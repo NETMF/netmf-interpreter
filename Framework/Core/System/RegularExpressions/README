@@ -1,0 +1,26 @@
+The LICENSE and NOTICE files are the original ones of the 1.5 Jakarta distribution.
+This library was ported by to the .Net Micro Framework by
+Julius Friedman - juliusfriedman@gmail.com
+Sr. Software Developer for ASTI Transportion Inc. http://www.asti-trans.com
+
+Following, the list of the original java files and their authors
+
+CharacterArrayCharacterIterator.java: * @author <a href="mailto:ales.novak@netbeans.com">Ales Novak</a>
+CharacterIterator.java: * @author <a href="mailto:ales.novak@netbeans.com">Ales Novak</a>
+RE.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+RE.java: * @author <a href="mailto:ts@sch-fer.de">Tobias Sch&auml;fer</a>
+ReaderCharacterIterator.java: * @author <a href="mailto:ales.novak@netbeans.com">Ales Novak</a>
+recompile.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+RECompiler.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+RECompiler.java: * @author <a href="mailto:gholam@xtra.co.nz">Michael McCallum</a>
+REDebugCompiler.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+REDemo.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+REProgram.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+RESyntaxException.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+RESyntaxException.java: * @author <a href="mailto:gholam@xtra.co.nz>Michael McCallum</a>
+RETest.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+RETest.java: * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+RETest.java: * @author <a href="mailto:gholam@xtra.co.nz">Michael McCallum</a>
+REUtil.java: * @author <a href="mailto:jonl@muppetlabs.com">Jonathan Locke</a>
+StreamCharacterIterator.java: * @author <a href="mailto:ales.novak@netbeans.com">Ales Novak</a>
+StringCharacterIterator.java: * @author <a href="mailto:ales.novak@netbeans.com">Ales Novak</a>

@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ComponentGuid>{6762330c-9017-4478-a627-1e0e9f103e06}</ComponentGuid>
+    <DirectoryRef>SamplesDir</DirectoryRef>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectFile Include="expressions2.csproj">
+      <Transform>Client</Transform>
+      <Deploy>true</Deploy>
+      <!--ExtraFiles>
+        <File>expressions2.csproj.user</File>
+      </ExtraFiles-->
+    </ProjectFile>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+</Project>

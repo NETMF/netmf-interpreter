@@ -1,0 +1,10 @@
+
+Namespace Microsoft.VisualBasic.CompilerServices
+    Friend Class [_Version]
+        Public Const Major As Integer = MAJORVERSION
+        Public Const Minor As Integer = MINORVERSION
+        Public Const Build As Integer = BUILDNUMBER
+        Public Const Revision As Integer = REVISIONNUMBER
+    End Class
+End Namespace
+

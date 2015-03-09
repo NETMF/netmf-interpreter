@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+  <If Name="COMPILER_TOOL_VERSION" Value="ADS1.2">
+    <FileMapping Name="*" Options="(i.IDelayLoop)" Comment="00004a98 24 16 IDelayLoop" />
+    <FileMapping Name="*" Options="(i.Time_Sleep_MicroSeconds__FUi)" Comment="Time_Sleep_MicroSeconds__FUi" />
+    <FileMapping Name="*" Options="(i.Time_Sleep_MicroSeconds_InterruptEnabled__FUi)" Comment="Time_Sleep_MicroSeconds_InterruptEnabled__FUi" />
+    <FileMapping Name="*" Options="(i.CPU_MicrosecondsToTicks__FUi)" Comment="CPU_MicrosecondsToTicks__FUi" />    
+    <FileMapping Name="*" Options="(i.Unlink__21CLR_RT_HeapBlock_NodeFv)" Comment="00006fdc 44 2013044 Unlink__21CLR_RT_HeapBlock_NodeFv" />
+    <FileMapping Name="*" Options="(i.LinkAtBack__20CLR_RT_DblLinkedListFP21CLR_RT_HeapBlock_Node)"
+        Comment="000050f8 12 386989 LinkAtBack__20CLR_RT_DblLinkedListFP21CLR_RT_HeapBlock_Node" />
+    <FileMapping Name="*" Options="(i.InitializeFromIndex__25CLR_RT_MethodDef_InstanceFRC22CLR_RT_MethodDef_Index)"
+        Comment="00004c44 100 2804817 InitializeFromIndex__25CLR_RT_MethodDef_InstanceFRC22CLR_RT_MethodDef_Index" />
+    <FileMapping Name="*" Options="(i.SUPPORT_ComputeCRC__FPCviUi)" Comment="00006654 72 1709347 SUPPORT_ComputeCRC__FPCviUi" />
+    <FileMapping Name="*" Options="(i.InitializeFromIndex__24CLR_RT_FieldDef_InstanceFRC21CLR_RT_FieldDef_Index)"
+        Comment="00004be0 100 1751270 InitializeFromIndex__24CLR_RT_FieldDef_InstanceFRC21CLR_RT_FieldDef_Index" />
+    <FileMapping Name="rt_memclr.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.EnsureObjectReference__16CLR_RT_HeapBlockFRP16CLR_RT_HeapBlock)"
+        Comment="00001954 92 1370630 EnsureObjectReference__16CLR_RT_HeapBlockFRP16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i.Append_Node__17CLR_RT_EventCacheFP16CLR_RT_HeapBlock)" Comment="00000c58 44 604823 Append_Node__17CLR_RT_EventCacheFP16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i.IsTimeExpired__22CLR_RT_ExecutionEngineFRCxRxb)" Comment="00004ff4 84 908651 IsTimeExpired__22CLR_RT_ExecutionEngineFRCxRxb" />
+    <FileMapping Name="*" Options="(i.Push__17CLR_RT_StackFrameSFP13CLR_RT_ThreadRC25CLR_RT_MethodDef_Instancei)"
+        Comment="00005d98 792 8013163 Push__17CLR_RT_StackFrameSFP13CLR_RT_ThreadRC25CLR_RT_MethodDef_Instancei" />
+    <FileMapping Name="*" Options="(i.ResolveToken__24CLR_RT_FieldDef_InstanceFUiP15CLR_RT_Assembly)"
+        Comment="000064c4 92 882794 ResolveToken__24CLR_RT_FieldDef_InstanceFUiP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i.InitializeFromMethod__23CLR_RT_TypeDef_InstanceFRC25CLR_RT_MethodDef_Instance)"
+        Comment="00004ca8 120 1019272 InitializeFromMethod__23CLR_RT_TypeDef_InstanceFRC25CLR_RT_MethodDef_Instance" />
+    <FileMapping Name="*" Options="(i.FindVirtualMethod__17CLR_RT_EventCacheFRC20CLR_RT_TypeDef_IndexRC22CLR_RT_MethodDef_IndexR22CLR_RT_MethodDef_Index)"
+        Comment="00004530 8 66423 FindVirtualMethod__17CLR_RT_EventCacheFRC20CLR_RT_TypeDef_IndexRC22CLR_RT_MethodDef_IndexR22CLR_RT_MethodDef_Index" />
+    <FileMapping Name="*" Options="(i.ResolveToken__25CLR_RT_MethodDef_InstanceFUiP15CLR_RT_Assembly)"
+        Comment="00006520 72 594243 ResolveToken__25CLR_RT_MethodDef_InstanceFUiP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i.Pop__17CLR_RT_StackFrameFv)" Comment="00005b90 520 3614292 Pop__17CLR_RT_StackFrameFv" />
+    <FileMapping Name="*" Options="(i.InitializeReference__22CLR_RT_ExecutionEngineFR16CLR_RT_HeapBlockR22CLR_RT_SignatureParser)"
+        Comment="00004e54 208 1438567 InitializeReference__22CLR_RT_ExecutionEngineFR16CLR_RT_HeapBlockR22CLR_RT_SignatureParser" />
+    <FileMapping Name="*" Options="(i.InitializeFromIndex__23CLR_RT_TypeDef_InstanceFRC20CLR_RT_TypeDef_Index)"
+        Comment="00004b78 104 672281 InitializeFromIndex__23CLR_RT_TypeDef_InstanceFRC20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="rt_memclr_w.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.Initialize_FieldDef__22CLR_RT_SignatureParserFP15CLR_RT_AssemblyPC19CLR_RECORD_FIELDDEF)"
+        Comment="00004f24 24 127712 Initialize_FieldDef__22CLR_RT_SignatureParserFP15CLR_RT_AssemblyPC19CLR_RECORD_FIELDDEF" />
+    <FileMapping Name="*" Options="(i.Execute_Inner__13CLR_RT_ThreadFv)" Comment="00003da4 956 4618781 Execute_Inner__13CLR_RT_ThreadFv" />
+    <FileMapping Name="*" Options="(i.InitializeLocals__22CLR_RT_ExecutionEngineFP16CLR_RT_HeapBlockP15CLR_RT_AssemblyPC20CLR_RECORD_METHODDEF)"
+        Comment="00004f5c 56 268593 InitializeLocals__22CLR_RT_ExecutionEngineFP16CLR_RT_HeapBlockP15CLR_RT_AssemblyPC20CLR_RECORD_METHODDEF" />
+    <FileMapping Name="*" Options="(i.InitializeArrayReferenceDirect__16CLR_RT_HeapBlockFR22CLR_RT_HeapBlock_Arrayi)"
+        Comment="00004b00 20 93646 InitializeArrayReferenceDirect__16CLR_RT_HeapBlockFR22CLR_RT_HeapBlock_Arrayi" />
+    <FileMapping Name="*" Options="(i.Extract_Node__17CLR_RT_EventCacheFUiN21)" Comment="00004384 344 1595787 Extract_Node__17CLR_RT_EventCacheFUiN21" />
+    <FileMapping Name="*" Options="(i.ExtractTypeIndexFromObject__21CLR_RT_TypeDescriptorSFRC16CLR_RT_HeapBlockR20CLR_RT_TypeDef_Index)"
+        Comment="000042c8 188 865815 ExtractTypeIndexFromObject__21CLR_RT_TypeDescriptorSFRC16CLR_RT_HeapBlockR20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="*" Options="(i.FindVirtualMethod__Q217CLR_RT_EventCache18VirtualMethodTableFRC20CLR_RT_TypeDef_IndexRC22CLR_RT_MethodDef_IndexR22CLR_RT_MethodDef_Index)"
+        Comment="00004538 452 1989007 FindVirtualMethod__Q217CLR_RT_EventCache18VirtualMethodTableFRC20CLR_RT_TypeDef_IndexRC22CLR_RT_MethodDef_IndexR22CLR_RT_MethodDef_Index" />
+    <FileMapping Name="*" Options="(i.TransparentBlt__14CLR_GFX_BitmapFiN31RC14CLR_GFX_BitmapN21)"
+        Comment="00006934 688 2978390 TransparentBlt__14CLR_GFX_BitmapFiN31RC14CLR_GFX_BitmapN21" />
+    <FileMapping Name="*" Options="(i.Initialize_FieldDef__22CLR_RT_SignatureParserFP15CLR_RT_AssemblyPCUc)"
+        Comment="00004f3c 32 138373 Initialize_FieldDef__22CLR_RT_SignatureParserFP15CLR_RT_AssemblyPCUc" />
+    <FileMapping Name="*" Options="(i.GetCurrent__11CLR_RT_TimeSFv)" Comment="0000488c 4 17239 GetCurrent__11CLR_RT_TimeSFv" />
+    <FileMapping Name="llshl.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.ExecutionConstraint_Suspend__22CLR_RT_ExecutionEngineSFv)"
+        Comment="000041c0 60 238208 ExecutionConstraint_Suspend__22CLR_RT_ExecutionEngineSFv" />
+    <FileMapping Name="*" Options="(i.Convert_Internal__16CLR_RT_HeapBlockF12CLR_DataType)" Comment="000016d0 332 1265708 Convert_Internal__16CLR_RT_HeapBlockF12CLR_DataType" />
+    <FileMapping Name="*" Options="(i.CheckTimers__22CLR_RT_ExecutionEngineFRx)" Comment="000011d0 160 555990 CheckTimers__22CLR_RT_ExecutionEngineFRx" />
+    <FileMapping Name="*" Options="(i.ExecutionConstraint_Resume__22CLR_RT_ExecutionEngineSFv)" Comment="00004160 96 328082 ExecutionConstraint_Resume__22CLR_RT_ExecutionEngineSFv" />
+    <FileMapping Name="*" Options="(i.MonthToDays__11CLR_RT_TimeSFUsT1)" Comment="00005688 80 269859 MonthToDays__11CLR_RT_TimeSFUsT1" />
+    <FileMapping Name="llsshr.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.Advance__22CLR_RT_SignatureParserFRQ222CLR_RT_SignatureParser7Element)"
+        Comment="000008f0 872 2881344 Advance__22CLR_RT_SignatureParserFRQ222CLR_RT_SignatureParser7Element" />
+    <FileMapping Name="llsdiv.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.InitializeArrayReference__16CLR_RT_HeapBlockFR16CLR_RT_HeapBlocki)"
+        Comment="00004b14 100 314482 InitializeArrayReference__16CLR_RT_HeapBlockFR16CLR_RT_HeapBlocki" />
+    <FileMapping Name="llushr.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.Execute_IL__13CLR_RT_ThreadSFP17CLR_RT_StackFrame)" Comment="000019b0 9204 28802638 Execute_IL__13CLR_RT_ThreadSFP17CLR_RT_StackFrame" />
+    <FileMapping Name="*" Options="(i.get_Item___OBJECT__I4__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFrame)"
+        Comment="00007d14 12 37022 get_Item___OBJECT__I4__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFrame" />
+    <FileMapping Name="lludiv.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.DaysToMonth__11CLR_RT_TimeSFUsT1)" Comment="000018a8 52 145672 DaysToMonth__11CLR_RT_TimeSFUsT1" />
+    <FileMapping Name="rt_memcpy_w.o" Options="(+RO)" />
+    <FileMapping Name="rt_sdiv.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.Relocate_Obj__16CLR_RT_HeapBlockFv)" Comment="00006374 16 42830 Relocate_Obj__16CLR_RT_HeapBlockFv" />
+    <FileMapping Name="*" Options="(i.ResolveToken__23CLR_RT_TypeDef_InstanceFUiP15CLR_RT_Assembly)"
+        Comment="00006568 92 239936 ResolveToken__23CLR_RT_TypeDef_InstanceFUiP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i.InitializeFromType__21CLR_RT_TypeDescriptorFRC20CLR_RT_TypeDef_Index)"
+        Comment="00004d20 240 611018 InitializeFromType__21CLR_RT_TypeDescriptorFRC20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="*" Options="(i.Heap_Relocate__23CLR_RT_GarbageCollectorSFP16CLR_RT_HeapBlockUi)"
+        Comment="000049c0 80 200811 Heap_Relocate__23CLR_RT_GarbageCollectorSFP16CLR_RT_HeapBlockUi" />
+    <FileMapping Name="*" Options="(i.ReadBits__29CLR_RT_HeapBlock_MemoryStreamFRUiUi)" Comment="000061e8 208 513986 ReadBits__29CLR_RT_HeapBlock_MemoryStreamFRUiUi" />
+    <FileMapping Name="*" Options="(i.InitializeReference__22CLR_RT_ExecutionEngineFR16CLR_RT_HeapBlockPC19CLR_RECORD_FIELDDEFP15CLR_RT_Assembly)"
+        Comment="00004e10 68 159880 InitializeReference__22CLR_RT_ExecutionEngineFR16CLR_RT_HeapBlockPC19CLR_RECORD_FIELDDEFP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i.Promote__16CLR_RT_HeapBlockFv)" Comment="000060e0 124 289783 Promote__16CLR_RT_HeapBlockFv" />
+    <FileMapping Name="*" Options="(i.GetString__15CLR_RT_AssemblyFUs)" Comment="0000495c 72 153401 GetString__15CLR_RT_AssemblyFUs" />
+    <FileMapping Name="*" Options="(i.FindTypeDef__15CLR_RT_AssemblyFUiR20CLR_RT_TypeDef_Index)"
+        Comment="000044dc 84 174077 FindTypeDef__15CLR_RT_AssemblyFUiR20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="*" Options="(i.ElapsedYearsToDays__11CLR_RT_TimeSFUs)" Comment="00001934 32 60483 ElapsedYearsToDays__11CLR_RT_TimeSFUs" />
+    <FileMapping Name="*" Options="(i.Heap_Relocate__23CLR_RT_GarbageCollectorSFPPv)" Comment="00004a10 136 249411 Heap_Relocate__23CLR_RT_GarbageCollectorSFPPv" />
+    <FileMapping Name="*" Options="(i.NumberOfLeapYears__11CLR_RT_TimeSFUs)" Comment="00005794 32 58611 NumberOfLeapYears__11CLR_RT_TimeSFUs" />
+    <FileMapping Name="*" Options="(i.DaysInMonth__11CLR_RT_TimeSFUsT1)" Comment="00001890 24 43631 DaysInMonth__11CLR_RT_TimeSFUsT1" />
+    <FileMapping Name="*" Options="(i.Initialize__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFrameRP22CLR_RT_HeapBlock_ArrayRiT3)"
+        Comment="00004f94 20 35372 Initialize__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFrameRP22CLR_RT_HeapBlock_ArrayRiT3" />
+    <FileMapping Name="*" Options="(i.ExtractArrayFromArrayList__22CLR_RT_ArrayListHelperSFR16CLR_RT_HeapBlockRP22CLR_RT_HeapBlock_ArrayRiT3)"
+        Comment="000041fc 100 174145 ExtractArrayFromArrayList__22CLR_RT_ArrayListHelperSFR16CLR_RT_HeapBlockRP22CLR_RT_HeapBlock_ArrayRiT3" />
+    <FileMapping Name="*" Options="(i.ExtractHeapBlocksForObjects__22CLR_RT_ExecutionEngineFUiN21)"
+        Comment="00004288 64 107632 ExtractHeapBlocksForObjects__22CLR_RT_ExecutionEngineFUiN21" />
+    <FileMapping Name="*" Options="(i.LoadFromReference__16CLR_RT_HeapBlockFR16CLR_RT_HeapBlock)"
+        Comment="00005104 340 570696 LoadFromReference__16CLR_RT_HeapBlockFR16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i.Compare_Values__16CLR_RT_HeapBlockSFRC16CLR_RT_HeapBlockT1b)"
+        Comment="000013f0 736 1187124 Compare_Values__16CLR_RT_HeapBlockSFRC16CLR_RT_HeapBlockT1b" />
+    <FileMapping Name="*" Options="(i.CastToType__22CLR_RT_ExecutionEngineSFR16CLR_RT_HeapBlockUiP15CLR_RT_Assemblyb)"
+        Comment="1010b234 116 381367 CastToType__22CLR_RT_ExecutionEngineSFR16CLR_RT_HeapBlockUiP15CLR_RT_Assemblyb" />
+    <FileMapping Name="*" Options="(i.IsZero__16CLR_RT_HeapBlockCFv)" Comment="00005048 176 260397 IsZero__16CLR_RT_HeapBlockCFv" />
+    <FileMapping Name="*" Options="(i.GetMonthTable__11CLR_RT_TimeSFUs)" Comment="000048fc 96 130078 GetMonthTable__11CLR_RT_TimeSFUs" />
+    <FileMapping Name="*" Options="(i.ReadBits__22CLR_RT_BinaryFormatterFRUxi)" Comment="10124120 20 55107 ReadBits__22CLR_RT_BinaryFormatterFRUxi" />
+    <FileMapping Name="*" Options="(i.ExtractBlocks__18CLR_RT_HeapClusterFUiN21)" Comment="10114804 252 672085 ExtractBlocks__18CLR_RT_HeapClusterFUiN21" />
+    <FileMapping Name="*" Options="(i.CompareTo___I4__STRING__35Library_corlib_native_System_StringSFR17CLR_RT_StackFrame)"
+        Comment="1010cd08 480 1190364 CompareTo___I4__STRING__35Library_corlib_native_System_StringSFR17CLR_RT_StackFrame" />
+    <FileMapping Name="*" Options="(i.RecoverFromGC__18CLR_RT_HeapClusterFv)" Comment="000062b8 180 197972 RecoverFromGC__18CLR_RT_HeapClusterFv" />
+    <FileMapping Name="*" Options="(i.PatBlt__14CLR_GFX_BitmapFiN31Ui)" Comment="00005878 792 868846 PatBlt__14CLR_GFX_BitmapFiN31Ui" />
+    <FileMapping Name="*" Options="(i.Advance__26CLR_RT_AttributeEnumeratorFv)" Comment="10108a74 168 391177 Advance__26CLR_RT_AttributeEnumeratorFv" />
+    <FileMapping Name="*" Options="(i.ComputeReachabilityGraphForMultipleBlocks__23CLR_RT_GarbageCollectorSFP16CLR_RT_HeapBlockUi)"
+        Comment="1010d3ec 856 1950626 ComputeReachabilityGraphForMultipleBlocks__23CLR_RT_GarbageCollectorSFP16CLR_RT_HeapBlockUi" />
+    <FileMapping Name="*" Options="(i.Events_MaskedRead__FUi)" Comment="000070ec 20 20787 Events_MaskedRead__FUi" />
+    <FileMapping Name="*" Options="(i.GetItem__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFrameR22CLR_RT_HeapBlock_ArrayiT3)"
+        Comment="00004890 108 112200 GetItem__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFrameR22CLR_RT_HeapBlock_ArrayiT3" />
+    <FileMapping Name="*" Options="(i.SwitchToParent__23CLR_RT_TypeDef_InstanceFv)" Comment="1012ace0 100 218547 SwitchToParent__23CLR_RT_TypeDef_InstanceFv" />
+    <FileMapping Name="*" Options="(i.GetItem__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFramei)"
+        Comment="10117e74 72 155757 GetItem__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFramei" />
+    <FileMapping Name="*" Options="(i.NumericSub__16CLR_RT_HeapBlockFRC16CLR_RT_HeapBlock)" Comment="000057b4 196 195249 NumericSub__16CLR_RT_HeapBlockFRC16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i.DaysAndFractionToTime__11CLR_RT_TimeSFUiT1Rx)" Comment="10111154 64 134933 DaysAndFractionToTime__11CLR_RT_TimeSFUiT1Rx" />
+    <FileMapping Name="*" Options="(i.DblLinkedList_Initialize__20CLR_RT_DblLinkedListFv)" Comment="101111fc 24 49821 DblLinkedList_Initialize__20CLR_RT_DblLinkedListFv" />
+    <FileMapping Name="strcmp.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i.NumericAdd__16CLR_RT_HeapBlockFRC16CLR_RT_HeapBlock)" Comment="101204cc 196 398815 NumericAdd__16CLR_RT_HeapBlockFRC16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i.Advance__22CLR_RT_BinaryFormatterFv)" Comment="10108820 64 128835 Advance__22CLR_RT_BinaryFormatterFv" />
+    <FileMapping Name="*" Options="(i.Relocate_Cls__16CLR_RT_HeapBlockFv)" Comment="101259fc 16 31705 Relocate_Cls__16CLR_RT_HeapBlockFv" />
+    <FileMapping Name="*" Options="(i.ClipToVisible__14CLR_GFX_BitmapFiN31R18CLR_GFX_RectAsSizePC14CLR_GFX_BitmapRiT7)"
+        Comment="00001270 284 259079 ClipToVisible__14CLR_GFX_BitmapFiN31R18CLR_GFX_RectAsSizePC14CLR_GFX_BitmapRiT7" />
+  </If>
+  <If Name="COMPILER_TOOL_VERSION" In="RVDS3.0 RVDS3.1 RVDS4.0 RVDS4.1">
+    <FileMapping Name="*" Options="(i.IDelayLoop)" Comment="00004a98 24 16 IDelayLoop" />
+    <FileMapping Name="*" Options="(i._Z23Time_Sleep_MicroSecondsj)" Comment="_Z23Time_Sleep_MicroSecondsj" />
+    <FileMapping Name="*" Options="(i._Z40Time_Sleep_MicroSeconds_InterruptEnabledj)" Comment="_Z40Time_Sleep_MicroSeconds_InterruptEnabledj" />
+    <FileMapping Name="*" Options="(i._Z23CPU_MicrosecondsToTicksj)" Comment="_Z23CPU_MicrosecondsToTicksj" />    
+    <FileMapping Name="*" Options="(i._ZN21CLR_RT_HeapBlock_Node6UnlinkEv)" Comment="00006fdc 44 2013044 Unlink__21CLR_RT_HeapBlock_NodeFv" />
+    <FileMapping Name="*" Options="(i._ZN20CLR_RT_DblLinkedList10LinkAtBackEP21CLR_RT_HeapBlock_Node)"
+        Comment="000050f8 12 386989 LinkAtBack__20CLR_RT_DblLinkedListFP21CLR_RT_HeapBlock_Node" />
+    <FileMapping Name="*" Options="(i._ZN25CLR_RT_MethodDef_Instance19InitializeFromIndexERK22CLR_RT_MethodDef_Index)"
+        Comment="00004c44 100 2804817 InitializeFromIndex__25CLR_RT_MethodDef_InstanceFRC22CLR_RT_MethodDef_Index" />
+    <FileMapping Name="*" Options="(i._Z18SUPPORT_ComputeCRCPKvij)" Comment="00006654 72 1709347 SUPPORT_ComputeCRC__FPCviUi" />
+    <FileMapping Name="*" Options="(i._ZN24CLR_RT_FieldDef_Instance19InitializeFromIndexERK21CLR_RT_FieldDef_Index)"
+        Comment="00004be0 100 1751270 InitializeFromIndex__24CLR_RT_FieldDef_InstanceFRC21CLR_RT_FieldDef_Index" />
+    <FileMapping Name="rt_memclr.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock21EnsureObjectReferenceERPS_)"
+        Comment="00001954 92 1370630 EnsureObjectReference__16CLR_RT_HeapBlockFRP16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i._ZN17CLR_RT_EventCache11Append_NodeEP16CLR_RT_HeapBlock)" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine13IsTimeExpiredERKxRxb)" Comment="00004ff4 84 908651 IsTimeExpired__22CLR_RT_ExecutionEngineFRCxRxb" />
+    <FileMapping Name="*" Options="(i._ZN17CLR_RT_StackFrame4PushEP13CLR_RT_ThreadRK25CLR_RT_MethodDef_Instancei)"
+        Comment="00005d98 792 8013163 Push__17CLR_RT_StackFrameSFP13CLR_RT_ThreadRC25CLR_RT_MethodDef_Instancei" />
+    <FileMapping Name="*" Options="(i._ZN24CLR_RT_FieldDef_Instance12ResolveTokenEjP15CLR_RT_Assembly)"
+        Comment="000064c4 92 882794 ResolveToken__24CLR_RT_FieldDef_InstanceFUiP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_TypeDef_Instance20InitializeFromMethodERK25CLR_RT_MethodDef_Instance)"
+        Comment="00004ca8 120 1019272 InitializeFromMethod__23CLR_RT_TypeDef_InstanceFRC25CLR_RT_MethodDef_Instance" />
+    <FileMapping Name="*" Options="(i._ZN17CLR_RT_EventCache17FindVirtualMethodERK20CLR_RT_TypeDef_IndexRK22CLR_RT_MethodDef_IndexRS3_)"
+        Comment="00004530 8 66423 FindVirtualMethod__17CLR_RT_EventCacheFRC20CLR_RT_TypeDef_IndexRC22CLR_RT_MethodDef_IndexR22CLR_RT_MethodDef_Index" />
+    <FileMapping Name="*" Options="(i._ZN25CLR_RT_MethodDef_Instance12ResolveTokenEjP15CLR_RT_Assembly)"
+        Comment="00006520 72 594243 ResolveToken__25CLR_RT_MethodDef_InstanceFUiP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i._ZN17CLR_RT_StackFrame3PopEv)" Comment="00005b90 520 3614292 Pop__17CLR_RT_StackFrameFv" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine19InitializeReferenceER16CLR_RT_HeapBlockR22CLR_RT_SignatureParser)"
+        Comment="00004e54 208 1438567 InitializeReference__22CLR_RT_ExecutionEngineFR16CLR_RT_HeapBlockR22CLR_RT_SignatureParser" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_TypeDef_Instance19InitializeFromIndexERK20CLR_RT_TypeDef_Index)"
+        Comment="00004b78 104 672281 InitializeFromIndex__23CLR_RT_TypeDef_InstanceFRC20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="rt_memclr_w.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_SignatureParser19Initialize_FieldDefEP15CLR_RT_AssemblyPK19CLR_RECORD_FIELDDEF)"
+        Comment="00004f24 24 127712 Initialize_FieldDef__22CLR_RT_SignatureParserFP15CLR_RT_AssemblyPC19CLR_RECORD_FIELDDEF" />
+    <FileMapping Name="*" Options="(i._ZN13CLR_RT_Thread13Execute_InnerEv)" Comment="00003da4 956 4618781 Execute_Inner__13CLR_RT_ThreadFv" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine16InitializeLocalsEP16CLR_RT_HeapBlockP15CLR_RT_AssemblyPK20CLR_RECORD_METHODDEF)"
+        Comment="00004f5c 56 268593 InitializeLocals__22CLR_RT_ExecutionEngineFP16CLR_RT_HeapBlockP15CLR_RT_AssemblyPC20CLR_RECORD_METHODDEF" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock30InitializeArrayReferenceDirectER22CLR_RT_HeapBlock_Arrayi)"
+        Comment="00004b00 20 93646 InitializeArrayReferenceDirect__16CLR_RT_HeapBlockFR22CLR_RT_HeapBlock_Arrayi" />
+    <FileMapping Name="*" Options="(i._ZN17CLR_RT_EventCache12Extract_NodeEjjj)" Comment="00004384 344 1595787 Extract_Node__17CLR_RT_EventCacheFUiN21" />
+    <FileMapping Name="*" Options="(i._ZN21CLR_RT_TypeDescriptor26ExtractTypeIndexFromObjectERK16CLR_RT_HeapBlockR20CLR_RT_TypeDef_Index)"
+        Comment="000042c8 188 865815 ExtractTypeIndexFromObject__21CLR_RT_TypeDescriptorSFRC16CLR_RT_HeapBlockR20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="*" Options="(i._ZN17CLR_RT_EventCache18VirtualMethodTable17FindVirtualMethodERK20CLR_RT_TypeDef_IndexRK22CLR_RT_MethodDef_IndexRS4_)"
+        Comment="00004538 452 1989007 FindVirtualMethod__Q217CLR_RT_EventCache18VirtualMethodTableFRC20CLR_RT_TypeDef_IndexRC22CLR_RT_MethodDef_IndexR22CLR_RT_MethodDef_Index" />
+    <FileMapping Name="*" Options="(i._ZN14CLR_GFX_Bitmap18CLR_TransparentBltEiiiiRKS_ii)"
+        Comment="00006934 688 2978390 _ZN14CLR_GFX_Bitmap18CLR_TransparentBltEiiiiRKS_ii" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_SignatureParser19Initialize_FieldDefEP15CLR_RT_AssemblyPKh)"
+        Comment="00004f3c 32 138373 Initialize_FieldDef__22CLR_RT_SignatureParserFP15CLR_RT_AssemblyPCUc" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time10GetCurrentEv)" Comment="0000488c 4 17239 GetCurrent__11CLR_RT_TimeSFv" />
+    <FileMapping Name="llshl.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine27ExecutionConstraint_SuspendEv)"
+        Comment="000041c0 60 238208 ExecutionConstraint_Suspend__22CLR_RT_ExecutionEngineSFv" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock16Convert_InternalE12CLR_DataType)" Comment="000016d0 332 1265708 Convert_Internal__16CLR_RT_HeapBlockF12CLR_DataType" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine11CheckTimersERx)" Comment="000011d0 160 555990 CheckTimers__22CLR_RT_ExecutionEngineFRx" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine26ExecutionConstraint_ResumeEv)" Comment="00004160 96 328082 ExecutionConstraint_Resume__22CLR_RT_ExecutionEngineSFv" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time11MonthToDaysEtt)" Comment="00005688 80 269859 MonthToDays__11CLR_RT_TimeSFUsT1" />
+    <FileMapping Name="llsshr.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_SignatureParser7AdvanceERNS_7ElementE)"
+        Comment="000008f0 872 2881344 Advance__22CLR_RT_SignatureParserFRQ222CLR_RT_SignatureParser7Element" />
+    <FileMapping Name="llsdiv.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock24InitializeArrayReferenceERS_i)"
+        Comment="00004b14 100 314482 InitializeArrayReference__16CLR_RT_HeapBlockFR16CLR_RT_HeapBlocki" />
+    <FileMapping Name="llushr.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN13CLR_RT_Thread10Execute_ILEP17CLR_RT_StackFrame)" Comment="000019b0 9204 28802638 Execute_IL__13CLR_RT_ThreadSFP17CLR_RT_StackFrame" />
+    <FileMapping Name="*" Options="(i._ZN34Library_corlib_native_System_Array46System_Collections_IList_get_Item___OBJECT__I4ER17CLR_RT_StackFrame)"
+        Comment="00007d14 12 37022 get_Item___OBJECT__I4__50Library_corlib_native_System_Collections_ArrayListSFR17CLR_RT_StackFrame" />
+    <FileMapping Name="lludiv.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time11DaysToMonthEtt)" Comment="000018a8 52 145672 DaysToMonth__11CLR_RT_TimeSFUsT1" />
+    <FileMapping Name="rt_memcpy_w.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock12Relocate_ObjEv)" Comment="00006374 16 42830 Relocate_Obj__16CLR_RT_HeapBlockFv" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_TypeDef_Instance12ResolveTokenEjP15CLR_RT_Assembly)"
+        Comment="00006568 92 239936 ResolveToken__23CLR_RT_TypeDef_InstanceFUiP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i._ZN21CLR_RT_TypeDescriptor18InitializeFromTypeERK20CLR_RT_TypeDef_Index)"
+        Comment="00004d20 240 611018 InitializeFromType__21CLR_RT_TypeDescriptorFRC20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_GarbageCollector13Heap_RelocateEP16CLR_RT_HeapBlockj)"
+        Comment="000049c0 80 200811 Heap_Relocate__23CLR_RT_GarbageCollectorSFP16CLR_RT_HeapBlockUi" />
+    <FileMapping Name="*" Options="(i._ZN29CLR_RT_HeapBlock_MemoryStream8ReadBitsERyj)" Comment="000061e8 208 513986 ReadBits__29CLR_RT_HeapBlock_MemoryStreamFRUiUi" />
+    <FileMapping Name="*" Options="(i._ZN29CLR_RT_HeapBlock_MemoryStream8ReadBitsERjj)" Comment="000061e8 208 513986 ReadBits__29CLR_RT_HeapBlock_MemoryStreamFRUiUi" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine19InitializeReferenceER16CLR_RT_HeapBlockPK19CLR_RECORD_FIELDDEFP15CLR_RT_Assembly)"
+        Comment="00004e10 68 159880 InitializeReference__22CLR_RT_ExecutionEngineFR16CLR_RT_HeapBlockPC19CLR_RECORD_FIELDDEFP15CLR_RT_Assembly" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock7PromoteEv)" Comment="000060e0 124 289783 Promote__16CLR_RT_HeapBlockFv" />
+    <FileMapping Name="*" Options="(i._ZN15CLR_RT_Assembly9GetStringEt)" Comment="0000495c 72 153401 GetString__15CLR_RT_AssemblyFUs" />
+    <FileMapping Name="*" Options="(i._ZN15CLR_RT_Assembly11FindTypeDefEPKcS1_R20CLR_RT_TypeDef_Index)"
+        Comment="000044dc 84 174077 FindTypeDef__15CLR_RT_AssemblyFUiR20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="*" Options="(i._ZN15CLR_RT_Assembly11FindTypeDefEPKctR20CLR_RT_TypeDef_Index)"
+        Comment="000044dc 84 174077 FindTypeDef__15CLR_RT_AssemblyFUiR20CLR_RT_TypeDef_Index" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time18ElapsedYearsToDaysEt)" Comment="00001934 32 60483 ElapsedYearsToDays__11CLR_RT_TimeSFUs" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_GarbageCollector13Heap_RelocateEPPv)" Comment="00004a10 136 249411 Heap_Relocate__23CLR_RT_GarbageCollectorSFPPv" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_GarbageCollector13Heap_RelocateEv)" Comment="00004a10 136 249411 Heap_Relocate__23CLR_RT_GarbageCollectorSFPPv" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time17NumberOfLeapYearsEt)" Comment="00005794 32 58611 NumberOfLeapYears__11CLR_RT_TimeSFUs" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time11DaysInMonthEtt)" Comment="00001890 24 43631 DaysInMonth__11CLR_RT_TimeSFUsT1" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine27ExtractHeapBlocksForObjectsEjjj)"
+        Comment="00004288 64 107632 ExtractHeapBlocksForObjects__22CLR_RT_ExecutionEngineFUiN21" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock17LoadFromReferenceERS_)"
+        Comment="00005104 340 570696 LoadFromReference__16CLR_RT_HeapBlockFR16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock14Compare_ValuesERKS_S1_b)"
+        Comment="000013f0 736 1187124 Compare_Values__16CLR_RT_HeapBlockSFRC16CLR_RT_HeapBlockT1b" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_ExecutionEngine10CastToTypeER16CLR_RT_HeapBlockjP15CLR_RT_Assemblyb)"
+        Comment="1010b234 116 381367 CastToType__22CLR_RT_ExecutionEngineSFR16CLR_RT_HeapBlockUiP15CLR_RT_Assemblyb" />
+    <FileMapping Name="*" Options="(i._ZNK16CLR_RT_HeapBlock6IsZeroEv)" Comment="00005048 176 260397 IsZero__16CLR_RT_HeapBlockCFv" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time13GetMonthTableEt)" Comment="000048fc 96 130078 GetMonthTable__11CLR_RT_TimeSFUs" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_BinaryFormatter8ReadBitsERji)" Comment="10124120 20 55107 ReadBits__22CLR_RT_BinaryFormatterFRUxi" />
+    <FileMapping Name="*" Options="(i._ZN18CLR_RT_HeapCluster13ExtractBlocksEjjj)" Comment="10114804 252 672085 ExtractBlocks__18CLR_RT_HeapClusterFUiN21" />
+    <FileMapping Name="*" Options="(i._ZN35Library_corlib_native_System_String22CompareTo___I4__STRINGER17CLR_RT_StackFrame)"
+        Comment="1010cd08 480 1190364 CompareTo___I4__STRING__35Library_corlib_native_System_StringSFR17CLR_RT_StackFrame" />
+    <FileMapping Name="*" Options="(i._ZN18CLR_RT_HeapCluster13RecoverFromGCEv)" Comment="000062b8 180 197972 RecoverFromGC__18CLR_RT_HeapClusterFv" />
+    <FileMapping Name="*" Options="(i._ZN14CLR_GFX_Bitmap6PatBltEiiiij)" Comment="00005878 792 868846 PatBlt__14CLR_GFX_BitmapFiN31Ui" />
+    <FileMapping Name="*" Options="(i._ZN26CLR_RT_AttributeEnumerator7AdvanceEv)" Comment="10108a74 168 391177 Advance__26CLR_RT_AttributeEnumeratorFv" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_GarbageCollector41ComputeReachabilityGraphForMultipleBlocksEP16CLR_RT_HeapBlockj)"
+        Comment="1010d3ec 856 1950626 ComputeReachabilityGraphForMultipleBlocks__23CLR_RT_GarbageCollectorSFP16CLR_RT_HeapBlockUi" />
+    <FileMapping Name="*" Options="(i._Z17Events_MaskedReadj)" Comment="000070ec 20 20787 Events_MaskedRead__FUi" />
+    <FileMapping Name="*" Options="(i._ZN23CLR_RT_TypeDef_Instance14SwitchToParentEv)" Comment="1012ace0 100 218547 SwitchToParent__23CLR_RT_TypeDef_InstanceFv" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock10NumericSubERKS_)" Comment="000057b4 196 195249 NumericSub__16CLR_RT_HeapBlockFRC16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i._ZN11CLR_RT_Time21DaysAndFractionToTimeEjjRx)" Comment="10111154 64 134933 DaysAndFractionToTime__11CLR_RT_TimeSFUiT1Rx" />
+    <FileMapping Name="*" Options="(i._ZN20CLR_RT_DblLinkedList24DblLinkedList_InitializeEv)" Comment="101111fc 24 49821 DblLinkedList_Initialize__20CLR_RT_DblLinkedListFv" />
+    <FileMapping Name="strcmpfast.o" Options="(+RO)" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock10NumericAddERKS_)" Comment="101204cc 196 398815 NumericAdd__16CLR_RT_HeapBlockFRC16CLR_RT_HeapBlock" />
+    <FileMapping Name="*" Options="(i._ZN22CLR_RT_BinaryFormatter7AdvanceEv)" Comment="10108820 64 128835 Advance__22CLR_RT_BinaryFormatterFv" />
+    <FileMapping Name="*" Options="(i._ZN16CLR_RT_HeapBlock12Relocate_ClsEv)" Comment="101259fc 16 31705 Relocate_Cls__16CLR_RT_HeapBlockFv" />
+    <FileMapping Name="*" Options="(i._ZN14CLR_GFX_Bitmap13ClipToVisibleERiS0_S0_S0_PKS_S0_S0_)"
+        Comment="00001270 284 259079 ClipToVisible__14CLR_GFX_BitmapFiN31R18CLR_GFX_RectAsSizePC14CLR_GFX_BitmapRiT7" />
+  </If>
+</ScatterFile>

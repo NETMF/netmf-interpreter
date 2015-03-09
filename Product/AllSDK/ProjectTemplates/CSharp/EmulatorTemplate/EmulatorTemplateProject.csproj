@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <NetMFTemplateName>MFEmulator</NetMFTemplateName>
+    <SPOCLIENT Condition="'$(SPOCLIENT)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), sdk.dirproj))</SPOCLIENT>
+  </PropertyGroup>
+  <!-- Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/ -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{08FF08A7-6883-4875-BBC5-5F9405D59B4D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>$(NetMFTemplateName)</RootNamespace>
+    <AssemblyName>$(NetMFTemplateName)</AssemblyName>
+    <PlatformTarget>x86</PlatformTarget>
+    <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NetMFBuildVsSdkVersion>12</NetMFBuildVsSdkVersion>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <DeployExtension>false</DeployExtension>
+    <DeployVSTemplates>false</DeployVSTemplates>
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <CreateVsixContainer>False</CreateVsixContainer>
+    <DeployExtension>False</DeployExtension>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <CreateVsixContainer>False</CreateVsixContainer>
+    <DeployExtension>False</DeployExtension>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.CoreUtility">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Properties\Resources.Designer.cs" />
+    <Content Include="Properties\Resources.resx" />
+	<Content Include="Properties\Settings.Designer.cs" />
+	<Content Include="Properties\Settings.Settings" />
+	<Content Include="Emulator.config" />
+	<Content Include="Form1.cs" />
+	<Content Include="Form1.Designer.cs" />
+    <Content Include="Program.cs" />
+	
+    <Content Include="$(NetMFTemplateName).csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSTemplate Include="$(NetMFTemplateName).vstemplate">
+      <OutputSubPath>Micro Framework</OutputSubPath>
+    </VSTemplate>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

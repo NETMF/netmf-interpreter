@@ -1,0 +1,15 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>SOCKET</FeatureName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\Sockets_PAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Socket transport</Description>
+    <Guid>{2800E544-CA23-4b32-933A-E5C9EA48083E}</Guid>
+    <Groups>COM</Groups>
+    <Documentation>
+    </Documentation>
+    <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
+    <SOCKETS_PORT_FEATUREPROJ>True</SOCKETS_PORT_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

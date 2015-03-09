@@ -1,0 +1,77 @@
+<Project DefaultTargets="BuildSupport" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+    <ItemGroup>
+        <Project Include="Native_Hardware\Native_UART\Core_Native_Hardware_UART.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Hardware\Native_USB\Core_Native_Hardware_USB.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Hardware\Native_PWM\Core_Native_Hardware_PWM.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Hardware\Native_OneWire\Core_Native_Hardware_OneWire.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Graphics\Core_Native_Graphics.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Net\Core_Net.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_IO\Core_IO.csproj" >
+            <InProject>false</InProject>
+        </Project>        
+        <Project Include="System\System.Security.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Net_Security\Core_Net_Security.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_TimeService\Core_TimeService.csproj" >
+          <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Touch\Core_Touch.csproj" >
+          <InProject>false</InProject>
+        </Project>
+        <Project Include="System\System.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="System\IO.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="System\System\Net\Security\NetSecurity.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="System\System.Http.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="System\System.FTP.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="System\RegularExpressions\Core_RegEx.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="System\Xml.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Xml\System.Xml.csproj">
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Dpws\build.dirproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Native_Update\Core_Update.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Update\MFUpdate.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="RPC\RPC.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Drivers\build.dirproj" >
+            <InProject>false</InProject>
+        </Project>
+    </ItemGroup>
+</Project>

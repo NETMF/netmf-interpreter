@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>SPOT_Hardware_SerialPort_stub</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>7BA56079-4624-4184-9681-50BB8441EF14</ProjectGuid>
+    <Description>SerialPort interop stub library</Description>
+    <Level>CLR</Level>
+    <LibraryFile>SPOT_Hardware_SerialPort_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_Serial\dotNetMF_Stub.proj</ProjectPath>
+    <ManifestFile>SPOT_Hardware_SerialPort_stub.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Hardware</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_Serial_CLR" Guid="{FE9B7E92-76BC-484C-93D1-D31D3C3CEC65}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+          <Author>Microsoft</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <CustomSpecific>
+    </CustomSpecific>
+    <Directory>CLR\Libraries\SPOT_Hardware\SPOT_Serial</Directory>
+    <OutputType>Library</OutputType>
+    <VCProjName>Lib_SPOT_Hardware_SerialPort_stub</VCProjName>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="spot_hardware_serial_stub.cpp" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\libraries\SPOT" />
+    <IncludePaths Include="CLR\libraries\SPOT_Hardware" />
+    <IncludePaths Include="CLR\libraries\SPOT_Hardware\SPOT_Serial" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_version.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="spot_hardware_serial.h" />
+    <HFiles Include="spot_hardware_serial_native.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

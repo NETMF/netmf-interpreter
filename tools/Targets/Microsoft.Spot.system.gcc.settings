@@ -1,0 +1,37 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+
+ <!-- base on cpu type, setup compiler-->
+
+  <!-- set up the base DST_DIR path base on different INSTRUCTION_SET -->  
+  <PropertyGroup>
+    <OBJ_EXT>obj</OBJ_EXT>
+    <LIB_EXT>lib</LIB_EXT>
+    <EXE_EXT>axf</EXE_EXT>
+    <SCATTER_EXT>xml</SCATTER_EXT>
+
+    <!-- default of PLATFORM_INDEPENDENT_DST_DIR -->
+    <PLATFORM_INDEPENDENT_DST_DIR>$(SPO_BUILD)\$(INSTRUCTION_SET)\$(DOTNETMF_COMPILER)\$(ENDIANNESS)\ANY_MEDIA\$(OLD_FLAVOR)</PLATFORM_INDEPENDENT_DST_DIR>
+
+    <!-- force debug build use the RVDS release build if porting GCC + RVDS CLR-->
+    <PLATFORM_INDEPENDENT_DST_DIR Condition="'$(OLD_FLAVOR)'=='debug' and '$(DOTNETMF_COMPILER)'=='RVDS3.1'">$(SPO_BUILD)\$(INSTRUCTION_SET)\$(DOTNETMF_COMPILER)\$(ENDIANNESS)\ANY_MEDIA\release</PLATFORM_INDEPENDENT_DST_DIR>
+
+
+    <DST_DIR>$(SPO_BUILD)\$(INSTRUCTION_SET)\$(COMPILER_TOOL_VERSION)\$(ENDIANNESS)\$(TARGETLOCATION)\$(OLD_FLAVOR)\$(TARGETPLATFORM)</DST_DIR>
+
+    <RELATIVE_LIB_DIR >$(DST_DIR)\$(LIB_EXT)\</RELATIVE_LIB_DIR> 
+    <PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR >$(PLATFORM_INDEPENDENT_DST_DIR)\$(LIB_EXT)\</PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR> 
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\Cores\arm"/>
+
+    <IncludePaths Include="DeviceCode\Cores\arm\Include"/>
+
+    <IncludePaths Include="DeviceCode"/>
+    <IncludePaths Include="DeviceCode\Include"/>
+    <IncludePaths Include="CLR\Include"/>
+    
+  </ItemGroup>
+
+</Project>

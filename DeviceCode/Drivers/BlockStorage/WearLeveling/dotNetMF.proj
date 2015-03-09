@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\BlockStorage\WearLeveling\dotnetmf.proj</ProjectPath>
+    <ProjectGuid>{5A76F74A-4E78-4855-BFD1-86D1A637AFCA}</ProjectGuid>
+    <AssemblyName>BS_WearLeveling</AssemblyName>
+    <Size>
+    </Size>
+    <Description>Wear Leveling driver for block storage</Description>
+    <Level>HAL</Level>
+    <LibraryFile>BS_WearLeveling.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>BS_WearLeveling.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>BlockStorage</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="WearLeveling_HAL" Guid="{8A00410F-E25A-443d-839B-738EB3EA5833}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Directory>DeviceCode\Drivers\BlockStorage\WearLeveling</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\Framework\features\BlockStorage_HAL.libcatproj" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="BS_WearLeveling_driver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="bs_wearleveling.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,29 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="LargeBuffer\LargeBuffer.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="LargeBuffer\LargeBuffer.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="UsbClient\UsbClient.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="UsbClient\UsbClient.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="EmulateHardware\EmulateHardware.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="EmulateHardware\EmulateHardware.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="SpotHardwareTests.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+</Project>

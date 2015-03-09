@@ -1,0 +1,60 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">USART_PAL</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{7468E981-2091-407B-ABAC-5F24649E0EE8}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">PAL</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\PAL\COM\USART\stubs\dotNetMF.proj</FilePath>
+  </Templates>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\PAL\COM\USART\stubs\usart_Stubs.cpp</FilePath>
+  </Templates>
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <StubLibrary Name="usart_pal_stubs" Guid="{DAE22025-892E-4915-9AB4-6BD28D741D91}" ProjectPath="$(SPOCLIENT)\DeviceCode\PAL\COM\USART\stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-06-23</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Library</ComponentType>
+  </StubLibrary>
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2009-04-30</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">true</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\USART_PAL.libcatproj</ProjectPath>
+  <FeatureAssociations Name="Serial" Guid="{072679F8-6769-41cc-AB06-4A509E6C6A8D}" ProjectPath="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-06-15</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+  <IsTransport xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">true</IsTransport>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+  <ItemGroup>
+    <LibraryCollection Include="$(SPOCLIENT)\DeviceCode\PAL\COM\USART\dotNetMF.proj" />
+    <LibraryCollection Include="$(SPOCLIENT)\DeviceCode\PAL\COM\USART\stubs\dotNetMF.proj" />
+  </ItemGroup>
+</Project>

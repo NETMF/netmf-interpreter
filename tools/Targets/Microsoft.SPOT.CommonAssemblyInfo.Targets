@@ -1,0 +1,100 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+    <!-- You can override in your project the file that contains your ReleaseInfo settings if you need to. You can
+         even avoid having such a file entirely by defining the standard release info and setting the property
+         _Microsoft_SPOT_CommonAssemblyInfo_Targets__Included_ to 'true'
+         -->
+    <PropertyGroup>
+        <ReleaseInfo             Condition="'$(ReleaseInfo)'==''"             >$(SPOCLIENT)\ReleaseInfo.settings</ReleaseInfo>
+    </PropertyGroup>
+    <Import Project="$(ReleaseInfo)" Condition=" Exists('$(ReleaseInfo)') and '$(_ReleaseInfo__Included_)' == '' " />
+
+    <PropertyGroup>
+        <AssemblyName            Condition="'$(AssemblyName)'==''"            >Unknown</AssemblyName>
+        <AssemblyCompany         Condition="'$(AssemblyCompany)'==''"         >$(MFLongCompanyName)</AssemblyCompany>
+        <AssemblyCopyright       Condition="'$(AssemblyCopyright)'==''"       >$(MFCopyright)</AssemblyCopyright>
+        <AssemblyDescription     Condition="'$(AssemblyDescription)'==''"     >$(MFFileDescription)</AssemblyDescription>
+        <AssemblyVersion         Condition="'$(AssemblyVersion)'==''"         >$(MFAssemblyVersion)</AssemblyVersion>
+        <AssemblyFileVersion     Condition="'$(AssemblyFileVersion)'==''"     >$(MFFileVersion)</AssemblyFileVersion>
+        <AssemblyFileVersionCSV  Condition="'$(AssemblyFileVersionCSV)'==''"  >$(MFFileVersionCSV)</AssemblyFileVersionCSV>
+        <AssemblyConfiguration   Condition="'$(AssemblyConfiguration)'==''"   >$(Configuration)</AssemblyConfiguration>
+        <AssemblyProduct         Condition="'$(AssemblyProduct)'==''"         >$(MFSDKProductName)</AssemblyProduct>
+        <AssemblyTrademark       Condition="'$(AssemblyTrademark)'==''"       >$(MFTradeMark)</AssemblyTrademark>
+        <AssemblyInternalName    Condition="'$(AssemblyInternalName)'==''"    >$(AssemblyName)</AssemblyInternalName>
+    </PropertyGroup>
+
+
+  <Target Name="InternalCreateCommonAssemblyInfo" >
+    <!-- TODO: When MsBuild finally lets you define inline script tasks, this would be a good candidate -->
+    <Exec Command="cscript //Nologo $(SPOCLIENT)\tools\scripts\Preprocess.js /TemplateFile:$(CommonAssemblyInfoTemplate) /Properties:%22__ASSEMBLYTITLE__=#$(AssemblyName)#;__ASSEMBLYCOMPANY__=#$(AssemblyCompany)#;__ASSEMBLYCOPYRIGHT__=#$(AssemblyCopyright)#;__ASSEMBLYDESCRIPTION__=#$(AssemblyDescription)#;__ASSEMBLYVERSION__=#$(AssemblyVersion)#;__PRODUCTVERSION__=#$(MFSDKProductVersion)#;__PRODUCTVERSION_CSV__=$(MFSDKProductVersionCSV);__ASSEMBLYFILEVERSION__=#$(AssemblyFileVersion)#;__FILEVERSION_CSV__=$(AssemblyFileVersionCSV);__ASSEMBLYCONFIGURATION__=#$(AssemblyConfiguration)#;__ASSEMBLYPRODUCT__=#$(AssemblyProduct)#;__ASSEMBLYTRADEMARK__=#$(AssemblyTrademark)#;__ASSEMBLYINTERNALNAME__=#$(AssemblyInternalName)#%22 /OutputFile:$(IntermediateOutputPath)_assemblyinfo.txt" />
+  </Target>
+
+  <Target Name="PublicCreateCommonAssemblyInfo" >
+    <GenerateAssemblyInfoFile
+        Language="$(CommonAssemblyInfoLanguage)"
+        OutputFile="$(OutputPath)$(AssemblyName)_assemblyinfo.txt"
+        Title="$(AssemblyName)"
+        Company="$(AssemblyCompany)"
+        Copyright="$(AssemblyCopyright)"
+        Description="$(AssemblyDescription)"
+        AssemblyVersion="$(AssemblyVersion)"
+        ProductVersion="$(MFSDKProductVersion)"
+        ProductVersionCSV="$(MFSDKProductVersionCSV)"
+        FileVersion="$(AssemblyFileVersion)"
+        FileVersionCSV="$(AssemblyFileVersionCSV)"
+        Configuration="$(AssemblyConfiguration)"
+        Product="$(AssemblyProduct)"
+        Trademark="$(AssemblyTrademark)"
+        InternalName="$(AssemblyInternalName)"
+        />
+  </Target>
+    
+  <Target Name="DoAddCommonAssemblyInfo">
+    <CreateItem
+      Condition="Exists('$(ReleaseInfo)')"
+      Include="$(ReleaseInfo)" >
+      <Output
+        TaskParameter="Include"
+        ItemName="CustomAdditionalCompileInputs" />
+    </CreateItem>
+
+    <Exec Command="cscript //Nologo $(SPOCLIENT)\tools\scripts\Preprocess.js /TemplateFile:$(CommonAssemblyInfoTemplate) /Properties:%22__ASSEMBLYTITLE__=#$(AssemblyName)#;__ASSEMBLYCOMPANY__=#$(AssemblyCompany)#;__ASSEMBLYCOPYRIGHT__=#$(AssemblyCopyright)#;__ASSEMBLYDESCRIPTION__=#$(AssemblyDescription)#;__ASSEMBLYVERSION__=#$(AssemblyVersion)#;__PRODUCTVERSION__=#$(MFSDKProductVersion)#;__PRODUCTVERSION_CSV__=$(MFSDKProductVersionCSV);__ASSEMBLYFILEVERSION__=#$(AssemblyFileVersion)#;__FILEVERSION_CSV__=$(AssemblyFileVersionCSV);__ASSEMBLYCONFIGURATION__=#$(AssemblyConfiguration)#;__ASSEMBLYPRODUCT__=#$(AssemblyProduct)#;__ASSEMBLYTRADEMARK__=#$(AssemblyTrademark)#;__ASSEMBLYINTERNALNAME__=#$(AssemblyInternalName)#%22 /OutputFile:$(OutputPath)$(AssemblyName)_assemblyinfo.txt" />
+
+    <CreateItem
+      Include="$(OutputPath)$(AssemblyName)_assemblyinfo.txt" >
+      <Output
+        TaskParameter="Include"
+        ItemName="$(CommonAssemblyInfoItemName)" />
+    </CreateItem>
+  </Target>
+
+  <!-- If the project contains a file called AssemblyInfo.*, we assume that it does not require the common assemblyinfo.
+       By the same token, if it does not have that file, we assume that it does, so if you want the common assemblyinfo,
+       don't have such a file in your project, and don't define any of the common attributes elsewhere in the project.
+       -->
+  <Target Name="AddCommonAssemblyInfo" >
+    <CreateProperty
+        Condition="'%(Compile.Filename)'=='AssemblyInfo'"
+        Value="true" >
+        <Output
+            TaskParameter="Value"
+            PropertyName="AddCommonAssemblyInfo_HasAssemblyInfo" />
+    </CreateProperty>
+
+    <CallTarget Targets="DoAddCommonAssemblyInfo" Condition="'$(AddCommonAssemblyInfo_HasAssemblyInfo)' != 'true'" />
+  </Target>
+
+  <Target Name="CleanCommonAssemblyInfo" >
+    <Delete
+        Files="$(OutputPath)$(AssemblyName)_assemblyinfo.txt"
+        TreatErrorsAsWarnings="true"
+        />
+  </Target>
+
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);AddCommonAssemblyInfo</CoreCompileDependsOn>
+    <CleanDependsOn>CleanCommonAssemblyInfo;$(CleanDependsOn)</CleanDependsOn>
+  </PropertyGroup>
+
+</Project>

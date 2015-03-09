@@ -1,0 +1,22 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>UsbClient</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <Import Condition="'$(USB_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\USB_Port.featureproj" />
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Hardware_Usb" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Hardware.Usb.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Hardware\Native_USB\Core_Native_Hardware_USB.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Hardware_Usb_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Usb client component</Description>
+    <Guid>{63891C0C-E1D9-4a7d-AA48-56936F51A57E}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <USB_FEATUREPROJ>True</USB_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

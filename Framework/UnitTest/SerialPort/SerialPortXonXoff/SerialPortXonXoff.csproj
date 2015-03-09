@@ -1,0 +1,23 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.$(MSBuildProjectName)UnitTest</AssemblyName>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <RootNamespace>Samples.Bluetooth</RootNamespace>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{637DB2C1-D81C-4701-8A85-856E5B5785B3}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\UnitTest\UnitTest.targets" />
+  <ItemGroup>
+    <Compile Include="UnitTest.cs">
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Hardware.SerialPort">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.SerialPort.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,39 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>System.Xml</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>System.Xml</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NoWarn>$(NoWarn),0169, 0649</NoWarn>
+    <ComponentGuid>{80a62065-1fd7-4c5c-b47b-1bf12aca27c8}</ComponentGuid>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <ProjectGuid>{20538789-F63C-467F-8C0E-67928F58E21D}</ProjectGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <!-- MMP_STUB options -->
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\system_xml_native</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>System_Xml</MMP_STUB_GenerateSkeletonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Xml\ReadState.cs" />
+    <Compile Include="Xml\XmlException.cs" />
+    <Compile Include="Xml\XmlNameTable.cs" />
+    <Compile Include="Xml\XmlNodeType.cs" />
+    <Compile Include="Xml\XmlReader.cs" />
+    <Compile Include="Xml\XmlReaderSettings.cs" />
+    <Compile Include="Xml\XmlSpace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\System.Xml.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+  </ItemGroup>
+</Project>

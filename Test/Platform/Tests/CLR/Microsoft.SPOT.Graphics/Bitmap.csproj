@@ -1,0 +1,40 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Platform.Tests.Bitmap</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Bitmap</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{8CAA93CE-ABD4-448C-9479-E43F5A0CA93D}</ProjectGuid>
+    <NoWarn>,1668</NoWarn>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="BitmapTest.cs" />
+    <Compile Include="Master.cs" />
+    <Compile Include="PandaGif.cs" />
+    <Compile Include="Untitled.cs" />
+    <Compile Include="WaterFallJpg.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Graphics">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_CLIENT)\dll\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFUtility">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_CLIENT)\dll\Microsoft.SPOT.Platform.Test.MFUtility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <?include defines.wxs?>
+    <DirectoryRef Id="WDEXPRESS11_PROJECT_TEMPLATE_CSHARP_NETMF">
+      <Component Id="Component_CSharpClassLibraryTemplate.WDE110" Guid ="27dd3ece-c62c-4640-b0e3-d670bb8bcd85">
+        <File Id="File_CSharpClassLibraryTemplate.WDE110" 
+            Name="ClassLibrary.zip" 	
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ClassLibrary.zip"
+            DiskId="1"
+            />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VS11_PROJECT_TEMPLATE_CSHARP_NETMF">
+      <Component Id="Component_CSharpClassLibraryTemplate.VS110" Guid ="25f3d826-1359-49dc-b2fa-7a494484d4c0">
+        <File Id="File_CSharpClassLibraryTemplate.VS110" 
+            Name="ClassLibrary.zip"
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ClassLibrary.zip"
+            DiskId="1"
+            />
+      </Component>
+    </DirectoryRef>
+
+      <DirectoryRef Id="WDEXPRESS12_PROJECT_TEMPLATE_CSHARP_NETMF">
+          <Component Id="Component_CSharpClassLibraryTemplate.WDE120" Guid ="120F19BA-1B33-45C7-BAEB-BA0D7A5A911B">
+              <File Id="File_CSharpClassLibraryTemplate.WDE120"
+                  Name="ClassLibrary.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ClassLibrary.zip"
+                  DiskId="1"
+            />
+          </Component>
+      </DirectoryRef>
+      <DirectoryRef Id="VS12_PROJECT11_TEMPLATE_CSHARP_NETMF">
+          <Component Id="Component_CSharpClassLibraryTemplate.VS120" Guid ="7C15C859-DDF2-4209-92DF-598FCA7AD76C">
+              <File Id="File_CSharpClassLibraryTemplate.VS120"
+                  Name="ClassLibrary.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ClassLibrary.zip"
+                  DiskId="1"
+            />
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

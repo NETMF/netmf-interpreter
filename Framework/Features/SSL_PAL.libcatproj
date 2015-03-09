@@ -1,0 +1,49 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SSL_PAL</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{61CDC260-7D46-4660-826F-D212AC8B7608}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">PAL</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\ssl\stubs\dotNetMF.proj</FilePath>
+  </Templates>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\ssl\stubs\ssl_Stubs.cpp</FilePath>
+  </Templates>
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <StubLibrary Name="ssl_pal_stubs" Guid="{D1879E4B-99D7-4614-9313-BA342F600736}" ProjectPath="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\ssl\stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-06-16</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Library</ComponentType>
+  </StubLibrary>
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2009-04-30</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\SSL_PAL.libcatproj</ProjectPath>
+  <FeatureAssociations Name="SSL (Open)" Guid="{36FAF407-32E1-4B19-9C9F-5333D5A2A780}" ProjectPath="$(SPOCLIENT)\Framework\Features\SSL_Open.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+  <FeatureAssociations Name="SSL (Open) [for LWIP OS]" Guid="{51BF9A3A-692F-4521-99BA-EF48EA358A9E}" ProjectPath="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+</Project>

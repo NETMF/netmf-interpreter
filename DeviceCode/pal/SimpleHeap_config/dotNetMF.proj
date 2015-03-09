@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>SimpleHeap_config</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{742F3095-DC26-4F8E-8689-74900D30602E}</ProjectGuid>
+    <Description>Simple unmanaged heap</Description>
+    <Level>PAL</Level>
+    <LibraryFile>SimpleHeap_config.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap_config\dotNetMF.proj</ProjectPath>
+    <ManifestFile>SimpleHeap_config.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SimpleHeap_Config_PAL" Guid="{459ACB2E-257C-4B90-B4A5-63DD8E3CBC0F}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\SimpleHeap_config</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <SubDirectories Include="Stubs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SimpleHeap_config.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

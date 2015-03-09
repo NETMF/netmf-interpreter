@@ -1,0 +1,56 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SD_Config_HAL</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{55D65695-3439-42fc-A727-15802883E1CC}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SD card configuration HAL category</Description>
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">HAL</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SD</Groups>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\BlockStorage\SD\stubs\dotNetMF.proj</FilePath>
+  </Templates>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\BlockStorage\SD\Stubs\sdconfig_stubs.cpp</FilePath>
+  </Templates>
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <StubLibrary Name="sdconfig_stubs" Guid="{9CFF0470-257F-4d50-9C39-80C6C0F5D1A1}" ProjectPath="$(SPOCLIENT)\DeviceCode\Drivers\Blockstorage\SD\Stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-06-15</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Library</ComponentType>
+  </StubLibrary>
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2009-04-30</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\SD_Config_HAL.libcatproj</ProjectPath>
+  <FeatureAssociations Name="SD" Guid="{C9D30638-8B83-42B7-90A6-C96899B185F1}" ProjectPath="$(SPOCLIENT)\Framework\Features\SD.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-04-30</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+  <IsTransport xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IsTransport>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+</Project>

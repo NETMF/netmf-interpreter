@@ -1,0 +1,31 @@
+﻿<VSTemplate Version="3.0.0"
+            Type="Project"
+            xmlns="http://schemas.microsoft.com/developer/vstemplate/2005"
+            xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance"
+            schemaLocation="http://schemas.microsoft.com/developer/vstemplate/2005"
+            >
+    <TemplateData>
+        <Name>Console Application</Name>
+        <Description>A project for creating a .NET Micro Framework application without a user interface</Description>
+        <Icon>Project.ico</Icon>
+        <TemplateID>Microsoft.VisualBasic.MicroFramework.ConsoleApplication</TemplateID>
+        <ProjectType>VisualBasic</ProjectType>
+        <ProjectSubType></ProjectSubType>
+        <SortOrder>1000</SortOrder>
+        <CreateNewFolder>true</CreateNewFolder>
+        <DefaultName>MFConsoleApplication</DefaultName>
+        <ProvideDefaultName>true</ProvideDefaultName>
+        <LocationField>Enabled</LocationField>
+        <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    </TemplateData>
+    <TemplateContent>
+        <Project File="MFConsoleApplication.vbproj" ReplaceParameters="true">
+            <ProjectItem ReplaceParameters="true" TargetFileName="Program.vb">Program.vb</ProjectItem>
+            <Folder Name="My Project" TargetFolderName="My Project">
+                <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.vb">AssemblyInfo.vb</ProjectItem>
+                <ProjectItem ReplaceParameters="true" TargetFileName="Resources.Designer.vb">Resources.Designer.vb</ProjectItem>
+                <ProjectItem ReplaceParameters="true" TargetFileName="Resources.resx">Resources.resx</ProjectItem>
+            </Folder>
+        </Project>
+    </TemplateContent>
+</VSTemplate>

@@ -1,0 +1,27 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+<!-- it is only needed when battery measurement lib is used, this defines the g_pBATTERY_MEASUREMENT_CurveFit for the battery -->
+
+  <PropertyGroup>
+    <Directory>DeviceCode\Drivers\BatteryModel</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup  >
+    <SubDirectories Include="IML200425_2"/>
+    <SubDirectories Include="ML1A_2"/>
+    <SubDirectories Include="ML2_2"/>
+    <SubDirectories Include="ML3_2"/>
+    <SubDirectories Include="MR11_2367"/>
+    <SubDirectories Include="PD3032"/>
+    <SubDirectories Include="PD2430"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SubDirectories Include="stubs"/>    
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>

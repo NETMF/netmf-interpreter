@@ -1,0 +1,91 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#include "system_xml_native.h"
+
+
+static const CLR_RT_MethodHandler method_lookup[] =
+{
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    Library_system_xml_native_System_Xml_XmlNameTable::Get___STRING__STRING,
+    Library_system_xml_native_System_Xml_XmlNameTable::Add___STRING__STRING,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    Library_system_xml_native_System_Xml_XmlReader::LookupNamespace___STRING__STRING,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    Library_system_xml_native_System_Xml_XmlReader::Initialize___VOID__U4,
+    Library_system_xml_native_System_Xml_XmlReader::ReadInternal___I4__U4,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    Library_system_xml_native_System_Xml_XmlReader::StringRefEquals___STATIC__BOOLEAN__STRING__STRING,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+};
+
+const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Xml =
+{
+    "System.Xml", 
+    0xA46E1384,
+    method_lookup
+};
+

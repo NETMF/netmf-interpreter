@@ -1,0 +1,11 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_BasicSamples">
+    <Feature Id="BasicSamples"
+             Title=".NET Micro Framework Drivers"
+             Description="Simple samples the demonstrate common features of the .NET Micro Framework"
+             Display="hidden"
+             Level="1">
+      <ComponentRef Id="Component_PetShop"/>
+    </Feature>
+  </Fragment>
+</Wix>

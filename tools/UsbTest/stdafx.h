@@ -1,0 +1,20 @@
+// stdafx.h : include file for standard system include files,
+// or project specific include files that are used frequently, but
+// are changed infrequently
+//
+
+#pragma once
+
+
+#include <iostream>
+#include <tchar.h>
+
+// TODO: reference additional headers your program requires here
+#include <windows.h>
+#include <stdio.h>
+#include <dbt.h>
+#include <setupapi.h>
+#include <string>
+#include "excpt.h"
+#include "StringHelp.h"
+#include "ParamParser.h"

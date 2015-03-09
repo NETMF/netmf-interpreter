@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <InstallExecuteSequence>
+    <LaunchConditions After="AppSearch" />
+    <ProcessComponents Sequence="2601" />
+    <UnpublishComponents Sequence="2700" />
+    <UnpublishFeatures Sequence="2800" />
+    <StopServices Sequence="2900" />
+    <RegisterComPlus Sequence="6700" />
+    <CreateShortcuts Sequence="7590" />
+    <InstallFinalize Sequence="7800" />
+  </InstallExecuteSequence>
+
+<!--
+  <DirectoryRef Id="DocsDir">
+    <Merge Id="Help20_Merge" DiskId="1" Language="1033" SourceFile="$(var.VisualStudioIntegrationDir)\Redistributables\HTML_Help_Registration__RTL_X86_- - -.msm" />
+    <Merge Id="VSIPCC_Merge" DiskId="1" Language="1033" SourceFile="$(var.VisualStudioIntegrationDir)\Redistributables\VSIPCC_Collection_Files_RTL_- - -_- - -.msm" />
+  </DirectoryRef>
+-->
+
+  <CustomTable Id="HelpFile">
+    <Column Id="HelpFileKey" Type="string" Width="72" PrimaryKey="yes" />
+    <Column Id="HelpFileName" Type="string" Width="72" />
+    <Column Id="LangID" Nullable="yes" Type="int" Width="2" />
+    <Column Id="File_HxS" Type="string" Width="72" />
+    <Column Id="File_HxI" Nullable="yes" Type="string" Width="72" />
+    <Column Id="File_HxQ" Nullable="yes" Type="string" Width="72" />
+    <Column Id="File_HxR" Nullable="yes" Type="string" Width="72" />
+    <Column Id="File_Samples" Nullable="yes" Type="string" Width="72" />
+  </CustomTable>
+  <CustomTable Id="HelpNamespace">
+    <Column Id="NamespaceKey" Type="string" Width="72" PrimaryKey="yes" />
+    <Column Id="NamespaceName" Type="string" Width="0" />
+    <Column Id="File_Collection" Type="string" Width="72" />
+    <Column Id="Description" Nullable="yes" Localizable="yes" Type="string" Width="0" />
+  </CustomTable>
+  <CustomTable Id="HelpFilterToNamespace">
+    <Column Id="HelpFilter_" Type="string" Width="72" PrimaryKey="yes" />
+    <Column Id="HelpNamespace_" Type="string" Width="72" PrimaryKey="yes" />
+  </CustomTable>
+  <CustomTable Id="HelpFilter">
+    <Column Id="FilterKey" Type="string" Width="72" PrimaryKey="yes" />
+    <Column Id="Description" Localizable="yes" Type="string" Width="0" />
+    <Column Id="QueryString" Nullable="yes" Type="string" Width="0" />
+  </CustomTable>
+  <CustomTable Id="HelpFileToNamespace">
+    <Column Id="HelpFile_" Type="string" Width="72" PrimaryKey="yes" />
+    <Column Id="HelpNamespace_" Type="string" Width="72" PrimaryKey="yes" />
+  </CustomTable>
+  <CustomTable Id="HelpPlugin">
+    <Column Id="HelpNamespace_" Type="string" Width="72" PrimaryKey="yes" />
+    <Column Id="HelpNamespace_Parent" Type="string" Width="72" PrimaryKey="yes" />
+    <Column Id="File_HxT" Nullable="yes" Type="string" Width="72" />
+    <Column Id="File_HxA" Nullable="yes" Type="string" Width="72" />
+    <Column Id="File_ParentHxT" Nullable="yes" Type="string" Width="72" />
+  </CustomTable>
+
+</Include>

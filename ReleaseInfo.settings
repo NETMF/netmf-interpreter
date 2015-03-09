@@ -1,0 +1,52 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <_ReleaseInfo__Included_>true</_ReleaseInfo__Included_>
+    </PropertyGroup>
+
+    <!-- Version info for the release built in this client -->
+    <PropertyGroup>
+        <MajorVersion   Condition="'$(MajorVersion)'==''"   >4</MajorVersion>
+        <MinorVersion   Condition="'$(MinorVersion)'==''"   >4</MinorVersion>
+        <BuildNumber    Condition="'$(BuildNumber)'==''"    >0</BuildNumber>
+        <BuildBase                                          >66335</BuildBase>
+        <RevisionNumber Condition="'$(RevisionNumber)'==''" >0</RevisionNumber>
+        <ReleaseName    Condition="'$(ReleaseName)'==''"    >(alpha)</ReleaseName>
+    </PropertyGroup>
+
+    <!-- Other info particular to this release -->
+    <PropertyGroup>
+        <MFSDKProductName           Condition="'$(MFSDKProductName)'==''"         >Microsoft .NET Micro Framework</MFSDKProductName>
+        <MFSDKProductVersion        Condition="'$(MFSDKProductVersion)'==''"      >$(MajorVersion).$(MinorVersion).$(BuildNumber).$(RevisionNumber)</MFSDKProductVersion>
+        <MFSDKProductVersionCSV     Condition="'$(MFSDKProductVersionCSV)'==''"   >$(MajorVersion), $(MinorVersion), $(BuildNumber), $(RevisionNumber)</MFSDKProductVersionCSV>
+        <MFSDKShortProductVersion   Condition="'$(MFSDKShortProductVersion)'==''" >$(MajorVersion).$(MinorVersion)</MFSDKShortProductVersion>
+        <MFCompanyName              Condition="'$(MFCompanyName)'==''"            >Microsoft</MFCompanyName>
+        <MFLongCompanyName          Condition="'$(MFLongCompanyName)'==''"        >Microsoft Corporation</MFLongCompanyName>
+        <MFShortCompanyName         Condition="'$(MFShortCompanyName)'==''"       >MSFT</MFShortCompanyName>
+        <MFTradeMark                Condition="'$(MFTradeMark)'==''"              >.NET is a trademark of Microsoft Corporation.</MFTradeMark>
+        <MFCopyright                Condition="'$(MFCopyright)'==''"              >Copyright (C) Microsoft Corporation.  All rights reserved.</MFCopyright>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OEMSystemInfoString Condition="'$(OEMSystemInfoString)'==''" >$(MFCompanyName) $(MFCopyright)</OEMSystemInfoString>
+    </PropertyGroup>
+
+    <!-- Default release info particular to specific components; provide definitions in the specific project file if the default is not suitable -->
+    <PropertyGroup>
+        <MFAssemblyMajorVersion     Condition="'$(MFAssemblyMajorVersion)'==''"     >$(MajorVersion)</MFAssemblyMajorVersion>
+        <MFAssemblyMinorVersion     Condition="'$(MFAssemblyMinorVersion)'==''"     >$(MinorVersion)</MFAssemblyMinorVersion>
+        <MFAssemblyBuildNumber      Condition="'$(MFAssemblyBuildNumber)'==''"      >$(BuildNumber)</MFAssemblyBuildNumber>
+        <MFAssemblyRevisionNumber   Condition="'$(MFAssemblyRevisionNumber)'==''"   >$(RevisionNumber)</MFAssemblyRevisionNumber>
+
+        <MFFileMajorVersion         Condition="'$(MFFileMajorVersion)'==''"         >$(MajorVersion)</MFFileMajorVersion>
+        <MFFileMinorVersion         Condition="'$(MFFileMinorVersion)'==''"         >$(MinorVersion)</MFFileMinorVersion>
+        <MFFileBuildNumber          Condition="'$(MFFileBuildNumber)'==''"          >$(BuildNumber)</MFFileBuildNumber>
+        <MFFileRevisionNumber       Condition="'$(MFFileRevisionNumber)'==''"       >$(RevisionNumber)</MFFileRevisionNumber>
+
+        <MFAssemblyVersion          Condition="'$(MFAssemblyVersion)'==''"          >$(MFAssemblyMajorVersion).$(MFAssemblyMinorVersion).$(MFAssemblyBuildNumber).$(MFAssemblyRevisionNumber)</MFAssemblyVersion>
+        <MFFileVersion              Condition="'$(MFFileVersion)'==''"              >$(MFFileMajorVersion).$(MFFileMinorVersion).$(MFFileBuildNumber).$(MFFileRevisionNumber)</MFFileVersion>
+        <MFFileVersionCSV           Condition="'$(MFFileVersionCSV)'==''"           >$(MFFileMajorVersion), $(MFFileMinorVersion), $(MFFileBuildNumber), $(MFFileRevisionNumber)</MFFileVersionCSV>
+        <MFDescription              Condition="'$(MFDescription)'==''"              >A component of the .NET Micro Framework</MFDescription>
+    </PropertyGroup>
+
+</Project>

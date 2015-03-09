@@ -1,0 +1,37 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">XML_core_CLR</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{206AD820-45A4-4EAD-8B31-03599CDD4C6F}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">CLR</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2009-04-30</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\XML_core_CLR.libcatproj</ProjectPath>
+  <FeatureAssociations Name="XML" Guid="{cd6b1816-656e-4c71-b941-e6950562b9c6}" ProjectPath="$(SPOCLIENT)\Framework\Features\XML.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-04-30</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+</Project>

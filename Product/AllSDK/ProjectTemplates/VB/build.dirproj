@@ -1,0 +1,15 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+    <ItemGroup>
+      <Project Include="ExeTemplate\MFConsoleApplication.vbproj" />
+      <Project Include="ExeTemplate\MFConsoleApplication.vstproj" />
+      <Project Include="LibTemplate\MFClassLibrary.vbproj" />
+      <Project Include="LibTemplate\MFClassLibrary.vstproj" />
+      <Project Include="WinTemplate\MFWindowApplication.vbproj" />
+      <Project Include="WinTemplate\MFWindowApplication.vstproj" />
+<!-- NOT SUPPORTED YET, NEED TO CREATE HOST TARGETS FIRST
+      <Project Include="WinTemplate\MFEmulator.vbproj" />
+      <Project Include="WinTemplate\MFEmulator.vstproj" />
+-->
+    </ItemGroup>
+</Project>

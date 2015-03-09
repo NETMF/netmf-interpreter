@@ -1,0 +1,14 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ComponentGuid>{a80efe7e-20c9-4ae2-8c60-1544e2805e76}</ComponentGuid>
+    <DirectoryRef>SamplesDir</DirectoryRef>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectFile Include="LargeBuffer.csproj">
+      <Transform>Client</Transform>
+      <Deploy>true</Deploy>
+    </ProjectFile>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets"/>
+</Project>
+

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Directory>CLR\Tools\MetaDataProcessor</Directory>
+    <AssemblyName>MetaDataProcessor</AssemblyName>
+    <OutputType>Executable</OutputType>
+    <VCProjName>MetaDataProcessor</VCProjName>
+    <ProjectGuid>84E90FC3-9AAA-436A-B369-EAB92194EC9E</ProjectGuid>
+    <Subsystem>CONSOLE</Subsystem>
+    <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows2\Windows2.settings</MFSettingsFile>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <Compile Include="MetaDataProcessor.cpp" />
+    <Compile Include="KeyGen.cpp" />
+    <IncludePaths Include="Support\include" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="CLR\Tools\include" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\clr\graphics\gif\giffile.h" />
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_parseoptions.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\assemblyparser.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\cor.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corerror.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corhdr.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corhlpr.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corsym.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\hal_windows.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\watchassemblybuilder.h" />
+    <HFiles Include="$(SPOCLIENT)\crypto\inc\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="keygen.h" />
+    <HFiles Include="stdafx.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Clr\Tools\Tools.Settings" />
+</Project>

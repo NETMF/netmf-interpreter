@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>WireProtocol</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>6C2F25B2-5EFA-4821-AF98-B66D5898A30B</ProjectGuid>
+    <Description>Device communication protocol</Description>
+    <Level>Support</Level>
+    <LibraryFile>WireProtocol.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Support\WireProtocol\dotNetMF.proj</ProjectPath>
+    <ManifestFile>WireProtocol.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>
+    </Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="WireProtocol_Support" Guid="{91AA2579-1BB8-4db7-806A-9999817E6274}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <CustomSpecific>
+    </CustomSpecific>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Support\WireProtocol</Directory>
+    <OutputType>Library</OutputType>
+    <VCProjName>Support_WireProtocol</VCProjName>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <ExtraFlags Condition="'$(PLATFORM_FAMILY)'=='x86'">/wd4996</ExtraFlags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Compression.cpp" />
+    <Compile Include="stdafx.cpp" Condition="'$(PLATFORM_FAMILY)'=='x86'" />
+    <Compile Include="WireProtocol.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="stdafx.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,16 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>DataStorage</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(BLOCKSTORAGE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\BlockStorage.featureproj" />
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\HeapPersistence_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Data storage (extended weak reference storage)</Description>
+    <Guid>{e80d11be-fb2d-4b22-9bcf-63516eca8b9b}</Guid>
+    <Groups>Storage</Groups>
+    <Documentation>
+    </Documentation>
+    <DATASTORAGE_FEATUREPROJ>True</DATASTORAGE_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

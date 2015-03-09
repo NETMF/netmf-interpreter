@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <Set Name="Valid" Value="false"/>
+
+    <!-- ################################################################################ -->
+    <!-- 16KB Stack and 16KB Heap -->
+    <Set Name="Heap_Begin"          Value="0x08100000"/>
+    <Set Name="Heap_End"            Value="0x084FEFFC"/>
+    <Set Name="Stack_Bottom"        Value="+0"/>
+    <Set Name="Stack_Top"           Value="0x08502000"/>
+
+    <If Name="TARGETLOCATION" In="FLASH">
+
+        <Set Name="Config_BaseAddress"  Value="0x10020000"/>    
+        <Set Name="Config_Size"         Value="0x00020000"/>
+        <Set Name="Code_BaseAddress"    Value="0x10040000"/>    
+        <Set Name="Deploy_BaseAddress"  Value="0x10100000"/>
+        <Set Name="Code_Size"           Value="%Deploy_BaseAddress - Code_BaseAddress%"/>
+        <Set Name="Valid"               Value="true"/>
+    </If>
+
+    <If Name="TARGETLOCATION" In="RAM">
+
+        <Set Name="Heap_Begin"          Value="0x08300000"/>
+        <Set Name="Heap_End"            Value="0x084FEFFC"/>
+
+        <Set Name="Code_BaseAddress" Value="0x08020000"/>
+        <Set Name="Code_Size"        Value="0x002D0000"/>
+        <!-- RAM with FLASH config is not needed -->
+        <Set Name="Valid"            Value="true"/>
+
+    </If>
+
+    <!-- ################################################################################ -->
+
+    <If Name="Valid" Value="false">
+        <Error Message="Configuration not recognized"/>
+    </If>
+
+    <!-- the address and sizes for both load regions (LR_*) are chosen to start and completely fill a flash partition in the 28F320W18 flash chip -->
+
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
+
+      <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
+
+        <!-- the entry pointer section goes into this region -->
+        <FileMapping Name="FirstEntry.obj"    Options="(+RO, +FIRST)" />
+
+        <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+
+        <FileMapping Name="*" Options="(+RO-CODE)" />
+
+            <FileMapping Name="*"                   Options="(+RO-DATA)" />
+
+            <IfNotDefined Name="Data_BaseAddress">
+
+                <FileMapping Name="tinyclr_dat.obj" Options="(+RO, +LAST)" />
+
+            </IfNotDefined>
+
+
+        </ExecRegion>
+
+        <!-- skip vector area -->
+
+        <ExecRegion Name="ER_RAM_RO" Base="0x00000000" Options="ABSOLUTE" Size="0x0005ffe0">
+            <!-- the following are dotNetMF's HAL library -->
+            <FileMapping Name="VectorsTrampolines.obj" Options="(+RO, +FIRST)" /> <!-- for vector handlers to be far from the vectors -->
+            
+            <FileMapping Name="*" Options="(SectionForFlashOperations)" />
+            <FileMapping Name="*" Options="(SectionForBootstrapInRam)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_Begin%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for a heap -->
+
+        <ExecRegion Name="ER_HEAP_END" Base="%Heap_End%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        </ExecRegion>
+
+
+        <!-- this must go last here to provide a low water mark on the stack -->
+
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>
+        
+        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Top%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackTop)" />
+        </ExecRegion>
+
+    </LoadRegion>
+
+    <!-- If this variable is defined, create a separate section for the tinyclr.dat file -->
+
+    <IfDefined Name="Data_BaseAddress">
+
+        <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Options="ABSOLUTE" Size="%Data_Size%">
+
+            <ExecRegion Name="ER_DAT" Base="%Data_BaseAddress%" Options="FIXED" Size="%Data_Size%">
+
+                <FileMapping Name="tinyclr_dat.obj" Options="(+RO)" />
+
+            </ExecRegion>
+
+        </LoadRegion>
+
+    </IfDefined>
+
+    <IfDefined Name="Config_BaseAddress">
+
+        <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
+
+            <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
+
+                <FileMapping Name="*" Options="(SectionForConfig)" />
+
+            </ExecRegion>
+
+        </LoadRegion>
+
+    </IfDefined>
+</ScatterFile>
+

@@ -1,0 +1,49 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>tinycrt_pal_loader</AssemblyName>
+    <ProjectGuid>{90471197-6b0c-45dc-910f-81b9ad6824bc}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>CRT functionality (for boot loaders)</Description>
+    <Level>PAL</Level>
+    <LibraryFile>tinycrt_pal_loader.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\devicecode\pal\TinyCRT\dotNetMF_loader.proj</ProjectPath>
+    <ManifestFile>tinycrt_pal_loader.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TinyCRT_PAL" Guid="{D364E9C9-BF40-4D93-84DF-372BCF3975D3}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\tinycrt\reducesize</Directory>
+    <reducesize>true</reducesize>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="tinycrt.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

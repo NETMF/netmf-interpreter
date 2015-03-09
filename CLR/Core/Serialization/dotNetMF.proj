@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Serialization</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>5863DDAE-6D54-4472-97F6-9EB9D0A3AE31</ProjectGuid>
+    <Description>Binary serialization (proprietary format)</Description>
+    <Level>CLR</Level>
+    <LibraryFile>Serialization.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\clr\core\serialization\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Serialization.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Serialization</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Serialization_CLR" Guid="{BC132DB8-6633-4C53-9C08-3A395EBCED0C}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Core\Serialization</Directory>
+    <OutputType>Library</OutputType>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="BinaryFormatter.cpp" />
+    <IncludePaths Include="CLR\core" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\libraries\SPOT" />
+    <IncludePaths Include="CLR\libraries\SPOT_Hardware" />
+  </ItemGroup>
+  <ItemGroup>
+    <ExtraProjects Include="dotNetMF_Stub.proj" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\clr\core\core.h" />
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_handler.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_parseoptions.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_stream.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_xml.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot_hardware\spot_hardware_native.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

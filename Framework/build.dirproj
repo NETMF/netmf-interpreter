@@ -1,0 +1,50 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="$(SPOCLIENT)\Support\FrameworkBase\dotnetmf.proj" />
+
+    <Project Include="$(SPOCLIENT)\CLR\tools\build.dirproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <!-- BUILD MSCORLIB BEFORE ANYTHING ELSE --> 
+    <Project Include="Subset_of_CorLib\SpotCorLib.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <!-- BUILD Native and Hardware ASSEMBLIES NEXT --> 
+    <Project Include="Core\Native\Core_Native.csproj" >
+        <InProject>false</InProject>
+    </Project>
+    <Project Include="Core\Native_Hardware\Core_Native_Hardware.csproj" >
+        <InProject>false</InProject>
+    </Project>
+
+    <!-- BUILD VB.NET RUNTIME --> 
+    <Project Include="Subset_of_VisualBasic\SpotVBasic.vbproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <!-- Security ASSEMBLY DEPENDS ON PKCS11 --> 
+    <Project Include="PKCS11\SecurityPkcs11.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <!-- BUILD ALL THE REST --> 
+    <Project Include="Core\build.dirproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="TinyCore\TinyCore.csproj">
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="TinyCore\Ink.csproj">
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="UnitTest\build.dirproj" >
+      <InProject>false</InProject>
+    </Project>
+  </ItemGroup>
+
+</Project>

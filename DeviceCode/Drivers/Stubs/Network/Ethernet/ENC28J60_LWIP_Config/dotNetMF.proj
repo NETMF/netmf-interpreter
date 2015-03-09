@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>ENC28J60_LWIP_config_stubs</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{60F27EA8-91C6-4313-879B-900A6560956A}</ProjectGuid>
+    <Description>ENC28J60 Ethernet driver stub configuration</Description>
+    <Level>HAL</Level>
+    <LibraryFile>ENC28J60_LWIP_config_stubs.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_LWIP_config\dotnetmf.proj</ProjectPath>
+    <ManifestFile>ENC28J60_LWIP_config_stubs.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Network\ENC28J60</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ENC28J60_Config_LWIP_HAL" Guid="{DD104859-675B-41E8-9885-092EBEDE8309}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+          <Author>Microsoft</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <Directory>DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_LWIP_config</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="enc28j60_LWIP_config_stubs.cpp" />
+    <IncludePaths Include="DeviceCode\Drivers\Ethernet\Enc28J60_LWIP" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\pal\net" />
+    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include" />
+    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include\ipv4" />
+    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include\arch" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\ethernet\enc28j60_lwip\enc28j60_lwip_driver.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\arch\cc.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\inet.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\ip.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\ip_addr.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\arch.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\debug.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\def.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\dhcp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\err.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\netif.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\opt.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\pbuf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\udp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\net\network_defines_lwip.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\net\net_decl_lwip.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

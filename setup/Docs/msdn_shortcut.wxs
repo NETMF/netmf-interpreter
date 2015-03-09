@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Property Id="DXEXPLORE10_DIRECTORY">
+    <RegistrySearch Id="RegistrySearch_Help10InstallDir" Root="HKLM" Key="SOFTWARE\Microsoft\MSDN\10.0" Name="InstallDir" Type="raw" />
+  </Property>
+
+  <DirectoryRef Id="DocsDir">
+    <Component Id="Component_DxexploreShortcut.Help10" Guid="395AD479-E8E3-4E41-88B6-270231EE41CA">
+      <Condition>DXEXPLORE10_DIRECTORY</Condition>
+      <Shortcut
+        Id="Shortcut_Dxexplore10"
+        Directory="ProgramMenuDir"
+        Name="$(var.CompanyName) $(var.CommonProductName) $(var.ProdVerMajor).$(var.ProdVerMinor) Documentation"
+        Arguments="/helpcol ms-help://ms.netmf.v30.1033 /filter &quot;.NET Micro Framework&quot; /LaunchFKeywordTopic DotNetMFDefaultPage"
+        Target="[DXEXPLORE10_DIRECTORY]\dexplore.exe"
+        />
+    </Component>
+
+  </DirectoryRef>
+
+</Include>

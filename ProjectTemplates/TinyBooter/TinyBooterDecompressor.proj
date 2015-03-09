@@ -1,0 +1,47 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>TinyBooterDecompressor</AssemblyName>
+    <ProjectGuid>
+    </ProjectGuid>
+    <Description>
+    </Description>
+    <Documentation>
+    </Documentation>
+    <Directory>Solutions\$(PLATFORM)\TinyBooter</Directory>
+    <IsClrProject>False</IsClrProject>
+    <InteropFeatures>
+    </InteropFeatures>
+    <ExtraAssemblies>
+    </ExtraAssemblies>
+    <ProjectPath>$(SPOCLIENT)\ProjectTemplates\TinyBooter\TinyBooterDecompressor.proj</ProjectPath>
+    <MFSettingsFile>
+    </MFSettingsFile>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Targets" />
+  <PropertyGroup>
+    <OutputType>Executable</OutputType>
+    <reducesize>true</reducesize>
+    <MultipleOutputSections>false</MultipleOutputSections>
+    <ExtraTargets>BuildSigFiles</ExtraTargets>
+    <ScatterFileDefinition>scatterfile_bootloader_decompressor_$(COMPILER_TOOL).$(SCATTER_EXT)</ScatterFileDefinition>
+    <LINK_FLAGS Condition="'$(COMPILER_TOOL)'!='GCC'">$(LINK_FLAGS) $(SWTC)keep BooterVectorTable.$(OBJ_EXT)</LINK_FLAGS>
+    <AS_FLAGS>$(AS_FLAGS) -I$(OBJ_DIR)</AS_FLAGS>
+    <EXEScatterFileDefinition>scatterfile_bootloader_decompressor_$(COMPILER_TOOL).xml</EXEScatterFileDefinition>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="$(SPOCLIENT)\Application\common\assemblycode\arm\$(AS_SUBDIR)\BooterVectorTable.s" Condition=" '$(INSTRUCTION_SET)'=='arm' or '$(INSTRUCTION_SET)'=='thumb'" />
+    <Compile Include="$(SPOCLIENT)\Application\common\assemblycode\thumb2\$(AS_SUBDIR)\BooterVectorTable.s" Condition=" '$(INSTRUCTION_SET)'=='thumb2'" />
+    <Compile Include="$(SRC_DIR)\$(AS_SUBDIR)\TinyBooter_dat.s" />
+    <ScatterFileReferences Include="scatterfile_BootLoader_$(COMPILER_TOOL).xml')" />
+    <ExtraProjects Include="TinyBooter.proj" />
+    <RequiredProjects Include="$(SPOCLIENT)\Application\Tinybooter\tinybooterDecompressorLib.proj" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
+  <ItemGroup>
+    <PlatformIndependentLibs Include="TinyBooterDecompressorLib.$(LIB_EXT)" />
+  </ItemGroup>
+</Project>

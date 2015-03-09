@@ -1,0 +1,21 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Common.Targets" />
+  <PropertyGroup>
+    <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
+    <MMP_DAT_CreateDatabaseFile>$(BUILD_TREE_DAT)\tinyclr_STM32.dat</MMP_DAT_CreateDatabaseFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\mscorlib.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Native.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Hardware.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Hardware.STM32.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+ </ItemGroup>
+</Project>

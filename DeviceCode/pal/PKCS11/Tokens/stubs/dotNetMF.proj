@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <AssemblyName>PKCS11_Token_stub</AssemblyName>
+    <Size />
+    <ProjectGuid>{9D447D7E-E017-4E24-BCCB-6EC49ED916AC}</ProjectGuid>
+    <Description>PKCS11 Engine stub</Description>
+    <Level>PAL</Level>
+    <LibraryFile>PKCS11_Token_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\Stubs\dotnetmf.proj</ProjectPath>
+    <ManifestFile>PKCS11_Token_stub.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Crypto</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PKCS11_Crypto_PAL" Guid="{C479A378-90A5-43FE-A7EA-1AF4ECE89940}" ProjectPath="$(spoclient)\framework\features\PKCS11_Crypto_PAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2011-07-19</Date>
+          <Author />
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation />
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter />
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <AssemblyName>PKCS11_Token_stub</AssemblyName>
+    <Size />
+    <ProjectGuid>{E36208ED-87EF-41D8-AC86-E479DC3F27E4}</ProjectGuid>
+    <Description>PKCS11 Engine</Description>
+    <Level>PAL</Level>
+    <LibraryFile>PKCS11_Token_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\Stubs\dotnetmf.proj</ProjectPath>
+    <ManifestFile>PKCS11_Token_stub.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Crypto</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PKCS11_Crypto_PAL" Guid="{C479A378-90A5-43FE-A7EA-1AF4ECE89940}" ProjectPath="$(spoclient)\framework\features\PKCS11_Crypto_PAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2011-07-19</Date>
+          <Author />
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation />
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter />
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <AssemblyName>PKCS11_Token_stub</AssemblyName>
+    <ProjectGuid>{416B208F-63A2-4318-9F74-5F6DCDE98885}</ProjectGuid>
+    <Description>PKCS11 Engine</Description>
+    <Level>HAL</Level>
+    <Directory>DeviceCode\PAL\PKCS11\Tokens\stubs</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="PKCS11_config_stub.cpp" />
+    <Compile Include="PKCS11_digest_stub.cpp" />
+    <Compile Include="PKCS11_encryption_stub.cpp" />
+    <Compile Include="PKCS11_keys_stub.cpp" />
+    <Compile Include="PKCS11_objects_stub.cpp" />
+    <Compile Include="PKCS11_random_stub.cpp" />
+    <Compile Include="PKCS11_session_stub.cpp" />
+    <Compile Include="PKCS11_signature_stub.cpp" />
+    <Compile Include="PKCS11_Token_stub.cpp" />
+    <IncludePaths Include="Crypto\INC" />
+    <IncludePaths Include="DeviceCode\PAL" />
+    <IncludePaths Include="DeviceCode\pal\PKCS11" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptoki.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptokipal.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11f.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11t.h" />
+    <HFiles Include="pkcs11_stub.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,69 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <!-- find, rename, and copy Emulator.config file to output directory -->
+
+  <PropertyGroup>
+    <PrepareForBuildDependsOn>$(PrepareForBuildDependsOn);PrepareEmulatorConfig</PrepareForBuildDependsOn>
+    <LoadTimeSensitiveTargets>$(LoadTimeSensitiveTargets);CopyEmulatorConfigFile</LoadTimeSensitiveTargets>
+    <LoadTimeSensitiveItems>$(LoadTimeSensitiveItems);EmulatorConfigWithTargetPath;EmulatorConfigFileDestination</LoadTimeSensitiveItems>
+    <LoadTimeCheckItemLocation>$(LoadTimeCheckItemLocation);EmulatorConfigFileDesination</LoadTimeCheckItemLocation>
+    <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyEmulatorConfigFile;RegisterEmulator</PrepareForRunDependsOn>
+
+    <EmulatorName Condition=" '$(EmulatorName)' == '' ">$(AssemblyName)</EmulatorName>
+    <EmulatorCurrentUser Condition=" '$(EmulatorCurrentUser)' == '' ">true</EmulatorCurrentUser>
+
+  </PropertyGroup>
+
+  <Import Project="Tasks.settings" />
+
+  <Target Name="PrepareEmulatorConfig">
+    <!--
+        Choose exactly one app.config to be the main app.config that is copied to the destination folder.
+
+        The search order is:
+
+            (1) Choose the value $(EmulatorConfig) set in the main project.
+            (2) Choose @(None) Emulator.Config in the same folder as the project.
+            (3) Choose @(Content) Emulator.Config in the same folder as the project.
+            (4) Choose @(None) Emulator.Config in any subfolder in the project.
+            (5) Choose @(Content) Emulator.Config in any subfolder in the project.
+
+        If an app.config is not found in one of these locations then there is no app.config for this project.
+        -->
+    <CreateProperty Value="%(None.Identity)" Condition="'$(EmulatorConfig)'=='' and '%(RelativeDir)%(Filename)%(Extension)'=='Emulator.Config'">
+      <Output TaskParameter="Value" PropertyName="EmulatorConfig" />
+    </CreateProperty>
+    <CreateProperty Value="%(Content.Identity)" Condition="'$(EmulatorConfig)'=='' and '%(RelativeDir)%(Filename)%(Extension)'=='Emulator.Config'">
+      <Output TaskParameter="Value" PropertyName="EmulatorConfig" />
+    </CreateProperty>
+    <CreateProperty Value="%(None.Identity)" Condition="'$(EmulatorConfig)'=='' and '%(Filename)%(Extension)'=='Emulator.Config'">
+      <Output TaskParameter="Value" PropertyName="EmulatorConfig" />
+    </CreateProperty>
+    <CreateProperty Value="%(Content.Identity)" Condition="'$(EmulatorConfig)'=='' and '%(Filename)%(Extension)'=='Emulator.Config'">
+      <Output TaskParameter="Value" PropertyName="EmulatorConfig" />
+    </CreateProperty>
+    <!-- Dump the single app.config into an item list with TargetPath set. -->
+    <CreateItem Include="$(EmulatorConfig)" AdditionalMetadata="TargetPath=$(TargetFileName).emulatorconfig">
+      <Output TaskParameter="Include" ItemName="EmulatorConfigWithTargetPath" />
+    </CreateItem>
+  </Target>
+  <Target Name="CopyEmulatorConfigFile" Condition=" '@(EmulatorConfigWithTargetPath)' != '' " Inputs="@(EmulatorConfigWithTargetPath)" Outputs="@(EmulatorConfigWithTargetPath->'$(OutDir)%(TargetPath)')">
+    <!--
+        Copy the application's .config file, if any.
+        Not using SkipUnchangedFiles="true" because the application may want to change
+        the app.config and not have an incremental build replace it.
+        -->
+    <Copy SourceFiles="@(EmulatorConfigWithTargetPath)" DestinationFiles="@(EmulatorConfigWithTargetPath->'$(OutDir)%(TargetPath)')">
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+  <Target Name="RegisterEmulator" Condition=" '$(EmulatorId)' != '' " >
+     <RegisterEmulator
+         SubkeyName="$(EmulatorId)"
+         Name="$(EmulatorName)"
+         CurrentUser="$(EmulatorCurrentUser)"
+         Path="$(OutDir)$(TargetFileName)" 
+         FrameworkVersion="v4.4"/>
+  </Target>
+
+</Project>

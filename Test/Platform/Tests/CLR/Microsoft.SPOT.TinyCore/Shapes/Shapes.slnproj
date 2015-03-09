@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ComponentGuid>{42a3f98b-9ce2-4095-88ee-66be95765c26}</ComponentGuid>
+    <DirectoryRef>SamplesDir</DirectoryRef>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectFile Include="Shapes.csproj">
+      <Transform>Client</Transform>
+      <Deploy>true</Deploy>
+      <!--ExtraFiles>
+        <File>Shapes.csproj.user</File>
+      </ExtraFiles-->
+    </ProjectFile>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+</Project>

@@ -1,0 +1,62 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>System.Http</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{180CA8C0-8E4C-41C2-85D3-83D3035403F4}</ProjectGuid>
+    <ComponentGuid>{2e6e7fee-a00b-4860-85c8-a159e57ecdf5}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <NoWarn>,1668,0444,1668;0649</NoWarn>
+    <DocumentationFile>..\..\..\BuildOutput\public\Debug\Client\dll\System.Http.XML</DocumentationFile>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="HTTP\System.Net.AuthenticationType.cs" />
+    <Compile Include="HTTP\System.Net.NetworkCredential.cs" />
+    <Compile Include="HTTP\System.Net._InputNetworkStreamWrapper.cs" />
+    <Compile Include="HTTP\System.Net.HttpListenerRequest.cs" />
+    <Compile Include="HTTP\System.Net.HttpListenerResponse.cs" />
+    <Compile Include="HTTP\System.Net.HttpListenerContext.cs" />
+    <Compile Include="HTTP\System.Net.HttpListener.cs" />
+    <Compile Include="HTTP\System.Net.HttpStatusCode.cs" />
+    <Compile Include="HTTP\System.Net.HttpVersion.cs" />
+    <Compile Include="HTTP\System.Net.HttpWebRequest.cs" />
+    <Compile Include="HTTP\System.Net.HttpWebResponse.cs" />
+    <Compile Include="HTTP\System.Net.Internal.cs" />
+    <Compile Include="HTTP\System.Net.iwebproxy.cs" />
+    <Compile Include="HTTP\System.Net.IWebRequestCreate.cs" />
+    <Compile Include="HTTP\System.Net.ProtocolViolationException.cs" />
+    <Compile Include="HTTP\System.Net.WebException.cs" />
+    <Compile Include="HTTP\System.Net.WebHeaders.cs" />
+    <Compile Include="HTTP\System.Net.webproxy.cs" />
+    <Compile Include="HTTP\System.Net.WebRequest.cs" />
+    <Compile Include="HTTP\System.Net.WebResponse.cs" />
+    <Compile Include="HTTP\System.Net.WebStatus.cs" />
+    <Compile Include="HTTP\System.Net._OutputNetworkStreamWrapper.cs" />
+    <Compile Include="HTTP\System.Net._HeaderInfo.cs" />
+    <Compile Include="HTTP\System.Net._HeaderInfoTable.cs" />
+    <Compile Include="HTTP\System.Net._HttpDateParse.cs" />
+    <Compile Include="HTTP\System.Net._ValidationHelper.cs" />
+    <Compile Include="HTTP\System.Uri.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>$(BUILD_TREE_DLL)\System.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Security">
+      <HintPath>$(BUILD_TREE_DLL)\System.Net.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Net.Security">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Net.Security.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

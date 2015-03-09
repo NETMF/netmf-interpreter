@@ -1,0 +1,60 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">OneWire_PAL</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{8B4E8B4B-774D-4F2F-AA52-085848AA8D70}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">PAL</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\dotNetMF.proj</FilePath>
+  </Templates>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\onewire_stubs.cpp</FilePath>
+  </Templates>
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <StubLibrary Name="onewire_pal_stubs" Guid="{24E1C771-7E4F-471C-A85C-78D693C259B6}" ProjectPath="$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2011-08-08</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Library</ComponentType>
+  </StubLibrary>
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2011-08-08</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\OneWire_PAL.libcatproj</ProjectPath>
+  <FeatureAssociations Name="OneWire" Guid="{C9D30638-8B83-42B7-90A6-C96899B185F1}" ProjectPath="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2011-08-08</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+  <IsTranport xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">true</IsTranport>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+  <ItemGroup>
+    <LibraryCollection Include="$(SPOCLIENT)\DeviceCode\PAL\OneWire\dotNetMF.proj" />
+    <LibraryCollection Include="$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\dotNetMF.proj" />
+  </ItemGroup>
+</Project>

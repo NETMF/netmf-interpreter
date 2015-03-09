@@ -1,0 +1,229 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+     <Project Include="arrays\arrays.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="arrays\arrays.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="basicconcepts\basicconcepts.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="basicconcepts\basicconcepts.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+	
+    <Project Include="bitconverter\bitconverter.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="bitconverter\bitconverter.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="classes\classes1\classes1.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="classes\classes1\classes1.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="classes\classes2\classes2.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="classes\classes2\classes2.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="classes\classes3\classes3.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="classes\classes3\classes3.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="collections\collections.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="collections\collections.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="conversions\basic\basic.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="conversions\basic\basic.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="conversions\basic2\basic2.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="conversions\basic2\basic2.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="conversions\conversions.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="conversions\conversions.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="conversions\expenum\expenum.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="conversions\expenum\expenum.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="conversions\expenum2\expenum2.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="conversions\expenum2\expenum2.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="conversions\user\selection\selection.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="conversions\user\selection\selection.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="conversions\user\user.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="conversions\user\user.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="expressions\expressions1\expressions1.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="expressions\expressions1\expressions1.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="expressions\expressions2\expressions2.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="expressions\expressions2\expressions2.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="exceptions\CSharp\exceptions.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="exceptions\CSharp\exceptions.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <!--
+    <Project Include="exceptions\VB\exceptions_VB.vbproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="exceptions\VB\exceptions_VB.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+    -->
+
+    <Project Include="namespaces\namespaces.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="namespaces\namespaces.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="statements\statements.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="statements\statements.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="structs\structs.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="structs\structs.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="types\types.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="types\types.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="variables\variables.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="variables\variables.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="attributes\attributes.csproj" >
+      <InProject>false</InProject>
+    </Project>
+     <Project Include="attributes\attributes.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+  
+    <Project Include="enums\enums.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="enums\enums.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="lexical\lexical.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="lexical\lexical.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="systemlib\systemlib1\systemlib1.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="systemlib\systemlib1\systemlib1.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="systemlib\systemlib2\systemlib2.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="systemlib\systemlib2\systemlib2.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="threads\threads1\threads1.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="threads\threads1\threads1.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="threads\threads2\threads2.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="threads\threads2\threads2.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="threads\threads3\threads3.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="threads\threads3\threads3.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="mscorlibTests.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+</Project>

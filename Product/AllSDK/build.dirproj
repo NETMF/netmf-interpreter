@@ -1,0 +1,11 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+    <ItemGroup>
+        <!--Project Include="ItemTemplates\build.dirproj" >
+        <InProject>false</InProject>
+      </Project>
+      <Project Include="ProjectTemplates\build.dirproj" >
+        <InProject>false</InProject>
+      </Project-->
+    </ItemGroup>
+</Project>

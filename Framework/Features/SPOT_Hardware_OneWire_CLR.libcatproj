@@ -1,0 +1,53 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SPOT_Hardware_OneWire_CLR</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{49949C30-83BE-4812-B689-130A6D43A4A3}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">CLR</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <StubLibrary Name="SPOT_Hardware_OneWire_stub" Guid="50EFCA91-B5C4-49EA-A538-781A9157E597" ProjectPath="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_OneWire\dotNetMF_Stub.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2011-08-08</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Library</ComponentType>
+  </StubLibrary>
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2011-08-08</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\SPOT_Hardware_OneWire_CLR.libcatproj</ProjectPath>
+  <FeatureAssociations Name="OneWire" Guid="{3401dd69-cab5-45fc-a759-1d1eded247c7}" ProjectPath="$(SPOCLIENT)\Framework\Features\OneWire.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2011-08-08</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+  <ItemGroup>
+    <LibraryCollection Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_OneWire\dotNetMF.proj" />
+    <LibraryCollection Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_OneWire\dotNetMF_stub.proj" />
+  </ItemGroup>
+</Project>

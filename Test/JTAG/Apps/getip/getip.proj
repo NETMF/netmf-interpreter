@@ -1,0 +1,42 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  
+  <PropertyGroup>
+
+    <!--
+    Project description for an executible with well-known (non-unique) project GUID
+    -->
+
+    <AssemblyName>Microsoft.SPOT.Test.getip</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Microsoft.SPOT.Test</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{332F8643-496C-44C1-9C19-3A75119DB3FC}</ProjectGuid>
+    <TinyCLR_ClientOnly>true</TinyCLR_ClientOnly>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+
+  <ItemGroup>
+    <Compile Include="loop.cs" />
+  </ItemGroup>
+
+    <!-- 
+    - 
+    - Specify the library references during compile and link (to PE) phases 
+    - 
+    -->
+
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>$(BUILD_TREE_DLL)\System.Dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Net">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Net.Dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

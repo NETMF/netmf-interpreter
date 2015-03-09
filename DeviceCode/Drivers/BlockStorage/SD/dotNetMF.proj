@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\BlockStorage\SD\dotnetmf.proj</ProjectPath>
+    <ProjectGuid>{01A4E96C-2291-454f-AA40-2BBC1610F4EF}</ProjectGuid>
+    <AssemblyName>SD_BL</AssemblyName>
+    <Size>
+    </Size>
+    <Description>SD driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>SD_BL.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>SD_BL.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>BlockStorage</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SD_HAL" Guid="{D0B87921-2D78-424d-8A14-843D1F4F789D}" ProjectPath="$(SPOCLIENT)\Framework\Features\SD_HAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-06-22</Date>
+          <Author>Microsoft</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <Directory>DeviceCode\Drivers\BlockStorage\SD</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="SD_BL_driver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="sd_bl.h" />
+  </ItemGroup>
+  <Import Condition="" Project="$(SPOCLIENT)\Framework\features\SD_Config_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

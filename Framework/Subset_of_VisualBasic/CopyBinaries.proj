@@ -1,0 +1,25 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Target Name="build">
+
+    <Exec Command="copy $(SPOCLIENT)\Framework\Subset_of_VisualBasic\lib\cst\*dll $(BUILD_TREE_CLIENT)\dll\.">
+    </Exec>
+
+    <Exec Command="copy $(SPOCLIENT)\Framework\Subset_of_VisualBasic\lib\cst\*pdb $(BUILD_TREE_CLIENT)\dll\.">
+    </Exec>
+
+    <Exec Command="copy $(SPOCLIENT)\Framework\Subset_of_VisualBasic\lib\cst\*dump $(BUILD_TREE_CLIENT)\dumps\.">
+    </Exec>
+
+    <Exec Command="copy $(SPOCLIENT)\Framework\Subset_of_VisualBasic\lib\cst\*wxs $(BUILD_TREE_CLIENT)\fragments\.">
+    </Exec>
+
+    <Exec Command="copy $(SPOCLIENT)\Framework\Subset_of_VisualBasic\lib\cst\be\* $(BUILD_TREE_CLIENT)\pe\be\.">
+    </Exec>
+
+    <Exec Command="copy $(SPOCLIENT)\Framework\Subset_of_VisualBasic\lib\cst\le\* $(BUILD_TREE_CLIENT)\pe\le\.">
+    </Exec>
+
+  </Target>
+
+</Project>

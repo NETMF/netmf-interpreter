@@ -1,0 +1,35 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <PlatformFamilyName>SmartWatch</PlatformFamilyName>
+    <AssemblyName>Microsoft.SPOT.Drivers.$(MSBuildProjectName)</AssemblyName>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{88BA0B86-9585-4F71-A5DD-E292A0D8F2A5}</ProjectGuid>
+    <RootNamespace>Microsoft.SPOT.Drivers.Bluetooth</RootNamespace>
+    <ComponentGuid>{27c22bf0-f1a3-4b2b-ab89-dc046fc2205b}</ComponentGuid>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_CLIENT)\DLL\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_CLIENT)\DLL\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware.SerialPort">
+      <HintPath>$(BUILD_TREE_CLIENT)\DLL\Microsoft.SPOT.Hardware.SerialPort.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BTManager.cs" />
+    <Compile Include="BTDriver.cs" />
+    <Compile Include="BTConnection.cs" />
+    <Compile Include="PromiSDBTDriver.cs" />
+    <Compile Include="SerialStream.cs" />
+    <Compile Include="IPowerPolicy.cs" />
+    <Compile Include="IPowerState.cs" />
+    <Compile Include="DefaultPowerPolicy.cs" />
+  </ItemGroup>
+</Project>

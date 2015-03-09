@@ -1,0 +1,18 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Gesture</FeatureName>
+  </PropertyGroup>  
+  <Import Condition="'$(TOUCHSCREEN_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\TouchScreen.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'   ==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <Import Condition="'$(PALEVENT_PAL_LIBCATPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\PalEvent_PAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Gesture_PAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Gesture support for touch panel</Description>
+    <Guid>{AAA729DF-A2D0-4ed1-8626-EFD4EB27368B}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <GESTURE_FEATUREPROJ>True</GESTURE_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

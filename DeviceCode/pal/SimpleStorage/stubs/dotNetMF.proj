@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <AssemblyName>SimpleStorage_pal_stub</AssemblyName>
+    <Size />
+    <ProjectGuid>{03923B78-D13A-48F9-A023-A2D77D84E779}</ProjectGuid>
+    <Description>Simple storage library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>simplestorage_pal_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\SimpleStorage\stubs\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Simplestorage_pal_stub.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Storage</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SimpleStorage_PAL" Guid="{FA278E2B-32AF-47AB-9372-F1F88DB8ECE1}" ProjectPath="$(SPOCLIENT)\Framework\Features\SimpleStorage_PAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2011-07-18</Date>
+          <Author />
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation />
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter />
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>true</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="SimpleStorage_stub.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\PAL" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

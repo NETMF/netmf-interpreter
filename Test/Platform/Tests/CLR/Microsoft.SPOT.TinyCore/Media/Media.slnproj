@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ComponentGuid>{3364c9fe-aedc-4cb4-8dc1-671e9774e464}</ComponentGuid>
+    <DirectoryRef>SamplesDir</DirectoryRef>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectFile Include="Media.csproj">
+      <Transform>Client</Transform>
+      <Deploy>true</Deploy>
+      <!--ExtraFiles>
+        <File>Media.csproj.user</File>
+      </ExtraFiles-->
+    </ProjectFile>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+</Project>

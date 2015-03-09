@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>bf_openssl</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{1bdf937a-0def-49d6-b4c5-4d5b2b835a98}</ProjectGuid>
+    <Description>Crypto BF library from OpenSSL</Description>
+    <Level>PAL</Level>
+    <LibraryFile>bf_openssl.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\bf\dotNetMF.proj</ProjectPath>
+    <ManifestFile>bf_openssl.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\bf</Directory>
+    <OutputType>Library</OutputType>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <!--
+  <ItemGroup>
+    <SubDirectories Include="Stubs"/>
+  </ItemGroup>
+-->
+  <ItemGroup>
+    <Compile Include="bf_skey.cpp" />
+    <Compile Include="bf_ecb.cpp" />
+    <Compile Include="bf_enc.cpp" />
+    <Compile Include="bf_cfb64.cpp" />
+    <Compile Include="bf_ofb64.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\include\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\ebcdic.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\o_str.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\ebcdic.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\tinyclr\ssl_types.h" />
+    <HFiles Include="bf_locl.h" />
+    <HFiles Include="bf_pi.h" />
+    <HFiles Include="blowfish.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="11.00"
+	Name="MFPK default settings for all builds"
+	InheritedPropertySheets="$(SPOCLIENT)\Support\MfPkVersion.vsprops"
+	OutputDirectory="$(BUILD_ROOT)\$(ConfigurationName)\Server\lib"
+	IntermediateDirectory="$(BUILD_ROOT)\$(ConfigurationName)\Server\obj\$(TargetName)"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+
+		PreprocessorDefinitions="WIN32;_WINDOWS;UNICODE;_UNICODE;VERSION_MAJOR=$(VERSION_MAJOR);VERSION_MINOR=$(VERSION_MINOR);VERSION_BUILD=$(VERSION_BUILD);VERSION_REVISION=$(VERSION_REVISION)"
+		DebugInformationFormat="3"
+		EnableFunctionLevelLinking="true"
+		WarningLevel="3"
+		StringPooling="true"
+        AdditionalIncludeDirectories="
+            &quot;$(SPOCLIENT)\CLR\include&quot;;
+            &quot;$(SPOCLIENT)\CLR\libraries\corlib&quot;;
+            &quot;$(SPOCLIENT)\CLR\libraries\SPOT&quot;;
+            &quot;$(SPOCLIENT)\CLR\libraries\SPOT_Hardware&quot;;
+            &quot;$(SPOCLIENT)\CLR\libraries\SPOT_Net&quot;;
+            &quot;$(SPOCLIENT)\CLR\libraries\SPOT_Graphics&quot;;
+            &quot;$(SPOCLIENT)\DeviceCode\include&quot;;
+            &quot;$(SPOCLIENT)\Support\include&quot;;
+            &quot;$(SPOCLIENT)\Crypto\inc&quot;;
+            "
+		ConfigurationType="2"
+		CharacterSet="1"
+        />
+	<Tool
+		Name="VCResourceCompilerTool"
+		PreprocessorDefinitions="WIN32;_WINDOWS;VERSION_MAJOR=$(VERSION_MAJOR);VERSION_MINOR=$(VERSION_MINOR);VERSION_BUILD=$(VERSION_BUILD);VERSION_REVISION=$(VERSION_REVISION)"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		IgnoreAllDefaultLibraries="true"
+        Keyfile="$(SPOCLIENT)\Framework\key.snk"
+        ManifestFile="$(OutDir)\$(TargetFileName).embed.manifest"
+	    />
+	<Tool
+		Name="VCPostBuildEventTool"
+		Description="Instrumenting..."
+		CommandLine="IF NOT &quot;$(CoverageBuildID)&quot; == &quot;&quot; $(SPOCLIENT)\tools\build\BBCoverWrapper.exe /Verbose /BinaryFile:&quot;$(TargetPath)&quot; /OriginalsDirectory:&quot;$(OutDir)\__uninstr&quot; /certificatefile:&quot;$(SPOCLIENT)\\Framework\key.snk&quot; /ignorablewarnings:BB5001 /BuildID:$(CoverageBuildID) /DB:&quot;$(CoverageDB)&quot; /registrationhook:entry"
+		ExcludedFromBuild="false"
+	    />
+</VisualStudioPropertySheet>

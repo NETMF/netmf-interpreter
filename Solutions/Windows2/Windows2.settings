@@ -1,0 +1,20 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Author>
+    </Author>
+    <Description>Emulator solution</Description>
+    <Documentation>
+    </Documentation>
+    <PlatformGuid>{859a4e9f-95d5-4c0b-82f2-264bb3a18130}</PlatformGuid>
+    <TARGETPLATFORM>Windows2</TARGETPLATFORM>
+    <PLATFORM>Windows2</PLATFORM>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <ENDIANNESS>le</ENDIANNESS>
+    <MEMORY>RAM</MEMORY>
+    <FLAVOR Condition="'$(FLAVOR)'==''">Debug</FLAVOR>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="Solutions\Windows2" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\devicecode\Targets\OS\Windows\Windows.settings" />
+</Project>

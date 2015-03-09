@@ -1,0 +1,7 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+ <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+   <Package Id='d5768e39-f3cc-41ac-b74f-4c2426840c56' Keywords="Installer" Description=".NET Micro Framework PerformanceTests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252" />
+   <?include ProductVersion.wxs?>
+   <?include Directories.wxs?>
+ </Module>
+</Wix>

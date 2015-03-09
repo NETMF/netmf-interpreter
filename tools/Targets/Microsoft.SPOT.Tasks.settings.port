@@ -1,0 +1,55 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <Import Project="$(SPOCLIENT)\Support\MfPkVersion.proj" />
+
+  <PropertyGroup>
+    <SPOTTasksAssembly>$(BUILD_ROOT)\$(Configuration)\Server\dll\Microsoft.SPOT.Tasks.dll</SPOTTasksAssembly>
+    <NativeBuildTasksAssembly>$(BUILD_ROOT)\$(Configuration)\Server\dll\Microsoft.SPOT.Tasks.NativeBuild.dll</NativeBuildTasksAssembly>
+    <InternalBuildTasksAssembly>$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll</InternalBuildTasksAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.GetDeviceFrameworkPaths"    AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.ResolveRuntimeDependencies" AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.GenerateTinyResource"       AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.MetaDataProcessor"          AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.RegisterEmulator"           AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.ProcessScatterFile"         AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.CreateLibManifest"          AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.SetEnvironmentVariable"     AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.GetEnvironmentVariable"     AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.UnsetEnvironmentVariable"   AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.CreateInteropFeatureProj"   AssemblyFile="$(SPOTTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.GenerateAssemblyInfoFile"   AssemblyFile="$(SPOTTasksAssembly)"/>
+
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.ADSCompileCPP"   AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.ADSCompileCC"    AssemblyFile="$(NativeBuildTasksAssembly)"  />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.ADSCompileTCC"   AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.ADSAssemble"     AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.VSCompileC"      AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.MakeVCProject"   AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.VSLinkExeTask"   AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.VSLinkLibTask"   AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.VSLinkDllTask"   AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.ADICompileCPP"   AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.ADICompileCC"    AssemblyFile="$(NativeBuildTasksAssembly)" />
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.NativeBuild.ADIAssemble"     AssemblyFile="$(NativeBuildTasksAssembly)" />
+
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.BBCover"                   AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.CompressSample"            AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.CreateAssemblyFragment"    AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.CreateSymbolRequest"       AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.CreateZip"                 AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.DirectorySearch"           AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.FindWixObjects"            AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.GenerateVSTemplate"        AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.GetProjectChildFiles"      AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.ResourceConverter"         AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.SignMSI"                   AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.SignMSIAssemblies"         AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.TargetLock"                AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.TransmorgifyProject"       AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.TransmorgifyTemplateFiles" AssemblyName="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.GenerateFrameworkList"     AssemblyFile="$(InternalBuildTasksAssembly)"/>
+  <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.GenerateCLRDefines"        AssemblyFile="$(InternalBuildTasksAssembly)"/>
+
+</Project>

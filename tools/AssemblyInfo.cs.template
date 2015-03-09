@@ -1,0 +1,17 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyTitle(__ASSEMBLYTITLE__)]
+[assembly: AssemblyDescription(__ASSEMBLYDESCRIPTION__)]
+[assembly: AssemblyConfiguration(__ASSEMBLYCONFIGURATION__)]
+[assembly: AssemblyCompany(__ASSEMBLYCOMPANY__)]
+[assembly: AssemblyProduct(__ASSEMBLYPRODUCT__)]
+[assembly: AssemblyCopyright(__ASSEMBLYCOPYRIGHT__)]
+[assembly: AssemblyTrademark(__ASSEMBLYTRADEMARK__)]
+[assembly: AssemblyFileVersion(__ASSEMBLYFILEVERSION__)]
+[assembly: AssemblyVersion(__ASSEMBLYVERSION__)]
+[assembly: AssemblyInformationalVersion(__PRODUCTVERSION__)]

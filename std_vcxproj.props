@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- 
+    This property sheet provides common settings for use in building
+    the .NET Micro Framework CLR runtime, PAL and HAL.
+    
+    TODO: 
+    * Add a targets file with an "InitialTargets" to validate all required
+      properties are set and within valid ranges, If issues are found it
+      should report clear error messages with info on how to fix them.
+    -->
+    <ImportGroup Label="PropertySheets" />
+    <PropertyGroup Label="UserMacros" >
+        <!-- help ease migration by placing this properties file at the root of the tree to set SPOCLIENT -->
+        <SPOCLIENT Condition="'$(SPOCLIENT)'==''">$(MSBuildThisFileDirectory)></SPOCLIENT>
+        
+        <!-- OEMs should override this in their Application projects. Once we have validation going this can be removed -->
+        <OEMInfoString Condition="'$(OEMInfoString)'!=''">.NET Micro Framework OEM Device</OEMInfoString>
+        <VersionMajor Condition="'$(VersionMajor)'==''">4</VersionMajor>
+        <VersionMinor Condition="'$(VersionMinor)'==''">4</VersionMinor>
+        
+        <!-- VersionBuild numbers must be limited to 16 bits for use in .NET assemblies -->
+        <VersionBuild Condition="'$(VersionBuild)'==''">0</VersionBuild>
+        
+        <!-- NOTE: Windows intaller only considers Major.Minor.Build for version checks
+            (e.g. 1.1.1.1 == 1.1.1.25 as far as an MSI is concerned )
+        -->
+        <VersionRevision Condition="'$(VersionRevision)'==''">0</VersionRevision>
+    </PropertyGroup>
+    <PropertyGroup>
+        <IncludePath>$(SPOCLIENT)\CLR\Include;$(SPOCLIENT)\DeviceCode\include;$(SPOCLIENT)\Support\Include;$(IncludePath)</IncludePath>
+    </PropertyGroup>
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <PreprocessorDefinitions>VERSION_MAJOR=$(VersionMajor);VERSION_MINOR=$(VersionMinor);VERSION_BUILD=$(VersionBuild);VERSION_REVISION=$(VersionRevision);OEMSYSTEMINFOSTRING="\"$(OEMInfoString)\"";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <AdditionalIncludeDirectories>$(SPOCLIENT)\CLR\Include;$(SPOCLIENT)\DeviceCode\include;$(SPOCLIENT)\Support\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+    </ItemDefinitionGroup>
+    <ItemGroup>
+    </ItemGroup>
+</Project>

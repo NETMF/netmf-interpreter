@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <AssemblyName>Legacy_Crypto_Token</AssemblyName>
+    <Size />
+    <ProjectGuid>{131BE473-CBC5-46D6-A1CE-C288FA7CD605}</ProjectGuid>
+    <Description>PKCS11 Engine</Description>
+    <Level>PAL</Level>
+    <LibraryFile>Legacy_Crypto_Token.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\Legacy\dotnetmf.proj</ProjectPath>
+    <ManifestFile>Legacy_Crypto_Token.$(LIB_EXT).manifest</ManifestFile>
+    <Directory>DeviceCode\PAL\PKCS11\Tokens\Legacy</Directory>
+    <Groups>Crypto</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PKCS11_Crypto_PAL" Guid="{C479A378-90A5-43FE-A7EA-1AF4ECE89940}" ProjectPath="$(spoclient)\framework\features\PKCS11_Crypto_PAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2011-07-19</Date>
+          <Author />
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation />
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter />
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <OutputType>Library</OutputType>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="NetMFCrypto.cpp" />
+    <IncludePaths Include="Crypto\INC" />
+    <IncludePaths Include="DeviceCode\PAL" />
+    <IncludePaths Include="DeviceCode\pal\PKCS11" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\crypto\inc\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptoki.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptokipal.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11f.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11t.h" />
+    <HFiles Include="netmfcrypto.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

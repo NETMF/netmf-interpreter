@@ -1,0 +1,8 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='6db37dd6-5b39-43db-bb72-1baf2c7e22eb' Keywords="Installer" Description=".NET Micro Framework MFDeploy Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_MFDeployBasicTests' />
+  </Module>
+</Wix>

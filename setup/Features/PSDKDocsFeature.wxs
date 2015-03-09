@@ -1,0 +1,40 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_PSDKDocsFeature">
+    <Feature 
+      Id="PSDKDocsFeature" 
+      Title="Platform Documentation" 
+      Description="Help and support documentation for the .NET MicroFramework" 
+      Level="1" 
+      Absent="allow"
+      AllowAdvertise="no"
+      >
+      <ComponentRef Id="Component_NetMFCollection" />
+      <ComponentRef Id="Component_PSDKDocs" />
+
+
+      <!---
+      <Feature Id="HelpDxexplorer90" Title="Document Explorer 2008 Help shortcut" Level="0" Display="hidden">
+        <Condition Level="1">DXEXPLORE9_DIRECTORY AND NOT DXEXPLORE10_DIRECTORY</Condition>
+        <MergeRef Id="Help20_Merge" />
+        <MergeRef Id="VSIPCC_Merge" />
+        <ComponentRef Id="Component_DxexploreShortcut.Help9" />
+      </Feature>
+      -->
+
+      <Feature Id="HelpDxexplorer100" Title="Document Explorer 2010 Help shortcut" Level="0" Display="hidden">
+        <Condition Level="1">DXEXPLORE10_DIRECTORY</Condition>
+        <ComponentRef Id="Component_DxexploreShortcut.Help10" />
+      </Feature>
+
+      <Feature Id="HelpSearchFilterVCS100" Title="Visual C# Express 2010 Help Filter" Level="0" Display="hidden">
+        <Condition Level="1">VCS_100_DEVENV OR REMOVE</Condition>
+        <ComponentRef Id="Component_PSDKFilter.VCS100"/>
+      </Feature>
+
+      <Feature Id="HelpSearchFilterVS100" Title="Visual Studio 2010 Help Filter" Level="0" Display="hidden">
+        <Condition Level="1">VS_100_DEVENV OR REMOVE</Condition>
+        <ComponentRef Id="Component_PSDKFilter.VS100"/>
+      </Feature>
+    </Feature>
+  </Fragment>
+</Wix>

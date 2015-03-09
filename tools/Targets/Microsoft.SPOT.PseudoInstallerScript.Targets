@@ -1,0 +1,129 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.Internal.CreatePseudoInstallScript" AssemblyFile="$(BUILD_TREE_SERVER)\dll\Microsoft.SPOT.Tasks.Internal.dll" />
+
+    <PropertyGroup>
+        <!-- the % is intentionally literal so that %foo% variables appear in the output script, rather than the current values thereof -->
+        <ExperimentalBuild Condition="'$(ExperimentalBuild)'==''">Exp</ExperimentalBuild>
+        <VSIP_DIR>%BUILD_TREE_SERVER%\dll</VSIP_DIR>
+        <MFSDKInstallerFile>$(BUILD_TREE_SERVER)\msm\MicroFrameworkSDK.MSI</MFSDKInstallerFile>
+        <PseudoInstallerScript Condition="'$(PseudoInstallerScript)'==''">$(SPOCLIENT)\tools\scripts\mfpseudoinstaller.cmd</PseudoInstallerScript>
+        <PseudoInstallerExists Condition="Exists('$(PseudoInstallerScript)')">true</PseudoInstallerExists>
+        <VSVER Condition="'$(VSVER)'==''" >12.0</VSVER>
+    </PropertyGroup>
+
+    <!-- The ComponentReplacements group are registry settings whose values are WiX -->
+    <!-- components that refer to files or directories on the target machine. We    -->
+    <!-- just replace the value encoded in the installer's registry value with the  -->
+    <!-- equivalent file or directory in our build or source tree                   -->
+    <ItemGroup>
+        <!-- new, current-version components -->
+        <ComponentReplacements Include="VERSIONDIR">
+            <ReplaceWith>%BUILD_TREE%</ReplaceWith>
+        </ComponentReplacements>
+
+        <ComponentReplacements Include="Component_Microsoft.SPOT.Debugger.CorDebug">
+            <ReplaceWith>$(VSIP_DIR)</ReplaceWith>
+         </ComponentReplacements>
+
+        <ComponentReplacements Include="Component_Microsoft.SPOT.Emulator.Sample.SampleEmulator">
+            <ReplaceWith>$(VSIP_DIR)</ReplaceWith>
+        </ComponentReplacements>
+
+        <ComponentReplacements Include="Component_Targets_v$(MajorVersion)_$(MinorVersion)">
+            <ReplaceWith>%SPOCLIENT%\Framework\IDE\Targets\v$(MajorVersion).$(MinorVersion)</ReplaceWith>
+        </ComponentReplacements>
+
+        <ComponentReplacements Include="ToolsDir">
+            <ReplaceWith>%BUILD_TREE_SERVER%\dll</ReplaceWith>
+        </ComponentReplacements>
+
+        <ComponentReplacements Include="Component_Targets">
+            <ReplaceWith>%SPOCLIENT%\Framework\IDE\Targets</ReplaceWith>
+        </ComponentReplacements>
+
+        <ComponentReplacements Include="AssembliesDirLE">
+            <ReplaceWith>%BUILD_TREE_CLIENT%\dll</ReplaceWith>
+        </ComponentReplacements>
+    </ItemGroup>
+
+    <!-- The KeyReplacements group are those registry settings where we want to map the -->
+    <!-- key used in the installer to an equivalent key that does not require admin     -->
+    <!-- privs or potentially mess up the global registration environment               -->
+    <ItemGroup>
+        <KeyReplacements Include="Class registration for classes of our VSIP">
+            <Prefix>HKCR\CLSID</Prefix>
+            <ReplaceWith>HKLM\Software\Microsoft\VisualStudio\$(VSVER)\CLSID</ReplaceWith>
+        </KeyReplacements>
+
+<!--
+        <KeyReplacements Include="Public Assemblies, eg Emulator">
+            <Prefix>HKLM\Software\Microsoft\.NETFramework\</Prefix>
+            <ReplaceWith>HKCU\Software\Microsoft\.NETFramework\</ReplaceWith>
+        </KeyReplacements>
+
+        <KeyReplacements Include="Adding our VSIP to VS $(VSVER) configuration $(ExperimentalBuild)">
+            <Prefix>HKLM\Software\Microsoft\VisualStudio\$(VSVER)\</Prefix>
+            <ReplaceWith>HKCU\Software\Microsoft\VisualStudio\$(VSVER)$(ExperimentalBuild)_Config\</ReplaceWith>
+        </KeyReplacements>
+
+        <KeyReplacements Include="MF Assemblies">
+            <Prefix>HKLM\Software\Microsoft\.NETMicroFramework</Prefix>
+            <ReplaceWith>HKCU\Software\Microsoft\.NETMicroFramework</ReplaceWith>
+        </KeyReplacements>
+-->
+
+    </ItemGroup>
+
+    <!-- The IgnoreKeys group are those registry settings that are in our installer that we -->
+    <!-- actually DO NOT wish to pretend to install                                         -->
+    <ItemGroup>
+        <IgnoreKeys Include="VC Runtime merge modules">
+            <Prefix>HKLM\SOFTWARE\Microsoft\Windows</Prefix>
+        </IgnoreKeys>
+    </ItemGroup>
+
+    <!-- The RawReg group are those registry settings in normal installs are not present at all -->
+    <ItemGroup>
+        <RawRegs Include="AssemblyFoldersEx">
+            <Root>HKLM</Root>
+            <Key>Software\Microsoft\.NETMicroFramework\v$(MajorVersion).$(MinorVersion)\AssemblyFolder</Key>
+            <Name></Name>
+            <Type>SZ</Type>
+            <Value>%BUILD_TREE_CLIENT%\dll</Value>
+        </RawRegs>
+
+    </ItemGroup>
+
+    <Target Name="Uninstall">
+        <Exec Condition="'$(PseudoInstallerExists)'=='true' "
+            Command="$(PseudoInstallerScript) /u"
+            ContinueOnError="true"
+            />
+    </Target>
+
+    <Target Name="Install">
+        <!-- Run the uninstall if the script previously did not exist -->
+        <Exec Condition="'$(PseudoInstallerExists)'!='true'"
+            Command="$(PseudoInstallerScript) /u"
+            />
+        <Exec Condition=" Exists($(PseudoInstallerScript)) "
+            Command="$(PseudoInstallerScript) /i"
+            />
+    </Target>
+
+    <Target Name="CreatePseudoInstallScript">
+       <Message Importance="high" Text="Creating pseudo-installer script at $(PseudoInstallerScript)" />
+       <CreatePseudoInstallScript
+          OutputScript="$(PseudoInstallerScript)"
+          InstallerFile="$(MFSDKInstallerFile)"
+          Replacements="@(ComponentReplacements)"
+          RegistrySettings="@(RawRegs)"
+          KeyReplacements="@(KeyReplacements)"
+          IgnoreKeys="@(IgnoreKeys)"
+          Verbose="$(PrepVsVerbose)"
+        />
+    </Target>
+
+    <Target Name="PrepVs" DependsOnTargets="Uninstall;CreatePseudoInstallScript;Install" />
+</Project>

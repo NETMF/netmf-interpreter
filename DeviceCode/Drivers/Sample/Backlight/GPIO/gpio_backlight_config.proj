@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Backlight_GPIO_Config</AssemblyName>
+    <ProjectGuid>{66a63378-11f6-469b-be5f-ff5333e534c8}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>SAMPLE: backlight GPIO configuration</Description>
+    <Level>HAL</Level>
+    <LibraryFile>Backlight_GPIO_Config.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Sample\Backlight\GPIO\gpio_backlight_config.proj</ProjectPath>
+    <ManifestFile>Backlight_GPIO_Config.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Backlight\Sample</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\Sample\Backlight\GPIO</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="gpio_backlight_Config.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\backlight\gpio\gpio_backlight.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

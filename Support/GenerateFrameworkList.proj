@@ -1,0 +1,22 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Targets"/>
+
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn);GenerateFrameworkList</BuildDependsOn>
+  </PropertyGroup>
+
+  <!-- USE $(BuildNumber) as an Input parameter so that it rebuilds always (since the dependency should be on the BuildNumber property value) -->
+  <Target Name="GenerateFrameworkList" 
+        Inputs="@(ReleaseInfoFile);$(BuildNumber)"  
+        Outputs="$(BUILD_TREE_CLIENT)\dll\RedistList\FrameworkList.xml">
+
+        <GenerateFrameworkList
+           BuildOutputDirectory="$(BUILD_TREE_CLIENT)\dll"
+           FrameworkListFile="$(BUILD_TREE_CLIENT)\dll\RedistList\FrameworkList.xml"
+           FrameworkVersion="$(MajorVersion).$(MinorVersion).$(BuildNumber).$(RevisionNumber)"
+           ToolsVersion="4.0"
+           PublicKeyToken="2670f5f21e7f4192"
+        />
+  </Target>
+  
+</Project>

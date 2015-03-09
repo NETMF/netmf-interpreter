@@ -1,0 +1,60 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+    <PropertyGroup>
+        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+        <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+        <SccProjectName>SAK</SccProjectName>
+        <SccLocalPath>SAK</SccLocalPath>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccProvider>SAK</SccProvider>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>AbortHandlerClient</AssemblyName>
+        <OutputType>Winexe</OutputType>
+        <RootNamespace>AbortHandlerClient</RootNamespace>
+        <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <ProductVersion>9.0.21022</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{252A4F97-3F27-49E9-939A-A98EDDB32051}</ProjectGuid>
+    </PropertyGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+
+    <ItemGroup>
+        <Compile Include="FormAbortHandler.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="MemoryControl.cs">
+            <SubType>UserControl</SubType>
+        </Compile>
+        <Compile Include="Settings.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Support.cs" />
+        <Compile Include="MemoryRange.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <EmbeddedResource Include="App.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="System"/>
+        <Reference Include="System.Windows.Forms"/>
+        <Reference Include="System.XML"/>
+        <Reference Include="System.Drawing"/>
+        <Reference Include="Microsoft.SPOT.Debugger">
+            <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <AppDesigner Include="Properties\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SPOCLIENT)\Framework\Debugger\Debugger.csproj">
+            <Name>Microsoft.SPOT.Debugger</Name>
+        </ProjectReference>
+    </ItemGroup>
+</Project>

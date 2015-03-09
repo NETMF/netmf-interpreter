@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Attach" xml:space="preserve">
+    <value>Attempting to attach to the device for debugging...</value>
+  </data>
+  <data name="AttachFailed" xml:space="preserve">
+    <value>Attach failed.</value>
+  </data>
+  <data name="AttachFailedProcessDied" xml:space="preserve">
+    <value>Attach failed because  an internal error caused the process to terminate.</value>
+  </data>
+  <data name="CheckTarget" xml:space="preserve">
+    <value>Verifying that the debugger target is initialized and ready for debugging.</value>
+  </data>
+  <data name="DebuggerThreadTerminated" xml:space="preserve">
+    <value>The debugger engine thread has terminated unexpectedly with error '{0}'.</value>
+  </data>
+  <data name="DebuggingTargetNotFound" xml:space="preserve">
+    <value>The debugging target could not be found.</value>
+  </data>
+  <data name="DebuggingTargetWait" xml:space="preserve">
+    <value>Looking for the debugging target {0} to connect to (will time out in {1} seconds)...</value>
+  </data>
+  <data name="DeployFailed" xml:space="preserve">
+    <value>Deployment to the device was not successful.</value>
+  </data>
+  <data name="DeploymentErrorDeviceErrors" xml:space="preserve">
+    <value>Deployment error: the debugging failed to initialize because of device errors.</value>
+  </data>
+  <data name="DeploymentErrorReconnect" xml:space="preserve">
+    <value>Deployment error: failed to (re)connect debugger engine to debugging target.</value>
+  </data>
+  <data name="DeploySucceeded" xml:space="preserve">
+    <value>Deployment to the device was successful.</value>
+  </data>
+  <data name="DispatchEvents" xml:space="preserve">
+    <value>The debugger engine is listening to debug events from the debugging target</value>
+  </data>
+  <data name="DispatchEventsFailed" xml:space="preserve">
+    <value>The debugger engine failed to receive any debug events from the debugging target</value>
+  </data>
+  <data name="EmulatorCommandLine" xml:space="preserve">
+    <value>Launching emulator with command line: '{0}'</value>
+  </data>
+  <data name="InitializationFailed" xml:space="preserve">
+    <value>The debugging target and the debugger engine failed to initialize because of unspecified device errors.</value>
+  </data>
+  <data name="InitializeProcessFailed" xml:space="preserve">
+    <value>The initialization of the debugging process failed.</value>
+  </data>
+  <data name="InitializeProcessFailedProcessDied" xml:space="preserve">
+    <value>The initialization of the debugging process failed because an internal error caused the process to terminate.</value>
+  </data>
+  <data name="InvalidPort" xml:space="preserve">
+    <value>Warning: Attempting to deploy to an invalid port {0}.</value>
+  </data>
+  <data name="LoadAssemblies" xml:space="preserve">
+    <value>The debugging target runtime is loading the application assemblies and starting execution.</value>
+  </data>
+  <data name="LoadedAssembliesInformation" xml:space="preserve">
+    <value>Updating information about assemblies on the debugging target.</value>
+  </data>
+  <data name="Rebooting" xml:space="preserve">
+    <value>The debugging target is not in an initialized state; rebooting...</value>
+  </data>
+  <data name="RunningThreadsInformation" xml:space="preserve">
+    <value>Updating thread list</value>
+  </data>
+  <data name="StartDeploy" xml:space="preserve">
+    <value>Preparing to deploy assemblies to the device.</value>
+  </data>
+  <data name="StartDeployAssemblies" xml:space="preserve">
+    <value>Deployment of assemblies is starting. </value>
+  </data>
+  <data name="TargetInitializeSuccess" xml:space="preserve">
+    <value>The debugging target initialized successfully.</value>
+  </data>
+  <data name="BogusCorDebugProcess" xml:space="preserve">
+    <value>CorDebugProcess not properly initialized (m_pid == 0)</value>
+  </data>
+  <data name="CouldNotReconnect" xml:space="preserve">
+    <value>Could not reconnect to the debugging target after rebooting it.</value>
+  </data>
+  <data name="DebugEngineAttachmentFailure" xml:space="preserve">
+    <value>Debugger engine could not attach to debugging target.</value>
+  </data>
+  <data name="DebuggingStarting" xml:space="preserve">
+    <value>Device debugging starting...</value>
+  </data>
+  <data name="DeviceFound" xml:space="preserve">
+    <value>Device "{0}" identified</value>
+  </data>
+  <data name="DeviceNotFound" xml:space="preserve">
+    <value>Device "{0}" was not found</value>
+  </data>
+  <data name="FxVersionMismatch" xml:space="preserve">
+    <value>The Micro Framework installed on the device is of a version ({0}) incompatible with that of your project, which is {1}</value>
+  </data>
+  <data name="StartDeviceSearch" xml:space="preserve">
+    <value>Looking for the debugging target {0} to connect to (will time out in {1} seconds)...</value>
+  </data>
+  <data name="WaitingForWakeup" xml:space="preserve">
+    <value>Waiting for VS debugger to wake up debuggee thread</value>
+  </data>
+  <data name="AddingPEtoBundle" xml:space="preserve">
+    <value>Adding pe file {0} to deployment bundle</value>
+  </data>
+  <data name="AtemptingDeployment" xml:space="preserve">
+    <value>Attempting deployment...</value>
+  </data>
+  <data name="AttachingEngine" xml:space="preserve">
+    <value>Attaching debugger engine...</value>
+  </data>
+  <data name="CannotAttachEngine" xml:space="preserve">
+    <value>... cannot attach debugger engine!</value>
+  </data>
+  <data name="EngineAttached" xml:space="preserve">
+    <value>... debugger engine attached!</value>
+  </data>
+  <data name="FoundAssembly" xml:space="preserve">
+    <value>Found Assembly {0} {1}</value>
+  </data>
+  <data name="FoundDevicePort" xml:space="preserve">
+    <value>Found device port '{0}' with ID '{1}' for transport '{2}'</value>
+  </data>
+  <data name="Iteration" xml:space="preserve">
+    <value>Iteration {0}</value>
+  </data>
+  <data name="LookingUpDevice" xml:space="preserve">
+    <value>Looking for a device on transport '{0}'</value>
+  </data>
+  <data name="OpeningPort" xml:space="preserve">
+    <value>Opening port {0}</value>
+  </data>
+  <data name="PortNotFound" xml:space="preserve">
+    <value>Port {0} not found!</value>
+  </data>
+  <data name="QueryingDeviceAssemblies" xml:space="preserve">
+    <value>Querying device assemblies...</value>
+  </data>
+  <data name="StartingDeviceDeployment" xml:space="preserve">
+    <value>Starting device deployment...</value>
+  </data>
+  <data name="UnableToCommunicate" xml:space="preserve">
+    <value>Unable to communicate with device {0}</value>
+  </data>
+  <data name="WaitingInitialize" xml:space="preserve">
+    <value>Waiting for device to initialize...</value>
+  </data>
+  <data name="AttachingToDevice" xml:space="preserve">
+    <value>Attaching to device...</value>
+  </data>
+  <data name="RestartingClr" xml:space="preserve">
+    <value>Restarting interpreter...</value>
+  </data>
+</root>

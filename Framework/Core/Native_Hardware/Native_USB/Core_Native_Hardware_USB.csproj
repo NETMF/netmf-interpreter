@@ -1,0 +1,40 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Hardware.Usb</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3A6E75D8-166C-41e8-8C97-E0E9494943B4}</ProjectGuid>
+    <NoWarn>$(NoWarn),0169</NoWarn>
+    <ComponentGuid>{4ff9a480-2e01-49de-95c9-58bb25d1ae1c}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <!-- MMP_STUB options -->
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\spot_hardware_usb_native</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>SPOT_Hardware_Usb</MMP_STUB_GenerateSkeletonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Hardware.Usb.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UsbClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

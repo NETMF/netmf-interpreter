@@ -1,0 +1,38 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+        <Project Include="Sockets\NormalMode\SocketClient\SocketClientTest.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="Sockets\NormalMode\SocketClient\SocketClientTest.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Sockets\NormalMode\SocketServer\SocketServerTest.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="Sockets\NormalMode\SocketServer\SocketServerTest.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Sockets\MultiThreadStress\MultiThreadStress.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="Sockets\MultiThreadStress\MultiThreadStress.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Sockets\Loopback\Loopback.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="Sockets\Loopback\Loopback.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="StressTests.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+</Project>

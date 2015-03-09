@@ -1,0 +1,20 @@
+//-----------------------------------------------------------------------------
+//
+//  %COPYRIGHT%
+//  Information Contained Herein Is Proprietary and Confidential.
+//
+//-----------------------------------------------------------------------------
+
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyTitle("%TITLE%")]
+[assembly: AssemblyDescription("%DESCRIPTION%")]
+[assembly: AssemblyConfiguration("%CONFIGURATION%")]
+[assembly: AssemblyCompany("%COMPANY%")]
+[assembly: AssemblyProduct("%PRODUCT%")]
+[assembly: AssemblyCopyright("%COPYRIGHT%")]
+[assembly: AssemblyTrademark("%TRADEMARK%")]
+[assembly: AssemblyFileVersion("%FILEVERSION%")]
+[assembly: AssemblyVersion("%ASSEMBLYVERSION%")]
+[assembly: AssemblyInformationalVersion("%PRODUCTVERSION%")]

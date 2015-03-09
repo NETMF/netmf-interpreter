@@ -1,0 +1,28 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <!-- needed to keep MS.Common.Targets happy -->
+    <AssemblyName>BogusAssemblyName</AssemblyName>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.Targets" />
+  <Import Project="Microsoft.SPOT.Build.Targets" />
+
+  <Target Name="CreateManifestResourceNames" />
+  <Target Name="Compile" />
+  <Target Name="CopyFilesToOutputDirectory" />
+
+  <PropertyGroup>
+    <MMP_PE_SKIP>true</MMP_PE_SKIP>
+    <MMP_DUMP_SKIP>true</MMP_DUMP_SKIP>
+    <MMP_STUB_SKIP>true</MMP_STUB_SKIP>
+    <MMP_DAT_SKIP>true</MMP_DAT_SKIP>
+    <MMP_XML_SKIP>true</MMP_XML_SKIP>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+
+</Project>

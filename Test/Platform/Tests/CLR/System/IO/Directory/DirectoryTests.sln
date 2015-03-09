@@ -1,0 +1,25 @@
+﻿Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{5E7AF0E3-649F-44a8-86D9-E3E8EB8EC112}") = "DirectoryTests", "DirectoryTests.csproj", "{91A3543E-2941-4029-A3D8-9115AFFF94CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RTM|Any CPU = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.RTM|Any CPU.ActiveCfg = RTM|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.RTM|Any CPU.Build.0 = RTM|Any CPU
+		{91A3543E-2941-4029-A3D8-9115AFFF94CE}.RTM|Any CPU.Deploy.0 = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

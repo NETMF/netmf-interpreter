@@ -1,0 +1,10 @@
+BuildId=<Branch>-<BuildNumber>-<Guid>
+BuildLabPhone=425-705-6442
+BuildRemark=Automated
+ContactPeople=lorenzte
+FileList=<FileList>
+PrefixToStrip=<Root>
+Project=NETMicroFramework
+UNCPath=<UNCPath>
+StatusMail=lorenzte
+UserName=mfala

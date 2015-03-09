@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "statements", "statements.csproj", "{FC8B01F8-C5DB-4DCF-8028-46093225E42C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RTM|Any CPU = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.RTM|Any CPU.ActiveCfg = RTM|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.RTM|Any CPU.Build.0 = RTM|Any CPU
+		{FC8B01F8-C5DB-4DCF-8028-46093225E42C}.RTM|Any CPU.Deploy.0 = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

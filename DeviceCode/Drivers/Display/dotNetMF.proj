@@ -1,0 +1,25 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>DeviceCode\Drivers\Display</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup  >
+    <SubDirectories Include="A025DL02"/>
+    <SubDirectories Include="LQ035Q7DB02"/>
+    <SubDirectories Include="TD022SHEB2"/>
+    <SubDirectories Include="TD035STEB1"/>
+    <SubDirectories Include="TX09D71VM1CCA"/>
+    <SubDirectories Include="TextFonts"/>
+    <SubDirectories Include="HD66773R"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SubDirectories Include="stubs"/>
+  </ItemGroup>
+  
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>

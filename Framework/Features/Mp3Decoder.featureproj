@@ -1,0 +1,15 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FeatureName>NXP.Interop.MP3Decoder</FeatureName>
+    <Guid>{004c36c0-048a-4f5e-be7f-bc81d497d66e}</Guid>
+    <Description>MP3 decoding API, NXP Research</Description>
+    <Groups></Groups>
+    <MP3DECODER_FEATUREPROJ>True</MP3DECODER_FEATUREPROJ>
+  </PropertyGroup>
+  <ItemGroup>
+    <InteropFeature Include="Mp3Decoder" />
+    <DriverLibs Include="Mp3Decoder.$(LIB_EXT)" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\Mp3Decoder.pe" />
+    <RequiredProjects Include="$(SPOCLIENT)\Solutions\EA_LPC2478\DeviceCode\Interop\Microsoft_SPOT_MP3Decoder\NativeCode\MP3Decoder\dotnetmf.proj" />
+  </ItemGroup>
+</Project>

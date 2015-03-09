@@ -1,0 +1,55 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">TouchScreen_Config_HAL</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{757A56B0-8619-4BDB-97FB-C6EFB2338BA8}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">Touch screen configuration library category</Description>
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">HAL</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">TouchScreen</Groups>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\TouchPanel\Config\dotNetMF.proj</FilePath>
+  </Templates>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\TouchPanel\Config\TouchPanel_config_stubs.cpp</FilePath>
+  </Templates>
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <StubLibrary Name="TouchPanel_Config_stubs" Guid="{DA7FE1F4-6E67-414C-8C2E-1EF7FDD8C56B}" ProjectPath="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\TouchPanel\Config\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-06-15</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Library</ComponentType>
+  </StubLibrary>
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2009-04-30</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\framework\features\TouchScreen_Config_HAL.libcatproj</ProjectPath>
+  <FeatureAssociations Name="TouchScreen" Guid="{7a8b6940-7ebc-44b4-8bf2-0ce1957add6f}" ProjectPath="$(SPOCLIENT)\Framework\Features\TouchScreen.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-04-30</Date>
+      <Author>Microsoft</Author>
+    </VersionDependency>
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+</Project>

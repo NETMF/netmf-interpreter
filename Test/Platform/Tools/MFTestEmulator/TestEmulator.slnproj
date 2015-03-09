@@ -1,0 +1,12 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ComponentGuid>{ee9e731a-159d-4227-af45-fe3ba34a18b9}</ComponentGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectFile Include="TestEmulator.csproj">
+      <Transform>Server</Transform>
+      <PreTransform>$(MSBuildProjectDirectory)\pretransform.xslt</PreTransform>
+    </ProjectFile>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+</Project>

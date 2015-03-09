@@ -1,0 +1,339 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <Import Project="$(MSBuildProjectDirectory)\ReleaseInfo.settings"/>
+  <Import Project="$(MSBuildProjectDirectory)\Tools\Targets\Microsoft.SPOT.SDK.Targets"/>
+
+  <PropertyGroup>
+    <BuildTasksDir>$(MSBuildProjectDirectory)\tools\build</BuildTasksDir>
+    <BuildDependsOn Condition=" '$(BranchTarget)' != '' ">$(BranchTarget)</BuildDependsOn>
+    <BuildDependsON Condition=" '$(BranchTarget)' == 'BuildTasks' ">$(BuildDependsOn)</BuildDependsON>
+
+    <!-- CodeSignSDK target normally depends on CLRWait target
+         except in the case where the BranchTarget is SDK (only building up to SDK)-->
+    <CodeSignDepends>CLRWait</CodeSignDepends>
+    <CodeSignDepends Condition=" '$(BranchTarget)' == 'SDK' ">SDKWait</CodeSignDepends>
+    <BuildDependsOn Condition=" '$(BranchTarget)' == 'SDK' ">$(BuildDependsOn);CodeSignSDK;SDKWait</BuildDependsOn>
+    <BuildDependsOn Condition=" '$(BranchTarget)' == 'CLR' ">$(BuildDependsOn);CLRWait</BuildDependsOn>
+    <BuildDependsOn Condition=" '$(BranchTarget)' == '' ">SDK;CodeSignSDK;CLR;CLRWait;Port;PortInstaller;Platform;</BuildDependsOn>
+    <PortDepends>CLRWait</PortDepends>
+    <PortDepends Condition=" '$(BranchTarget)' == 'Port' ">CLRWait;SDK</PortDepends>
+    <BuildDependsOn Condition=" '$(BranchTarget)' == 'Port' ">SDK;$(BuildDependsOn);PortInstaller</BuildDependsOn>
+    <DefaultEnvironment>setenv.cmd</DefaultEnvironment>
+    <AutomatedBuild Condition=" '$(AutomatedBuild)' == '' ">false</AutomatedBuild>
+    <BuildDependsOn Condition=" '$(AutomatedBuild)' == 'true' ">BranchBuildSetup3;$(BuildDependsOn);BuildDrop3</BuildDependsOn>
+    <EchoCommand></EchoCommand>
+    <EchoCommand Condition=" '$(NoCommands)' == 'true' ">echo</EchoCommand>
+  </PropertyGroup>
+
+  <Import Condition=" '$(AutomatedBuild)' == 'true' " Project="$(MSBuildProjectDirectory)\..\Microsoft.SPOT.AutomatedBuild.Common.Targets"/>
+
+  <UsingTask
+    TaskName="Microsoft.SPOT.Automation.Build.Branch.ExecBuildTask"
+    AssemblyFile="$(BuildTasksDir)\Microsoft.SPOT.Automation.Build.Branch.dll" />
+
+  <UsingTask
+    TaskName="Microsoft.SPOT.Automation.Build.Branch.AsyncExecBuildTask"
+    AssemblyFile="$(BuildTasksDir)\Microsoft.SPOT.Automation.Build.Branch.dll" />
+
+  <UsingTask
+    TaskName="Microsoft.SPOT.Automation.Build.Branch.AsyncWait"
+    AssemblyFile="$(BuildTasksDir)\Microsoft.SPOT.Automation.Build.Branch.dll" />
+
+
+  <PropertyGroup>
+    <SDKTimeout>90</SDKTimeout>
+    <SDKTimeout Condition=" '$(SignBuild)' == 'true' ">0</SDKTimeout>
+
+    <!-- When code signing a build then the code sign target will fire the event
+         as SDK.  This is because the SDK isn't built during the normal SDK target.
+         This prevents test cases that are depending on the SDK target from failing
+         becuase the SDK is totally built yet.-->
+
+    <SDKResultString>SDK</SDKResultString>
+    <SDKResultString Condition=" '$(SignBuild)' == 'true' ">SDK Precodesign</SDKResultString>
+    <CodeSignResultString>SDK Codesign</CodeSignResultString>
+    <CodeSignResultString Condition=" '$(SignBuild)' == 'true' ">SDK</CodeSignResultString>
+  </PropertyGroup>
+
+
+  <Target Name="BuildTasks">
+    <ExecBuildTask Condition=" '$(DefaultBuildFlavor)' == '' Or '%(BuildFlavor.Identity)' == '$(DefaultBuildFlavor)' "
+      Command="$(EchoCommand) Msbuild Support\Frameworkbase\dotnetmf.proj /t:Build /p:BuildNumber=$(BuildVersion) /p:RevisionNumber=0 /p:SignBuild=$(SignBuild)"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="%(BuildFlavor.Identity)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="BuildTasks"
+      TaskItemGroup="@(BuildTasks)"
+      ResultString="Build Tasks"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="60"
+      />
+    <OnError Condition=" '$(AutomatedBuild)' == 'true' " ExecuteTargets="BuildDrop3"/>
+  </Target>
+
+
+  <Target Name="SDK" DependsOnTargets="BuildTasks" Condition=" '$(IgnoreBuild)' != 'true' " >
+    <AsyncExecBuildTask Condition=" '$(DefaultBuildFlavor)' == '' Or '%(BuildFlavor.Identity)' == '$(DefaultBuildFlavor)' "
+      Command="$(EchoCommand) Msbuild sdk.dirproj /t:Build /p:BuildNumber=$(BuildVersion) /p:RevisionNumber=0 /p:SignBuild=$(SignBuild)"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="%(BuildFlavor.Identity)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="SDK"
+      TaskItemGroup="@(SDK)"
+      ResultString="$(SDKResultString)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="$(SDKTimeout)"
+      LockName="CLRTargetLock"
+      MaxConcurrentThreads="$(MaxConcurrentThreads)">
+      <Output ItemName="CLRSyncEvent" TaskParameter="SyncEventName"/>
+    </AsyncExecBuildTask>
+    <OnError Condition=" '$(AutomatedBuild)' == 'true' " ExecuteTargets="BuildDrop3"/>
+  </Target>
+
+  <!-- The SDKWait target is only used when the BranchTarget property == "SDK"
+       i.e. the user only wants to build the SDK target
+  -->
+  <Target Name="SDKWait" DependsOnTargets="SDK" Condition=" '$(IgnoreBuild)' != 'true' ">
+    <AsyncWait
+      SyncEventNames="@(CLRSyncEvent)"
+      Timeout="360"
+      FailOnTimeout="false">
+      <Output TaskParameter="Signaled" PropertyName="TasksCompleted"/>
+    </AsyncWait>
+  </Target>
+
+  <Target Name="CodeSignSDK" DependsOnTargets="$(CodeSignDepends)" Condition=" '$(IgnoreBuild)' != 'true' " >
+    <Message Text="Code Sign SDK" Importance="high"/>
+    <ExecBuildTask
+      Condition=" '$(SignBuild)' == 'true' "
+      Command="$(EchoCommand) Msbuild setup\ProductSDK\Product.wixproj /t:Build /p:BuildNumber=$(BuildVersion) /p:RevisionNumber=0 /p:SignBuild=$(SignBuild)"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(DefaultBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      TaskItemGroup="@(SDK)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="CodeSignSDK"
+      ResultString="$(CodeSignResultString)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="$(SDKTimeout)"/>
+    <OnError Condition=" '$(AutomatedBuild)' == 'true' " ExecuteTargets="BuildDrop3"/>
+  </Target>
+
+  <Target Name="CLR" DependsOnTargets="BuildTasks" Condition=" '$(IgnoreBuild)' != 'true' ">
+    <AsyncExecBuildTask
+      Condition=" '%(CLR.env_FLAVOR_PLATFORM)' != '' "
+      Command="$(EchoCommand) msbuild.exe dotNetMF.proj /p:MEMORY=%(CLR.env_FLAVOR_MEMORY) /p:platformindependent=true /p:PLATFORM=%(CLR.env_FLAVOR_PLATFORM) %(CLR.ExtraMsbuildArguments)"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(DefaultBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      TaskItemGroup="@(CLR)"
+      BatchParameter="%(CLR.env_FLAVOR_PLATFORM)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="CLR.%(CLR.env_FLAVOR_PLATFORM).%(CLR.env_FLAVOR_MEMORY)"
+      ResultString="%(CLR.Identity)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"
+      LockName="CLRTargetLock"
+      MaxConcurrentThreads="$(MaxConcurrentThreads)">
+      <Output ItemName="CLRSyncEvent" TaskParameter="SyncEventName"/>
+    </AsyncExecBuildTask>
+    <OnError Condition=" '$(AutomatedBuild)' == 'true' " ExecuteTargets="BuildDrop3"/>
+  </Target>
+
+  <Target Name="CLRWait" DependsOnTargets="CLR" Condition=" '$(IgnoreBuild)' != 'true' ">
+    <AsyncWait
+      SyncEventNames="@(CLRSyncEvent)"
+      Timeout="360"
+      FailOnTimeout="false">
+      <Output TaskParameter="Signaled" PropertyName="TasksCompleted"/>
+    </AsyncWait>
+  </Target>
+
+  <Target Name="Platform" DependsOnTargets="CLRWait" Condition=" '$(IgnoreBuild)' != 'true' ">
+    <ExecBuildTask
+      Condition=" '%(Platform.env_FLAVOR_PLATFORM)' != '' "
+      Command="$(EchoCommand) msbuild.exe dotNetMF.proj /p:MEMORY=%(Platform.env_FLAVOR_MEMORY) /p:platformdependent=true /p:PLATFORM=%(Platform.env_FLAVOR_PLATFORM) /p:BuildNumber=$(BuildVersion) /p:RevisionNumber=0"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(DefaultBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      TaskItemGroup="@(Platform)"
+      BatchParameter="%(Platform.env_FLAVOR_PLATFORM)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="Platform.%(Platform.env_FLAVOR_PLATFORM).%(Platform.env_FLAVOR_MEMORY)"
+      ResultString="Platform %(Platform.Identity) %(Platform.env_FLAVOR_MEMORY)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+    <OnError Condition=" '$(AutomatedBuild)' == 'true' " ExecuteTargets="BuildDrop3"/>
+  </Target>
+
+  <!--
+  For a normal build the Port build is only called once for all three flavors.  It is run as a "Release" build
+
+  When a DefaultBuildFlavor is specified then the Port build will only specify that one on the command line.
+  -->
+  <PropertyGroup>
+    <PortBuildFlavor Condition=" '$(DefaultBuildFlavor)' == '' ">@(BuildFlavor,';')</PortBuildFlavor>
+    <PortBuildFlavor Condition=" '$(DefaultBuildFlavor)' != '' ">$(DefaultBuildFlavor)</PortBuildFlavor>
+
+    <PortPreferredBuildFlavor Condition=" '$(DefaultBuildFlavor)' == '' ">Release</PortPreferredBuildFlavor>
+    <PortPreferredBuildFlavor Condition=" '$(DefaultBuildFlavor)' != '' ">$(DefaultBuildFlavor)</PortPreferredBuildFlavor>
+</PropertyGroup>
+
+  <Target Name="Port" DependsOnTargets="$(PortDepends)" Condition=" '$(IgnoreBuild)' != 'true' ">
+    <CreateProperty Condition=" '$(CurrentBuildDrop)' == '' " Value="..">
+      <Output TaskParameter="Value" PropertyName="CurrentBuildDrop"/>
+    </CreateProperty>
+
+    <ExecBuildTask
+      Condition=" '%(Port.PortName)' != '' And '%(Port.PortFolder)' != '' "
+      Command="$(EchoCommand) generate_port $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits\%(Port.PortFolder) %(Port.PortName) $(PortBuildFlavor) copy_only build_automation zip BuildNumber=$(BuildVersion) RevisionNumber=0"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      TaskItemGroup="@(Port)"
+      BatchParameter="%(Port.PortName)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="Port.%(Port.PortName)"
+      ResultString="Port %(Port.Identity)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <CreateItem Include="%(Port.InstallerKey)=$(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits\%(Port.PortFolder)\$(MSBuildProjectName)">
+      <Output TaskParameter="Include" ItemName="PortInstallerArgument"/>
+    </CreateItem>
+
+    <OnError Condition=" '$(AutomatedBuild)' == 'true' " ExecuteTargets="BuildDrop3"/>
+  </Target>
+
+  <Target Name="PortInstaller" DependsOnTargets="Port" Condition=" '$(IgnoreBuild)' != 'true' ">
+    <CreateProperty Condition=" '$(CurrentBuildDrop)' == '' " Value="..">
+      <Output TaskParameter="Value" PropertyName="CurrentBuildDrop"/>
+    </CreateProperty>
+
+    <ExecBuildTask
+      Command="$(EchoCommand) PartitionPK.exe PKProduct\PKProduct.wxs MicroFrameworkPK $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits @(WixDefines->'%(FileName)=%(Value)',';') NONE @(PortInstallerArgument, ' ')"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="PortInstaller"
+      ResultString="PortingKit Installer"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <ExecBuildTask
+      Command="$(EchoCommand) PartitionPK.exe PKProductNoLibs\PKProductNoLibs.wxs MicroFrameworkPK $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits @(WixDefines->'%(FileName)=%(Value)',';') Crypto\LIB;DeviceCode\PAL\rtip\LIB\RVDS3.1 @(PortInstallerArgument, ' ')"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="PortInstaller"
+      ResultString="PortingKit Installer (No Binaries)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <ExecBuildTask
+      Command="$(EchoCommand) PartitionPK.exe PKProductCrypto\PKProductCrypto.wxs %22MicroFrameworkPK (Crypto Pack)%22 $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits @(WixDefines->'%(FileName)=%(Value)',';') NONE CRYPTO=$(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits\%(Port.PortFolder)\$(MSBuildProjectName)\Crypto\LIB"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="PortInstaller"
+      ResultString="PortingKit Installer (Crypto Pack)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <ExecBuildTask
+      Command="$(EchoCommand) PartitionPK.exe PKProductNetARM\PKProductNetARM.wxs %22MicroFrameworkPK (ARM Network Pack)%22 $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits @(WixDefines->'%(FileName)=%(Value)',';') THUMB;THUMB2 ARMNET=$(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits\%(Port.PortFolder)\$(MSBuildProjectName)\DeviceCode\PAL\rtip\LIB\RVDS3.1"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="PortInstaller"
+      ResultString="PortingKit Installer (ARM Network Pack)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <ExecBuildTask
+      Command="$(EchoCommand) PartitionPK.exe PKProductNetThumb\PKProductNetThumb.wxs %22MicroFrameworkPK (THUMB Network Pack)%22 $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits @(WixDefines->'%(FileName)=%(Value)',';') ARM;THUMB2 THUMBNET=$(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits\%(Port.PortFolder)\$(MSBuildProjectName)\DeviceCode\PAL\rtip\LIB\RVDS3.1"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="PortInstaller"
+      ResultString="PortingKit Installer (Thumb Network Pack)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <ExecBuildTask
+      Command="$(EchoCommand) PartitionPK.exe PKProductNetThumb2\PKProductNetThumb2.wxs %22MicroFrameworkPK (THUMB2 Network Pack)%22 $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits @(WixDefines->'%(FileName)=%(Value)',';') ARM;THUMB THUMB2NET=$(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits\%(Port.PortFolder)\$(MSBuildProjectName)\DeviceCode\PAL\rtip\LIB\RVDS3.1"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="PortInstaller"
+      ResultString="PortingKit Installer (Thumb2 Network Pack)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <ExecBuildTask
+      Command="$(EchoCommand) PartitionPK.exe PKProductNetSH2\PKProductNetSH2.wxs %22MicroFrameworkPK (SH2 Network Pack)%22 $(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits @(WixDefines->'%(FileName)=%(Value)',';') NONE SH2NET=$(CurrentBuildDrop)\$(MSBuildProjectName)_PortingKits\%(Port.PortFolder)\$(MSBuildProjectName)\DeviceCode\PAL\rtip\LIB\HEW9.2"
+      BuildFlavors="@(BuildFlavor)"
+      PreferredBuildFlavor="$(PortPreferredBuildFlavor)"
+      DefaultEnvironment="$(DefaultEnvironment)"
+      AutomatedBuild="$(AutomatedBuild)"
+      BuildDrop="$(CurrentBuildDrop)"
+      LocalBuildDrop="$(LocalBuildDrop)\$(MSBuildProjectName)"
+      Branch="$(MSBuildProjectName)"
+      Target="PortInstaller"
+      ResultString="PortingKit Installer (SH2 Network Pack)"
+      ResultFile="$(BuildResultsXml)"
+      Timeout="30"/>
+
+    <OnError Condition=" '$(AutomatedBuild)' == 'true' " ExecuteTargets="BuildDrop3"/>
+
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" Condition=" '$(IgnoreBuild)' != 'true' "/>
+
+
+
+</Project>

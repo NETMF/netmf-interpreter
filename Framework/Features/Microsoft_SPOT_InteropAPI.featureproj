@@ -1,0 +1,17 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FeatureName>Microsoft_SPOT_InteropAPI</FeatureName>
+    <Guid>{d53dd15d-a5f3-42f6-b2a4-84a84c3d0c21}</Guid>
+    <Description>
+    </Description>
+    <Groups>
+    </Groups>
+    <MICROSOFT_SPOT_INTEROPAPI_FEATUREPROJ>True</MICROSOFT_SPOT_INTEROPAPI_FEATUREPROJ>
+  </PropertyGroup>
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_InteropAPI" />
+    <DriverLibs Include="Microsoft_SPOT_InteropAPI.$(LIB_EXT)" />
+	<MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\Microsoft_SPOT_InteropAPI.pe" />
+    <RequiredProjects Include="$(SPOCLIENT)\Solutions\EA_LPC2478\DeviceCode\Interop\Microsoft_SPOT_InteropAPI\NativeCode\Microsoft_SPOT_InteropAPI\dotnetmf.proj" />
+  </ItemGroup>
+</Project>

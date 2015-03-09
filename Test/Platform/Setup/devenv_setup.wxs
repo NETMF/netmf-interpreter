@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<Include>
+  <UI Id="DetectVSErrorUI">
+    <Error Id="25000">Setup has detected at least one copy of Visual Studio or Document Explorer running.  Please save your work and close all instances of Visual Studio or Document Explorer (dexplore.exe) before proceeding with setup.</Error>
+  </UI>
+
+  <!-- This should be written to support all the lovely exes we get to deal with for supporting express editions, plus devenv.exe plus dexplore.exe -->
+  <CustomAction Id="CA_DetectVS" BinaryKey="Bin_DetectVS" DllEntry="DevEnvNotRunning" />
+  <Binary Id="Bin_DetectVS" SourceFile="$(var.BuildTreeServer)\dll\DetectVSRunning.dll" />
+
+  <Property Id="VS_DEVENV">
+    <RegistrySearch Id="VS_DEVENV_Path" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\11.0\" Name="InstallDir" Type="directory" />
+  </Property>
+  <Property Id="VS_DEVENV_64">
+    <RegistrySearch Win64="yes" Id="VS_DEVENV_Path_64" Root="HKLM" Key="SOFTWARE\Wow6432Node\Microsoft\VisualStudio\11.0\" Name="InstallDir" Type="directory" />
+  </Property>
+  <Property Id="VS_ITEM_TEMPLATE">
+    <RegistrySearch Id="VS_ItemTemplate" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\11.0\VSTemplate\Item" Name="UserFolder" Type="directory" />
+  </Property>
+  <Property Id="VS_PROJECT_TEMPLATE">
+    <RegistrySearch Id="VS_ProjectTemplate" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\11.0\VSTemplate\Project" Name="UserFolder" Type="directory" />
+  </Property>
+
+  <Property Id="WDEXPRESS_DEVENV">
+    <RegistrySearch Id="WDEXPRESS_DEVENV_Path" Root="HKLM" Key="SOFTWARE\Microsoft\WDExpress\11.0\" Name="InstallDir" Type="directory" />
+  </Property>
+  <Property Id="WDEXPRESS_DEVENV_64">
+    <RegistrySearch Id="WDEXPRESS_DEVENV_Path_64" Root="HKLM" Key="SOFTWARE\Wow6432Node\Microsoft\WDExpress\11.0\" Name="InstallDir" Type="directory" />
+  </Property>
+
+  <Property Id="WDEXPRESS_INSTALL_PATH" Value="$(sys.CURRENTDIR)">
+    <RegistrySearch Id="WDEXPRESS_DEVENV_Path_2" Root="HKLM" Key="SOFTWARE\Microsoft\WDExpress\11.0\" Name="InstallDir" Type="directory" />
+  </Property>
+
+  <CustomAction Id="PropertyAssign_VS_DEVENV"           Property="VS_DEVENV"           Value="[VS_DEVENV]DevEnv.exe"              />
+  <CustomAction Id="PropertyAssign_VS_DEVENV_64"        Property="VS_DEVENV_64"        Value="[VS_DEVENV_64]DevEnv.exe"           />
+  <CustomAction Id="PropertyAssign_WDEXPRESS_DEVENV"    Property="WDEXPRESS_DEVENV"    Value="[WDEXPRESS_DEVENV]WDExpress.exe"    />
+  <CustomAction Id="PropertyAssign_WDEXPRESS_DEVENV_64" Property="WDEXPRESS_DEVENV_64" Value="[WDEXPRESS_DEVENV_64]WDExpress.exe" />
+ 
+  <!-- TODO: ADD WixVSExtensions and use builtin custom actions <CustomActionRef Id="VCSHARP2010Setup" /> -->
+
+  <CustomAction Id="Launch_VS_DEVENV_64"        Property="VS_DEVENV_64"        ExeCommand="/setup" Execute="deferred" Impersonate="no" />
+  <CustomAction Id="Launch_VS_DEVENV"           Property="VS_DEVENV"           ExeCommand="/setup" Execute="deferred" Impersonate="no" />
+  <CustomAction Id="Launch_WDEXPRESS_DEVENV"    Property="WDEXPRESS_DEVENV"    ExeCommand="/setup" Execute="deferred" Impersonate="no" />
+  <CustomAction Id="Launch_WDEXPRESS_DEVENV_64" Property="WDEXPRESS_DEVENV_64" ExeCommand="/setup" Execute="deferred" Impersonate="no" />
+
+  <UI> 
+    <ProgressText Action="Launch_VS_DEVENV_64"        >Configuring Visual Studio (this may take a few minutes)</ProgressText> 
+    <ProgressText Action="Launch_VS_DEVENV"           >Configuring Visual Studio (this may take a few minutes)</ProgressText> 
+    <ProgressText Action="Launch_WDEXPRESS_DEVENV_64" >Configuring Visual Studio (this may take a few minutes)</ProgressText> 
+    <ProgressText Action="Launch_WDEXPRESS_DEVENV"    >Configuring Visual Studio (this may take a few minutes)</ProgressText> 
+  </UI>
+
+  <InstallExecuteSequence>
+      <!-- Trimmed to the versions we support now: -->
+      <Custom Action="PropertyAssign_VS_DEVENV"                   Before="InstallInitialize"                     >VS_DEVENV</Custom>
+      <Custom Action="PropertyAssign_VS_DEVENV_64"                After="PropertyAssign_VS_DEVENV"               >VS_DEVENV_64</Custom>
+      <Custom Action="PropertyAssign_WDEXPRESS_DEVENV"            After="PropertyAssign_VS_DEVENV_64"            >WDEXPRESS_DEVENV</Custom>
+      <Custom Action="PropertyAssign_WDEXPRESS_DEVENV_64"         After="PropertyAssign_WDEXPRESS_DEVENV"        >WDEXPRESS_DEVENV_64</Custom>
+
+      <Custom Action="Launch_WDEXPRESS_DEVENV"    After="PublishProduct"         >WDEXPRESS_DEVENV</Custom>
+      <Custom Action="Launch_WDEXPRESS_DEVENV_64" After="Launch_WDEXPRESS_DEVENV">WDEXPRESS_DEVENV_64</Custom>
+      <Custom Action="Launch_VS_DEVENV"           Before="InstallFinalize"       >VS_DEVENV</Custom>
+      <Custom Action="Launch_VS_DEVENV_64"        After="Launch_VS_DEVENV"       >VS_DEVENV_64</Custom>
+
+      <Custom Action="CA_DetectVS" After="CostFinalize" />
+  </InstallExecuteSequence>
+
+</Include>

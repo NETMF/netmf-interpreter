@@ -1,0 +1,29 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>Application\EraseDeployment</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <PropertyGroup>
+    <OutputType>Executable</OutputType>
+    <ADD_LOAD_IMAGE_CRC>false</ADD_LOAD_IMAGE_CRC>    
+    <AssemblyName>EraseDeployment</AssemblyName>
+    <ExtraTargets>BuildSigFiles</ExtraTargets>    
+    <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_definition.xml</EXEScatterFileDefinition>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\DeviceCode\Targets\$(TARGETCODEBASETYPE)\$(TARGETCODEBASE)\$(PLATFORM)\Drivers_$(PLATFORM).proj" Condition="Exists('$(SPOCLIENT)\DeviceCode\Targets\$(TARGETCODEBASETYPE)\$(TARGETCODEBASE)\$(PLATFORM)\Drivers_$(PLATFORM).proj')" />
+
+  <ItemGroup>
+    <Compile Include="EraseDeployment.cpp" />
+
+    <InputLibs  Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CRC.$(LIB_EXT)"/> 
+
+    <ScatterFileReferences Include="$(SPOCLIENT)\DeviceCode\Targets\$(TARGETCODEBASETYPE)\$(TARGETCODEBASE)\$(PLATFORM)\scatterfile_tools.xml"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>

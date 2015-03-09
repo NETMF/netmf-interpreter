@@ -1,0 +1,38 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Test.HelloWorld</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Microsoft.SPOT.Test</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{332F8643-496C-44C1-9C19-3A75119DB3FC}</ProjectGuid>
+    <TinyCLR_ClientOnly>true</TinyCLR_ClientOnly>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+
+<!--
+ <PropertyGroup>
+   <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
+   <MMP_DAT_CreateDatabaseFile>$(BUILD_TREE_DAT)\tinyclr_HelloWorld.dat</MMP_DAT_CreateDatabaseFile>
+   <MMP_DAT_CreateDatabaseFileBE>$(BUILD_TREE_DAT_BE)\tinyclr_HelloWorld.dat</MMP_DAT_CreateDatabaseFileBE>
+   <MMP_XML_SKIP>false</MMP_XML_SKIP>
+   <MMP_XML_GenerateDependency>$(BUILD_TREE_XML)\DependencyGraph_Microsoft.xml</MMP_XML_GenerateDependency>
+ </PropertyGroup>
+-->
+
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>$(BUILD_TREE_DLL)\System.Dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

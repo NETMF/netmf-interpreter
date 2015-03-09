@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Directory>DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\idea</Directory>
+    <AssemblyName>ideatest</AssemblyName>
+    <OutputType>Executable</OutputType>
+    <ProjectGuid>91fdc6fe-581f-4eab-94c1-3ccf5e65b13c</ProjectGuid>
+    <Subsystem>CONSOLE</Subsystem>
+    <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows2\Windows2.settings</MFSettingsFile>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <Compile Include="ideatest.cpp" />
+    <!--HFiles Include="KeyGen.h" /-->
+    <IncludePaths Include="Support\include" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="CLR\Tools\include" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\include\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Clr\Tools\Tools.Settings" />
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\idea\dotnetmf.proj" />
+    <DriverLibs Include="idea_openssl.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\o_str.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\tinyclr\ssl_types.h" />
+    <HFiles Include="idea.h" />
+    <HFiles Include="idea_lcl.h" />
+  </ItemGroup>
+</Project>

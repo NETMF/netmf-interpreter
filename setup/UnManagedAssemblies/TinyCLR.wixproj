@@ -1,0 +1,16 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Condition="'$(Microsoft_SPOT_Build_Setup_Targts_Imported)'==''" Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Build.Setup.Targets"/>
+ 
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.CLR</AssemblyName>
+    <OUTDIR>$(BUILD_TREE_SERVER)\dll\</OUTDIR>
+    <OutputType>Library</OutputType>
+    <ComponentGuid>{6f0c315c-c6a3-4ad4-921b-a82ca0c2c24d}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef> 
+<!--    <InstallInGAC>true</InstallInGAC> -->
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+
+</Project>

@@ -1,0 +1,18 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Author>
+    </Author>
+    <Description>Template Big Endian solution</Description>
+    <Documentation>
+    </Documentation>
+    <PlatformGuid>{580a712f-aa16-4f7e-95b1-146d019c5959}</PlatformGuid>
+    <TARGETPLATFORM>TEMPLATE_BE</TARGETPLATFORM>
+    <PLATFORM>TEMPLATE_BE</PLATFORM>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <ENDIANNESS>be</ENDIANNESS>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="Solutions\Template_BE" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\devicecode\Targets\Native\Template\Template.settings" />
+</Project>

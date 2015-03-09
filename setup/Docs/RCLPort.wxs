@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_RCLPort">
+
+    <?include defines.wxs?>
+    <?include pkdocs_shortcut.wxs?>
+
+    <DirectoryRef Id="DocsDir">
+      <Directory Id="RCLPortHelpFiles" Name="HAL Porting Guide" >
+        <Component Id="Component_RCLPort" Guid="b2e2c123-b37b-4cb9-b260-4c2e59314d09">
+          <File Id="RCLPort.chm" DiskId="1" Name="RCLPort.chm" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\RCLPort\en-us\chmBuild\RCLPort.chm" />
+          <File Id="RCLPort.hxs" DiskId="1" Name="RCLPort.hxs" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\RCLPort\en-us\RCLPort.hxs" />
+          <File Id="RCLPortCollection.hxc" DiskId="1" Name="RCLPortCollection.hxc" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\RCLPort\en-us\RCLPortCollection.hxc" />
+          <File Id="RCLPortCollection.hxt" DiskId="1" Name="RCLPortCollection.hxt" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\RCLPort\en-us\RCLPortCollection.hxt" />
+          <File Id="RCLPortCollectionAIndex.hxk" DiskId="1" Name="RCLPortCollectionAIndex.hxk" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\RCLPort\en-us\RCLPortCollectionAIndex.hxk" />
+          <File Id="RCLPortCollectionFIndex.hxk" DiskId="1" Name="RCLPortCollectionFIndex.hxk" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\RCLPort\en-us\RCLPortCollectionFIndex.hxk" />
+          <File Id="RCLPortCollectionKIndex.hxk" DiskId="1" Name="RCLPortCollectionKIndex.hxk" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\RCLPort\en-us\RCLPortCollectionKIndex.hxk" />
+          <RemoveFile Id="RemoveRCLPort.chm" Name="RCLPort.chm" On="uninstall" />
+          <RemoveFile Id="RemoveRCLPort.hxs" Name="RCLPort.hxs" On="uninstall" />
+          <RemoveFile Id="RemoveRCLPortCollection.hxc" Name="RCLPortCollection.hxc" On="uninstall" />
+          <RemoveFile Id="RemoveRCLPortCollection.hxt" Name="RCLPortCollection.hxt" On="uninstall" />
+          <RemoveFile Id="RemoveRCLPortCollectionAIndex.hxk" Name="RCLPortCollectionAIndex.hxk" On="uninstall" />
+          <RemoveFile Id="RemoveRCLPortCollectionFIndex.hxk" Name="RCLPortCollectionFIndex.hxk" On="uninstall" />
+          <RemoveFile Id="RemoveRCLPortCollectionKIndex.hxk" Name="RCLPortCollectionKIndex.hxk" On="uninstall" />
+        </Component>
+      </Directory>
+    </DirectoryRef>
+
+    <CustomTable Id="HelpFile">
+      <Row>
+        <Data Column="HelpFileKey">RCLPort</Data>
+        <Data Column="HelpFileName">RCLPort</Data>
+        <Data Column="LangID">1033</Data>
+        <Data Column="File_HxS">RCLPort.hxs</Data>
+        <Data Column="File_HxI" />
+        <Data Column="File_HxQ" />
+        <Data Column="File_HxR" />
+        <Data Column="File_Samples" />
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpNamespace">
+      <Row>
+        <Data Column="NamespaceKey">RCLPort_NS</Data>
+        <Data Column="NamespaceName">MS.NETMF.RCLPort.v30.1033</Data>
+        <Data Column="File_Collection">RCLPortCollection.hxc</Data>
+        <Data Column="Description">Microsoft .NET Micro Framework Porting Kit Collection</Data>
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpFileToNamespace">
+      <Row>
+        <Data Column="HelpFile_">RCLPort</Data>
+        <Data Column="HelpNamespace_">RCLPort_NS</Data>
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpPlugin">
+      <Row>
+        <Data Column="HelpNamespace_">RCLPort_NS</Data>
+        <Data Column="HelpNamespace_Parent">MSNetMF</Data>
+        <Data Column="File_HxT">RCLPortCollection.hxt</Data>
+        <Data Column="File_HxA" />
+        <Data Column="File_ParentHxT" />
+      </Row>
+    </CustomTable>
+  </Fragment>
+</Wix>

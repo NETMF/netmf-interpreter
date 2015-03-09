@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Property Id="DXEXPLORE10_DIRECTORY">
+    <RegistrySearch Id="RegistrySearch_Help10InstallDir" Root="HKLM" Key="SOFTWARE\Microsoft\MSDN\10.0" Name="InstallDir" Type="raw" />
+  </Property>
+
+  <DirectoryRef Id="DocsDir">
+    <Component Id="Component_PkDxexploreShortcut10" Guid="521e0f63-ea35-4e45-a636-8ce57bc1ac57">
+      <Condition>DXEXPLORE10_DIRECTORY</Condition>
+      <!--HTML Help 2 for PK was never tested... so link to the chm instead.
+      <Shortcut
+        Id="Shortcut_Dxexplore"
+        Directory="ProgramMenuDir"
+        Name="Porting Kit Documentation"
+        Arguments="/helpcol ms-help://ms.netmf.v30.1033 /filter &quot;.NET Micro Framework&quot; /LaunchFKeywordTopic DotNetMFPKDefaultPage"
+        Target="[DXEXPLORE_DIRECTORY10]\dexplore.exe"
+        />-->
+    </Component>
+  </DirectoryRef>
+
+</Include>

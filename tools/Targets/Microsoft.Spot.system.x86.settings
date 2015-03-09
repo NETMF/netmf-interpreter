@@ -1,0 +1,15 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <OBJ_EXT>obj</OBJ_EXT>
+    <LIB_EXT>lib</LIB_EXT>
+    <EXE_EXT>exe</EXE_EXT>
+    <SCATTER_EXT>xml</SCATTER_EXT>
+
+    <PLATFORM_INDEPENDENT_DST_DIR>$(SPO_BUILD)\Windows\$(ENDIANNESS)\ANY_MEDIA\$(OLD_FLAVOR)</PLATFORM_INDEPENDENT_DST_DIR>
+    <DST_DIR>$(SPO_BUILD)\Windows\$(ENDIANNESS)\RAM\$(OLD_FLAVOR)\$(TARGETPLATFORM)</DST_DIR>
+    <BIN_DIR>$(SPO_BUILD)\public\$(Configuration)\Server\dll</BIN_DIR>
+  </PropertyGroup>
+
+</Project>
+

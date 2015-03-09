@@ -1,0 +1,23 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <DOCPROJ>RCLPort</DOCPROJ>
+    <XBUILDCMD>$(DOCPROJ)</XBUILDCMD>
+    <CHMProject>RCLPort</CHMProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <WiXSource Include="RCLPort.wxs"/>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <PropertyGroup>
+    <DOCPROJOUTDIR>$(XBUILD_OUTDIR)\$(DOCPROJ)\en-us\</DOCPROJOUTDIR>
+  </PropertyGroup>
+  <ItemGroup>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\$(DOCPROJ).hxs"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\$(DOCPROJ)Collection.hxc"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\$(DOCPROJ)Collection.hxt"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\$(DOCPROJ)CollectionAIndex.hxk"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\$(DOCPROJ)CollectionFIndex.hxk"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\$(DOCPROJ)CollectionKIndex.hxk"/>
+  </ItemGroup>
+    
+</Project>

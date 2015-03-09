@@ -1,0 +1,15 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>SPI</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPI_HAL.libcatproj" />
+  <PropertyGroup>
+    <Description>SPI support</Description>
+    <Guid>{c3a44eda-cda1-4aa0-99e6-952c6bad5ef0}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <SPI_FEATUREPROJ>True</SPI_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

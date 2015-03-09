@@ -1,0 +1,250 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <WINSDKPATH>$(Registry:HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft SDKs\Windows@CurrentInstallFolder)</WINSDKPATH>
+    <!-- If WinSDKPath is still not defined, then you're using msbuild.exe from .Net 2.0.x, and we'll just have to go with a reasonable guess -->
+    <WINSDKPATH Condition="'$(WINSDKPATH)'==''">C:\Program Files\Microsoft SDKs\Windows\v6.0A</WINSDKPATH>
+
+    <ALTOOLPATH Condition="'$(ALTOOLPATH)'=='' and Exists('$(WINSDKPATH)\bin\AL.EXE')">$(WINSDKPATH)\bin</ALTOOLPATH>
+    <ALTOOLPATH Condition="'$(ALTOOLPATH)'=='' and Exists('$(MSBuildBinPath)\AL.EXE')">$(MSBuildBinPath)</ALTOOLPATH>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <CommonAssemblyInfoFile Condition="'$(CommonAssemblyInfoFile)'==''"
+        >$(SPOCLIENT)\tools\targets\Microsoft.SPOT.CommonAssemblyInfo.Targets</CommonAssemblyInfoFile>
+  </PropertyGroup>
+  <Import Project="$(CommonAssemblyInfoFile)" />
+
+  <Import Condition=" '$(InstrumentForCoverage)' == 'true' "
+    Project="Microsoft.SPOT.Build.Magellan.Targets"
+    />
+
+  <Import Project="Microsoft.SPOT.SDK.Targets" />
+
+  <ItemGroup>
+    <OUTPUT_DIR Include="$(BUILD_TREE_DLL)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_FRAGMENTS)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_OBJ)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_PE)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_PE_BE)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_LOC)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_DAT)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_STUBS)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_DISASM)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_TXT)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_XML)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_DUMPS)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_TEMPLATES)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TREE_MSM)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <BuildDependsOn>StartBuild;BuildChildren_Build;EnsureOutputDirectories;$(BuildDependsOn)</BuildDependsOn>
+    <CleanDependsOn>StartBuild;BuildChildren_Clean;$(CleanDependsOn)</CleanDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Microsoft_SPOT_Build_Setup_Error)' != '' " >
+    <TinyCLR_DisasmDependsOn>Display_Microsoft_SPOT_Build_Setup_Error</TinyCLR_DisasmDependsOn>
+    <TinyCLR_ConvertResources>Display_Microsoft_SPOT_Build_Setup_Error</TinyCLR_ConvertResources>
+    <BuildDependsOn>Display_Microsoft_SPOT_Build_Setup_Error</BuildDependsOn>
+    <CleanDependsOn>Display_Microsoft_SPOT_Build_Setup_Error</CleanDependsOn>
+    <RebuildDependsOn>Display_Microsoft_SPOT_Build_Setup_Error</RebuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="Display_Microsoft_SPOT_Build_Setup_Error">
+    <Error Text="$(Microsoft_SPOT_Build_Setup_Error) (The problem is probably not at the point indicated.)" />
+  </Target>
+
+  <Target Name ="StartBuild">
+    <Message Text="Building...$(MSBuildProjectFullPath);"></Message>
+  </Target>
+
+  <Target Name="EnsureOutputDirectories">
+    <MakeDir Directories="@(OUTPUT_DIR)" />
+  </Target>
+
+  <Target Name="CleanOutputDirectories">
+    <RemoveDir Directories="@(OUTPUT_DIR)" />
+  </Target>
+
+  <Target Name="BuildChildren_Build" Condition="'@(Project)'!=''">
+    <MSBuild Projects="@(Project)" Targets="Build" Properties="$(MainProps)" />
+  </Target>
+
+  <Target Name="BuildChildren_Disasm" Condition="'@(Project)'!=''">
+    <MSBuild Projects="@(Project)" Targets="TinyCLR_Disasm" Properties="$(MainProps)" />
+  </Target>
+
+  <Target Name="BuildChildren_ConvertResources" Condition="'@(Project)'!=''">
+    <MSBuild Projects="@(Project)" Targets="TinyCLR_ConvertResources" Properties="$(MainProps)" />
+  </Target>
+
+  <Target Name="BuildChildren_Clean" Condition="'@(Project)'!=''">
+    <MSBuild Projects="@(Project)" Targets="Clean" Properties="$(MainProps)" />
+  </Target>
+
+  <Target Name="TinyCLR_Clean" DependsOnTargets="Clean" />
+
+  <Target Name="TinyCLR_Build" DependsOnTargets="Build">
+    <OnError ExecuteTargets="_CleanRecordFileWrites"/>
+  </Target>
+
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn);TinyCLR_RecordFileWrites</BuildDependsOn>
+  </PropertyGroup>
+
+  <!-- Tell MSBuild to record the files written in this pass.
+       For this to work automatically and render this target useless, we must
+       modify our build such that ALL files are put into FileWrites even if a file
+       does not need rebuilt in this run. Furthermore, all of our building
+       (docs, WiX, native, etc) must run as a dependency of the "Compile" task such that
+       IncrementalClean automatically gets ran afterward.
+       -->
+  <Target Name="IncrementalClean" />
+  <Target Name="TinyCLR_RecordFileWrites" 
+          DependsOnTargets="_CleanRecordFileWrites" />
+
+
+    <Target
+         Name="_CleanGetCurrentAndPriorFileWrites"
+         DependsOnTargets="_CheckForCompileOutputs;_SGenCheckForOutputs">
+
+        <!-- Read the list of files produced by a prior builds from disk. -->
+        <ReadLinesFromFile File="$(IntermediateOutputPath)$(CleanFile)">
+            <Output TaskParameter="Lines" ItemName="_CleanUnfilteredPriorFileWrites"/>
+        </ReadLinesFromFile>
+
+        <!--
+        Convert the list of references to the absolute paths so we can make valid comparisons
+        across two lists
+         -->
+        <ConvertToAbsolutePath Paths="@(_ResolveAssemblyReferenceResolvedFiles)">
+            <Output TaskParameter="AbsolutePaths" ItemName="_ResolveAssemblyReferenceResolvedFilesAbsolute"/>
+        </ConvertToAbsolutePath>
+
+        <!--
+        Subtract any resolved assembly files from *prior* file writes because deleting
+        these would break subsequent builds because the assemblies would be unresolvable.
+         -->
+        <ItemGroup>
+            <_CleanPriorFileWrites Include="@(_CleanUnfilteredPriorFileWrites)" Exclude="@(_ResolveAssemblyReferenceResolvedFilesAbsolute)"/>
+        </ItemGroup>
+
+        <!--
+        Of shareable files, keep only those that are in the project's directory.
+        We never clean shareable files outside of the project directory because
+        the build may be to a common output directory and other projects may need
+        them.
+
+        Only subtract the outputs from ResolveAssemblyReferences target because that's the
+        only "Resolve" target that tries to resolve assemblies directly from the output
+        directory.
+        -->
+        <FindUnderPath Path="$(MSBuildProjectDirectory)" Files="@(FileWritesShareable)" UpdateToAbsolutePaths="true">
+            <Output TaskParameter="InPath" ItemName="FileWrites"/>
+        </FindUnderPath>
+
+        <!-- Find all files in the final output directories. -->
+        <FindUnderPath Path="%(OUTPUT_DIR.Identity)" Files="@(FileWrites)" UpdateToAbsolutePaths="true">
+            <Output TaskParameter="InPath" ItemName="_CleanCurrentFileWritesInOutput"/>
+        </FindUnderPath>
+
+        <!--
+        Subtract any resolved assembly files from *current* file writes because deleting
+        these would break subsequent builds because the assemblies would be unresolvable.
+
+        Only subtract the outputs from ResolveAssemblyReferences target because that's the
+        only "Resolve" target that tries to resolve assemblies directly from the output
+        directory.
+         -->
+        <ItemGroup>
+            <_CleanCurrentFileWritesWithNoReferences Include="@(_CleanCurrentFileWritesInOutput);@(_CleanCurrentFileWritesInIntermediate)" Exclude="@(_ResolveAssemblyReferenceResolvedFilesAbsolute)"/>
+        </ItemGroup>
+
+        <!-- Remove duplicates from files produced in this build. -->
+        <RemoveDuplicates Inputs="@(_CleanCurrentFileWritesWithNoReferences)" >
+            <Output TaskParameter="Filtered" ItemName="_CleanCurrentFileWrites"/>
+        </RemoveDuplicates>
+      </Target>
+
+    <Target
+        Name="CoreClean"
+        DependsOnTargets="$(CoreCleanDependsOn)">
+
+        <!-- Read in list of files that were written to disk in past builds. -->
+        <ReadLinesFromFile File="$(IntermediateOutputPath)$(CleanFile)">
+            <Output TaskParameter="Lines" ItemName="_CleanPriorFileWrites"/>
+        </ReadLinesFromFile>
+
+        <!-- Find all files in the final output directory. -->
+        <FindUnderPath Path="%(OUTPUT_DIR.Identity)" Files="@(_CleanPriorFileWrites)">
+            <Output TaskParameter="InPath" ItemName="_CleanPriorFileWritesInOutput"/>
+        </FindUnderPath>
+
+        <!-- Delete those files. -->
+        <Delete
+            Files="@(_CleanPriorFileWritesInOutput);"
+            TreatErrorsAsWarnings="true">
+
+            <Output TaskParameter="DeletedFiles" ItemName="_CleanPriorFileWritesDeleted"/>
+
+        </Delete>
+
+        <!-- Create a list of everything that wasn't deleted. -->
+        <ItemGroup>
+            <_CleanRemainingFileWritesAfterClean Include="@(_CleanPriorFileWrites)" Exclude="@(_CleanPriorFileWritesDeleted)"/>
+        </ItemGroup>
+
+        <!-- Remove duplicates. -->
+        <RemoveDuplicates Inputs="@(_CleanRemainingFileWritesAfterClean)">
+            <Output TaskParameter="Filtered" ItemName="_CleanUniqueRemainingFileWrites"/>
+        </RemoveDuplicates>
+
+        <!-- Make sure the directory exists. -->
+        <MakeDir Directories="$(IntermediateOutputPath)"/>
+
+        <!-- Write new list of current files back to disk. -->
+        <WriteLinesToFile File="$(IntermediateOutputPath)$(CleanFile)" Lines="@(_CleanUniqueRemainingFileWrites)" Overwrite="true" />
+
+    </Target>
+
+  <Target Name="TinyCLR_Disasm" DependsOnTargets="$(TinyCLR_DisasmDependsOn)" />
+
+  <Target Name="TinyCLR_ConvertResources" DependsOnTargets="$(TinyCLR_ConvertResourcesDependsOn)" />
+
+  <Target Name="CleanObjLib" DependsOnTargets="Clean" />
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+
+</Project>

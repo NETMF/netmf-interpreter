@@ -1,0 +1,15 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Diagnostics</FeatureName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\Diagnostics_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Diagnostic utilities</Description>
+    <Guid>{e1f00fe5-5844-49e2-b1dc-91bf4776239b}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <DIAGNOSTICS_FEATUREPROJ>True</DIAGNOSTICS_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

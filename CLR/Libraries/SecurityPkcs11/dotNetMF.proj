@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>SecurityPkcs11</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>6D660CDA-0235-4609-B536-9332AF9B3735</ProjectGuid>
+    <Description>PKCS11</Description>
+    <Level>CLR</Level>
+    <LibraryFile>SecurityPkcs11.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Libraries\SecurityPkcs11\dotNetMF.proj</ProjectPath>
+    <ManifestFile>SecurityPkcs11.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Core</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>true</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Libraries\SecurityPkcs11</Directory>
+    <OutputType>Library</OutputType>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <FastCompileCPPFile Include="Security_Pkcs11_fastcompile.cpp" />
+    <Compile Include="security_pkcs11_native.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_Cryptoki.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_CryptokiDigest.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_CryptokiObject.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_CryptokiRNG.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_CryptokiSign.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_CryptokiVerify.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_Decryptor.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_Encryptor.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_FindObjectEnum.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_Session.cpp" />
+    <Compile Include="security_pkcs11_native_Microsoft_SPOT_Cryptoki_Slot.cpp" />
+    <Compile Include="security_pkcs11_native_System_Security_Cryptography_CryptoKey.cpp" />
+    <IncludePaths Include="DeviceCode\PAL\Pkcs11" />
+    <IncludePaths Include="CLR\libraries\SPOT" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\libraries\SecurityPkcs11" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_version.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptoki.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptokipal.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11f.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11t.h" />
+    <HFiles Include="security_pkcs11.h" />
+    <HFiles Include="security_pkcs11_native.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

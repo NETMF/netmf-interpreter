@@ -1,0 +1,239 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+<!-- windows build -->
+  <PropertyGroup>
+    <BuildToolName>VS2010</BuildToolName>
+    <BuildToolGuid>{C4790E3D-217E-40a6-A3D6-EB1B80ABC1ED}</BuildToolGuid>
+    <Documentation></Documentation>
+    <ProcessorTypes>Windows</ProcessorTypes>
+    <ISAs>x86</ISAs>
+    <CommonAssemblyInfoTemplate>$(SPOCLIENT)\tools\AssemblyInfo.rc.template</CommonAssemblyInfoTemplate>
+    <CommonAssemblyInfoItemName>RCFile</CommonAssemblyInfoItemName>
+    <CommonAssemblyInfoLanguage>RC</CommonAssemblyInfoLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VCProjName Condition="'$(VCProjName)'==''">$(AssemblyName)</VCProjName>
+    <AssemblyName Condition="'$(AssemblyName)'==''">$(MSBuildProjectName)</AssemblyName>
+
+    <WarningLevel Condition="'$(WarningLevel)'==''">3</WarningLevel>
+    <EnableStringPooling Condition="'$(EnableStringPooling)'==''">true</EnableStringPooling>
+    <StringPoolFlags Condition="'$(EnableStringPooling)'=='true'">/GF</StringPoolFlags>
+
+    <PCHFile Condition="'$(PCHFile)'==''">none</PCHFile>
+    <PCHFlags Condition="'$(PCHFile)'!='none'">/Yu"$(PCHFile)" /Fp"$(OBJ_DIR)\$(AssemblyName).pch"</PCHFlags>
+
+    <Subsystem Condition="'$(Subsystem)'==''">WINDOWS</Subsystem>
+
+    <EmbedManifest>true</EmbedManifest>
+
+    <ExtraFlags>$(ExtraFlags) /wd4204</ExtraFlags>
+
+    <StaticLibC Condition="'$(StaticLibC)'==''">false</StaticLibC>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CommonAssemblyInfoFile Condition="'$(CommonAssemblyInfoFile)'==''"
+        >$(SPOCLIENT)\tools\targets\Microsoft.SPOT.CommonAssemblyInfo.Targets</CommonAssemblyInfoFile>
+  </PropertyGroup>
+  <Import Project="$(CommonAssemblyInfoFile)" />
+
+  <ItemGroup Condition="'$(IgnoreNetMFStandardLibs)' != 'true'">
+    <ExtraLibs       Include="dbghelp.lib" />
+    <ExtraLibs       Include="delayimp.lib"/>
+    <ExtraLibs       Include="Msimg32.lib" />
+    <ExtraLibs       Include="comsuppw.lib"/>
+    <DelayLoadedDlls Include="dbghelp.dll" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DebugFlags>/Od /D "_DEBUG" /Zi</DebugFlags>
+    <MiscFlags Condition="'$(ManagedCode)'!='true'">$(MiscFlags) /Gm /RTC1</MiscFlags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MiscFlags>$(MiscFlags) /D VERSION_MAJOR=$(MajorVersion) /D VERSION_MINOR=$(MinorVersion) /D VERSION_BUILD=$(BuildNumber) /D VERSION_REVISION=$(RevisionNumber) /D OEMSYSTEMINFOSTRING="\"$(OemSystemInfoString)\""</MiscFlags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MiscFlags >$(MiscFlags) @(TinyCLR_Defines->'/D %(filename)',' ')</MiscFlags>
+    <MiscFlags >$(MiscFlags) @(CC_CPP_Defines->'/D %(filename)',' ')</MiscFlags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugFlags>/O2 /Ob1 /Oy /Zi /D "NDEBUG"</DebugFlags>
+    <MiscFlags>$(MiscFlags) /FD /Gy</MiscFlags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MTFlags Condition="'$(Configuration)'=='Debug' and '$(StaticLibC)'=='false'">/MDd</MTFlags>
+    <MTFlags Condition="'$(Configuration)'!='Debug' and '$(StaticLibC)'=='false'">/MD</MTFlags>
+    <MTFlags Condition="'$(Configuration)'=='Debug' and '$(StaticLibC)'=='true' ">/MTd</MTFlags>
+    <MTFlags Condition="'$(Configuration)'!='Debug' and '$(StaticLibC)'=='true' ">/MT</MTFlags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OutputType)'=='DLL'">
+    <TargetRule>W32BuildDLL</TargetRule>
+    <TargetSuffix>dll</TargetSuffix>
+    <TargetFile>$(BIN_DIR)\$(AssemblyName).$(TargetSuffix)</TargetFile>
+    <EmbeddedManifestFile Condition="'$(EmbedManifest)'=='true'">$(OBJ_DIR)\$(AssemblyName).$(TargetSuffix).embed.manifest</EmbeddedManifestFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OutputType)'=='Library'">
+    <TargetFlags>/D "_LIB"</TargetFlags>
+    <TargetRule>W32BuildLib</TargetRule>
+    <TargetSuffix>lib</TargetSuffix>
+    <TargetFile>$(LIB_DIR)\$(AssemblyName).$(LIB_EXT)</TargetFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OutputType)'=='Executable'">
+    <TargetRule>W32BuildExe</TargetRule>
+    <TargetSuffix>exe</TargetSuffix>
+    <SubSysDefines>/D _$(Subsystem)</SubSysDefines>
+    <TargetFile>$(BIN_DIR)\$(AssemblyName).$(TargetSuffix)</TargetFile>
+    <EmbeddedManifestFile Condition="'$(EmbedManifest)'=='true'">$(OBJ_DIR)\$(AssemblyName).$(TargetSuffix).embed.manifest</EmbeddedManifestFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OutputType)'=='Command'">
+    <TargetRule>W32BuildExe</TargetRule>
+    <TargetSuffix>com</TargetSuffix>
+    <SubSysDefines>/D _$(Subsystem)</SubSysDefines>
+    <TargetFile>$(BIN_DIR)\$(AssemblyName).$(TargetSuffix)</TargetFile>
+    <EmbeddedManifestFile Condition="'$(EmbedManifest)'=='true'">$(OBJ_DIR)\$(AssemblyName).$(TargetSuffix).embed.manifest</EmbeddedManifestFile>
+  </PropertyGroup>
+
+  <PropertyGroup >
+    <ExtraFlags>$(ExtraFlags) $(SubSysDefines)</ExtraFlags>
+
+    <IncludeFlags>@(IncludePaths->'/I $(CLRROOT)\%(relativedir)%(filename)',' ')</IncludeFlags>
+    <IncludeFlags>$(IncludeFlags) @(DirectIncludePaths->'/I %(FullPath)',' ')</IncludeFlags>
+
+    <CharSet Condition="'$(CharSet)'==''">1</CharSet>
+    <CharSetFlags Condition="'$(CharSet)'=='2'">/D "_MBCS"</CharSetFlags>
+    <CharSetFlags Condition="'$(CharSetFlags)'==''">/D "UNICODE" /D "_UNICODE"</CharSetFlags>
+
+    <PDBFile Condition="'$(PDBFile)'==''">$(OBJ_DIR)\$(AssemblyName).pdb</PDBFile>
+    <CFlags>$(ExtraFlags) $(DebugFlags) /D "WIN32" $(CharSetFlags) $(IncludeFlags) $(VCIncludeFlags) /GS $(MTFlags) $(MiscFlags) $(PCHFlags) $(TargetFlags) $(StringPoolFlags) /Fd"$(PDBFile)" /W$(WarningLevel) /nologo /errorReport:prompt</CFlags>
+    <CFlags Condition="'$(ManagedCode)'=='true' and '$(OldSyntax)'=='true'">$(CFLAGS) /clr:oldsyntax</CFlags>
+    <CFlags Condition="'$(ManagedCode)'=='true' and '$(OldSyntax)'!='true'">$(CFLAGS) /clr</CFlags>
+    <CFlags Condition="'$(ManagedCode)'!='true'">$(CFLAGS) /EHsc</CFlags>
+	  <CFlags Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">$(CFLAGS) /D TCPIP_LWIP_OS  /D ERRNO /D _WINSOCKAPI_</CFlags>
+	  <CFlags Condition="'$(TCP_IP_STACK)'=='LWIP'">$(CFLAGS) /D TCPIP_LWIP  /D ERRNO /D _WINSOCKAPI_</CFlags>
+
+    <NoOptForParserTarget Condition="'$(NoOptForParserTarget)'==''">None</NoOptForParserTarget>
+    <NoOptForParserOptimization Condition="'$(NoOptForParserOptimization)'==''">true</NoOptForParserOptimization>
+
+    <!-- Assemblage'....Don't like the transformations here... -->
+
+    <LibPathFlags>@(LibDirs->'/LIBPATH:&quot;%(Fullpath)&quot;',' ')</LibPathFlags>
+    <DelayLoadedDllFlags>@(DelayLoadedDlls->'/DELAYLOAD:&quot;%(relativedir)%(filename).dll&quot;',' ')</DelayLoadedDllFlags>
+    <NoDefaultLibFlags>@(IgnoreLibs->'/NODEFAULTLIB:&quot;%(relativedir)%(filename)&quot;',' ')</NoDefaultLibFlags>
+    <IncrFlag Condition="'$(Configuration)'=='Debug'">true</IncrFlag>
+    <IncrFlag Condition="'$(IncrFlag)'==''">false</IncrFlag>
+<!--    <LinkOptFlags Condition="'$(Configuration)'!='Debug'"> /OPT:REF /OPT:ICF</LinkOptFlags> EXCESS DEBUG OUTPUT -->
+
+    <SIGNING_KEY_FILE Condition="EXISTS('$(SPOCLIENT)\Framework\key.snk') And '$(SIGNING_KEY_FILE)'==''">$(SPOCLIENT)\Framework\key.snk</SIGNING_KEY_FILE>
+    <DelaySign>false</DelaySign>
+    <DelaySign Condition="'$(SIGNING_KEY_FILE)'!=''">true</DelaySign>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <W32SysLibs Condition="'@(W32SysLibs)'==''" Include="kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib"/>
+<!--;Msimg32.lib;delayimp.lib"-->
+    <LinkLibs Include="@(InputLibs)"/>
+    <LinkLibs Include="@(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_LIB_DIR)\%(FileName)%(Extension)');@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)')"/>
+  </ItemGroup>
+
+  <!-- Build rules for Win32 -->
+
+  <Target Name="W32CompileC"
+    Condition="'@(CFiles)'!=''"
+    Inputs="@(CFiles);@(HFiles)"
+    Outputs="@(CFiles->'$(OBJ_DIR)\%(filename).obj')"
+    >
+    <VSCompileC InputFiles="@(CFiles)" HeaderFiles="@(HFiles)" OutputPath="$(OBJ_DIR)" Flags="$(CFlags) /TC" IncludePaths="@(IncludeDirs)"/>
+  </Target>
+
+
+  <Target Name="W32CompileCPP"
+    Condition="'@(CPPFiles)'!=''"
+    Inputs="@(CPPFiles);@(HFiles)"
+    Outputs="@(CPPFiles->'$(OBJ_DIR)\%(filename).obj')"
+    >
+    <VSCompileC InputFiles="@(CPPFiles)" HeaderFiles="@(HFiles)" OutputPath="$(OBJ_DIR)" Flags="$(CFlags) /TP" IncludePaths="@(IncludeDirs)"/>
+  </Target>
+
+
+  <Target Name="W32BuildExe"
+    DependsOnTargets="W32CompileC;W32CompileCPP;W32CompileRC"
+    Inputs="@(ObjFiles);@(LinkLibs);@(RCFile->'$(OBJ_DIR)\%(filename).res')"
+    Outputs="$(TargetFile)"
+    >
+    <VSLinkExeTask
+          OUT="$(TargetFile)"
+          INCREMENTAL="$(IncrFlag)"
+          LIBPATH="@(LibDirs)"
+          NODEFAULTLIB="@(IgnoreLibs)"
+          DELAYLOAD="@(DelayLoadedDlls)"
+          PDB="$(BIN_DIR)\$(AssemblyName).pdb"
+          SUBSYSTEM="$(Subsystem)"
+          MACHINE="X86"
+          DEBUG="true"
+          OBJFILES="@(ObjFiles);@(W32SysLibs);@(LinkLibs);@(ExtraLibs);@(RCFile->'$(OBJ_DIR)\%(filename).res')"
+          MANIFEST="$(EmbedManifest)"
+          MANIFESTFILE="$(EmbeddedManifestFile)"
+          DELAYSIGN="$(DelaySign)"
+          KEYFILE="$(SIGNING_KEY_FILE)"
+          />
+    <Exec Condition="'$(EmbedManifest)'=='true'" Command="mt /outputresource:&quot;$(TargetFile);#1&quot; /manifest $(EmbeddedManifestFile) /nologo $(ManifestFlag)"/>
+    <Exec Condition="'$(ManagedCode)'=='true' And '$(SIGNING_KEY_FILE)'!=''" Command="sn /R &quot;$(TargetFile)&quot; $(SPOCLIENT)\Framework\key.snk"/>
+  </Target>
+
+
+  <Target Name="W32BuildLib"
+    DependsOnTargets="W32CompileC;W32CompileCPP;CreateLibManifest"
+    Inputs="@(ObjFiles);@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)')"
+    Outputs="$(TargetFile);@(TargetLib->'%(FullPath).manifest')"
+    >
+    <VSLinkLibTask
+          OUT="$(TargetFile)"
+          OBJFILES="@(ObjFiles);@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)', ' ')"
+          DEBUG="false"
+          />
+  </Target>
+
+
+  <Target Name="W32BuildDLL"
+    DependsOnTargets="W32CompileC;W32CompileCPP;W32CompileRC"
+    Inputs="@(ObjFiles);@(LinkLibs);@(RCFile->'$(OBJ_DIR)\%(filename).res');@(ModuleDefinitionFile)"
+    Outputs="$(TargetFile)"
+    >
+    <!-- Perform final linkage -->
+    <VSLinkDllTask
+          OUT="$(TargetFile)"
+          INCREMENTAL="$(IncrFlag)"
+          LIBPATH="@(LibDirs)"
+          NODEFAULTLIB="@(IgnoreLibs)"
+          DELAYLOAD="@(DelayLoadedDlls)"
+          DEBUG="true"
+          OBJFILES="@(ObjFiles);@(W32SysLibs);@(LinkLibs);@(ExtraLibs);@(RCFile->'$(OBJ_DIR)\%(filename).res')"
+          MANIFEST="$(EmbedManifest)"
+          MANIFESTFILE="$(EmbeddedManifestFile)"
+          DELAYSIGN="$(DelaySign)"
+          KEYFILE="$(SIGNING_KEY_FILE)"
+          ModuleDefinitionFile="@(ModuleDefinitionFile)"
+          />
+    <Exec Condition="'$(EmbedManifest)'=='true'" Command="mt /outputresource:&quot;$(TargetFile);#2&quot; /manifest $(EmbeddedManifestFile) /nologo $(ManifestFlag)"/>
+    <Exec Condition="'$(ManagedCode)'=='true' And '$(SIGNING_KEY_FILE)'!=''" Command="sn /R &quot;$(TargetFile)&quot; $(SPOCLIENT)\Framework\key.snk"/>
+  </Target>
+
+
+  <Target Name="W32CompileRC"
+    DependsOnTargets="AddCommonAssemblyInfo"
+    Inputs="@(RCFile)"
+    Outputs="@(RCFile->'$(OBJ_DIR)\%(filename).res')"
+    >
+    <Exec Command="rc.exe $(CharSetFlags) /fo&quot;@(RCFile->'$(OBJ_DIR)\%(filename).res')&quot; %(RCFile.Identity)"/>
+  </Target>
+
+</Project>

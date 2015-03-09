@@ -1,0 +1,33 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Net.Security</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NoWarn>$(NoWarn),0169</NoWarn>
+    <ComponentGuid>{30a6ceaa-f3ce-416f-a2ee-39e29bf1f0af}</ComponentGuid>
+    <ProjectGuid>{4FEB560D-5F3A-4FA8-AE41-FBE7714813A7}</ProjectGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <!-- MMP_STUB options -->
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\spot_net_security_native</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>SPOT_Net_Security</MMP_STUB_GenerateSkeletonProject>
+    <MMP_STUB_LegacySkeletonInterop>true</MMP_STUB_LegacySkeletonInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="NetworkSecurity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Net.Security.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+  </ItemGroup>
+</Project>

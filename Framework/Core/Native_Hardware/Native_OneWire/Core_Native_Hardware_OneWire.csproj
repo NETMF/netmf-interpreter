@@ -1,0 +1,37 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Hardware.OneWire</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{08422FD6-ECFD-4371-923D-C8225AC38203}</ProjectGuid>
+    <TinyCLR_CSharp_Documentation>true</TinyCLR_CSharp_Documentation>
+    <ComponentGuid>{B7C5DA39-41F1-429F-B4FE-480E62B24BB3}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <!-- MMP_STUB options -->
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\spot_hardware_onewire_native</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>SPOT_Hardware_onewire</MMP_STUB_GenerateSkeletonProject>
+  </PropertyGroup>  
+    <ItemGroup>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Hardware.OneWire.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core_Native_Hardware_OneWire.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

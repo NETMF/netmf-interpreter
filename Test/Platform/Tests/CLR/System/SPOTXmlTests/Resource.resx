@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="complexXml" xml:space="preserve">
+    <value>&lt;?xml    version  ="1.0" encoding='UTF-8' standalone='yes'  ?&gt;
+&lt;?pi ??????processing ??instruction??&gt;
+&lt;!--comment &lt;&gt;&lt;&gt;&lt;&gt;- - - - ?&amp;&amp;&amp;--&gt;
+&lt;ns:ln  xmlns:ns='http://tempuri.org' ns:at  =  "." at2  =  "abc	defg"&gt;
+  &lt;ab /&gt;&amp;lt;
+
+  ab]]c&amp;gt;]&amp;amp;&amp;apos;] 
+  &lt;a&gt;&amp;#99;&amp;#x6b;&lt;/a&gt;
+  ]&lt;a/&gt;]
+  &amp;quot;&lt;a a="&amp;gt;&amp;lt;&amp;amp;
+&amp;apos; &amp;#x6b; 	
+  中文內容
+&amp;quot;"/&gt;
+ &lt;a a=""     &gt;&lt;a a  = ''/&gt;&lt;/a&gt;
+ &lt;a ns:a='.' &gt;bc&lt;a         a='&amp;gt;&amp;lt;&amp;amp;
+
+
+ &amp;apos;&amp;quot;' /&gt;&lt;a xml:space="default"&gt;     &lt;/a&gt;&lt;/a&gt;
+ &lt;ns:a xml:lang="en"&gt;&lt;ns:b xml:lang="en-GB"/&gt;&lt;ns:b xml:lang="de"/&gt;&lt;/ns:a&gt;
+
+  &lt;space xml:space="preserve"&gt;       
+
+
+
+ &lt;空白&gt;     
+
+
+      &lt;/空白&gt;
+
+ &lt;space1 xml:space="default"&gt;     
+
+
+      &lt;/space1&gt;
+ &lt;space1     xml:space='preserve' xml:lang="en"&gt;     
+
+
+      &lt;/space1&gt;
+ &lt;space1&gt;     
+
+   &lt;a/&gt;    &lt;!--comment--&gt; &lt;?pi ????&gt;
+      &lt;/space1&gt;
+   &lt;/space&gt;
+&lt;/ns:ln  &gt;
+
+&lt;!--comment --&gt;
+&lt;?pi pipipipipi?&gt;
+&lt;!-- comment2--&gt;</value>
+  </data>
+  <data name="mesh" xml:space="preserve">
+    <value>&lt;rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"&gt;
+  &lt;channel xml:base="https://user-ctp.windows.net/V0.1/"&gt;
+    &lt;title&gt;Applications&lt;/title&gt;
+    &lt;description /&gt;
+    &lt;a10:link rel="self" title="self" href="Mesh/Applications" /&gt;
+    &lt;a10:link rel="edit" title="edit" href="Mesh/Applications" /&gt;
+    &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/Subscriptions" /&gt;
+    &lt;item&gt;
+      &lt;guid isPermaLink="false"&gt;5ab79699-8e11-4cdf-b3d0-534de5e44b44&lt;/guid&gt;
+      &lt;author&gt;meshuser@live.com&lt;/author&gt;
+      &lt;category domain="http://user.windows.net/Resource"&gt;Application&lt;/category&gt;
+      &lt;title&gt;Collaborative Crossword&lt;/title&gt;
+      &lt;pubDate&gt;Fri, 24 Oct 2008 21:56:33 Z&lt;/pubDate&gt;
+      &lt;a10:link rel="LiveFX/ApplicationPackage" title="LiveFX/ApplicationPackage" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/Package/N4H3PCMTFFEUFE74LLEHCOAT3E-HTBKUY5U35CU7AIB2YASB7EOLI-Manifest.xml" /&gt;
+      &lt;a10:link rel="LiveFX/ApplicationLogo" title="LiveFX/ApplicationLogo" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/Package/N4H3PCMTFFEUFE74LLEHCOAT3E-HTBKUY5U35CU7AIB2YASB7EOLI-logo.png" /&gt;
+      &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/Subscriptions" /&gt;
+      &lt;a10:link rel="LiveFX/ResourceFeeds" title="LiveFX/ResourceFeeds" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/ResourceFeeds" /&gt;
+      &lt;a10:link rel="self" title="self" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ" /&gt;
+      &lt;a10:link rel="edit" title="edit" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ" /&gt;
+      &lt;a10:updated&gt;2008-10-25T23:12:55Z&lt;/a10:updated&gt;
+      &lt;a10:content type="application/xml"&gt;
+        &lt;ApplicationContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://user.windows.net"&gt;
+          &lt;ApplicationId&gt;000000004800272D&lt;/ApplicationId&gt;
+          &lt;Approved&gt;true&lt;/Approved&gt;
+          &lt;CurrentVersion&gt;1&lt;/CurrentVersion&gt;
+          &lt;Description&gt;Play crosswords with friends and family.&lt;/Description&gt;
+          &lt;DisplayVersion&gt;0.94&lt;/DisplayVersion&gt;
+          &lt;LogoName&gt;logo.png&lt;/LogoName&gt;
+          &lt;MultiInstance&gt;true&lt;/MultiInstance&gt;
+          &lt;Name&gt;Collaborative Crossword&lt;/Name&gt;
+          &lt;PackageName&gt;Manifest.xml&lt;/PackageName&gt;
+          &lt;PrivacyPolicyLink&gt;http://privacy.microsoft.com/en-us/default.mspx&lt;/PrivacyPolicyLink&gt;
+          &lt;PublisherName&gt;www.microsoftstartuplabs.com&lt;/PublisherName&gt;
+          &lt;ReleaseStatus&gt;Production&lt;/ReleaseStatus&gt;
+          &lt;RootDocument&gt;index.html&lt;/RootDocument&gt;
+          &lt;SupportLink&gt;http://www.microsoftstartuplabs.com/support/&lt;/SupportLink&gt;
+          &lt;VendorLink&gt;http://www.microsoftstartuplabs.com/&lt;/VendorLink&gt;
+        &lt;/ApplicationContent&gt;
+      &lt;/a10:content&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+      &lt;guid isPermaLink="false"&gt;bb44a24a-1bdf-452b-9a00-a4273befa694&lt;/guid&gt;
+      &lt;author&gt;meshuser@live.com&lt;/author&gt;
+      &lt;category domain="http://user.windows.net/Resource"&gt;Application&lt;/category&gt;
+      &lt;title&gt;Corkboard&lt;/title&gt;
+      &lt;pubDate&gt;Fri, 24 Oct 2008 19:57:44 Z&lt;/pubDate&gt;
+      &lt;a10:link rel="LiveFX/ApplicationPackage" title="LiveFX/ApplicationPackage" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/Package/6PSURE3UVB3EVAVSWP6GDXHEYA-AJWV2NVTT7CEPOJF625JNDNOJI-Manifest.xml" /&gt;
+      &lt;a10:link rel="LiveFX/ApplicationLogo" title="LiveFX/ApplicationLogo" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/Package/6PSURE3UVB3EVAVSWP6GDXHEYA-AJWV2NVTT7CEPOJF625JNDNOJI-logo.png" /&gt;
+      &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/Subscriptions" /&gt;
+      &lt;a10:link rel="LiveFX/ResourceFeeds" title="LiveFX/ResourceFeeds" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/ResourceFeeds" /&gt;
+      &lt;a10:link rel="self" title="self" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ" /&gt;
+      &lt;a10:link rel="edit" title="edit" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ" /&gt;
+      &lt;a10:updated&gt;2008-11-21T17:16:29Z&lt;/a10:updated&gt;
+      &lt;a10:content type="application/xml"&gt;
+        &lt;ApplicationContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://user.windows.net"&gt;
+          &lt;ApplicationId&gt;0000000040003417&lt;/ApplicationId&gt;
+          &lt;Approved&gt;true&lt;/Approved&gt;
+          &lt;CurrentVersion&gt;3&lt;/CurrentVersion&gt;
+          &lt;Description&gt;Get a digital corkboard and start sharing notes across town or across the globe&lt;/Description&gt;
+          &lt;DisplayVersion&gt;0.82&lt;/DisplayVersion&gt;
+          &lt;LogoName&gt;logo.png&lt;/LogoName&gt;
+          &lt;MultiInstance&gt;true&lt;/MultiInstance&gt;
+          &lt;Name&gt;Corkboard&lt;/Name&gt;
+          &lt;PackageName&gt;Manifest.xml&lt;/PackageName&gt;
+          &lt;PrivacyPolicyLink&gt;http://privacy.microsoft.com/en-us/default.mspx&lt;/PrivacyPolicyLink&gt;
+          &lt;PublisherName&gt;www.microsoftstartuplabs.com&lt;/PublisherName&gt;
+          &lt;ReleaseStatus&gt;Production&lt;/ReleaseStatus&gt;
+          &lt;RootDocument&gt;index.html&lt;/RootDocument&gt;
+          &lt;SupportLink&gt;http://www.microsoftstartuplabs.com/support/&lt;/SupportLink&gt;
+          &lt;VendorLink&gt;http://www.microsoftstartuplabs.com/&lt;/VendorLink&gt;
+        &lt;/ApplicationContent&gt;
+      &lt;/a10:content&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;</value>
+  </data>
+  <data name="soapIn" xml:space="preserve">
+    <value>&lt;s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope" xmlns:a="http://schemas.xmlsoap.org/ws/2004/08/addressing"&gt;
+  &lt;s:Header&gt;
+    &lt;a:Action s:mustUnderstand="1"&gt;http://schemas.example.org/SimpleService/TwoWayRequest&lt;/a:Action&gt;
+    &lt;a:From&gt;
+      &lt;a:Address&gt;http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous&lt;/a:Address&gt;
+    &lt;/a:From&gt;
+    &lt;a:ReplyTo&gt;
+      &lt;a:Address&gt;http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous&lt;/a:Address&gt;
+    &lt;/a:ReplyTo&gt;
+    &lt;a:MessageID&gt;urn:uuid:85167211-529a-4eb1-89b0-5b7759df9cc3&lt;/a:MessageID&gt;
+    &lt;a:To s:mustUnderstand="1"&gt;http://localhost:8084/34c6b7e3-9494-4eb3-90bb-c946c2bcd775&lt;/a:To&gt;
+  &lt;/s:Header&gt;
+  &lt;s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+    &lt;TwoWayRequest xmlns="http://schemas.example.org/SimpleService"&gt;
+      &lt;X&gt;1&lt;/X&gt;
+      &lt;Y&gt;2&lt;/Y&gt;
+    &lt;/TwoWayRequest&gt;
+  &lt;/s:Body&gt;
+&lt;/s:Envelope&gt;</value>
+  </data>
+  <data name="soapOut" xml:space="preserve">
+    <value>&lt;soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:wsdp="http://schemas.xmlsoap.org/ws/2006/02/devprof" xmlns:wsd="http://schemas.xmlsoap.org/ws/2005/04/discovery" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:smpl="http://schemas.example.org/SimpleService"&gt;
+  &lt;soap:Header&gt;
+    &lt;wsa:To&gt;http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous&lt;/wsa:To&gt;
+    &lt;wsa:Action&gt;http://schemas.example.org/SimpleService/TwoWayResponse&lt;/wsa:Action&gt;
+    &lt;wsa:RelatesTo&gt;urn:uuid:33831893-d3be-4afd-8d0a-85b7e901366d&lt;/wsa:RelatesTo&gt;
+    &lt;wsa:MessageID&gt;urn:uuid:ff99b19e-7db9-c8c9-8a8c-000000f15958&lt;/wsa:MessageID&gt;
+    &lt;wsd:AppSequence InstanceId="1181949116" SequenceId="urn:uuid:c883e4a8-9af4-4bf4-aaaf-06394151d6c0" MessageNumber="4"/&gt;
+  &lt;/soap:Header&gt;
+  &lt;soap:Body&gt;
+    &lt;smpl:TwoWayResponse&gt;
+      &lt;smpl:Sum&gt;4&lt;/smpl:Sum&gt;
+    &lt;/smpl:TwoWayResponse&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;</value>
+  </data>
+</root>

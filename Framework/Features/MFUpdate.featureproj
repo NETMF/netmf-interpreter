@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FeatureName>MFUpdate</FeatureName>
+    <Guid>{defc90df-c860-49b4-92e7-bdb2db938a8d}</Guid>
+    <Description>Micro Framework update utilities</Description>
+    <Groups />
+    <MFUPDATE_FEATUREPROJ>True</MFUPDATE_FEATUREPROJ>
+  </PropertyGroup>
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Update" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Update.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Update\Core_Update.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\MFUpdate.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Update\MFUpdate.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+</Project>

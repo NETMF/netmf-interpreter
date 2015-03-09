@@ -1,0 +1,20 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Debugger</FeatureName>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\Debugger_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Debugger_flavor_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Messaging_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Messaging_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Visual Studio debugger support</Description>
+    <Guid>{74968e51-2ed3-4d97-b051-c914aa42a9f7}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <DEBUGGER_FEATURPROJ>True</DEBUGGER_FEATURPROJ>
+  </PropertyGroup>
+</Project>

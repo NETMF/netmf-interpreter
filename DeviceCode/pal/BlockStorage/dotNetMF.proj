@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>blockstorage_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{b4c150a5-7e29-4603-89d5-ca2db16e7f51}</ProjectGuid>
+    <Description>Block storage library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>blockstorage_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\BlockStorage\dotNetMF.proj</ProjectPath>
+    <ManifestFile>blockstorage_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Storage</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorage_PAL" Guid="{762EA1E3-8DDC-480A-A6C7-4A6F1998B30A}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\blockstorage</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\BlockStorage_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\BlockStorageAddDevices_HAL.libcatproj" />
+  <ItemGroup>
+    <SubDirectories Include="Stubs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="blockstoragelist.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

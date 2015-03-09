@@ -1,0 +1,24 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_EndianFeatures">
+    <Feature Id="EndianFeatures"
+             Title="endian version of platform"
+             Description="A set of managed assemblies that comprise the core of the .NET MF tests"
+             Display="hidden"
+             Absent='disallow'
+             AllowAdvertise='no'
+             InstallDefault='local'
+             TypicalDefault='install'
+             Level="1">
+      <ComponentRef Id='Component_le_Microsoft.SPOT.Platform.Test.MFTestRunner' />
+      <ComponentRef Id='Component_be_Microsoft.SPOT.Platform.Test.MFTestRunner' />
+      <ComponentRef Id='Component_le_MFDpwsTestFixtureUtilities' />
+      <ComponentRef Id='Component_be_MFDpwsTestFixtureUtilities' />
+      <ComponentRef Id='Component_le_Microsoft.SPOT.Platform.Test.MFUtility' />
+      <ComponentRef Id='Component_be_Microsoft.SPOT.Platform.Test.MFUtility' />
+      <ComponentRef Id='Component_le_Microsoft.SPOT.Platform.Tests.IOTestsHelper' />
+      <ComponentRef Id='Component_be_Microsoft.SPOT.Platform.Tests.IOTestsHelper' />
+
+    </Feature>
+
+  </Fragment>  
+</Wix>

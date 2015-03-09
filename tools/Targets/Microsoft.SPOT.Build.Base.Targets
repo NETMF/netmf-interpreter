@@ -1,0 +1,6 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+xxxxxxxxxxxxx
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Common.Targets" />
+
+</Project>

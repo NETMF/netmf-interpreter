@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>SimpleHeap_stubs</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{CFD0FC57-C506-461D-B460-9D44C8A6A6B6}</ProjectGuid>
+    <Description>SimpleHeap unmanaged heap stub library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>SimpleHeap_stubs.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\stubs\dotNetMF.proj</ProjectPath>
+    <ManifestFile>SimpleHeap_stubs.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SimpleHeap_PAL" Guid="{50C71E02-13E2-4A29-B72D-B1D61F73D808}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <Directory>DeviceCode\pal\SimpleHeap\stubs</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="SimpleHeap_stubs.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

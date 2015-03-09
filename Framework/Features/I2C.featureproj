@@ -1,0 +1,19 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>I2C</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\hardware.featureproj" />
+  <ItemGroup>
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Hardware\Core_Native_Hardware.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\I2C_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\I2C_PAL.libcatproj" />
+  <PropertyGroup>
+    <Description>I2C Support</Description>
+    <Guid>{9b155e82-ee63-436f-9d90-7c8af3d8d7a7}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <I2C_FEATUREPROJ>True</I2C_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

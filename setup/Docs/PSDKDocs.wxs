@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_PSDKDocs">
+
+    <?include defines.wxs?>
+    <?include msdn_shortcut.wxs?>
+
+    <DirectoryRef Id="DocsDir">
+      <Directory Id="PSDKHelpFiles" Name="NET MicroFramework Docs" >
+        <Component Id="Component_PSDKDocs" Guid="145bf696-70e3-4346-bb41-ebd882c5d89c">
+          <File Id="PSDK.chm" DiskId="1" Name="PSDK.chm" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\PSDK\en-us\chmBuild\PSDK.chm" />
+          <File Id="PSDK.hxs" DiskId="1" Name="PSDK.hxs" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\PSDK\en-us\PSDK.hxs" />
+          <File Id="PSDKCollection.hxc" DiskId="1" Name="PSDKCollection.hxc" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\PSDK\en-us\PSDKCollection.hxc" />
+          <File Id="PSDKCollection.hxt" DiskId="1" Name="PSDKCollection.hxt" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\PSDK\en-us\PSDKCollection.hxt" />
+          <File Id="PSDKCollectionAIndex.hxk" DiskId="1" Name="PSDKCollectionAIndex.hxk" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\PSDK\en-us\PSDKCollectionAIndex.hxk" />
+          <File Id="PSDKCollectionFIndex.hxk" DiskId="1" Name="PSDKCollectionFIndex.hxk" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\PSDK\en-us\PSDKCollectionFIndex.hxk" />
+          <File Id="PSDKCollectionKIndex.hxk" DiskId="1" Name="PSDKCollectionKIndex.hxk" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\PSDK\en-us\PSDKCollectionKIndex.hxk" />
+          <RemoveFile Id="RemovePSDK.chm" Name="PSDK.chm" On="uninstall" />
+          <RemoveFile Id="RemovePSDK.hxs" Name="PSDK.hxs" On="uninstall" />
+          <RemoveFile Id="RemovePSDKCollection.hxc" Name="PSDKCollection.hxc" On="uninstall" />
+          <RemoveFile Id="RemovePSDKCollection.hxt" Name="PSDKCollection.hxt" On="uninstall" />
+          <RemoveFile Id="RemovePSDKCollectionAIndex.hxk" Name="PSDKCollectionAIndex.hxk" On="uninstall" />
+          <RemoveFile Id="RemovePSDKCollectionFIndex.hxk" Name="PSDKCollectionFIndex.hxk" On="uninstall" />
+          <RemoveFile Id="RemovePSDKCollectionKIndex.hxk" Name="PSDKCollectionKIndex.hxk" On="uninstall" />
+        </Component>
+      </Directory>
+    </DirectoryRef>
+
+    <CustomTable Id="HelpFile">
+      <Row>
+        <Data Column="HelpFileKey">PSDK</Data>
+        <Data Column="HelpFileName">PSDK</Data>
+        <Data Column="LangID">1033</Data>
+        <Data Column="File_HxS">PSDK.hxs</Data>
+        <Data Column="File_HxI" />
+        <Data Column="File_HxQ" />
+        <Data Column="File_HxR" />
+        <Data Column="File_Samples" />
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpNamespace">
+      <Row>
+        <Data Column="NamespaceKey">PSDK_NS</Data>
+        <Data Column="NamespaceName">MS.NETMF.PSDK.v30.1033</Data>
+        <Data Column="File_Collection">PSDKCollection.hxc</Data>
+        <Data Column="Description">Microsoft .NET Micro Framework SDK Collection</Data>
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpFileToNamespace">
+      <Row>
+        <Data Column="HelpFile_">PSDK</Data>
+        <Data Column="HelpNamespace_">PSDK_NS</Data>
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpPlugin">
+      <Row>
+        <Data Column="HelpNamespace_">PSDK_NS</Data>
+        <Data Column="HelpNamespace_Parent">MSNetMF</Data>
+        <Data Column="File_HxT">PSDKCollection.hxt</Data>
+        <Data Column="File_HxA" />
+        <Data Column="File_ParentHxT" />
+      </Row>
+    </CustomTable>
+
+    <DirectoryRef Id="VCS_100_HELP_FILTERS_1033">
+      <Component Id="Component_PSDKFilter.VCS100" Guid="17A37373-9449-416F-9858-3326FE46008F">
+        <?include vs_skus/VCSharpExpress10.wxs?>
+        <File Id="File_DNMFFilter10.VCS100" Name="DNMFFilter10.xml"
+          Source="$(var.MSBuildProjectDirectory)\DNMFFilter10.xml" DiskId="1"/>
+        <RegistryKey Root="HKLM" Key="$(var.VSInstalledHelpFilesKey)\VisibleFilters">
+          <RegistryValue Name="DNMFFilter10" Type="integer" Value="1"/>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VS_100_HELP_FILTERS_1033">
+      <Component Id="Component_PSDKFilter.VS100" Guid="927FD6B8-4123-4174-B0EC-CA5182EBB331">
+        <?include vs_skus/VisualStudio10.wxs?>
+        <File Id="File_DNMFFilter10.VS100" Name="DNMFFilter10.xml"
+          Source="$(var.MSBuildProjectDirectory)\DNMFFilter10.xml" DiskId="1"/>
+        <RegistryKey Root="HKLM" Key="$(var.VSInstalledHelpFilesKey)\VisibleFilters">
+          <RegistryValue Name="DNMFFilter10" Type="integer" Value="1"/>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

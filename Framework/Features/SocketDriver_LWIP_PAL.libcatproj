@@ -1,0 +1,53 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PKUI_LibraryCategory>
+<LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SocketDriver_PAL_LWIP</Name>
+  <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{9DB86889-471A-4743-9ACF-1AED838973FB}</Guid>
+  <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">Socket driver category</Description>
+  <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">PAL</Level>
+  <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">Network</Groups>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\pal\lwip\SocketsDriver\stubs\dotNetMF.proj</FilePath>
+  </Templates>
+  <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <FilePath>$(SPOCLIENT)\DeviceCode\pal\lwip\SocketsDriver\stubs\SocketsDriver_stubs.cpp</FilePath>
+  </Templates>
+  <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
+  <StubLibrary Name="SocketsDriver_LWIP_PAL_stubs" Guid="{5C02A8D7-C8E4-43d3-97E9-CBE27F6A26D9}" ProjectPath="$(SPOCLIENT)\DeviceCode\pal\lwip\SocketsDriver\stubs\dotnetmf.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <VersionDependency>
+      <Major>4</Major>
+      <Minor>0</Minor>
+      <Revision>0</Revision>
+      <Build>0</Build>
+      <Extra />
+      <Date>2009-08-24</Date>
+      <Author />
+    </VersionDependency>
+    <ComponentType>Library</ComponentType>
+  </StubLibrary>
+  <Version xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2009-04-30</Date>
+    <Author>Microsoft</Author>
+  </Version>
+  <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
+  <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\SocketDriver_LWIP_PAL.libcatproj</ProjectPath>
+  <FeatureAssociations Name="Network for lwIP" Guid="{31DBB847-F042-4d95-A7FD-8132623961C7}" ProjectPath="$(SPOCLIENT)\Framework\Features\Network_LWIP.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+  <FeatureAssociations Name="Network (LWIP OS)" Guid="{FC481D0B-784B-402B-8EE0-0BD1D29823A9}" ProjectPath="$(SPOCLIENT)\Framework\Features\Network_LWIP_OS.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <ComponentType>Feature</ComponentType>
+  </FeatureAssociations>
+  <IsTransport xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IsTransport>
+</LibraryCategory></PKUI_LibraryCategory>
+  </PropertyGroup>
+  <ItemGroup>
+    <LibraryCollection Include="$(SPOCLIENT)\DeviceCode\pal\lwip\SocketsDriver\dotnetmf.proj" />
+  </ItemGroup>
+</Project>

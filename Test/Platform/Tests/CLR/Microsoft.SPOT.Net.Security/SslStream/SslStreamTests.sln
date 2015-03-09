@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SslStreamTests", "SslStreamTests.csproj", "{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RTM|Any CPU = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.Release|Any CPU.Deploy.0 = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.RTM|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.RTM|Any CPU.Build.0 = Debug|Any CPU
+		{E3AB0A71-ABD8-48E1-A647-C30EDCAD427B}.RTM|Any CPU.Deploy.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

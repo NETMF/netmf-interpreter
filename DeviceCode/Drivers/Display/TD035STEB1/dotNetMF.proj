@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>TD035STEB1</AssemblyName>
+    <ProjectGuid>{c541535d-1929-4720-a112-4cbfd850ac70}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>TD035STEB1 display driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>TD035STEB1.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Display\TD035STEB1\dotNetMF.proj</ProjectPath>
+    <ManifestFile>TD035STEB1.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Display</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="LCD_HAL" Guid="{9F6063F2-7ED0-49F7-95A3-2A2D2219EEAB}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\Display\TD035STEB1</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <FastCompileCPPFile Include="fastcompile_TD035STEB1.cpp" />
+    <Compile Include="TD035STEB1_driver.cpp" />
+    <Compile Include="TD035STEB1_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="td035steb1.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

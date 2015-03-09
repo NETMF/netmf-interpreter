@@ -1,0 +1,32 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_Tools">
+    <Feature Id="Tools"
+             Title=".NET Micro Framework Tools"
+             Description="Tools for the .NET MF"
+             Display="hidden"
+             Level="1"
+             Absent="disallow"
+             InstallDefault="followParent">
+      <ComponentRef Id="Component_TFConvert"/>
+      <ComponentRef Id="Component_MFDeploy"/>
+      <ComponentRef Id="Component_MFDeployEngine"/>       
+      <ComponentRef Id="COMPONENT_TRUETYPEFONTS"/>
+      <ComponentRef Id="Component_ToolsDirectoryShortcut"/>
+<!--
+      <?if $(var.INCLUDEDOCS) = "true"?>
+      <ComponentRef Id="Component_MFDeployDocumentation"/>
+      <?endif?>
+-->
+    </Feature>
+    <DirectoryRef Id="ToolsDir">
+      <Component Id="Component_ToolsDirectoryShortcut" Guid="632f6d21-72a5-4813-938b-afef55258b9e">
+        <Shortcut Id="Shortcut_ToolsDirectory" Directory="ProgramMenuDir" Name="Tools" Target="[ToolsDir]" />
+      </Component>
+      <?if $(var.INCLUDEDOCS) = "true"?>
+      <Component Id="Component_MFDeployDocumentation" Guid="ea7f8302-167c-4883-a79e-215b979e9482">
+        <File Id="File_MFDeploy_CHM" Name="MFDeploy.chm" Source="$(env.SPOCLIENT)\UE\Public\Docs\Built\MFDeploy\en-us\chmBuild\MFDeploy.chm" DiskId="1" />
+      </Component>
+      <?endif?>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

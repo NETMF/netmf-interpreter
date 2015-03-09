@@ -1,0 +1,6 @@
+Verbosity 0
+
+AddFontToProcess %CLRLIB%\fonts\arialbd.ttf
+
+SelectFont "FN:Arial Bold,HE:-10,WE:700,PF:39,FullName:Monotype:Arial Bold:Version 2.90 (Microsoft),Style:Bold"
+ImportRange 32 128

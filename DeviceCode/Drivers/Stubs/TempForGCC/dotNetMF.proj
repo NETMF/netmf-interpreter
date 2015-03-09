@@ -1,0 +1,46 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>gcc_hal</AssemblyName>
+    <ProjectGuid>{EB05534A-A8DB-4bbf-9CDA-7D6C65CF3D06}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>System GCC library</Description>
+    <Level>HAL</Level>
+    <LibraryFile>GCC_hal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\TempForGCC\dotNetMF.proj</ProjectPath>
+    <ManifestFile>gcc_hal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Initialization_HAL" Guid="{34EDFFBE-0FB6-49CC-A673-03BD96EDE0A9}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2008-08-04</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\Stubs\TempForGCC</Directory>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>3.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType  >Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="missFunctions.cpp" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,67 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <!--
+    A project may explicitly specify a version of the VSSDK it targets by setting  the 'NetMFBuildVsSdkVersion' property.
+    This sets the default based on the current build environment VS_VER, which is provided in the 'setenv_vs' command.
+    -->
+    <NetMFBuildVsSdkVersion Condition="'$(NetMFBuildVsSdkVersion)'==''">$(VS_VER)</NetMFBuildVsSdkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(UseGacInAssembllySearchPath)'==''">
+    <!-- Default to using the GAC in the build as the default state -->
+    <UseGacInAssembllySearchPath >true</UseGacInAssembllySearchPath>
+    <UseGacInAssembllySearchPath Condition="EXISTS('$(SPOROOT)\tools\x86\MicrosoftSDKs\VSSDK\vs$(NetMFBuildVsSdkVersion)\')">false</UseGacInAssembllySearchPath>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(NetMFBuildVsSdkVersion)'=='11'">
+    <VSSDKINSTALLDIR>$(VSSDK11INSTALLDIR)</VSSDKINSTALLDIR>
+    <!-- Additional VS SDK version specific properties go here -->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NetMFBuildVsSdkVersion)'=='12'">
+    <VSSDKINSTALLDIR>$(VSSDK12INSTALLDIR)</VSSDKINSTALLDIR>
+    <!-- Additional VS SDK version specific properties go here -->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NetMFBuildVsSdkVersion)'=='14'">
+    <VSSDKINSTALLDIR>$(VSSDK14INSTALLDIR)</VSSDKINSTALLDIR>
+    <!-- Additional VS SDK version specific properties go here -->
+  </PropertyGroup>
+    
+  <PropertyGroup>
+    <GACAssemblySearchPathToken Condition="'$(UseGacInAssembllySearchPath)'!='true'">$(VSSDKINSTALLDIR)\GAC;{GAC};</GACAssemblySearchPathToken>
+    <GACAssemblySearchPathToken Condition="'$(UseGacInAssembllySearchPath)'=='true'">{GAC};</GACAssemblySearchPathToken>
+    
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+    <DocFile Condition=" '$(TinyCLR_CSharp_Documentation)'=='true' ">$(OutputPath)$(AssemblyName).xml</DocFile>
+    <NoWarn>$(NoWarn),1668,1762</NoWarn>
+    <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)'==''" >false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow Condition="'$(CheckForOverflowUnderflow)'==''" >false</CheckForOverflowUnderflow>
+    <CommonAssemblyInfoTemplate>$(SPOCLIENT)\tools\AssemblyInfo.cs.template</CommonAssemblyInfoTemplate>
+    <CommonAssemblyInfoItemName>Compile</CommonAssemblyInfoItemName>
+    <CommonAssemblyInfoLanguage>CSharp</CommonAssemblyInfoLanguage>
+    <VSSDKAssemblySearchPath Condition="'$(VSSDKINSTALLDIR)'!=''">$(VSSDKINSTALLDIR)\VisualStudioIntegration\Common\Assemblies\v4.0\;$(VSSDKINSTALLDIR)\VisualStudioIntegration\Common\Assemblies\v2.0\;$(MSBuildProgramFiles32)\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\;</VSSDKAssemblySearchPath>
+    <!-- NOTE: '{GAC}' is deliberately not listed in the search path directly. This ensures we have more control over the binaries used for generating reliable, repeatable builds -->
+    <AssemblySearchPaths Condition=" '$(AssemblySearchPaths)' == '' ">
+            {CandidateAssemblyFiles};
+            $(ReferencePath);
+            {HintPathFromItem};
+            {TargetFrameworkDirectory};
+            {Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};
+            {AssemblyFolders};
+            $(GACAssemblySearchPathToken)
+            $(VSSDKAssemblySearchPath)
+            $(OutputPath);
+            {RawFileName}
+    </AssemblySearchPaths>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <Import Project="Microsoft.SPOT.Build.Host.Targets" />
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+</Project>

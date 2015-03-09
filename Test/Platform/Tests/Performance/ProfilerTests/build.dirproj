@@ -1,0 +1,38 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="ProfilerCollectionsTests\ProfilerCollectionsTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="ProfilerCollectionsTests\ProfilerCollectionsTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="ProfilerStringTests\ProfilerStringTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="ProfilerStringTests\ProfilerStringTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="ProfilerThreadTests\ProfilerThreadTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="ProfilerThreadTests\ProfilerThreadTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="ProfilerXmlTests\ProfilerXmlTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="ProfilerXmlTests\ProfilerXmlTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="ProfilerTests.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+</Project>

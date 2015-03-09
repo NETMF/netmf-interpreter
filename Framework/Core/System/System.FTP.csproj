@@ -1,0 +1,58 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>System.Ftp</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>System.Net</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <NoWarn>$(NoWarn),0169,0659</NoWarn>
+    <ProjectGuid>{AB39B9e9-9797-4769-A99D-768AC2308218}</ProjectGuid>
+    <ComponentGuid>{89471248-6087-40cd-2308-3ca187f47d72}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+    <DefineConstants>MICROFRAMEWORK</DefineConstants>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+
+  <ItemGroup>
+    <Compile Include="FTP\Client\FTPCommand.cs" />
+    <Compile Include="FTP\Client\FTPWebRequest.cs" />
+    <Compile Include="FTP\Client\FtpWebRequestCreator.cs" />
+    <Compile Include="FTP\Client\FtpWebResponse.cs" />
+    <Compile Include="FTP\Client\WebRequestMethods.cs" />
+    <Compile Include="FTP\Server\FilePath.cs" />
+    <Compile Include="FTP\Server\FtpCommand.cs" />
+    <Compile Include="FTP\Server\FtpListener.cs" />
+    <Compile Include="FTP\Server\FtpListenerContext.cs" />
+    <Compile Include="FTP\Server\FtpListenerManager.cs" />
+    <Compile Include="FTP\Server\FtpListenerRequest.cs" />
+    <Compile Include="FTP\Server\FtpListenerResponse.cs" />
+    <Compile Include="FTP\Server\FtpListenerSession.cs" />
+    <Compile Include="FTP\Server\FtpResponseStream.cs" />
+    <Compile Include="FTP\Server\Logging.cs" />
+    <Compile Include="FTP\Server\PrefixList.cs" />
+    <Compile Include="FTP\Server\SessionPool.cs" />
+    <Compile Include="FTP\Server\Types.cs" />
+    <Compile Include="FTP\Server\Util.cs" />
+    <Compile Include="FTP\Server\Listeners\FtpDefaultListener.cs" />
+    <Compile Include="FTP\Server\Listeners\FtpFilesystemListener.cs" />
+    <Compile Include="FTP\Server\Listeners\FtpMemoryListener.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>$(BUILD_TREE_DLL)\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Http">
+      <HintPath>$(BUILD_TREE_DLL)\System.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>$(BUILD_TREE_DLL)\System.IO.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

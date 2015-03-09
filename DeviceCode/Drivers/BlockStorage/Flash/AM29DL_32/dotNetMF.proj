@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\BlockStorage\Flash\AM29DL_32\dotNetMF.proj</ProjectPath>
+    <ProjectGuid>{84b3be78-43c5-42a1-8ebb-748dc432d2c0}</ProjectGuid>
+    <AssemblyName>AM29DL_32_BL</AssemblyName>
+    <Size>
+    </Size>
+    <Description>Block storage library for AM29DL 32-bit flash chip</Description>
+    <Level>HAL</Level>
+    <LibraryFile>AM29DL_32_BL.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>AM29DL_32_BL.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>BlockStorage</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorage_HAL" Guid="{B87F1565-3D64-4531-A84B-2F9C2B221D1E}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Directory>DeviceCode\Drivers\Blockstorage\Flash\AM29DL_32</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\Framework\features\BlockStorageConfig_HAL.libcatproj" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="AM29DL_32_driver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="am29dl_32.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

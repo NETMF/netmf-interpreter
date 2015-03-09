@@ -1,0 +1,20 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <TemplateID>Microsoft.VisualBasic.MicroFramework.ClassLibrary</TemplateID>
+    <TemplateDefaultName>MFClassLibrary</TemplateDefaultName>
+    <TemplateName>ClassLibrary</TemplateName>
+    <TemplateNameString>Class Library</TemplateNameString>
+    <TemplateDescriptionString>A project for creating a .NET Micro Framework class librarye</TemplateDescriptionString>
+    <TemplateProjectType>VisualBasic</TemplateProjectType>
+    <TemplateImplementationLanguage>VisualBasic</TemplateImplementationLanguage>
+    <TemplateIconFile>Project.ico</TemplateIconFile>
+    <TemplateSortOrder>1000</TemplateSortOrder>
+  </PropertyGroup>
+  <ItemGroup>
+    <WiXSource Include="VBTemplate.wxs" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <ItemGroup>
+    <VSTemplateProject Include="MFClassLibrary.vbproj" />
+  </ItemGroup>
+</Project>

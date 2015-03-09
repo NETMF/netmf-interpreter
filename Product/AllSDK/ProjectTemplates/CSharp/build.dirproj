@@ -1,0 +1,13 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+    <ItemGroup>
+      <Project Include="LibTemplate\MFClassLibrary.csproj" />
+      <Project Include="LibTemplate\MFClassLibrary.vstproj" />
+      <Project Include="ExeTemplate\MFConsoleApplication.csproj" />
+      <Project Include="ExeTemplate\MFConsoleApplication.vstproj" />
+      <Project Include="WinTemplate\MFWindowApplication.csproj" />
+      <Project Include="WinTemplate\MFWindowApplication.vstproj" />
+      <Project Include="EmulatorTemplate\MFEmulator.csproj" />
+      <Project Include="EmulatorTemplate\MFEmulator.vstproj" />
+    </ItemGroup>
+</Project>

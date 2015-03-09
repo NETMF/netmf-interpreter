@@ -1,0 +1,92 @@
+<?xml version='1.0'?>
+<Include>
+  <!-- How to deal with ComInterop registration.
+       Assembly=".net" puts this into the GAC, which I don't think we want
+       AssemblyRegisterComInterop ="yes"
+       Assembly=".net"
+  -->
+
+  <?define EngineKey="$(var.VSRegKeyRoot)\AD7Metrics\Engine\$(var.EngineGuid)"?>
+  <?define InstalledProductsKey="$(var.VSRegKeyRoot)\InstalledProducts\Microsoft .NET Micro Framework"?>
+  <?define PortSupplierKey="$(var.VSRegKeyRoot)\AD7Metrics\PortSupplier\$(var.PortSupplierGuid)"?>
+  <?define PackageKey="$(var.VSRegKeyRoot)\Packages\$(var.PackageGuid)"?>
+  <?define ProjectKeyCSharp="$(var.VSRegKeyRoot)\Projects\$(var.ProjectGuidCSharp)"?>
+  <?define ProjectKeyVisualBasic="$(var.VSRegKeyRoot)\Projects\$(var.ProjectGuidVisualBasic)"?>
+
+  <RegistryKey Root ="HKLM" Key ="$(var.EngineKey)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Type="string" Value=".NET Micro Framework" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Attach" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="CallStackBP" Type="integer" Value="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="CLSID"	Type="string" Value="$(var.EngineCLSID)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="ConditionalBP" Type="integer" Value="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="DataBP" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Disassembly" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Embedded" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="ENC" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="EngineCanWatchProcess" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Exceptions" Type="integer" Value="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="FunctionBP" Type="integer" Value="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="HitCountBP" Type="integer" Value="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="InterceptCurrentException" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Interop" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="JITDebug" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Name" Type="string" Value="Managed" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="NativeInteropOK" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="PortSupplier" Type="string" Value="$(var.PortSupplierGuid)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="ProgramProvider" Type="string" Value="$(var.EngineCLSID)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Registers" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="RemoteDebugging" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="Runtime" Type="string" Value="$(var.CorDebugCLSID)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="SetNextStatement" Type="integer" Value="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="SqlCLR" Type="integer" Value="0" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="SuspendThread" Type="integer" Value="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.EngineKey)" Name="UseShimAPI" Type="integer" Value="0" />
+
+  <RegistryKey Root ="HKLM" Key ="$(var.InstalledProductsKey)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root ="HKLM" Key ="$(var.InstalledProductsKey)" Name="DefaultProductAttribute" Type="string" Value="Microsoft .NET Micro Framework" />
+  <RegistryValue Root ="HKLM" Key ="$(var.InstalledProductsKey)" Name="Package" Type="string" Value="$(var.PackageGuid)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.InstalledProductsKey)" Name="UseInterface" Type="integer" Value="1" />
+
+  <RegistryKey Root ="HKLM" Key ="$(var.PortSupplierKey)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root ="HKLM" Key ="$(var.PortSupplierKey)" Name="CLSID" Type="string" Value="$(var.PortSupplierCLSID)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PortSupplierKey)" Name="Name" Type="string" Value="TinyCLR" />
+
+  <RegistryKey Root ="HKLM" Key ="$(var.PackageKey)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Type="string" Value="Microsoft .NET Micro Framework SDK" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.VsPackage" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" /> 
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="CompanyName" Type="string" Value="Microsoft Corporation" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="ID" Type="integer" Value="$(var.SKU_PLK_ID)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="InprocServer32" Type="string" Value="mscoree.dll" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="MinEdition" Type="string" Value="Standard" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="ProductName" Type="string" Value="Microsoft .NET Micro Framework SDK" />
+  <RegistryValue Root ="HKLM" Key ="$(var.PackageKey)" Name="ProductVersion" Type="string" Value="$(var.ProdVerMajorMinor).0.0" />
+
+  <!--CSharp Project Registry Values-->
+  <RegistryKey Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Name="Name" Type="string" Value=".Net Micro Framework C# Project" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Name="Package" Type="string" Value="$(var.PackageGuid)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Name="Language(VsTemplate)" Type ="string" Value ="CSharp" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Name="ProjectSubType(VsTemplate)" Type ="string" Value ="MicroFramework" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Name="ShowOnlySpecifiedTemplates(VsTemplate)" Type ="integer" Value ="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Name="TemplateGroupIDs(VsTemplate)" Type ="string" Value ="MicroFramework" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyCSharp)" Name="TemplateIDs(VsTemplate)" Type ="string" Value ="$(var.VCSTemplateIDs)" />
+
+  <!--VBasic Project Registry Values-->
+  <RegistryKey Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Name="Name" Type="string" Value=".Net Micro Framework VB.Net Project" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Name="Package" Type="string" Value="$(var.PackageGuid)" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Name="Language(VsTemplate)" Type ="string" Value ="VisualBasic" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Name="ProjectSubType(VsTemplate)" Type ="string" Value ="MicroFramework" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Name="ShowOnlySpecifiedTemplates(VsTemplate)" Type ="integer" Value ="1" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Name="TemplateGroupIDs(VsTemplate)" Type ="string" Value ="MicroFramework" />
+  <RegistryValue Root ="HKLM" Key ="$(var.ProjectKeyVisualBasic)" Name="TemplateIDs(VsTemplate)" Type ="string" Value ="$(var.VBTemplateIDs)" />
+
+  <?undef EngineKey ?>
+  <?undef InstalledProductsKey ?>
+  <?undef PortSupplierKey ?>
+  <?undef PackageKey ?>
+  <?undef ProjectKeyCSharp ?>
+  <?undef ProjectKeyVisualBasic ?>
+</Include>
+

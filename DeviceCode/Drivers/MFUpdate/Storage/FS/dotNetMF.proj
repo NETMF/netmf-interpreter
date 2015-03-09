@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\MFUpdate\Storage\FS\dotNetMF.proj</ProjectPath>
+    <ProjectGuid>{E20138DE-5F8E-41F7-BFFC-E98B70EF4148}</ProjectGuid>
+    <AssemblyName>FSUpdateStorage</AssemblyName>
+    <Size>
+    </Size>
+    <Description>Update Storage driver using the File System</Description>
+    <Level>HAL</Level>
+    <LibraryFile>FSUpdateStorage.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>FSUpdateStorage.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Update</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\MFUpdate\Storage\FS</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="FSUpdateStorage.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\mfupdate_decl.h" />
+    <HFiles Include="fsupdatestorage.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

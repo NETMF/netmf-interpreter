@@ -1,0 +1,255 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+ <!-- base on cpu type, setup compiler-->
+
+  <PropertyGroup>
+    <BuildToolName>Blackfin</BuildToolName>
+    <BuildToolGuid>{7B46838D-2562-4ca3-80FC-A0401ACAF9F7}</BuildToolGuid>
+    <Documentation></Documentation>
+    <ProcessorTypes>ADSP-BF527;ADSP-BF537</ProcessorTypes>
+    <ISAs>blackfin</ISAs>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- ****** TBD -->
+    <!-- to be confirmed for floating license -->
+    <ADI_WRAPPER Condition="'$(NO_WRAPPER)'==''"></ADI_WRAPPER>
+
+    <!-- ............ TOOLS ..........................................-->
+    <!-- VADSP Tools -->
+    <CC>$(ADI_WRAPPER) "$(ADI_DSP)\ccblkfn.exe"</CC>
+    <CPP>$(ADI_WRAPPER) "$(ADI_DSP)\ccblkfn.exe"</CPP>
+
+    <AS>$(ADI_WRAPPER) "$(ADI_DSP)\easmblkfn.exe"</AS>
+    <LINK>$(ADI_WRAPPER) "$(ADI_DSP)\linker.exe"</LINK>
+    <AR>"$(ADI_DSP)\ccblkfn.exe"</AR>
+
+    <!-- loader and splitter for blackfin-->
+    <FROMELF>$(ADI_WRAPPER) "$(ADI_DSP)\elfloader.exe"</FROMELF>
+
+    <!--.................................................................-->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Assembler, C and C++ common compiler flags -->
+    <AS_CC_CPP_COMMON_FLAGS>$(AS_CC_CPP_COMMON_FLAGS) -proc $(DEVICE_TYPE)</AS_CC_CPP_COMMON_FLAGS>
+  </PropertyGroup>
+
+
+  <!-- assembler flags -->
+  <PropertyGroup>
+    <!-- target dependant flags -->
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >$(AS_TARGETTYPE_FLAGS) -D BUILD_RTM=1</AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='release'"      >$(AS_TARGETTYPE_FLAGS) -D BUILD_RTM=0 -g</AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(AS_TARGETTYPE_FLAGS) -D BUILD_RTM=0 -g</AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >$(AS_TARGETTYPE_FLAGS) -D BUILD_RTM=0 -g</AS_TARGETTYPE_FLAGS>
+
+
+    <!-- AS_FLAGS = Assembler options -->
+    <AS_FLAGS>$(AS_FLAGS)</AS_FLAGS>
+
+    <!-- Adjust the compiler/assembler flags according to the settings -->
+    <AS_FLAGS Condition="'$(sampleprof)'=='true'">$(AS_FLAGS) -DFIQ_SAMPLING_PROFILER=1</AS_FLAGS>
+    <AS_FLAGS Condition="'$(latencyprof)'=='true'">$(AS_FLAGS) -DFIQ_LATENCY_PROFILER=1</AS_FLAGS>
+
+    <!-- Assembler target type MARCRO define flags -->
+    <AS_FLAGS>$(AS_FLAGS) -D TargetLocation='$(TARGETLOCATION)'</AS_FLAGS >
+    <AS_FLAGS>$(AS_FLAGS) -D TargetModel='$(TARGETPLATFORM)'</AS_FLAGS >
+    <AS_FLAGS>$(AS_FLAGS) -D TargetPlatformName='PLATFORM_BLACKFIN_$(TARGETPLATFORM)'</AS_FLAGS >
+    <AS_FLAGS>$(AS_FLAGS) -D TargetPlatformProcessor='PLATFORM_BLACKFIN_$(TARGETPROCESSOR)'</AS_FLAGS>
+    <AS_FLAGS>$(AS_FLAGS) $(AS_CC_CPP_COMMON_FLAGS) $(AS_TARGETTYPE_FLAGS) $(AS_INCS) $(ExtraASFlags)</AS_FLAGS>
+
+    <AS_FLAGS>$(AS_FLAGS) @(AS_Defines->'-D %(filename)',' ')</AS_FLAGS>
+  </PropertyGroup>
+
+
+  <!--Common flags for CC/CPP  -->
+  <PropertyGroup>
+
+    <!-- target dependant flags -->
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >$(CC_CPP_TARGETTYPE_FLAGS) -D BUILD_RTM -O -Ov100</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='release'"      >$(CC_CPP_TARGETTYPE_FLAGS) -D NDEBUG -O -Ov100</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >$(CC_CPP_TARGETTYPE_FLAGS) -D DEBUG -g -save-temps -path-output $(OBJ_DIR)</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(CC_CPP_TARGETTYPE_FLAGS) -D DEBUG -g -save-temps -path-output $(OBJ_DIR)</CC_CPP_TARGETTYPE_FLAGS>
+
+    <!-- flags based on input options -->
+    <CC_CPP_COMMON_FLAGS Condition="'$(reducesize)'=='true'" >$(CC_CPP_COMMON_FLAGS) -DHAL_REDUCESIZE</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(timewarp)'=='true'"   >$(CC_CPP_COMMON_FLAGS) -DHAL_TIMEWARP</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(profile)'=='true'"    >$(CC_CPP_COMMON_FLAGS) -DARM_PROFILE_ACTIVE</CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS Condition="'$(FLAVOR)'!='RTM'"      >$(CC_CPP_COMMON_FLAGS) -DTINYCLR_ENABLE_SOURCELEVELDEBUGGING </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(sampleprof)'=='true'" >$(CC_CPP_COMMON_FLAGS) -DFIQ_SAMPLING_PROFILER</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(latencyprof)'=='true'">$(CC_CPP_COMMON_FLAGS) -DFIQ_LATENCY_PROFILER</CC_CPP_COMMON_FLAGS>
+
+    <!-- C/C++ common flags -->
+    <CC_CPP_COMMON_FLAGS Condition="'$(PATCH_BUILD)'=='Active'">$(CC_CPP_COMMON_FLAGS) -D PATCH_BUILD</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(OS_PLATFORM)'=='true'">$(CC_CPP_COMMON_FLAGS) -DPLATFORM_ARM_OS_PORT</CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -c -structs-do-not-overlap -no-multiline -double-size-32 -decls-strong -warn-protos -path-temp $(OBJ_DIR)</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -D __ADSPBLACKFIN__ </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(ENDIANNESS)'=='le'">$(CC_CPP_COMMON_FLAGS) -D LITTLE_ENDIAN </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(ENDIANNESS)'=='be'">$(CC_CPP_COMMON_FLAGS) -D BIG_ENDIAN </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -D TARGETLOCATION_$(TARGETLOCATION) -D PLATFORM_BLACKFIN_$(TARGETPLATFORM) </CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS Condition="'$(PLATFORM_NO_APPDOMAINS)'=='true'"  >$(CC_CPP_COMMON_FLAGS) -D TINYCLR_NO_APPDOMAINS </CC_CPP_COMMON_FLAGS>
+
+    <!-- BUILD VERSIONS -->
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -D VERSION_MAJOR=$(MajorVersion) -D VERSION_MINOR=$(MinorVersion) -D VERSION_BUILD=$(BuildNumber) -D VERSION_REVISION=$(RevisionNumber) -D OEMSYSTEMINFOSTRING="\"$(OemSystemInfoString)\""</CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) @(TinyCLR_Defines->'-D %(filename)',' ')</CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) @(CC_CPP_Defines->'-D %(filename)',' ')</CC_CPP_COMMON_FLAGS>
+
+    <!-- common include directory -->
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\DeviceCode\Targets\$(TARGETCODEBASETYPE)\$(TARGETCODEBASE)\$(PLATFORM)</CC_CPP_INCS>
+
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(CLRROOT)\$(Directory)</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\DeviceCode\include</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\Support\Include</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\crypto\inc </CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\CLR\Include</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\CLR\Libraries\CorLib</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\CLR\Libraries\SPOT</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\CLR\Libraries\SPOT_Hardware</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\CLR\Libraries\SPOT_Graphics</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I $(SPO_SDK)\CLR\Libraries\SPOT_Net</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I "$(ADI_DSP)\Include"</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) @(IncludePaths->'-I$(CLRROOT)\%(relativedir)%(filename)',' ')</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) @(DirectIncludePaths->'-I%(FullPath)',' ')</CC_CPP_INCS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) $(AS_CC_CPP_COMMON_FLAGS) $(CC_CPP_TARGETTYPE_FLAGS) $(ExtraFlags) $(CC_CPP_INCS) </CC_CPP_COMMON_FLAGS>
+
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <!-- C flags -->
+    <CC_FLAGS>$(CC_FLAGS) </CC_FLAGS>
+    <CC_FLAGS>$(CC_FLAGS) $(CC_CPP_COMMON_FLAGS) $(ExtraCCFlags)</CC_FLAGS>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- C++ flags -->
+    <CPP_FLAGS>$(CPP_FLAGS) -c++ </CPP_FLAGS>
+    <CPP_FLAGS>$(CPP_FLAGS) $(CC_CPP_COMMON_FLAGS) $(ExtraCPPFlags)</CPP_FLAGS>
+
+  </PropertyGroup>
+
+
+
+  <PropertyGroup>
+
+    <!-- Library flags -->
+    <ARFLAGS>$(ARFLAGS) -proc $(DEVICE_TYPE) -build-lib </ARFLAGS>
+
+    <!-- Linking flags -->
+    <LINK_FLAGS>$(LINK_FLAGS) -t -xref -L $(LIB_DIR) -proc $(DEVICE_TYPE) -jcs2l </LINK_FLAGS>
+
+    <LINK_FLAGS>$(LINK_FLAGS) -L$(DST_DIR)\$(OBJ_EXT)\DeviceCode\Targets\$(TARGETCODEBASETYPE)\$(TARGETCODEBASE)\DeviceCode\ -MDUSER_CRT="Application_basiccrt.doj" -MDUSE_FILEIO -MD__cplusplus  -MDUSE_SDRAM -od $(BIN_DIR)</LINK_FLAGS>
+
+    <LINK_TARGETTYPE_FLAGS>$(LINK_TARGETTYPE_FLAGS)</LINK_TARGETTYPE_FLAGS>
+
+
+    <LINK_FLAGS>-L$(LIB_DIR) -L$(PLATFORM_INDEPENDENT_LIB_DIR) $(LINK_FLAGS) $(LINK_TARGETTYPE_FLAGS)</LINK_FLAGS>
+
+    <LOADER_FLAG>-b flash </LOADER_FLAG>
+
+    <EXEName>$(BIN_DIR)\$(AssemblyName)</EXEName>
+
+    <TargetRule Condition="'$(OutputType)'=='Library'">ADIBuildLib</TargetRule>
+    <TargetRule Condition="'$(OutputType)'=='Executable'">BuildDxe</TargetRule>
+
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <MakeDXEInputs Include="$(MakeDXEInputs)"/>
+    <FastCompileFile Condition="'$(ENABLE_FASTCOMPILE)'=='true'" Include="@(FastCompileCFile)"/>
+    <FastCompileFile Condition="'$(ENABLE_FASTCOMPILE)'=='true'" Include="@(FastCompileCPPFile)"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(OutputType)'=='Executable'">
+    <EXEIncludePaths Include="$(ADI_DSP)"/>
+  </ItemGroup>
+
+
+  <Target Name="ADICompileCPP" Condition="'@(CPPFiles)'!='' or '@(FastCompileCPPFile)'!=''" Inputs="@(FastCompileCPPFile);@(CPPFiles);@(HFiles)" Outputs="@(ObjFiles)">
+<!--
+     <ADICompileCPP InputFiles="@(CPPFiles->'%(FullPath)')" OutputPath="$(OBJ_DIR)" Flags="$(CPP_FLAGS) " IncludePaths="@(IncludeDirs)"/>
+-->
+   <Exec Condition="Exists('%(FastCompileCPPFile.FullPath)') and '@(FastCompileCPPFile)'!='' and '$(ENABLE_FASTCOMPILE)'=='true'" Command="$(ADI_WRAPPER) $(CPP) %(FastCompileCPPFile.FullPath) $(CPP_FLAGS) -o $(OBJ_DIR)\%(FastCompileCPPFile.Filename).$(OBJ_EXT)"/>
+   <Exec Condition="Exists('%(CPPFiles.FullPath)')           and '@(FastCompileCPPFile)'==''"                                     Command="$(ADI_WRAPPER) $(CPP) %(CPPFiles.FullPath) $(CPP_FLAGS) -o $(OBJ_DIR)\%(CPPFiles.Filename).$(OBJ_EXT)"/>
+
+  </Target>
+
+
+  <Target Name="ADICompileC" Condition="'@(CFiles)'!='' or '@(FastCompileCFile)'!=''"  Inputs="@(FastCompileCFile);@(CFiles);@(HFiles)" Outputs="@(ObjFiles)">
+<!--
+    <ADICompileCC InputFiles="@(CFiles->'%(FullPath)')" OutputPath="$(OBJ_DIR)" Flags="$(CC_FLAGS)" IncludePaths="@(IncludeDirs)"/>
+-->
+    <Exec Condition="Exists('%(FastCompileCFile.FullPath)') and '@(FastCompileCFile)'!='' and '$(ENABLE_FASTCOMPILE)'=='true'" Command="$(ADI_WRAPPER) $(CC) %(FastCompileCFile.FullPath) $(CC_FLAGS) -o $(OBJ_DIR)\%(FastCompileCFile.Filename).$(OBJ_EXT)"/>
+    <Exec Condition="Exists('%(CFiles.FullPath)')           and '@(FastCompileCFile)'==''"                                     Command="$(ADI_WRAPPER) $(CC) %(CFiles.FullPath) $(CC_FLAGS) -o $(OBJ_DIR)\%(CFiles.Filename).$(OBJ_EXT)"/>
+  </Target>
+
+
+  <Target Name="ADIAssemble" Condition="'@(AssemblyFiles)'!=''" Inputs="@(AssemblyFiles)" Outputs="@(AssemblyFiles->'$(OBJ_DIR)\%(FileName).$(OBJ_EXT)')">
+    <Message Text="ADI compile ass @(AssemblyFiles)   obj  = @(AssemblyFiles->'$(OBJ_DIR)\%(FileName).obj')"/>
+    <Exec Condition="Exists('%(AssemblyFiles.FullPath)')" Command="$(ADI_WRAPPER) $(AS)  %(AssemblyFiles.FullPath) $(AS_PLATFORM_FLAGS) $(AS_FLAGS) -l $(OBJ_DIR)\%(AssemblyFiles.Filename).lst -o $(OBJ_DIR)\%(AssemblyFiles.Filename).$(OBJ_EXT)"/>
+  </Target>
+
+  <Target Name="DelBuildLib" Condition="'$(OutputType)'=='Library'" Inputs="@(FastCompileCPPFile);@(CPPFiles);@(FastCompileCFile);@(CFiles);@(AssemblyFiles);@(HFiles)" Outputs="@(TargetLib)">
+    <Exec Condition="'@(FilesExist)'!='' " Command="del /q  @(TargetLib->'%(FullPath)', ' ')" ContinueOnError="true" />
+    <Exec Condition="'@(FilesExist)'!='' " Command="del /q  @(TargetLib->'%(FullPath).manifest', ' ')" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="ADIBuildLib" Condition="'$(OutputType)'=='Library'" DependsOnTargets="FindCompileFilesExistence;FindFastCompileFilesExistence;DelBuildLib;ADIAssemble;ADICompileC;ADICompileCPP;CreateLibManifest;$(ExtraTargets);" Inputs="@(ObjFiles)" Outputs="@(TargetLib);@(TargetLib->'%(FullPath).manifest')">
+    <Exec Condition="'@(FilesExist)'!='' " Command="$(ADI_WRAPPER) $(AR) $(ARFLAGS) -o @(TargetLib) &quot;@(ObjFiles,'&quot; &quot;')&quot;"/>
+  </Target>
+
+
+  <Target Name="BuildDXE" Condition="'$(OutputType)'=='Executable'" DependsOnTargets="ADICompileCPP;ADICompileC;$(ExtraEXETargets);ADIAssemble" Inputs="@(EXEInputs);@(InputLibs);@(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_LIB_DIR)\%(FileName)%(Extension)');@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)');@(EXEScatterFile)" Outputs="@(EXEOutput)">
+
+    <Exec Command="$(ADI_WRAPPER) $(LINK) @(EXEInputs,' ') @(InputLibs,' ') @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') @(DriverLibs->'$(RELATIVE_LIB_DIR)%(FileName)%(Extension)', ' ') @(EXEScatterfile,' ') -T $(ScatterFileDefinition)  $(LINK_FLAGS) -Map $(EXEName).map.xml -o @(EXEOutput) " />
+
+    <Exec Command="copy /y $(ScatterFileDefinition) $(BIN_DIR)"/>
+    <Exec Command="$(FROMELF) @(EXEOutput) -proc $(DEVICE_TYPE) $(FROMELFOPTIONS) -f hex  $(LOADER_FLAG) -o $(EXEName).hex" />
+    <Exec Command="$(FROMELF) @(EXEOutput) -proc $(DEVICE_TYPE) $(FROMELFOPTIONS) -f binary  $(LOADER_FLAG) -o $(EXEName).bin" />
+
+  </Target>
+
+    <Target Name="BuildSigFiles"
+            Inputs="@(AllSigFiles)"
+            Outputs="@(AllSigFiles->'%(OutputDir)%(FileName).sig'"
+            Condition="EXISTS('$(SPO_SDK)\crypto\lib\x86\dll\crypto.dll')" >
+
+    <Message Text="Create Signature files for @(AllSigFiles)"/>
+<!-- later need cryto lib to complete this target
+    <Exec Command="$(PRG_MMP) -sign_file %(RelativeDir)%(AllSigFiles.Filename)%(Extension) $(SPO_SDK)\tools\bin\tinybooter_private_key.bin %(AllSigFiles.Outputdir)%(AllSigFiles.Filename).sig"/>
+-->
+  </Target>
+
+
+
+  <Target Name="CompressBin" Inputs="@(CompressBinFile);@(CompressBinFile->'%(RootDir)%(Directory)%(FileName).symdefs')" Outputs="@(CompressBinOutput);@(CompressBinComp)" >
+    <Message Text="Compressing @(CompressBinFile)"/>
+    <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressBinFile->'%(RootDir)%(Directory)%(FileName).symdefs') EntryPoint -compress @(CompressBinFile) @(CompressBinComp)"/>
+    <Exec Command="$(AS) $(AS_FLAGS) -I$(OBJ_DIR) $(POS_DEPENDENT) $(SWTC)list @(CompressBinOutput->'%(RootDir)%(Directory)%(FileName).txt') $(SWTC)xref -o @(CompressBinOutput) @(CompressBinAsm)"/>
+    <Exec Command="del /q @(CompressBinFile->'%(RootDir)%(Directory)%(FileName).hex')" ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="TinyClrDat" Inputs="$(BIN_DIR)\tinyclr.dat;$(SRC_DIR)\tinyclr_dat.s" Outputs="$(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)">
+    <Message                               Text="***************************************************************************************************"/>
+    <Message Text="Target: TinyClrDat with outputs $(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)"/>
+    <Message Condition="'$(FORCEDAT)'!=''" Text="Building Tinyclr.dat from $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat"/>
+    <Message Condition="'$(FORCEDAT)'==''" Text="Building Tinyclr.dat from the features specified in the tinyclr.proj file"/>
+    <Exec Condition="'$(FORCEDAT)'!='' AND EXISTS('$(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat')" Command="copy /y $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat $(BIN_DIR)\tinyclr.dat" />
+    <Exec Command="$(ADI_WRAPPER) $(AS) tinyclr_dat.s $(AS_PLATFORM_FLAGS) $(AS_FLAGS) -I$(BIN_DIR) -l $(OBJ_DIR)\tinyclr_dat.lst -o $(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)"/>
+    <Message                               Text="========== Database file content:"/>    
+    <Exec Command="$(PRG_MMP) -dump_dat $(BIN_DIR)\tinyclr.dat" />
+    <Message                               Text="========== End of Database file content"/>    
+    <Message                               Text="***************************************************************************************************"/>
+    <Exec Command="copy /BVY $(BIN_DIR)\tinyclr.dat $(BIN_DIR)\tinyclr.dat.fromlastbuildrun" />
+    <Exec Command="del  /Q /F $(BIN_DIR)\tinyclr.dat"/>
+  </Target>
+
+</Project>
+

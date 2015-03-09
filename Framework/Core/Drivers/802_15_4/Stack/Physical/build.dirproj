@@ -1,0 +1,14 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+    <ItemGroup>
+        <Project Include="CC2420\802_15_4_MF_PHY.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="CC2420\802_15_4_MF_CC2420_PHY.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="CC2420\802_15_4_MF_MAC.csproj" >
+            <InProject>false</InProject>
+        </Project>
+    </ItemGroup>
+</Project>

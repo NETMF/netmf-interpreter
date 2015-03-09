@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://localhost/WineMonitorService/" elementFormDefault="qualified" targetNamespace="http://localhost/WineMonitorService/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:52305/WineMonitorService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WineMonitorService" />
+  <xs:element name="GetSensorData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cabinetId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSensorDataResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="GetSensorDataResult" nillable="true" type="q1:WineSensorData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAlert">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cabinetId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAlertResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="GetAlertResult" nillable="true" type="q2:AlertData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetThresholdValues">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cabinetId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetThresholdValuesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="GetThresholdValuesResult" nillable="true" type="q3:WineSensorThreshold" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWineSensorDataHistory">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cabinetId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="dataSince" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWineSensorDataHistoryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="GetWineSensorDataHistoryResult" nillable="true" type="q4:ArrayOfWineSensorData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAlertHistory">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cabinetId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="alertsSince" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAlertHistoryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="GetAlertHistoryResult" nillable="true" type="q5:ArrayOfAlertData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetThresholdHistory">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cabinetId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="changesSince" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetThresholdHistoryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="GetThresholdHistoryResult" nillable="true" type="q6:ArrayOfWineSensorThreshold" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWineCabinets">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWineCabinetsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="GetWineCabinetsResult" nillable="true" type="q7:ArrayOfCabinetItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeThresholds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cabinetId" nillable="true" type="xs:string" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WineMonitorService" minOccurs="0" name="data" nillable="true" type="q8:WineSensorThreshold" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeThresholdsResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

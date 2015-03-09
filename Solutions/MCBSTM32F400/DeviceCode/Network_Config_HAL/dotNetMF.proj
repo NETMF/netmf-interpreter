@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Network_Config_HAL_MCBSTM32F400</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{9056DC22-F8C1-4459-8794-37D50287EAAC}</ProjectGuid>
+    <Description>Network configuration MCBSTM32F400 library</Description>
+    <Level>HAL</Level>
+    <LibraryFile>Network_Config_HAL_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Network_Config_HAL\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Network_Config_HAL_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Network</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Network_Config_HAL" Guid="{14DA2330-C44D-4F5B-AE85-534E24AEC5B2}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>false</IsStub>
+    <Directory>Solutions\MCBSTM32F400\DeviceCode\Network_Config_HAL</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="Network_config_MCBSTM32F400.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

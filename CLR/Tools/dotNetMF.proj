@@ -1,0 +1,22 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>CLR\Tools</Directory>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup>
+    <SubDirectories Include="Include"/>
+    <SubDirectories Include="BuildHelper"/>
+    <SubDirectories Include="TFConvert"/>
+    <SubDirectories Include="CorHelper"/>
+    <SubDirectories Include="MetaDataProcessor"/>
+    <SubDirectories Include="Parser"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

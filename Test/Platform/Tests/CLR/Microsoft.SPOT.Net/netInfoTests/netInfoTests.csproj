@@ -1,0 +1,32 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>NetInfoTests</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>NetInfoTests</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{64BF184C-A901-4B29-B6B6-7349AE9E35A9}</ProjectGuid>
+    <NoWarn>,1668</NoWarn>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="Master.cs" />
+    <Compile Include="NetworkInterfaceTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Net">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>$(BUILD_TREE_DLL)\System.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,57 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>System</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <NoWarn>$(NoWarn),0169,0659</NoWarn>
+    <ProjectGuid>{AB39B90B-97E7-4763-AD9D-768ACE897218}</ProjectGuid>
+    <ComponentGuid>{405748bb-4161-4e1d-93d8-a2b74837c600}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <!-- Used to generate SocketException native format 
+  <PropertyGroup>
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\system_sockets</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>System_sockets</MMP_STUB_GenerateSkeletonProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Net.pe" />
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Native.pe" />
+  </ItemGroup>
+
+-->
+  <ItemGroup>
+    <Compile Include="System\Net\DNS.cs" />
+    <Compile Include="System\Net\EndPoint.cs" />
+    <Compile Include="System\Net\IPAddress.cs" />
+    <Compile Include="System\Net\IPEndPoint.cs" />
+    <Compile Include="System\Net\IPHostEntry.cs" />
+    <Compile Include="System\Net\SocketAddress.cs" />
+    <Compile Include="System\Net\SocketException.cs" />
+    <Compile Include="System\Net\Sockets\AddressFamily.cs" />
+    <Compile Include="System\Net\Sockets\NetworkStream.cs" />
+    <Compile Include="System\Net\Sockets\ProtocolFamily.cs" />
+    <Compile Include="System\Net\Sockets\ProtocolType.cs" />
+    <Compile Include="System\Net\Sockets\SelectMode.cs" />
+    <Compile Include="System\Net\Sockets\Socket.cs" />
+    <Compile Include="System\Net\Sockets\SocketErrors.cs" />
+    <Compile Include="System\Net\Sockets\SocketFlags.cs" />
+    <Compile Include="System\Net\Sockets\SocketOptionLevel.cs" />
+    <Compile Include="System\Net\Sockets\SocketOptionName.cs" />
+    <Compile Include="System\Net\Sockets\SocketType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Net">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

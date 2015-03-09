@@ -1,0 +1,25 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>DeviceCode\Cores\arm\Common\GlobalLock\thumb2</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <PropertyGroup>
+    <AssemblyName>GlobalLock_hal</AssemblyName>
+    <OutputType Condition="'$(INSTRUCTION_SET)'=='thumb2'">Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="SmartPtr_thumb2.cpp" />
+ </ItemGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\include"/>    
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

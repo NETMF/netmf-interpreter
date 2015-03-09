@@ -1,0 +1,131 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.TinyCore</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F544A663-DFB3-4CBD-B72C-7B5B9B6A953B}</ProjectGuid>
+    <TinyCLR_CSharp_Documentation>false</TinyCLR_CSharp_Documentation>
+    <ComponentGuid>{3a858eb6-0d00-400c-bf05-606a84cdf84a}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <NoWarn>$(NoWarn),1591</NoWarn>
+    <MMP_PE_NoBitmapCompression>true</MMP_PE_NoBitmapCompression>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Input\Buttons.cs" />
+    <Compile Include="Input\ButtonState.cs" />
+    <Compile Include="Input\ButtonDevice.cs" />
+    <Compile Include="Input\ButtonEventArgs.cs" />
+    <Compile Include="Input\ButtonEventHandler.cs" />
+    <Compile Include="Input\FocusChangedEventArgs.cs" />
+    <Compile Include="Input\FocusChangedEventHandler.cs" />
+    <Compile Include="Input\GenericDevice.cs" />
+    <Compile Include="Input\InputDevice.cs" />
+    <Compile Include="Input\InputEventArgs.cs" />
+    <Compile Include="Input\InputEventHandler.cs" />
+    <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Input\InputProviderSite.cs" />
+    <Compile Include="Input\InputReport.cs" />
+    <Compile Include="Input\InputReportEventArgs.cs" />
+    <Compile Include="Input\InputReportEventHandler.cs" />
+    <Compile Include="Input\NotifyInputEventArgs.cs" />
+    <Compile Include="Input\PreProcessInputEventArgs.cs" />
+    <Compile Include="Input\PreProcessInputEventHandler.cs" />
+    <Compile Include="Input\ProcessInputEventArgs.cs" />
+    <Compile Include="Input\ProcessInputEventHandler.cs" />
+    <Compile Include="Input\RawButtonInputReport.cs" />
+    <Compile Include="Input\RawGenericInputReport.cs" />
+    <Compile Include="Input\RawTouchInputReport.cs" />
+    <Compile Include="Input\StagingAreaInputItem.cs" />
+    <Compile Include="Input\Touch.cs" />
+    <Compile Include="Input\TouchDevice.cs" />
+    <Compile Include="Presentation\Controls\Border.cs" />
+    <Compile Include="Presentation\Controls\Canvas.cs" />
+    <Compile Include="Presentation\Controls\ContentControl.cs" />
+    <Compile Include="Presentation\Controls\Control.cs" />
+    <Compile Include="Presentation\Controls\Image.cs" />
+    <Compile Include="Presentation\Controls\ListBox.cs" />
+    <Compile Include="Presentation\Controls\ListBoxItem.cs" />
+    <Compile Include="Presentation\Controls\ListBoxItemCollection.cs" />
+    <Compile Include="Presentation\Controls\Orientation.cs" />
+    <Compile Include="Presentation\Controls\Panel.cs" />
+    <Compile Include="Presentation\Controls\ScrollViewer.cs" />
+    <Compile Include="Presentation\Controls\ScrollChangedEventArgs.cs" />
+    <Compile Include="Presentation\Controls\ScrollChangedEventHandler.cs" />
+    <Compile Include="Presentation\Controls\SelectionChangedEventArgs.cs" />
+    <Compile Include="Presentation\Controls\SelectionChangedEventHandler.cs" />
+    <Compile Include="Presentation\Controls\ScrollingStyle.cs" />
+    <Compile Include="Presentation\Controls\StackPanel.cs" />
+    <Compile Include="Presentation\Controls\Text.cs" />
+    <Compile Include="Presentation\Controls\TextFlow.cs" />
+    <Compile Include="Presentation\Controls\TextRun.cs" />
+    <Compile Include="Presentation\Controls\TextRunCollection.cs" />
+    <Compile Include="Presentation\UIElement.cs" />
+    <Compile Include="Presentation\UIElementCollection.cs" />
+    <Compile Include="Presentation\HorizontalAlignment.cs" />
+    <Compile Include="Presentation\LayoutManager.cs" />
+    <Compile Include="Presentation\Media\Brush.cs" />
+    <Compile Include="Presentation\Media\Colors.cs" />
+    <Compile Include="Presentation\Media\Constants.cs" />
+    <Compile Include="Presentation\Media\DrawingContext.cs" />
+    <Compile Include="Presentation\Media\ImageBrush.cs" />
+    <Compile Include="Presentation\Media\MediaContext.cs" />
+    <Compile Include="Presentation\Media\LinearGradientBrush.cs" />
+    <Compile Include="Presentation\Media\Pen.cs" />
+    <Compile Include="Presentation\Media\SolidColorBrush.cs" />
+    <Compile Include="Presentation\Media\Stretch.cs" />
+    <Compile Include="Presentation\Media\TextAlignment.cs" />
+    <Compile Include="Presentation\Media\TextTrimming.cs" />
+    <Compile Include="Presentation\Shapes\Ellipse.cs" />
+    <Compile Include="Presentation\Shapes\Line.cs" />
+    <Compile Include="Presentation\Shapes\Polygon.cs" />
+    <Compile Include="Presentation\Shapes\Rectangle.cs" />
+    <Compile Include="Presentation\Shapes\Shape.cs" />
+    <Compile Include="Presentation\PresentationSource.cs" />
+    <Compile Include="Presentation\SizeToContent.cs" />
+    <Compile Include="Presentation\SystemMetrics.cs" />
+    <Compile Include="Presentation\VerticalAlignment.cs" />
+    <Compile Include="Presentation\Visibility.cs" />
+    <Compile Include="Presentation\Window.cs" />
+    <Compile Include="Presentation\WindowManager.cs" />
+    <Compile Include="System\Application.cs" />
+    <Compile Include="System\EventHandler.cs" />
+    <Compile Include="System\EventRoute.cs" />
+    <Compile Include="System\PropertyChangedEventArgs.cs" />
+    <Compile Include="System\PropertyChangedEventHandler.cs" />
+    <Compile Include="System\RoutedEvent.cs" />
+    <Compile Include="System\RoutedEventArgs.cs" />
+    <Compile Include="System\RoutedEventHandlerInfo.cs" />
+    <Compile Include="System\RouteItem.cs" />
+    <Compile Include="System\RoutingStrategy.cs" />
+    <Compile Include="System\WindowCollection.cs" />
+    <Compile Include="System\Threading\Dispatcher.cs" />
+    <Compile Include="System\Threading\DispatcherFrame.cs" />
+    <Compile Include="System\Threading\DispatcherObject.cs" />
+    <Compile Include="System\Threading\DispatcherOperation.cs" />
+    <Compile Include="System\Threading\DispatcherOperationStatus.cs" />
+    <Compile Include="System\Threading\DispatcherTimer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Graphics">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

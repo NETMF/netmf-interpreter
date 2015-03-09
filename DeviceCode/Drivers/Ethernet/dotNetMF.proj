@@ -1,0 +1,32 @@
+<!-- Builds the MC9328[_stub].$(LIB_EXT), for SPOT projects -->
+
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>DeviceCode\Drivers\Ethernet</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup  >
+    <SubDirectories Include="enc28j60"/>    
+    <SubDirectories Include="enc28j60_lwip"/>    
+    <SubDirectories Include="loopback"/>    
+    <SubDirectories Include="loopback_lwip"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\pal\rtip"/>   
+    <IncludePaths Include="DeviceCode\pal\rtip\tinyclr"/>    
+    <IncludePaths Include="DeviceCode\pal\rtip\rtpcore"/>    
+    <IncludePaths Include="DeviceCode\pal\rtip\drivers"/>    
+    <IncludePaths Include="DeviceCode\pal\rtip\vfile"/>    
+    <IncludePaths Include="DeviceCode\pal\rtip\protocol"/>    
+    <IncludePaths Include="DeviceCode\Drivers\Ethernet\enc28j60"/>
+    <IncludePaths Include="DeviceCode\Drivers\Ethernet\loopback"/>
+  </ItemGroup>
+  
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

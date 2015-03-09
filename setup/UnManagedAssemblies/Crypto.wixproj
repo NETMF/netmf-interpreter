@@ -1,0 +1,16 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  
+  <Import Condition="'$(Microsoft_SPOT_Build_Setup_Targts_Imported)'==''" Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Build.Setup.Targets"/>
+
+  <PropertyGroup>
+    <AssemblyName>Crypto</AssemblyName>
+    <OUTDIR>$(BUILD_TREE_SERVER)\dll\</OUTDIR>
+    <OutputType>Library</OutputType>
+    <ComponentGuid>{4eeba5d3-b0b8-44e1-aaa8-99912208a0e9}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <WixIncludePdb>false</WixIncludePdb>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+
+</Project>

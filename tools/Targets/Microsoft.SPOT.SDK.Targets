@@ -1,0 +1,895 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+    <CANDLE_EXE>$(SPOROOT)\tools\x86\WiX\tools_3_5_1315_0\candle.exe</CANDLE_EXE>
+    <CandleIncludeSearchPath>-I$(SPOCLIENT)\Setup\Include</CandleIncludeSearchPath>
+    <LIGHT_EXE>$(SPOROOT)\tools\x86\WiX\tools_3_5_1315_0\light.exe</LIGHT_EXE>
+    <LIT_EXE>$(SPOROOT)\tools\x86\WiX\tools_3_5_1315_0\lit.exe</LIT_EXE>
+    <OutputWiXObjRoot>$(BUILD_TREE_OBJ)\WiX\</OutputWiXObjRoot>
+    <OutputWixObjClient>$(BUILD_TREE_CLIENT)\obj\WiX\Fragments\</OutputWixObjClient>
+    <OutputWixObjServer>$(BUILD_TREE_SERVER)\obj\WiX\Fragments\</OutputWixObjServer>
+    <OUTPUT_WIXOBJ_DIR>$(OutputWiXObjRoot)Fragments\$(MSBuildProjectName)\</OUTPUT_WIXOBJ_DIR>
+    <OUTPUT_WIXOBJ_DIR_LE>$(OutputWiXObjRoot)Fragments\le\$(MSBuildProjectName)\</OUTPUT_WIXOBJ_DIR_LE>
+    <OUTPUT_WIXOBJ_DIR_BE>$(OutputWiXObjRoot)Fragments\be\$(MSBuildProjectName)\</OUTPUT_WIXOBJ_DIR_BE>
+    <DO_NOT_BUILD_DOCS>True</DO_NOT_BUILD_DOCS>
+    <CodeSignAuthenticodeCert>100040133</CodeSignAuthenticodeCert>
+    <!-- Temp using Corp cert for VSIX packages until MSOT obtains it's own cert
+         (Cleared with LCA so long as the contained binaries are signed with an MSOT publisher cert)
+    -->
+    <CodeSignOpcCert>160</CodeSignOpcCert>
+    <CodeSignStrangNameCert>150</CodeSignStrangNameCert>
+    <CodeSignApprovers>gokulk;richh</CodeSignApprovers>
+    <!--
+    <VSIPInstalled>false</VSIPInstalled>
+    <XBUILD_OUTDIR>$(SPOCLIENT)\UE\Public\Docs\Built</XBUILD_OUTDIR>
+    <SPO_BASEDIR>$(SPOCLIENT)\UE</SPO_BASEDIR>
+    <XBUILDEXE>$(SPOCLIENT)\UE\Public\Binaries\Built\Xanx.Build.XBuild.exe</XBUILDEXE>
+    <VSIPInstallDir>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\VSIP\11.0@InstallDir)</VSIPInstallDir>
+    <VSIPInstallDir Condition="'$(VSIPInstallDir)'==''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\VSIP\11.0@InstallDir)</VSIPInstallDir> 
+    -->
+    <WiXLibDirectory>$(SPOCLIENT)\Setup\LIB\</WiXLibDirectory>
+    <DoCandle>false</DoCandle>
+    <CandleInput>$(CandleInput);$(SPOCLIENT)\ReleaseInfo.settings</CandleInput>
+    <SkipLit>true</SkipLit>
+    <WixMsiBuildNumber>$(BuildNumber)</WixMsiBuildNumber>
+    <!-- allow overriding the build number of the MSI so the MSI can be updated without re-versioning all the assemblies (which would trigger a need for firmware updates on all devices ) -->
+    <WixMsiBuildNumber Condition="'$(WixMsiBuildNumberOverride)'!=''">$(WixMsiBuildNumberOverride)</WixMsiBuildNumber>
+  </PropertyGroup>
+
+  <!--WiX Preprocessor Defines-->
+  <ItemGroup>
+    <WiXDefines Include="BuildFlavor">
+      <Value>$(Configuration)</Value>
+    </WiXDefines>
+    <WiXDefines Include="BuildTreeServer">
+      <Value>$(BUILD_TREE_SERVER)</Value>
+    </WiXDefines>
+    <WiXDefines Include="BuildTreeClient">
+      <Value>$(BUILD_TREE_CLIENT)</Value>
+    </WiXDefines>
+    <WiXDefines Include="BuildTreeClientTest">
+      <Value>$(BUILD_TREE)\test\client</Value>
+    </WiXDefines>
+    <WiXDefines Include="BuildTreeServerTest">
+      <Value>$(BUILD_TREE)\test\server</Value>
+    </WiXDefines>
+    <WiXDefines Include="WixSpoClient">
+      <Value>$(SPOCLIENT)</Value>
+    </WiXDefines>
+
+    <WiXDefines Include="ProdVerMajor">
+      <Value>$(MajorVersion)</Value>
+    </WiXDefines>
+    <WiXDefines Include="ProdVerMinor">
+      <Value>$(MinorVersion)</Value>
+    </WiXDefines>
+    <WiXDefines Include="ProdVerBuild">
+      <Value>$(WixMsiBuildNumber)</Value>
+    </WiXDefines>
+    <WiXDefines Include="ProdVerRevision">
+      <Value>$(RevisionNumber)</Value>
+    </WiXDefines>
+    <WiXDefines Include="ProdReleaseName">
+      <Value>$(ReleaseName)</Value>
+    </WiXDefines>
+    
+
+    <WiXDefines Include="ProdVer">
+      <Value>$(MajorVersion).$(MinorVersion).$(WixMsiBuildNumber).$(RevisionNumber)</Value>
+    </WiXDefines>
+    <WiXDefines Include="ProdVerMajorMinor">
+      <Value>$(MFSDKShortProductVersion)</Value>
+    </WiXDefines>
+
+    <WiXDefines Include="MSBuildProjectDirectory">
+      <Value>"$(MSBuildProjectDirectory)"</Value>
+    </WiXDefines>
+    <WiXDefines Include="MSBuildProjectFile">
+      <Value>$(MSBuildProjectFile)</Value>
+    </WiXDefines>
+    <WiXDefines Include="MSBuildProjectExtension">
+      <Value>$(MSBuildProjectExtension)</Value>
+    </WiXDefines>
+    <WiXDefines Include="MSBuildProjectFullPath">
+      <Value>"$(MSBuildProjectFullPath)"</Value>
+    </WiXDefines>
+    <WiXDefines Include="MSBuildProjectName">
+      <Value>$(MSBuildProjectName)</Value>
+    </WiXDefines>
+    <WiXDefines Include="MSBuildBinPath">
+      <Value>"$(MSBuildBinPath)"</Value>
+    </WiXDefines>
+    <WiXDefines Include="MSBuildProjectDefaultTargets">
+      <Value>$(MSBuildProjectDefaultTargets)</Value>
+    </WiXDefines>
+    <WiXDefines Include="MSBuildExtensionsPath">
+      <Value>"$(MSBuildExtensionsPath)"</Value>
+    </WiXDefines>
+
+    <WiXDefines Include="DesktopTargetFrameworkVersion">
+      <Value>2.0.50727</Value>
+    </WiXDefines>
+
+    <WiXDefines Include="VisualStudioIntegrationDir">
+      <Value>"$(VSIPInstallDir)VisualStudioIntegration"</Value>
+    </WiXDefines>
+  </ItemGroup>
+
+  <!-- Target imports not to flatten into a top level project file-->
+  <ItemGroup>
+    <TerminalTarget Include="$(SPOCLIENT)\Framework\IDE\Targets\$(TargetFrameworkVersion)\CSharp.targets"/>
+    <TerminalTarget Include="$(SPOCLIENT)\Framework\IDE\Targets\$(TargetFrameworkVersion)\Device.targets"/>
+    <TerminalTarget Include="$(SPOCLIENT)\Framework\IDE\Targets\$(TargetFrameworkVersion)\VisualBasic.targets"/>
+    <TerminalTarget Include="$(SPOCLIENT)\Framework\IDE\Targets\$(TargetFrameworkVersion)\Emulator.targets"/>
+    <TerminalTarget Include="$(SPOCLIENT)\Tools\Targets\*.targets"/>
+  </ItemGroup>
+
+  <!-- Project Type Chooser
+       Sets properties and items based on the project type
+  -->
+  <Choose>
+    <!--Standard WiX Project?-->
+    <When Condition=" '$(MSBuildProjectExtension)' == '.wixproj' AND !EXISTS('$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll') ">
+
+      <PropertyGroup>
+        <DoCandle>true</DoCandle>
+      </PropertyGroup>
+
+      <Choose>
+
+        <!--Either a file list project or an "unmanaged" assembly project-->
+        <When Condition=" '$(ComponentGuid)' != '' ">
+          <Choose>
+
+            <!--"Unmanaged" assembly project-->
+            <When Condition=" '$(AssemblyName)' != 'NONASSEMBLY' ">
+
+              <PropertyGroup>
+                <AssemblyFragmentWxs>$(BUILD_TREE_PLATFORM)\frg\$(TargetName).wxs</AssemblyFragmentWxs>
+                <BuildDependsOn>$(BuildDependsOn);AssemblyFragment</BuildDependsOn>
+                <CleanDependsOn>$(CleanDependsOn);CleanAssemblyFragment</CleanDependsOn>
+              </PropertyGroup>
+
+               <ItemGroup>
+                <WiXComponentFiles Include="$(OUTDIR)$(TargetName)$(TargetExt)"/>
+              </ItemGroup>
+
+              <ItemGroup Condition="'$(WixIncludePdb)' != 'false' ">
+                <WiXComponentFiles Include="$(OUTDIR)$(TargetName).pdb" />
+              </ItemGroup>
+
+            </When>
+
+            <!--File list project-->
+            <Otherwise>
+
+              <PropertyGroup>
+                <AssemblyFragmentWxs>$(BUILD_TREE_PLATFORM)\Fragments\$(MSBuildProjectName).wxs</AssemblyFragmentWxs>
+                <TargetName>$(MSBuildProjectName)</TargetName>
+                <BuildDependsOn>$(BuildDependsOn);AssemblyFragment</BuildDependsOn>
+                <CleanDependsOn>$(CleanDependsOn);CleanAssemblyFragment</CleanDependsOn>
+              </PropertyGroup>
+
+            </Otherwise>
+          </Choose>
+        </When>
+
+        <!--Standard WiX project-->
+        <Otherwise>
+          <PropertyGroup Condition=" '$(OUTPUT_MSM_FILE)' != '' " >
+            <OUTPUT_MSM Condition=" '$(OUTPUT_MSM)' == '' ">$(BUILD_TREE_MSM)\$(OUTPUT_MSM_FILE)</OUTPUT_MSM>
+          </PropertyGroup>
+
+          <PropertyGroup Condition=" '$(OUTPUT_MSM)' != '' ">
+            <BuildDependsOn>$(BuildDependsOn);Light</BuildDependsOn>
+            <CleanDependsOn>$(CleanDependsOn);CleanLight;CleanSymbolRequest;CleanCodeSign</CleanDependsOn>
+            <LightDependsOn Condition="'$(AssemblyBothEndian)'!='true'">$(LightDependsOn);Candle</LightDependsOn>
+            <LightDependsOn Condition="'$(AssemblyBothEndian)'=='true'">$(LightDependsOn);CandleLE;CandleBE</LightDependsOn>            
+            <OUTPUT_WIXOBJ_DIR>$(OutputWiXObjRoot)Modules\$(MSBuildProjectName)\</OUTPUT_WIXOBJ_DIR>
+          
+        </PropertyGroup>
+
+          <PropertyGroup Condition=" '$(LinkAllWiXObjects)' != 'true' ">
+            <BuildDependsOn>$(BuildDependsOn);Light</BuildDependsOn>
+            <SkipLit>false</SkipLit>
+          </PropertyGroup>
+
+          <PropertyGroup Condition=" '$(LinkAllWiXObjects)' == 'true' ">
+            <LightDependsOn>$(LightDependsOn);LitEndian;LitNonEndian</LightDependsOn>
+            <SkipLit>false</SkipLit>
+          </PropertyGroup>
+
+          <PropertyGroup Condition=" '$(OUTPUT_MSM)' != '' And '$(ISOProject)' != '' ">
+            <BuildCDImageDependsOn>$(BuildCDImageDependsOn);Light</BuildCDImageDependsOn>
+          </PropertyGroup>
+        </Otherwise>
+      </Choose>
+    </When>
+
+    <!--C# Project with WiX component-->
+    <When Condition=" ('$(MSBuildProjectExtension)' == '.csproj' Or '$(MSBuildProjectExtension)' == '.vbproj') And '$(ComponentGuid)' != '' And !EXISTS('$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll') ">
+
+      <PropertyGroup>
+        <DoCandle>true</DoCandle>
+        <AssemblyFragmentWxs>$(BUILD_TREE_PLATFORM)\Fragments\$(TargetName).wxs</AssemblyFragmentWxs>
+        <AssemblyFragmentWxsLE>$(BUILD_TREE_PLATFORM)\Fragments\le\$(TargetName).wxs</AssemblyFragmentWxsLE>
+        <AssemblyFragmentWxsBE>$(BUILD_TREE_PLATFORM)\Fragments\be\$(TargetName).wxs</AssemblyFragmentWxsBE>
+        <BuildDependsOn Condition="'$(AssemblyBothEndian)'!='true'">$(BuildDependsOn);AssemblyFragment</BuildDependsOn>
+        <BuildDependsOn Condition="'$(AssemblyBothEndian)'=='true'">$(BuildDependsOn);AssemblyFragmentLE;AssemblyFragmentBE</BuildDependsOn>
+        <CleanDependsOn>$(CleanDependsOn);CleanAssemblyFragment</CleanDependsOn>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <WiXComponentFiles Include="$(OUTDIR)$(TargetName)$(TargetExt)"/>
+        <WiXComponentFilesLE Include="$(OUTDIR)$(TargetName)$(TargetExt)"/>
+        <WiXComponentFilesBE Include="$(OUTDIR)$(TargetName)$(TargetExt)"/>
+      </ItemGroup>
+
+      <PropertyGroup Condition=" '$(TinyCLR_Platform)' == 'Client' And '$(MMP_PE_SKIP)' != 'true' ">
+        <BuildPE>true</BuildPE>
+      </PropertyGroup>
+
+      <ItemGroup Condition=" '$(WixIncludePdb)' != 'false' ">
+        <WiXComponentFiles Include="$(OUTDIR)$(TargetName).pdb" />
+        <WiXComponentFilesLE Include="$(OUTDIR)$(TargetName).pdb" />
+        <WiXComponentFilesBE Include="$(OUTDIR)$(TargetName).pdb" />
+      </ItemGroup>
+
+      <PropertyGroup Condition=" '$(BuildPE)' == 'true' ">
+        <DirectoryRef>AssembliesDir</DirectoryRef>
+        <IncludePEInComponent>true</IncludePEInComponent>
+      </PropertyGroup>
+
+      <ItemGroup Condition=" '$(BuildPE)' == 'true'  and '$(BUILD_TEST_TREE_PE)' == '' ">
+        <WiXComponentFiles Include="$(BUILD_TREE_PE)\$(TargetName).pe" />
+        <WiXComponentFiles Include="$(BUILD_TREE_PE)\$(TargetName).pdbx" />
+        <WiXComponentFilesLE Include="$(BUILD_TREE_PE_LE)\$(TargetName).pe" />
+        <WiXComponentFilesLE Include="$(BUILD_TREE_PE_LE)\$(TargetName).pdbx" />
+        <WiXComponentFilesBE Include="$(BUILD_TREE_PE_BE)\$(TargetName).pe" />
+        <WiXComponentFilesBE Include="$(BUILD_TREE_PE_BE)\$(TargetName).pdbx" />
+      </ItemGroup>
+
+      <ItemGroup Condition=" '$(BuildPE)' == 'true' and '$(BUILD_TEST_TREE_PE)' != '' ">
+        <WiXComponentFiles Include="$(BUILD_TEST_TREE_PE)\$(TargetName).pe" />
+        <WiXComponentFiles Include="$(BUILD_TEST_TREE_PE)\$(TargetName).pdbx" />
+        <WiXComponentFilesLE Include="$(BUILD_TEST_TREE_PE_LE)\$(TargetName).pe" />
+        <WiXComponentFilesLE Include="$(BUILD_TEST_TREE_PE_LE)\$(TargetName).pdbx" />
+        <WiXComponentFilesBE Include="$(BUILD_TEST_TREE_PE_BE)\$(TargetName).pe" />
+        <WiXComponentFilesBE Include="$(BUILD_TEST_TREE_PE_BE)\$(TargetName).pdbx" />
+      </ItemGroup>
+
+    </When>
+
+    <!--SDK Solution Project-->
+    <When Condition=" '$(MSBuildProjectExtension)' == '.slnproj' And '$(ComponentGuid)' != '' And !EXISTS('$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll') ">
+
+      <PropertyGroup>
+        <DoCandle>true</DoCandle>
+        <SampleSolutionOutputRoot>$(BUILD_TREE_PLATFORM)\Fragments\SampleSolutions\</SampleSolutionOutputRoot>
+        <IntermediateOutputPath>$(SampleSolutionOutputRoot)$(MSBuildProjectName)\</IntermediateOutputPath>
+        <BuildDependsOn>$(BuildDependsOn);SDKSolution</BuildDependsOn>
+      </PropertyGroup>
+
+      <PropertyGroup Condition=" '$(ComponentSolutionName)' == '' ">
+        <ComponentSolutionName>$(MSBuildProjectName)</ComponentSolutionName>
+      </PropertyGroup>
+
+    </When>
+
+    <!--Visual Studio Project Template Project-->
+    <When Condition=" '$(MSBuildProjectExtension)' == '.vstproj' ">
+      <PropertyGroup Condition=" '$(TemplateType)' == '' ">
+        <TemplateType>Project</TemplateType>
+      </PropertyGroup>
+      <PropertyGroup Condition=" '$(TemplateImplementationLanguage)' == '' ">
+        <TemplateImplementationLanguage>CSharp</TemplateImplementationLanguage>
+      </PropertyGroup>
+      <PropertyGroup>
+        <DoCandle>true</DoCandle>
+        <VSTemplateOutputRoot>$(BUILD_TREE_TEMPLATES)\$(TemplateType)Templates\$(TemplateImplementationLanguage)\MicroFramework\</VSTemplateOutputRoot>
+        <VSTemplateOutputRoot Condition="'$(TemplateSubdirectory)'!=''">$(VSTemplateOutputRoot)$(TemplateSubdirectory)\</VSTemplateOutputRoot>
+        <VSTemplateOutput>$(VSTemplateOutputRoot)$(TemplateName).zip</VSTemplateOutput>
+        <CandleInput>$(CandleInput);$(VSTemplateOutput)</CandleInput>
+        <TemplateOutputRoot>$(BUILD_TREE_PLATFORM)\Fragments\$(TemplateType)Templates\$(TemplateImplementationLanguage)\</TemplateOutputRoot>
+        <IntermediateOutputPath Condition="'$(TemplateSubdirectory)'==''">$(TemplateOutputRoot)$(TemplateName)\</IntermediateOutputPath>
+        <IntermediateOutputPath Condition="'$(TemplateSubdirectory)'!=''">$(TemplateOutputRoot)$(TemplateSubdirectory)\$(TemplateName)\</IntermediateOutputPath>
+        <BuildTemplateZipDependsOn>BuildTemplateProject;BuildVSTemplateFile;BuildTemplateContents</BuildTemplateZipDependsOn>
+        <BuildDependsOn>BuildTemplateZip;$(BuildDependsOn)</BuildDependsOn>
+      </PropertyGroup>
+    </When>
+
+    <!-- A directory whose contents should be compressed into a zip archive -->
+    <When Condition=" '$(MSBuildProjectExtension)' == '.zipproj' ">
+      <PropertyGroup>
+        <BuildDependsOn>$(BuildDependsOn);CompressDirectories</BuildDependsOn>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <PropertyGroup Condition=" '$(DoCandle)' == 'true' ">
+    <BuildDependsOn Condition="'$(AssemblyBothEndian)'!='true'">$(BuildDependsOn);Candle</BuildDependsOn>
+    <BuildDependsOn Condition="'$(AssemblyBothEndian)'=='true'">$(BuildDependsOn);CandleLE;CandleBE</BuildDependsOn>
+  </PropertyGroup>
+
+  <!--PropertyGroup Condition=" '$(ISOProject)' != '' ">
+    <BuildDependsOn>$(BuildDependsOn);BuildCDImage</BuildDependsOn>
+    <CleanDependsOn>$(CleanDependsOn);CleanCDImage</CleanDependsOn>
+  </PropertyGroup-->
+
+  <PropertyGroup Condition=" '$(DOCPROJ)' != '' AND EXISTS('$(XBUILDEXE)')">
+    <BuildDependsOn>XBuild;GenerateCHM;$(BuildDependsOn)</BuildDependsOn>
+    <CleanDependsOn>$(CleanDependsOn);CleanXBuild</CleanDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CompressDirectories">
+    <MakeDir Directories="$(ZipDestination)"/>
+    <DirectorySearch
+      Directories="%(CompressDirectory.Identity)"
+      UseSubdirectories="true">
+      <Output TaskParameter="FoundFiles" ItemName="%(CompressDirectory.Identity)FilesToCompress" />
+    </DirectorySearch>
+
+    <Message Text="CompressDirectory = %(CompressDirectory.Identity)"/>
+
+    <CreateZip
+      InputFiles="@(%(CompressDirectory.Identity)FilesToCompress)"
+      OutputFile="$(ZipDestination)\%(CompressDirectory.Identity)"
+      />
+  </Target>
+
+  <Target Name="DocsCheck">
+    <CreateProperty Condition=" '$(VSIPInstallDir)' != '' And '$(DO_NOT_BUILD_DOCS)' == ''  And '$(Configuration)' != 'Debug' " Value="true">
+      <Output TaskParameter="Value" PropertyName="VSIPInstalled"/>
+    </CreateProperty>
+
+    <CreateItem Condition=" '$(VSIPInstalled)' == 'true' "
+                 Include="@(DocWiXObject)">
+      <Output TaskParameter="Include" ItemName="WiXObject"/>
+    </CreateItem>
+
+    <CreateItem
+      Include="INCLUDEDOCS"
+      AdditionalMetadata="Value=$(VSIPInstalled)">
+      <Output TaskParameter="Include" ItemName="WiXDefines"/>
+    </CreateItem>
+
+    <Message Condition=" '$(VSIPInstalled)' == 'true' " Text="VSIP Installed at $(VSIPInstallDir)" />
+  </Target>
+
+  <Target Name="_GetVSTemplateContents">
+    <GetProjectChildFiles ProjectFiles="@(VSTemplateProject)">
+      <Output TaskParameter="ProjectFiles" ItemName="_Temporary" />
+      <Output TaskParameter="ProjectContents" ItemName="VSTemplateInput"/>
+      <Output TaskParameter="GuidReplacements" ItemName="VSTemplateGuidReplacements" />
+    </GetProjectChildFiles>
+
+    <ItemGroup>
+      <VSTemplateProject Remove="@(VSTemplateProject)" />
+      <VSTemplateProject Include="@(_Temporary)" />
+      <_Temporary Remove="@(_Temporary)" />
+  </ItemGroup>
+
+    <ItemGroup>
+      <!--FileWrites must be declared in Targets without Input/Output attributes for IncrementalClean to work.
+          However, this isn't the best place for them... they should be defined in a target after they are
+          created such that they are only included if the file exists and the target suceeded... this way,
+          other projects don't link to stale files
+          -->
+      <FileWrites Include="@(VSTemplateProject->'$(IntermediateOutputPath)%(Identity)')" />
+      <FileWrites Include="@(VSTemplateProject->'$(IntermediateOutputPath)%(RelativeDir)%(FileName).vstemplate')" />
+      <FileWrites Include="@(VSTemplateInput->'$(IntermediateOutputPath)%(ProjectDir)%(Identity)')" />
+      <FileWrites Include="$(VSTemplateOutput)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="BuildTemplateContents"
+    DependsOnTargets="_GetVSTemplateContents"
+    Inputs="@(VSTemplateInput->'%(ProjectDir)%(Identity)')"
+    Outputs="@(VSTemplateInput->'$(IntermediateOutputPath)%(ProjectDir)%(Identity)')"
+    >
+    <MakeDir Directories="$(IntermediateOutputPath)"/>
+
+    <TransmorgifyTemplateFiles
+      Condition="'%(VSTemplateInput.DoReplacements)'=='true'"
+      SourceFiles="@(VSTemplateInput->'%(ProjectDir)%(Identity)')"
+      DestinationFiles="@(VSTemplateInput->'$(IntermediateOutputPath)%(ProjectDir)%(Identity)')" />
+    <Copy
+      Condition="'%(VSTemplateInput.DoReplacements)'!='true'"
+      SourceFiles="@(VSTemplateInput->'%(ProjectDir)%(Identity)')"
+      DestinationFiles="@(VSTemplateInput->'$(IntermediateOutputPath)%(ProjectDir)%(Identity)')" />
+
+  </Target>
+
+  <Target Name="BuildTemplateProject"
+    DependsOnTargets="_GetVSTemplateContents"
+    Inputs="@(VSTemplateProject)"
+    Outputs="@(VSTemplateProject->'$(IntermediateOutputPath)%(Identity)')"
+    >
+    <MakeDir Directories="@(VSTemplateProject->'$(IntermediateOutputPath)%(RelativeDir)')"/>
+
+    <TransmorgifyProject
+      TargetToolsVersion="4.0"
+      RunSDKTransform="true"
+      RunTemplateTransform="true"
+      SourceProjects="@(VSTemplateProject)"
+      DestinationProjects="@(VSTemplateProject->'$(IntermediateOutputPath)%(Identity)')"
+      GuidReplacements="@(VSTemplateGuidReplacements)"
+      TerminalTargets="@(TerminalTarget)"
+      MajorVersion="$(MajorVersion)"
+      MinorVersion="$(MinorVersion)"
+      BuildNumber="$(BuildNumber)"
+      RevisionNumber="$(RevisionNumber)"
+      />
+
+  </Target>
+
+  <Target Name="BuildVSTemplateFile"
+    DependsOnTargets="_GetVSTemplateContents"
+    Inputs="@(VSTemplateProject)" 
+    Outputs="@(VSTemplateProject->'$(IntermediateOutputPath)%(RelativeDir)%(Filename).vstemplate');
+             $(IntermediateOutputPath)$(TemplateName).vstemplate"
+    >
+
+    <MakeDir Directories="$(IntermediateOutputPath)%(VSTemplateProject.RelativeDir)"/>
+
+    <GenerateVSTemplate
+      ProjectContents="@(VSTemplateInput)"
+      ProjectFiles="@(VSTemplateProject)"
+      VSTemplateFiles="@(VSTemplateProject->'$(IntermediateOutputPath)%(RelativeDir)%(Filename).vstemplate')"
+      />
+  </Target>
+
+  <Target Name="BuildTemplateZip"
+          DependsOnTargets="$(BuildTemplateZipDependsOn)"
+          Inputs="@(VSTemplateInput->'$(IntermediateOutputPath)%(ProjectDir)%(Identity)');
+                  @(VSTemplateProject->'$(IntermediateOutputPath)%(Identity)');
+                  @(VSTemplateProject->'%(RelativeDir)%(Filename).vstemplate')"
+          Outputs="$(VSTemplateOutput)"
+        >
+    <CreateZip
+         InputFiles="@(VSTemplateInput->'%(ProjectDir)%(Identity)');
+                     @(VSTemplateProject->'%(Identity)');
+                     @(VSTemplateProject->'%(RelativeDir)%(Filename).vstemplate')"
+         OutputFile="$(VSTemplateOutput)"
+         WorkingDirectory="$(IntermediateOutputPath)"
+         />
+  </Target>
+
+  <Target Name="XBuildInputs"
+          DependsOnTargets="DocsCheck">
+    <DirectorySearch Directories="$(SPOCLIENT)\UE\Source\$(DOCPROJ)"
+                     Wildcards="*.xml"
+                     Condition=" '$(VSIPInstalled)' == 'true' ">
+      <Output TaskParameter="FoundFiles" ItemName="InputToXbuild" />
+    </DirectorySearch>
+  </Target>
+  
+  <Target Name="XBuild"
+          DependsOnTargets="XBuildInputs"
+          Inputs="@(InputToXbuild)"
+          Outputs="@(DOCPROJOUT)">
+
+    <SetEnvironmentVariable  Name="VSSDKPATH" Value='$(VSIPInstallDir)VisualStudioIntegration'/>
+    <SetEnvironmentVariable  Name="LOCALROOT" Value="$(SPO_BASEDIR)\source"/>
+    <SetEnvironmentVariable  Name="docteam_basedir" Value="$(SPO_BASEDIR)"/>
+       
+    <Message Text=" --------------Diagnosis: $(XBUILDEXE) -b $(XBUILDCMD)" />
+    
+    <Exec Command="$(XBUILDEXE) -b $(XBUILDCMD) -m retail -a $(BUILD_TREE_DLL)"
+          Condition=" '$(VSIPInstalled)' == 'true' "/>
+    <!-- Special Case
+    MFDEPLOY build is folded under the product sdk with corresponding help files
+    first in htm format and later in a legacy chm file.
+    -->
+    <Exec Command="$(XBUILDEXE) -b MFDeploy -m  retail -a $(BUILD_TREE_DLL)"
+     Condition=" '$(VSIPInstalled)' == 'true' And '$(XBUILDCMD)' == 'PSDK'"/>   
+   
+    <UnsetEnvironmentVariable Name="VSSDKPATH"/>
+    <UnsetEnvironmentVariable Name="LOCALROOT"/>
+    <UnsetEnvironmentVariable Name="docteam_basedir"/>
+   
+  </Target>
+ 
+
+  <Target Name="GenerateCHM"
+         DependsOnTargets="XBuild"
+         Outputs="$(BUILD_TREE_SERVER)\Docs\$(CHMProject)\$(CHMProject).chm">
+
+    <Error Condition="'$(VSIPInstalled)'==''" Text="Visual Studio SDK is required for documenation builds"/>
+
+    <GetEnvironmentVariable 
+         Name="BUILD_TREE_SERVER" >
+        <Output TaskParameter="Value" PropertyName="BUILD_TREE_SERVER_OLD" />
+    </GetEnvironmentVariable>
+    <SetEnvironmentVariable Name="BUILD_TREE_SERVER" Value="$(BUILD_TREE_SERVER)"/>
+    <Exec Condition="'$(VSIPInstalled)'!=''" Command='"hxs2chm.exe" $(CHMProject)Config.xml' WorkingDirectory='$(SPOCLIENT)\ue\build\tools\Batch'/>
+    <SetEnvironmentVariable Name="BUILD_TREE_SERVER" Value="$(BUILD_TREE_SERVER_OLD)"/>
+    <UnsetEnvironmentVariable Name="BUILD_TREE_SERVER_OLD"/>
+          
+  </Target>
+  <!-- 
+   -->
+
+  <Target Name="SDKSolutionInputs">
+    <GetProjectChildFiles ProjectFiles="@(ProjectFile)">
+      <Output TaskParameter="ProjectContents" ItemName="ProjectChild"/>
+      <Output TaskParameter="ProjectDependentFiles" ItemName="ProjectDependency" />
+    </GetProjectChildFiles>
+      <!--FileWrites must be declared in Targets without Input/Output attributes for IncrementalClean to work.
+          However, this isn't the best place for them... they should be defined in a target after they are
+          created such that they are only included if the file exists and the target suceeded... this way,
+          other projects don't link to stale files -->
+    <ItemGroup>
+      <FileWrites Include="@(ProjectFile->'$(IntermediateOutputPath)%(filename).csproj')" />
+      <FileWrites Include="$(IntermediateOutputPath)$(ComponentSolutionName).sln" />
+      <FileWrites Include="$(IntermediateOutputPath)$(ComponentSolutionName).wxs" />
+    </ItemGroup>
+  </Target>
+
+  <PropertyGroup>
+    <CompressPath Condition=" '$(CompressFile)' != '' ">$(BUILD_TREE_SERVER)\Samples\$(CompressFile)</CompressPath>
+      </PropertyGroup>
+
+  <!-- Creates VS Solutions and Projects for MF SDK from Dev Projects-->
+  <Target Name="SDKSolution"
+          Condition=" !EXISTS('$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll') "
+          DependsOnTargets="SDKSolutionInputs"
+          Inputs="@(ProjectFile);@(ProjectChild);@(WiXFragmentIncludeFile);@(WiXComponentIncludeFile);@(ProjectDependency)"
+          Outputs="@(ProjectFile->'$(IntermediateOutputPath)%(filename)%(extension)');
+                  $(IntermediateOutputPath)$(ComponentSolutionName).sln;
+                  $(IntermediateOutputPath)$(ComponentSolutionName).wxs">
+
+    <MakeDir Directories="$(IntermediateOutputPath)"/>
+
+    <TransmorgifyProject
+      TargetToolsVersion="4.0"
+      RunSDKTransform="true"
+      RunTemplateTransform="false"
+
+      SourceProjects="@(ProjectFile)"
+      DestinationProjects="@(ProjectFile->'$(IntermediateOutputPath)%(filename)%(extension)')"
+      TerminalTargets="@(TerminalTarget)"
+      MajorVersion="$(MajorVersion)"
+      MinorVersion="$(MinorVersion)"
+      BuildNumber="$(BuildNumber)"
+      RevisionNumber="$(RevisionNumber)"
+
+      SolutionFile="$(IntermediateOutputPath)$(ComponentSolutionName).sln"
+      ExtraSolutionFiles="@(SolutionFile)"
+
+      ComponentGuid="$(ComponentGuid)"
+      WxsFile="$(IntermediateOutputPath)$(ComponentSolutionName).wxs"
+      ShortcutType="$(CreateShortcut)"
+      ParentDirectoryRef="$(DirectoryRef)"
+      FragmentIncludeFiles="@(WiXFragmentIncludeFile)"
+      ComponentIncludeFiles="@(WiXComponentIncludeFile)"/>
+
+    <CompressSample Condition="'$(CompressPath)'!=''"
+        CompressFile="$(CompressPath)"
+        ParentDirectoryRef="$(DirectoryRef)"
+        WiXFile="$(IntermediateOutputPath)$(ComponentSolutionName).wxs" />
+
+    <ItemGroup Condition="'$(CompressPath)'!=''">
+        <FileWrites Include="$(CompressPath)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <WiXSource Include="$(IntermediateOutputPath)$(ComponentSolutionName).wxs" />
+    </ItemGroup>
+
+  </Target>
+
+  <!-- Creates a fragment containing a single
+       component for installing an assembly -->
+  <Target Name="AssemblyFragment"
+          Condition="!EXISTS('$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll')"
+          Inputs="$(MSBuildProjectFullPath);@(WiXComponentFiles);@(WiXFragmentIncludeFile);@(WiXComponentIncludeFile);@(WiXPostFragmentIncludeFile)"
+          Outputs="$(AssemblyFragmentWxs)">
+
+    <CreateAssemblyFragment
+      ComponentGuid="$(ComponentGuid)"
+      ComponentShortcut="$(ComponentShortcut)"
+      DirectoryRef="$(DirectoryRef)"
+      AssemblyName="$(TargetName)"
+      ComponentFiles="@(WiXComponentFiles)"
+      FragmentIncludeFiles="@(WiXFragmentIncludeFile)"
+      PostFragmentIncludeFiles="@(WiXPostFragmentIncludeFile)"
+      ComponentIncludeFiles="@(WiXComponentIncludeFile)"
+      FragmentFileName="$(AssemblyFragmentWxs)"
+      ShortName="$(WiXComponentFileShortName)"
+      AssemblyEndian="_"
+      />
+
+    <CreateItem
+      Include="$(AssemblyFragmentWxs)">
+      <Output TaskParameter="Include" ItemName="WiXSource"/>
+    </CreateItem>
+  </Target>
+
+  <Target Name="AssemblyFragmentLE"
+          Inputs="$(MSBuildProjectFullPath);@(WiXComponentFilesLE);@(WiXFragmentIncludeFile);@(WiXComponentIncludeFile)"
+          Outputs="$(AssemblyFragmentWxsLE)">
+
+    <CreateAssemblyFragment
+      ComponentGuid="$(ComponentGuid)"
+      DirectoryRef="$(DirectoryRef)LE"
+      AssemblyName="$(TargetName)"
+      ComponentFiles="@(WiXComponentFilesLE)"
+      FragmentIncludeFiles="@(WiXFragmentIncludeFile)"
+      PostFragmentIncludeFiles="@(WiXPostFragmentIncludeFile)"
+      ComponentIncludeFiles="@(WiXComponentIncludeFile)"
+      FragmentFileName="$(AssemblyFragmentWxsLE)"
+      ShortName="$(WiXComponentFileShortName)"
+      AssemblyEndian="_le_"
+      />
+
+    <CreateItem
+      Include="$(AssemblyFragmentWxsLE)">
+      <Output TaskParameter="Include" ItemName="WiXSourceLE"/>
+    </CreateItem>
+  </Target>
+
+  <Target Name="AssemblyFragmentBE"
+          Inputs="$(MSBuildProjectFullPath);@(WiXComponentFilesBE);@(WiXFragmentIncludeFile);@(WiXComponentIncludeFile)"
+          Outputs="$(AssemblyFragmentWxsBE)">
+
+    <CreateAssemblyFragment
+      ComponentGuid="$(ComponentGuid)"
+      DirectoryRef="$(DirectoryRef)BE"
+      AssemblyName="$(TargetName)"
+      ComponentFiles="@(WiXComponentFilesBE)"
+      FragmentIncludeFiles="@(WiXFragmentIncludeFile)"
+      PostFragmentIncludeFiles="@(WiXPostFragmentIncludeFile)"
+      ComponentIncludeFiles="@(WiXComponentIncludeFile)"
+      FragmentFileName="$(AssemblyFragmentWxsBE)"
+      ShortName="$(WiXComponentFileShortName)"
+      AssemblyEndian="_be_"
+      />
+
+    <CreateItem
+      Include="$(AssemblyFragmentWxsBE)">
+      <Output TaskParameter="Include" ItemName="WiXSourceBE"/>
+    </CreateItem>
+  </Target>
+
+  <!-- WiX Candle -->
+  <Target Name="Candle"
+          Condition="!EXISTS('$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll')"
+          Inputs="$(CandleInput);@(WixSource)"
+          Outputs="@(WiXSource->'$(OUTPUT_WIXOBJ_DIR)%(filename).wixobj')">
+
+    <MakeDir Condition="!Exists('$(OUTPUT_WIXOBJ_DIR)')"  Directories="$(OUTPUT_WIXOBJ_DIR)"/>
+
+<!--    <Message Text="$(CANDLE_EXE) -nologo $(CandleIncludeSearchPath) -wx -out $(OUTPUT_WIXOBJ_DIR) @(WiXDefines->'-d%(Identity)=%(Value)', ' ') @(CandleInput, ' ') @(WixSource, ' ')" /> -->
+    <Exec Command="$(CANDLE_EXE) -nologo $(CandleIncludeSearchPath) -wx -out $(OUTPUT_WIXOBJ_DIR) @(WiXDefines->'-d%(Identity)=%(Value)', ' ') @(CandleInput, ' ') @(WixSource, ' ')" />
+
+    <ItemGroup Condition=" '$(OUTPUT_MSM)' != '' ">
+      <WiXObject Include="@(WiXSource->'$(OUTPUT_WIXOBJ_DIR)%(filename).wixobj')" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="@(WiXSource->'$(OUTPUT_WIXOBJ_DIR)%(filename).wixobj')" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CandleLE"
+          Inputs="$(CandleInput);@(WiXSourceLE)"
+          Outputs="@(WiXSourceLE->'$(OUTPUT_WIXOBJ_DIR_LE)%(filename).wixobj')">
+
+    <MakeDir Condition="!Exists('$(OUTPUT_WIXOBJ_DIR_LE)')"  Directories="$(OUTPUT_WIXOBJ_DIR_LE)"/>
+
+<!--    <Message Text="$(CANDLE_EXE) -nologo $(CandleIncludeSearchPath) -wx -out $(OUTPUT_WIXOBJ_DIR_LE) @(WiXDefines->'-d%(Identity)=%(Value)', ' ') @(CandleInput, ' ') @(WixSourceLE, ' ')" /> -->
+    <Exec Command="$(CANDLE_EXE) -nologo $(CandleIncludeSearchPath) -wx -out $(OUTPUT_WIXOBJ_DIR_LE) @(WiXDefines->'-d%(Identity)=%(Value)', ' ') @(CandleInput, ' ') @(WixSourceLE, ' ')" />
+
+    <ItemGroup Condition=" '$(OUTPUT_MSM)' != '' ">
+      <WiXObjectLE Include="@(WiXSourceLE->'$(OUTPUT_WIXOBJ_DIR_LE)%(filename).wixobj')" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="@(WiXSourceLE->'$(OUTPUT_WIXOBJ_DIR_LE)%(filename).wixobj')" />
+    </ItemGroup>
+  </Target>
+  
+  <Target Name="CandleBE"
+          Inputs="$(CandleInput);@(WiXSourceBE)"
+          Outputs="@(WiXSourceBE->'$(OUTPUT_WIXOBJ_DIR_BE)%(filename).wixobj')">
+
+    <MakeDir Condition="!Exists('$(OUTPUT_WIXOBJ_DIR_BE)')"  Directories="$(OUTPUT_WIXOBJ_DIR_BE)"/>
+
+<!--    <Message Text="$(CANDLE_EXE) -nologo $(CandleIncludeSearchPath) -wx -out $(OUTPUT_WIXOBJ_DIR_BE) @(WiXDefines->'-d%(Identity)=%(Value)', ' ') @(CandleInput, ' ') @(WixSourceBE, ' ')" /> -->
+    <Exec Command="$(CANDLE_EXE) -nologo $(CandleIncludeSearchPath) -wx -out $(OUTPUT_WIXOBJ_DIR_BE) @(WiXDefines->'-d%(Identity)=%(Value)', ' ') @(CandleInput, ' ') @(WixSourceBE, ' ')" />
+
+    <ItemGroup Condition=" '$(OUTPUT_MSM)' != '' ">
+      <WiXObjectBE Include="@(WiXSourceBE->'$(OUTPUT_WIXOBJ_DIR_BE)%(filename).wixobj')" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <FileWrites Include="@(WiXSourceBE->'$(OUTPUT_WIXOBJ_DIR_BE)%(filename).wixobj')" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <FileType Include="Dynamic Link Library">
+      <RegularExpression>\.dll$</RegularExpression>
+    </FileType>
+    <FileType Include="Executable">
+      <RegularExpression>\.exe$</RegularExpression>
+    </FileType>
+    <SymbolType Include="Dynamic Link Library"/>
+    <SymbolType Include="Executable"/>
+    <CodeSignType Include="Dynamic Link Library"/>
+    <CodeSignType Include="Executable"/>
+  </ItemGroup>
+
+  <Target Name="LitEndianInput">
+    <FindWixObjects
+      SearchPaths="$(OutputWixObjClient)BE\;$(OutputWixObjClient)LE\"
+      InputWixObjects="@(WiXObjectEndian)"
+      FileTypes="@(FileType)"
+      PrintFiles="false"
+      WorkingDirectory="$(OutputWixObjClient)"
+      >
+      <Output TaskParameter="FoundObjects" ItemName="WiXObjectEndian"/>
+      <Output TaskParameter="FoundFiles" ItemName="FoundFileOfType"/>
+    </FindWixObjects>
+
+    <CreateSymbolRequest
+      Condition=" '$(SymbolProject)' != '' "
+      Files="@(FoundFileOfType);@(FoundFileOfTypeLE)"
+      FileTypes="@(SymbolType)"
+      SymbolWorkingDirectory="$(BUILD_TREE_SERVER)\Symbols\$(SymbolProject)"
+      InputFiles="$(IndexFile);$(ArchiveFile)"
+      Root="$(SPOROOT)"
+      RequestFileName="symbolrequest.xml"/>
+  </Target>
+
+  <Target
+      Name="LitEndian"
+      DependsOnTargets="LitEndianInput"
+      Inputs="@(WiXObjectEndian)"
+      Outputs="$(LitLibEndian)">
+<!--      <Message Text="Execute LitEndian $(LIT_EXE) $(LitCmdLine) $(LitLibEndian) @(WiXObjectEndian, ' ') "/> -->
+    <Exec
+      WorkingDirectory="$(OutputWixObjClient)"
+      Command="$(LIT_EXE) $(LitCmdLine) $(LitLibEndian) @(WiXObjectEndian, ' ')" />
+  </Target>
+
+  <Target Name="LitNonEndianInput">
+    <FindWixObjects
+      SearchPaths="$(OutputWixObjClient);$(OutputWixObjServer)"
+      ExcludePaths="LE;BE"
+      InputWixObjects="@(WiXObject)"
+      FileTypes="@(FileType)"
+      PrintFiles="false"
+      >
+      <Output TaskParameter="FoundObjects" ItemName="WiXObjectNonEndian"/>
+      <Output TaskParameter="FoundFiles" ItemName="FoundFileOfType"/>
+    </FindWixObjects>
+
+    <SignMSIAssemblies
+      Condition=" '$(SignBuild)' == 'true' And '$(SignProject)' == 'true' And ( '$(TinyCLR_Platform)' == 'Server' And '$(Configuration)' == 'Release' )"
+      Files="@(FoundFileOfType)"
+      FileTypes="@(CodeSignType)"
+      StageDirectory="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\Bin"
+      JobDescription="$(CodeSignJobDescInternal)"
+      JobKeywords="$(CodeSignJobKeywInternal)"
+      Certificate="$(CodeSignAuthenticodeCert)"
+      Approvers="$(CodeSignApprovers)"
+      DisplayName="$(CodeSignDisplayNameInternal)"
+      DisplayURL="http://netmf.com"
+      />
+    
+    <CreateSymbolRequest
+      Condition=" '$(SymbolProject)' != '' "
+      Files="@(FoundFileOfType)"
+      FileTypes="@(SymbolType)"
+      SymbolWorkingDirectory="$(BUILD_TREE_SERVER)\Symbols\$(SymbolProject)"
+      InputFiles="$(IndexFile);$(ArchiveFile)"
+      Root="$(SPOROOT)"
+      RequestFileName="symbolrequest.xml"/>
+
+  </Target>
+
+  <Target
+      Name="LitNonEndian"
+      DependsOnTargets="LitNonEndianInput"
+      Inputs="@(WiXObjectNonEndian)"
+      Outputs="$(LitLibNonEndian)">
+<!--      <Message Text="Execute LitNonEndian: $(LIT_EXE) $(LitCmdLine) $(LitLibNonEndian) @(WiXObjectNonEndian, ' ')"/> -->
+    <Exec
+      Command="$(LIT_EXE) $(LitCmdLine) $(LitLibNonEndian) @(WiXObjectNonEndian, ' ') " />
+  </Target> 
+
+  <PropertyGroup>
+    <LitCmdLine>-nologo -wx -out  </LitCmdLine>
+    <LitLibNonEndian>$(OUTPUT_MSM).nonendian.wixlib</LitLibNonEndian>
+    <LitLibEndian>$(OUTPUT_MSM).endian.wixlib</LitLibEndian>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LightCmdLine>-nologo -wx -sw1076 -sw1079 -sw1056 -sw1055 -sice:ICE03 -sice:ICE18 -sice:ICE20 -sice:ICE30 -sice:ICE31 -sice:ICE38 -sice:ICE43 -sice:ICE57 -sice:ICE64 -sice:ICE69 -b $(SPOCLIENT)\Setup -out $(OUTPUT_MSM) </LightCmdLine>
+    <LightCmdLine Condition=" $(WiXLocalization) != '' ">$(LightCmdLine) -loc $(WiXLocalization) </LightCmdLine>
+  </PropertyGroup>
+
+  <Target
+    Condition="!EXISTS('$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll')"
+    Name="Light"
+    DependsOnTargets="$(LightDependsOn)"
+    Inputs="$(LitLibEndian);$(LitLibNonEndian);@(WiXLibrary);$(WixLocalization)"
+    Outputs="$(OUTPUT_MSM)">
+
+    <!-- The TargetLock task prevents more than one process of Light building an MSI at the same time-->
+    <TargetLock EventName="$(OUTPUT_MSM_FILE)-85410d23-4eac-4d97-a219-70983c497ffb" Lock="true"/>
+<!--    <Message Text="Execute Light: $(LIGHT_EXE) $(LightCmdLine) @(WiXObject, ' ') $(LitLibEndian) $(LitLibNonEndian) @(WiXLibrary, ' ')"/> -->
+    
+    <Exec Condition="Exists('$(LitLibEndian)') And Exists('$(LitLibNonEndian)')"
+      Command="$(LIGHT_EXE) $(LightCmdLine) @(WiXObject, ' ') $(LitLibEndian) $(LitLibNonEndian) @(WiXLibrary, ' ')" />
+    
+    <Exec Condition="Exists('$(LitLibEndian)') And !Exists('$(LitLibNonEndian)')"
+      Command="$(LIGHT_EXE) $(LightCmdLine) @(WiXObject, ' ') $(LitLibEndian) @(WiXLibrary, ' ')" />
+    
+    <Exec Condition="!Exists('$(LitLibEndian)') And Exists('$(LitLibNonEndian)')"
+      Command="$(LIGHT_EXE) $(LightCmdLine) @(WiXObject, ' ') $(LitLibNonEndian) @(WiXLibrary, ' ')" />
+    
+    <Exec Condition="!Exists('$(LitLibEndian)') And !Exists('$(LitLibNonEndian)')"
+      Command="$(LIGHT_EXE) $(LightCmdLine) @(WiXObject, ' ') @(WiXLibrary, ' ')" />
+
+    <TargetLock EventName="$(OUTPUT_MSM_FILE)-85410d23-4eac-4d97-a219-70983c497ffb" Lock="false"/>
+
+    <SignMSI
+      Condition=" '$(SignBuild)' == 'true' And '$(SignProject)' == 'true' And ( '$(TinyCLR_Platform)' == 'Server' And '$(Configuration)' == 'Release' )"
+      MSI="$(OUTPUT_MSM)"
+      StageDirectory="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\MSI"
+      JobDescription="$(CodeSignJobDescMSI)"
+      JobKeywords="$(CodeSignJobKeywMSI)"
+      Certificate="$(CodeSignAuthenticodeCert)"
+      Approvers="$(CodeSignApprovers)"
+      DisplayName="$(CodeSignDisplayNameMSI)"
+      DisplayURL="http://msdn.microsoft.com/embedded/netmf"/>
+  </Target>
+
+  <Target Name="BuildCDImage" DependsOnTargets="$(BuildCDImageDependsOn)" Inputs="$(OUTPUT_MSM);@(ISO_FILE)" Outputs="$(ISOImage)">
+    <Copy Condition=" '$(FinalMSI)' != '' " SourceFiles="$(OUTPUT_MSM)" DestinationFiles="$(BUILD_TREE_SERVER)\ISO\$(ISOProject)\$(FinalMSI)" />
+    <Copy Condition=" '$(ISOProject)' != '' "  SourceFiles="@(ISO_File)" DestinationFolder="$(BUILD_TREE_SERVER)\ISO\$(ISOProject)" />
+    <Exec
+      Condition=" '$(ISOProject)' != '' "
+      Command="cdimage -n $(BUILD_TREE_SERVER)\ISO\$(ISOProject) $(ISOImage)"/>
+  </Target>
+
+  <Target Name="CleanLight">
+    <Delete Files="$(OUTPUT_MSM)" />
+  </Target>
+
+  <Target Name="CleanXbuild">
+    <Delete Files="@(DOCPROJOUT)"/>
+    <RemoveDir Directories="$(SPOCLIENT)\ue\public\docs\built" />
+  </Target>
+
+  <Target Name="CleanCDImage">
+    <RemoveDir Directories="$(BUILD_TREE_SERVER)\ISO\$(ISOProject)" />
+  </Target>
+
+  <Target Name="CleanAssemblyFragment">
+    <Delete Files="$(AssemblyFragmentWxs);$(AssemblyFragmentWxsLE);$(AssemblyFragmentWxsBE)"/>
+
+    <CreateItem
+      Include="$(AssemblyFragmentWxs)">
+      <Output TaskParameter="Include" ItemName="WiXSource"/>
+    </CreateItem>
+
+  </Target>
+
+  <Target Name="CleanSymbolRequest">
+    <RemoveDir Directories="$(BUILD_TREE_SERVER)\Symbols\$(SymbolProject)" />
+  </Target>
+
+  <Target Name="CleanCodeSign">
+    <RemoveDir Directories="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\Unsigned\client" />
+    <RemoveDir Directories="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\Unsigned\server" />
+    <RemoveDir Directories="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\Unsigned" />
+    <RemoveDir Directories="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\Signed\client" />
+    <RemoveDir Directories="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\Signed\server" />
+    <RemoveDir Directories="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\Signed" />
+    <RemoveDir Directories="$(BUILD_TREE_MSM)\$(MSBuildProjectName)" />
+  </Target>
+</Project>

@@ -1,0 +1,54 @@
+<?xml version='1.0'?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?ifndef _defines_wxs_?>
+  <?define _defines_wxs_="true"?>
+
+  <?define CompanyName="Microsoft"?>
+  <?define ShortCompanyName="MSFT"?>
+  <?define FullCompanyName="$(var.CompanyName) Corporation"?>
+
+  <?define CommonProductName=".NET Micro Framework"?>
+  <?define CommonFrameworkName=".NETMicroFramework"?>
+  <?define ShortCommonProductName="DNETMF"?>
+
+  <?define DEFAULT_FOLDER_NAME="$(var.CompanyName) $(var.CommonProductName)"?>
+
+  <?define BUILD_TREE_SERVER="$(var.BuildTreeServer)" ?>
+  <?define BUILD_TREE_SERVER_DLL="$(var.BuildTreeServer)\dll" ?>
+  <?define BUILD_TREE_SERVER_DLL_1033="$(var.BuildTreeServer)\dll\1033" ?>
+  <?define BUILD_TREE_SERVER_MSM="$(var.BuildTreeServer)\msm" ?>
+
+  <?define BUILD_TREE_CLIENT="$(var.BuildTreeClient)" ?>
+  <?define BUILD_TREE_CLIENT_DLL="$(var.BuildTreeClient)\dll" ?>
+  <?define BUILD_TREE_CLIENT_PE="$(var.BuildTreeClient)\pe" ?>
+
+  <?define FxKey="Software\Microsoft\.NETMicroFramework" ?>
+
+  <!--
+	FxVersionBuild is used for reference resolution.  This number (which should be generated...) should
+	not have any leading zeros
+    -->
+  <?define DeviceNameShort="MicroFw"?>
+  <?define DeviceName="MicroFramework"?>
+  <?define TemplateGroup="Micro Framework"?>
+  <?define ComponentGuidAssemblyFoldersEx="4ca25c9c-daaa-4b6d-8437-93cebd41c547"?>
+
+  <?define ProjectSystemDir="$(env.SPOCLIENT)\Framework\CorDebug\TinyCLRProjectSystem"?>
+  <?define ProjectsDir="$(var.ProjectSystemDir)\Projects"?>
+
+  <?define BUILD_TREE_SERVER_TEMPLATES="$(var.BuildTreeServer)\templates" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_PROJECTS="$(var.BUILD_TREE_SERVER_TEMPLATES)\ProjectTemplates" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS)\CSharp" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP)\$(var.DeviceName)" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS)\VisualBasic" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC)\$(var.DeviceName)" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_ITEMS="$(var.BUILD_TREE_SERVER_TEMPLATES)\ItemTemplates" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS)\CSharp" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP)\$(var.DeviceName)" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_ITEMS_VISUALBASIC="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS)\VisualBasic" ?>
+  <?define BUILD_TREE_SERVER_TEMPLATES_ITEMS_VISUALBASIC_DEVICE="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_VISUALBASIC)\$(var.DeviceName)" ?>
+
+  <?define VS10HelpNamespace="MS.VSIPCC.v100"?>
+
+  <?endif?>
+</Include>

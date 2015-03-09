@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>HD66773R</AssemblyName>
+    <ProjectGuid>{52607311-1618-4290-944E-9E35E9AAB53D}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>HD66773R display driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>HD66773R.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Display\HD66773R\dotNetMF.proj</ProjectPath>
+    <ManifestFile>HD66773R.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Display</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="LCD_HAL" Guid="{9F6063F2-7ED0-49F7-95A3-2A2D2219EEAB}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>1</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-06-05</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\Display\HD66773R</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>1.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <FastCompileCPPFile Include="fastcompile_HD66773R.cpp" />
+    <Compile Include="HD66773R_driver.cpp" />
+    <Compile Include="HD66773R_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="hd66773r.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

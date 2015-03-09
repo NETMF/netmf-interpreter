@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Graphics_Gif</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>9ce382ab-2fdc-4a59-9cb8-314a6a6e624a</ProjectGuid>
+    <Description>GIF library for graphics subsystem</Description>
+    <Level>CLR</Level>
+    <LibraryFile>Graphics_Gif.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Graphics\GIF\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Graphics_Gif.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Graphics</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Graphics_GIF_CLR" Guid="{E44003AC-2692-4343-A0D0-FA58BC2C2C31}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Graphics\Gif</Directory>
+    <OutputType>Library</OutputType>
+    <PCHFile>none</PCHFile>
+    <NameSpace>Graphics_Gif</NameSpace>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <NoOptForParserOptimization>false</NoOptForParserOptimization>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <ExtraFlags Condition="'$(INSTRUCTION_SET)'=='x86' or '$(INSTRUCTION_SET)'=='armv4'">/Gd</ExtraFlags>
+    <ExtraFlags Condition="'$(INSTRUCTION_SET)'=='BLACKFIN'"> -D_NO_CPP_INLINES </ExtraFlags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Gif.cpp" />
+    <Compile Include="Graphics_Gif.cpp" />
+    <Compile Include="lzwread.cpp" />
+    <ExtraProjects Include="dotNetMF_Stub.proj" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\clr\graphics\graphics.h" />
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="gif.h" />
+    <HFiles Include="giffile.h" />
+    <HFiles Include="lzw.h" />
+    <HFiles Include="lzwread.h" />
+    <HFiles Include="lzwutil.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

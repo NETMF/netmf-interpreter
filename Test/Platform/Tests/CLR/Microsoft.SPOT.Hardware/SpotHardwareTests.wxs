@@ -1,0 +1,10 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='f40e94ac-611c-4627-b05c-aff57e56a4d8' Keywords="Installer" Description=".NET Micro Framework Hardware Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_LargeBuffer' />
+      <ComponentRef Id='Component_UsbClient' />
+      <ComponentRef Id='Component_EmulateHardware' />
+  </Module>
+</Wix>

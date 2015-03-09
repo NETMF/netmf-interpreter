@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Platform>x86</Platform>
+    <PlatformTarget>x86</PlatformTarget>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C71485D9-B0EF-4363-9918-F6FD360634FD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.SPOT.Platform.Test</RootNamespace>
+    <AssemblyName>RunTests</AssemblyName>
+    <ComponentGuid>4235f1ad-823a-4e36-96a9-1a43df0d8449</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="envdte100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>$(SPOROOT)\bin\build\extensibility.dll</HintPath>
+    </Reference>
+    <Reference Include="MFDeployEngine">
+      <HintPath>$(BUILD_TREE_DLL)\MFDeployEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MFProfiler">
+      <HintPath>$(BUILD_TREE_DLL)\MFProfiler.exe</HintPath>
+      <ExecutableExtension>.exe</ExecutableExtension>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.SPOT.Debugger">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Harness.cs" />
+    <Compile Include="MFPowerController.cs" />
+    <Compile Include="MicroFrameworkTest.cs" />
+    <Compile Include="Profile.cs" />
+    <Compile Include="RunningProcesses.cs" />
+    <Compile Include="ScreenCapture.cs" />
+    <Compile Include="SendMail.cs" />
+    <Compile Include="XmlLog.cs" />
+    <Compile Include="TestSystem.cs" />
+    <Compile Include="TimedTest.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.4.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 4.0 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.4.0.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 4.0 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Host.Targets" />
+</Project>

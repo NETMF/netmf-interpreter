@@ -1,0 +1,132 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Toolsversion="4.0">
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <ProjText Include="%3CProject xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;%3E"/>
+    <ProjText Include="%3CPropertyGroup%3E" />
+    <ProjText Include="%20%20%20%20%3CMajorVersion%3E$(MajorVersion)%3C/MajorVersion%3E"/>
+    <ProjText Include="%20%20%20%20%3CMinorVersion%3E$(MinorVersion)%3C/MinorVersion%3E"/>
+    <ProjText Include="%20%20%20%20%3CBuildNumber%3E$(BuildNumber)%3C/BuildNumber%3E"/>
+    <ProjText Include="%20%20%20%20%3CRevisionNumber%3E$(RevisionNumber)%3C/RevisionNumber%3E"/>
+    <ProjText Include="%3C/PropertyGroup%3E" />
+    <ProjText Include="%3C/Project%3E" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HeaderLine Include="#ifndef __MFPKVERSION_H__"/>
+    <HeaderLine Include="#define __MFPKVERSION_H__"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_MAJOR"/>
+    <HeaderLine Include="#define MFPK_VER_MAJOR                 $(MajorVersion)"/>
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_MINOR"/>
+    <HeaderLine Include="#define MFPK_VER_MINOR                 $(MinorVersion)"/>
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_BUILD"/>
+    <HeaderLine Include="#define MFPK_VER_BUILD                 $(BuildNumber)"/>
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_REVISION"/>
+    <HeaderLine Include="#define MFPK_VER_REVISION              $(RevisionNumber)"/>
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_VERSIONSTRING"/>
+    <HeaderLine Include="#define MFPK_VER_VERSIONSTRING         &quot;$(MajorVersion).$(MinorVersion).$(BuildNumber).$(RevisionNumber)&quot;"/>
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_SHORTVERSIONSTRING"/>
+    <HeaderLine Include="#define MFPK_VER_SHORTVERSIONSTRING    &quot;$(MajorVersion).$(MinorVersion)&quot;"/>
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_PRODUCTNAME"/>
+    <HeaderLine Include="#define MFPK_VER_PRODUCTNAME           &quot;$(MFSDKProductName)&quot;" />
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_COMPANYNAME"/>
+    <HeaderLine Include="#define MFPK_VER_COMPANYNAME 	        &quot;$(MFCompanyName)&quot;" />
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_LONGCOMPANYNAME"/>
+    <HeaderLine Include="#define MFPK_VER_LONGCOMPANYNAME  	    &quot;$(MFLongCompanyName)&quot;" />
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_SHORTCOMPANYNAME"/>
+    <HeaderLine Include="#define MFPK_VER_SHORTCOMPANYNAME 	    &quot;$(MFShortCompanyName)&quot;" />
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_TRADEMARK"/>
+    <HeaderLine Include="#define MFPK_VER_TRADEMARK		        &quot;$(MFTrademark)&quot;" />
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_COPYRIGHT"/>
+    <HeaderLine Include="#define MFPK_VER_COPYRIGHT			    &quot;$(MFCopyright)&quot;" />
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#ifndef MFPK_VER_DESCRIPTION"/>
+    <HeaderLine Include="#define MFPK_VER_DESCRIPTION		    &quot;$(MFDescription)&quot;" />
+    <HeaderLine Include="#endif"/>
+
+    <HeaderLine Include="#endif"/>
+    <HeaderLine Include="/* end of __MFPKVERSION_H__ */"/> <!-- Last line does not get written to file for some reason -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <VsPropsLine Include="%3C?xml version=&quot;1.0&quot;?%3E" />
+    <VsPropsLine Include="%3CVisualStudioPropertySheet" />
+    <VsPropsLine Include="%20%20%20%20ProjectType=&quot;Visual C++&quot;" />
+	<VsPropsLine Include="%20%20%20%20Version=&quot;8.00&quot;" />
+	<VsPropsLine Include="%20%20%20%20Name=&quot;MFPK version info&quot;" />
+    <VsPropsLine Include="%20%20%20%20%3E" />
+
+    <VsPropsLine Include="%20%20%20%20%3CUserMacro%20Name=&quot;VERSION_MAJOR&quot;%20Value=&quot;$(MajorVersion)&quot;%20/%3E" />
+    <VsPropsLine Include="%20%20%20%20%3CUserMacro%20Name=&quot;VERSION_MINOR&quot;%20Value=&quot;$(MinorVersion)&quot;%20/%3E" />
+    <VsPropsLine Include="%20%20%20%20%3CUserMacro%20Name=&quot;VERSION_BUILD&quot;%20Value=&quot;$(BuildNumber)&quot;%20/%3E" />
+    <VsPropsLine Include="%20%20%20%20%3CUserMacro%20Name=&quot;VERSION_REVISION&quot;%20Value=&quot;$(RevisionNumber)&quot;%20/%3E" />
+
+    <VsPropsLine Include="%3C/VisualStudioPropertySheet%3E" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TaskText Include="%3CProject xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;%3E"/>
+    <TaskText Include="%3CPropertyGroup%3E" />
+    <TaskText Include="%20%20%20%20%3CSPOTTasksAssembly%3EMicrosoft.SPOT.Tasks, Version=$(MajorVersion).$(MinorVersion).$(BuildNumber).$(RevisionNumber), Culture=neutral, PublicKeyToken=2670f5f21e7f4192%3C/SPOTTasksAssembly%3E"/>
+    <TaskText Include="%20%20%20%20%3CNativeBuildTasksAssembly%3EMicrosoft.SPOT.Tasks.NativeBuild, Version=$(MajorVersion).$(MinorVersion).$(BuildNumber).$(RevisionNumber), Culture=neutral, PublicKeyToken=2670f5f21e7f4192%3C/NativeBuildTasksAssembly%3E"/>
+    <TaskText Include="%20%20%20%20%3CInternalBuildTasksAssembly%3EMicrosoft.SPOT.Tasks.Internal, Version=$(MajorVersion).$(MinorVersion).$(BuildNumber).$(RevisionNumber), Culture=neutral, PublicKeyToken=2670f5f21e7f4192%3C/InternalBuildTasksAssembly%3E"/>
+    <TaskText Include="%3C/PropertyGroup%3E" />
+    <TaskText Include="%3C/Project%3E" />
+  </ItemGroup>
+
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" >
+    <WriteLinesToFile
+        File="$(BUILD_TREE)\MfPkVersion.proj"
+        Lines="@(ProjText)"
+        Overwrite="true"
+        />
+
+    <WriteLinesToFile
+        File="$(BUILD_TREE)\MfPkVersion.h"
+        Lines="@(HeaderLine)"
+        Overwrite="true"
+        />
+
+    <WriteLinesToFile
+        File="$(BUILD_TREE)\Mfpkversion.vsprops"
+        Lines="@(VsPropsLine)"
+        Overwrite="true"
+        />
+
+    <WriteLinesToFile
+        File="$(BUILD_TREE)\MfPkTasksAsm.proj"
+        Lines="@(TaskText)"
+        Overwrite="true"
+        />
+  </Target>
+
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" >
+    <Delete Files="$(SPOCLIENT)\Support\MfPkVersion.proj;$(SPOCLIENT)\Support\Include\MfPkVersion.h;$(SPOCLIENT)\Support\Mfpkversion.vsprops" />
+  </Target>
+
+</Project>

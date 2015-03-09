@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectGuid>5A50119C-1B45-431D-93E1-5365812C1C55</ProjectGuid>
+    <Directory>DeviceCode</Directory>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <SubDirectories Include="Cores"/>
+    <SubDirectories Include="Initialization" Condition="'$(PLATFORM_FAMILY)'!='x86'" />
+    <SubDirectories Include="Drivers"        Condition="'$(PLATFORM_FAMILY)'!='x86'" />
+    <!-- build PAL before build the tools. -->
+    <SubDirectories Include="Pal" />
+    <SubDirectories Include="Targets" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

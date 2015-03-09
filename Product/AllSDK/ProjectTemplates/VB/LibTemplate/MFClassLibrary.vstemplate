@@ -1,0 +1,22 @@
+﻿<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance" schemaLocation="http://schemas.microsoft.com/developer/vstemplate/2005">
+    <TemplateData>
+        <Name>Class Library</Name>
+        <Description>A project for creating a .NET Micro Framework VisualBasic class library (.dll)</Description>
+        <Icon>Project.ico</Icon>
+        <TemplateID>Microsoft.VisualBasic.MicroFramework.ClassLibrary</TemplateID>
+        <ProjectType>VisualBasic</ProjectType>
+        <ProjectSubType></ProjectSubType>
+        <SortOrder>1000</SortOrder>
+        <CreateNewFolder>true</CreateNewFolder>
+        <DefaultName>MFClassLibrary</DefaultName>
+        <ProvideDefaultName>true</ProvideDefaultName>
+        <LocationField>Enabled</LocationField>
+        <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    </TemplateData>
+    <TemplateContent>
+        <Project File="MFClassLibrary.vbproj" ReplaceParameters="true">
+            <ProjectItem ReplaceParameters="true" TargetFileName="Class1.vb">Class1.vb</ProjectItem>
+            <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.vb">AssemblyInfo.vb</ProjectItem>
+        </Project>
+    </TemplateContent>
+</VSTemplate>

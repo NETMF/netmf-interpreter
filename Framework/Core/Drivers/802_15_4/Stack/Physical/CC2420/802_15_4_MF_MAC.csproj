@@ -1,0 +1,40 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Wireless.IEEE_802_15_4.Mac</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.Wireless.IEEE_802_15_4</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{77E93520-CC2D-4011-B8B9-0D57AD99D9C7}</ProjectGuid>
+    <ComponentGuid>{98080893-9c67-4a1c-8ca4-c4820565d862}</ComponentGuid>
+    <DefineConstants>TRACE;DEBUG;MICROFRAMEWORK;RTEXTENSIONS</DefineConstants>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>,1668,0067</NoWarn>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="MAC\Frames\BeaconFrame.cs" />
+    <Compile Include="MAC\Frames\CommandFrames.cs" />
+    <Compile Include="MAC\Frames\Header.cs" />
+    <Compile Include="MAC\IMac.cs" />
+    <Compile Include="MAC\Mac.cs" />
+    <Compile Include="MAC\MacReceive.cs" />
+    <Compile Include="MAC\MacState.cs" />
+    <Compile Include="MAC\PhySendReceive.cs" />
+    <Compile Include="MAC\TaskProcessor.cs" />
+    <Compile Include="MAC\TaskQueue.cs" />
+    <Compile Include="MAC\TaskTypes.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

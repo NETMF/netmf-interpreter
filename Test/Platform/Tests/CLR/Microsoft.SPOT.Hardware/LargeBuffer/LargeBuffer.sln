@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LargeBuffer", "LargeBuffer.csproj", "{741A74B6-C0DB-4191-96A0-3D782376C275}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RTM|Any CPU = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{741A74B6-C0DB-4191-96A0-3D782376C275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{741A74B6-C0DB-4191-96A0-3D782376C275}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{741A74B6-C0DB-4191-96A0-3D782376C275}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{741A74B6-C0DB-4191-96A0-3D782376C275}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{741A74B6-C0DB-4191-96A0-3D782376C275}.RTM|Any CPU.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>SPOT_Graphics_stub</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>2B4C4A34-25C6-4995-89C3-B9483B4439BC</ProjectGuid>
+    <Description>Graphics interop stub library</Description>
+    <Level>CLR</Level>
+    <LibraryFile>SPOT_Graphics_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Libraries\SPOT_Graphics\dotNetMF_Stub.proj</ProjectPath>
+    <ManifestFile>SPOT_Graphics_stub.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Graphics</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Graphics_CLR" Guid="{6E04CE5E-46B5-4608-9CA3-6E17842DA36F}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <Directory>CLR\Libraries\SPOT_Graphics</Directory>
+    <OutputType>Library</OutputType>
+    <VCProjName>Lib_SPOT_Graphics_stub</VCProjName>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <Compile Include="spot_graphics_stub.cpp" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\libraries\SPOT" />
+    <IncludePaths Include="CLR\libraries\SPOT_Graphics" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_version.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="spot_graphics.h" />
+    <HFiles Include="spot_graphics_native.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

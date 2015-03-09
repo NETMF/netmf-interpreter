@@ -1,0 +1,21 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>Framework</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="
+        $(SPOCLIENT)\Framework\Tools\BuildTasksNativeBuild\NativeBuildTasks.csproj;
+        $(SPOCLIENT)\Framework\Tools\BuildTasks\BuildTasks.csproj;
+        $(SPOCLIENT)\Framework\Tools\CreateCLRDefines.proj;
+        $(SPOCLIENT)\CLR\Tools\Metadataprocessor\dotnetmf.proj;
+        $(SPOCLIENT)\Framework\Tools\buildTasks.dirproj;
+        $(SPOCLIENT)\Framework\Debugger\Debugger.csproj;
+        " />
+  </ItemGroup>
+
+</Project>
+

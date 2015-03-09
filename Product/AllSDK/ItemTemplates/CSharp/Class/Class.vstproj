@@ -1,0 +1,15 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <TemplateName>Class</TemplateName>
+    <TemplateType>Item</TemplateType>
+    <TemplateImplementationLanguage>CSharp</TemplateImplementationLanguage>
+  </PropertyGroup>
+  <ItemGroup>
+    <WiXSource Include="Class.wxs" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <ItemGroup>
+    <VSTemplateInput Include="Class.cs" />
+    <VSTemplateInput Include="Class.vstemplate" />
+  </ItemGroup>
+</Project>

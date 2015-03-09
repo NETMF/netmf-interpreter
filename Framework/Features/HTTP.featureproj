@@ -1,0 +1,26 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>HTTP</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(NETWORK_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network.featureproj" />
+  <ItemGroup>
+    <!-- Just a reference, not a dependency -->
+    <InteropFeature Include="Microsoft_SPOT_Net_Security" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Net.Security.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\Native_net_Security\Core_Net_Security.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\System.Net.security.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\System\Net\Security\NetSecurity.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\System.Http.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\System\System.HTTP.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Description>Support for HTTP functionality.</Description>
+    <Guid>{1ed5902c-9a8a-4822-94eb-88e693fcb572}</Guid>
+    <Groups>Networking</Groups>
+    <Documentation>
+    </Documentation>
+    <HTTP_FEATUREPROJ>True</HTTP_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

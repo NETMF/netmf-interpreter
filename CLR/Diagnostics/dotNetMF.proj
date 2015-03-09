@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Diagnostics</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>361D0942-712A-4E8E-A38C-63EDD98A1E99</ProjectGuid>
+    <Description>Diagnostic functionality</Description>
+    <Level>CLR</Level>
+    <LibraryFile>Diagnostics.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Diagnostics\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Diagnostics.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Diagnostics</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Diagnostics_CLR" Guid="{4E525F0B-5313-4CB2-9C7E-9133C5451FB4}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Diagnostics</Directory>
+    <OutputType>Library</OutputType>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\PerformanceCounter_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <FastCompileCPPFile Include="Diagnostics_fastcompile.cpp" />
+    <Compile Include="Info.cpp" />
+    <Compile Include="Info_Win32.cpp" Condition="'$(PLATFORM_FAMILY)'=='x86'" />
+    <Compile Include="ManagedElementTypes_Win32.cpp" Condition="'$(PLATFORM_FAMILY)'=='x86'" />
+    <Compile Include="Profile.cpp" />
+    <Compile Include="Profiler.cpp" />
+    <ExtraProjects Include="dotNetMF_stub.proj" />
+    <IncludePaths Include="CLR\core" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\Libraries\SPOT" />
+    <IncludePaths Include="CLR\Libraries\SPOT_Hardware" />
+    <IncludePaths Include="CLR\Libraries\SPOT_Net" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\clr\core\core.h" />
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_handler.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_parseoptions.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_stream.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_xml.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot_hardware\spot_hardware_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot_net\spot_net_native.h" />
+    <HFiles Include="diagnostics.h" />
+    <HFiles Include="managedelementtypes_win32.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

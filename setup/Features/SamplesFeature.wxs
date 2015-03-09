@@ -1,0 +1,66 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include defines.wxs?>
+  <Module Id="Module_SamplesFeature"
+    Language="1033"
+    Version="$(var.ProdVer)">
+
+    <Package
+      Id="05c09fc1-cb35-426a-bc09-d5e1991b03fe"
+      Keywords="Installer"
+      Description=".NET Micro Framework Samples $(var.ProdVer)"
+      Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved."
+      Manufacturer="Microsoft Corporation"
+      InstallerVersion="200"
+      Languages="1033"
+      SummaryCodepage="1252"/>
+
+    <ComponentRef Id="Component_SampleEmulator"/>
+    <ComponentRef Id="Component_InkCanvasSample"/>
+    <ComponentRef Id="Component_Puzzle"/>
+    <ComponentRef Id="Component_SimpleTouchInput"/>
+    <ComponentRef Id="Component_TouchScreen"/>
+    <ComponentRef Id="Component_StylusCapture"/>
+    <ComponentRef Id="Component_TouchCalibration"/>
+    <ComponentRef Id="Component_FileSystem"/>
+    <ComponentRef Id="Component_ExtendedWeakReferences"/>
+    <ComponentRef Id="Component_SocketClient"/>
+    <ComponentRef Id="Component_SocketServer"/>
+    <ComponentRef Id="Component_Threading"/>
+    <ComponentRef Id="Component_WeakDelegates"/>
+    <ComponentRef Id="Component_TemperatureSample"/>
+    <ComponentRef Id="Component_TemperatureEmulator"/>
+    <ComponentRef Id="Component_SimpleWPFApplication"/>
+    <ComponentRef Id="Component_SimpleService"/>
+    <ComponentRef Id="Component_SimpleServiceClient"/>
+    <ComponentRef Id="Component_Mouse"/>
+    <ComponentRef Id="Component_Clock"/>
+    <ComponentRef Id="Component_HttpClient"/>
+    <ComponentRef Id="Component_HttpServer"/>
+    <ComponentRef Id="Component_FtpServer"/>
+    <ComponentRef Id="Component_IEEE_802_15_4_Network" />
+    <ComponentRef Id="Component_IEEE_802_15_4_PHY" />
+    <ComponentRef Id="Component_HelloWorldClient_MF" />
+    <ComponentRef Id="Component_HelloWorldClient_WCF" />
+    <ComponentRef Id="Component_HelloWorldServer_MF" />
+    <ComponentRef Id="Component_HelloWorldServer_WCF" />
+
+    <?include common.wxs?>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="TempFolder" Name="Temp">
+        <Directory Id="TEMPFOLDERINSTALLDIR" Name="$(var.DEFAULT_FOLDER_NAME)"/>
+      </Directory>
+    </DirectoryRef>
+    <DirectoryRef Id="SamplesDir">
+      <Component Id="Component_SampleDirectoryShortcut" Guid="717602b2-745f-47ac-b070-83cae29f3a72">
+        <Shortcut Id="Shortcut_SampleDirectory" Directory="ProgramMenuDir" Name="Samples" Target="[SamplesDir]" />
+      </Component>
+      <Component Id="Component_DpwsSampleReadme" Guid="0A143634-97DD-4D56-99D8-4AFE86D0D862">
+        <File Id="File_DpwsSampleReadme" 
+            Name="DPWS_WCF_ReadMe.txt"
+            Source="..\..\Product\Samples\DPWS\WCFSample\DPWS_WCF_ReadMe.txt"
+            DiskId="1"/>
+      </Component>
+    </DirectoryRef>
+  </Module>
+</Wix>

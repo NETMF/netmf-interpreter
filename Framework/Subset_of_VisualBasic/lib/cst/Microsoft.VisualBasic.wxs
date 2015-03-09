@@ -1,0 +1,21 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_Microsoft.VisualBasic">
+    <?define IDMicrosoft_VisualBasic_pdbx="id19919865543067858490_"?>
+    <?define IDMicrosoft_VisualBasic_pe="id19919865541049137437_"?>
+    <?define IDMicrosoft_VisualBasic_pdb="id19919865541792519002_"?>
+    <?define IDMicrosoft_VisualBasic_dll="id1991986554640037900_"?>
+    <?define COMPONENTID="Component_Microsoft.VisualBasic"?>
+    <DirectoryRef Id="AssembliesDir">
+      <Component Id="Component_Microsoft.VisualBasic" Guid="fe8f0c58-8e34-412e-a199-0620031f760c">
+        <File Id="id1991986554640037900_" Name="Microsoft.VisualBasic.dll" Source="$(env.SPOCLIENT)\BuildOutput\public\Debug\Client\dll\Microsoft.VisualBasic.dll" DiskId="1" />
+        <RemoveFile Name="Microsoft.VisualBasic.dll" Id="Remove6222fc4687ab4916b026e65d5f3aad5f" On="uninstall" />
+        <File Id="id19919865541792519002_" Name="Microsoft.VisualBasic.pdb" Source="$(env.SPOCLIENT)\BuildOutput\public\Debug\Client\dll\Microsoft.VisualBasic.pdb" DiskId="1" />
+        <RemoveFile Name="Microsoft.VisualBasic.pdb" Id="Removed058a3be559d47d0be7719d11c9b7809" On="uninstall" />
+        <File Id="id19919865541049137437_" Name="Microsoft.VisualBasic.pe" Source="$(env.SPOCLIENT)\BuildOutput\public\Debug\Client\pe\le\Microsoft.VisualBasic.pe" DiskId="1" />
+        <RemoveFile Name="Microsoft.VisualBasic.pe" Id="Remove3164bcc5e8334b0c891013292df5d497" On="uninstall" />
+        <File Id="id19919865543067858490_" Name="Microsoft.VisualBasic.pdbx" Source="$(env.SPOCLIENT)\BuildOutput\public\Debug\Client\pe\le\Microsoft.VisualBasic.pdbx" DiskId="1" />
+        <RemoveFile Name="Microsoft.VisualBasic.pdbx" Id="Remove12675f47013d4659bf8da69d1e070adc" On="uninstall" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

@@ -1,0 +1,17 @@
+<Include>
+  <?ifdef ProdVerMajorMinor ?>
+  <?undef ProdVerMajorMinor ?>
+  <?endif ?>
+  <?ifdef ProdVer ?>
+  <?undef ProdVer ?>
+  <?endif ?>
+
+  <?define ProdVerMajorMinor = "4.3"?>
+  <?define ProdVer = "$(var.ProdVerMajorMinor).$(var.ProdVerBuild)" ?>
+  <?define ProdName = "Microsoft .NET Micro Framework Test Kit SDK $(var.ProdVerMajorMinor)"?>
+  <?define ProdUrl = "http://www.microsoft.com" ?>
+  
+  <?define CompanyName="Microsoft"?>
+  <?define ProductName=".NET Micro Framework"?>
+  <?define CommonProductName=".NET Micro Framework $(var.ProdVerMajorMinor)"?>
+</Include>

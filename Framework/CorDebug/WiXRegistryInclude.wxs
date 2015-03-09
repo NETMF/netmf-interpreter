@@ -1,0 +1,63 @@
+<?xml version='1.0'?>
+<Include>
+  <RegistryKey   Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.PropertyPageComObject"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)" Name="ThreadingModel" Type="string" Value="Both" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)" Name="InprocServer32" Type="string" Value="mscoree.dll" />
+
+  <RegistryKey   Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.PropertyPageComObject" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32" Name="ThreadingModel" Type="string" Value="Both" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32" Type="string" Value="mscoree.dll" />
+
+  <RegistryKey Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32\$(var.CORDEBUGVER)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" /> 
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.PropertyPageComObject" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PropertyPageCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192" />
+
+
+  <RegistryKey Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)" Name="InprocServer32" Type="string" Value="mscoree.dll" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.DebugPortSupplier" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)" Name="ThreadingModel" Type="string" Value="Both" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+
+  <RegistryKey Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32" Type="string" Value="mscoree.dll" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.DebugPortSupplier" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32" Name="ThreadingModel" Type="string" Value="Both" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+
+  <RegistryKey Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32\$(var.CORDEBUGVER)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.DebugPortSupplier" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.PortSupplierCLSID)\InprocServer32\$(var.CORDEBUGVER)" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+
+
+  <RegistryKey Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)" Name="InprocServer32" Type="string" Value="mscoree.dll" />
+
+  <RegistryKey Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)\InprocServer32" Action="createAndRemoveOnUninstall"/>
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)\InprocServer32" Name="CodeBase" Type="string" Value="[#$(var.IDMicrosoft_SPOT_Debugger_CorDebug_dll)]" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)\InprocServer32" Name="Assembly" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug, Version=$(var.CORDEBUGVER), Culture=neutral, PublicKeyToken=2670f5f21e7f4192" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)\InprocServer32" Name="RuntimeVersion" Type="string" Value="v$(var.DesktopTargetFrameworkVersion)" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)\InprocServer32" Name="Class" Type="string" Value="Microsoft.SPOT.Debugger.CorDebug" />
+  <RegistryValue Root="HKLM" Key="$(var.VSRegKeyRoot)\CLSID\$(var.CorDebugCLSID)\InprocServer32" Type="string" Value="mscoree.dll" />
+
+</Include>

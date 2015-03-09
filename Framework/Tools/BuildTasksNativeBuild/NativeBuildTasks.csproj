@@ -1,0 +1,46 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+    <PropertyGroup>
+        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+        <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+        <SccProjectName>SAK</SccProjectName>
+        <SccLocalPath>SAK</SccLocalPath>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccProvider>SAK</SccProvider>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>Microsoft.SPOT.Tasks.NativeBuild</AssemblyName>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Microsoft.SPOT.Tasks.NativeBuild</RootNamespace>
+        <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <ProductVersion>9.0.21022</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{7B8DD39E-B0AA-47fc-B30B-B777CF840695}</ProjectGuid>
+    </PropertyGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+
+    <ItemGroup>
+        <Compile Include="Compile.cs" />
+        <Compile Include="MakeVCProject.cs" />
+        <Compile Include="Link.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Microsoft.Build.Engine"/>
+        <Reference Include="Microsoft.Build.Framework"/>
+        <Reference Include="Microsoft.Build.Tasks.v4.0"/>
+        <Reference Include="Microsoft.Build.Utilities.v4.0"/>
+        <Reference Include="System"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
+        <Reference Include="System.Drawing"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AppDesigner Include="Properties\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+</Project>

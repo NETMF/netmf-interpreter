@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>$safeprojectname$</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>$safeprojectname$</RootNamespace>
+    <ProjectTypeGuids>{bb063c12-22d6-4e50-a55f-f678d783e61d};{F184B08F-C81C-45f6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>$guid1$</ProjectGuid>
+    <MyType />
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
+  </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineDebug>true</DefineDebug>
+        <DefineTrace>true</DefineTrace>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineTrace>true</DefineTrace>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="Class1.vb" />
+  </ItemGroup>
+  <ItemGroup>
+        <Reference Include="Microsoft.SPOT.Native" />
+  </ItemGroup>
+
+    <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\VisualBasic.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\VisualBasic.Targets" />
+    <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\VisualBasic.Targets')" Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>

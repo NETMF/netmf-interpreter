@@ -1,0 +1,9 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='01fa6786-26a9-4980-bd2f-118c4bc2ef0c' Keywords="Installer" Description=".NET Micro Framework Net Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_netInfoTests' />
+      <ComponentRef Id='Component_WiFiTests1' />
+  </Module>
+</Wix>

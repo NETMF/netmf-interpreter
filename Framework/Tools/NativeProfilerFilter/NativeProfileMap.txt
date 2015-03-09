@@ -1,0 +1,79 @@
++F, CLR, NATIVE_PROFILE_CLR_CORE,             CLR\Core\*
+-F, CLR, NATIVE_PROFILE_CLR_CORE,             CLR\Core\Jitter*.cpp
+-F, CLR, NATIVE_PROFILE_CLR_CORE,             CLR\Core\*_win32.cpp
++D, CLR, NATIVE_PROFILE_CLR_CORE,             CLR\Libraries\CorLib
++F, CLR, NATIVE_PROFILE_CLR_CORE,             CLR\Libraries\SPOT\*
+
++D, CLR, NATIVE_PROFILE_CLR_HARDWARE,         CLR\Core\Hardware
++D, CLR, NATIVE_PROFILE_CLR_HARDWARE,         CLR\Libraries\SPOT_Hardware
+-F, CLR, NATIVE_PROFILE_CLR_HARDWARE,         CLR\Core\*_win32.cpp
++D, CLR, NATIVE_PROFILE_CLR_HEAP_PERSISTENCE, CLR\Core\HeapPersistence
++D, CLR, NATIVE_PROFILE_CLR_I2C,              CLR\Core\I2C
++D, CLR, NATIVE_PROFILE_CLR_IOPORT,           CLR\Core\IOPort
++D, CLR, NATIVE_PROFILE_CLR_SERIALIZATION,    CLR\Core\Serialization
++D, CLR, NATIVE_PROFILE_CLR_SERIALIZATION,    CLR\Libraries\SPOT\SPOT_Serialization
++D, CLR, NATIVE_PROFILE_CLR_DEBUGGER,         CLR\Debugger
++D, CLR, NATIVE_PROFILE_CLR_DIAGNOSTICS,      CLR\Diagnostics
+-F, CLR, NATIVE_PROFILE_CLR_DIAGNOSTICS,      CLR\Diagnostics\*_win32.cpp
++D, CLR, NATIVE_PROFILE_CLR_DIAGNOSTICS,      CLR\Libraries\SPOT\SPOT_Logging
++D, CLR, NATIVE_PROFILE_CLR_GRAPHICS,         CLR\Graphics
+-F, CLR, NATIVE_PROFILE_CLR_GRAPHICS,         CLR\Graphics\*_win32.cpp
++D, CLR, NATIVE_PROFILE_CLR_GRAPHICS,         CLR\Libraries\SPOT_Graphics
++D, CLR, NATIVE_PROFILE_CLR_MESSAGING,        CLR\Messaging
++D, CLR, NATIVE_PROFILE_CLR_MESSAGING,        CLR\Libraries\SPOT\SPOT_Messaging
++D, CLR, NATIVE_PROFILE_CLR_STARTUP,          CLR\StartupLib
++D, CLR, NATIVE_PROFILE_CLR_NETWORK,          CLR\Libraries\SPOT_Net
++D, CLR, NATIVE_PROFILE_CLR_NETWORK,          CLR\Libraries\SPOT_Net_Security
+
++D, PAL, NATIVE_PROFILE_PAL_ASYNC_PROC_CALL,  DeviceCode\pal\AsyncProcCall
++D, PAL, NATIVE_PROFILE_PAL_BUTTONS,          DeviceCode\PAL\Buttons
++F, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\*.cpp
++D, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\I2C
++D, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\Sockets
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USART\USART.cpp, USART_Driver::Initialize
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USART\USART.cpp, USART_Driver::Uninitialize
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USART\USART.cpp, USART_Driver::Write
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USART\USART.cpp, USART_Driver::Read
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USART\USART.cpp, USART_Driver::Flush
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USB\usb.cpp,     USB_Driver::Initialize
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USB\usb.cpp,     USB_Driver::Uninitialize
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USB\usb.cpp,     USB_Driver::Write
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USB\usb.cpp,     USB_Driver::Read
++M, PAL, NATIVE_PROFILE_PAL_COM,              DeviceCode\PAL\COM\USB\usb.cpp,     USB_Driver::Flush
++D, PAL, NATIVE_PROFILE_PAL_EVENTS,           DeviceCode\PAL\Events
++D, PAL, NATIVE_PROFILE_PAL_FLASH,            DeviceCode\PAL\Flash
++D, PAL, NATIVE_PROFILE_PAL_HEAP,             DeviceCode\PAL\Heap
++D, PAL, NATIVE_PROFILE_PAL_IO,               DeviceCode\PAL\IO
++D, PAL, NATIVE_PROFILE_PAL_NETWORK,          DeviceCode\PAL\RTIP
++D, PAL, NATIVE_PROFILE_PAL_CRT,              DeviceCode\PAL\TinyCRT
+
++D, HAL, NATIVE_PROFILE_HAL_DRIVERS_BACKLIGHT,   DeviceCode\Drivers\Backlight
++D, HAL, NATIVE_PROFILE_HAL_DRIVERS_DISPLAY,     DeviceCode\Drivers\Display
+-F, HAL, NATIVE_PROFILE_HAL_DRIVERS_DISPLAY,     DeviceCode\Drivers\Display\font*.cpp
++D, HAL, NATIVE_PROFILE_HAL_DRIVERS_ETHERNET,    DeviceCode\Drivers\Ethernet
++D, HAL, NATIVE_PROFILE_HAL_DRIVERS_FLASH,       DeviceCode\Drivers\Flash
+-F, HAL, NATIVE_PROFILE_HAL_INITIALIZAION,       DeviceCode\Initialization\tinyhal.cpp
+
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_CMU,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_CMU
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_DMA,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_DMA
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_EBIU,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_EBIU
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_GPIO,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_GPIO
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_GPIO,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_GPIO\MC9328MXL__gpio.cpp,        MC9328MXL_GPIO_Driver::ISR
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_GPIO,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_GPIO\MC9328MXL__gpio.cpp,        MC9328MXL_GPIO_Driver::STUB_GPIOISRVector
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_GPIO,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_GPIO\MC9328MXL__gpio.cpp,        MC9328MXL_GPIO_Driver::Fire
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_GPIO,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_GPIO\MC9328MXL__gpio.cpp,        MC9328MXL_GPIO_Driver::HandleDebounce
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_I2C,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_I2C
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_I2C,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_I2C\MC9328MXL__i2c.cpp,          MC9328MXL_I2C_Driver::ISR
+-D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_INTC,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_INTC
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_LCD,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_LCD
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_POWER,     DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_POWER
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_SECURITY,  DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_SECURITY
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_SPI,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_SPI
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_SPI,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_SPI\MC9328MXL__spi.cpp,          MC9328MXL_SPI_Driver::ISR
+-D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_TIME,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_TIME
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_TIME,      DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_TIME\MC9328MXL__time.cpp,        MC9328MXL_TIME_Driver::ISR
+-D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_TIMER,     DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_TIMER
+-M, HAL, NATIVE_PROFILE_HAL_PROCESSOR_TIMER,     DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_TIMER\MC9328MXL__timer.cpp,      MC9328MXL_TMER_Driver::ISR
+-D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_USART,     DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_USART
+-D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_USB,       DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_USB
++D, HAL, NATIVE_PROFILE_HAL_PROCESSOR_WATCHDOG,  DeviceCode\Targets\Native\MC9328\DeviceCode\MC9328MXL_WATCHDOG

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <NetMFTemplateName>MFConsoleApplication</NetMFTemplateName>
+    <SccProjectName>%24/netmf/client_vNext/Product/AllSDK/ProjectTemplates/VB/ExeTemplate</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>https://tfs.codeplex.com/tfs/tfs15</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+  </PropertyGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+  <!-- Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/ -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{898B220F-11FF-400D-B40C-588CF06DF856}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>$(NetMFTemplateName)</RootNamespace>
+    <AssemblyName>$(NetMFTemplateName)</AssemblyName>
+    <PlatformTarget>x86</PlatformTarget>
+    <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NetMFBuildVsSdkVersion>12</NetMFBuildVsSdkVersion>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <DeployExtension>false</DeployExtension>
+    <DeployVSTemplates>false</DeployVSTemplates>
+    <CopyVsixManifestToOutput>false</CopyVsixManifestToOutput>
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <CreateVsixContainer>False</CreateVsixContainer>
+    <DeployExtension>False</DeployExtension>
+    <IntermediateOutputPath>C:\Users\smaillet\AppData\Local\Temp\vsC76C.tmp\Release\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <CreateVsixContainer>False</CreateVsixContainer>
+    <DeployExtension>False</DeployExtension>
+    <IntermediateOutputPath>C:\Users\smaillet\AppData\Local\Temp\vsC76C.tmp\Debug\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.CoreUtility">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="My Project\AssemblyInfo.vb" />
+    <Content Include="My Project\Resources.Designer.vb" />
+    <Content Include="Program.vb" />
+    <Content Include="My Project\Resources.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="$(NetMFTemplateName).vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSTemplate Include="$(NetMFTemplateName).vstemplate">
+      <OutputSubPath>Micro Framework</OutputSubPath>
+    </VSTemplate>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="My Project\Resources\small.tinyfnt" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

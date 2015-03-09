@@ -1,0 +1,28 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Interop Sample</FeatureName>
+  </PropertyGroup>
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_InteropSample" />
+    <InteropFeature Include="Microsoft_SPOT_InteropSample_DriverProcs" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\mscorlib.pe" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Native.pe" />
+  </ItemGroup>
+  <ItemGroup Condition="!EXISTS('$(SPOCLIENT)\tools\scripts\port\Sample\InteropSample\InteropManagedCode\InteropSample.csproj')">
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Product\Sample\InteropSample\InteropManagedCode\InteropSample.csproj"/>
+    <RequiredProjects Include="$(SPOCLIENT)\Product\Sample\InteropSample\InteropNativeCode\dotnetmf.proj"/>
+  </ItemGroup>
+  <ItemGroup Condition="EXISTS('$(SPOCLIENT)\tools\scripts\port\Sample\InteropSample\InteropManagedCode\InteropSample.csproj')">
+    <RequiredManagedProjects Include="$(SPOCLIENT)\tools\scripts\port\Sample\InteropSample\InteropManagedCode\InteropSample.csproj"/>
+    <RequiredProjects Include="$(SPOCLIENT)\tools\scripts\port\Sample\InteropSample\InteropNativeCode\dotnetmf.proj"/>
+  </ItemGroup>
+  <PropertyGroup>
+    <Description>Interop sample feature</Description>
+    <Guid>{BE73D0A0-3D1E-4a60-928C-4C31A02B45D9}</Guid>
+    <Required>false</Required>
+    <Groups>Interop</Groups>
+    <Documentation>
+    </Documentation>
+    <INTEROPSAMPLE_FEATUREPROJ>True</INTEROPSAMPLE_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

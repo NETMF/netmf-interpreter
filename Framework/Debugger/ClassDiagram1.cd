@@ -1,0 +1,637 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Microsoft.SPOT.Debugger.AbortHandler" Collapsed="true">
+    <Position X="19.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACARAgCQAAAIAAwAgAAIQAAAAAgAAIAAAAAAgAAA=</HashCode>
+      <FileName>AbortHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.ArmDisassembler" Collapsed="true">
+    <Position X="22.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>L0Fv8QCal/8//e6Cq4QiQPQscehWbO+SxKl6x4xiQlE=</HashCode>
+      <FileName>ArmDisassembler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.AsyncFileStream" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAQAAQAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>AsyncStreams\AsyncFileStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.AsyncFileStream_AsyncResult" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAKABgBAAAAAAAQEECgAAAAUAhgQgAACAgFAAAA=</HashCode>
+      <FileName>AsyncStreams\AsyncFileStream_AsyncResult.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.AsyncNetworkStream" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="28" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAASAAQABgGAAAAARgAACIAgAAAAAAAAEIACA=</HashCode>
+      <FileName>AsyncStreams\AsyncNetworkStream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.AsyncSerialStream" Collapsed="true">
+    <Position X="0.5" Y="10.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAQAAAABAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AsyncStreams\AsyncSerialStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.AsyncUsbStream" Collapsed="true">
+    <Position X="2.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABEAAAIEAQAgAACAAAAgACAAAAAAAAgAAAAQAAEAAA=</HashCode>
+      <FileName>AsyncStreams\AsyncUsbStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.GenericAsyncStream" Collapsed="true">
+    <Position X="2.75" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABBAACAGCAQQAAwGAAAAEBgAAAEAAIAAAABAAGMQCA=</HashCode>
+      <FileName>AsyncStreams\GenericAsyncStream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.941" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.UsbStream" Collapsed="true">
+    <Position X="3.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EEgiEAAAEAAAAAAAAAAEAAAAIAEAAAAAAAAAAEEIAiA=</HashCode>
+      <FileName>AsyncStreams\UsbStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WinUsb_AsyncUsbStream" Collapsed="true">
+    <Position X="5" Y="11.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAQgGCQQAAAQAAAgASAAwAECBgAgAgAAAGCoQhA=</HashCode>
+      <FileName>AsyncStreams\WinUsbStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.SerializationHintsAttribute" Collapsed="true">
+    <Position X="22.75" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAEAIAAIAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>BinaryFormatter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.BinaryFormatter" Collapsed="true">
+    <Position X="29.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iABAJBXwwBRhjRgIDCwBKIgEAjRCMAggYQSCiCAAZwU=</HashCode>
+      <FileName>BinaryFormatter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.BitStream" Collapsed="true">
+    <Position X="19.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAABAAAAAAACAAAAAUAhAAIAAQEAwAgBBAAAo=</HashCode>
+      <FileName>BitStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.CommandLineBuilder" Collapsed="true">
+    <Position X="22.75" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BABAAAAgAAAAAAAEAAAAAAAAIQAAAAAAIAAAAAABCAA=</HashCode>
+      <FileName>CommandLineBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.CRC" Collapsed="true">
+    <Position X="29.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CRC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.DebuggerEventSource" Collapsed="true">
+    <Position X="19.25" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAQAAAAAEAAwAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>DebuggerEventSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.Emulator" Collapsed="true">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAKCAAAAAAgBAAACAIBAEAACgIECgAAAAQAA=</HashCode>
+      <FileName>Emulator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.EmulatorDiscovery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAASIAAAAEAIAAAAAAAAAAAAAAAAIAAAIAAAA=</HashCode>
+      <FileName>EmulatorDiscovery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.MessageCall" Collapsed="true">
+    <Position X="26.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAgAAAAQABAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>EndPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.EndPoint" Collapsed="true">
+    <Position X="24.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAOAAAAAAQIAAAQSAAAAAIAAABAgwAAAAAIAAAQBA=</HashCode>
+      <FileName>EndPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.ThreadStatus" Collapsed="true">
+    <Position X="29.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAkAAAAAAUAAAAAAAAAAAAYAAAAQEAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.ProcessExitException" Collapsed="true">
+    <Position X="28" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.State" Collapsed="true">
+    <Position X="26.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAIAAgAAAAAAUAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.Engine" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ZOE0X5xMleHf7RdrK0DWeNX6XjEG6ROB8A2JrFrLmAU=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.Message" Collapsed="true">
+    <Position X="22.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAQAAAQAAAAAQAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.AccurateTimer" Collapsed="true">
+    <Position X="21" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAgAAAAAAAAAAgAAACAAAAgAAAAAAA=</HashCode>
+      <FileName>NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.ASCII" Collapsed="true">
+    <Position X="24.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAABAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.NativeMethods" Collapsed="true">
+    <Position X="19.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQABAAgAAgRCQCEAgiQEAGgABQggBJEYgGAviCBAAAQ=</HashCode>
+      <FileName>NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PlatformInfo" Collapsed="true">
+    <Position X="24.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAQAkAAEBAAABAAAAABEIAAAgAABAACEAAgAAIAA=</HashCode>
+      <FileName>PlatformInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PortBooter" Collapsed="true">
+    <Position X="26.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACQRQACQMAEQAAgBgAgAQAEAAggAAYAIAAAAAAAA=</HashCode>
+      <FileName>PortBooter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PortDefinition" Collapsed="true">
+    <Position X="4.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAgEAEAEAAAIkAAgEAIAAAACAAAAIBAAAAABAACQIA=</HashCode>
+      <FileName>PortDefinition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PortDefinition_Emulator" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAIAAAAAAABAAAIA=</HashCode>
+      <FileName>PortDefinition_Emulator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PortDefinition_Serial" Collapsed="true">
+    <Position X="2.75" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAEAAAAAAAAAAAAAAAAAAAAAAEAIA=</HashCode>
+      <FileName>PortDefinition_Serial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PortDefinition_Tcp" Collapsed="true">
+    <Position X="5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAQAAACAAAAAAQAABAAAAAAAAAAAAAAEUIA=</HashCode>
+      <FileName>PortDefinition_Tcp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PortDefinition_Usb" Collapsed="true">
+    <Position X="7.25" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIA=</HashCode>
+      <FileName>PortDefinition_Usb.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.PortDefinition_WinUsb" Collapsed="true">
+    <Position X="9.5" Y="5.75" Width="2" />
+    <InheritanceLine Type="Microsoft.SPOT.Debugger.PortDefinition" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="5.062" />
+        <Point X="5.5" Y="5.375" />
+        <Point X="10.5" Y="5.375" />
+        <Point X="10.5" Y="5.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIA=</HashCode>
+      <FileName>PortDefinition_WinUsb.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RegistryAccess" Collapsed="true">
+    <Position X="19.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAIADAQAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RegistryAccess.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.ReflectionDefinition" Collapsed="true">
+    <Position X="29.75" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAgAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Runtime\ReflectionDefinition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAQAghIAgAAAAIEAAGRAAAgEAgAqAwAgAEAqABA=</HashCode>
+      <FileName>Runtime\RunTimeValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_Array" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAgAAAAAEAAABAAAgAAAAqAQAAAAAIAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_Array.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_ByRef" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_ByRef.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_Class" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAggAAgAAAAAEAAAAAAAgAAAAKAAAAAAACAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_Class.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_Indirect" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAggIAgAAAAAEAACBAAAwEAAAqAQAgAAAqAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_Indirect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_Internal" Collapsed="true">
+    <Position X="10" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAgAAAAAEAAAAAAAgAAAAKAAAAAAAAAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_Internal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_Object" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_Object.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_Primitive" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAgAAAAAEAAAAAAAwAAAAKAAAgAAAAAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_Primitive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_Reflection" Collapsed="true">
+    <Position X="14.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAgAAgAAAAAEAACAAAAgAAAQKAAAAQAAAAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_Reflection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_String" Collapsed="true">
+    <Position X="16.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAgAAAAAEAACAAAAwAAAAKAAAgAAAAAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_String.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.RuntimeValue_ValueType" Collapsed="true">
+    <Position X="3" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAgAAAAAEAAAAAAAgAAAAKAAAAAAAAAAA=</HashCode>
+      <FileName>Runtime\RuntimeValue_ValueType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.SRecordFile" Collapsed="true">
+    <Position X="24.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.SymDef" Collapsed="true">
+    <Position X="28" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SymDef.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.UsbDeviceDiscovery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAiAAAAAACAAAAgEAEAAAAABAAAAAAAgAABCAAAAAAA=</HashCode>
+      <FileName>UsbDeviceDiscovery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.UsbDevicePortNameEqualityComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.25" Y="6.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAEAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>UsbDevicePortNameEqualityComparer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.CLRCapabilities" Collapsed="true">
+    <Position X="21" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABIIgAAEAIAAAASACIgoAAAAQACACiAIoAAAEAEAAA=</HashCode>
+      <FileName>CLRCapabilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.Converter" Collapsed="true">
+    <Position X="28" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAgEAAAAAAAAAAAABAAACBAAAAIIAAAAAgAAAA=</HashCode>
+      <FileName>Converter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.Controller" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BIJAAQgEAKAHAAjAAyQECQQgAAAgAAEAIBDEAAQgAEA=</HashCode>
+      <FileName>WireProtocol\Controller.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.FifoBuffer" Collapsed="true">
+    <Position X="28" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAQAAAAAAAAAAAAAAABgIAAAIAAAAAAAAAUAAAA=</HashCode>
+      <FileName>WireProtocol\FifoBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.IncomingMessage" Collapsed="true">
+    <Position X="19.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAAQAACQAAAAAQQAAEAAAAIAAAAAAEAAAAQAA=</HashCode>
+      <FileName>WireProtocol\IncomingMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.MessageBase" Collapsed="true">
+    <Position X="24.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>WireProtocol\MessageBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.MessageRaw" Collapsed="true">
+    <Position X="28" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\MessageRaw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.MessageReassembler" Collapsed="true">
+    <Position X="29.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAABAAAIAgAAAABUAAAAIEAAAAAAAAAAABA=</HashCode>
+      <FileName>WireProtocol\MessageReassembler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.OutgoingMessage" Collapsed="true">
+    <Position X="21" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAAAAAgAAAAEAQAAAEAAAAoAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\OutgoingMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.ReleaseInfo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAABAA=</HashCode>
+      <FileName>WireProtocol\ReleaseInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.VersionStruct" Collapsed="true">
+    <Position X="21" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAIAAAAAAAAAAAAAAAAAAAAAAAAABAAIAAAAAAIAA=</HashCode>
+      <FileName>WireProtocol\WireProtocol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.Flags" Collapsed="true">
+    <Position X="29.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAQQMAEcEABAAEAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>WireProtocol\WireProtocol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.Packet" Collapsed="true">
+    <Position X="22.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAAAAEAQAAAAAAAAAAAAIAAAAAQZAAAAAAIQAAA=</HashCode>
+      <FileName>WireProtocol\WireProtocol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Debugger.WireProtocol.Commands" Collapsed="true">
+    <Position X="24.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>WABEAKJBgFgATMDmYoMDIEABERE0FAEgAgAEcQsQ9Bk=</HashCode>
+      <FileName>WireProtocol\WireProtocol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.SPOT.Messaging.Message" Collapsed="true">
+    <Position X="21" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Messaging\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Microsoft.SPOT.Debugger.WireProtocol.HeapBlock" Collapsed="true">
+    <Position X="19.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>WireProtocol\WireProtocol.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IConverter" Collapsed="true">
+    <Position X="19.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IControllerHost" Collapsed="true">
+    <Position X="9.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IController" Collapsed="true">
+    <Position X="8.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAESAGAAAQAAAAAAAEAIAAAAAAMAAAAAAAAgA=</HashCode>
+      <FileName>WireProtocol\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IControllerHostLocal" Collapsed="true">
+    <Position X="8.25" Y="11.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IControllerLocal" Collapsed="true">
+    <Position X="7.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IStreamAvailableCharacters" Collapsed="true">
+    <Position X="21" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IControllerHostRemote" Collapsed="true">
+    <Position X="10.5" Y="11.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Microsoft.SPOT.Debugger.WireProtocol.IControllerRemote" Collapsed="true">
+    <Position X="9.5" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WireProtocol\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Microsoft.SPOT.Debugger.SerializationFlags" Collapsed="true">
+    <Position X="29.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAACIAAgAAAAAAAAAAAAAAAAAEAIIAAAAA=</HashCode>
+      <FileName>BinaryFormatter.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.SPOT.Debugger.ElementType" Collapsed="true">
+    <Position X="22.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAEQAAAACUxQAAQKQAAARBAA4AAAAgAAAACAAAAAA=</HashCode>
+      <FileName>BinaryFormatter.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.SPOT.Debugger.PortFilter" Collapsed="true">
+    <Position X="24.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAQAAAAAAAABAEAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.SPOT.Debugger.PublicKeyIndex" Collapsed="true">
+    <Position X="26.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.SPOT.Debugger.ConnectionSource" Collapsed="true">
+    <Position X="19.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.SPOT.Debugger.CorElementType" Collapsed="true">
+    <Position X="21" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCgAABgMICAAAAQAAAICgYAAABAABACAERAoAAAAEAI=</HashCode>
+      <FileName>Runtime\RunTimeValue.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.SPOT.Debugger.RuntimeDataType" Collapsed="true">
+    <Position X="28" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SQAABBBAIUABCgIAwAAMEIiMBAQXJdgSEQgABCADACw=</HashCode>
+      <FileName>Runtime\RunTimeValue.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Microsoft.SPOT.Debugger.NoiseEventHandler" Collapsed="true">
+    <Position X="24.5" Y="11" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAABAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Microsoft.SPOT.Debugger.MessageEventHandler" Collapsed="true">
+    <Position X="22.75" Y="11" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Microsoft.SPOT.Debugger.CommandEventHandler" Collapsed="true">
+    <Position X="19.25" Y="11" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Microsoft.SPOT.Debugger.ConsoleOutputEventHandler" Collapsed="true">
+    <Position X="21" Y="11" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Engine.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

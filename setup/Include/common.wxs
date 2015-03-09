@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<Include>
+  <?include defines.wxs?>
+
+  <?if $(env.PROCESSOR_ARCHITECTURE) = "x86" ?>
+  <Property Id="BaseProgramDir">$(env.SystemDrive)\Program Files\</Property>
+  <?else?>
+  <Property Id="BaseProgramDir">$(env.SystemDrive)\Program Files (x86)\</Property>
+  <?endif?>
+
+  <Directory Id="TARGETDIR" Name="SourceDir">
+    <Directory Id="ProgramFilesFolder" Name="PFiles" >
+
+      <Directory Id="BaseProgramDir" Name=".">
+        <Directory Id="REFERENCEASSEMBLIES" Name="Reference Assemblies">
+          <Directory Id="VsRefAsmMs" Name="$(var.CompanyName)">
+            <Directory Id="VsRefAsmMsFrame" Name="Framework">
+              <Directory Id="VsRefAsmMsMF" Name="$(var.CommonFrameworkName)">
+                <Directory Id="VsFrameworkAssemblyBase" Name="v$(var.ProdVerMajorMinor)">
+                  <Directory Id="VsFrameworkAssemblyRedist" Name="RedistList"/>
+                </Directory>
+                <Directory Id="VsFrameworkAssemblyBase_v4_2" Name="v4.2">
+                  <Directory Id="VsFrameworkAssemblyRedist_V4_2" Name="RedistList"/>
+                </Directory>
+                <Directory Id="VsFrameworkAssemblyBase_v4_1" Name="v4.1">
+                  <Directory Id="VsFrameworkAssemblyRedist_V4_1" Name="RedistList"/>
+                </Directory>
+                <Directory Id="VsFrameworkAssemblyBase_v4_0" Name="v4.0">
+                  <Directory Id="VsFrameworkAssemblyRedist_V4_0" Name="RedistList"/>
+                </Directory>
+                <Directory Id="VsFrameworkAssemblyBase_v3_0" Name="v3.0">
+                  <Directory Id="VsFrameworkAssemblyRedist_V3_0" Name="RedistList"/>
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    
+      <Directory Id="INSTALLDIR" Name="$(var.DEFAULT_FOLDER_NAME)">
+
+        <Directory Id="VERSIONDIR" Name="v$(var.ProdVerMajorMinor)">
+          <Directory Id="DocsDir" Name="Documentation" />
+          <Directory Id="AssembliesDir" Name="Assemblies">
+            <Directory Id="AssembliesDirLE" Name="le"/>
+            <Directory Id="AssembliesDirBE" Name="be"/>
+          </Directory>
+          <Directory Id="FontsDir" Name="Fonts"/>
+          <Directory Id="ToolsDir" Name="Tools"/>
+        </Directory>
+        <!--EndVERSIONDIR-->
+
+        <Directory Id="VERSIONDIR_v4_2" Name="v4.2">
+          <Directory Id="DocsDir_v4_2" Name="Documentation" />
+          <Directory Id="AssembliesDir_V4_2" Name="Assemblies">
+            <Directory Id="AssembliesDirLE_V4_2" Name="le"/>
+            <Directory Id="AssembliesDirBE_V4_2" Name="be"/>
+          </Directory>
+          <Directory Id="FontsDir_v4_2" Name="Fonts"/>
+          <Directory Id="ToolsDir_v4_2" Name="Tools"/>
+        </Directory>
+        <!--EndVERSIONDIR_v4_2-->
+
+        <Directory Id="VERSIONDIR_v4_1" Name="v4.1">
+          <Directory Id="DocsDir_v4_1" Name="Documentation" />
+          <Directory Id="AssembliesDir_V4_1" Name="Assemblies">
+            <Directory Id="AssembliesDirLE_V4_1" Name="le"/>
+            <Directory Id="AssembliesDirBE_V4_1" Name="be"/>
+          </Directory>
+          <Directory Id="FontsDir_v4_1" Name="Fonts"/>
+          <Directory Id="ToolsDir_v4_1" Name="Tools"/>
+        </Directory>
+        <!--EndVERSIONDIR_v4_1-->
+
+        <Directory Id="VERSIONDIR_v4_0" Name="v4.0">
+          <Directory Id="DocsDir_v4_0" Name="Documentation" />
+          <Directory Id="AssembliesDir_V4_0" Name="Assemblies"/>
+          <Directory Id="FontsDir_v4_0" Name="Fonts"/>
+          <Directory Id="ToolsDir_v4_0" Name="Tools"/>
+        </Directory>
+        <!--EndVERSIONDIR_v4_0-->
+
+        <Directory Id="VERSIONDIR_v3_0" Name="v3.0">
+          <Directory Id="AssembliesDir_V3_0" Name="Assemblies"/>
+          <Directory Id="ToolsDir_v3_0" Name="Tools"/>
+          <Directory Id="DocsDir_v3_0" Name="Documentation" />
+        </Directory>
+        <!--EndVERSIONDIR_v3_0-->
+
+      </Directory>
+      <!--EndINSTALLDIR-->
+
+      <Directory Id="MSBuildExtensionsRoot" Name="MSBuild">
+        <Directory Id="MSBuildExtensionsCompany" Name="$(var.CompanyName)">
+          <Directory Id="MSBuildExtensionsProduct" Name="$(var.CommonProductName)">
+            <Directory Id="MSBuildExtensionsPathVersion" Name="v$(var.ProdVerMajorMinor)"/>
+            <Directory Id="MSBuildExtensionsPath_MFv4_2" Name="v4.2"/>
+            <Directory Id="MSBuildExtensionsPath_MFv4_1" Name="v4.1"/>
+            <Directory Id="MSBuildExtensionsPath_MFv4_0" Name="v4.0"/>
+            <Directory Id="MSBuildExtensionsPath_MFv3_0" Name="v3.0"/>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+    <!--EndProgramFilesFolder-->
+
+    <Directory Id="ProgramMenuFolder" Name="Programs">
+      <Directory Id="ProgramMenuDir" Name="$(var.DEFAULT_FOLDER_NAME) $(var.ProdVerMajorMinor)" />
+    </Directory>
+    <!--EndProgramMenuFolder-->
+
+  </Directory>
+  <!--EndTARGETDIR-->
+
+</Include>

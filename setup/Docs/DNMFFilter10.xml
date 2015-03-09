@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SearchFilter xmlns="http://schemas.microsoft.com/VisualStudio/2004/08/Help/SearchFilter" Version="0.1.0.0">
+    <FilterAttribute>
+        <Id>Technology</Id>
+        <Name _locID="name.1">Technology</Name>
+        <FilterValue>
+            <Id>DNMFFilter10</Id>
+            <Name _locID="name.2">.NET Micro Framework</Name>
+            <Meaning>
+                <LocalFilterString>("DocSet"="DotNetMicroFramework")</LocalFilterString> 
+                <TocInclude></TocInclude>
+                <OnlineFilterString>
+                 <![CDATA[
+                      <StringTest Name="ExtendedProperty" Operator="Equals" Value="bb200104" ExtendedProperty="MSCategory"/>
+                 ]]>
+                </OnlineFilterString>
+            </Meaning>
+        </FilterValue>
+    </FilterAttribute>
+</SearchFilter>

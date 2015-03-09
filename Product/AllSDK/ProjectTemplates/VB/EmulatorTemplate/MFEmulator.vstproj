@@ -1,0 +1,19 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <TemplateID>Microsoft.VisualBasic.MicroFramework.Emulator</TemplateID>
+    <TemplateDefaultName>MFEmulator</TemplateDefaultName>
+    <TemplateName>Emulator</TemplateName>
+    <TemplateNameString>Device Emulator</TemplateNameString>
+    <TemplateDescriptionString>A project for creating a .NET Micro Framework device emulator</TemplateDescriptionString>
+    <TemplateProjectType>VisualBasic</TemplateProjectType>
+    <TemplateIconFile>Project.ico</TemplateIconFile>
+    <TemplateSortOrder>1000</TemplateSortOrder>
+  </PropertyGroup>
+  <ItemGroup>
+    <WiXSource Include="Template.wxs" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <ItemGroup>
+    <VSTemplateProject Include="MFEmulator.csproj" />
+  </ItemGroup>
+</Project>

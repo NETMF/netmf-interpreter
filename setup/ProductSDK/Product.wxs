@@ -1,0 +1,190 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <?define ProdCode = "C8EBC982-26E9-4C44-8FCC-1F7981DFBCA6" ?>
+
+    <?define ProdName = "Microsoft .NET Micro Framework SDK $(var.ProdVerMajorMinor) $(var.ProdReleaseName)" ?>
+    <?define ProdUrl = "http://www.microsoft.com" ?>
+    <?define ProdUpgradeCode = "C8EBC982-26E9-4C44-8FCC-1F7981DFBCA6" ?>
+
+    <Product
+      Id="$(var.ProdCode)"
+      UpgradeCode="$(var.ProdUpgradeCode)"
+      Name="$(var.ProdName)"
+      Language="1033"
+      Codepage="1252"
+      Version="$(var.ProdVer)"
+      Manufacturer="Microsoft Corporation">
+
+        <Package
+          Id="*"
+          Keywords="Installer"
+          Description="$(var.ProdName) $(var.ProdVer)"
+          Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved."
+          Manufacturer="Microsoft Corporation"
+          InstallerVersion="405"
+          Languages="1033"
+          SummaryCodepage="1252"
+          Compressed="yes"
+       />
+        
+        <Upgrade Id="$(var.ProdUpgradeCode)">
+            <UpgradeVersion OnlyDetect="yes" Property="NEWERVERSIONDETECTED" Maximum="$(var.ProdVer)" IncludeMaximum="no" />
+            <UpgradeVersion OnlyDetect="no" Property="PREVIOUSFOUND" Minimum="4.4.0" IncludeMinimum="yes" Maximum="$(var.ProdVer)" IncludeMaximum="yes" />
+        </Upgrade>
+
+        <?include prereq.wxs?>
+
+        <?include mergecrt.wxs?>
+
+        <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
+
+        <Property Id="ALLUSERS"><![CDATA[2]]></Property>
+
+        <?include common.wxs ?>
+
+        <!--
+    <?if $(var.INCLUDEDOCS) = "true"?>
+    <?include Docs.Common.wxs ?>
+    <?endif?>
+-->
+
+        <DirectoryRef Id="VERSIONDIR">
+            <Component Id="Component_InstallRoot" Guid="{bbb465ab-6d6d-4cef-aaa1-e945e191ee7a}">
+                <RegistryKey
+                  Root="HKLM"
+                  Id="Registry_ProdVerKey"
+                  Key="$(var.FxKey)\v$(var.ProdVerMajorMinor)"
+                  Action="createAndRemoveOnUninstall">
+                    <RegistryValue
+                      Name="InstallRoot"
+                      Type="string"
+                      Value="[VERSIONDIR]"
+                      Id="Registry_InstallRootVal"/>
+                    <RegistryKey
+                      Id="Registry_AssemblyFoldersExKey"
+                      Key="AssemblyFoldersEx"
+                      Action="createAndRemoveOnUninstall"/>
+                    <RegistryKey
+                      Id="Registry_EmulatorsKey"
+                      Key="Emulators"
+            
+                      Action="createAndRemoveOnUninstall"/>
+                </RegistryKey>
+            </Component>
+            <Component Id="ReadmeComponent" Guid="107df12f-d512-49b7-be2d-93a3264df93c">
+                <File Id="ReleaseNotesTxt" Name="Micro Framework SDK Release Notes.txt"  DiskId="1" Source="$(env.SPOCLIENT)\Setup\ProductSDK\Micro Framework SDK Release notes.txt">
+                    <Shortcut Id="startMenuReadme"
+                              Directory="ProgramMenuDir"
+                              Name="Micro Framework SDK Release Notes"/>
+                </File>
+            </Component>
+            <Component Id="RedistComponent" Guid="a43e9d09-ce38-4885-8df7-dd884e4f4ee2">
+                <File Id="REDIST.TXT" Name="REDIST.TXT" DiskId="1" Source="$(env.SPOCLIENT)\Setup\ProductSDK\REDIST.TXT"/>
+            </Component>
+        </DirectoryRef>
+
+        <DirectoryRef Id="VsFrameworkAssemblyRedist">
+            <Component Id="Component_FrameworkAssemblyList" Guid="6D28A619-B94A-4E65-9719-D41D74CB5969">
+                <File Id="File_FrameworkAssemblyList"
+                    Name="FrameworkList.xml"
+                    Source="$(var.BuildTreeClient)\dll\RedistList\FrameworkList.xml"
+                    DiskId="1"/>
+            </Component>
+        </DirectoryRef>
+
+        <InstallExecuteSequence>
+            <RemoveExistingProducts Before="InstallInitialize"/>
+        </InstallExecuteSequence>
+
+        <Property Id="ARPPRODUCTICON">ProductIcon</Property>
+        <Icon Id="ProductIcon" SourceFile="$(env.SPOCLIENT)\setup\include\setup.ico"/>
+
+        <Feature
+          Id="PlatformAndDocsFeature"
+          Title="$(var.ProdName)"
+          Description="$(var.ProdName) core features"
+          Level="1"
+          ConfigurableDirectory="INSTALLDIR"
+          Display="expand"
+          Absent="disallow"
+          AllowAdvertise="no"
+          InstallDefault="local"
+          TypicalDefault="install"
+      >
+            <Feature
+              Id="MultiTargetFrameworks"
+              Title="Multi-Target Pack"
+              Description="Assemblies and tools for targeting previous versions of the .NET Micro Framework."
+              Level="1"
+              ConfigurableDirectory="INSTALLDIR"
+              Display="expand"
+              Absent="allow"
+              AllowAdvertise="no"
+              InstallDefault="local"
+              TypicalDefault="install"
+          >
+            <FeatureRef Id="MicroFramework_v4_4" />
+            </Feature>
+
+            <Feature Id="PlatformAndToolsFeature"
+                     Title="Platform and Tools"
+                     Description="Assemblies and tools for developing for the .NET Micro Framework"
+                     Level="1"
+                     Absent="disallow"
+                     AllowAdvertise="no"
+                     InstallDefault="local"
+                     TypicalDefault="install"
+                     Display="expand">
+
+                <FeatureRef Id="CorePlatform" />
+                <FeatureRef Id="Debugger" />
+                <FeatureRef Id="Tools" />
+                <FeatureRef Id="CoreEmulator" />
+                <FeatureRef Id="DPWS" />
+
+                <ComponentRef Id="Component_InstallRoot" />
+
+                <ComponentRef Id="ReadmeComponent" />
+                <ComponentRef Id="RedistComponent"/>
+                <ComponentRef Id="Component_FrameworkAssemblyList" />
+            </Feature>
+
+            <!--
+      <?if $(var.INCLUDEDOCS) = "true"?>
+      <FeatureRef Id="PSDKDocsFeature" />
+      <?endif?>
+-->
+
+        </Feature>
+
+        <Feature Id='CRT_WinSXS'
+                 Title='CRT WinSXS'
+                 Level='1'
+                 InstallDefault='local'
+                 TypicalDefault='install'
+                 Display='hidden'
+             >
+            <MergeRef Id='CRT90' />
+            <MergeRef Id='CRT100' />
+            <MergeRef Id='CRT110' />
+            
+            <!--        <MergeRef Id='CRT Policy' /> -->
+
+            <MergeRef Id='ATL90' />
+            <MergeRef Id='ATL100' />
+            <MergeRef Id='ATL110' />
+            
+            <!--        <MergeRef Id='ATL Policy' /> -->
+
+            <?if $(var.BuildFlavor) = "Debug"?>
+            <MergeRef Id='Debug CRT90' />
+            <MergeRef Id='Debug CRT100' />
+            <MergeRef Id='Debug CRT110' />
+            
+            <!--        <MergeRef Id='Debug CRT Policy' /> -->
+            <?endif?>
+        </Feature>
+
+        <UIRef Id="FrameworkUI" />
+
+    </Product>
+</Wix>

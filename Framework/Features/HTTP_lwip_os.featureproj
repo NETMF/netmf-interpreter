@@ -1,0 +1,26 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>HTTP [for LWIP OS]</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_LWIP_OS.featureproj" />
+  <ItemGroup>
+    <!-- Just a reference, not a dependency -->
+    <InteropFeature Include="Microsoft_SPOT_Net_Security" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Net.Security.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\Native_net_Security\Core_Net_Security.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\System.Net.security.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\System\Net\Security\NetSecurity.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\System.Http.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\System\System.HTTP.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Description>Support for HTTP functionality.</Description>
+    <Guid>{43C9E2B7-C744-4686-9396-3AF33F28F490}</Guid>
+    <Groups>Networking</Groups>
+    <Documentation>
+    </Documentation>
+    <HTTP_LWIP_OS_FEATUREPROJ>True</HTTP_LWIP_OS_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

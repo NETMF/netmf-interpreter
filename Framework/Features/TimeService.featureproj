@@ -1,0 +1,21 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>TimeService</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Time" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Time.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_TimeService\Core_TimeService.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_TimeService_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Time Service support</Description>
+    <Guid>{A6CAF8C8-9252-42f9-90F7-CBBE0C40017C}</Guid>
+    <Groups></Groups>
+    <Documentation>
+    </Documentation>
+    <TIMESERVICE_FEATUREPROJ>True</TIMESERVICE_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

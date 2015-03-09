@@ -1,0 +1,14 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>BlockStorage</FeatureName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\BlockStorage_PAL.libcatproj"/>
+  <PropertyGroup>
+    <Description>Block storage support</Description>
+    <Guid>{07391559-733D-474c-A0AE-7E113DE2878B}</Guid>
+    <Groups>BlockStorage</Groups>
+    <Documentation>
+    </Documentation>
+    <BLOCKSTORAGE_FEATUREPROJ>True</BLOCKSTORAGE_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

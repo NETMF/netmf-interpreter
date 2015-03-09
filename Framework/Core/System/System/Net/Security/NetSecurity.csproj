@@ -1,0 +1,32 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>System.Net.Security</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.Net.Security</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <NoWarn>$(NoWarn),0169,0659</NoWarn>
+    <ProjectGuid>{D0E050A0-DB79-4965-8767-6804664F7E5C}</ProjectGuid>
+    <ComponentGuid>{5ed1b470-0a83-4dae-8af7-bf26e8aaff8f}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="SslStream.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>$(BUILD_TREE_DLL)\System.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Net">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Net.Security">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Net.Security.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

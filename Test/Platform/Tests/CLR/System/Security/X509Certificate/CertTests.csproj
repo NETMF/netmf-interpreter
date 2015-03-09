@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Platform.Tests.Security.Certs1</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Microsoft.SPOT.Platform.Tests</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6ABFEE83-EAC5-45BD-82E7-E88C7CF23609}</ProjectGuid>
+    <NoWarn>,1668</NoWarn>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <None Include="certs\cacert.pem" />
+    <None Include="certs\msft1.cer" />
+    <None Include="GetUTCTicks.cs" />
+    <None Include="Resources\NetMFCert.pfx" />
+    <None Include="X509CertificateExports.cs" />
+    <None Include="X509CertificateInvalidImports.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="X509CertificateLoadCertFromBlob.cs" />
+    <None Include="X509CertificateLoadCertFromFile.cs" />
+    <None Include="X509CertificateRunSuite.cs" />
+    <Compile Include="master.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Graphics">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.IO">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Security.Pkcs11">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Security.PKCS11.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>$(BUILD_TREE_DLL)\System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>$(BUILD_TREE_DLL)\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security">
+      <HintPath>$(BUILD_TREE_DLL)\System.security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFUtility">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFUtility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+</Project>

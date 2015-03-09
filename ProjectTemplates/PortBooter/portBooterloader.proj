@@ -1,0 +1,38 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <AssemblyName>PortBooterLoader</AssemblyName>
+    <OutputType>Executable</OutputType>
+    <Directory>Solutions\$(PLATFORM)\PortBooter</Directory>
+    <reducesize>true</reducesize>
+    <MFSettingsFile></MFSettingsFile>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <PropertyGroup>
+    <ExtraTargets>BuildSigFiles</ExtraTargets>    
+    <EXEScatterFileDefinition>scatterfile_bootloader_decompressor_$(COMPILER_TOOL).xml</EXEScatterFileDefinition>    
+    <ScatterFileDefinition>scatterfile_bootloader_decompressor_$(COMPILER_TOOL).$(SCATTER_EXT)</ScatterFileDefinition>    
+
+    <!-- extra link flags -->
+    <LINK_FLAGS Condition="'$(COMPILER_TOOL)'!='GCC'">$(LINK_FLAGS) $(SWTC)keep BooterVectorTable.$(OBJ_EXT)</LINK_FLAGS>
+    <AS_FLAGS>$(AS_FLAGS) -I$(OBJ_DIR)</AS_FLAGS> 
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="PortBooterLoader.cpp" />
+    <Compile Include="$(AS_SUBDIR)\PortBooter_dat.s" />
+
+    <Compile Include ="$(SPOCLIENT)\Application\common\assemblycode\arm\$(AS_SUBDIR)\BooterVectorTable.s"    Condition=" '$(INSTRUCTION_SET)'=='arm' or '$(INSTRUCTION_SET)'=='thumb'"/>
+    <Compile Include ="$(SPOCLIENT)\Application\common\assemblycode\thumb2\$(AS_SUBDIR)\BooterVectorTable.s"  Condition=" '$(INSTRUCTION_SET)'=='thumb2'"/>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ExtraProjects Include="portBooter.proj"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>

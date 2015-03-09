@@ -1,0 +1,584 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Project="Tasks.settings" />
+
+  <!-- Overrides of *DependsOn properties from Microsoft.Common.v3.5.Targets -->
+  <!-- We override these completely rather than merely append our MF-specific targets so that we can
+        1) preserve the semantics of the pre- and post-target hooks,
+        2) eliminate targets and tasks that are irrelevant or incompatible with MF, and
+        2) more easily find incompatibilities with future .NET 3.x service packs and updates
+      -->
+  <PropertyGroup>
+    <CoreBuildDependsOn>
+      BuildOnlySettings;
+      PrepareForBuild;
+      PreBuildEvent;
+      ResolveReferences;
+      PrepareResources;
+      ResolveKeySource;
+      Compile;
+      GenerateSerializationAssemblies;
+      CreateSatelliteAssemblies;
+      GetTargetPath;
+      PrepareForRun;
+      IncrementalClean;
+      MetaDataProcessor;
+      PostBuildEvent
+    </CoreBuildDependsOn>
+
+    <CleanDependsOn>
+      BeforeClean;
+      CleanReferencedProjects;
+      CoreClean;
+      AfterClean
+    </CleanDependsOn>
+
+    <CoreCleanDependsOn>
+      TinyCLRClean
+    </CoreCleanDependsOn>
+
+    <PrepareForRunDependsOn>
+      MetaDataProcessor;
+      CopyFilesToOutputDirectory;
+      CopyTinyCLRFiles
+    </PrepareForRunDependsOn>
+
+    <PrepareResourcesDependsOn>
+      PrepareResourceNames;
+      ResGen;
+      CompileLicxFiles;
+      TinyResGen
+    </PrepareResourcesDependsOn>
+
+    <ResolveReferencesDependsOn>
+      BeforeResolveReferences;
+      ResolveProjectReferences;
+      ResolveAssemblyReferencesLE;
+      ResolveAssemblyReferencesBE;
+      ResolveRuntimeDependenciesLE;
+      ResolveRuntimeDependenciesBE;
+      AfterResolveReferences
+    </ResolveReferencesDependsOn>
+<!--       SplitProjectReferencesByType; -->
+  </PropertyGroup>
+
+
+  <!-- MF-specific targets and other properties -->
+  <PropertyGroup>
+    <TinyCLR_StartProgram Condition=" '$(StartAction)'== 'Program' ">$(StartProgram)</TinyCLR_StartProgram>
+    <TinyCLR_IntermediateAssembly>$(ProjectDir)$(IntermediateOutputPath)$(TargetName)</TinyCLR_IntermediateAssembly>
+    <TinyCLR_IntermediateAssemblyLE>$(ProjectDir)$(IntermediateOutputPath)le\$(TargetName)</TinyCLR_IntermediateAssemblyLE>
+    <TinyCLR_IntermediateAssemblyBE>$(ProjectDir)$(IntermediateOutputPath)be\$(TargetName)</TinyCLR_IntermediateAssemblyBE>
+    <TinyCLR_AssemblyLE>$(ProjectDir)$(OutDir)le\$(TargetName)</TinyCLR_AssemblyLE>
+    <TinyCLR_AssemblyBE>$(ProjectDir)$(OutDir)be\$(TargetName)</TinyCLR_AssemblyBE>
+    <TinyCLR_PdbxExt>.pdbx</TinyCLR_PdbxExt>
+    <TinyCLR_ExeExt>.exe</TinyCLR_ExeExt>
+    <TinyCLR_DllExt>.dll</TinyCLR_DllExt>
+    <TinyCLR_PdbExt>.pdb</TinyCLR_PdbExt>
+
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <NoStdLib>true</NoStdLib>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <MaxTargetPath>260</MaxTargetPath>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EndianAwareDirs Include="$(ProjectDir)$(IntermediateOutputPath)le" />
+    <EndianAwareDirs Include="$(ProjectDir)$(IntermediateOutputPath)be" />
+    <EndianAwareDirs Include="$(ProjectDir)$(OutDir)le" />
+    <EndianAwareDirs Include="$(ProjectDir)$(OutDir)be" />
+  </ItemGroup>
+
+  <!-- Clean possible multitarget pe/pdbx files -->
+  <Target Name="TinyCLRClean">
+    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)$(TargetName).pe')"   Files="$(ProjectDir)$(OutDir)$(TargetName).pe" />
+    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)$(TargetName).pdbx')" Files="$(ProjectDir)$(OutDir)$(TargetName).pdbx" />
+    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)le\$(TargetName).pe')"   Files="$(ProjectDir)$(OutDir)le\$(TargetName).pe" />
+    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)le\$(TargetName).pdbx')" Files="$(ProjectDir)$(OutDir)le\$(TargetName).pdbx" />
+    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)be\$(TargetName).pe')"   Files="$(ProjectDir)$(OutDir)be\$(TargetName).pe" />
+    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)be\$(TargetName).pdbx')" Files="$(ProjectDir)$(OutDir)be\$(TargetName).pdbx" />
+  </Target>
+
+  <Target Name="EnsureEndianAwareDirectories">
+    <MakeDir Directories="@(EndianAwareDirs)" />
+  </Target>
+
+  <Target Name="CopyExeToEndian" >
+    <Copy
+        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)')"
+        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)"
+        DestinationFolder="$(ProjectDir)$(OutDir)le\" >
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)')"
+        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)"
+        DestinationFolder="$(ProjectDir)$(OutDir)be\" >
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)')"
+        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)"
+        DestinationFolder="$(ProjectDir)$(OutDir)le\" >
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)')"
+        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)"
+        DestinationFolder="$(ProjectDir)$(OutDir)be\" >
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)')"
+        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)"
+        DestinationFolder="$(ProjectDir)$(OutDir)le\" >
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)')"
+        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)"
+        DestinationFolder="$(ProjectDir)$(OutDir)be\" >
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+  <!-- MetadataProcessor support -->
+
+  <PropertyGroup>
+    <MetaDataProcessorDependsOn>EnsureEndianAwareDirectories;Compile;MetaDataProcessorBE;CopyExeToEndian</MetaDataProcessorDependsOn>
+    <MetaDataProcessorBEDependsOn>EnsureEndianAwareDirectories;Compile;CopyExeToEndian</MetaDataProcessorBEDependsOn>
+    <MF_GenerateStubsDirectory Condition="'$(MF_GenerateStubsDirectory)'==''">$(ProjectDir)Stubs\</MF_GenerateStubsDirectory>
+    <MF_GenerateStubsRootName Condition="'$(MF_GenerateStubsRootName)'==''">$(TargetName)</MF_GenerateStubsRootName>
+    <MF_GenerateSkeletonProjectName Condition="'$(MF_GenerateSkeletonProjectName)'==''">$(TargetName)</MF_GenerateSkeletonProjectName>
+    <MF_GenerateSkeletonFile>$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName)</MF_GenerateSkeletonFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <MF_GeneratedStubFile Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).h" />
+    <MF_GeneratedStubFile Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).cpp" />
+    <MF_GenerateStubsFeatureProj Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).featureproj" Condition="'$(MF_GenerateStubs)'=='true'" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <InProject>false</InProject>
+    </Reference>
+  </ItemGroup>
+
+  <!--
+        Override frameworks.targets version
+        Get the path to the target .NET framework SDK directory.
+    -->
+  <Target Name="GetFrameworkPaths"
+      DependsOnTargets="$(GetFrameworkPathsDependsOn)"
+        >
+    <GetDeviceFrameworkPaths
+        RuntimeVersion="$(TargetFrameworkVersion)"
+            >
+      <Output TaskParameter="FrameworkAssembliesPath" PropertyName="TargetFrameworkDirectory"/>
+      <Output TaskParameter="FrameworkAssembliesPathLE" PropertyName="TargetFrameworkDirectoryLE"/>
+      <Output TaskParameter="FrameworkAssembliesPathBE" PropertyName="TargetFrameworkDirectoryBE"/>
+    </GetDeviceFrameworkPaths>
+  </Target>
+  
+  <Target Name="GetFrameworkPathsLE"
+       DependsOnTargets="$(GetFrameworkPathsDependsOn)"
+        >
+    <GetDeviceFrameworkPaths
+        RuntimeVersion="$(TargetFrameworkVersion)"
+            >
+      <Output TaskParameter="FrameworkAssembliesPathLE" PropertyName="TargetFrameworkDirectory"/>
+    </GetDeviceFrameworkPaths>
+  </Target>
+  
+  <Target Name="GetFrameworkPathsBE"
+       DependsOnTargets="$(GetFrameworkPathsDependsOn)"
+        >
+    <GetDeviceFrameworkPaths
+        RuntimeVersion="$(TargetFrameworkVersion)"
+            >
+      <Output TaskParameter="FrameworkAssembliesPathBE" PropertyName="TargetFrameworkDirectory"/>
+    </GetDeviceFrameworkPaths>
+  </Target>
+
+  <!-- No-op the GetReferenceAssemblyPaths target for devices; the version in .NET 3.0+ makes
+         TargetFrameworkDirectory a list of paths to a set of directories that in sum contain
+         the .NET framework assemblies for the desktop; we continue to treat TargetFrameworkDirectory
+         as a single path to the one directory containing the entire .NET MF.
+    -->
+
+  <Target
+      Name="GetReferenceAssemblyPaths"
+      DependsOnTargets="$(GetReferenceAssemblyPathsDependsOn)">
+  </Target>
+
+  <Target Name="MetaDataProcessor"
+      Inputs="$(TinyCLR_AssemblyLE)$(TargetExt);
+        @(ReferencePath);
+        @(ReferenceDependencyPaths);
+        @(ReferenceSatellitePaths);
+        @(TinyCLR_Resources)"
+      Outputs="$(TinyCLR_IntermediateAssemblyLE).pe;@(MF_GenerateStubsFeatureProj)"
+      DependsOnTargets="$(MetaDataProcessorDependsOn)"
+        >
+    <!-- Should we also use ReferenceCopyLocalPaths, dlls that got copied to output directory?? -->
+    <MetaDataProcessor
+        Endianness="le"
+        LoadHints="@(ReferencePath);@(ReferenceDependencyPaths);@(ReferenceSatellitePaths)"
+        Parse="$(TinyCLR_AssemblyLE)$(TargetExt)"
+        Compile="$(TinyCLR_IntermediateAssemblyLE).pe"
+        ImportResources="@(TinyCLR_Resources)"
+        TargetFrameworkVersion="$(TargetFrameworkVersion)"
+        Minimize="true">
+
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites" />
+    </MetaDataProcessor>
+
+    <!--CallTarget is less than ideal... MF_GeneratedStubFile isn't a complete list...-->
+    <CallTarget Targets="GenerateStubs" Condition="'$(MF_GenerateStubs)'=='true'" />
+  </Target>
+
+  <Target Name="MetaDataProcessorBE"
+        Inputs="$(TinyCLR_AssemblyBE)$(TargetExt);
+        @(ReferencePath);
+        @(ReferenceDependencyPaths);
+        @(ReferenceSatellitePaths);
+        @(TinyCLR_Resources)"
+        Outputs="$(TinyCLR_IntermediateAssemblyBE).pe"
+        DependsOnTargets="$(MetaDataProcessorBEDependsOn)"
+        >
+    <!-- Should we also use ReferenceCopyLocalPaths, dlls that got copied to output directory?? -->
+    <MetaDataProcessor
+        Endianness="be"
+        LoadHints="@(ReferencePath);@(ReferenceDependencyPaths);@(ReferenceSatellitePaths)"
+        Parse="$(TinyCLR_AssemblyBE)$(TargetExt)"
+        Compile="$(TinyCLR_IntermediateAssemblyBE).pe"
+        ImportResources="@(TinyCLR_Resources)"
+        TargetFrameworkVersion="$(TargetFrameworkVersion)"
+        Minimize="true">
+
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites" />
+    </MetaDataProcessor>
+
+	<!-- not necessary to have BE version Stubs -->
+    <!--CallTarget is less than ideal... MF_GeneratedStubFile isn't a complete list...-->
+<!--    <CallTarget Targets="GenerateStubsBE" Condition="'$(MF_GenerateStubs)'=='true'" /> -->
+  </Target>
+
+  <!-- Generate stubs for assemblies containing methods to be implemented in native code -->
+  <Target Name="GenerateStubs"
+    Inputs="$(TinyCLR_IntermediateAssemblyLE).pe"
+    Outputs="@(MF_GeneratedStubFile)"
+    DependsOnTargets="ReferencedAssemblyDllsToPeFilesLE"
+    >
+    <MakeDir Condition="!Exists('$(MF_GenerateStubsDirectory)')" Directories="$(MF_GenerateStubsDirectory)" />
+
+    <MetaDataProcessor
+      Verbose="true"
+      Load="$(TinyCLR_IntermediateAssemblyLE).pe;@(ReferencedPeFile)"
+
+      GenerateSkeletonName="$(TargetName)"
+      GenerateSkeletonFile="$(MF_GenerateSkeletonFile)"
+      GenerateSkeletonProject="$(MF_GenerateSkeletonProjectName)"
+      RefreshAssemblyName="$(AssemblyName)"
+      RefreshAssemblyOutput="$(TinyCLR_IntermediateAssemblyLE).pe"
+      Resolve="true"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+      <!--TODO... output here is incomplete? -->
+    </MetaDataProcessor>
+
+    <CreateInteropFeatureProj
+        StubsPath="$(MF_GenerateStubsDirectory)"
+        Name="$(TargetName)"
+        AssemblyName="$(TinyCLR_IntermediateAssemblyLE).pe"
+        ManagedProjectFile="$(MSBuildProjectFullPath)"
+        NativeProjectFile="$(MF_GenerateStubsDirectory)dotnetmf.proj"
+          />
+    <!--TODO FileWrites for FeatureProj -->
+
+  </Target>
+  <!-- Generate stubs for assemblies containing methods to be implemented in native code -->
+  <Target Name="GenerateStubsBE"
+    Inputs="$(TinyCLR_IntermediateAssemblyBE).pe"
+    Outputs="@(MF_GeneratedStubFile)"
+    DependsOnTargets="ReferencedAssemblyDllsToPeFilesBE"
+    >
+    <MakeDir Condition="!Exists('$(MF_GenerateStubsDirectory)')" Directories="$(MF_GenerateStubsDirectory)" />
+
+    <MetaDataProcessor
+      Verbose="true"
+      Load="$(TinyCLR_IntermediateAssemblyBE).pe;@(ReferencedPeFile)"
+
+      GenerateSkeletonName="$(TargetName)"
+      GenerateSkeletonFile="$(MF_GenerateSkeletonFile)"
+      GenerateSkeletonProject="$(MF_GenerateSkeletonProjectName)"
+      RefreshAssemblyName="$(AssemblyName)"
+      RefreshAssemblyOutput="$(TinyCLR_IntermediateAssemblyBE).pe"
+      Resolve="true"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+      <!--TODO... output here is incomplete? -->
+    </MetaDataProcessor>
+
+    <CreateInteropFeatureProj
+        StubsPath="$(MF_GenerateStubsDirectory)"
+        Name="$(TargetName)"
+        AssemblyName="$(TinyCLR_IntermediateAssemblyBE).pe"
+        ManagedProjectFile="$(MSBuildProjectFullPath)"
+        NativeProjectFile="$(MF_GenerateStubsDirectory)dotnetmf.proj"
+          />
+    <!--TODO FileWrites for FeatureProj -->
+
+  </Target>
+  <Target Name="ReferencedAssemblyDllsToPeFilesLE" DependsOnTargets="ResolveRuntimeDependenciesLE">
+    <ItemGroup>
+      <_ReferencedAssemblyDll Include="@(TinyCLR_StartProgram_ResolvedFiles);@(TinyCLR_StartProgram_ResolvedDependencyFiles)" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)%(filename).pe')" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)LE\%(filename).pe')" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)PE\LE\%(filename).pe')" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)..\PE\LE\%(filename).pe')" />
+
+      <ReferencedPeFile Include="%(_ReferencedPeFile.identity)" Condition="EXISTS(%(_ReferencedPeFile.identity))" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="ReferencedAssemblyDllsToPeFilesBE" DependsOnTargets="ResolveRuntimeDependenciesBE">
+    <ItemGroup>
+      <_ReferencedAssemblyDll Include="@(TinyCLR_StartProgram_ResolvedFiles);@(TinyCLR_StartProgram_ResolvedDependencyFiles)" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)%(filename).pe')" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)BE\%(filename).pe')" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)PE\BE\%(filename).pe')" />
+      <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)..\PE\BE\%(filename).pe')" />
+
+      <ReferencedPeFile Include="%(_ReferencedPeFile.identity)" Condition="EXISTS(%(_ReferencedPeFile.identity))" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CopyTinyCLRFiles" >
+    <Copy
+        SourceFiles="$(TinyCLR_IntermediateAssemblyLE).pe"
+        DestinationFiles="$(TinyCLR_AssemblyLE).pe"
+        SkipUnchangedFiles="true">
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+
+    <Copy
+        Condition="Exists('$(TinyCLR_IntermediateAssemblyLE)$(TinyCLR_PdbxExt)')"
+        SourceFiles="$(TinyCLR_IntermediateAssemblyLE)$(TinyCLR_PdbxExt)"
+        DestinationFiles="$(TinyCLR_AssemblyLE)$(TinyCLR_PdbxExt)"
+        SkipUnchangedFiles="true">
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        SourceFiles="$(TinyCLR_IntermediateAssemblyBE).pe"
+        DestinationFiles="$(TinyCLR_AssemblyBE).pe"
+        SkipUnchangedFiles="true">
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+
+    <Copy
+        Condition="Exists('$(TinyCLR_IntermediateAssemblyBE)$(TinyCLR_PdbxExt)')"
+        SourceFiles="$(TinyCLR_IntermediateAssemblyBE)$(TinyCLR_PdbxExt)"
+        DestinationFiles="$(TinyCLR_AssemblyBE)$(TinyCLR_PdbxExt)"
+        SkipUnchangedFiles="true">
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <!--
+        These two tasks will also copy the .pe and .pdbx files for references
+        that are marked as CopyLocal. A couple of notes.  @(ReferenceCopyLocalPaths) can contain the
+        .dll and .pdb files, so there is likely duplicate copying going on here: the copy command
+        is a little smart, but we are still doing a bit more work than necessary.
+        Also, if the pdbx files are in a separate directory from the .dll, then this may fail.
+        I haven't tried yet.
+        -->
+
+    <Copy
+        SourceFiles="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)LE\%(Filename).pe')"
+        DestinationFiles="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)LE\%(Filename).pe')"
+        SkipUnchangedFiles="true" >
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        SourceFiles="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)BE\%(Filename).pe')"
+        DestinationFiles="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)BE\%(Filename).pe')"
+        SkipUnchangedFiles="true" >
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        SourceFiles="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)LE\%(Filename)$(TinyCLR_PdbxExt)')"
+        DestinationFiles="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)LE\%(Filename)$(TinyCLR_PdbxExt)')"
+        SkipUnchangedFiles="true">
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+    <Copy
+        SourceFiles="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)BE\%(Filename)$(TinyCLR_PdbxExt)')"
+        DestinationFiles="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)BE\%(Filename)$(TinyCLR_PdbxExt)')"
+        SkipUnchangedFiles="true">
+
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+
+
+
+
+
+  <Target
+         Name="ResolveAssemblyReferencesLE"
+         DependsOnTargets="GetFrameworkPathsLE"
+         >
+    <CallTarget Targets="ResolveAssemblyReferences" />
+  </Target>
+
+  <Target
+         Name="ResolveAssemblyReferencesBE"
+         DependsOnTargets="GetFrameworkPathsBE"
+         >    
+    <CallTarget Targets="ResolveAssemblyReferences" />
+
+  </Target>
+
+
+
+
+
+  <Target Name="ResolveRuntimeDependenciesLE" >
+
+    <ItemGroup>
+      <TinyCLR_StartProgramItem Include="$(TinyCLR_StartProgram)" Condition=" '$(TinyCLR_StartProgram)' != '' " />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <TinyCLR_DebugReferencesStateFile>$(IntermediateOutputPath)TinyCLR_DebugReferences.cache</TinyCLR_DebugReferencesStateFile>
+    </PropertyGroup>
+
+        
+    <ResolveAssemblyReference
+        Assemblies="@(Reference)"
+        AssemblyFiles="$(TinyCLR_StartProgram);@(_ResolvedProjectReferencePaths)"
+        InstalledAssemblyTables="@(InstalledAssemblyTables)"
+        CandidateAssemblyFiles="@(Content);@(None)"
+        SearchPaths="{CandidateAssemblyFiles};
+                         $(ReferencePath);
+                         {HintPathFromItem};
+                         $(TargetFrameworkDirectoryLE);
+                         {Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};
+                         {RawFileName};
+                         $(OutputPath);
+                         @(TinyCLR_StartProgramItem->'%(RootDir)%(Directory)')"
+        TargetProcessorArchitecture="$(ProcessorArchitecture)"
+        AppConfigFile="@(_ResolveAssemblyReferencesApplicationConfigFileForExes)"
+        AutoUnify="$(AutoUnifyAssemblyReferences)"
+        FindDependencies="true"
+        FindSatellites="true"
+        FindRelatedFiles="true"
+        Silent="!$(BuildingProject)"
+        StateFile="$(TinyCLR_DebugReferencesStateFile)"
+        TargetFrameworkVersion="$(TargetFrameworkVersion)"
+            >
+      <Output TaskParameter="ResolvedFiles" ItemName="TinyCLR_StartProgram_ResolvedFiles"/>
+      <Output TaskParameter="ResolvedDependencyFiles" ItemName="TinyCLR_StartProgram_ResolvedDependencyFiles"/>
+      <Output TaskParameter="RelatedFiles" ItemName="TinyCLR_ReferenceRelatedPaths"/>
+      <Output TaskParameter="SatelliteFiles" ItemName="TinyCLR_ReferenceSatellitePaths"/>
+      <Output TaskParameter="CopyLocalFiles" ItemName="TinyCLR_ReferenceCopyLocalPaths"/>
+      <Output TaskParameter="SuggestedRedirects" ItemName="TinyCLR_SuggestedBindingRedirects"/>
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </ResolveAssemblyReference>
+
+    <ResolveRuntimeDependencies
+        Assembly="$(TinyCLR_AssemblyLE)$(TargetExt)"
+        AssemblyReferences="@(ReferencePath);@(ReferenceDependencyPaths);@(ReferenceSatellitePaths)"
+        StartProgram="$(TinyCLR_StartProgram)"
+        StartProgramReferences="@(TinyCLR_StartProgram_ResolvedFiles);@(TinyCLR_StartProgram_ResolvedDependencyFiles)"
+            />
+  </Target>
+
+  <Target Name="ResolveRuntimeDependenciesBE" >
+
+    <ItemGroup>
+      <TinyCLR_StartProgramItem Include="$(TinyCLR_StartProgram)" Condition=" '$(TinyCLR_StartProgram)' != '' " />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <TinyCLR_DebugReferencesStateFile>$(IntermediateOutputPath)TinyCLR_DebugReferences.cache</TinyCLR_DebugReferencesStateFile>
+    </PropertyGroup>
+
+    <ResolveAssemblyReference
+        Assemblies="@(Reference)"
+        AssemblyFiles="$(TinyCLR_StartProgram);@(_ResolvedProjectReferencePaths)"
+        InstalledAssemblyTables="@(InstalledAssemblyTables)"
+        CandidateAssemblyFiles="@(Content);@(None)"
+        SearchPaths="{CandidateAssemblyFiles};
+                         $(ReferencePath);
+                         {HintPathFromItem};
+                         $(TargetFrameworkDirectoryBE);
+                         {Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};
+                         {RawFileName};
+                         $(OutputPath);
+                         @(TinyCLR_StartProgramItem->'%(RootDir)%(Directory)')"
+        TargetProcessorArchitecture="$(ProcessorArchitecture)"
+        AppConfigFile="@(_ResolveAssemblyReferencesApplicationConfigFileForExes)"
+        AutoUnify="$(AutoUnifyAssemblyReferences)"
+        FindDependencies="true"
+        FindSatellites="true"
+        FindRelatedFiles="true"
+        Silent="!$(BuildingProject)"
+        StateFile="$(TinyCLR_DebugReferencesStateFile)"
+            >
+      <Output TaskParameter="ResolvedFiles" ItemName="TinyCLR_StartProgram_ResolvedFilesBE"/>
+      <Output TaskParameter="ResolvedDependencyFiles" ItemName="TinyCLR_StartProgram_ResolvedDependencyFilesBE"/>
+      <Output TaskParameter="RelatedFiles" ItemName="TinyCLR_ReferenceRelatedPathsBE"/>
+      <Output TaskParameter="SatelliteFiles" ItemName="TinyCLR_ReferenceSatellitePathsBE"/>
+      <Output TaskParameter="CopyLocalFiles" ItemName="TinyCLR_ReferenceCopyLocalPathsBE"/>
+      <Output TaskParameter="SuggestedRedirects" ItemName="TinyCLR_SuggestedBindingRedirectsBE"/>
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </ResolveAssemblyReference>
+
+    <ResolveRuntimeDependencies
+        Assembly="$(TinyCLR_AssemblyBE)$(TargetExt)"
+        AssemblyReferences="@(ReferencePath);@(ReferenceDependencyPaths);@(ReferenceSatellitePaths)"
+        StartProgram="$(TinyCLR_StartProgram)"
+        StartProgramReferences="@(TinyCLR_StartProgram_ResolvedFilesBE);@(TinyCLR_StartProgram_ResolvedDependencyFilesBE)"
+            />
+
+  </Target>
+
+  <Target Name="TinyResGen"
+      Condition="'@(EmbeddedResource)'!=''"
+      DependsOnTargets="$(TinyResGenDependsOn)"
+        >
+    <GenerateTinyResource
+        Sources="@(EmbeddedResource)"
+        Condition=" '%(EmbeddedResource.Type)' == 'Resx' and '%(EmbeddedResource.GenerateResource)' != 'false'"
+        References="@(ReferencePath)"
+        UseSourcePath="$(UseSourcePath)"
+        StateFile="$(IntermediateOutputPath)TinyResGen.cache"
+        OutputResources="@(EmbeddedResource->'$(IntermediateOutputPath)%(ManifestResourceName).tinyresources')"
+            >
+
+      <Output TaskParameter="OutputResources" ItemName="TinyCLR_Resources"/>
+      <Output TaskParameter="OutputResources" ItemName="FileWrites"/>
+    </GenerateTinyResource>
+
+    <ItemGroup>
+      <FileWrites Include="$(IntermediateOutputPath)TinyResGen.cache" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Overriding common targets.  Application and Deployment manifests are not currently supported -->
+
+  <Target Name="_CopyManifestFiles" />
+  <Target Name="_CopyApplicationConfigFiles" />
+
+</Project>

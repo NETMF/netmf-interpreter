@@ -1,0 +1,9 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='9e06f33b-01e0-4cca-8347-0091d2d20531' Keywords="Installer" Description=".NET Micro Framework Net Security Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_SslStreamTests' />  
+
+  </Module>
+</Wix>

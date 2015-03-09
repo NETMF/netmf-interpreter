@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>mscorlib</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <IsMscorlib>true</IsMscorlib>
+    <ProjectGuid>{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}</ProjectGuid>
+    <NoWarn>$(NoWarn),0169,0649,0659,0660,0661,3001</NoWarn>
+    <ComponentGuid>{8ed2587d-e7d2-4766-b70b-c9f3c5c1f503}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <!-- CSC overridden options -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- MMP_PE options -->
+    <MMP_PE_NoBitmapCompression>true</MMP_PE_NoBitmapCompression>
+    <MMP_PE_DumpExports>$(BUILD_TREE_TXT)\$(TargetName)_exports.txt</MMP_PE_DumpExports>
+    <MMP_PE_DumpAll>$(BUILD_TREE_TXT)\$(TargetName)_all.txt</MMP_PE_DumpAll>
+    <!-- MMP_STUB options -->
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\corlib_native</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>CorLib</MMP_STUB_GenerateSkeletonProject>
+    <MMP_STUB_LegacySkeletonInterop>true</MMP_STUB_LegacySkeletonInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="System\BitConverter.cs" />
+    <Compile Include="System\AppDomain.cs" />
+    <Compile Include="System\AppDomainUnloadedException.cs" />
+    <Compile Include="System\ApplicationException.cs" />
+    <Compile Include="System\ArgumentException.cs" />
+    <Compile Include="System\ArgumentNullException.cs" />
+    <Compile Include="System\ArgumentOutOfRangeException.cs" />
+    <Compile Include="System\Array.cs" />
+    <Compile Include="System\AssemblyInfo2.cs" />
+    <Compile Include="System\AsyncCallback.cs" />
+    <Compile Include="System\Attribute.cs" />
+    <Compile Include="System\AttributeTargets.cs" />
+    <Compile Include="System\AttributeUsageAttribute.cs" />
+    <Compile Include="System\Boolean.cs" />
+    <Compile Include="System\Byte.cs" />
+    <Compile Include="System\Char.cs" />
+    <Compile Include="System\ComponentModel\EditorBrowsableAttribute.cs" />
+    <Compile Include="System\Convert.cs" />
+    <Compile Include="System\CLSCompliantAttribute.cs" />
+    <Compile Include="System\DateTime.cs" />
+    <Compile Include="System\DayOfWeek.cs" />
+    <Compile Include="System\DBNull.cs" />
+    <Compile Include="System\Decimal.cs" />
+    <Compile Include="System\Delegate.cs" />
+    <Compile Include="System\Diagnostics\ConditionalAttribute.cs" />
+    <Compile Include="System\Diagnostics\Debugger.cs" />
+    <Compile Include="System\Diagnostics\DebuggerAttributes.cs" />
+    <Compile Include="System\Double.cs" />
+    <Compile Include="System\Enum.cs" />
+    <Compile Include="System\Exception.cs" />
+    <Compile Include="System\FlagsAttribute.cs" />
+    <Compile Include="System\GC.cs" />
+    <Compile Include="System\Guid.cs" />
+    <Compile Include="System\IAsyncResult.cs" />
+    <Compile Include="System\ICloneable.cs" />
+    <Compile Include="System\IComparable.cs" />
+    <Compile Include="System\ICustomFormatter.cs" />
+    <Compile Include="System\IDisposable.cs" />
+    <Compile Include="System\IFormatProvider.cs" />
+    <Compile Include="System\IFormattable.cs" />
+    <Compile Include="System\IndexOutOfRangeException.cs" />
+    <Compile Include="System\Int16.cs" />
+    <Compile Include="System\Int32.cs" />
+    <Compile Include="System\Int64.cs" />
+    <Compile Include="System\IntPtr.cs" />
+    <Compile Include="System\InvalidCastException.cs" />
+    <Compile Include="System\InvalidOperationException.cs" />
+    <Compile Include="System\MarshalByRefObject.cs" />
+    <Compile Include="System\Math.cs" />
+    <Compile Include="System\MulticastDelegate.cs" />
+    <Compile Include="System\NonSerializedAttribute.cs" />
+    <Compile Include="System\NotImplementedException.cs" />
+    <Compile Include="System\NotSupportedException.cs" />
+    <Compile Include="System\NullReferenceException.cs" />
+    <Compile Include="System\Number.cs" />
+    <Compile Include="System\Object.cs" />
+    <Compile Include="System\ObjectDisposedException.cs" />
+    <Compile Include="System\ObsoleteAttribute.cs" />
+    <Compile Include="System\OutOfMemoryException.cs" />
+    <Compile Include="System\ParamArrayAttribute.cs" />
+    <Compile Include="System\Random.cs" />
+    <Compile Include="System\RuntimeArgumentHandle.cs" />
+    <Compile Include="System\RuntimeFieldHandle.cs" />
+    <Compile Include="System\RuntimeMethodHandle.cs" />
+    <Compile Include="System\RuntimeType.cs" />
+    <Compile Include="System\RuntimeTypeHandle.cs" />
+    <Compile Include="System\TargetFrameworkAttribute.cs" />
+    <Compile Include="System\SByte.cs" />
+    <Compile Include="System\SerializableAttribute.cs" />
+    <Compile Include="System\Single.cs" />
+    <Compile Include="System\String.cs" />
+    <Compile Include="System\SystemException.cs" />
+    <Compile Include="System\Text\Decoder.cs" />
+    <Compile Include="System\Text\Encoding.cs" />
+    <Compile Include="System\Text\StringBuilder.cs" />
+    <Compile Include="System\Text\UTF8Decoder.cs" />
+    <Compile Include="System\Text\UTF8Encoding.cs" />
+    <Compile Include="System\ThreadAttributes.cs" />
+    <Compile Include="System\TimeSpan.cs" />
+    <Compile Include="System\TimeZone.cs" />
+    <Compile Include="System\Type.cs" />
+    <Compile Include="System\TypeCode.cs" />
+    <Compile Include="System\TypedReference.cs" />
+    <Compile Include="System\UInt16.cs" />
+    <Compile Include="System\UInt32.cs" />
+    <Compile Include="System\UInt64.cs" />
+    <Compile Include="System\UIntPtr.cs" />
+    <Compile Include="System\ValueType.cs" />
+    <Compile Include="System\Version.cs" />
+    <Compile Include="System\Void.cs" />
+    <Compile Include="System\WeakReference.cs" />
+    <Compile Include="System\Collections\ArrayList.cs" />
+    <Compile Include="System\Collections\DictionaryEntry.cs" />
+    <Compile Include="System\Collections\Hashtable.cs" />
+    <Compile Include="System\Collections\ICollection.cs" />
+    <Compile Include="System\Collections\IComparer.cs" />
+    <Compile Include="System\Collections\IDictionary.cs" />
+    <Compile Include="System\Collections\IEqualityComparer.cs" />
+    <Compile Include="System\Collections\IEnumerable.cs" />
+    <Compile Include="System\Collections\IEnumerator.cs" />
+    <Compile Include="System\Collections\IList.cs" />
+    <Compile Include="System\Collections\Queue.cs" />
+    <Compile Include="System\Collections\Stack.cs" />
+    <Compile Include="System\IO\IOException.cs" />
+    <Compile Include="System\IO\SeekOrigin.cs" />
+    <Compile Include="System\IO\Stream.cs" />
+    <Compile Include="System\Globalization\CultureInfo.cs" />
+    <EmbeddedResource Include="System\Globalization\Resources\CultureInfo.resx">
+      <Generator>ResXFileCodeGenerator(Mscorlib=true)</Generator>
+      <LastGenOutput>CultureInfo.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="System\Globalization\Resources\CultureInfo.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CultureInfo.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="System\Globalization\Resources\CultureInfo.en.resx">
+      <!-- hack to keep in mscorlib -->
+      <DependentUpon>CultureInfo.en.NoCulture</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="System\Globalization\CultureTypes.cs" />
+    <Compile Include="System\Globalization\DateTimeFormat.cs" />
+    <Compile Include="System\Globalization\DateTimeFormatInfo.cs" />
+    <Compile Include="System\Globalization\DaylightTime.cs" />
+    <Compile Include="System\Globalization\NumberFormatInfo.cs" />
+    <Compile Include="System\Reflection\Assembly.cs" />
+    <Compile Include="System\Reflection\AssemblyAttributes.cs" />
+    <Compile Include="System\Reflection\AssemblyNameFlags.cs" />
+    <Compile Include="System\Reflection\AssemblyReflectionAttributes.cs" />
+    <Compile Include="System\Reflection\Binder.cs" />
+    <Compile Include="System\Reflection\BindingFlags.cs" />
+    <Compile Include="System\Reflection\ConstructorInfo.cs" />
+    <Compile Include="System\Reflection\DefaultMemberAttribute.cs" />
+    <Compile Include="System\Reflection\FieldInfo.cs" />
+    <Compile Include="System\Reflection\FieldReflectionAttributes.cs" />
+    <Compile Include="System\Reflection\IReflect.cs" />
+    <Compile Include="System\Reflection\MemberInfo.cs" />
+    <Compile Include="System\Reflection\MethodImplAttributes.cs" />
+    <Compile Include="System\Reflection\MemberTypes.cs" />
+    <Compile Include="System\Reflection\MethodBase.cs" />
+    <Compile Include="System\Reflection\MethodInfo.cs" />
+    <Compile Include="System\Reflection\PropertyInfo.cs" />
+    <Compile Include="System\Reflection\RuntimeConstructorInfo.cs" />
+    <Compile Include="System\Reflection\RuntimeFieldInfo.cs" />
+    <Compile Include="System\Reflection\RuntimeMethodInfo.cs" />
+    <Compile Include="System\Resources\ResourceManager.cs" />
+    <Compile Include="System\Runtime\CompilerServices\AccessedThroughPropertyAttribute.cs" />
+    <Compile Include="System\Runtime\CompilerServices\ExtensionAttribute.cs" />
+    <Compile Include="System\Runtime\CompilerServices\MethodImplAttribute.cs" />
+    <Compile Include="System\Runtime\CompilerServices\IndexerNameAttribute.cs" />
+    <Compile Include="System\Runtime\CompilerServices\InternalsVisibleToAttribute.cs" />
+    <Compile Include="System\Runtime\CompilerServices\RuntimeHelpers.cs" />
+    <Compile Include="System\Runtime\InteropServices\Attributes.cs" />
+    <Compile Include="System\Runtime\InteropServices\CharSet.cs" />
+    <Compile Include="System\Runtime\InteropServices\LayoutKind.cs" />
+    <Compile Include="System\Runtime\Remoting\__TransparentProxy.cs" />
+    <Compile Include="System\Runtime\Remoting\RemotingServices.cs" />
+    <Compile Include="System\Threading\AutoResetEvent.cs" />
+    <Compile Include="System\Threading\Interlocked.cs" />
+    <Compile Include="System\Threading\ManualResetEvent.cs" />
+    <Compile Include="System\Threading\Monitor.cs" />
+    <Compile Include="System\Threading\Thread.cs" />
+    <Compile Include="System\Threading\ThreadAbortException.cs" />
+    <Compile Include="System\Threading\ThreadPriority.cs" />
+    <Compile Include="System\Threading\ThreadStart.cs" />
+    <Compile Include="System\Threading\ThreadState.cs" />
+    <Compile Include="System\Threading\Timer.cs" />
+    <Compile Include="System\Threading\Timeout.cs" />
+    <Compile Include="System\Threading\WaitHandle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <MMP_PE_ExcludeClassByName Include="System.AttributeTargets">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.AttributeUsageAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.ComponentModel.EditorBrowsableAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.CLSCompliantAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.DBNull">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Decimal">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.ConditionalAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggableAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerBrowsableAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerBrowsableState">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerDisplayAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerHiddenAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerNonUserCodeAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerStepperBoundaryAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerStepThroughAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Diagnostics.DebuggerTypeProxyAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.FlagsAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.MTAThreadAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.NonSerializedAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.ObsoleteAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.ParamArrayAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyCompanyAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyConfigurationAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyCopyrightAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyCultureAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyDefaultAliasAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyDelaySignAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyDescriptionAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyFileVersionAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyFlagsAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyInformationalVersionAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyKeyFileAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyKeyNameAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyProductAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyTitleAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyTrademarkAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.AssemblyVersionAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.DefaultMemberAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.FieldNoReflectionAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Reflection.MethodImplAttributes">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.CompilerServices.IndexerNameAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.CompilerServices.MethodCodeType">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.CompilerServices.MethodImplAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.CompilerServices.MethodImplOptions">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.InteropServices.CharSet">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.InteropServices.ComVisibleAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.InteropServices.GuidAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.InteropServices.LayoutKind">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.InteropServices.OutAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.InteropServices.StructLayoutAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Runtime.Remoting.Proxies.__TransparentProxy">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.SerializableAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.STAThreadAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.Threading.Timeout">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.TypedReference">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="System.UIntPtr">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>MFUpdate</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.MFUpdate</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <NoWarn>$(NoWarn),0169,0659</NoWarn>
+    <ProjectGuid>{3AF36ADD-7AD2-405A-B806-ADADCD0BB07D}</ProjectGuid>
+    <ComponentGuid>{415A6179-1DAE-41D2-9084-1D3913AA1033}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Update">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Update.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FirmwareUpdate.cs" />
+    <Compile Include="MFAssemblyUpdate.cs" />
+    <Compile Include="MFKeyUpdate.cs" />
+    <Compile Include="MFUpdate.cs" />
+    <Compile Include="MFUpdatePkt.cs" />
+  </ItemGroup>
+</Project>

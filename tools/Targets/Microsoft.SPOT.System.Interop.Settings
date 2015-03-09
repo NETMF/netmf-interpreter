@@ -1,0 +1,17 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <InteropFeatureProperty>@(InteropFeature)</InteropFeatureProperty>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\clr\core\InteropAssembliesTable.proj">
+        <AdditionalProperties>
+            Directory=$(Directory);
+            InteropModule=$(InteropFeatureProperty)
+        </AdditionalProperties>
+    </RequiredProjects>
+    <InputLibs Include="$(LIB_DIR)\InteropAssembliesTable.$(LIB_EXT)"/>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Serial</FeatureName>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\USART_PAL.libcatproj" />
+
+  <PropertyGroup>
+    <Description>Serial transport</Description>
+    <Guid>{072679F8-6769-41cc-AB06-4A509E6C6A8D}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
+    <SERIAL_PORT_FEATUREPROJ>True</SERIAL_PORT_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

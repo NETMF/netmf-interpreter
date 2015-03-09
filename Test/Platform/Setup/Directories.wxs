@@ -1,0 +1,106 @@
+<Include>
+
+  <?define DEFAULT_FOLDER_NAME="$(var.CompanyName) $(var.ProductName)"?>
+  <?define START_MENU_FOLDER_NAME="$(var.CompanyName) $(var.CommonProductName)"?>
+  <?define DeviceNameShort="MFTest"?>
+  <?define TemplateGroup="Micro Framework Test"?>
+  
+  <Directory Id='TARGETDIR' Name='SourceDir'>
+    <Directory Id='ProgramFilesFolder' Name='PFiles'>
+      <Directory Id='INSTALLDIR' Name='$(var.DEFAULT_FOLDER_NAME)'>
+        <Directory Id='INSTALLDIRVERSION' Name='v$(var.ProdVerMajorMinor)'>
+          <Directory Id='TESTSDIR' Name="Tests">
+            <Directory Id='SamplesDir' Name="TestCases">
+              <Directory Id='CryptoDir' Name="Crypto"/>
+            </Directory>
+            <Directory Id='AssembliesDir' Name='Assemblies'>
+              <Directory Id='AssembliesDirLE' Name='le'/>
+              <Directory Id='AssembliesDirBE' Name='be'/>
+            </Directory>
+            <Directory Id='ResultsDir' Name='Results'>
+              <Directory Id="ImagesDir" Name="Images" />
+            </Directory>
+            <Directory Id='ToolsDir' Name='Tools'/>
+            <Directory Id='ProfilerTestDir' Name="ManagedProfilerTests"/>
+            <Directory Id='StressTestDir' Name="StressTests"/>
+          </Directory>
+          <!--EndTESTSDIR-->
+
+          <Directory Id="VS_PATH" Name="VS120">
+            <Directory Id="VS_ITEM_TEMPLATE" Name="ItemTemplates">
+              <Directory Id="VS_ITEM_TEMPLATE_CSHARP" Name="CSharp">
+                <Directory Id="VS_ITEM_TEMPLATE_CSHARP_MF" Name="Micro Framework">
+                  <Directory Id="VS_ITEM_TEMPLATE_CSHARP_CODE" Name="Code"/>
+                  <Directory Id="VS_ITEM_TEMPLATE_CSHARP_ASSEMBLYINFO" Name="General"/>
+                </Directory>
+              </Directory>
+              <Directory Id="VS_ITEM_TEMPLATE_VISUALBASIC" Name="VisualBasic">
+                <Directory Id="VS_ITEM_TEMPLATE_VISUALBASIC_MF" Name="Micro Framework">
+                  <Directory Id="VS_ITEM_TEMPLATE_VISUALBASIC_CODE" Name="Code"/>
+                </Directory>
+              </Directory>
+            </Directory>
+            <Directory Id="VS_PROJECT_TEMPLATE" Name="ProjectTemplates">
+              <Directory Id="VS_PROJECT_TEMPLATE_CSHARP" Name="CSharp">
+                <Directory Id="VS_PROJECT_TEMPLATE_CSHARP_NETMF" Name="$(var.TemplateGroup)" />
+              </Directory>
+              <Directory Id="VS_PROJECT_TEMPLATE_VISUALBASIC" Name="VisualBasic">
+                <Directory Id="VS_PROJECT_TEMPLATE_VISUALBASIC_NETMF" Name="$(var.TemplateGroup)" />
+              </Directory>
+            </Directory>
+          </Directory>
+          <!--EndVS_PATH-->
+
+        <Directory Id="WDE_PATH" Name="WDE120">
+          <Directory Id="WDEXPRESS_INSTALL_PATH" Name="ROOT">
+            <Directory Id="WDEXPRESS_WDEXPRESS" Name="WDExpress">
+              <Directory Id="WDEXPRESS_ITEM_TEMPLATE" Name="ItemTemplates">
+                <Directory Id="WDEXPRESS_ITEM_TEMPLATE_CSHARP" Name="CSharp">
+                  <Directory Id="WDEXPRESS_ITEM_TEMPLATE_CSHARP_MF" Name="Micro Framework">
+                    <Directory Id="WDEXPRESS_ITEM_TEMPLATE_CSHARP_CODE" Name="Code"/>
+                    <Directory Id="WDEXPRESS_ITEM_TEMPLATE_CSHARP_ASSEMBLYINFO" Name="General"/>
+                  </Directory>
+                </Directory>
+                <Directory Id="WDEXPRESS_ITEM_TEMPLATE_VISUALBASIC" Name="VisualBasic">
+                  <Directory Id="WDEXPRESS_ITEM_TEMPLATE_VISUALBASIC_MF" Name="Micro Framework">
+                    <Directory Id="WDEXPRESS_ITEM_TEMPLATE_VISUALBASIC_CODE" Name="Code"/>
+                  </Directory>
+                </Directory>
+              </Directory>
+              <Directory Id="WDEXPRESS_PROJECT_TEMPLATE" Name="ProjectTemplates">
+                <Directory Id="WDEXPRESS_PROJECT_TEMPLATE_CSHARP" Name="CSharp">
+                  <Directory Id="WDEXPRESS_PROJECT_TEMPLATE_CSHARP_NETMF" Name="$(var.TemplateGroup)" />
+                </Directory>
+                <Directory Id="WDEXPRESS_PROJECT_TEMPLATE_VISUALBASIC" Name="VisualBasic">
+                  <Directory Id="WDEXPRESS_PROJECT_TEMPLATE_VISUALBASIC_NETMF" Name="$(var.TemplateGroup)" />
+                </Directory>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+        <!--EndWDE_PATH-->
+          
+        </Directory>
+        <!--EndINSTALLDIR-->
+      </Directory>
+      <!--EndProgramFilesFolder-->
+    </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="$(var.START_MENU_FOLDER_NAME)" >
+          <Directory Id="PLATFORMTESTSDIR" Name="Tests" />
+        </Directory>
+      </Directory>
+
+      <Directory Id="TempFolder" Name="Temp">
+        <Directory Id="TEMPFOLDERINSTALLDIR" Name="NETMFTests"/>
+      </Directory>
+
+      <Directory Id="TestCasesFolder" Name="tc">
+        <Directory Id="TEST_CASES_FOLDER" Name="TestCases"/>
+      </Directory>
+
+      <Directory Id="GACDir" Name="GAC" />        
+    <!--EndTARGETDIR-->
+  </Directory>
+</Include>

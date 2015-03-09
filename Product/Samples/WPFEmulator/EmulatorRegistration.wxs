@@ -1,0 +1,21 @@
+<Include>
+  <?include defines.wxs?>
+  <RegistryKey
+  Root="HKLM"
+  Id="Registry_MicrosoftEmulatorKey"
+  Key="$(var.FxKey)\v$(var.ProdVerMajorMinor)\Emulators\Microsoft"
+  Action="createAndRemoveOnUninstall"
+  >
+    <RegistryValue
+      Name="Name"
+      Type="string"
+      Value="Microsoft Emulator"
+      Id="Registry_MicrosoftEmulatorNameValue"/>
+    <RegistryValue
+      Name="Path"
+      Type="string"
+      Value="[#$(var.IDMicrosoft_SPOT_Emulator_Sample_SampleEmulator_exe)]"
+      Id="Registry_MicrosoftSampleEmulatorPathValue"/>
+  </RegistryKey>
+</Include>
+

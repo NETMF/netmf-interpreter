@@ -1,0 +1,51 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>PortBooterClient</AssemblyName>
+    <OutputType>Winexe</OutputType>
+    <RootNamespace>PortBooterClient</RootNamespace>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1BB26C53-B0EA-4AFF-BD6C-317DB012B080}</ProjectGuid>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+
+  <ItemGroup>
+    <Compile Include="PortBooterClient.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="App.ico" />
+    <EmbeddedResource Include="PortBooterClient.resx">
+      <DependentUpon>PortBooterClient.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="System"/>
+    <Reference Include="System.XML"/>
+    <Reference Include="System.Drawing"/>
+    <Reference Include="System.Windows.Forms"/>
+    <Reference Include="Microsoft.SPOT.Debugger">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SPOCLIENT)\Framework\Debugger\Debugger.csproj">
+      <Name>Microsoft.SPOT.Debugger</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,30 @@
+Verbosity 0
+
+AddFontToProcess %CLRLIB%\fonts\Nina.ttf
+AddFontToProcess %CLRLIB%\fonts\NinaB.ttf
+
+# Bold 18 PPEM Nina
+SelectFont "FN:Nina Bold,HE:-18,WE:700,PF:39,FullName:Microsoft Nina Bold,Style:Bold"
+
+OffsetX      	0
+OffsetY      	0
+ImportRange     32  128
+# little black box
+ImportRange	8226 8226
+
+# degree symbol
+
+AdjustRightMargin	1
+ImportRange	176 176
+AdjustAscent 	-3
+
+SelectFont %CLRLIB%\fonts\emoticons_large.fnt
+ImportRangeAndMap 0 45 5024
+
+SelectFont %CLRLIB%\fonts\emoticons_large_calendar.fnt
+ImportRangeAndMap 0 45 5070
+
+AddFontToProcess %CLRLIB%\fonts\Arial.ttf
+SelectFont "FN:Arial,HE:-18,WE:400,PF:39,FullName:Monotype:Arial Regular:Version 2.95 (Microsoft),Style:Regular"
+AdjustAscent 	-3
+ImportRange	9632	9632

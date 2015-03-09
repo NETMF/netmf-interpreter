@@ -1,0 +1,10 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <TemplateSubdirectory>Samples</TemplateSubdirectory>
+    <TemplateName>SampleEmulator</TemplateName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <ItemGroup>
+    <VSTemplateProject Include="SampleEmulator.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="MFPK default settings for Release builds"
+	InheritedPropertySheets="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.System.Windows.vsprops"
+    >
+	<Tool Name="VCCLCompilerTool"
+		PreprocessorDefinitions="NDEBUG;_NDEBUG"
+		Optimization="2"
+		InlineFunctionExpansion="1"
+		OmitFramePointers="true"
+		RuntimeLibrary="2"
+		UsePrecompiledHeader="0"
+        />
+	<Tool
+		Name="VCLinkerTool"
+		AssemblyDebug="2"
+	    />
+	<Tool Name="VCResourceCompilerTool"
+		PreprocessorDefinitions="NDEBUG;_NDEBUG"
+	    />
+</VisualStudioPropertySheet>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="MFEmuTemplateFragment">
+    <?include defines.wxs?>
+    <DirectoryRef Id="WDEXPRESS11_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+      <Component Id="Component_EmulatorTemplate.WDE110" Guid ="c46f4131-4c8b-4aee-8c99-2778fc6d3637">
+        <File Id="Component_EmulatorTemplate.WDE110" 
+          Name="Emulator.zip"
+          Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\Emulator.zip"
+          DiskId="1"
+          />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VS11_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+      <Component Id="Component_EmulatorTemplate.VS110" Guid ="96e98858-fb87-4a77-ae1a-853e6a5c321e">
+        <File Id="Component_EmulatorTemplate.VS110"
+            Name="Emulator.zip"
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\Emulator.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+      <DirectoryRef Id="WDEXPRESS12_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+          <Component Id="Component_EmulatorTemplate.WDE120" Guid ="7C97F432-DEA0-4442-A881-89AF3C3B4BDB">
+              <File Id="Component_EmulatorTemplate.WDE120"
+                Name="Emulator.zip"
+                Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\Emulator.zip"
+                DiskId="1"
+          />
+          </Component>
+      </DirectoryRef>
+      <DirectoryRef Id="VS12_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+          <Component Id="Component_EmulatorTemplate.VS120" Guid ="00FDAE8F-E3D2-49BC-BDB2-F7B6CC3FCA86">
+              <File Id="Component_EmulatorTemplate.VS120"
+                  Name="Emulator.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\Emulator.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

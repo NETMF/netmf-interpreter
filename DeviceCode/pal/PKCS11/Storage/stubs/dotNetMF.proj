@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <AssemblyName>PKCS11_storage_pal_stub</AssemblyName>
+    <Size />
+    <ProjectGuid>{391D996B-9984-4F02-A1F1-0EECEA53CA46}</ProjectGuid>
+    <Description>PKCS11 storage library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>PKCS11_storage_pal_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Storage\stubs\dotNetMF.proj</ProjectPath>
+    <ManifestFile>PKCS11_storage_pal_stub.$(LIB_EXT).manifest</ManifestFile>
+    <OutputType>Library</OutputType>
+    <Directory>DeviceCode\PAL\PKCS11\Storage\stubs</Directory>
+    <Groups>Storage</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PKCS11_Storage_PAL" Guid="{B755FBE2-D282-4DCC-9766-E1A2C2ABE16B}" ProjectPath="$(SPOCLIENT)\framework\features\PKCS11_Storage_PAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2011-07-19</Date>
+          <Author />
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation />
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter />
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="PKCS11_storage_stub.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\PAL" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptoki.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptokipal.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11f.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11t.h" />
+    <HFiles Include="pkcs11_storage_stub.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

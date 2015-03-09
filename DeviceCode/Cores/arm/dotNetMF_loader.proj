@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>TinyHal_loader</AssemblyName>
+    <ProjectGuid>{3746d6a7-c602-482d-8a72-2326f2ee5e66}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>Core HAL library (for boot loaders)</Description>
+    <Level>HAL</Level>
+    <LibraryFile>TinyHal_loader.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\cores\arm\dotNetMF_loader.proj</ProjectPath>
+    <ManifestFile>TinyHal_loader.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TinyHal_HAL" Guid="{37C37BC0-3CA6-4C1C-A26F-4761A7BA3C05}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Cores\arm\reducesize</Directory>
+    <reducesize>true</reducesize>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType Condition="'$(PLATFORM_FAMILY)'=='arm'">Library</OutputType>
+    <AssemblyName>TinyHal_loader</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Diagnostics\Aborts.cpp" />
+    <Compile Include="Diagnostics\FIQ_Profiler.cpp" />
+    <Compile Include="Diagnostics\RamTest.cpp" />
+    <Compile Include="Diagnostics\RamTest.h" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(OS_PLATFORM)'!='true' and ( '$(INSTRUCTION_SET)'=='arm' or '$(INSTRUCTION_SET)'=='thumb')">
+    <Compile Include="AssemblyCode\arm\$(AS_SUBDIR)\VectorsHandlers.s" />
+    <Compile Include="AssemblyCode\arm\$(AS_SUBDIR)\IDelayLoop.s" />
+    <Compile Include="AssemblyCode\arm\$(AS_SUBDIR)\Sampling_Profiler_RAM.s" />
+    <Compile Include="AssemblyCode\arm\$(AS_SUBDIR)\VectorsTrampolines.s" />
+    <Compile Include="AssemblyCode\arm\$(AS_SUBDIR)\FirstEntry.s" />
+    <Compile Include="AssemblyCode\arm\$(AS_SUBDIR)\cpwait.s" />
+    <Compile Include="Diagnostics\FIQAssembly\$(AS_SUBDIR)\FiqSubhandler_MC9328.s" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(OS_PLATFORM)'!='true' and '$(INSTRUCTION_SET)'=='thumb2'">
+     <Compile Include="AssemblyCode\thumb2\$(AS_SUBDIR)\FirstEntry.s" />
+     <Compile Include="AssemblyCode\thumb2\$(AS_SUBDIR)\IDelayLoop.s" />
+     <Compile Include="AssemblyCode\thumb2\$(AS_SUBDIR)\BootVectors.s" />
+     <Compile Include="AssemblyCode\thumb2\$(AS_SUBDIR)\VectorsTrampolines.s" />	 
+     <Compile Include="AssemblyCode\thumb2\$(AS_SUBDIR)\ProtectionArea.s" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(OS_PLATFORM)'!='true'">
+    <LIB_FIRSTENTRY_OBJ Include="$(OBJ_DIR)\FirstEntry.$(OBJ_EXT)"/>
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\cores\arm\diagnostics\ramtest.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\cores\arm\include\arm_util.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\cores\arm\include\cpu.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\cores\arm\include\cpu_definitions.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\cores\arm\include\smartptr_fiq_arm.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\com\usb\usb.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\targets\native\mc9328\devicecode\mc9328mxl.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

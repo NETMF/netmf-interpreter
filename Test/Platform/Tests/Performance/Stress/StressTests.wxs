@@ -1,0 +1,11 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='44b08b11-1e89-4f7b-9648-6e73af840bfc' Keywords="Installer" Description=".NET Micro Framework Stress Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <ComponentRef Id='Component_SocketServerTest' />
+      <ComponentRef Id='Component_SocketClientTest' />
+      <ComponentRef Id='Component_Loopback' />
+      <ComponentRef Id='Component_MultiThreadStress' />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+  </Module>
+</Wix>

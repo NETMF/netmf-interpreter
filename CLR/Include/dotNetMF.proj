@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Directory>CLR\Include</Directory>
+    <AssemblyName>Include</AssemblyName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <!-- We are not building this lib at all
+	<OutputType Condition="'$(PLATFORM_FAMILY)'=='x86'">Library</OutputType>
+    -->
+    <PCHFile>none</PCHFile>
+    <ProjectGuid>819C41B7-3552-47C1-B5EE-27D28548F2FC</ProjectGuid>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <HFiles Include="opcode.def"/>
+    <HFiles Include="TinyCLR_Checks.h"/>
+    <HFiles Include="TinyCLR_Debugging.h"/>
+    <HFiles Include="TinyCLR_Messaging.h"/>
+    <HFiles Include="TinyCLR_Diagnostics.h"/>
+    <HFiles Include="TinyCLR_Graphics.h"/>
+    <HFiles Include="TinyCLR_Hardware.h"/>
+    <HFiles Include="TinyCLR_Jitter.h"/>
+    <HFiles Include="TinyCLR_Jitter_ARM.h"/>
+    <HFiles Include="TinyCLR_Jitter_ARM_Emulation.h"/>
+    <HFiles Include="TinyCLR_ParseOptions.h"/>
+    <HFiles Include="TinyCLR_PlatformDef.h"/>
+    <HFiles Include="TinyCLR_Runtime.h"/>
+    <HFiles Include="TinyCLR_Runtime__HeapBlock.h"/>
+    <HFiles Include="TinyCLR_Runtime__Serialization.h"/>
+    <HFiles Include="TinyCLR_Types.h"/>
+    <HFiles Include="TinyCLR_Version.h"/>
+
+    <HFiles Condition="'$(PLATFORM_FAMILY)'=='x86'" Include="TinyCLR_Win32.h"/>       
+
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,15 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_Debugger">
+    <Feature Id="Debugger"
+             Title=".NET Micro Framework Debugger"
+             Description="Build tools for the .NET MicroFramework"
+             Display="hidden"
+             Level="1">
+
+      <ComponentRef Id="Component_MetaDataProcessor"/>
+      <ComponentRef Id="Component_Microsoft.SPOT.Tasks"/>
+      <ComponentRef Id="Component_Microsoft.SPOT.Debugger" />
+      <ComponentRef Id="Component_WinUsbInvoke" />
+    </Feature>
+  </Fragment>
+</Wix>

@@ -1,0 +1,19 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop.csproj", "{8E22D03A-94E0-4BB7-9ED3-C56DC5BB3B1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E22D03A-94E0-4BB7-9ED3-C56DC5BB3B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E22D03A-94E0-4BB7-9ED3-C56DC5BB3B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E22D03A-94E0-4BB7-9ED3-C56DC5BB3B1F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,13 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(AssemblyName)' == '' ">
+    <AssemblyName>NONASSEMBLY</AssemblyName>
+  </PropertyGroup>
+  <Import Project="Microsoft.SPOT.Targets" />
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+</Project>

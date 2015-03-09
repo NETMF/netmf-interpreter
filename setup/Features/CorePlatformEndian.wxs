@@ -1,0 +1,86 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_CorePlatformLE">
+    <Feature Id="CorePlatformLE"
+             Title=".NET Micro Framework Core Platform (Little Endian)"
+             Description="A set of managed assemblies that comprise the core of the .NET MF"
+             Display="hidden"
+             Level="1">
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware.PWM" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware.SerialPort" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware.Usb" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware.OneWire" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Native" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Net" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Net.Security" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.IO" />      
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Graphics" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Time" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.TinyCore"/>
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Touch" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Ink" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Security.PKCS11" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Update" />
+      <ComponentRef Id="Component_le_Microsoft.VisualBasic" />
+      <ComponentRef Id="Component_le_MFUpdate" />
+      <ComponentRef Id="Component_le_mscorlib" />
+      <ComponentRef Id="Component_le_System" />
+      <ComponentRef Id="Component_le_System.IO" />
+      <ComponentRef Id="Component_le_System.Http" />
+      <ComponentRef Id="Component_le_System.Ftp" />
+      <ComponentRef Id="Component_le_System.Net.Security" />
+      <ComponentRef Id="Component_le_System.Security" />
+      <ComponentRef Id="Component_le_System.Text.RegularExpressions" />
+      <ComponentRef Id="Component_le_System.Xml" />
+      <ComponentRef Id="Component_le_System.Xml.Legacy" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Mac" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.CC2420" />
+      <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy" />
+
+    </Feature>
+
+  </Fragment>
+
+  <Fragment Id="Fragment_CorePlatformBE">
+    <Feature Id="CorePlatformBE"
+             Title=".NET Micro Framework Core Platform (Big Endian)"
+             Description="A set of managed assemblies that comprise the core of the .NET MF"
+             Display="hidden"
+             Level="1">
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware.PWM" />
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware.SerialPort"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware.Usb"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware.OneWire" />
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Native"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Net"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Net.Security"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.IO"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Graphics"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Time"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.TinyCore"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Touch"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Ink"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Security.PKCS11" />
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Update" />
+      <ComponentRef Id="Component_be_Microsoft.VisualBasic" />
+      <ComponentRef Id="Component_be_MFUpdate" />
+      <ComponentRef Id="Component_be_mscorlib"/>
+      <ComponentRef Id="Component_be_System"/>
+      <ComponentRef Id="Component_be_System.IO"/>
+      <ComponentRef Id="Component_be_System.Http"/>
+      <ComponentRef Id="Component_be_System.Ftp" />
+      <ComponentRef Id="Component_be_System.Net.Security"/>
+      <ComponentRef Id="Component_be_System.Security" />
+      <ComponentRef Id="Component_be_System.Text.RegularExpressions" />
+      <ComponentRef Id="Component_be_System.Xml"/>
+      <ComponentRef Id="Component_be_System.Xml.Legacy"/>
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Wireless.IEEE_802_15_4" />
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Wireless.IEEE_802_15_4.Mac" />
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.CC2420" />
+      <ComponentRef Id="Component_be_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy" />
+    </Feature>
+
+  </Fragment>  
+</Wix>

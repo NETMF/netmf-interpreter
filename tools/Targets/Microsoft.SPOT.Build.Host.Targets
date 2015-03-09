@@ -1,0 +1,71 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Condition=" '$(EmulatorId)' != '' "
+    Project="$(SPOCLIENT)\Framework\IDE\Targets\v4.4\Emulator.targets"
+    />
+
+  <!-- Dummy up the RegisterEmulator target; we don't do that in this system -->
+  <Target Condition=" '$(EmulatorId)' != '' "
+    Name="RegisterEmulator"
+    />
+
+  <PropertyGroup Condition="'$(CreatePublisherPolicy)' != ''">
+    <BuildDependsOn>$(BuildDependsOn);CreatePublisherPolicyFile</BuildDependsOn>
+    <CleanDependsOn>CleanPublisherPolicyFile;$(CleanDependsOn)</CleanDependsOn>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.SPOT.Build.Common.Targets" />
+
+
+
+  <Target Name="CreatePublisherPolicyFile" >
+
+    <PropertyGroup>
+        <PolicyConfigFile>$(OutputPath)\$(AssemblyName).publisherpolicy.config</PolicyConfigFile>
+        <PolicyAssembly>$(OutputPath)\policy.$(MFAssemblyMajorVersion).$(MFAssemblyMinorVersion).$(AssemblyName).dll</PolicyAssembly>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PublisherPolicyConfig Include="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?>" />
+        <PublisherPolicyConfig Include="&lt;configuration>" />
+        <PublisherPolicyConfig Include="   &lt;runtime>" />
+        <PublisherPolicyConfig Include="      &lt;assemblyBinding xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;>" />
+        <PublisherPolicyConfig Include="       &lt;dependentAssembly>" />
+        <PublisherPolicyConfig Include="         &lt;assemblyIdentity name=&quot;$(AssemblyName)&quot;" />
+        <PublisherPolicyConfig Include="                           publicKeyToken=&quot;2670f5f21e7f4192&quot;" />
+        <PublisherPolicyConfig Include="                           culture=&quot;neutral&quot;" />
+        <PublisherPolicyConfig Include="                           />" />
+        <PublisherPolicyConfig Include="         &lt;bindingRedirect " />
+        <PublisherPolicyConfig Include="            oldVersion=&quot;$(MFAssemblyMajorVersion).$(MFAssemblyMinorVersion).0.0-$(MFAssemblyMajorVersion).$(MFAssemblyMinorVersion).$(MFAssemblyBuildNumber).$(MFAssemblyRevisionNumber)&quot;" />
+        <PublisherPolicyConfig Include="            newVersion=&quot;$(MFAssemblyMajorVersion).$(MFAssemblyMinorVersion).$(MFAssemblyBuildNumber).$(MFAssemblyRevisionNumber)&quot;/>" />
+        <PublisherPolicyConfig Include="       &lt;/dependentAssembly>" />
+        <PublisherPolicyConfig Include="      &lt;/assemblyBinding>" />
+        <PublisherPolicyConfig Include="   &lt;/runtime>" />
+        <PublisherPolicyConfig Include="&lt;/configuration>" />
+    </ItemGroup>
+
+    <WriteLinesToFile
+        File="$(PolicyConfigFile)"
+        Lines="@(PublisherPolicyConfig)"
+        Overwrite="true"
+        />
+
+    <AL
+        ToolPath="$(ALTOOLPATH)"
+        LinkResources="$(PolicyConfigFile)"
+        OutputAssembly="$(PolicyAssembly)"
+        Keyfile="$(SPOCLIENT)\Framework\key.snk"
+        Platform="$(PlatformTarget)"
+        Version="$(MFAssemblyMajorVersion).$(MFAssemblyMinorVersion).$(MFAssemblyBuildNumber).$(MFAssemblyRevisionNumber)"
+        />
+
+  </Target>
+
+  <Target Name="CleanPublisherPolicyFile" >
+    <Delete
+        Files="$(PolicyConfigFile);$(PolicyAssembly)"
+        TreatErrorsAsWarnings="true"
+        />
+  </Target>
+
+</Project>

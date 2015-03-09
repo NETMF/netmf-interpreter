@@ -1,0 +1,9 @@
+<Include>
+  <?ifdef VSInstalledHelpFilesKey ?>
+    <?undef VSInstalledHelpFilesKey ?>
+    <?undef VSSafeImports ?>
+  <?endif?>
+
+  <?define VSInstalledHelpFilesKey="$(var.VSRegKeyRoot)\Help"?>
+  <?define VSSafeImports="$(var.VSRegKeyRoot)\MSBuild\SafeImports"?>
+</Include>

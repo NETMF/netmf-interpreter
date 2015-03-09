@@ -1,0 +1,48 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+    <!-- You can override in your project the file that contains your ReleaseInfo settings if you need to. You can
+         even avoid having such a file entirely by defining the standard release info and setting the property
+         _Microsoft_SPOT_CommonAssemblyInfo_Targets__Included_ to 'true'
+         -->
+    <PropertyGroup>
+        <ReleaseInfo Condition="'$(ReleaseInfo)'==''" >$(SPOCLIENT)\ReleaseInfo.settings</ReleaseInfo>
+    </PropertyGroup>
+    <Import Project="$(ReleaseInfo)" Condition=" Exists('$(ReleaseInfo)') and '$(_ReleaseInfo__Included_)' == '' " />
+
+    <Target Name="CreateLibManifest"
+        Condition=" '@(TargetLib)' != '' "
+        Inputs="$(ProjectFile);%(TargetLib.FullPath)"
+        Outputs="%(TargetLib.FullPath).manifest"
+        >
+
+        <CreateLibManifest
+            ManifestFile="%(TargetLib.FullPath).manifest"
+            Project="$(ProjectFile)"
+
+            Platform="$(PLATFORM)"
+            PlatformFamily="$(PLATFORM_FAMILY)"
+            ArmType="$(ARMR_TYPE)"
+            InstructionSet="$(INSTRUCTION_SET)"
+            Compiler="$(COMPILER_TOOL)"
+            CompilerVersion="$(COMPILER_TOOL_VERSION)"
+            TargetLocation="$(TARGETLOCATION)"
+            MemoryFlavor="$(MEMORY)"
+            Processor="$(TARGETPROCESSOR)"
+            TargetPlatform="$(TARGETPLATFORM)"
+            Codebase="$(TARGETCODEBASE)"
+            CodebaseType="$(TARGETCODEBASETYPE)"
+
+            Name="$(AssemblyName)"
+            ObjectFiles="@(ObjFiles)"
+            Company="$(MFLongCompanyName)"
+            Copyright="$(MFCopyright)"
+            Description="$(MFFileDescription)"
+            Version="$(MFSDKProductVersion)"
+            FileVersion="$(MFFileVersion)"
+            Configuration="$(FLAVOR)"
+            Product="$(MFSDKProductName)"
+            Trademark="$(MFTradeMark)"
+            />
+    </Target>
+
+</Project>

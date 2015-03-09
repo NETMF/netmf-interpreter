@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>asyncproccall_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{0a96c8c7-240d-4241-bcf1-26515d05ba84}</ProjectGuid>
+    <Description>Asynchronous procedure call library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>asyncproccall_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\AsyncProcCall\dotNetMF.proj</ProjectPath>
+    <ManifestFile>asyncproccall_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Threading</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="AsyncProc_PAL" Guid="{2B215A8E-3692-4AED-B5AA-2A3BBBEF77A1}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\AsyncProcCall</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <SubDirectories Include="Stubs" />
+  </ItemGroup>
+  <ItemGroup>
+    <FastCompileCPPFile Include="asyncproccall_fastcompile.cpp" />
+    <Compile Include="Completions.cpp" />
+    <Compile Include="Continuations.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

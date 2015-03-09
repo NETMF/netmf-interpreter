@@ -1,0 +1,28 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Network (LWIP OS)</FeatureName>
+    <Filter>LWIP_OS</Filter>
+  </PropertyGroup>
+
+  <Import Condition="'$(CORE_FEATUREPROJ)'        ==''" Project="$(SPOCLIENT)\Framework\Features\Core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <Import Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" />
+
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Net" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Net.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\Native_net\Core_Net.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\system.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\System.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\spot_net_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Network core functionality for lwIP 1.4.1 stack on a multi-threaded OS</Description>
+    <Guid>{FC481D0B-784B-402B-8EE0-0BD1D29823A9}</Guid>
+    <Groups>Networking</Groups>
+    <Documentation>
+    </Documentation>
+    <NETWORK_LWIP_OS_FEATUREPROJ>True</NETWORK_LWIP_OS_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

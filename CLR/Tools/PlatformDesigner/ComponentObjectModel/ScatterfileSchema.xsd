@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ScatterfileSchema" targetNamespace="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd" elementFormDefault="qualified" xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd" xmlns:mstns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="ScatterFile">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Set" type="Set" maxOccurs="unbounded" />
+                <xs:element name="If" type="If" maxOccurs="unbounded" />
+                <xs:element name="IfDefined" type="IfDefined" maxOccurs="unbounded" />
+                <xs:element name="IfNotDefined" type="IfNotDefined" maxOccurs="unbounded" />
+                <xs:element name="LoadRegion" type="LoadRegion" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="Set">
+        <xs:sequence>
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" />
+        <xs:attribute name="Value" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="If">
+        <xs:sequence>
+            <xs:element name="Set" type="Set" maxOccurs="unbounded" />
+            <xs:element name="If" type="If" maxOccurs="unbounded" />
+            <xs:element name="IfDefined" type="IfDefined" maxOccurs="unbounded" />
+            <xs:element name="IfNotDefined" type="IfNotDefined" maxOccurs="unbounded" />
+            <xs:element name="Error" type="Error" />
+            <xs:element name="FileMapping" type="FileMapping" maxOccurs="unbounded" />
+            <xs:element name="LoadRegion" type="LoadRegion" maxOccurs="unbounded" />
+            <xs:element name="ExecRegion" type="ExecRegion" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" />
+        <xs:attributeGroup ref="IfOptions" />
+    </xs:complexType>
+    <xs:attributeGroup name="IfOptions">
+        <xs:attribute name="Value" type="xs:string" />
+        <xs:attribute name="In" type="xs:string" />
+    </xs:attributeGroup>
+    <xs:complexType name="IfDefined">
+        <xs:sequence>
+            <xs:element name="FileMapping" type="FileMapping" maxOccurs="unbounded" />
+            <xs:element name="LoadRegion" type="LoadRegion" maxOccurs="unbounded" />
+            <xs:element name="ExecRegion" type="ExecRegion" maxOccurs="unbounded" />
+            <xs:element name="IfDefined" type="IfDefined" maxOccurs="unbounded" />
+            <xs:element name="IfNotDefined" type="IfNotDefined" maxOccurs="unbounded" />
+            <xs:element name="If" type="If" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="LoadRegion">
+        <xs:sequence>
+            <xs:element name="ExecRegion" type="ExecRegion" maxOccurs="unbounded" />
+            <xs:element name="If" type="If" maxOccurs="unbounded" />
+            <xs:element name="IfDefined" type="IfDefined" maxOccurs="unbounded" />
+            <xs:element name="IfNotDefined" type="IfNotDefined" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" />
+        <xs:attribute name="Base" type="xs:string" />
+        <xs:attribute name="Options" type="xs:string" />
+        <xs:attribute name="Size" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="ExecRegion">
+        <xs:sequence>
+            <xs:element name="FileMapping" type="FileMapping" maxOccurs="unbounded" />
+            <xs:element name="If" type="If" maxOccurs="unbounded" />
+            <xs:element name="IfDefined" type="IfDefined" maxOccurs="unbounded" />
+            <xs:element name="IfNotDefined" type="IfNotDefined" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" />
+        <xs:attribute name="Base" type="xs:string" />
+        <xs:attribute name="Options" type="xs:string" />
+        <xs:attribute name="Size" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="FileMapping">
+        <xs:sequence>
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" />
+        <xs:attribute name="Options" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="IfNotDefined">
+        <xs:sequence>
+            <xs:element name="FileMapping" type="FileMapping" maxOccurs="unbounded" />
+            <xs:element name="LoadRegion" type="LoadRegion" maxOccurs="unbounded" />
+            <xs:element name="ExecRegion" type="ExecRegion" maxOccurs="unbounded" />
+            <xs:element name="IfDefined" type="IfDefined" maxOccurs="unbounded" />
+            <xs:element name="IfNotDefined" type="IfNotDefined" maxOccurs="unbounded" />
+            <xs:element name="If" type="If" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Name" type="xs:string" />
+    </xs:complexType>
+    <xs:complexType name="Error">
+        <xs:sequence>
+        </xs:sequence>
+        <xs:attribute name="Message" type="xs:string" />
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>MicroBooter</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>
+    </ProjectGuid>
+    <Description>
+    </Description>
+    <Level>
+    </Level>
+    <ProjectPath>$(SPOCLIENT)\ProjectTemplates\MicroBooter\MicroBooter.proj</ProjectPath>
+    <ManifestFile>
+    </ManifestFile>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <CustomSpecific>
+    </CustomSpecific>
+    <IsStub>False</IsStub>
+    <Directory>Solutions\$(PLATFORM)\MicroBooter</Directory>
+    <IsClrProject>False</IsClrProject>
+    <reducesize>true</reducesize>
+    <MFSettingsFile>
+    </MFSettingsFile>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Executable</OutputType>
+    <ADD_LOAD_IMAGE_CRC>true</ADD_LOAD_IMAGE_CRC>
+    <CustomAssemblyName>MicroBooter</CustomAssemblyName>
+    <ExtraTargets>BuildSigFiles</ExtraTargets>
+    <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_microbooter_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(SRC_DIR)\MicrobooterExt.cpp" />
+    <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\AssemblyCode\arm\$(AS_SUBDIR)\FirstEntry.s" Condition=" '$(INSTRUCTION_SET)'=='arm' or '$(INSTRUCTION_SET)'=='thumb'" />
+    <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\AssemblyCode\arm\$(AS_SUBDIR)\VectorsTrampolines.s" Condition=" '$(INSTRUCTION_SET)'=='arm' or '$(INSTRUCTION_SET)'=='thumb'" />
+    <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\AssemblyCode\arm\$(AS_SUBDIR)\IDelayLoop.s" Condition=" '$(INSTRUCTION_SET)'=='arm' or '$(INSTRUCTION_SET)'=='thumb'" />
+    <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\AssemblyCode\thumb2\$(AS_SUBDIR)\FirstEntry.s" Condition=" '$(INSTRUCTION_SET)'=='thumb2'" />
+    <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\AssemblyCode\thumb2\$(AS_SUBDIR)\VectorsTrampolines.s" Condition=" '$(INSTRUCTION_SET)'=='thumb2'" />
+    <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\AssemblyCode\thumb2\$(AS_SUBDIR)\IDelayLoop.s" Condition=" '$(INSTRUCTION_SET)'=='thumb2'" />
+  </ItemGroup>
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\Application\MicroBooter\MicroBooter.proj" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\mfupdate_decl.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\microbooter_decl.h" />
+    <HFiles Include="microbooter.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

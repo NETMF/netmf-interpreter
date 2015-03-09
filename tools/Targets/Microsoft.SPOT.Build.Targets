@@ -1,0 +1,944 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <MetaDataProcessorDependsOn>Compile</MetaDataProcessorDependsOn>
+    <MetaDataProcessorCompileBEDependsOn>Compile</MetaDataProcessorCompileBEDependsOn>
+    <CoreBuildDependsOn>$(CoreBuildDependsOn);MetaDataProcessorCompile;MetaDataProcessorCompileBE</CoreBuildDependsOn>
+    <PrepareResourcesDependsOn>$(PrepareResourcesDependsOn);TinyResGen</PrepareResourcesDependsOn>
+    <CleanDependsOn>$(CleanDependsOn);TinyCLR_CleanExtraFiles</CleanDependsOn>
+    <ResolveReferencesDependsOn>$(ResolveReferencesDependsOn);ResolveRuntimeDependenciesLE;ResolveRuntimeDependenciesBE</ResolveReferencesDependsOn>
+    <!-- ADAPTED FROM DEVICE.TARGETS...  -->
+    <TinyCLR_StartProgram Condition=" '$(StartAction)'== 'Program' ">$(StartProgram)</TinyCLR_StartProgram>
+    <TinyCLR_IntermediateAssembly>$(OutDir)..\pe\le\$(TargetName).pe</TinyCLR_IntermediateAssembly>
+    <TinyCLR_IntermediateAssemblyLE>$(ProjectDir)$(IntermediateOutputPath)le\$(TargetName)</TinyCLR_IntermediateAssemblyLE>
+    <TinyCLR_IntermediateAssemblyBE>$(ProjectDir)$(IntermediateOutputPath)be\$(TargetName)</TinyCLR_IntermediateAssemblyBE>
+    <TinyCLR_PdbxExt>.pdbx</TinyCLR_PdbxExt>
+    <MF_GenerateStubsDirectory Condition="'$(MF_GenerateStubsDirectory)'==''">$(ProjectDir)Stubs\</MF_GenerateStubsDirectory>
+    <MF_GenerateStubsRootName Condition="'$(MF_GenerateStubsRootName)'==''">$(TargetName)</MF_GenerateStubsRootName>
+    <MF_GenerateSkeletonProjectName Condition="'$(MF_GenerateSkeletonProjectName)'==''">$(TargetName)</MF_GenerateSkeletonProjectName>
+    <MF_GenerateSkeletonFile>$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName)</MF_GenerateSkeletonFile>
+    <TinyCLR_Assembly>$(OutDir)$(TargetName)</TinyCLR_Assembly>
+    <TinyCLR_AssemblyLE>$(OutDir)le\$(TargetName)</TinyCLR_AssemblyLE>
+    <TinyCLR_AssemblyBE>$(OutDir)be\$(TargetName)</TinyCLR_AssemblyBE>
+    <!-- END ADAPTED FROM DEVICE.TARGETS... -->
+    <BuildingProject Condition=" '$(BuildingProject)'=='' " >false</BuildingProject>
+    <BuildSilently Condition=" '$(BuildSilently)'=='' " >!$(BuildingProject)</BuildSilently>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
+    <ResolveReferencesDependsOn>$(ResolveReferencesDependsOn);ResolveRuntimeDependenciesLE;ResolveRuntimeDependenciesBE</ResolveReferencesDependsOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">
+    <CoreBuildDependsOn>$(CoreBuildDependsOn);MMP_CreateDatabaseAndDependencyMap;DownloadDeployment</CoreBuildDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- MMP_PE -->
+    <MMP_PE_SKIP>false</MMP_PE_SKIP>
+    <MMP_PE_Parse>$(BUILD_TREE_DLL)\$(TargetFileName)</MMP_PE_Parse>
+    <MMP_PE_Minimize>true</MMP_PE_Minimize>
+    <MMP_PE_Compile_NoExt>$(BUILD_TREE_PE)\$(TargetName)</MMP_PE_Compile_NoExt>
+    <MMP_PE_Compile>$(BUILD_TREE_PE)\$(TargetName).pe</MMP_PE_Compile>
+    <MMP_PE_Compile_BE>$(BUILD_TREE_PE_BE)\$(TargetName).pe</MMP_PE_Compile_BE>
+    <MMP_PE_SaveStrings>$(BUILD_TREE_PE)\$(TargetName).strings</MMP_PE_SaveStrings>
+    <MMP_PE_SaveStrings_BE>$(BUILD_TREE_PE_BE)\$(TargetName).strings</MMP_PE_SaveStrings_BE>
+
+    <!-- MMP_DUMP -->
+    <MMP_DUMP_SKIP>false</MMP_DUMP_SKIP>
+    <MMP_DUMP_DumpAll>$(BUILD_TREE_DUMPS)\$(TargetName).dump</MMP_DUMP_DumpAll>
+
+    <!-- MMP_STUB -->
+    <MMP_STUB_SKIP>true</MMP_STUB_SKIP>
+    <MMP_STUB_DumpAll>$(BUILD_TREE_TXT)\$(TargetName)_exports2.txt</MMP_STUB_DumpAll>
+    <MMP_STUB_GenerateSkeletonName>$(AssemblyName)</MMP_STUB_GenerateSkeletonName>
+    <MMP_STUB_RefreshAssemblyName>$(AssemblyName)</MMP_STUB_RefreshAssemblyName>
+    <MMP_STUB_RefreshAssemblyOutput>$(MMP_PE_Compile)</MMP_STUB_RefreshAssemblyOutput>
+    <MMP_STUB_Resolve>true</MMP_STUB_Resolve>
+
+    <!-- MMP_DAT -->
+    <MMP_DAT_SKIP>true</MMP_DAT_SKIP>
+
+    <!-- MMP_XML -->
+    <MMP_XML_SKIP>true</MMP_XML_SKIP>
+    <MMP_XML_Resolve>true</MMP_XML_Resolve>
+    <MMP_XML_GenerateDependency>$(BUILD_TREE_XML)\$(TargetName).xml</MMP_XML_GenerateDependency>
+
+    <!-- DDT -->
+    <DDT_CreateDownload>false</DDT_CreateDownload>
+    <DDT_ImportDescriptor>$(BUILD_TREE_PE)\$(TargetName).pe_downloads</DDT_ImportDescriptor>
+    <DDT_Import_DependencyGraph>$(BUILD_TREE_XML)\$(TargetName).xml</DDT_Import_DependencyGraph>
+    <DDT_Save>$(BUILD_TREE_PE)\$(TargetName).spot_download</DDT_Save>
+
+    <!-- misc -->
+    <TinyCLR_DisasmInput>$(BUILD_TREE_DLL)\$(TargetFileName)</TinyCLR_DisasmInput>
+    <TinyCLR_DisasmOutput>$(BUILD_TREE_DISASM)\$(TargetName).il</TinyCLR_DisasmOutput>
+
+  </PropertyGroup>
+
+    <ItemGroup>
+        <MF_GeneratedStubFile Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).h" />
+        <MF_GeneratedStubFile Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).cpp" />
+        <MF_GenerateStubsFeatureProj Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).featureproj" Condition="'$(MF_GenerateStubs)'=='true'" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(IsMscorlib)' != 'true' ">
+      <MMP_PE_LoadHints Include="$(BUILD_TREE_DLL)\mscorlib.dll">
+      <InProject>false</InProject>
+    </MMP_PE_LoadHints>
+
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\mscorlib.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetName)' != 'BogusAssemblyName'" >
+    <MMP_DUMP_Load Include="$(MMP_PE_Compile)" >
+      <InProject>false</InProject>
+    </MMP_DUMP_Load>
+    <MMP_STUB_Load Include="$(MMP_PE_Compile)">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+  </ItemGroup>
+
+  <Target Name="MetaDataProcessorDat" DependsOnTargets="MetaDataProcessorDatBE;MetaDataProcessorCompileBE" />
+
+  <Target Name="MMP_CreateDatabaseAndDependencyMap" DependsOnTargets="MetaDataProcessorDump;MetaDataProcessorDat;MetadataProcessorXML" />
+
+  <Target Name="MetaDataProcessorCompile"
+    Inputs="
+        $(MMP_PE_Parse);
+        @(MMP_PE_LoadHints);
+        $(MMP_PE_LoadStrings);
+        @(MMP_PE_Load);
+        @(MMP_PE_LoadDatabase);
+        @(MMP_PE_CreateDatabase);
+        @(MMP_PE_Resource)"
+    Outputs="
+        $(MMP_PE_SaveStrings);
+        $(MMP_PE_GenerateStringsTable);
+        $(MMP_PE_DumpAll);
+        $(MMP_PE_Compile);
+        $(MMP_PE_DumpExports);
+        $(MMP_PE_RefreshAssemblyOutput);
+        $(MMP_PE_CreateDatabaseFile);
+        $(MMP_PE_GenerateDependency);
+        @(MF_GenerateStubsFeatureProj)"
+
+    DependsOnTargets="ResolveRuntimeDependenciesLE"
+    Condition="'$(MMP_PE_SKIP)' != 'true'"
+    >
+
+      <ItemGroup>
+        <MMP_PE_CreatedFiles Include="$(MMP_PE_CreateDatabaseFile)" Condition="'$(MMP_PE_CreateDatabaseFile)'!=''"/>
+        <MMP_PE_CreatedFiles Include="$(MMP_PE_GenerateSkeletonFile)"  Condition="'$(MMP_PE_GenerateSkeletonFile)'!=''"/>
+        <MMP_PE_CreatedFiles Include="$(MMP_PE_GenerateDependency)"  Condition="'$(MMP_PE_GenerateDependency)'!=''"/>
+      </ItemGroup>
+      <MakeDir Directories="@(MMP_PE_CreatedFiles->'%(RootDir)%(Directory)')" />
+
+      <ItemGroup>
+        <MMP_STUB_Load Include="@(ResolvedPEFile)" />
+        <MMP_DAT_CreateDatabase Include="@(MMP_STUB_Load)" />
+        <MMP_XML_Load Include="@(MMP_STUB_Load)" />
+      </ItemGroup>
+
+      <ItemGroup>
+        <MMP_STUB_CreatedFiles Include="$(MMP_STUB_CreateDatabaseFile)" Condition="'$(MMP_STUB_CreateDatabaseFile)'!=''"/>
+        <MMP_STUB_CreatedFiles Include="$(MMP_STUB_GenerateSkeletonFile)"  Condition="'$(MMP_STUB_GenerateSkeletonFile)'!=''"/>
+        <MMP_STUB_CreatedFiles Include="$(MMP_STUB_GenerateDependency)"  Condition="'$(MMP_STUB_GenerateDependency)'!=''"/>
+      </ItemGroup>
+      <MakeDir Directories="@(MMP_STUB_CreatedFiles->'%(RootDir)%(Directory)')" Condition="'$(MMP_STUB_SKIP)' != 'true'"/>
+
+      <PropertyGroup>
+        <MMP_STUB_GenerateSkeletonProject Condition="'$(MMP_STUB_GenerateSkeletonProject)'==''" >$(AssemblyName)</MMP_STUB_GenerateSkeletonProject>
+      </PropertyGroup>
+
+      <Message Text="Distilling assemblies to TinyCLR PE files..." />
+      <!-- Compile to PE -->
+      <MetaDataProcessor
+        Endianness="$(ENDIANNESS)"        
+        Minimize="$(MMP_PE_Minimize)"
+        Verbose="$(MMP_PE_Verbose)"
+        Parse="$(MMP_PE_Parse)"
+        VerboseMinimize="$(MMP_PE_VerboseMinimize)"
+        NoByteCode="$(MMP_PE_NoByteCode)"
+        NoAttributes="$(MMP_PE_NoAttributes)"
+        SaveStrings="$(MMP_PE_SaveStrings)"
+        LoadStrings="$(MMP_PE_LoadStrings)"
+        ImportResources="@(MMP_PE_Resource)"
+        GenerateStringsTable="$(MMP_PE_GenerateStringsTable)"
+        Compile="$(MMP_PE_Compile)"
+        DumpAll="$(MMP_PE_DumpAll)"
+        DumpExports="$(MMP_PE_DumpExports)"
+        GenerateSkeletonFile="$(MMP_PE_GenerateSkeletonFile)"
+        GenerateSkeletonName="$(MMP_PE_GenerateSkeletonName)"
+        GenerateSkeletonProject="$(MMP_PE_GenerateSkeletonProject)"
+        GenerateDependency="$(MMP_PE_GenerateDependency)"
+        CreateDatabase="@(MMP_PE_CreateDatabase)"
+        RefreshAssemblyName="$(MMP_PE_RefreshAssemblyName)"
+        RefreshAssemblyOutput="$(MMP_PE_RefreshAssemblyOutput)"
+        CreateDatabaseFile="$(MMP_PE_CreateDatabaseFile)"
+        Resolve="$(MMP_PE_Resolve)"
+        LoadHints="@(MMP_PE_LoadHints)"
+        IgnoreAssembly="@(MMP_PE_IgnoreAssembly)"
+        Load="@(MMP_PE_Load)"
+        LoadDatabase="@(MMP_PE_LoadDatabase)"
+        ExcludeClassByName="@(MMP_PE_ExcludeClassByName)"
+        TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+        <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+      </MetaDataProcessor>
+
+      <Message Text="Generating interop stub files for $(MMP_STUB_GenerateSkeletonName)..." Condition="'$(MMP_STUB_SKIP)' != 'true'"/>
+
+      <!-- Create STUB file -->
+      <MetaDataProcessor
+        Minimize="$(MMP_STUB_Minimize)"
+        Verbose="$(MMP_STUB_Verbose)"
+        Parse="$(MMP_STUB_Parse)"
+        VerboseMinimize="$(MMP_STUB_VerboseMinimize)"
+        NoByteCode="$(MMP_STUB_NoByteCode)"
+        NoAttributes="$(MMP_STUB_NoAttributes)"
+        SaveStrings="$(MMP_STUB_SaveStrings)"
+        LoadStrings="$(MMP_STUB_LoadStrings)"
+        GenerateStringsTable="$(MMP_STUB_GenerateStringsTable)"
+        Compile="$(MMP_STUB_Compile)"
+        DumpAll="$(MMP_STUB_DumpAll)"
+        DumpExports="$(MMP_STUB_DumpExports)"
+        GenerateSkeletonFile="$(MMP_STUB_GenerateSkeletonFile)"
+        GenerateSkeletonName="$(MMP_STUB_GenerateSkeletonName)"
+        GenerateSkeletonProject="$(MMP_STUB_GenerateSkeletonProject)"
+        LegacySkeletonInterop="$(MMP_STUB_LegacySkeletonInterop)"
+        GenerateDependency="$(MMP_STUB_GenerateDependency)"
+        CreateDatabase="@(MMP_STUB_CreateDatabase)"
+        RefreshAssemblyName="$(MMP_STUB_RefreshAssemblyName)"
+        RefreshAssemblyOutput="$(MMP_STUB_RefreshAssemblyOutput)"
+        CreateDatabaseFile="$(MMP_STUB_CreateDatabaseFile)"
+        Resolve="$(MMP_STUB_Resolve)"
+        LoadHints="@(MMP_STUB_LoadHints)"
+        IgnoreAssembly="@(MMP_STUB_IgnoreAssembly)"
+        Load="@(MMP_STUB_Load)"
+        LoadDatabase="@(MMP_STUB_LoadDatabase)"
+        ExcludeClassByName="@(MMP_STUB_ExcludeClassByName)"
+        TargetFrameworkVersion="$(TargetFrameworkVersion)"
+        Condition="'$(MMP_STUB_SKIP)' != 'true'"
+      >
+        <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+      </MetaDataProcessor>
+
+      <CallTarget Targets="GenerateStubs" Condition="'$(MF_GenerateStubs)'=='true'" />
+    </Target>
+
+    <Target
+      Name="MetaDataProcessorCompileBE"
+      Inputs="
+        $(MMP_PE_Parse);
+        @(MMP_PE_LoadHints);
+        $(MMP_PE_LoadStrings);
+        @(MMP_PE_Load);
+        @(MMP_PE_LoadDatabase);
+        @(MMP_PE_CreateDatabase);
+        @(MMP_PE_Resource)"
+      Outputs="
+        $(MMP_PE_SaveStrings_BE);
+        $(MMP_PE_GenerateStringsTable);
+        $(MMP_PE_DumpAll);
+        $(MMP_PE_Compile_BE);
+        $(MMP_PE_DumpExports);
+        $(MMP_PE_RefreshAssemblyOutput);
+        $(MMP_PE_CreateDatabaseFile);
+        $(MMP_PE_GenerateDependency)"
+      DependsOnTargets="ResolveRuntimeDependenciesBE"
+      Condition="'$(MMP_PE_SKIP)' != 'true'"
+    >
+    <ItemGroup>
+        <MMP_PE_CreatedFiles Include="$(MMP_PE_CreateDatabaseFile)" Condition="'$(MMP_PE_CreateDatabaseFile)'!=''"/>
+        <MMP_PE_CreatedFiles Include="$(MMP_PE_GenerateSkeletonFile)"  Condition="'$(MMP_PE_GenerateSkeletonFile)'!=''"/>
+        <MMP_PE_CreatedFiles Include="$(MMP_PE_GenerateDependency)"  Condition="'$(MMP_PE_GenerateDependency)'!=''"/>
+    </ItemGroup>
+    <MakeDir Directories="@(MMP_PE_CreatedFiles->'%(RootDir)%(Directory)')" />
+
+    <ItemGroup>
+      <MMP_STUB_Load Include="@(ResolvedPEFile)" />
+      <MMP_DAT_CreateDatabase Include="@(MMP_STUB_Load)" />
+      <MMP_XML_Load Include="@(MMP_STUB_Load)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <MMP_STUB_CreatedFiles Include="$(MMP_STUB_CreateDatabaseFile)" Condition="'$(MMP_STUB_CreateDatabaseFile)'!=''"/>
+        <MMP_STUB_CreatedFiles Include="$(MMP_STUB_GenerateSkeletonFile)"  Condition="'$(MMP_STUB_GenerateSkeletonFile)'!=''"/>
+        <MMP_STUB_CreatedFiles Include="$(MMP_STUB_GenerateDependency)"  Condition="'$(MMP_STUB_GenerateDependency)'!=''"/>
+    </ItemGroup>
+    <MakeDir Directories="@(MMP_STUB_CreatedFiles->'%(RootDir)%(Directory)')" Condition="'$(MMP_STUB_SKIP)' != 'true'"/>
+
+    <PropertyGroup>
+        <MMP_STUB_GenerateSkeletonProject Condition="'$(MMP_STUB_GenerateSkeletonProject)'==''" >$(AssemblyName)</MMP_STUB_GenerateSkeletonProject>
+    </PropertyGroup>
+
+   <!-- Compile to PE -->
+   <Message Text="Distilling assemblies to TinyCLR PE files in other endianness..." />
+   <MetaDataProcessor
+      Endianness="be"
+      Minimize="$(MMP_PE_Minimize)"
+      Verbose="$(MMP_PE_Verbose)"
+      Parse="$(MMP_PE_Parse)"
+      VerboseMinimize="$(MMP_PE_VerboseMinimize)"
+      NoByteCode="$(MMP_PE_NoByteCode)"
+      NoAttributes="$(MMP_PE_NoAttributes)"
+      SaveStrings="$(MMP_PE_SaveStrings_BE)"
+      LoadStrings="$(MMP_PE_LoadStrings)"
+      ImportResources="@(MMP_PE_Resource)"
+      GenerateStringsTable="$(MMP_PE_GenerateStringsTable)"
+      Compile="$(MMP_PE_Compile_BE)"
+      DumpAll="$(MMP_PE_DumpAll)"
+      DumpExports="$(MMP_PE_DumpExports)"
+      GenerateSkeletonFile="$(MMP_PE_GenerateSkeletonFile)"
+      GenerateSkeletonName="$(MMP_PE_GenerateSkeletonName)"
+      GenerateSkeletonProject="$(MMP_PE_GenerateSkeletonProject)"
+      GenerateDependency="$(MMP_PE_GenerateDependency)"
+      CreateDatabase="@(MMP_PE_CreateDatabase)"
+      RefreshAssemblyName="$(MMP_PE_RefreshAssemblyName)"
+      RefreshAssemblyOutput="$(MMP_PE_RefreshAssemblyOutput)"
+      CreateDatabaseFile="$(MMP_PE_CreateDatabaseFile)"
+      Resolve="$(MMP_PE_Resolve)"
+      LoadHints="@(MMP_PE_LoadHints)"
+      IgnoreAssembly="@(MMP_PE_IgnoreAssembly)"
+      Load="@(MMP_PE_Load)"
+      LoadDatabase="@(MMP_PE_LoadDatabase)"
+      ExcludeClassByName="@(MMP_PE_ExcludeClassByName)"
+      BuildFlavor="$(Configuration)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </MetaDataProcessor>
+      
+
+<!-- DON'T NEED TO BUILD INTEROP STUBS FOR BE ENDIAN      
+    <Message Text="Generating interop stub files for other endian $(MMP_STUB_GenerateSkeletonName)..." Condition="'$(MMP_STUB_SKIP)' != 'true'"/>
+
+    <! - - Create STUB file - - >
+    <MetaDataProcessor
+      Endianness="be"
+      Minimize="$(MMP_STUB_Minimize)"
+      Verbose="$(MMP_STUB_Verbose)"
+      Parse="$(MMP_STUB_Parse)"
+      VerboseMinimize="$(MMP_STUB_VerboseMinimize)"
+      NoByteCode="$(MMP_STUB_NoByteCode)"
+      NoAttributes="$(MMP_STUB_NoAttributes)"
+      SaveStrings="$(MMP_STUB_SaveStrings)"
+      LoadStrings="$(MMP_STUB_LoadStrings)"
+      GenerateStringsTable="$(MMP_STUB_GenerateStringsTable)"
+      Compile="$(MMP_STUB_Compile)"
+      DumpAll="$(MMP_STUB_DumpAll)"
+      DumpExports="$(MMP_STUB_DumpExports)"
+      GenerateSkeletonFile="$(MMP_STUB_GenerateSkeletonFile)"
+      GenerateSkeletonName="$(MMP_STUB_GenerateSkeletonName)"
+      GenerateSkeletonProject="$(MMP_STUB_GenerateSkeletonProject)"
+      LegacySkeletonInterop="$(MMP_STUB_LegacySkeletonInterop)"
+      GenerateDependency="$(MMP_STUB_GenerateDependency)"
+      CreateDatabase="@(MMP_STUB_CreateDatabase)"
+      RefreshAssemblyName="$(MMP_STUB_RefreshAssemblyName)"
+      RefreshAssemblyOutput="$(MMP_STUB_RefreshAssemblyOutput)"
+      CreateDatabaseFile="$(MMP_STUB_CreateDatabaseFile)"
+      Resolve="$(MMP_STUB_Resolve)"
+      LoadHints="@(MMP_STUB_LoadHints)"
+      IgnoreAssembly="@(MMP_STUB_IgnoreAssembly)"
+      Load="@(MMP_STUB_Load)"
+      LoadDatabase="@(MMP_STUB_LoadDatabase)"
+      ExcludeClassByName="@(MMP_STUB_ExcludeClassByName)"
+      Condition="'$(MMP_STUB_SKIP)' != 'true'"
+      BuildFlavor="$(Configuration)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </MetaDataProcessor>
+
+      <CallTarget Targets="GenerateStubs" Condition="'$(MF_GenerateStubs)'=='true'" />
+-->
+  </Target>
+
+  <Target Name="GenerateStubs"
+    Inputs="$(TinyCLR_IntermediateAssembly)"
+    Outputs="@(MF_GeneratedStubFile)"
+    DependsOnTargets="ReferencedAssemblyDllsToPeFiles"
+    >
+
+    <MakeDir Condition="!Exists('$(MF_GenerateStubsDirectory)')" Directories="$(MF_GenerateStubsDirectory)" />
+
+    <MetaDataProcessor
+      Verbose="true"
+      Load="$(TinyCLR_IntermediateAssembly);@(ReferencedPeFile)"
+
+      GenerateSkeletonName="$(TargetName)"
+      GenerateSkeletonFile="$(MF_GenerateSkeletonFile)"
+      GenerateSkeletonProject="$(MF_GenerateSkeletonProjectName)"
+      BuildFlavor="$(Configuration)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </MetaDataProcessor>
+
+      <CreateInteropFeatureProj
+          StubsPath="$(MF_GenerateStubsDirectory)"
+          Name="$(TargetName)"
+          AssemblyName="$(TinyCLR_IntermediateAssembly)"
+          ManagedProjectFile="$(MSBuildProjectFullPath)"
+          NativeProjectFile="$(MF_GenerateStubsDirectory)dotnetmf.proj"
+      />
+      
+  </Target>
+
+    <Target Name="ReferencedAssemblyDllsToPeFiles" DependsOnTargets="ResolveRuntimeDependenciesLE">
+        <ItemGroup>
+            <_ReferencedAssemblyDll Include="@(TinyCLR_StartProgram_ResolvedFiles);@(TinyCLR_StartProgram_ResolvedDependencyFiles)" />
+            <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)%(filename).pe')" />
+            <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)LE\%(filename).pe')" />
+            <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)..\LE\%(filename).pe')" />
+            <_ReferencedPeFile Include="@(_ReferencedAssemblyDll->'%(RootDir)%(Directory)..\PE\LE\%(filename).pe')" />
+
+            <ReferencedPeFile Include="%(_ReferencedPeFile.identity)" Condition="EXISTS(%(_ReferencedPeFile.identity))" />
+        </ItemGroup>
+    </Target>
+
+    <Target
+    Name="MetaDataProcessorDump"
+    Inputs="
+        $(MMP_DUMP_Parse);
+        @(MMP_DUMP_LoadHints);
+        $(MMP_DUMP_LoadStrings);
+        @(MMP_DUMP_Load);
+        @(MMP_DUMP_LoadDatabase);
+        @(MMP_DUMP_CreateDatabase)"
+    Outputs="
+        $(MMP_DUMP_SaveStrings);
+        $(MMP_DUMP_GenerateStringsTable);
+        $(MMP_DUMP_DumpAll);
+        $(MMP_DUMP_Compile);
+        $(MMP_DUMP_DumpExports);
+        $(MMP_DUMP_RefreshAssemblyOutput);
+        $(MMP_DUMP_CreateDatabaseFile);
+        $(MMP_DUMP_GenerateDependency)"
+    Condition="'$(MMP_DUMP_SKIP)' != 'true' and '$(ENDIANNESS)' == 'le'"
+    >
+    <!-- Create DUMP file -->
+    <MetaDataProcessor
+      Minimize="$(MMP_DUMP_Minimize)"
+      Verbose="$(MMP_DUMP_Verbose)"
+      Parse="$(MMP_DUMP_Parse)"
+      VerboseMinimize="$(MMP_DUMP_VerboseMinimize)"
+      NoByteCode="$(MMP_DUMP_NoByteCode)"
+      NoAttributes="$(MMP_DUMP_NoAttributes)"
+      SaveStrings="$(MMP_DUMP_SaveStrings)"
+      LoadStrings="$(MMP_DUMP_LoadStrings)"
+      GenerateStringsTable="$(MMP_DUMP_GenerateStringsTable)"
+      Compile="$(MMP_DUMP_Compile)"
+      DumpAll="$(MMP_DUMP_DumpAll)"
+      DumpExports="$(MMP_DUMP_DumpExports)"
+      GenerateSkeletonFile="$(MMP_DUMP_GenerateSkeletonFile)"
+      GenerateSkeletonName="$(MMP_DUMP_GenerateSkeletonName)"
+      GenerateSkeletonProject="$(MMP_DUMP_GenerateSkeletonProject)"
+      GenerateDependency="$(MMP_DUMP_GenerateDependency)"
+      CreateDatabase="@(MMP_DUMP_CreateDatabase)"
+      RefreshAssemblyName="$(MMP_DUMP_RefreshAssemblyName)"
+      RefreshAssemblyOutput="$(MMP_DUMP_RefreshAssemblyOutput)"
+      CreateDatabaseFile="$(MMP_DUMP_CreateDatabaseFile)"
+      Resolve="$(MMP_DUMP_Resolve)"
+      LoadHints="@(MMP_DUMP_LoadHints)"
+      IgnoreAssembly="@(MMP_DUMP_IgnoreAssembly)"
+      Load="@(MMP_DUMP_Load)"
+      LoadDatabase="@(MMP_DUMP_LoadDatabase)"
+      ExcludeClassByName="@(MMP_DUMP_ExcludeClassByName)"
+      BuildFlavor="$(Configuration)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </MetaDataProcessor>
+  </Target>
+
+  <Target Name="MetaDataProcessorDat_MSG" >
+    <Message Text="Creating assemblies database $(MMP_DAT_CreateDatabaseFile) with assemblies: " />
+    <Message Text="    %(MMP_DAT_CreateDatabase.identity)" />
+  </Target>
+
+  <!-- MMP_DAT -->
+  
+  <Target
+    
+    Name="MetaDataProcessorDat"
+    Inputs="
+        $(MMP_DAT_Parse);
+        @(MMP_DAT_LoadHints);
+        $(MMP_DAT_LoadStrings);
+        @(MMP_DAT_Load);
+        @(MMP_DAT_LoadDatabase);
+        @(MMP_DAT_CreateDatabase);
+        @(ResolvedPEFile);
+        $(MsBuildProjectFullPath)"
+    Outputs="
+        $(MMP_DAT_SaveStrings);
+        $(MMP_DAT_GenerateStringsTable);
+        $(MMP_DAT_DumpAll);
+        $(MMP_DAT_DumpExports);
+        $(MMP_DAT_Compile);
+        $(MMP_DAT_RefreshAssemblyOutput);
+        $(MMP_DAT_CreateDatabaseFile);
+        $(MMP_DAT_GenerateDependency)"
+    Condition="'$(MMP_DAT_SKIP)' != 'true'"
+    >
+    <CallTarget Targets="MetaDataProcessorDat_MSG" Condition="'$(MMP_DAT_Verbose)'=='true'" />
+
+    <ItemGroup>
+        <MMP_DAT_CreatedFiles Include="$(MMP_DAT_CreateDatabaseFile)" Condition="'$(MMP_DAT_CreateDatabaseFile)'!=''"/>
+        <MMP_DAT_CreatedFiles Include="$(MMP_DAT_GenerateSkeletonFile)"  Condition="'$(MMP_DAT_GenerateSkeletonFile)'!=''"/>
+        <MMP_DAT_CreatedFiles Include="$(MMP_DAT_GenerateDependency)"  Condition="'$(MMP_DAT_GenerateDependency)'!=''"/>
+    </ItemGroup>
+    <MakeDir Directories="@(MMP_DAT_CreatedFiles->'%(RootDir)%(Directory)')" />
+
+    <MetaDataProcessor
+      Minimize="$(MMP_DAT_Minimize)"
+      Verbose="$(MMP_DAT_Verbose)"
+      Parse="$(MMP_DAT_Parse)"
+      VerboseMinimize="$(MMP_DAT_VerboseMinimize)"
+      NoByteCode="$(MMP_DAT_NoByteCode)"
+      NoAttributes="$(MMP_DAT_NoAttributes)"
+      SaveStrings="$(MMP_DAT_SaveStrings)"
+      LoadStrings="$(MMP_DAT_LoadStrings)"
+      GenerateStringsTable="$(MMP_DAT_GenerateStringsTable)"
+      Compile="$(MMP_DAT_Compile)"
+      DumpAll="$(MMP_DAT_DumpAll)"
+      DumpExports="$(MMP_DAT_DumpExports)"
+      GenerateSkeletonFile="$(MMP_DAT_GenerateSkeletonFile)"
+      GenerateSkeletonName="$(MMP_DAT_GenerateSkeletonName)"
+      GenerateSkeletonProject="$(MMP_DAT_GenerateSkeletonProject)"
+      GenerateDependency="$(MMP_DAT_GenerateDependency)"
+      CreateDatabase="@(MMP_DAT_CreateDatabase)"
+      RefreshAssemblyName="$(MMP_DAT_RefreshAssemblyName)"
+      RefreshAssemblyOutput="$(MMP_DAT_RefreshAssemblyOutput)"
+      CreateDatabaseFile="$(MMP_DAT_CreateDatabaseFile)"
+      Resolve="$(MMP_DAT_Resolve)"
+      LoadHints="@(MMP_DAT_LoadHints)"
+      IgnoreAssembly="@(MMP_DAT_IgnoreAssembly)"
+      Load="@(MMP_DAT_Load)"
+      LoadDatabase="@(MMP_DAT_LoadDatabase)"
+      ExcludeClassByName="@(MMP_DAT_ExcludeClassByName)"
+      BuildFlavor="$(Configuration)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </MetaDataProcessor>
+
+  </Target>
+  <Target Name="MetaDataProcessorDatBE_MSG" >
+    <Message Text="Creating assemblies database Other Endian $(MMP_DAT_CreateDatabaseFile) with assemblies: " />
+    <Message Text="    %(MMP_DAT_CreateDatabaseBE.identity)" />
+  </Target>  
+  <Target    
+    Name="MetaDataProcessorDatBE"
+    Inputs="
+        $(MMP_DAT_Parse);
+        @(MMP_DAT_LoadHints);
+        $(MMP_DAT_LoadStrings);
+        @(MMP_DAT_Load);
+        @(MMP_DAT_LoadDatabase);
+        @(MMP_DAT_CreateDatabase);
+        @(ResolvedPEFile);
+        $(MsBuildProjectFullPath)"
+    Outputs="
+        $(MMP_DAT_SaveStrings);
+        $(MMP_DAT_GenerateStringsTable);
+        $(MMP_DAT_DumpAll);
+        $(MMP_DAT_DumpExports);
+        $(MMP_DAT_Compile);
+        $(MMP_DAT_RefreshAssemblyOutput);
+        $(MMP_DAT_CreateDatabaseFileBE);
+        $(MMP_DAT_GenerateDependency)"
+    Condition="'$(MMP_DAT_SKIP)' != 'true'"
+    >
+    <CallTarget Targets="MetaDataProcessorDatBE_MSG" Condition="'$(MMP_DAT_Verbose)'=='true'" />
+
+    <ItemGroup>
+      <MMP_DAT_CreatedFiles Include="$(MMP_DAT_CreateDatabaseFileBE)" Condition="'$(MMP_DAT_CreateDatabaseFileBE)'!=''"/>
+      <MMP_DAT_CreatedFiles Include="$(MMP_DAT_GenerateSkeletonFile)"  Condition="'$(MMP_DAT_GenerateSkeletonFile)'!=''"/>
+      <MMP_DAT_CreatedFiles Include="$(MMP_DAT_GenerateDependency)"  Condition="'$(MMP_DAT_GenerateDependency)'!=''"/>
+    </ItemGroup>
+    <MakeDir Directories="@(MMP_DAT_CreatedFiles->'%(RootDir)%(Directory)')" />
+
+    <MetaDataProcessor
+      Minimize="$(MMP_DAT_Minimize)"
+      Verbose="$(MMP_DAT_Verbose)"
+      Parse="$(MMP_DAT_Parse)"
+      VerboseMinimize="$(MMP_DAT_VerboseMinimize)"
+      NoByteCode="$(MMP_DAT_NoByteCode)"
+      NoAttributes="$(MMP_DAT_NoAttributes)"
+      SaveStrings="$(MMP_DAT_SaveStrings)"
+      LoadStrings="$(MMP_DAT_LoadStrings)"
+      GenerateStringsTable="$(MMP_DAT_GenerateStringsTable)"
+      Compile="$(MMP_DAT_Compile)"
+      DumpAll="$(MMP_DAT_DumpAll)"
+      DumpExports="$(MMP_DAT_DumpExports)"
+      GenerateSkeletonFile="$(MMP_DAT_GenerateSkeletonFile)"
+      GenerateSkeletonName="$(MMP_DAT_GenerateSkeletonName)"
+      GenerateSkeletonProject="$(MMP_DAT_GenerateSkeletonProject)"
+      GenerateDependency="$(MMP_DAT_GenerateDependency)"
+      CreateDatabase="@(MMP_DAT_CreateDatabase)"
+      RefreshAssemblyName="$(MMP_DAT_RefreshAssemblyName)"
+      RefreshAssemblyOutput="$(MMP_DAT_RefreshAssemblyOutput)"
+      CreateDatabaseFile="$(MMP_DAT_CreateDatabaseFileBE)"
+      Resolve="$(MMP_DAT_Resolve)"
+      LoadHints="@(MMP_DAT_LoadHints)"
+      IgnoreAssembly="@(MMP_DAT_IgnoreAssembly)"
+      Load="@(MMP_DAT_Load)"
+      LoadDatabase="@(MMP_DAT_LoadDatabase)"
+      ExcludeClassByName="@(MMP_DAT_ExcludeClassByName)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </MetaDataProcessor>
+
+  </Target>
+  <!-- MMP_XML -->
+  <Target
+    Name="MetaDataProcessorXml"
+    Inputs="@(MMP_XML_Load)"
+    Outputs="
+        $(MMP_XML_SaveStrings);
+        $(MMP_XML_GenerateStringsTable);
+        $(MMP_XML_DumpAll);
+        $(MMP_XML_DumpExports);
+        $(MMP_XML_Compile);
+        $(MMP_XML_RefreshAssemblyOutput);
+        $(MMP_XML_CreateDatabaseFile);
+        $(MMP_XML_GenerateDependency)"
+    Condition="'$(MMP_XML_SKIP)' != 'true'"
+    >
+    <Message Text="Creating dependency map $(MMP_XML_GenerateDependency)..." />
+
+    <MetaDataProcessor
+      Minimize="$(MMP_XML_Minimize)"
+      Verbose="$(MMP_XML_Verbose)"
+      Parse="$(MMP_XML_Parse)"
+      VerboseMinimize="$(MMP_XML_VerboseMinimize)"
+      NoByteCode="$(MMP_XML_NoByteCode)"
+      NoAttributes="$(MMP_XML_NoAttributes)"
+      SaveStrings="$(MMP_XML_SaveStrings)"
+      LoadStrings="$(MMP_XML_LoadStrings)"
+      GenerateStringsTable="$(MMP_XML_GenerateStringsTable)"
+      Compile="$(MMP_XML_Compile)"
+      DumpAll="$(MMP_XML_DumpAll)"
+      DumpExports="$(MMP_XML_DumpExports)"
+      GenerateSkeletonFile="$(MMP_XML_GenerateSkeletonFile)"
+      GenerateSkeletonName="$(MMP_XML_GenerateSkeletonName)"
+      GenerateSkeletonProject="$(MMP_XML_GenerateSkeletonProject)"
+      GenerateDependency="$(MMP_XML_GenerateDependency)"
+      CreateDatabase="$(MMP_XML_CreateDatabase)"
+      RefreshAssemblyName="$(MMP_XML_RefreshAssemblyName)"
+      RefreshAssemblyOutput="$(MMP_XML_RefreshAssemblyOutput)"
+      CreateDatabaseFile="$(MMP_XML_CreateDatabaseFile)"
+      Resolve="$(MMP_XML_Resolve)"
+      LoadHints="@(MMP_XML_LoadHints)"
+      IgnoreAssembly="@(MMP_XML_IgnoreAssembly)"
+      Load="@(MMP_XML_Load)"
+      LoadDatabase="@(MMP_XML_LoadDatabase)"
+      ExcludeClassByName="@(MMP_XML_ExcludeClassByName)"
+      BuildFlavor="$(Configuration)"
+      TargetFrameworkVersion="$(TargetFrameworkVersion)"
+      >
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </MetaDataProcessor>
+  </Target>
+
+
+  <!-- COPIED FROM DEVICE.TARGETS....except for condition on the target... -->
+  <Target Name="ResolveRuntimeDependenciesLE" >
+
+    <CreateItem
+        Include="$(TinyCLR_StartProgram)"
+        Condition=" '$(TinyCLR_StartProgram)' != '' "
+        >
+      <Output TaskParameter="Include" ItemName="TinyCLR_StartProgramItem"/>
+    </CreateItem>
+
+    <CreateProperty Value="$(IntermediateOutputPathLE)TinyCLR_DebugReferences.cache">
+      <Output TaskParameter="Value" PropertyName="TinyCLR_DebugReferencesStateFile" />
+    </CreateProperty>
+
+    <ResolveAssemblyReference
+        Assemblies="@(Reference)"
+        AssemblyFiles="$(TinyCLR_StartProgram);@(_ResolvedProjectReferencePaths)"
+        CandidateAssemblyFiles="@(Content);@(None)"
+        SearchPaths="{CandidateAssemblyFiles};
+                         $(ReferencePath);
+                         {HintPathFromItem};
+                         $(TargetFrameworkDirectoryLE);
+                         {Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};
+                         {RawFileName};
+                         $(OutputPath);
+                         @(TinyCLR_StartProgramItem->'%(RootDir)%(Directory)')"
+        TargetProcessorArchitecture="$(ProcessorArchitecture)"
+        AppConfigFile="@(ApplicationConfigFileForExes)"
+        AutoUnify="$(AutoUnifyAssemblyReferences)"
+        FindDependencies="true"
+        FindSatellites="true"
+        FindRelatedFiles="true"
+        Silent="$(BuildSilently)"
+        StateFile="$(TinyCLR_DebugReferencesStateFile)"
+            >
+      <Output TaskParameter="ResolvedFiles" ItemName="TinyCLR_StartProgram_ResolvedFiles"/>
+      <Output TaskParameter="ResolvedDependencyFiles" ItemName="TinyCLR_StartProgram_ResolvedDependencyFiles"/>
+      <Output TaskParameter="RelatedFiles" ItemName="TinyCLR_ReferenceRelatedPaths"/>
+      <Output TaskParameter="SatelliteFiles" ItemName="TinyCLR_ReferenceSatellitePaths"/>
+      <Output TaskParameter="CopyLocalFiles" ItemName="TinyCLR_ReferenceCopyLocalPaths"/>
+      <Output TaskParameter="SuggestedRedirects" ItemName="TinyCLR_SuggestedBindingRedirects"/>
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </ResolveAssemblyReference>
+
+    <ItemGroup>
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedFiles->'%(RootDir)%(Directory)%(filename).pe')" />
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedFiles->'$(BUILD_TREE_PE)\%(filename).pe')" />
+
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedDependencyFiles->'%(RootDir)%(Directory)%(filename).pe')" />
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedDependencyFiles->'$(BUILD_TREE_PE)\%(filename).pe')" />
+
+      <ResolvedPEFile Include="%(_ResolvedPEFile.identity)" Condition="EXISTS(%(_ResolvedPEFile.identity))" />
+    </ItemGroup>
+
+    <ResolveRuntimeDependencies
+        Condition="'$(BuildingInsideVisualStudio)' == 'true'"
+        Assembly="$(TinyCLR_Assembly)"
+        AssemblyReferences="@(ReferencePath);@(ReferenceDependencyPaths);@(ReferenceSatellitePaths)"
+        StartProgram="$(TinyCLR_StartProgram)"
+        StartProgramReferences="@(TinyCLR_StartProgram_ResolvedFiles);@(TinyCLR_StartProgram_ResolvedDependencyFiles)"
+            />
+  </Target>
+
+  <Target Name="ResolveRuntimeDependenciesBE" >
+
+    <CreateItem
+        Include="$(TinyCLR_StartProgram)"
+        Condition=" '$(TinyCLR_StartProgram)' != '' "
+        >
+      <Output TaskParameter="Include" ItemName="TinyCLR_StartProgramItem"/>
+    </CreateItem>
+
+    <CreateProperty Value="$(IntermediateOutputPathBE)TinyCLR_DebugReferences.cache">
+      <Output TaskParameter="Value" PropertyName="TinyCLR_DebugReferencesStateFile" />
+    </CreateProperty>
+
+    <ResolveAssemblyReference
+        Assemblies="@(Reference)"
+        AssemblyFiles="$(TinyCLR_StartProgram);@(_ResolvedProjectReferencePaths)"
+        CandidateAssemblyFiles="@(Content);@(None)"
+        SearchPaths="{CandidateAssemblyFiles};
+                         $(ReferencePath);
+                         {HintPathFromItem};
+                         $(TargetFrameworkDirectoryBE);
+                         {Registry:$(FrameworkRegistryBase),$(TargetFrameworkVersion),$(AssemblyFoldersSuffix)$(AssemblyFoldersExConditions)};
+                         {RawFileName};
+                         $(OutputPath);
+                         @(TinyCLR_StartProgramItem->'%(RootDir)%(Directory)')"
+        TargetProcessorArchitecture="$(ProcessorArchitecture)"
+        AppConfigFile="@(ApplicationConfigFileForExes)"
+        AutoUnify="$(AutoUnifyAssemblyReferences)"
+        FindDependencies="true"
+        FindSatellites="true"
+        FindRelatedFiles="true"
+        Silent="$(BuildSilently)"
+        StateFile="$(TinyCLR_DebugReferencesStateFile)"
+            >
+      <Output TaskParameter="ResolvedFiles" ItemName="TinyCLR_StartProgram_ResolvedFiles"/>
+      <Output TaskParameter="ResolvedDependencyFiles" ItemName="TinyCLR_StartProgram_ResolvedDependencyFiles"/>
+      <Output TaskParameter="RelatedFiles" ItemName="TinyCLR_ReferenceRelatedPaths"/>
+      <Output TaskParameter="SatelliteFiles" ItemName="TinyCLR_ReferenceSatellitePaths"/>
+      <Output TaskParameter="CopyLocalFiles" ItemName="TinyCLR_ReferenceCopyLocalPaths"/>
+      <Output TaskParameter="SuggestedRedirects" ItemName="TinyCLR_SuggestedBindingRedirects"/>
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </ResolveAssemblyReference>
+
+    <ItemGroup>
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedFiles->'%(RootDir)%(Directory)%(filename).pe')" />
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedFiles->'$(BUILD_TREE_PE)\%(filename).pe')" />
+
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedDependencyFiles->'%(RootDir)%(Directory)%(filename).pe')" />
+      <_ResolvedPEFile Include="@(TinyCLR_StartProgram_ResolvedDependencyFiles->'$(BUILD_TREE_PE)\%(filename).pe')" />
+
+      <ResolvedPEFile Include="%(_ResolvedPEFile.identity)" Condition="EXISTS(%(_ResolvedPEFile.identity))" />
+    </ItemGroup>
+
+
+    <ResolveRuntimeDependencies
+        Condition="'$(BuildingInsideVisualStudio)' == 'true'"
+        Assembly="$(TinyCLR_Assembly)$(TargetExt)"
+        AssemblyReferences="@(ReferencePath);@(ReferenceDependencyPaths);@(ReferenceSatellitePaths)"
+        StartProgram="$(TinyCLR_StartProgram)"
+        StartProgramReferences="@(TinyCLR_StartProgram_ResolvedFiles);@(TinyCLR_StartProgram_ResolvedDependencyFiles)"
+            />
+  </Target>
+  <!-- END COPIED FROM DEVICE.TARGETS-->
+
+  <Target Name="DownloadDeployment"
+    Inputs="$(DDT_ImportDescriptor);$(DDT_Import_DependencyGraph)"
+    Outputs="$(DDT_Save)"
+    Condition="'$(DDT_CreateDownload)' == 'true'"
+    >
+    <Exec Command="$(PRG_DDT) -importDownload $(DDT_ImportDescriptor) $(DDT_Import_DependencyGraph) -save $(DDT_Save)" />
+  </Target>
+
+    <!-- Nop this target.  Properties are set in Build.Targets. -->
+  <Target Name="GetFrameworkPaths"/>
+
+    <!-- Nop the GetReferenceAssemblyPaths target for devices; the version in .NET 3.0+ makes
+         TargetFrameworkDirectory a list of paths to a set of directories that in sum contain
+         the .NET framework assemblies for the desktop; we continue to treat TargetFrameworkDirectory
+         as a single path to the one directory containing the entire .NET MF.
+    -->
+
+  <Target Name="GetReferenceAssemblyPaths"
+    DependsOnTargets="$(GetReferenceAssemblyPathsDependsOn)">
+  </Target>
+
+  <!-- Override of ResolveAssemblyReferences big build perf win -->
+  <!-- Courtesy of Lars Bergstrom on the msbuild alias -->
+  <Target Name="ResolveAssemblyReferences"
+        Condition="'@(Reference)'!='' or '@(_ResolvedProjectReferencePaths)'!=''"
+        DependsOnTargets="$(ResolveAssemblyReferencesDependsOn)">
+
+        <!--
+        Only read and write cache file at build time, skip it for load time because its more
+        expensive to write the newly created cache file.
+        -->
+
+       <!-- only when building within the IDE to properly resolve references without a hintpath -->
+
+        <ResolveAssemblyReference
+            Condition=" '$(BuildingInsideVisualStudio)' == 'true' "
+            Assemblies="@(Reference)"
+            AssemblyFiles="@(_ResolvedProjectReferencePaths)"
+            InstalledAssemblyTables="@(InstalledAssemblyTables)"
+            CandidateAssemblyFiles="@(Content);@(None)"
+            SearchPaths="$(AssemblySearchPaths)"
+            AllowedAssemblyExtensions="$(AllowedReferenceAssemblyFileExtensions)"
+            TargetProcessorArchitecture="$(ProcessorArchitecture)"
+            AppConfigFile="@(_ResolveAssemblyReferencesApplicationConfigFileForExes)"
+            AutoUnify="$(AutoUnifyAssemblyReferences)"
+            FindDependencies="$(BuildingProject)"
+            FindSatellites="$(BuildingProject)"
+            FindSerializationAssemblies="$(BuildingProject)"
+            FindRelatedFiles="$(BuildingProject)"
+            Silent="$(BuildSilently)"
+            StateFile="$(ResolveAssemblyReferencesStateFile)">
+
+            <Output TaskParameter="ResolvedFiles" ItemName="ReferencePath"/>
+            <Output TaskParameter="ResolvedFiles" ItemName="_ResolveAssemblyReferenceResolvedFiles"/>
+            <Output TaskParameter="ResolvedDependencyFiles" ItemName="ReferenceDependencyPaths"/>
+            <Output TaskParameter="RelatedFiles" ItemName="_ReferenceRelatedPaths"/>
+            <Output TaskParameter="SatelliteFiles" ItemName="ReferenceSatellitePaths"/>
+            <Output TaskParameter="SerializationAssemblyFiles" ItemName="_ReferenceSerializationAssemblyPaths"/>
+            <Output TaskParameter="ScatterFiles" ItemName="_ReferenceScatterPaths"/>
+            <Output TaskParameter="CopyLocalFiles" ItemName="ReferenceCopyLocalPaths"/>
+            <Output TaskParameter="SuggestedRedirects" ItemName="SuggestedBindingRedirects"/>
+            <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+        </ResolveAssemblyReference>
+
+    <!-- only when building outside of the IDE to properly resolve require without a hintpath -->
+
+        <CreateItem
+            Include="%(Reference.HintPath)"
+            AdditionalMetadata="ResolvedFrom=%(Reference.HintPath);Name=%(Reference.Identity)"
+            Condition=" '$(BuildingInsideVisualStudio)' != 'true' "
+            >
+          <Output TaskParameter="Include" ItemName="ReferencePath" />
+        </CreateItem>
+
+        <Error Condition=" '$(BuildingInsideVisualStudio)' != 'true' and '%(Reference.HintPath)'=='' " Text="HintPath required for all assembly references" />
+    </Target>
+
+
+  <!--
+          CoreClean isn't very good at cleaning files not built into IntermediateDirectory or OutDirectory.  Just clean
+          the known files here
+    -->
+  <Target Name="TinyCLR_CleanExtraFiles">
+    <Delete Files="
+            $(MMP_PE_SaveStrings);
+            $(MMP_PE_GenerateStringsTable);
+            $(MMP_PE_DumpAll);
+            $(MMP_PE_Compile);$(MMP_PE_Compile_NoExt).pdbx;$(MMP_PE_Compile_NoExt).pe_downloads;
+            $(MMP_PE_DumpExports);
+            $(MMP_PE_RefreshAssemblyOutput);
+            $(MMP_PE_CreateDatabaseFile);
+            $(MMP_PE_GenerateDependency);
+            $(MMP_PE_SaveStrings);
+            $(MMP_DUMP_GenerateStringsTable);
+            $(MMP_DUMP_DumpAll);
+            $(MMP_DUMP_Compile);
+            $(MMP_DUMP_DumpExports);
+            $(MMP_DUMP_RefreshAssemblyOutput);
+            $(MMP_DUMP_CreateDatabaseFile);
+            $(MMP_DUMP_GenerateDependency);
+            $(MMP_XML_SaveStrings);
+            $(MMP_XML_GenerateStringsTable);
+            $(MMP_XML_DumpAll);
+            $(MMP_XML_Compile);
+            $(MMP_XML_DumpExports);
+            $(MMP_XML_RefreshAssemblyOutput);
+            $(MMP_XML_CreateDatabaseFile);
+            $(MMP_XML_GenerateDependency);
+            $(MMP_STUBS_SaveStrings);
+            $(MMP_STUBS_GenerateStringsTable);
+            $(MMP_STUBS_DumpAll);
+            $(MMP_STUBS_Compile);
+            $(MMP_STUBS_DumpExports);
+            $(MMP_STUBS_RefreshAssemblyOutput);
+            $(MMP_STUBS_CreateDatabaseFile);
+            $(MMP_STUBS_GenerateDependency);
+            $(MMP_DAT_SaveStrings);
+            $(MMP_DAT_GenerateStringsTable);
+            $(MMP_DAT_DumpAll);
+            $(MMP_DAT_Compile);
+            $(MMP_DAT_DumpExports);
+            $(MMP_DAT_RefreshAssemblyOutput);
+            $(MMP_DAT_CreateDatabaseFile);
+            $(MMP_DAT_GenerateDependency)"
+        TreatErrorsAsWarnings="true" >
+    </Delete>
+  </Target>
+
+  <Target Name="Disasm"
+    Condition="Exists('$(TinyCLR_DisasmInput)')"
+    Inputs="$(TinyCLR_DisasmInput)"
+    Outputs="$(TinyCLR_DisasmOutput)"
+    >
+    <Exec Command="ildasm.exe $(ILDASM_FLAGS) /out=$(TinyCLR_DisasmOutput) $(TinyCLR_DisasmInput)" />
+  </Target>
+
+  <Target Name="ConvertResources"
+    Condition="Exists('$(OutDir)$(TargetFileName)')"
+    >
+    <ResourceConverter
+      Condition=" '$(TinyCLR_Skip_ConvertResources)' != 'true' "
+      AssemblyName="$(OutDir)$(TargetFileName)"
+      OutputFile="$(ProjectDir)\Resources.resx"
+      ResourceDirectories="$(CONVERT_RESOURCES_DIR)"
+      />
+  </Target>
+
+
+  <Target Name="TinyResGen"
+    Condition="'@(EmbeddedResource)'!=''"
+    DependsOnTargets="$(TinyResGenDependsOn)"
+    >
+    <GenerateTinyResource
+      Sources="@(EmbeddedResource)"
+      Condition=" '%(EmbeddedResource.Type)' == 'Resx' and '%(EmbeddedResource.GenerateResource)' != 'false'"
+      References="@(ReferencePath)"
+      UseSourcePath="$(UseSourcePath)"
+      StateFile="$(IntermediateOutputPath)$(MSBuildProjectFile).TinyGenerateResource.Cache"
+      OutputResources="@(EmbeddedResource->'$(IntermediateOutputPath)%(ManifestResourceName).tinyresources')"
+      >
+
+      <Output TaskParameter="OutputResources" ItemName="MMP_PE_Resource"/>
+      <Output TaskParameter="FilesWritten" ItemName="FileWrites"/>
+    </GenerateTinyResource>
+  </Target>
+
+  <Import Project="Microsoft.SPOT.Build.Common.Targets" />
+</Project>

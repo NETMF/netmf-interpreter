@@ -1,0 +1,58 @@
+//-----------------------------------------------------------------------------
+//
+//  Template for defining a common set of AssemblyInfo attributes across the SDK
+//
+//  Copyright ©2007,2008,2009 Microsoft Corporation
+//  One Microsoft Way, Redmond, Washington 98052-6399 U.S.A.
+//  All rights reserved.
+//  MICROSOFT CONFIDENTIAL
+//
+//-----------------------------------------------------------------------------
+
+// Neutral resources
+
+LANGUAGE 0x00, 0x00 //LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+
+1 VERSIONINFO
+ FILEVERSION    __FILEVERSION_CSV__
+ PRODUCTVERSION __PRODUCTVERSION_CSV__
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L //VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS      0x4L //VOS__WINDOWS32
+ FILETYPE    0x1L //VFT_APP
+ FILESUBTYPE 0x0L //VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0" //US English - Unicode
+        BEGIN
+            VALUE "Comments",         __ASSEMBLYCONFIGURATION__ //optional
+            VALUE "CompanyName",      __ASSEMBLYCOMPANY__
+            VALUE "FileDescription",  __ASSEMBLYDESCRIPTION__
+            VALUE "FileVersion",      __ASSEMBLYFILEVERSION__
+            VALUE "InternalName",     __ASSEMBLYINTERNALNAME__
+            VALUE "LegalCopyright",   __ASSEMBLYCOPYRIGHT__
+            VALUE "LegalTrademarks",  __ASSEMBLYTRADEMARK__
+            VALUE "OriginalFilename", __ASSEMBLYTITLE__
+//            VALUE "PrivateBuild",   "" //optional
+            VALUE "ProductName",      __ASSEMBLYPRODUCT__
+            VALUE "ProductVersion",   __PRODUCTVERSION__
+//            VALUE "SpecialBuild",   "" //optional
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

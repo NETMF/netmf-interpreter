@@ -1,0 +1,21 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <?include defines.wxs?>
+
+    <Feature Id="CoreEmulator"
+             Title="Core Emulator"
+             Description="Core emulator components"
+             Display="hidden"
+             Level="1">
+
+      <ComponentRef Id="Component_Microsoft.SPOT.CLR"/>
+      <ComponentRef Id="Component_Microsoft.SPOT.Emulator"/>
+      <ComponentRef Id="Component_Microsoft.SPOT.Emulator.Interface"/>
+
+      <!--Virtual Hardware Components-->
+      <ComponentRef Id="Component_Microsoft.SPOT.Emulator.Sample.SampleEmulator"/>
+
+    </Feature>
+
+  </Fragment>
+</Wix>

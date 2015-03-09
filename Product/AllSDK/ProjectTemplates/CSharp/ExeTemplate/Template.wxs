@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="MFAppTemplateFragment">
+    <?include defines.wxs?>
+    <DirectoryRef Id="WDEXPRESS11_PROJECT_TEMPLATE_CSHARP_NETMF">
+      <Component Id="Component_CSharpConsoleApplicationTemplate.WDE110" Guid ="93f85e01-b847-44e1-9350-acb43eff2080">
+        <File Id="FileCSharpConsoleApplicationTemplate.WDE110"
+            Name="ConsoleApplication.zip"
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ConsoleApplication.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VS11_PROJECT_TEMPLATE_CSHARP_NETMF">
+      <Component Id="Component_CSharpConsoleApplicationTemplate.VS110" Guid ="beeb6405-2776-4e9d-9def-4c73c9f43b2f">
+        <File Id="FileCSharpConsoleApplicationTemplate.VS110"
+            Name="ConsoleApplication.zip" 	
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ConsoleApplication.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+
+      <DirectoryRef Id="WDEXPRESS12_PROJECT_TEMPLATE_CSHARP_NETMF">
+          <Component Id="Component_CSharpConsoleApplicationTemplate.WDE120" Guid ="9B74933D-ED87-45F6-823D-2C0460054E7F">
+              <File Id="FileCSharpConsoleApplicationTemplate.WDE120"
+                  Name="ConsoleApplication.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ConsoleApplication.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+      <DirectoryRef Id="VS12_PROJECT_TEMPLATE_CSHARP_NETMF">
+          <Component Id="Component_CSharpConsoleApplicationTemplate.VS120" Guid ="5C6E0AF5-D647-4876-9CE5-A25A6B90B5CF">
+              <File Id="FileCSharpConsoleApplicationTemplate.VS120"
+                  Name="ConsoleApplication.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\ConsoleApplication.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+    <PropertyGroup>
+        <Author>Microsoft Open Technologies</Author>
+        <Description>
+            NETMF port to MCBSTM32F400 (STMicroelectronics STM32F407IG Cortex-M4F) dev board from Keil.
+            Based on the STM32F4 port by Oberon Systems, CSA Engineering and, Mountaineering Group.
+        </Description>
+        <Documentation />
+        <PlatformGuid>{eb85333d-ae15-4ad6-b6d9-8239c38de2be}</PlatformGuid>
+        <TARGETPLATFORM>MCBSTM32F400</TARGETPLATFORM>
+        <PLATFORM>MCBSTM32F400</PLATFORM>
+        <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+        <ENDIANNESS>le</ENDIANNESS>
+        <NO_BOOTLOADER_COMPRESSION>true</NO_BOOTLOADER_COMPRESSION>
+        <TCP_IP_STACK>LWIP_1_4_1_OS</TCP_IP_STACK>
+    </PropertyGroup>
+    <PropertyGroup>
+        <OEMSystemInfoString>Copyright (C) Microsoft Open Technologies Inc.</OEMSystemInfoString>
+    </PropertyGroup>
+    <ItemGroup>
+        <CC_CPP_Defines Include="__CMSIS_RTOS" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <IncludePaths Include="Solutions\MCBSTM32F400" />
+    </ItemGroup>
+    <Import Project="$(SPOCLIENT)\devicecode\Targets\Native\STM32F4\STM32F4.settings" />
+    <!-- This must be imported after the native build settings as it overrides the TARGETCODEBASE and Target type-->
+    <Import Project="$(SPOCLIENT)\devicecode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings" />
+</Project>

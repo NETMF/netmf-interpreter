@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+  <If Name="COMPILER_TOOL_VERSION" Value="ADS1.2">
+    <FileMapping Name="*" Options="(i.Pause__16MC9328MXL_DriverSFv)" />
+    <FileMapping Name="*" Options="(i.Xaction_nWrite16_nRead16__20MC9328MXL_SPI_DriverSFR14SPI_XACTION_16)"
+        Comment="000078c8 264 1382803 Xaction_nWrite16_nRead16__20MC9328MXL_SPI_DriverSFR14SPI_XACTION_16" />
+    <FileMapping Name="*" Options="(i.CounterValue__21MC9328MXL_TIME_DriverSFv)" Comment="00007840 40 712150 CounterValue__21MC9328MXL_TIME_DriverSFv" />
+    <FileMapping Name="*" Options="(i.ActivateInterrupt__21MC9328MXL_AITC_DriverSFUiT1PFPv_vPvUc)" Comment="00007604 76 231095 ActivateInterrupt__21MC9328MXL_AITC_DriverSFUiT1PFPv_vPvUc" />
+    <FileMapping Name="*" Options="(i.DeactivateInterrupt__21MC9328MXL_AITC_DriverSFUi)" Comment="00007604 76 231095 DeactivateInterrupt__21MC9328MXL_AITC_DriverSFUi" />
+    <FileMapping Name="*" Options="(i.SetCompareValue__21MC9328MXL_TIME_DriverSFUx)" Comment="00007868 96 181492 SetCompareValue__21MC9328MXL_TIME_DriverSFUx" />
+    <FileMapping Name="*" Options="(i.CurrentTime__21MC9328MXL_TIME_DriverSFv)" Comment="000079d0 88 94500 CurrentTime__21MC9328MXL_TIME_DriverSFv" />
+    <FileMapping Name="*" Options="(i.ResetCounter__25MC9328MXL_WATCHDOG_DriverSFv)" Comment="00007adc 24 22218 ResetCounter__25MC9328MXL_WATCHDOG_DriverSFv" />
+    <FileMapping Name="*" Options="(i.IRQ_Handler__21MC9328MXL_AITC_DriverSFv)" Comment="10133d18 216 430045 IRQ_Handler__21MC9328MXL_AITC_DriverSFv" />
+  </If>
+  <If Name="COMPILER_TOOL_VERSION" In="RVDS3.0 RVDS3.1 RVDS4.0 RVDS4.1">
+    <FileMapping Name="*" Options="(i._ZN16MC9328MXL_Driver5PauseEv)" />
+    <FileMapping Name="*" Options="(i._ZN20MC9328MXL_SPI_Driver24Xaction_nWrite16_nRead16ER14SPI_XACTION_16)"
+        Comment="000078c8 264 1382803 _ZN20MC9328MXL_SPI_Driver24Xaction_nWrite16_nRead16ER14SPI_XACTION_16" />
+    <FileMapping Name="*" Options="(i._ZN21MC9328MXL_TIME_Driver12CounterValueEv)" Comment="00007840 40 712150 _ZN21MC9328MXL_TIME_Driver12CounterValueEv" />
+    <FileMapping Name="*" Options="(i._ZN21MC9328MXL_AITC_Driver17ActivateInterruptEjjPFvPvES0_h)" Comment="00007604 76 231095 _ZN21MC9328MXL_AITC_Driver17ActivateInterruptEjjPFvPvES0_h" />
+    <FileMapping Name="*" Options="(i._ZN21MC9328MXL_AITC_Driver19DeactivateInterruptEj)" Comment="00007604 76 231095 _ZN21MC9328MXL_AITC_Driver19DeactivateInterruptEj" />
+    <FileMapping Name="*" Options="(i._ZN21MC9328MXL_TIME_Driver15SetCompareValueEy)" Comment="00007868 96 181492 _ZN21MC9328MXL_TIME_Driver15SetCompareValueEy" />
+    <FileMapping Name="*" Options="(i._ZN21MC9328MXL_TIME_Driver11CurrentTimeEv)" Comment="000079d0 88 94500 _ZN21MC9328MXL_TIME_Driver11CurrentTimeEv" />
+    <FileMapping Name="*" Options="(i._ZN25MC9328MXL_WATCHDOG_Driver12ResetCounterEv)" Comment="00007adc 24 22218 _ZN25MC9328MXL_WATCHDOG_Driver12ResetCounterEv" />
+  </If>
+</ScatterFile>

@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MeshXml" xml:space="preserve">
+    <value>&lt;rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"&gt;
+  &lt;channel xml:base="https://user-ctp.windows.net/V0.1/"&gt;
+    &lt;title&gt;Applications&lt;/title&gt;
+    &lt;description /&gt;
+    &lt;a10:link rel="self" title="self" href="Mesh/Applications" /&gt;
+    &lt;a10:link rel="edit" title="edit" href="Mesh/Applications" /&gt;
+    &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/Subscriptions" /&gt;
+    &lt;item&gt;
+      &lt;guid isPermaLink="false"&gt;5ab79699-8e11-4cdf-b3d0-534de5e44b44&lt;/guid&gt;
+      &lt;author&gt;meshuser@live.com&lt;/author&gt;
+      &lt;category domain="http://user.windows.net/Resource"&gt;Application&lt;/category&gt;
+      &lt;title&gt;Collaborative Crossword&lt;/title&gt;
+      &lt;pubDate&gt;Fri, 24 Oct 2008 21:56:33 Z&lt;/pubDate&gt;
+      &lt;a10:link rel="LiveFX/ApplicationPackage" title="LiveFX/ApplicationPackage" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/Package/N4H3PCMTFFEUFE74LLEHCOAT3E-HTBKUY5U35CU7AIB2YASB7EOLI-Manifest.xml" /&gt;
+      &lt;a10:link rel="LiveFX/ApplicationLogo" title="LiveFX/ApplicationLogo" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/Package/N4H3PCMTFFEUFE74LLEHCOAT3E-HTBKUY5U35CU7AIB2YASB7EOLI-logo.png" /&gt;
+      &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/Subscriptions" /&gt;
+      &lt;a10:link rel="LiveFX/ResourceFeeds" title="LiveFX/ResourceFeeds" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ/ResourceFeeds" /&gt;
+      &lt;a10:link rel="self" title="self" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ" /&gt;
+      &lt;a10:link rel="edit" title="edit" href="Mesh/Applications/TGLLOWQRR3PUZM6QKNG6LZCLIQ" /&gt;
+      &lt;a10:updated&gt;2008-10-25T23:12:55Z&lt;/a10:updated&gt;
+      &lt;a10:content type="application/xml"&gt;
+        &lt;ApplicationContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://user.windows.net"&gt;
+          &lt;ApplicationId&gt;000000004800272D&lt;/ApplicationId&gt;
+          &lt;Approved&gt;true&lt;/Approved&gt;
+          &lt;CurrentVersion&gt;1&lt;/CurrentVersion&gt;
+          &lt;Description&gt;Play crosswords with friends and family.&lt;/Description&gt;
+          &lt;DisplayVersion&gt;0.94&lt;/DisplayVersion&gt;
+          &lt;LogoName&gt;logo.png&lt;/LogoName&gt;
+          &lt;MultiInstance&gt;true&lt;/MultiInstance&gt;
+          &lt;Name&gt;Collaborative Crossword&lt;/Name&gt;
+          &lt;PackageName&gt;Manifest.xml&lt;/PackageName&gt;
+          &lt;PrivacyPolicyLink&gt;http://privacy.microsoft.com/en-us/default.mspx&lt;/PrivacyPolicyLink&gt;
+          &lt;PublisherName&gt;www.microsoftstartuplabs.com&lt;/PublisherName&gt;
+          &lt;ReleaseStatus&gt;Production&lt;/ReleaseStatus&gt;
+          &lt;RootDocument&gt;index.html&lt;/RootDocument&gt;
+          &lt;SupportLink&gt;http://www.microsoftstartuplabs.com/support/&lt;/SupportLink&gt;
+          &lt;VendorLink&gt;http://www.microsoftstartuplabs.com/&lt;/VendorLink&gt;
+        &lt;/ApplicationContent&gt;
+      &lt;/a10:content&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+      &lt;guid isPermaLink="false"&gt;0cb8ad36-f302-4e37-8cb2-a32d03d602a7&lt;/guid&gt;
+      &lt;author&gt;meshuser@live.com&lt;/author&gt;
+      &lt;category domain="http://user.windows.net/Resource"&gt;Application&lt;/category&gt;
+      &lt;title&gt;MeshLists&lt;/title&gt;
+      &lt;pubDate&gt;Fri, 24 Oct 2008 20:21:17 Z&lt;/pubDate&gt;
+      &lt;a10:link rel="LiveFX/ApplicationPackage" title="LiveFX/ApplicationPackage" href="Mesh/Applications/G2W3QDAC6M3U5DFSUMWQHVQCU4/Package/2G3MT4XQ2XNERIGXUG4EO4DQBQ-PNZW7KOJFKRENPASMW2ENE5OQA-Manifest.xml" /&gt;
+      &lt;a10:link rel="LiveFX/ApplicationLogo" title="LiveFX/ApplicationLogo" href="Mesh/Applications/G2W3QDAC6M3U5DFSUMWQHVQCU4/Package/2G3MT4XQ2XNERIGXUG4EO4DQBQ-PNZW7KOJFKRENPASMW2ENE5OQA-logo.png" /&gt;
+      &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/G2W3QDAC6M3U5DFSUMWQHVQCU4/Subscriptions" /&gt;
+      &lt;a10:link rel="LiveFX/ResourceFeeds" title="LiveFX/ResourceFeeds" href="Mesh/Applications/G2W3QDAC6M3U5DFSUMWQHVQCU4/ResourceFeeds" /&gt;
+      &lt;a10:link rel="self" title="self" href="Mesh/Applications/G2W3QDAC6M3U5DFSUMWQHVQCU4" /&gt;
+      &lt;a10:link rel="edit" title="edit" href="Mesh/Applications/G2W3QDAC6M3U5DFSUMWQHVQCU4" /&gt;
+      &lt;a10:updated&gt;2008-11-21T17:21:37Z&lt;/a10:updated&gt;
+      &lt;a10:content type="application/xml"&gt;
+        &lt;ApplicationContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://user.windows.net"&gt;
+          &lt;ApplicationId&gt;0000000040004003&lt;/ApplicationId&gt;
+          &lt;Approved&gt;true&lt;/Approved&gt;
+          &lt;CurrentVersion&gt;3&lt;/CurrentVersion&gt;
+          &lt;Description&gt;Get things done - create shared to-do lists, track projects and more&lt;/Description&gt;
+          &lt;DisplayVersion&gt;0.9.5&lt;/DisplayVersion&gt;
+          &lt;LogoName&gt;logo.png&lt;/LogoName&gt;
+          &lt;MultiInstance&gt;true&lt;/MultiInstance&gt;
+          &lt;Name&gt;MeshLists&lt;/Name&gt;
+          &lt;PackageName&gt;Manifest.xml&lt;/PackageName&gt;
+          &lt;PrivacyPolicyLink&gt;http://privacy.microsoft.com/en-us/default.mspx&lt;/PrivacyPolicyLink&gt;
+          &lt;PublisherName&gt;www.microsoftstartuplabs.com&lt;/PublisherName&gt;
+          &lt;ReleaseStatus&gt;Production&lt;/ReleaseStatus&gt;
+          &lt;RootDocument&gt;index.html&lt;/RootDocument&gt;
+          &lt;SupportLink&gt;http://www.microsoftstartuplabs.com/support/&lt;/SupportLink&gt;
+          &lt;VendorLink&gt;http://www.microsoftstartuplabs.com/&lt;/VendorLink&gt;
+        &lt;/ApplicationContent&gt;
+      &lt;/a10:content&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+      &lt;guid isPermaLink="false"&gt;bb44a24a-1bdf-452b-9a00-a4273befa694&lt;/guid&gt;
+      &lt;author&gt;meshuser@live.com&lt;/author&gt;
+      &lt;category domain="http://user.windows.net/Resource"&gt;Application&lt;/category&gt;
+      &lt;title&gt;Corkboard&lt;/title&gt;
+      &lt;pubDate&gt;Fri, 24 Oct 2008 19:57:44 Z&lt;/pubDate&gt;
+      &lt;a10:link rel="LiveFX/ApplicationPackage" title="LiveFX/ApplicationPackage" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/Package/6PSURE3UVB3EVAVSWP6GDXHEYA-AJWV2NVTT7CEPOJF625JNDNOJI-Manifest.xml" /&gt;
+      &lt;a10:link rel="LiveFX/ApplicationLogo" title="LiveFX/ApplicationLogo" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/Package/6PSURE3UVB3EVAVSWP6GDXHEYA-AJWV2NVTT7CEPOJF625JNDNOJI-logo.png" /&gt;
+      &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/Subscriptions" /&gt;
+      &lt;a10:link rel="LiveFX/ResourceFeeds" title="LiveFX/ResourceFeeds" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ/ResourceFeeds" /&gt;
+      &lt;a10:link rel="self" title="self" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ" /&gt;
+      &lt;a10:link rel="edit" title="edit" href="Mesh/Applications/JKREJO67DMVULGQAUQTTX35GSQ" /&gt;
+      &lt;a10:updated&gt;2008-11-21T17:16:29Z&lt;/a10:updated&gt;
+      &lt;a10:content type="application/xml"&gt;
+        &lt;ApplicationContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://user.windows.net"&gt;
+          &lt;ApplicationId&gt;0000000040003417&lt;/ApplicationId&gt;
+          &lt;Approved&gt;true&lt;/Approved&gt;
+          &lt;CurrentVersion&gt;3&lt;/CurrentVersion&gt;
+          &lt;Description&gt;Get a digital corkboard and start sharing notes across town or across the globe&lt;/Description&gt;
+          &lt;DisplayVersion&gt;0.82&lt;/DisplayVersion&gt;
+          &lt;LogoName&gt;logo.png&lt;/LogoName&gt;
+          &lt;MultiInstance&gt;true&lt;/MultiInstance&gt;
+          &lt;Name&gt;Corkboard&lt;/Name&gt;
+          &lt;PackageName&gt;Manifest.xml&lt;/PackageName&gt;
+          &lt;PrivacyPolicyLink&gt;http://privacy.microsoft.com/en-us/default.mspx&lt;/PrivacyPolicyLink&gt;
+          &lt;PublisherName&gt;www.microsoftstartuplabs.com&lt;/PublisherName&gt;
+          &lt;ReleaseStatus&gt;Production&lt;/ReleaseStatus&gt;
+          &lt;RootDocument&gt;index.html&lt;/RootDocument&gt;
+          &lt;SupportLink&gt;http://www.microsoftstartuplabs.com/support/&lt;/SupportLink&gt;
+          &lt;VendorLink&gt;http://www.microsoftstartuplabs.com/&lt;/VendorLink&gt;
+        &lt;/ApplicationContent&gt;
+      &lt;/a10:content&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+      &lt;guid isPermaLink="false"&gt;19607bd8-6666-4d9f-b4c2-e9d7e59daeb5&lt;/guid&gt;
+      &lt;author&gt;meshuser@live.com&lt;/author&gt;
+      &lt;category domain="http://user.windows.net/Resource"&gt;Application&lt;/category&gt;
+      &lt;title&gt;CrowdVote&lt;/title&gt;
+      &lt;pubDate&gt;Fri, 24 Oct 2008 20:05:44 Z&lt;/pubDate&gt;
+      &lt;a10:link rel="LiveFX/ApplicationPackage" title="LiveFX/ApplicationPackage" href="Mesh/Applications/3B5WAGLGM2PU3NGC5HL6LHNOWU/Package/T47TGGM4BIXUDAKMG3RLHAJU7Y-6GIAAOR2IMJUNKEZW5ONZ3YZZY-Manifest.xml" /&gt;
+      &lt;a10:link rel="LiveFX/ApplicationLogo" title="LiveFX/ApplicationLogo" href="Mesh/Applications/3B5WAGLGM2PU3NGC5HL6LHNOWU/Package/T47TGGM4BIXUDAKMG3RLHAJU7Y-6GIAAOR2IMJUNKEZW5ONZ3YZZY-logo.png" /&gt;
+      &lt;a10:link rel="LiveFX/Subscription" title="LiveFX/Subscription" href="Mesh/Applications/3B5WAGLGM2PU3NGC5HL6LHNOWU/Subscriptions" /&gt;
+      &lt;a10:link rel="LiveFX/ResourceFeeds" title="LiveFX/ResourceFeeds" href="Mesh/Applications/3B5WAGLGM2PU3NGC5HL6LHNOWU/ResourceFeeds" /&gt;
+      &lt;a10:link rel="self" title="self" href="Mesh/Applications/3B5WAGLGM2PU3NGC5HL6LHNOWU" /&gt;
+      &lt;a10:link rel="edit" title="edit" href="Mesh/Applications/3B5WAGLGM2PU3NGC5HL6LHNOWU" /&gt;
+      &lt;a10:updated&gt;2008-11-21T17:19:18Z&lt;/a10:updated&gt;
+      &lt;a10:content type="application/xml"&gt;
+        &lt;ApplicationContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://user.windows.net"&gt;
+          &lt;ApplicationId&gt;0000000040004001&lt;/ApplicationId&gt;
+          &lt;Approved&gt;true&lt;/Approved&gt;
+          &lt;CurrentVersion&gt;3&lt;/CurrentVersion&gt;
+          &lt;Description&gt;Efficient, collaborative decision making.&lt;/Description&gt;
+          &lt;DisplayVersion&gt;0.2&lt;/DisplayVersion&gt;
+          &lt;LogoName&gt;logo.png&lt;/LogoName&gt;
+          &lt;MultiInstance&gt;true&lt;/MultiInstance&gt;
+          &lt;Name&gt;CrowdVote&lt;/Name&gt;
+          &lt;PackageName&gt;Manifest.xml&lt;/PackageName&gt;
+          &lt;PrivacyPolicyLink&gt;http://privacy.microsoft.com/en-us/default.mspx&lt;/PrivacyPolicyLink&gt;
+          &lt;PublisherName&gt;www.microsoftstartuplabs.com&lt;/PublisherName&gt;
+          &lt;ReleaseStatus&gt;Production&lt;/ReleaseStatus&gt;
+          &lt;RootDocument&gt;index.html&lt;/RootDocument&gt;
+          &lt;SupportLink&gt;http://www.microsoftstartuplabs.com/support/&lt;/SupportLink&gt;
+          &lt;VendorLink&gt;http://www.microsoftstartuplabs.com/&lt;/VendorLink&gt;
+        &lt;/ApplicationContent&gt;
+      &lt;/a10:content&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;</value>
+  </data>
+</root>

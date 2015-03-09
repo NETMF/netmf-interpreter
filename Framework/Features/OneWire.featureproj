@@ -1,0 +1,22 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FeatureName>OneWire</FeatureName>
+    <Guid>{3401dd69-cab5-45fc-a759-1d1eded247c7}</Guid>
+    <Description>OneWire feature</Description>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <ONEWIRE_FEATUREPROJ>True</ONEWIRE_FEATUREPROJ>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\OneWire_PAL.libcatproj"/>
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Hardware_OneWire_CLR.libcatproj" />
+
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Hardware_OneWire" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Hardware.OneWire.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Hardware\Native_OneWire\Core_Native_Hardware_OneWire.csproj" />
+    <RequiredProjects        Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_OneWire\dotNetMF.proj" />
+    <RequiredProjects        Include="$(SPOCLIENT)\DeviceCode\pal\OneWire\dotNetMF.proj" />
+  </ItemGroup>
+</Project>

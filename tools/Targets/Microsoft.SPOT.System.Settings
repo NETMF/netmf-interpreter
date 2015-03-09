@@ -1,0 +1,133 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <!-- Possibly propagated properties from enclosing or dependent projects -->
+  <PropertyGroup>
+    <_PLATFORM              Condition="'$(_PLATFORM)'==''"              >WINDOWS2</_PLATFORM>
+    <FLAVOR                 Condition="'$(FLAVOR)'==''"                 >$(_FLAVOR)</FLAVOR>
+    <PLATFORM               Condition="'$(PLATFORM)'==''"               >$(_PLATFORM)</PLATFORM>
+    <PLATFORMS              Condition="'$(PLATFORMS)'==''"              >$(_PLATFORMS)</PLATFORMS>
+    <MEMORY                 Condition="'$(MEMORY)'==''"                 >$(_MEMORY)</MEMORY>
+    <TARGETLOCATION         Condition="'$(TARGETLOCATION)'==''"         >$(_TARGETLOCATION)</TARGETLOCATION>
+    <MFSettingsFile         Condition="'$(MFSettingsFile)'==''"         >$(_MFSettingsFile)</MFSettingsFile>
+    <SolutionRoot           Condition="'$(SolutionRoot)'==''"           >$(_SolutionRoot)</SolutionRoot>
+    <CLEAN_INDEPENDENT_ONLY Condition="'$(CLEAN_INDEPENDENT_ONLY)'==''" >$(_CLEAN_INDEPENDENT_ONLY)</CLEAN_INDEPENDENT_ONLY>
+    <Configuration          Condition="'$(Configuration)'==''"          >$(_Configuration)</Configuration>
+    <TinyCLR_Platform       Condition="'$(TinyCLR_Platform)'==''"       >$(_TinyCLR_Platform)</TinyCLR_Platform>
+    <BuildNumber            Condition="'$(BuildNumber)'==''"            >$(_BuildNumber)</BuildNumber>
+    <RevisionNumber         Condition="'$(RevisionNumber)'==''"         >$(_RevisionNumber)</RevisionNumber>
+    <SignBuild              Condition="'$(SignBuild)'==''"              >$(_SignBuild)</SignBuild>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\ReleaseInfo.settings"/>
+
+
+  <PropertyGroup>
+    <ProjectFile>$(MSBuildProjectName)$(MSBuildProjectExtension)</ProjectFile>
+
+  <!--
+  Optional settings/overrides: (true/false)
+
+  timewarp      - Enabled the timewarp feature
+  profile       - creates a profile build
+  sampleprof    - enables build with sampling profile support
+  latencyprof   - enables build with latency profile support
+
+  Set the defaults for these if they haven't been explicitly set:
+  -->
+
+    <timewarp Condition="'$(timewarp)'==''"         >false</timewarp>
+    <profile Condition="'$(profile)'==''"           >false</profile>
+    <sampleprof Condition="'$(sampleprof)'==''"     >false</sampleprof>
+    <latencyprof Condition="'$(latencyprof)'==''"   >false</latencyprof>
+    <FLAVOR Condition="'$(FLAVOR)'==''"             >Debug</FLAVOR>
+    <MEMORY Condition="'$(MEMORY)'==''"             >FLASH</MEMORY>
+    <ENABLE_FASTCOMPILE Condition="'$(ENABLE_FASTCOMPILE)'==''"   >true</ENABLE_FASTCOMPILE>
+    <FourByteCrytoLib>false</FourByteCrytoLib>
+    <CLEAN_INDEPENDENT_ONLY Condition="'$(CLEAN_INDEPENDENT_ONLY)'==''"></CLEAN_INDEPENDENT_ONLY>
+    <Configuration Condition="'$(Configuration)'=='' And '$(FLAVOR)'=='Debug'"       >$(FLAVOR)</Configuration>
+    <Configuration Condition="'$(Configuration)'=='' And '$(FLAVOR)'=='Instrumented'">Debug</Configuration>
+    <Configuration Condition="'$(Configuration)'=='' ">Release</Configuration>
+  </PropertyGroup>
+
+
+  <!-- set up platform dependant properties, also setup the TARGETPLATFORM as capitals for set up PLATFORM_ARM_XXX flag -->
+
+  <!--  platform dependent properties are included here, based on teh path right above -->
+  <!--  the settigns file is required to be have a specifc name ! -->
+  <Import Project="$(MFSettingsFile)"                                       Condition=" EXISTS('$(MFSettingsFile)')"/>
+<!-- -->
+  <Import Project="$(MSBuildStartupDirectory)\$(PLATFORM).settings"         Condition="!EXISTS('$(MFSettingsFile)') AND  EXISTS('$(MSBuildStartupDirectory)\$(PLATFORM).settings')"/>
+  <Import Project="$(SPOCLIENT)\Solutions\$(PLATFORM)\$(PLATFORM).settings" Condition="!EXISTS('$(MFSettingsFile)') AND !EXISTS('$(MSBuildStartupDirectory)\$(PLATFORM).settings') AND EXISTS('$(SPOCLIENT)\Solutions\$(PLATFORM)\$(PLATFORM).settings')"/>
+
+<!--  <Import Project="Error: INSTRUCTION_SET is not defined" Condition="'$(INSTRUCTION_SET)'==''"/> -->
+<!-- -->
+  <PropertyGroup>
+    <!-- has to change the MEMORY property to Capital letters for TARGETLOCATION_XXX-->
+    <TARGETLOCATION Condition="'$(MEMORY)'=='FLASH'">FLASH</TARGETLOCATION>
+    <TARGETLOCATION Condition="'$(MEMORY)'=='RAM'">RAM</TARGETLOCATION>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- We explictly push the above three in recursive invocations; this makes such invocations
+         less sensitive to where the include of this rules file appears -->
+
+    <SPO_SDK Condition="'$(SPO_SDK)'==''">$(SPOCLIENT)</SPO_SDK>
+    <SPO_BUILD Condition="'$(SPO_BUILD)'==''">$(BUILD_ROOT_BASE)</SPO_BUILD>
+
+    <TOOLS_DIR>$(SPO_BUILD)\public\$(Configuration)\Server\dll</TOOLS_DIR>
+
+    <!-- TODO: finish consolidation of parallel build trees (eg, see other def'n of MainProps in Microsoft.SPOT.Build.Configuration.Settings) -->
+    <MainProps>_FLAVOR=$(FLAVOR);_PLATFORMS=$(PLATFORMS);_PLATFORM=$(PLATFORM);_TARGETLOCATION=$(TARGETLOCATION);_MEMORY=$(MEMORY);_CLEAN_INDEPENDENT_ONLY=$(CLEAN_INDEPENDENT_ONLY);_BuildNumber=$(BuildNumber);_RevisionNumber=$(RevisionNumber);_Configuration=$(Configuration);_TinyCLR_Platform=$(TinyCLR_Platform);_SignBuild=$(SignBuild);_SolutionRoot=$(SolutionRoot);_MFSettingsFile=$(MFSettingsFile);PropagatedBy=System</MainProps>
+
+    <CLRLIB>$(CLRROOT)\Tools\Libraries</CLRLIB>
+
+    <SRC_DIR>$(CLRROOT)\$(Directory)</SRC_DIR>
+
+    <!-- pedantic matching of letter case with old makefiles; makes it easier to use WinDiff to check things -->
+
+    <OLD_FLAVOR Condition="'$(FLAVOR)'=='Release'">release</OLD_FLAVOR>
+    <OLD_FLAVOR Condition="'$(FLAVOR)'=='Debug'">debug</OLD_FLAVOR>
+    <OLD_FLAVOR Condition="'$(FLAVOR)'=='RTM'">RTM</OLD_FLAVOR>
+    <OLD_FLAVOR Condition="'$(FLAVOR)'=='RTM' and '$(PLATFORM_FAMILY)'=='x86'">release</OLD_FLAVOR>
+    <OLD_FLAVOR Condition="'$(FLAVOR)'=='Instrumented'">instrumented</OLD_FLAVOR>
+
+  </PropertyGroup>
+
+  <!-- set up the base DST_DIR path base on different PLATFORM_FAMILY at the corresponding setting files -->
+  <Import Condition="'$(PLATFORM_FAMILY)'=='x86'"    Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.x86.settings"    />
+  <!-- IMPORT the COMPILER_TOOL specific settings file (if it exists).  COMPILER_TOOL is set by setenv.cmd -->
+  <Import Condition="'$(PLATFORM_FAMILY)'!='x86' and EXISTS('$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.$(COMPILER_TOOL).settings')"    Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.$(COMPILER_TOOL).settings"    />
+
+  <PropertyGroup Condition="'$(PlatformIndependentBuild)'!='true'">
+    <OBJ_DIR>$(DST_DIR)\$(OBJ_EXT)\$(Directory)</OBJ_DIR>
+    <LIB_DIR>$(DST_DIR)\$(LIB_EXT)</LIB_DIR>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(PlatformIndependentBuild)'=='true'">
+    <OBJ_DIR>$(PLATFORM_INDEPENDENT_DST_DIR)\$(OBJ_EXT)\$(Directory)</OBJ_DIR>
+    <LIB_DIR>$(PLATFORM_INDEPENDENT_DST_DIR)\$(LIB_EXT)</LIB_DIR>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IntermediateOutputPath>$(OBJ_DIR)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BIN_DIR Condition="'$(BIN_DIR)'==''"   >$(DST_DIR)\bin</BIN_DIR>
+    <BLD_DIR>$(DST_DIR)</BLD_DIR>
+    <PLATFORM_INDEPENDENT_OBJ_DIR           >$(PLATFORM_INDEPENDENT_DST_DIR)\$(OBJ_EXT)\$(Directory)</PLATFORM_INDEPENDENT_OBJ_DIR>
+    <PLATFORM_INDEPENDENT_LIB_DIR           >$(PLATFORM_INDEPENDENT_DST_DIR)\$(LIB_EXT)</PLATFORM_INDEPENDENT_LIB_DIR>
+  </PropertyGroup>
+
+  <!-- at the common.mk-->
+  <ItemGroup>
+    <DirectIncludePaths Include="$(PLATFORM_INDEPENDENT_LIB_DIR)" />
+    <IncludePaths Include="DeviceCode\Targets\$(TARGETCODEBASETYPE)\$(TARGETCODEBASE)\$(PLATFORM)" />
+    <IncludePaths Include="Support\Include"/>
+    <IncludePaths Include="DeviceCode\include"/>
+    <IncludePaths Include="CLR\include"/>
+    <IncludePaths Include="Crypto\inc"/>
+  </ItemGroup>
+
+  <Import Project="Microsoft.SPOT.System.HalIncludes.settings"/>
+</Project>

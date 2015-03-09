@@ -1,0 +1,37 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>Solutions\Template\DeviceCode</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <PropertyGroup>
+    <AssemblyName>Template</AssemblyName>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <!-- put all the files (.cpp, .c, .s) to be compiled for this Output in the "compile" itemgroup -->
+    <!-- the files that appear at the compile group and if it exists in the diretory, the obj will be deleted when it is doing clean-->
+    <!-- if none of the source files eixst in the directory, then the library will not be delete, it will assume it is precompiled lib  -->
+    <!-- otherwise, the .lib will be removed for "cleanbuild"-->
+
+    <Compile Include="various.cpp" />
+
+
+    <!-- for extra no source obj to included in the library, use ObjFiles itemgroup-->
+    <!-- 
+    <ObjFiles Include=""/>
+    -->
+    <!-- for extra files to be deleted at cleanbuild, use ExtraCleanFiles -->
+    <!--
+    <ExtraCleanFiles Include=""/>
+    -->
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

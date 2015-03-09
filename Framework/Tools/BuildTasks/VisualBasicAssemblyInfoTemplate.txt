@@ -1,0 +1,23 @@
+'*****************************************************************************/
+'*  Template for defining a common set of AssemblyInfo attributes across the SDK
+'*
+'*  %COPYRIGHT%
+'*  Information Contained Herein Is Proprietary and Confidential.
+'*
+'* Purpose:
+'*  Define attributes for the Microsoft.VisualBasic assembly
+'*
+'*****************************************************************************/
+Imports System.Reflection
+Imports System.Runtime.CompilerServices
+
+<Assembly: System.Reflection.AssemblyTitle("%TITLE%")> 
+<Assembly: System.Reflection.AssemblyDescription("%DESCRIPTION%")> 
+<Assembly: System.Reflection.AssemblyCompany("%COMPANY%")>
+<Assembly: System.Reflection.AssemblyCopyright("%COPYRIGHT%")> 
+<Assembly: AssemblyVersion("%ASSEMBLYVERSION%")> 
+<Assembly: AssemblyConfiguration("%CONFIGURATION%")>
+<Assembly: AssemblyProduct("%PRODUCT%")>
+<Assembly: AssemblyTrademark("%TRADEMARK%")>
+<Assembly: AssemblyFileVersion("%FILEVERSION%")>
+<Assembly: AssemblyInformationalVersion("%PRODUCTVERSION%")>

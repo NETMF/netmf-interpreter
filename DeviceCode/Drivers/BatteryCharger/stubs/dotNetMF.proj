@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>batterycharger_hal_stubs</AssemblyName>
+    <ProjectGuid>{8d8bbb5d-1923-4e4d-b666-d29bdd7956df}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>Battery charger stub library</Description>
+    <Level>HAL</Level>
+    <LibraryFile>batterycharger_hal_stubs.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\BatteryCharger\stubs\dotNetMF.proj</ProjectPath>
+    <ManifestFile>batterycharger_hal_stubs.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Battery\stubs</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BatteryCharger_HAL" Guid="{381CBCC8-A737-4DD2-A821-6ABF0F908305}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <Directory>DeviceCode\Drivers\batterycharger\stubs</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <FastCompileCPPFile Include="fastcompile_batterycharger_stubs.cpp" />
+    <Compile Include="BatteryCharger_stubs_config.cpp" />
+    <Compile Include="BatteryCharger_stubs_functions.cpp" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

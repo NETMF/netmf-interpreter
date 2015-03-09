@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <xsd:annotation>
+    <xsd:documentation xml:lang="en">
+      USB client configuration schema for MFDeploy
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:element name="UsbControllerConfiguration" type ="UsbConfigurationType"/>
+  
+  <xsd:complexType name="UsbConfigurationType">
+    <xsd:sequence>
+      <xsd:element name="DeviceDescriptor" type="DeviceDescriptorType"/>
+      <xsd:element name="ConfigurationDescriptor" type="ConfigurationDescriptorType"/>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element name="StringDescriptor" type="StringDescriptorType"/>
+        <xsd:element name="GenericDescriptor" type="GenericDescriptorType"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DeviceDescriptorType">
+    <xsd:all>
+      <xsd:element name="idVendor" type="ComplexInteger"/>
+      <xsd:element name="idProduct" type="ComplexInteger"/>
+      <xsd:element name="bcdDevice" type="BcdInteger"/>
+      <xsd:element name="bMaxPacketSize0" type="ComplexInteger"/>
+      <xsd:element name="iManufacturer" type="UsbString" minOccurs="0"/>
+      <xsd:element name="iProduct" type="UsbString" minOccurs="0"/>
+      <xsd:element name="iSerialNumber" type="UsbString" minOccurs="0"/>
+      <xsd:element name="bcdUSB" type="BcdInteger" minOccurs="0"/>
+      <xsd:element name="bDeviceClass" type="ComplexInteger" minOccurs="0"/>
+      <xsd:element name="bDeviceSubClass" type="ComplexInteger" minOccurs="0"/>
+      <xsd:element name="bDeviceProtocol" type="ComplexInteger" minOccurs="0"/>
+    </xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="ConfigurationDescriptorType">
+    <xsd:choice maxOccurs="unbounded">
+      <xsd:element name="bMaxPower_mA" type="DevicePowerType"/>
+      <xsd:element name="iConfiguration" type="UsbString" minOccurs="0"/>
+      <xsd:element name="SelfPowered" minOccurs="0"/>
+      <xsd:element name="RemoteWakeup" minOccurs="0"/>
+      <xsd:element name="InterfaceDescriptor" type="InterfaceDescriptorType" maxOccurs="255"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="InterfaceDescriptorType">
+    <xsd:choice maxOccurs="unbounded">
+      <xsd:element name="EndpointDescriptor" type="EndpointDescriptorType" maxOccurs="255"/>
+      <xsd:element name="ClassDescriptor" type="ClassDescriptorType" minOccurs="0"/>
+      <xsd:element name="iInterface" type="UsbString" minOccurs="0"/>
+      <xsd:element name="bInterfaceClass" type="ComplexInteger" minOccurs="0"/>
+      <xsd:element name="bInterfaceSubClass" type="ComplexInteger" minOccurs="0"/>
+      <xsd:element name="bInterfaceProtocol" type="ComplexInteger" minOccurs="0"/>
+    </xsd:choice>
+    <xsd:attribute name="id" type="ComplexInteger" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="EndpointDescriptorType">
+    <xsd:choice maxOccurs="2">
+      <xsd:element name="wMaxPacketSize" type="ComplexInteger"/>
+      <xsd:element name="bInterval" type="ComplexInteger"/>
+    </xsd:choice>
+    <xsd:attribute name="id" type="ComplexInteger" use="required"/>
+    <xsd:attribute name="direction" type="DirectionType" use="required"/>
+    <xsd:attribute name="transfer" type="TransferType" use="required"/>
+    <xsd:attribute name="usage" type="UsageType" default="data"/>
+    <xsd:attribute name="synchronization" type="SynchronizationType" default="none"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="ClassDescriptorType">
+    <xsd:choice maxOccurs="unbounded">
+      <xsd:element name="bDescriptorType" type="ComplexInteger"/>
+      <xsd:element name="bPadding" type="ComplexInteger" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="bData" type="ComplexIntegerList" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="wData" type="ComplexIntegerList" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="dwData" type="ComplexIntegerList" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="iData" type="UsbString" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="sData" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="wsData" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="StringDescriptorType">
+    <xsd:simpleContent>
+      <xsd:extension base="UsbString">
+        <xsd:attribute name="index" type="ComplexInteger" use="required"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="GenericDescriptorType">
+    <xsd:choice maxOccurs="unbounded">
+      <xsd:element name="bRecipient" type="RecipientType" minOccurs="0" default="device"/>
+      <xsd:element name="wValue" type="ComplexInteger"/>
+      <xsd:element name="bRequest" type="ComplexInteger" minOccurs="0" default="6"/>
+      <xsd:element name="wIndex" type="ComplexInteger" minOccurs="0" default="0"/>
+      <xsd:element name="bPadding" type="ComplexInteger" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="bData" type="ComplexIntegerList" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="wData" type="ComplexIntegerList" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="dwData" type="ComplexIntegerList" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="iData" type="UsbString" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="sData" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="wsData" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:choice>
+    <xsd:attribute name="type" type="RequestType" use="required"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="UsbString">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="126"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="BcdInteger">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{0,2}(\.[0-9]{0,2})?"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <xsd:simpleType name="ComplexInteger">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="(#x([0-9]|[A-F]|[a-f])+)|([0-9]+)"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ComplexIntegerList">
+    <xsd:list itemType="ComplexInteger"/>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="DevicePowerType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="2"/>
+      <xsd:maxInclusive value="510"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="DirectionType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="in"/>
+      <xsd:enumeration value="out"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="TransferType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="bulk"/>
+      <xsd:enumeration value="isochronous"/>
+      <xsd:enumeration value="interrupt"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="UsageType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="data"/>
+      <xsd:enumeration value="feedback"/>
+      <xsd:enumeration value="implicit"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="SynchronizationType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="none"/>
+      <xsd:enumeration value="asynchronous"/>
+      <xsd:enumeration value="adaptive"/>
+      <xsd:enumeration value="synchronous"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="RequestType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="standard"/>
+      <xsd:enumeration value="class"/>
+      <xsd:enumeration value="vendor"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="RecipientType">
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="device"/>
+          <xsd:enumeration value="interface"/>
+          <xsd:enumeration value="endpoint"/>
+          <xsd:enumeration value="other"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="ComplexInteger"/>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+
+</xsd:schema>

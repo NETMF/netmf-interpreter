@@ -1,0 +1,15 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_NetMFv44">
+    <Feature Id="MicroFramework_v4_4"
+             Title="Micro Framework v4.4 Assemblies"
+             Description=".NET Micro Framework v4.4 Multi-Target Pack"
+             Display="collapse"
+             Level="1"
+             Absent="allow"
+             InstallDefault="followParent">
+
+      <ComponentRef Id="Component_MicroFramework_v4_4"/>
+      <ComponentRef Id="Component_Targets_v4_4"/>
+    </Feature>
+  </Fragment>
+</Wix>

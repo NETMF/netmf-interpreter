@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Platform.Tests.IO.FileStreamTests</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>FileStreamTests</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{44B47FC4-356F-4BDB-BDF8-873C42923DC4}</ProjectGuid>
+    <NoWarn>,1668</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Microsoft.SPOT.Platform.Tests.IOTests</StartupObject>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="CanRead.cs" />
+    <Compile Include="CanSeek.cs" />
+    <Compile Include="CanWrite.cs" />
+    <Compile Include="Constructors_FileAccess.cs" />
+    <Compile Include="Constructors_FileMode.cs" />
+    <Compile Include="Constructors_FileShare.cs" />
+    <Compile Include="FileStreamHelper.cs" />
+    <Compile Include="Flush.cs" />
+    <Compile Include="Master.cs" />
+    <Compile Include="PropertyTests.cs" />
+    <Compile Include="Read.cs" />
+    <Compile Include="Seek.cs" />
+    <Compile Include="Write.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.IO">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>$(BUILD_TREE_DLL)\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFUtility">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Tests.IOTestsHelper">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Tests.IOTestsHelper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WineMonitorService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WineMonitorService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="WineSensorData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Humidity" type="xs:double" />
+      <xs:element minOccurs="0" name="Temperature" type="xs:double" />
+      <xs:element minOccurs="0" name="TimeStamp" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WineSensorData" nillable="true" type="tns:WineSensorData" />
+  <xs:complexType name="WineSensorThreshold">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MaxHumidity" type="xs:double" />
+      <xs:element minOccurs="0" name="MaxMinutesWithoutUpdate" type="xs:int" />
+      <xs:element minOccurs="0" name="MaxTemperature" type="xs:double" />
+      <xs:element minOccurs="0" name="MinHumidity" type="xs:double" />
+      <xs:element minOccurs="0" name="MinTemperature" type="xs:double" />
+      <xs:element minOccurs="0" name="TimeStamp" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WineSensorThreshold" nillable="true" type="tns:WineSensorThreshold" />
+  <xs:complexType name="AlertData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Alert" type="tns:AlertFlags" />
+      <xs:element minOccurs="0" name="AlertValue" type="xs:double" />
+      <xs:element minOccurs="0" name="TimeStamp" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AlertData" nillable="true" type="tns:AlertData" />
+  <xs:simpleType name="AlertFlags">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="TempHigh" />
+      <xs:enumeration value="TempLow" />
+      <xs:enumeration value="HumidHigh" />
+      <xs:enumeration value="HumidLow" />
+      <xs:enumeration value="NoComm" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AlertFlags" nillable="true" type="tns:AlertFlags" />
+</xs:schema>

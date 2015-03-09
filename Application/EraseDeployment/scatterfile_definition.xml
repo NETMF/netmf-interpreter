@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ScatterFile>
+
+    <Include File="%SPOCLIENT%\DeviceCode\Targets\%TARGETCODEBASETYPE%\%TARGETCODEBASE%\%PLATFORM%\scatterfile_tools.xml"/>
+
+</ScatterFile>

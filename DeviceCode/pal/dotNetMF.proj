@@ -1,0 +1,45 @@
+<!-- Builds the tinypal[_stub].$(LIB_EXT), for SPOT projects -->
+
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>DeviceCode\pal</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup Condition="'$(PLATFORM_FAMILY)'!='x86'">
+    <SubDirectories Include="AsyncProcCall"/>
+    <SubDirectories Include="Buttons"/>
+    <SubDirectories Include="Blockstorage"/>
+    <SubDirectories Include="COM"/>
+    <SubDirectories Include="palevent"/>
+    <SubDirectories Include="configuration"/>
+    <SubDirectories Include="Diagnostics"     Condition="'$(FLAVOR)'=='Instrumented'"/>
+    <SubDirectories Include="events"/>
+    <SubDirectories Include="fs"/>
+    <SubDirectories Include="Gesture"/>
+    <SubDirectories Include="Graphics"/>
+    <SubDirectories Include="heap"/>
+    <SubDirectories Include="Ink"/>
+    <SubDirectories Include="io"/>
+    <SubDirectories Include="piezo"/>
+    <SubDirectories Include="StateDebounce"/>
+    <SubDirectories Include="time"/>
+    <SubDirectories Include="timeservice"/>
+    <SubDirectories Include="tinycrt"/>
+    <SubDirectories Include="TouchPanel"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SubDirectories Include="SimpleHeap"/>
+  </ItemGroup>
+ 
+  <ItemGroup Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'"> 
+    <SubDirectories Include="Double" />    <!-- Support Double precison floating point -->
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

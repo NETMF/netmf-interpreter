@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>StubWinHal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>e3130481-e48f-4725-8467-c162df8631ae</ProjectGuid>
+    <Description>Collection of stubs and minimum implemenations to satisfy the CLR enough for Tools</Description>
+    <Level>HAL</Level>
+    <LibraryFile>StubWinHal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Tools\StubWinHal\dotNetMF.proj</ProjectPath>
+    <ManifestFile>StubWinHal.$(LIB_EXT).manifest</ManifestFile>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Tools\StubWinHal</Directory>
+    <OutputType>Library</OutputType>
+    <PCHFile>none</PCHFile>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+    <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows2\Windows2.settings</MFSettingsFile>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <Compile Include="StubWinHal.cpp" />
+    <Compile Include="corlib_native.cpp" />
+    <Compile Include="mintime.cpp" />
+    <Compile Include="minheap.cpp" />
+    <Compile Include="$(SPOCLIENT)\Clr\Diagnostics\Info_Win32.cpp" />
+    <Compile Include="$(SPOCLIENT)\Clr\Diagnostics\ManagedElementTypes_Win32.cpp" />
+    <Compile Include="$(SPOCLIENT)\CLR\Core\Serialization\BinaryFormatter.cpp" />
+    <Compile Include="$(SPOCLIENT)\CLR\Core\CLR_RT_RuntimeMemory.cpp" />
+    <IncludePaths Include="CLR\Tools\Include" />
+    <IncludePaths Include="CLR\Tools\StubWinHal" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\core" />
+    <IncludePaths Include="CLR\Libraries\SPOT_Net" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\libraries\SPOT_Hardware" />
+    <IncludePaths Include="CLR\libraries\SPOT_Graphics" />
+    <IncludePaths Include="CLR\libraries\SPOT" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\hal_windows.h" />
+    <HFiles Include="stdafx.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

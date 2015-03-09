@@ -1,0 +1,22 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>TouchPanel</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Touch" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Touch.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Touch\Core_Touch.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Touch_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\PalEvent_PAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Touch panel support</Description>
+    <Guid>{7a8b6940-7ebc-44b4-8bf2-0ce1957add6f}</Guid>
+    <Groups>Touch</Groups>
+    <Documentation>
+    </Documentation>
+    <TOUCHSCREEN_FEATUREPROJ>True</TOUCHSCREEN_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

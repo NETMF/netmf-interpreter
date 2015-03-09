@@ -1,0 +1,43 @@
+<!-- 
+
+    Builds native-mode test library 
+-->
+
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>Test\native\src</Directory>
+    <ProjectGuid>{D1AD99A7-C586-447F-AD7E-6A5556019557}</ProjectGuid>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <PropertyGroup>
+    <AssemblyName>Native</AssemblyName>
+    <OutputType>Library</OutputType>
+    <LibraryFile>Native.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>Native.$(LIB_EXT).manifest</ManifestFile>
+  </PropertyGroup>
+
+  <!-- 
+   *
+   * Add new functions to the library by adding the source relative-directory\source file to the list
+   * below. 
+   *
+   -->
+
+  <ItemGroup>
+    <Compile Include="$(SPOCLIENT)\Test\native\src\log\log.cpp" />
+    <Compile Include="$(SPOCLIENT)\Test\native\src\timedevents\timedevents.cpp" />
+    <Compile Include="$(SPOCLIENT)\Test\native\src\timers\timers.cpp" />
+    <Compile Include="$(SPOCLIENT)\Test\native\src\uart\uart.cpp" />
+    <Compile Include="$(SPOCLIENT)\Test\native\src\gpio\gpio.cpp" />
+    <Compile Include="$(SPOCLIENT)\Test\native\src\spi\spi.cpp" />
+    <Compile Include="$(SPOCLIENT)\Test\native\src\spi\eeprom_stm95x.cpp" />
+    <Compile Include="$(SPOCLIENT)\Test\native\src\ramtest\ramtest.cpp" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

@@ -1,0 +1,25 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Hardware</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(CORE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Hardware" />
+    <InteropFeature Include="Microsoft_SPOT_EventSink_DriverProcs" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Hardware.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_hardware\Core_Native_Hardware.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\BatteryCharger_HAL.libcatproj"/>
+  <Import Project="$(SPOCLIENT)\Framework\Features\BatteryMeasurement_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Hardware_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Hardware_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Core hardware component</Description>
+    <Guid>{823f4e8c-a71d-459f-a6be-950986a1c2f6}</Guid>
+    <Groups>Hardware</Groups>
+    <Required>true</Required>
+    <HARDWARE_FEATUREPROJ>true</HARDWARE_FEATUREPROJ>
+    <Documentation>
+    </Documentation>
+  </PropertyGroup>
+</Project>

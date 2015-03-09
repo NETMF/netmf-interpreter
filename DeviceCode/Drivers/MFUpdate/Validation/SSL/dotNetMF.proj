@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\MFUpdate\Validation\SSL\dotNetMF.proj</ProjectPath>
+    <ProjectGuid>{E3C399EE-47FA-49C1-997A-9B36A89EF54A}</ProjectGuid>
+    <AssemblyName>UpdateValidationSSL</AssemblyName>
+    <Size>
+    </Size>
+    <Description>Update Validation driver for SSL</Description>
+    <Level>HAL</Level>
+    <LibraryFile>UpdateValidationSSL.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>UpdateValidationSSL.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Update</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\MFUpdate\Validation\SSL</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="SslUpdateValidation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\mfupdate_decl.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptoki.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptokipal.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11f.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11t.h" />
+    <HFiles Include="sslupdatevalidation.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

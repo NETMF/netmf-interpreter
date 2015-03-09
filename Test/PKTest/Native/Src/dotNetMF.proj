@@ -1,0 +1,32 @@
+<!-- 
+
+    Builds native-mode test library 
+-->
+
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>PKTest\Native\Src</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <PropertyGroup>
+    <AssemblyName>Native</AssemblyName>
+    <OutputType>Library</OutputType>
+    <LibraryFile>Native.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>Native.$(LIB_EXT).manifest</ManifestFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(NMT_DIR)\src\Log\Log.cpp" />
+    <Compile Include="$(NMT_DIR)\src\SPI\SPI.cpp" />
+    <Compile Include="$(NMT_DIR)\src\UART\UART.cpp" />
+    <Compile Include="$(NMT_DIR)\src\TEvents\TEvents.cpp" />
+  </ItemGroup>
+
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

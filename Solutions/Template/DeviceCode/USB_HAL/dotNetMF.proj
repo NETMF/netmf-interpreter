@@ -1,0 +1,46 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>USB_HAL_TEMPLATE</AssemblyName>
+    <ProjectGuid>{591749DD-D419-430B-BA5D-833E3211A075}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>USB TEMPLATE library</Description>
+    <Level>HAL</Level>
+    <LibraryFile>USB_HAL_TEMPLATE.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Solutions\Template\DeviceCode\USB_HAL\dotNetMF.proj</ProjectPath>
+    <ManifestFile>USB_HAL_TEMPLATE.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Processor\TEMPLATE</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="USB_HAL" Guid="{D5D07F9F-0BB9-4077-836B-580C4E7A734C}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsTEMPLATE>True</IsTEMPLATE>
+    <Directory>Solutions\Template\DeviceCode\USB_HAL</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="TEMPLATE_functions_USB.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

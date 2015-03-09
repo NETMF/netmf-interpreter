@@ -1,0 +1,11 @@
+<Include>
+  <?ifdef  VSRegKeyRoot ?><?undef VSRegKeyRoot ?><?endif ?>
+  <?define VSRegKeyRoot="SOFTWARE\Microsoft\VCSExpress\10.0"?>
+
+  <?ifdef SKU_PLK_ID?><?undef SKU_PLK_ID?><?endif?>
+  <?define SKU_PLK_ID="1001"?>
+
+  <?ifdef SKU_HAS_VB  ?><?undefine SKU_HAS_VB ?><?endif?>
+  <?ifndef SKU_HAS_VCS ?><?define SKU_HAS_VCS?><?endif?>
+  <?include vs_skus\__vs_common.wxs?>
+</Include>

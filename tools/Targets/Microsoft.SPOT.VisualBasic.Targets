@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Project="Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />
+  <Import Project="Microsoft.SPOT.Build.Targets" />
+
+  <PropertyGroup>
+    <DocFile Condition=" '$(TinyCLR_VisualBasic_Documentation)'=='true'">$(OutputPath)$(AssemblyName).xml</DocFile>
+    <!--TODO: Remove some of these once we program in late-binding, etc-->
+    <WarningsAsError>42017,42020,42021,42022</WarningsAsError>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <FrameworkPathOverride>$(BUILD_TREE_DLL)</FrameworkPathOverride>
+    <TargetCompactFramework>true</TargetCompactFramework>
+    <NoWarn>$(NoWarn),42016</NoWarn>
+    <CommonAssemblyInfoTemplate>$(SPOCLIENT)\tools\AssemblyInfo.vb.template</CommonAssemblyInfoTemplate>
+    <CommonAssemblyInfoItemName>Compile</CommonAssemblyInfoItemName>
+    <CommonAssemblyInfoLanguage>VisualBasic</CommonAssemblyInfoLanguage>
+
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v3.0'">$(DefineConstants),MF_FRAMEWORK_VERSION_V3_0</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.0'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_0</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.1'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_1</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.2'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_2</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.3'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_3</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.4'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_4</DefineConstants>
+  </PropertyGroup>  
+
+  <!-- for DEV11, we will not need to refer to the runtime anymore, it will be embedded -->
+  <ItemGroup Condition=" '$(AssemblyName)' != 'Microsoft.VisualBasic' ">
+    <!-- Tell the IDE to use these paths; It seems to make the IDE look at the right MS.VB
+        It seems as if Intellisence grabs the right thing from the SDK Path; These lines only
+        give a warning about the ambiguous mscorlib as far as I can tell.
+      -->
+  
+    <Reference Include="Microsoft.VisualBasic">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.VisualBasic.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Standard VB Imports (was in vbc.rsp, but it includes stuff we can't use.-->
+    <Import Include="System" />
+    <Import Include="Microsoft.VisualBasic" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+</Project>

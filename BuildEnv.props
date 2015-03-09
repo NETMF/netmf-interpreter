@@ -1,0 +1,67 @@
+<Project InitialTargets="SetPathEnv" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  
+  <!-- Provide properties for Environment variables normally set by setenvbase.cmd -->
+  <PropertyGroup>
+    <SPOCLIENT Condition="'$(SPOCLIENT)'==''">$(MsBuildThisFileDirectory.TrimEnd('\'))</SPOCLIENT>
+    <CLRROOT Condition="'$(CLRROOT)'==''">$(SPOCLIENT)</CLRROOT>
+    <SPOROOT Condition="'$(SPOROOT)'==''">$([System.IO.Path]::GetDirectoryName('$(SPOCLIENT)'))</SPOROOT>
+    <_SDROOT_ Condition="'$(_SDROOT_)'==''">$(SPOROOT)</_SDROOT_>
+    <COMMON_BUILD_ROOT Condition="'$(COMMON_BUILD_ROOT)'==''">$(SPOCLIENT)</COMMON_BUILD_ROOT>
+    <BUILD_ROOT_BASE Condition="'$(BUILD_ROOT_BASE)'==''">$(COMMON_BUILD_ROOT)\BuildOutput</BUILD_ROOT_BASE>
+    <BUILD_ROOT Condition="'$(BUILD_ROOT)'==''">$(BUILD_ROOT_BASE)\Public</BUILD_ROOT>
+    <BUILD_TREE Condition="'$(BUILD_TREE)'==''">$(BUILD_ROOT)\$(Configuration)</BUILD_TREE>
+    <BUILD_TREE_CLIENT Condition="'$(BUILD_TREE_CLIENT)'==''">$(BUILD_TREE)\Client</BUILD_TREE_CLIENT>
+    <BUILD_TREE_SERVER Condition="'$(BUILD_TREE_SERVER)'==''">$(BUILD_TREE)\Server</BUILD_TREE_SERVER>
+    <BHL_EXE Condition="'$(BHL_EXE)'==''">$(BUILD_TREE_SERVER)\dll\BuildHelper.exe</BHL_EXE>
+    <MDP_EXE Condition="'$(MDP_EXE)'==''">$(BUILD_TREE_SERVER)\dll\MetadataProcessor.exe</MDP_EXE>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(SPOCLIENT)\Framework\IDE\Targets\</NetMfTargetsBaseDir>
+    <FLAVOR_ARM Condition="'$(FLAVOR_ARM)'==''">$(Configuration)</FLAVOR_ARM>
+    <FLAVOR_DAT Condition="'$(FLAVOR_DAT)'==''">$(Configuration)</FLAVOR_DAT>
+    <FLAVOR_WIN Condition="'$(FLAVOR_WIN)'==''">$(Configuration)</FLAVOR_WIN>
+    <FLAVOR_MEMORY Condition="'$(FLAVOR_MEMORY)'==''">FLASH</FLAVOR_MEMORY>
+    <CLRLIB Condition="'$(CLRLIB)'==''">$(SPOCLIENT)\Tools\Libraries</CLRLIB>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)'==''" >12.0</VisualStudioVersion>
+    <!-- use registry to get VC install directory (this is what the VCVARS32.bat does for a VS command prompt) -->
+    <VcInstallDir Condition="'$(VcInstallDir)'==''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\SxS\VC7', '$(VisualStudioVersion)', null, RegistryView.Registry32))</VcInstallDir>
+  </PropertyGroup>
+  
+  <!-- Additional binary search paths -->
+  <ItemGroup>
+    <BinPath Include="$(SPOROOT)\tools\x86\perl\bin"/>
+    <BinPath Include="$(SPOROOT)\tools\x86\bin"/>
+    <BinPath Include="$(SPOROOT)\tools\bin"/>
+    <BinPath Include="$(SPOROOT)" />
+    <BinPath Include="$(VcInstallDir)\Bin" /> 
+  </ItemGroup>
+  
+  <!-- Inlined task to add paths to the environment of this build -->
+  <UsingTask TaskName="SetEnvironmentBinPath" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <Paths ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+string path = System.Environment.GetEnvironmentVariable("PATH");
+path = Paths + ";" + path;
+System.Environment.SetEnvironmentVariable("PATH", path);
+]]></Code>
+    </Task>
+  </UsingTask>
+
+  <!--
+  Target to set the environment path with the items in the BinPath items group.
+  This target is triggered at the start of a build by the 'InitialTargets'
+  attribute on the containing project (above). Ideally a props file has no targets
+  however, since there is no other way to set environment variables, in particular
+  the search path for executables, this will do. In the future the targets needing
+  specific paths for tools will need to be updated to use properties to specify
+  the paths for executables explicitly so the PATH environment variable and this
+  target isn't necessary.
+  -->
+  <Target Name="SetPathEnv">
+    <SetEnvironmentBinPath Paths="@(BinPath)"/>
+  </Target>
+</Project>
+
+
+

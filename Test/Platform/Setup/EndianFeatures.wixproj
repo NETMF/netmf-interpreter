@@ -1,0 +1,15 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+
+    <WiXSource Include="EndianFeatures.wxs"/>
+
+  </ItemGroup>
+  
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+
+  <PropertyGroup>
+    <CandleIncludeSearchPath>-I$(MSBuildProjectDirectory)</CandleIncludeSearchPath>
+    <CandleIncludeSearchPath>-I$(SPOCLIENT)\Test\Platform\Setup</CandleIncludeSearchPath>
+    <OUTPUT_WIXOBJ_DIR>$(OutputWiXObjRoot)FeatureFragments\</OUTPUT_WIXOBJ_DIR>
+  </PropertyGroup>
+</Project>

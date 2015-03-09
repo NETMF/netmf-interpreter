@@ -1,0 +1,56 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Tinybooter</AssemblyName>
+    <ProjectGuid>
+    </ProjectGuid>
+    <Description>
+    </Description>
+    <Documentation>
+    </Documentation>
+    <Directory>Solutions\$(PLATFORM)\TinyBooter</Directory>
+    <IsClrProject>False</IsClrProject>
+    <InteropFeatures>
+    </InteropFeatures>
+    <ExtraAssemblies>
+    </ExtraAssemblies>
+    <ProjectPath>$(SPOCLIENT)\ProjectTemplates\TinyBooter\TinyBooter.proj</ProjectPath>
+    <MFSettingsFile>
+    </MFSettingsFile>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Targets" />
+  <PropertyGroup>
+    <OutputType>Executable</OutputType>
+    <reducesize>true</reducesize>
+    <MultipleOutputSections>false</MultipleOutputSections>
+    <CustomAssemblyName>TinyBooter</CustomAssemblyName>
+
+    <ExtraTargets>BuildSigFiles</ExtraTargets>
+    <ExtraTargets>$(ExtraTargets);CompressBin</ExtraTargets>
+    <ScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</ScatterFileDefinition>
+    <EXEScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="$(SPOCLIENT)\Application\common\assemblycode\arm\$(AS_SUBDIR)\FirstEntryMinimal.s" Condition="'$(INSTRUCTION_SET)'=='arm' or '$(INSTRUCTION_SET)'=='thumb'" />
+    <Compile Include="$(SPOCLIENT)\Application\common\assemblycode\thumb2\$(AS_SUBDIR)\FirstEntryMinimal.s" Condition="'$(INSTRUCTION_SET)'=='thumb2'" />
+    <Compile Include="$(SRC_DIR)\Allocator.cpp" />
+    <Compile Include="$(SRC_DIR)\TinyBooterEntry.cpp" />
+    <ExtraCleanFiles Include="$(OBJ_DIR)\TinyBooter_Compressed.dat" />
+
+    <CompressBinFile   Include="$(BIN_DIR)\TinyBooter.bin"/>
+    <CompressBinAsm    Include="$(AS_SUBDIR)\TinyBooter_dat.s"/>
+    <CompressBinComp   Include="$(OBJ_DIR)\TinyBooter_compressed.dat"/>
+    <CompressBinOutput Include="$(OBJ_DIR)\Tinybooter_dat.$(OBJ_EXT)"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\Application\Tinybooter\TinybooterLib.proj" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Heap_PAL.libcatproj" />
+  <ItemGroup>
+    <PlatformIndependentLibs Include="TinybooterLib.$(LIB_EXT)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Directory>DeviceCode\Drivers\Stubs</Directory>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <SubDirectories Include="GlobalLock"/>
+    <SubDirectories Include="Processor"/>
+    <SubDirectories Include="VirtualKey"/>
+    <SubDirectories Include="USB_Config"/>
+    <SubDirectories Include="Backlight"/>
+    <SubDirectories Include="Network"/>
+    <SubDirectories Include="BlockStorage"/>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UsbControllerConfiguration
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="UsbClientConfig.xsd">
+  
+  <DeviceDescriptor>
+    <idVendor>#x15A2</idVendor>
+    <idProduct>#x0026</idProduct>
+    <bcdDevice>1.00</bcdDevice>
+    <bMaxPacketSize0>8</bMaxPacketSize0>
+    <iManufacturer>Freescale</iManufacturer>
+    <iProduct>Micro Framework MXS Reference </iProduct>
+  </DeviceDescriptor>
+  
+  <ConfigurationDescriptor>
+    <bMaxPower_mA>280</bMaxPower_mA>
+    <SelfPowered/>
+    
+    <!-- Debug interface -->
+    <InterfaceDescriptor id="0">
+      <bInterfaceClass>#xFF</bInterfaceClass>
+      <bInterfaceSubClass>1</bInterfaceSubClass>
+      <bInterfaceProtocol>1</bInterfaceProtocol>
+      <EndpointDescriptor id="1" direction="in" transfer="bulk">
+        <wMaxPacketSize>64</wMaxPacketSize>
+      </EndpointDescriptor>
+      <EndpointDescriptor id="2" direction="out" transfer="bulk">
+        <wMaxPacketSize>64</wMaxPacketSize>
+      </EndpointDescriptor>
+    </InterfaceDescriptor>
+    
+    <!-- Mouse interface -->
+    <InterfaceDescriptor id="1">
+      <bInterfaceClass>3</bInterfaceClass>
+      <bInterfaceSubClass>1</bInterfaceSubClass>
+      <bInterfaceProtocol>2</bInterfaceProtocol>
+      <ClassDescriptor>
+        <bDescriptorType>#x21</bDescriptorType>
+        <wData>#x0101</wData>     <!-- bcdHID: HID version 1.01 -->
+        <bData>0</bData>          <!-- bCountryCode (unimportant) -->
+        <bData>1</bData>          <!-- bNumDescriptors -->
+        <bData>#x22</bData>       <!-- bDescriptorType: Report descriptor -->
+        <wData>50</wData>         <!-- Total size of Report descriptor -->
+      </ClassDescriptor>
+      <EndpointDescriptor id="3" direction="in" transfer="interrupt">
+        <wMaxPacketSize>8</wMaxPacketSize>
+        <bInterval>10</bInterval>
+      </EndpointDescriptor>
+      
+    </InterfaceDescriptor>
+  </ConfigurationDescriptor>
+  
+  <!-- Display name -->
+  <StringDescriptor index="4">iMXS</StringDescriptor>
+  <!-- Friendly name -->
+  <StringDescriptor index="5">a7e70ea2</StringDescriptor>
+  
+  <!-- Here is the HID Mouse report descriptor -->
+  <GenericDescriptor type="standard">
+    <bRecipient>interface</bRecipient>
+    <wValue>#x2200</wValue>               <!-- Report descriptor            -->
+    <wIndex>1</wIndex>                    <!-- For interface 1              -->
+    <bData>#x05 #x01</bData>              <!-- USAGE_PAGE (Generic Desktop) -->
+    <bData>#x09 #x02</bData>              <!-- USAGE (Mouse)                -->
+    <bData>#xa1 #x01</bData>              <!-- COLLECTION (Application)     -->
+    <bData>#x09 #x01</bData>              <!-- USAGE (Pointer)              -->
+    <bData>#xa1 #x00</bData>              <!-- COLLECTION (Physical)        -->
+    <bData>#x05 #x09</bData>              <!-- USAGE_PAGE (Button)          -->
+    <bData>#x19 #x01</bData>              <!-- USAGE_MINIMUM (Button 1)     -->
+    <bData>#x29 #x03</bData>              <!-- USAGE_MAXIMUM (Button 3)     -->
+    <bData>#x15 #x00</bData>              <!-- LOGICAL_MINIMUM (0)          -->
+    <bData>#x25 #x01</bData>              <!-- LOGICAL_MAXIMUM (1)          -->
+    <bData>#x95 #x03</bData>              <!-- REPORT_COUNT (3)             -->
+    <bData>#x75 #x01</bData>              <!-- REPORT_SIZE (1)              -->
+    <bData>#x81 #x02</bData>              <!-- INPUT (Data,Var,Abs)         -->
+    <bData>#x95 #x01</bData>              <!-- REPORT_COUNT (1)             -->
+    <bData>#x75 #x05</bData>              <!-- REPORT_SIZE (5)              -->
+    <bData>#x81 #x01</bData>              <!-- INPUT (Cnst,Ary,Abs)         -->
+    <bData>#x05 #x01</bData>              <!-- USAGE_PAGE (Generic Desktop) -->
+    <bData>#x09 #x30</bData>              <!-- USAGE (X)                    -->
+    <bData>#x09 #x31</bData>              <!-- USAGE (Y)                    -->
+    <bData>#x15 #x81</bData>              <!-- LOGICAL_MINIMUM (-127)       -->
+    <bData>#x25 #x7f</bData>              <!-- LOGICAL_MAXIMUM (127)        -->
+    <bData>#x75 #x08</bData>              <!-- REPORT_SIZE (8)              -->
+    <bData>#x95 #x02</bData>              <!-- REPORT_COUNT (2)             -->
+    <bData>#x81 #x06</bData>              <!-- INPUT (Data,Var,Rel)         -->
+    <bData>#xc0</bData>                   <!-- END_COLLECTION               -->
+    <bData>#xc0</bData>                   <!-- END_COLLECTION               -->
+  </GenericDescriptor>
+  
+</UsbControllerConfiguration>

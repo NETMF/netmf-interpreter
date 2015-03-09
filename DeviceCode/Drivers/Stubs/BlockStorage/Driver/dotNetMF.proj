@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\stubs\BlockStorage\Driver\dotNetMF.proj</ProjectPath>
+    <AssemblyName>BlockStorageDriver_stubs</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{2F42B783-3E2C-4e53-99C6-8F0A1C9FDED3}</ProjectGuid>
+    <Description>Stub block storage driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>BlockStorageDriver_stubs.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>BlockStorageDriver_stubs.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>BlockStorage</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorage_HAL" Guid="{B87F1565-3D64-4531-A84B-2F9C2B221D1E}" ProjectPath="$(SPOCLIENT)\Framework\Features\BlockStorage_HAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-06-27</Date>
+          <Author>Microsoft</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Directory>DeviceCode\Drivers\stubs\BlockStorage\Driver</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="BlockStorageDriver_stubs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="blockstoragedriver_stubs.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

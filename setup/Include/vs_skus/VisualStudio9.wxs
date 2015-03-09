@@ -1,0 +1,11 @@
+<Include>
+  <?ifdef VSRegKeyRoot ?><?undef VSRegKeyRoot ?><?endif ?>
+  <?define VSRegKeyRoot="SOFTWARE\Microsoft\VisualStudio\9.0"?>
+
+  <?ifdef SKU_PLK_ID?><?undef SKU_PLK_ID?><?endif?>
+  <?define SKU_PLK_ID="1000"?>
+
+  <?ifndef SKU_HAS_VB  ?><?define SKU_HAS_VB ?><?endif?>
+  <?ifndef SKU_HAS_VCS ?><?define SKU_HAS_VCS?><?endif?>
+  <?include vs_skus\__vs_common.wxs?>
+</Include>

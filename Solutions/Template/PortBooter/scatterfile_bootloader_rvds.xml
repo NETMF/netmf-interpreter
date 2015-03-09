@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <!-- Freescale MC9328L, NO SRAM, SDRAM 32M/64M -->
+
+    <!-- ################################################################################ -->
+
+
+    <Set Name="Heap_Begin"      Value="0x08100000"/>
+    <Set Name="Heap_End"        Value="0x084FFFF8"/>
+    <Set Name="Stack_Bottom"    Value="+0"/>
+    <Set Name="Stack_Top"       Value="0x08502000"/>
+
+
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="0x00000000" Options="ABSOLUTE" Size="0x60000">
+
+
+        <ExecRegion Name="ER_%TARGETLOCATION%" Base="0x00000000" Options="FIXED" Size="">
+
+            <FileMapping Name="FirstEntryMinimal.obj"   Options="(+RO)" /> <!-- the entry pointer section goes into this region -->
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
+
+            <!-- all code and constants are in RAM, 0-WS, 32-bit wide -->
+
+            <FileMapping Name="*" Options="(+RO)" /> <!-- this must live somewhere other than RAM, for all but RAM builds -->
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+
+            <FileMapping Name="*"                Options="(+RW-DATA, +ZI)" />
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_Begin%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for a heap -->
+
+        <ExecRegion Name="ER_HEAP_END" Base="%Heap_End%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        </ExecRegion>
+
+
+        <!-- this must go last here to provide a low water mark on the stack -->
+
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>
+	    
+        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Top%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackTop)" />
+        </ExecRegion>
+
+    </LoadRegion>
+
+</ScatterFile>

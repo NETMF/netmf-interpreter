@@ -1,0 +1,8 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='9eab0e93-5daa-4cb4-8a92-024c88fe04e1' Keywords="Installer" Description="Pulsecor Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_MathTests' />
+  </Module>
+</Wix>

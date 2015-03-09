@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <?include defines.wxs?>
+    <DirectoryRef Id="WDEXPRESS11_PROJECT_TEMPLATE_CSHARP_NETMF">
+      <Component Id="Component_CSharpWindowApplicationTemplate.WDE110" Guid ="e4f131f1-bab8-489d-944d-10d032d1192b">
+        <File Id="File_CSharpWindowApplicationTemplate.WDE110" 
+            Name="WindowApplication.zip" 	
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\WindowApplication.zip"
+            DiskId="1"/>
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VS11_PROJECT_TEMPLATE_CSHARP_NETMF">
+      <Component Id="Component_CSharpWindowApplicationTemplate.VS110" Guid ="a98cf2fe-4857-4360-a84b-6ec38b5d650d">
+        <File Id="File_CSharpWindowApplicationTemplate.VS110" 
+            Name="WindowApplication.zip" 	
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\WindowApplication.zip"
+            DiskId="1"/>
+      </Component>
+    </DirectoryRef>
+      <DirectoryRef Id="WDEXPRESS12_PROJECT_TEMPLATE_CSHARP_NETMF">
+          <Component Id="Component_CSharpWindowApplicationTemplate.WDE120" Guid ="1E0DFFD9-7257-4090-8E74-7643487EC276">
+              <File Id="File_CSharpWindowApplicationTemplate.WDE120"
+                  Name="WindowApplication.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\WindowApplication.zip"
+                  DiskId="1"/>
+          </Component>
+      </DirectoryRef>
+      <DirectoryRef Id="VS12_PROJECT_TEMPLATE_CSHARP_NETMF">
+          <Component Id="Component_CSharpWindowApplicationTemplate.VS120" Guid ="1E0DFFD9-7257-4090-8E74-7643487EC276">
+              <File Id="File_CSharpWindowApplicationTemplate.VS120"
+                  Name="WindowApplication.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_CSHARP_DEVICE)\WindowApplication.zip"
+                  DiskId="1"/>
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

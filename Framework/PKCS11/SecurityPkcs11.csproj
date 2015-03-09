@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Security.PKCS11</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.Cryptoki</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7D66DC5C-7838-4F82-87AB-4A54DC3B35FE}</ProjectGuid>
+    <NoWarn>$(NoWarn),0169,0649,0659,0660,0661</NoWarn>
+    <ComponentGuid>{A6F618B7-4097-4C72-8AC6-B4A355A32E17}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <!-- CSC overridden options -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- MMP_PE options -->
+    <MMP_PE_NoBitmapCompression>true</MMP_PE_NoBitmapCompression>
+    <MMP_PE_DumpExports>$(BUILD_TREE_TXT)\$(TargetName)_exports.txt</MMP_PE_DumpExports>
+    <MMP_PE_DumpAll>$(BUILD_TREE_TXT)\$(TargetName)_all.txt</MMP_PE_DumpAll>
+    <!-- MMP_STUB options -->
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\security_pkcs11_native</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>security_pkcs11</MMP_STUB_GenerateSkeletonProject>
+    <MMP_STUB_LegacySkeletonInterop>true</MMP_STUB_LegacySkeletonInterop>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Certificate.cs" />
+    <Compile Include="Decrypt.cs" />
+    <Compile Include="Digest.cs" />
+    <Compile Include="Encrypt.cs" />
+    <Compile Include="ICryptoTransform.cs" />
+    <Compile Include="Key.cs" />
+    <Compile Include="Mechanism.cs" />
+    <Compile Include="Object.cs" />
+    <Compile Include="PKCS11.cs" />
+    <Compile Include="Random.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Signing.cs" />
+    <Compile Include="SlotToken.cs" />
+  </ItemGroup>
+</Project>

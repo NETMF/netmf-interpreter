@@ -1,0 +1,20 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--This is the current PK/SDK version-->
+  <PropertyGroup>
+    <MajorVersion   Condition=" '$(MajorVersion)' == '' "   >4</MajorVersion>
+    <MinorVersion   Condition=" '$(MinorVersion)' == '' "   >4</MinorVersion>
+    <BuildNumber    Condition=" '$(BuildNumber)' == '' "    >0</BuildNumber>
+    <BuildBase                                              >66335</BuildBase>
+    <RevisionNumber Condition=" '$(RevisionNumber)' == '' " >0</RevisionNumber>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--  Sample Past Version 
+    <PastVersion Include="v1.0.0">
+      <Major>1</Major>
+      <Minor>0</Minor>
+      <BuildBase>0</BuildBase>
+    </PastVersion>
+    -->
+  </ItemGroup>
+</Project>

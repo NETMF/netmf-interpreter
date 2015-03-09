@@ -1,0 +1,21 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Directory>DeviceCode\pal\OpenSSL\OpenSSL_1_0_0</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+
+  <ItemGroup>
+    <SubDirectories Include="ssl"/>
+    <SubDirectories Include="crypto"/>
+    <SubDirectories Include="engines"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(PLATFORM_FAMILY)'=='x86'">
+    <SubDirectories Include="apps"/>
+  </ItemGroup>
+
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

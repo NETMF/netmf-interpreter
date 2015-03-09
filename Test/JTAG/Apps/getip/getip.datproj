@@ -1,0 +1,36 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Common.Targets" />
+
+  <PropertyGroup>
+    <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
+    <MMP_DAT_CreateDatabaseFile>$(BUILD_TREE_DAT)\tinyclr_getip.dat</MMP_DAT_CreateDatabaseFile>
+  </PropertyGroup>
+
+    <!--
+    -
+    -  Specify the managed code assemblies to be added to DAT database
+    -->
+  <ItemGroup>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\mscorlib.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Native.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Test.getip.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\System.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Net.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Hardware.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_XML_Load Include="@(MMP_DAT_CreateDatabase)">
+      <InProject>false</InProject>
+    </MMP_XML_Load>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>InteropAssembliesTable</AssemblyName>
+    <Directory>clr\Core</Directory>
+    <Size>
+    </Size>
+    <ProjectGuid>1AEE6923-2376-28A5-A30B-0FC9A3DE703E</ProjectGuid>
+    <Description>Interop assembly table</Description>
+    <Level>CLR</Level>
+    <Groups>Interop</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <OutputType>Library</OutputType>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <InteropAssembliesTableFile>$(OBJ_DIR)\CLR_RT_InteropAssembliesTable.cpp</InteropAssembliesTableFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Core\InteropAssembliesTable.proj</ProjectPath>
+    <LibraryFile>InteropAssembliesTable.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>InteropAssembliesTable.$(LIB_EXT).manifest</ManifestFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(InteropAssembliesTableFile)" />
+    <Compile Include="$(SPOCLIENT)\CLR\Core\CLR_RT_RuntimeMemory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_handler.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_jitter.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_jitter_arm.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_jitter_arm_emulation.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_parseoptions.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_stream.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_xml.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot_hardware\spot_hardware_native.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="core.h" />
+    <HFiles Include="corhdr_private.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+  <Target Name="GenerateInteropTable">
+    <ItemGroup>
+      <Module Include="$(InteropModule)" />
+    </ItemGroup>
+    <Message Text="Generating $(InteropAssembliesTableFile)" />
+    <ItemGroup>
+      <Line Include="// This generated file is the product of building" />
+      <Line Include="// $(MsbuildProjectFullPath)." />
+      <Line Include="// Do not edit it, but rather modify the list of InteropFeature items" />
+      <Line Include="// in that project." />
+      <Line Include="#include &quot;TinyCLR_Interop.h&quot;" />
+      <Line Include="%20" />
+      <Line Include="extern const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_%(Module.identity)%3B" />
+      <Line Include="%20" />
+      <Line Include="const CLR_RT_NativeAssemblyData %2Ag_CLR_InteropAssembliesNativeData[] = " />
+      <Line Include="{" />
+      <Line Include="%20%20%20%20%26g_CLR_AssemblyNative_%(Module.identity)%2C" />
+      <Line Include="%20%20%20%20NULL" />
+      <Line Include="}%3B" />
+      <Line Include="// End of $(InteropAssembliesTableFile)" />
+    </ItemGroup>
+    <!-- TODO: decide if it's important to avoid re-creating this file if the content has not changed. -->
+    <!-- It's probably doing the right thing already in most cases; in the Build Lab too? -->
+    <WriteLinesToFile File="$(InteropAssembliesTableFile)" Lines="@(Line)" Overwrite="true" />
+  </Target>
+  <Target Name="PreBuild" DependsOnTargets="GenerateInteropTable" />
+</Project>

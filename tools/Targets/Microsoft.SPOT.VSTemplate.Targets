@@ -1,0 +1,19 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="Microsoft.SPOT.Targets" />
+  <Target Name="Build"
+      Inputs="@(VSTemplateInput)"
+      Outputs="$(VSTemplateOutput)"
+        >
+    <BuildTemplate 
+         InputFiles="@(VSTemplateInput)"
+         OutputFile="$(VSTemplateOutput)"
+        />
+  </Target>
+  <Target Name="Clean">
+    <Delete Files="$(VSTemplateOutput)" />
+  </Target>
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineMonitorService", "Server\WineMonitorService\WineMonitorService.csproj", "{55C5BB0C-607B-40B9-BF15-0456D5BD84CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineMonitorApp", "Desktop\WineMonitorApp\WineMonitorApp.csproj", "{1C78B438-E025-42B4-892B-60D07572713D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineMonitorDevice", "Server\WineMonitorDeviceContract\WineMonitorDevice.csproj", "{A91C1408-B794-42FF-8428-921E72C7CEB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightWineMonitorApp", "Desktop\SilverlightWineMonitorApp\SilverlightWineMonitorApp.csproj", "{541D04D7-7088-4B26-BBE4-01793CA46745}"
+	ProjectSection(ProjectDependencies) = postProject
+		{55C5BB0C-607B-40B9-BF15-0456D5BD84CB} = {55C5BB0C-607B-40B9-BF15-0456D5BD84CB}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55C5BB0C-607B-40B9-BF15-0456D5BD84CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55C5BB0C-607B-40B9-BF15-0456D5BD84CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55C5BB0C-607B-40B9-BF15-0456D5BD84CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55C5BB0C-607B-40B9-BF15-0456D5BD84CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C78B438-E025-42B4-892B-60D07572713D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C78B438-E025-42B4-892B-60D07572713D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C78B438-E025-42B4-892B-60D07572713D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C78B438-E025-42B4-892B-60D07572713D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A91C1408-B794-42FF-8428-921E72C7CEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A91C1408-B794-42FF-8428-921E72C7CEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A91C1408-B794-42FF-8428-921E72C7CEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A91C1408-B794-42FF-8428-921E72C7CEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{541D04D7-7088-4B26-BBE4-01793CA46745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{541D04D7-7088-4B26-BBE4-01793CA46745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{541D04D7-7088-4B26-BBE4-01793CA46745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{541D04D7-7088-4B26-BBE4-01793CA46745}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,75 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A8AFD0C4-6820-45CB-907B-B7136275AEC0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.SPOT.Emulator.Sample</RootNamespace>
+    <AssemblyName>Microsoft.SPOT.Emulator.Sample.TestEmulator</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <PlatformTarget>x86</PlatformTarget>
+    <ComponentGuid>67848675-e9cf-4b48-ae67-d859206fed2c</ComponentGuid>
+    <EmulatorId>{012f5c54-975a-4839-95f6-45c8c37d72e9}</EmulatorId>
+    <InstrumentForCoverage>true</InstrumentForCoverage>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Host.Targets" />
+
+  <ItemGroup>
+    <Reference Include="System"/>
+    <Reference Include="System.Drawing"/>
+    <Reference Include="System.Windows.Forms"/>
+    <Reference Include="Microsoft.SPOT.Emulator">
+      <HintPath>$(BUILD_TREE_SERVER)\dll\Microsoft.SPOT.Emulator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Button.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ButtonCollection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Lcd.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TestEmulatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestEmulatorForm.Designer.cs">
+      <DependentUpon>TestEmulatorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestEmulator.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestEmulatorForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TestEmulatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Emulator.config" />
+    <None Include="Resources\DefaultButtonDown.bmp" />
+    <None Include="Resources\DefaultButtonUp.bmp" />
+    <None Include="Resources\EmulatorSkin.bmp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WiXComponentFiles Include="$(BUILD_TEST_TREE_SERVER)\dll\Microsoft.SPOT.Emulator.Sample.TestEmulator.exe.emulatorconfig" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>NativeSample</AssemblyName>
+    <ProjectGuid>
+    </ProjectGuid>
+    <Description>
+    </Description>
+    <Documentation>
+    </Documentation>
+    <Directory>Solutions\$(PLATFORM)\NativeSample</Directory>
+    <IsClrProject>False</IsClrProject>
+    <InteropFeatures>
+    </InteropFeatures>
+    <ExtraAssemblies>
+    </ExtraAssemblies>
+    <ProjectPath>$(SPOCLIENT)\ProjectTemplates\NativeSample\NativeSample.proj</ProjectPath>
+    <MFSettingsFile>
+    </MFSettingsFile>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Targets" />
+  <PropertyGroup>
+    <OutputType>Executable</OutputType>
+    <MultipleOutputSections>false</MultipleOutputSections>
+    <ADD_LOAD_IMAGE_CRC>false</ADD_LOAD_IMAGE_CRC>
+    <ExtraTargets>BuildSigFiles</ExtraTargets>
+    <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_tools_$(COMPILER_TOOL).xml</EXEScatterFileDefinition>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="NativeSample.cpp" />
+    <ScatterFileReferences Include="$(SRC_DIR)\scatterfile_tools_$(COMPILER_TOOL).xml" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\Test\native\src\dotnetmf.proj" />
+    <DriverLibs Include="Native.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tests.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\gpio\gpio.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\log\log.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\ramtest\ramtest.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\spi\eeprom_stm95x.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\spi\spi.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\timedevents\timedevents.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\timers\timers.h" />
+    <HFiles Include="$(SPOCLIENT)\test\native\src\uart\uart.h" />
+    <HFiles Include="nativesample.h" />
+  </ItemGroup>
+</Project>

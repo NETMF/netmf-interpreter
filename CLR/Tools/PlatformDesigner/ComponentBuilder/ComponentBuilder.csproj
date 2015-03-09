@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{AB5C04D8-DDE9-4AAA-831E-C51F5EACB612}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ComponentBuilder</RootNamespace>
+    <AssemblyName>ComponentBuilder</AssemblyName>
+    <ComponentGuid>{d6c79923-c2ad-47ab-be35-f25bfaaf497c}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ComponentBuilderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ComponentBuilderForm.Designer.cs">
+      <DependentUpon>ComponentBuilderForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <EmbeddedResource Include="ComponentBuilderForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ComponentBuilderForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ComponentObjectModel\ComponentObjectModel.csproj">
+      <Project>{E0580777-E882-46C9-82B5-947D7A69586A}</Project>
+      <Name>ComponentObjectModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

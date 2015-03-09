@@ -1,0 +1,11 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='0dcf51a8-c9fc-401b-9b28-fa3d77540508' Keywords="Installer" Description=".NET Micro Framework Profiler Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_ProfilerCollectionsTests' />
+      <ComponentRef Id='Component_ProfilerStringTests' />
+      <ComponentRef Id='Component_ProfilerThreadTests' />
+      <ComponentRef Id='Component_ProfilerXmlTests' />
+  </Module>
+</Wix>

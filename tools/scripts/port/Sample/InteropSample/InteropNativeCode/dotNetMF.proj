@@ -1,0 +1,51 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>SPOT_InteropSample</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>05001942-DA89-4b71-9D4C-AA5105135DCD</ProjectGuid>
+    <Description>Inter-op Sample</Description>
+    <Level>CLR</Level>
+    <LibraryFile>SPOT_InteropSample.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Product\Sample\InteropSample\InteropNativeCode\dotNetMF.proj</ProjectPath>
+    <ManifestFile>SPOT_InteropSample.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Interop</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Libraries\SPOT_InteropSample</Directory>
+    <OutputType>Library</OutputType>
+    <VCProjName>SPOT_InteropSample</VCProjName>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+
+    <FastCompileCPPFile Include="SPOT_InteropSample_fastcompile.cpp"/>
+
+    <HFiles Include="SPOT_InteropSample_Native.h"/>
+
+    <Compile Include="SPOT_InteropSample_Native.cpp"/>
+    <Compile Include="SPOT_InteropSample_Native_Microsoft_SPOT_Interop_TestCallback.cpp"/>
+    <Compile Include="SPOT_InteropSample_Native_Microsoft_SPOT_Interop_TestCallback_mshl.cpp"/>
+    <Compile Include="SPOT_InteropSample_Native_Microsoft_SPOT_Interop_TestBasicTypes.cpp"/>
+    <Compile Include="SPOT_InteropSample_Native_Microsoft_SPOT_Interop_TestBasicTypes_mshl.cpp"/>
+    <Compile Include="Spot_InteropSample_Native_Microsoft_SPOT_Interop_TestNonStaticFunctions.cpp"/>
+    <Compile Include="Spot_InteropSample_Native_Microsoft_SPOT_Interop_TestNonStaticFunctions_mshl.cpp"/>
+    <Compile Include="Spot_InteropSample_Native_Microsoft_SPOT_Interop_TestNonStaticFunctions__TestInternalType.cpp"/>
+    <Compile Include="Spot_InteropSample_Native_Microsoft_SPOT_Interop_TestNonStaticFunctions__TestInternalType_mshl.cpp"/>
+
+    <IncludePaths Include="$(SPOCLIENT)\CLR\libraries\corlib"/>
+    <IncludePaths Include="$(SPOCLIENT)\CLR\libraries\SPOT"/>
+    <IncludePaths Include=".\"/>
+
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

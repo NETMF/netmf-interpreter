@@ -1,0 +1,17 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>NativeEventDispatcher</FeatureName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\NativeEventDispatcher_CLR.libcatproj" />
+
+  <PropertyGroup>
+    <Description>Native event dispatching for interop</Description>
+    <Guid>{79697c77-486c-4f54-b551-13ee023967a8}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <Required>true</Required>
+    <NATIVEEVENTDISPATCHER_FEATUREPROJ>True</NATIVEEVENTDISPATCHER_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

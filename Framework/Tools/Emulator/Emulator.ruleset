@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Debugger" ToolsVersion="10.0">
+  <Include Path="basiccorrectnessrules.ruleset" Action="Default" />
+  <Include Path="basicdesignguidelinerules.ruleset" Action="Default" />
+  <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
+  <Include Path="securityrules.ruleset" Action="Default" />
+</RuleSet>

@@ -1,0 +1,1 @@
+SEE <depot>\current\client\CLR\exe\makefile for up to date offsets for tinyclr.dat on the P3

@@ -1,0 +1,6 @@
+<?xml version='1.0'?>
+<Include>
+  <?include defines.wxs?>
+  <?define AssemblyFoldersExKey="SOFTWARE\Microsoft\.NETFramework\v$(var.DesktopTargetFrameworkVersion)\AssemblyFoldersEx"?>
+  <RegistryValue Root ="HKLM" Key ="$(var.AssemblyFoldersExKey)\$(var.CommonProductName) v$(var.ProdVerMajorMinor)" Type="string" Value="[ToolsDir]" Id="AssemblyFoldersEx"/>
+</Include>

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+    <PropertyGroup>
+        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+        <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+        <SccProjectName>SAK</SccProjectName>
+        <SccLocalPath>SAK</SccLocalPath>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccProvider>SAK</SccProvider>
+    </PropertyGroup>
+    <PropertyGroup>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{504C17B5-8B7F-4367-BA5C-E00D30471921}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.SPOT.Emulator</RootNamespace>
+    <AssemblyName>Microsoft.SPOT.Emulator.Interface</AssemblyName>
+    <ComponentGuid>{743e0402-ea74-4e28-88ba-3a7e93590fdb}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <InstrumentForCoverage>true</InstrumentForCoverage>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="IEmulator.cs" />
+    <Compile Include="IBlockStorage.cs" />
+    <Compile Include="IBattery.cs" />
+    <Compile Include="ICom.cs" />
+    <Compile Include="IEvents.cs" />
+    <Compile Include="IFS.cs" />
+    <Compile Include="IGpio.cs" />
+    <Compile Include="IHal.cs" />
+    <Compile Include="II2c.cs" />
+    <Compile Include="ILcd.cs" />
+    <Compile Include="IMemory.cs" />
+    <Compile Include="ISerial.cs" />
+    <Compile Include="ISockets.cs" />
+    <Compile Include="ISsl.cs" />
+    <Compile Include="ISpi.cs" />
+    <Compile Include="ITime.cs" />
+    <Compile Include="ITouchPanel.cs" />
+    <Compile Include="IUpdateBackupProvider.cs" />
+    <Compile Include="IUpdateProvider.cs" />
+    <Compile Include="IUpdateStorageProvider.cs" />
+    <Compile Include="IUpdateValidationProvider.cs" />
+    <Compile Include="IUsb.cs" />
+    <Compile Include="IWatchdog.cs" />
+    <Compile Include="IEncryption.cs" />
+    <Compile Include="IDigest.cs" />
+    <Compile Include="ISession.cs" />
+    <Compile Include="ISignature.cs" />
+    <Compile Include="IKeyManagement.cs" />
+    <Compile Include="IProtectedDataStore.cs" />
+    <Compile Include="IRandom.cs" />
+    <Compile Include="EmulatorException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+</Project>

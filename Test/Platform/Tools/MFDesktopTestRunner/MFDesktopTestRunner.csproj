@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Platform>x86</Platform>
+    <PlatformTarget>x86</PlatformTarget>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5865FD9B-FFA4-43CA-8149-FAB3D73F04D7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.SPOT.Platform.Test</RootNamespace>
+    <AssemblyName>MFDesktopTestRunner</AssemblyName>
+    <ComponentGuid>fe39719e-7760-4d6a-9593-28f3aba302bb</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Debug.cs" />
+    <Compile Include="MFDesktopTestRunner.cs" />
+    <Compile Include="MFTestInterface.cs" />
+    <Compile Include="MFTestResult.cs" />
+    <Compile Include="SpotTestLog.cs" />
+    <Compile Include="TestAttributes.cs" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Host.Targets" />
+</Project>

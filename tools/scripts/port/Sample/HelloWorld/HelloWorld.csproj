@@ -1,0 +1,67 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.HelloWorld</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Microsoft.SPOT.Sample</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{332F8643-496C-44C1-9C19-3A75119DB3FC}</ProjectGuid>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
+
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets') And '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="!Exists('$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets') And '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" Condition="Exists('$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets')" />
+  <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" Condition="!Exists('$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets')" />
+  <PropertyGroup>
+    <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
+    <MMP_DAT_CreateDatabaseFile>$(BUILD_TREE_DAT)\tinyclr_HelloWorld_Microsoft.dat</MMP_DAT_CreateDatabaseFile>
+    <MMP_DAT_CreateDatabaseFileOtherEnd>$(BUILD_TREE_DAT_OTHEREND)\tinyclr_HelloWorld_Microsoft.dat</MMP_DAT_CreateDatabaseFileOtherEnd>
+    <MMP_XML_SKIP>false</MMP_XML_SKIP>
+    <MMP_XML_GenerateDependency>$(BUILD_TREE_XML)\DependencyGraph_Microsoft.xml</MMP_XML_GenerateDependency>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\mscorlib.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Native.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.HelloWorld.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_XML_Load Include="@(MMP_DAT_CreateDatabase)">
+      <InProject>false</InProject>
+    </MMP_XML_Load>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

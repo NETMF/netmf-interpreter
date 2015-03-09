@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.VisualBasic</AssemblyName>
+    <AssemblyTitle>Microsoft Visual Basic .NET Micro Runtime</AssemblyTitle>
+    <AssemblyDescription>Microsoft Visual Basic .NET Micro Runtime</AssemblyDescription>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectTypeGuids>{bb063c12-22d6-4e50-a55f-f678d783e61d};{F184B08F-C81C-45f6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8A9FEB74-3871-4ed4-8853-55CD32FE6CB9}</ProjectGuid>
+    <ComponentGuid>{FE8F0C58-8E34-412E-A199-0620031F760C}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>SMARTDEVICE_RUNTIME_SUPPORTED=TRUE</DefineConstants>
+    <CompilerResponseFile>NoVBRuntimeRef.rsp</CompilerResponseFile>
+  </PropertyGroup>
+
+  <ItemGroup >
+    <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="Microsoft.VisualBasic.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MMP_PE_ExcludeClassByName Include="Microsoft.VisualBasic.HideModuleNameAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="Microsoft.VisualBasic.VBFixedArrayAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="Microsoft.VisualBasic.VBFixedStringAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="Microsoft.VisualBasic.CompilerServices.DesignerGeneratedAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="Microsoft.VisualBasic.CompilerServices.OptionCompareAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="Microsoft.VisualBasic.CompilerServices.OptionTextAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+    <MMP_PE_ExcludeClassByName Include="Microsoft.VisualBasic.CompilerServices.StandardModuleAttribute">
+      <InProject>false</InProject>
+    </MMP_PE_ExcludeClassByName>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.VisualBasic.Targets" />
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);GenerateVersion</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GenerateVersion">
+    <Exec Command="cscript //Nologo $(SPOCLIENT)\tools\scripts\Preprocess.js /TemplateFile:_Version.vb.template /Properties:%22MAJORVERSION=$(MajorVersion);MINORVERSION=$(MinorVersion);BUILDNUMBER=$(BuildNumber);REVISIONNUMBER=$(RevisionNumber)%22 /OutputFile:$(IntermediateOutputPath)_version.vb" />
+    <CreateItem Include="$(IntermediateOutputPath)_version.vb">
+      <Output TaskParameter="Include" ItemName="Compile" />
+    </CreateItem>
+  </Target>
+  <PropertyGroup>
+    <CoreCompileDependsOn>$(CoreCompileDependsOn);GenerateVersion</CoreCompileDependsOn>
+  </PropertyGroup>
+
+</Project>

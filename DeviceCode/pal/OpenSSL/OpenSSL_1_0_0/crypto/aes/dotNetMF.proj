@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>aes_openssl</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{aef9ab99-95bf-4bb9-9b8d-f2055d0a33cf}</ProjectGuid>
+    <Description>Crypto AES library from OpenSSL</Description>
+    <Level>PAL</Level>
+    <LibraryFile>aes_openssl.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\aes\dotNetMF.proj</ProjectPath>
+    <ManifestFile>aes_openssl.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\aes</Directory>
+    <OutputType>Library</OutputType>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <!--
+  <ItemGroup>
+    <SubDirectories Include="Stubs"/>
+  </ItemGroup>
+-->
+  <ItemGroup>
+    <Compile Include="aes_core.cpp" />
+    <Compile Include="aes_misc.cpp" />
+    <Compile Include="aes_ecb.cpp" />
+    <Compile Include="aes_cbc.cpp" />
+    <Compile Include="aes_cfb.cpp" />
+    <Compile Include="aes_ofb.cpp" />
+    <Compile Include="aes_ctr.cpp" />
+    <Compile Include="aes_ige.cpp" />
+    <Compile Include="aes_wrap.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\include\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\bio\bio.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\buffer\buffer.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\cryptlib.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\ebcdic.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\err\err.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\lhash\lhash.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\modes\modes.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\ossl_typ.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\o_str.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\stack\safestack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\stack\stack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\symhacks.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\bio.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\buffer.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\ebcdic.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\err.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\lhash.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\modes.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\ossl_typ.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\safestack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\stack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\symhacks.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\ms\uplink.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\tinyclr\ssl_types.h" />
+    <HFiles Include="aes.h" />
+    <HFiles Include="aes_locl.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

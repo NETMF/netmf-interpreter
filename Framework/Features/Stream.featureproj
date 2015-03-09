@@ -1,0 +1,30 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Stream</FeatureName>
+  </PropertyGroup>
+
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_IO" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.io.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_IO\Core_IO.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\system.io.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\System\IO.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\Stream_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_IO_CLR.libcatproj" />
+
+  <PropertyGroup>
+    <Description>Stream component</Description>
+    <Guid>{c17c5d59-7d8e-489c-a8b0-50d6b8b4e61e}</Guid>
+    <Groups>
+    </Groups>
+    <STREAM_FEATUREPROJ>true</STREAM_FEATUREPROJ>
+    <Documentation>
+    </Documentation>
+  </PropertyGroup>
+</Project>

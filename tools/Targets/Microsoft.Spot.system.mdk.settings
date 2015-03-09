@@ -1,0 +1,32 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+
+ <!-- base on cpu type, setup compiler-->
+  <PropertyGroup>
+    <SWTC>--</SWTC>
+  </PropertyGroup>
+
+
+  <!-- set up the base DST_DIR path base on different INSTRUCTION_SET -->  
+  <PropertyGroup>
+    <OBJ_EXT>obj</OBJ_EXT>
+    <LIB_EXT>lib</LIB_EXT>
+    <EXE_EXT>axf</EXE_EXT>
+    <SCATTER_EXT>xml</SCATTER_EXT>
+
+    <PLATFORM_INDEPENDENT_DST_DIR>$(SPO_BUILD)\$(INSTRUCTION_SET)\$(DOTNETMF_COMPILER)\$(ENDIANNESS)\ANY_MEDIA\$(OLD_FLAVOR)</PLATFORM_INDEPENDENT_DST_DIR>
+    <DST_DIR>$(SPO_BUILD)\$(INSTRUCTION_SET)\$(COMPILER_TOOL_VERSION)\$(ENDIANNESS)\$(TARGETLOCATION)\$(OLD_FLAVOR)\$(TARGETPLATFORM)</DST_DIR>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\Cores\arm"/>
+
+
+    <IncludePaths Include="DeviceCode\Cores\arm\Include"/>
+
+
+    <IncludePaths Include="DeviceCode"/>
+    <IncludePaths Include="DeviceCode\Include"/>
+  </ItemGroup>
+
+</Project>

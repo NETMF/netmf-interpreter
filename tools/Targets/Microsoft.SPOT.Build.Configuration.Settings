@@ -1,0 +1,46 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <_Microsoft_SPOT_Build_Configuration_Settings__Included_>true</_Microsoft_SPOT_Build_Configuration_Settings__Included_>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.SPOT.Build.Common.Settings" />
+
+  <PropertyGroup>
+    <TinyCLR_Platform Condition=" '$(TinyCLR_Platform)' == '' "     >Client</TinyCLR_Platform>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Platform     Condition="'$(Platform)'==''" >AnyCPU</Platform>
+    <FLAVOR       Condition="'$(FLAVOR)'=='' And '$(Configuration)'!=''">$(Configuration)</FLAVOR>
+    <FLAVOR       Condition="'$(FLAVOR)'=='' And '$(Configuration)'==''">Debug</FLAVOR>
+    <MEMORY       Condition="'$(MEMORY)'==''"   >RAM</MEMORY>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == '' ">
+    <Configuration Condition=" '$(FLAVOR)'        == 'Instrumented' ">Debug</Configuration>
+    <Configuration Condition=" '$(FLAVOR)'        == 'Debug' "       >$(FLAVOR)</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' "            >Release</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Microsoft_SPOT_Build_Setup_Error
+        Condition=" '$(Microsoft_SPOT_Build_Setup_Error)' == ''
+                     and '$(TinyCLR_Platform)' != 'Client'
+                     and '$(TinyCLR_Platform)' != 'Server' "
+        >Invalid value &quot;$(TinyCLR_Platform)&quot; for TinyCLR_Platform</Microsoft_SPOT_Build_Setup_Error>
+
+    <Microsoft_SPOT_Build_Setup_Error
+        Condition=" '$(Microsoft_SPOT_Build_Setup_Error)' == ''
+                     and '$(Configuration)' != 'Debug'
+                     and '$(Configuration)' != 'Release'
+                     and '$(Configuration)' != 'RTM' "
+        >Invalid value &quot;$(Configuration)&quot; for Configuration</Microsoft_SPOT_Build_Setup_Error>
+  </PropertyGroup>
+
+  <!-- TODO: define this only once (see other def'n in Microsoft.SPOT.System.Settings -->
+  <PropertyGroup>
+    <MainProps>_FLAVOR=$(Configuration);_PLATFORMS=;_TARGETLOCATION=$(TARGETLOCATION);_CLEAN_INDEPENDENT_ONLY=$(CLEAN_INDEPENDENT_ONLY);_BuildNumber=$(BuildNumber);_RevisionNumber=$(RevisionNumber);_Configuration=$(Configuration);_TinyCLR_Platform=$(TinyCLR_Platform);_SignBuild=$(SignBuild);_SolutionRoot=$(SolutionRoot);_MFSettingsFile=$(SPOCLIENT)\Solutions\Windows2\Windows2.settings;PropagatedBy=SDK</MainProps>
+  </PropertyGroup>
+
+</Project>

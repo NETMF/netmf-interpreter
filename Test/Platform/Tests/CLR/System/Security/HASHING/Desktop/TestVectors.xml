@@ -1,0 +1,177 @@
+<HashTests>
+  <HashFunctions>
+    <HashFunction name="HMAC-MD5" class="System.Security.Cryptography.HMACMD5" />
+    <HashFunction name="HMAC-RIPEMD-160" class="System.Security.Cryptography.HMACRIPEMD160" />
+    <HashFunction name="HMAC-SHA1" class="System.Security.Cryptography.HMACSHA1" />
+    <HashFunction name="HMAC-SHA-256" class="System.Security.Cryptography.HMACSHA256" />
+    <HashFunction name="HMAC-SHA-384" class="System.Security.Cryptography.HMACSHA384" />
+    <HashFunction name="HMAC-SHA-512" class="System.Security.Cryptography.HMACSHA512" />
+    <HashFunction name="RIPEMD-160" class="System.Security.Cryptography.RIPEMD160Managed" />
+  </HashFunctions>
+
+  <Tests>
+    <Test name="RIPEMD Test Vectors">
+      <!-- Test vectors from http://www.esat.kuleuven.ac.be/~bosselae/ripemd160.html -->
+      <TestItem dataType="string" data="">
+        <HashValue algorithm="RIPEMD-160"      value="9c1185a5c5e9fc54612808977ee8f548b2258d31" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="cf387677bfda8483e63b57e06c3b5ecd8b7fc055" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="fe69a66c7423eea9c8fa2eff8d9dafb4f17a62f5" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+      <TestItem dataType="string" data="a">
+        <HashValue algorithm="RIPEMD-160"      value="0bdc9d2d256b3ee9daae347be6f4dc835a467ffe" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="0d351d71b78e36dbb7391c810a0d2b6240ddbafc" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="85743e899bc82dbfa36faaa7a25b7cfd372432cd" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+      <TestItem dataType="string" data="abc">
+        <HashValue algorithm="RIPEMD-160"      value="8eb208f7e05d987a9b044a8e98c6b087f15a0bfc" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="f7ef288cb1bbcc6160d76507e0a3bbf712fb67d6" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="6e4afd501fa6b4a1823ca3b10bd9aa0ba97ba182" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+      <TestItem dataType="string" data="message digest">
+        <HashValue algorithm="RIPEMD-160"      value="5d0689ef49d2fae572b881b123a85ffa21595f36" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="f83662cc8d339c227e600fcd636c57d2571b1c34" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="2e066e624badb76a184c8f90fba053330e650e92" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+      <TestItem dataType="string" data="abcdefghijklmnopqrstuvwxyz">
+        <HashValue algorithm="RIPEMD-160"      value="f71c27109c692c1b56bbdceb5b9d2865b3708dbc" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="843d1c4eb880ac8ac0c9c95696507957d0155ddb" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="07e942aa4e3cd7c04dedc1d46e2e8cc4c741b3d9" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+      <TestItem dataType="string" data="abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq" >
+        <HashValue algorithm="RIPEMD-160"      value="12a053384a9c0c88e405a06c27dcf49ada62eb2b" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="60f5ef198a2dd5745545c1f0c47aa3fb5776f881" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="b6582318ddcfb67a53a67d676b8ad869aded629a" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+      <TestItem dataType="string" data="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789">
+        <HashValue algorithm="RIPEMD-160"      value="b0e20b6e3116640286ed3a87a5713079b21f5189" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="e49c136a9e5627e0681b808a3b97e6a6e661ae79" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="f1be3ee877703140d34f97ea1ab3a07c141333e2" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+      <TestItem dataType="string" data="12345678901234567890123456789012345678901234567890123456789012345678901234567890">
+        <HashValue algorithm="RIPEMD-160"      value="9b752e45573d4b39f4dbd3323cab82bf63326bfb" />
+        <HashValue algorithm="HMAC-RIPEMD-160" value="31be3cc98cee37b79b0619e3e1c2be4f1aa56e6c" key="00112233445566778899aabbccddeeff01234567"/>
+        <HashValue algorithm="HMAC-RIPEMD-160" value="85f164703e61a63131be7e45958e0794123904f9" key="0123456789abcdeffedcba987654321000112233"/>
+      </TestItem>
+    </Test>
+
+    <Test name="HMAC-MD5 Test Vectors">
+      <!-- Test vectors from http://www.ietf.org/rfc/rfc2202.txt -->
+      <TestItem dataType="string" data="Hi There">
+        <HashValue algorithm="HMAC-MD5" value="9294727a3638bb1c13f48ef8158bfc9d" key="0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"/>
+      </TestItem>
+      <TestItem dataType="string" data="what do ya want for nothing?">
+        <HashValue algorithm="HMAC-MD5" value="750c783e6ab0b503eaa86e310a5db738"  key="4A656665"/>
+      </TestItem>
+      <TestItem dataType="hex" data="DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD">
+        <HashValue algorithm="HMAC-MD5" value="56be34521d144c88dbb8c733f0e8b3f6" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+      </TestItem>
+      <TestItem dataType="hex" data="cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd">
+        <HashValue algorithm="HMAC-MD5" value="697eaf0aca3a3aea3a75164746ffaa79" key="0102030405060708090a0b0c0d0e0f10111213141516171819" />
+      </TestItem>
+      <TestItem dataType="string" data="Test With Truncation">
+        <HashValue algorithm="HMAC-MD5" value="56461ef2342edc00f9bab995690efd4c" key="0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c" />
+      </TestItem>
+      <TestItem dataType="string" data="Test Using Larger Than Block-Size Key - Hash Key First">
+        <HashValue algorithm="HMAC-MD5" value="6b1ab7fe4bd7bf8f0b62e6ce61b9d0cd" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
+      </TestItem>
+      <TestItem dataType="string" data="Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data">
+        <HashValue algorithm="HMAC-MD5" value="6f630fad67cda0ee1fb1f562db3aa53e" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
+      </TestItem>
+    </Test>
+
+    <Test name="HMAC-SHA1 Test Vectors">
+      <!-- Test vectors from http://www.ietf.org/rfc/rfc2202.txt -->
+      <TestItem dataType="string" data="Hi There">
+        <HashValue algorithm="HMAC-SHA1" value="b617318655057264e28bc0b6fb378c8ef146be00" key="0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"/>
+      </TestItem>
+      <TestItem dataType="string" data="what do ya want for nothing?">
+        <HashValue algorithm="HMAC-SHA1" value="effcdf6ae5eb2fa2d27416d5f184df9c259a7c79"  key="4A656665"/>
+      </TestItem>
+      <TestItem dataType="hex" data="DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD">
+        <HashValue algorithm="HMAC-SHA1" value="125d7342b9ac11cd91a39af48aa17b4f63f175d3" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+      </TestItem>
+      <TestItem dataType="hex" data="cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd">
+        <HashValue algorithm="HMAC-SHA1" value="4c9007f4026250c6bc8414f9bf50c86c2d7235da" key="0102030405060708090a0b0c0d0e0f10111213141516171819" />
+      </TestItem>
+      <TestItem dataType="string" data="Test With Truncation">
+        <HashValue algorithm="HMAC-SHA1" value="4c1a03424b55e07fe7f27be1d58bb9324a9a5a04" key="0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c" />
+      </TestItem>
+      <TestItem dataType="string" data="Test Using Larger Than Block-Size Key - Hash Key First">
+        <HashValue algorithm="HMAC-SHA1" value="aa4ae5e15272d00e95705637ce8a3b55ed402112" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
+      </TestItem>
+      <TestItem dataType="string" data="Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data">
+        <HashValue algorithm="HMAC-SHA1" value="e8e99d0f45237d786d6bbaa7965c7808bbff1a91" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
+      </TestItem>
+    </Test>
+
+    <Test name="HMAC-SHA256 Test Vectors">
+      <!-- Test vectors from http://www.ietf.org/internet-drafts/draft-ietf-ipsec-ciph-sha-256-01.txt -->
+      <TestItem dataType="string" data="abc">
+        <HashValue algorithm="HMAC-SHA-256" value="a21b1f5d4cf4f73a4dd939750f7a066a7f98cc131cb16a6692759021cfab8181" key="0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"/>
+      </TestItem>
+      <TestItem dataType="string" data="abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq">
+        <HashValue algorithm="HMAC-SHA-256" value="104fdc1257328f08184ba73131c53caee698e36119421149ea8c712456697d30" key="0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"/>
+      </TestItem>
+      <TestItem dataType="string" data="abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopqabcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq">        
+        <HashValue algorithm="HMAC-SHA-256" value="470305fc7e40fe34d3eeb3e773d95aab73acf0fd060447a5eb4595bf33a9d1a3" key="0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"/>
+      </TestItem>
+      <TestItem dataType="string" data="Hi There">
+        <HashValue algorithm="HMAC-SHA-256" value="198a607eb44bfbc69903a0f1cf2bbdc5ba0aa3f3d9ae3c1c7a3b1696a0b68cf7" key="0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"/>
+      </TestItem>
+      <TestItem dataType="hex" data="DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD">
+        <HashValue algorithm="HMAC-SHA-256" value="cdcb1220d1ecccea91e53aba3092f962e549fe6ce9ed7fdc43191fbde45c30b0" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+      </TestItem>
+      <TestItem dataType="hex" data="CDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCDCD">
+        <HashValue algorithm="HMAC-SHA-256" value="d4633c17f6fb8d744c66dee0f8f074556ec4af55ef07998541468eb49bd2e917" key="0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425"/>
+      </TestItem>
+      <TestItem dataType="string" data="Test With Truncation">
+        <HashValue algorithm="HMAC-SHA-256" value="7546af01841fc09b1ab9c3749a5f1c17d4f589668a587b2700a9c97c1193cf42" key="0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c"/>
+      </TestItem>
+      <TestItem dataType="string" data="Test Using Larger Than Block-Size Key - Hash Key First">
+        <HashValue algorithm="HMAC-SHA-256" value="6953025ed96f0c09f80a96f78e6538dbe2e7b820e3dd970e7ddd39091b32352f" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+      </TestItem>
+      <TestItem dataType="string" data="Test Using Larger Than Block-Size Key and Larger Than One Block-Size Data">
+        <HashValue algorithm="HMAC-SHA-256" value="6355ac22e890d0a3c8481a5ca4825bc884d3e7a1ff98a2fc2ac7d8e064c3b2e6" key="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+      </TestItem>
+    </Test>
+
+    <Test name="HMAC-SHA-256-384-512 Test Vectors">
+      <!-- Test vectors from http://www.rfc-archive.org/getrfc.php?rfc=4231 -->
+      <TestItem dataType="string" data="Hi There">
+        <HashValue algorithm="HMAC-SHA-256" value="b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7" key="0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"/>
+        <HashValue algorithm="HMAC-SHA-384" value="afd03944d84895626b0825f4ab46907f15f9dadbe4101ec682aa034c7cebc59cfaea9ea9076ede7f4af152e8b2fa9cb6" key="0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"/>
+        <HashValue algorithm="HMAC-SHA-512" value="87aa7cdea5ef619d4ff0b4241a1d6cb02379f4e2ce4ec2787ad0b30545e17cdedaa833b7d6b8a702038b274eaea3f4e4be9d914eeb61f1702e696c203a126854" key="0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"/>
+      </TestItem>
+      <TestItem dataType="string" data="what do ya want for nothing?">
+        <HashValue algorithm="HMAC-SHA-256" value="5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843" key="4A656665"/>
+        <HashValue algorithm="HMAC-SHA-384" value="af45d2e376484031617f78d2b58a6b1b9c7ef464f5a01b47e42ec3736322445e8e2240ca5e69e2c78b3239ecfab21649" key="4A656665"/>
+        <HashValue algorithm="HMAC-SHA-512" value="164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737" key="4A656665"/>
+      </TestItem>
+      <TestItem dataType="hex" data="dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd">
+        <HashValue algorithm="HMAC-SHA-256" value="773ea91e36800e46854db8ebd09181a72959098b3ef8c122d9635514ced565fe" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+        <HashValue algorithm="HMAC-SHA-384" value="88062608d3e6ad8a0aa2ace014c8a86f0aa635d947ac9febe83ef4e55966144b2a5ab39dc13814b94e3ab6e101a34f27" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+        <HashValue algorithm="HMAC-SHA-512" value="fa73b0089d56a284efb0f0756c890be9b1b5dbdd8ee81a3655f83e33b2279d39bf3e848279a722c806b485a47e67c807b946a337bee8942674278859e13292fb" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+      </TestItem>
+      <TestItem dataType="hex" data="cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd">
+        <HashValue algorithm="HMAC-SHA-256" value="82558a389a443c0ea4cc819899f2083a85f0faa3e578f8077a2e3ff46729665b" key="0102030405060708090a0b0c0d0e0f10111213141516171819"/>
+        <HashValue algorithm="HMAC-SHA-384" value="3e8a69b7783c25851933ab6290af6ca77a9981480850009cc5577c6e1f573b4e6801dd23c4a7d679ccf8a386c674cffb" key="0102030405060708090a0b0c0d0e0f10111213141516171819"/>
+        <HashValue algorithm="HMAC-SHA-512" value="b0ba465637458c6990e5a8c5f61d4af7e576d97ff94b872de76f8050361ee3dba91ca5c11aa25eb4d679275cc5788063a5f19741120c4f2de2adebeb10a298dd" key="0102030405060708090a0b0c0d0e0f10111213141516171819"/>
+      </TestItem>
+      <TestItem dataType="string" data="Test With Truncation">
+        <HashValue algorithm="HMAC-SHA-256" value="a3b6167473100ee06e0c796c2955552b" key="0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c" truncation="128"/>
+        <HashValue algorithm="HMAC-SHA-384" value="3abf34c3503b2a23a46efc619baef897" key="0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c" truncation="128"/>
+        <HashValue algorithm="HMAC-SHA-512" value="415fad6271580a531d4179bc891d87a6" key="0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c" truncation="128"/>
+      </TestItem>
+      <TestItem dataType="string" data="Test Using Larger Than Block-Size Key - Hash Key First">
+        <HashValue algorithm="HMAC-SHA-256" value="60e431591ee0b67f0d8a26aacbf5b77f8e0bc6213728c5140546040f0ee37f54" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+        <HashValue algorithm="HMAC-SHA-384" value="4ece084485813e9088d2c63a041bc5b44f9ef1012a2b588f3cd11f05033ac4c60c2ef6ab4030fe8296248df163f44952" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+        <HashValue algorithm="HMAC-SHA-512" value="80b24263c7c1a3ebb71493c1dd7be8b49b46d1f41b4aeec1121b013783f8f3526b56d037e05f2598bd0fd2215d6a1e5295e64f73f63f0aec8b915a985d786598" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+      </TestItem>
+      <TestItem dataType="string" data="This is a test using a larger than block-size key and a larger than block-size data. The key needs to be hashed before being used by the HMAC algorithm.">
+        <HashValue algorithm="HMAC-SHA-256" value="9b09ffa71b942fcb27635fbcd5b0e944bfdc63644f0713938a7f51535c3a35e2" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+        <HashValue algorithm="HMAC-SHA-384" value="6617178e941f020d351e2f254e8fd32c602420feb0b8fb9adccebb82461e99c5a678cc31e799176d3860e6110c46523e" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+        <HashValue algorithm="HMAC-SHA-512" value="e37b6a775dc87dbaa4dfa9f96e5e3ffddebd71f8867289865df5a32d20cdc944b6022cac3c4982b10d5eeb55c3e4de15134676fb6de0446065c97440fa8c6a58" key="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+      </TestItem>
+    </Test>
+  </Tests>
+</HashTests>

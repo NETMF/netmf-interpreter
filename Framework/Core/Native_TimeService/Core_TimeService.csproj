@@ -1,0 +1,40 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Time</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NoWarn>$(NoWarn),0169</NoWarn>
+    <ComponentGuid>{4d7dfbc0-8478-45fd-ba40-40c2a8f1daa7}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <!-- MMP_STUB options -->
+    <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
+    <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\spot_Time_native</MMP_STUB_GenerateSkeletonFile>
+    <MMP_STUB_GenerateSkeletonProject>SPOT_Time</MMP_STUB_GenerateSkeletonProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="TimeService.cs" />    
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>    
+  </ItemGroup>
+  <ItemGroup>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Time.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Hardware.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>
+    <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Native.pe">
+      <InProject>false</InProject>
+    </MMP_STUB_Load>    
+  </ItemGroup>
+</Project>

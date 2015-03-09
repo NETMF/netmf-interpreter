@@ -1,0 +1,20 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+
+  <ItemGroup Condition="EXISTS('$(SPOCLIENT)\Framework\Tools\BuildTasksInternal\InternalBuildTasks.csproj')">
+    <Project Include="WiXLib\WixLibSpotBuild.csproj"/>
+    <Project Include="BuildTasksInternal\BuildSigner\BuildSignerSpotBuild.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Project Include="BuildTasksInternal\InternalBuildTasks.csproj" Condition="EXISTS('$(SPOCLIENT)\Framework\Tools\BuildTasksInternal\InternalBuildTasks.csproj')"/>
+    <Project Include="BuildTasks\BuildTasks.csproj"/>
+    <Project Include="BuildTasksNativeBuild\NativeBuildTasks.csproj"/>
+    <Project Include="CreateSymdef\CreateSymdef.csproj" Condition="'$(COMPILER_TOOL)'=='GCC'"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+</Project>

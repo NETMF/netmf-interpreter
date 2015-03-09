@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Diagram xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" MajorVersion="1" MinorVersion="1" xmlns="http://www.microsoft.com/VisualStudio/EnterpriseTools/ClassDesigner/V1.1/DiagramSchema.xsd">
+  <View GroupingSetting="Access" FilterFieldProperty="false" LastOpened="true" Name="Main">
+    <AbsoluteBounds X="0" Y="0" Height="23.725989789466066" Width="23.25" />
+    <Font Name="Tahoma" Size="0.1145833358168602" />
+    <Class Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="6" Height="1.2667816188931464" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.GenericRequest</FullName>
+        <FileName>Input\GenericRequest.cs</FileName>
+        <HashCode>AAAAAAAAAAACAAQAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="0.5" Height="1.933448285559813" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.KeyArgs</FullName>
+        <FileName>Input\KeyArgs.cs</FileName>
+        <HashCode>AAAAAAAAAAAEAAAAAAAgAAAAAAAAAAAAAAAMBAAAAQA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="7.5" Height="1.4842401149868962" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Request_Button</FullName>
+        <FileName>Input\Request_Button.cs</FileName>
+        <HashCode>AAAAAAIAAAABAAQAAAAAAwAAAAAoAAkgAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="6.5" Y="9" Height="2.3683652777473121" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Border</FullName>
+        <FileName>Presentation\Controls\Border.cs</FileName>
+        <HashCode>EACAAAiAAAAAAAEAAAEACAAACAAAIAAAAggAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="13.75" Y="5.5" Height="2.8683652777473121" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Canvas</FullName>
+        <FileName>Presentation\Controls\Canvas.cs</FileName>
+        <HashCode>AAAIAAAAAQAAAYAAiAAIoAAQKAABAAABAAgAgAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="4.75" Y="5.75" Height="0.93344828555981341" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ContentControl</FullName>
+        <FileName>Presentation\Controls\ContentControl.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class NewMemberLocation="Presentation\Controls\Control.cs" Collapsed="false">
+      <AbsoluteBounds X="4.75" Y="2.75" Height="1.9842401149868962" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Control</FullName>
+        <FileName>Presentation\Controls\Control.cs</FileName>
+        <HashCode>AAAAACAAIAAAAAAAAAAAAIAAAAAAAAAAAAAgAAASAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="18.25" Y="0.5" Height="3.5350319444139791" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.DialogBox</FullName>
+        <FileName>Presentation\Controls\DialogBox.cs</FileName>
+        <HashCode>BACAAACCAKEAAAAEAIAAAAAAGIEAAAAIAAAAAAAUCAw=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="15.5" Y="5.5" Height="2.3683652777473121" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.DialogBoxView</FullName>
+        <FileName>Presentation\Controls\DialogBox.cs</FileName>
+        <HashCode>AACACAAAEAAAAgAAAAAAhAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="16.25" Y="0.5" Height="4.3683652777473121" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Form</FullName>
+        <FileName>Presentation\Controls\Form.cs</FileName>
+        <HashCode>AQGgAgAAACAAQEAAEAAAAEEABAQEAgAAAAyAAAAEABA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="7.75" Y="2" Height="2.201698611080646" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Image</FullName>
+        <FileName>Presentation\Controls\Image.cs</FileName>
+        <HashCode>AACAAAAgAAAAAEAQgAgAAAAAAAABAAAAAAgAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="6.75" Y="5.75" Height="2.701698611080646" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ListBox</FullName>
+        <FileName>Presentation\Controls\ListBox.cs</FileName>
+        <HashCode>AAAAAAAAAAAACIAAAAAAAAAACAAAAAAAAJgQAAEAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="19.25" Y="19.25" Height="2.6509067816535641" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.BrowsableIterator</FullName>
+        <FileName>Presentation\Controls\ListBrowser.cs</FileName>
+        <HashCode>AAAAAAAAAgRAAAAAEACAAAAAQAAEAQAAIAUAAAAAEBA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="10.75" Y="12.5" Height="1.2667816188931464" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ListBrowser</FullName>
+        <FileName>Presentation\Controls\ListBrowser.cs</FileName>
+        <HashCode>AACAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="4.75" Y="9" Height="1.2667816188931464" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ListItem</FullName>
+        <FileName>Presentation\Controls\ListItem.cs</FileName>
+        <HashCode>AACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="12.75" Y="8.75" Height="1.1001149522264804" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ListViewItem</FullName>
+        <FileName>Presentation\Controls\ListView.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="14.25" Y="10.25" Height="1.1001149522264804" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ListViewItemLabel</FullName>
+        <FileName>Presentation\Controls\ListView.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="16.5" Y="10.25" Height="1.3175734483202302" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ListViewItemTwoLabel</FullName>
+        <FileName>Presentation\Controls\ListView.cs</FileName>
+        <HashCode>AACAAAAAIAAAAAAAAAAAAECCAAAAAAAAABAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="8.25" Y="14.25" Height="3.6509067816535641" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ListView</FullName>
+        <FileName>Presentation\Controls\ListView.cs</FileName>
+        <HashCode>AAIAAAAAAAACCIBAhAAAAABAAQAAgAAAABAMQAAAAQA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="4.75" Y="10.75" Height="3.3683652777473121" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.PageElement</FullName>
+        <FileName>Presentation\Controls\PageElement.cs</FileName>
+        <HashCode>AACAAAAgAAAAAIAQgAAAIEAAAAADACACAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <NestedType xsi:type="DelegateShapeProxy" Collapsed="true">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Controls.PageElement.PageChangedEventHandler</FullName>
+        </TypeIdentifier>
+      </NestedType>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="12.25" Height="1.9842401149868962" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.PageSource</FullName>
+        <FileName>Presentation\Controls\PageSource.cs</FileName>
+        <HashCode>AABAAAAAAgAAAIAAAEAAABAEAAAAAAAQABAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="10" Y="3" Height="1.4842401149868962" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Panel</FullName>
+        <FileName>Presentation\Controls\Panel.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAIAAAAEAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="8.25" Y="9" Height="4.4191571071743958" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ScrollableContainer</FullName>
+        <FileName>Presentation\Controls\ScrollableContainer.cs</FileName>
+        <HashCode>QACAQCAAAAAABIAAAAAAAEQAIKQACAAAwAAgAACAAAA=</HashCode>
+      </TypeIdentifier>
+      <NestedType xsi:type="DelegateShapeProxy" Collapsed="true">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Controls.ScrollableContainer.OnScrollEvent</FullName>
+        </TypeIdentifier>
+      </NestedType>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="9" Y="5.5" Height="2.201698611080646" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.StackPanel</FullName>
+        <FileName>Presentation\Controls\StackPanel.cs</FileName>
+        <HashCode>AAAAAAAAAQAAAAAAAAAAAAAACEAAEAAAABgAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="14.25" Y="0.5" Height="3.701698611080646" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Text</FullName>
+        <FileName>Presentation\Controls\Text.cs</FileName>
+        <HashCode>AACABQAgIAAAAhAQoAAEAAEAAEABAAAAABgQBgECAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="12.5" Y="0.5" Height="4.502619011079271" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.TextPanel</FullName>
+        <FileName>Presentation\Controls\TextPanel.cs</FileName>
+        <HashCode>AACAQAAgAAAAAIAQwAAAAEAACAABCAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <Compartment Group="Kind" HasGroup="false" HeaderText="Nested Types" IsDefaultExpandCollapseState="false" />
+      <NestedType xsi:type="ClassShapeProxy" Collapsed="true">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Controls.TextPanel.TextSpan</FullName>
+        </TypeIdentifier>
+      </NestedType>
+      <NestedType xsi:type="ClassShapeProxy" Collapsed="true">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Controls.TextPanel.TextSpanCollection</FullName>
+        </TypeIdentifier>
+        <LollipopPosition Position="0.19999999999999929" />
+      </NestedType>
+      <NestedType xsi:type="ClassShapeProxy" Collapsed="true">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Controls.TextPanel.Line</FullName>
+        </TypeIdentifier>
+      </NestedType>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="15.75" Y="12.25" Height="1.8683652777473121" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.TransitionView</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AACAIAAAAAABQIgAAAAAAAAAAAAAAAAAQACAAACAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <NestedType xsi:type="EnumShapeProxy" Collapsed="true">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Controls.TransitionView.State</FullName>
+        </TypeIdentifier>
+      </NestedType>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="13" Y="14" Height="4.5350319444139835" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Transition</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AAAAAIAAAEABBBEBAEAEAAAAAAAQIICgAAAgAAAAAA4=</HashCode>
+      </TypeIdentifier>
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="17" Y="19.25" Height="2.0350319444139835" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.CrossFadeTransition</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AAAAAAAAAEAABAAAAAAAAAQEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="15" Y="19.25" Height="2.3683652777473121" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.FadeInTransition</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AAAAAAAAAEAABAgAAAEAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="15.25" Y="14.5" Height="1.2667816188931464" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.NoTransition</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AAAAAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="13" Y="19.25" Height="2.2016986110806478" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.DropInTransition</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AIAAAAAAAEAABAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="10.75" Y="5.5" Height="6.3175734483202284" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ViewController</FullName>
+        <FileName>Presentation\Controls\ViewController.cs</FileName>
+        <HashCode>AAAAgCAACQBCAIhAEAuCAAokEAAAEQEAIAAAQAARIAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="2.75" Y="1.75" Height="15.170063888827961" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Element</FullName>
+        <FileName>Presentation\Element.cs</FileName>
+        <HashCode>iOClAARkFGAYEeLkAAFq0EGEqSUBshRMASgAADCCIBE=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <Compartment Group="Kind" HasGroup="false" HeaderText="Nested Types" IsDefaultExpandCollapseState="false" />
+      <NestedType xsi:type="ClassShapeProxy" Collapsed="false">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Element.Pair</FullName>
+        </TypeIdentifier>
+      </NestedType>
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="4.5" Y="15.25" Height="2.8175734483202319" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.ElementCollection</FullName>
+        <FileName>Presentation\ElementCollection.cs</FileName>
+        <HashCode>AEYAAEAAAACAAAAACAAAFAQAAAAKAAAEAAAIAATAIAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <LollipopPosition Position="0.19999999999999929" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="18" Y="6.25" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Media.Brush</FullName>
+        <FileName>Presentation\Media\Brush.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="20" Y="0.5" Height="5.2016986110806451" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Media.DrawingContext</FullName>
+        <FileName>Presentation\Media\DrawingContext.cs</FileName>
+        <HashCode>AAgAABAQBAAAAEBAAAhEgEAAQAgAAEAIAEUECADAAIA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="18" Y="5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Media.Pen</FullName>
+        <FileName>Presentation\Media\Pen.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="18" Y="7.5" Height="1.4842401149868962" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Media.SolidColorBrush</FullName>
+        <FileName>Presentation\Media\SolidColorBrush.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAgAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="10.75" Y="14.25" Height="3.6943550672133796" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Resources</FullName>
+        <FileName>Presentation\Resources.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAABAAAAABAAAAAgACAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <Compartment Group="Kind" HasGroup="false" HeaderText="Nested Types" IsDefaultExpandCollapseState="false" />
+      <NestedType xsi:type="EnumShapeProxy" Collapsed="false">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.Resources.Tag</FullName>
+        </TypeIdentifier>
+      </NestedType>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="9.5" Y="20.25" Height="1.3175734483202319" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Shapes.Ellipse</FullName>
+        <FileName>Presentation\Shapes\Ellipse.cs</FileName>
+        <HashCode>AADAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="7.75" Y="20.25" Height="1.4842401149868962" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Shapes.Line</FullName>
+        <FileName>Presentation\Shapes\Line.cs</FileName>
+        <HashCode>AACAAAAAAAAAAAAAACAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="6" Y="20.25" Height="1.4842401149868962" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Shapes.Polygon</FullName>
+        <FileName>Presentation\Shapes\Polygon.cs</FileName>
+        <HashCode>AACAAAAAAAAAgAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="4.25" Y="20.25" Height="1.1001149522264804" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Shapes.Rectangle</FullName>
+        <FileName>Presentation\Shapes\Rectangle.cs</FileName>
+        <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="6.5" Y="18.25" Height="1.1509067816535641" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Shapes.Shape</FullName>
+        <FileName>Presentation\Shapes\Shape.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAACAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+    </Class>
+    <Class Collapsed="false">
+      <AbsoluteBounds X="19" Y="9.5" Height="8.914418956041338" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.WindowManager</FullName>
+        <FileName>Presentation\WindowManager.cs</FileName>
+        <HashCode>DCIDACADCgCAAAAAIBAAQAAoAAEAABAggBBggAQAAAA=</HashCode>
+      </TypeIdentifier>
+      <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+      <Compartment Group="Kind" HasGroup="false" HeaderText="Nested Types" IsDefaultExpandCollapseState="false" />
+      <NestedType xsi:type="ClassShapeProxy" Collapsed="false">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.WindowManager.Request_Redraw</FullName>
+        </TypeIdentifier>
+      </NestedType>
+      <NestedType xsi:type="ClassShapeProxy" Collapsed="false">
+        <TypeIdentifier>
+          <FullName>Microsoft.SPOT.Presentation.WindowManager.Request_WindowCommand</FullName>
+        </TypeIdentifier>
+        <Compartment Group="Access" HasGroup="true" HeaderText="private" IsDefaultExpandCollapseState="false" />
+        <Compartment Group="Kind" HasGroup="false" HeaderText="Nested Types" IsDefaultExpandCollapseState="false" />
+        <NestedType xsi:type="EnumShapeProxy" Collapsed="false">
+          <TypeIdentifier>
+            <FullName>Microsoft.SPOT.Presentation.WindowManager.Request_WindowCommand.Command</FullName>
+          </TypeIdentifier>
+        </NestedType>
+      </NestedType>
+    </Class>
+    <Interface Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="2.75" Height="1.2667816188931464" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.IInputSource</FullName>
+        <FileName>Input\IInputSource.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAACACAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Interface>
+    <Interface Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="9.5" Height="1.1001149522264804" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.IDocumentFormatter</FullName>
+        <FileName>Presentation\Controls\IDocumentFormatter.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Interface>
+    <Interface Collapsed="false">
+      <AbsoluteBounds X="20" Y="6.25" Height="1.9334482855598125" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.IWindow</FullName>
+        <FileName>Presentation\Interfaces.cs</FileName>
+        <HashCode>AACAAAAAAAAAAAAAAAAAAAEABAAAAgAAAAQAAAAEABA=</HashCode>
+      </TypeIdentifier>
+    </Interface>
+    <Interface Collapsed="false">
+      <AbsoluteBounds X="15.25" Y="17.25" Height="1.2667816188931482" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.ITransition</FullName>
+        <FileName>Presentation\Interfaces.cs</FileName>
+        <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAAAgAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Interface>
+    <Interface Collapsed="false">
+      <AbsoluteBounds X="15.25" Y="16" Height="0.93344828555981607" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.ITransitionMyViewsEnabled</FullName>
+        <FileName>Presentation\Interfaces.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Interface>
+    <Interface Collapsed="false">
+      <AbsoluteBounds X="4.25" Y="22" Height="1.2667816188931482" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.IApplication</FullName>
+        <FileName>System\IApplication.cs</FileName>
+        <HashCode>gAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      </TypeIdentifier>
+    </Interface>
+    <Interface Collapsed="false">
+      <AbsoluteBounds X="21.5" Y="20" Height="2.1001149522264804" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.ISafeIterator</FullName>
+        <FileName>System\ISafeIterator.cs</FileName>
+        <HashCode>AAAAAAAAAgBAAAAAEACAAAAAAAAAAQAAIAEAAAAAEAA=</HashCode>
+      </TypeIdentifier>
+    </Interface>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="4.25" Height="1.5593231227993964" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.KeyAction</FullName>
+        <FileName>Input\KeyArgs.cs</FileName>
+        <HashCode>AABAAAAAQAAACAAAAAAAAAAAAAAAAQAAACACAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="14.5" Height="0.89265645613273037" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.Orientation</FullName>
+        <FileName>Presentation\Controls\Orientation.cs</FileName>
+        <HashCode>AAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="19.75" Height="1.0593231227993982" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.TransitionCallbackState</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AABAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="18.25" Height="1.2259897894660661" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.HorizontalLayoutAlignment</FullName>
+        <FileName>Presentation\HorizontalLayoutAlignment.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACQAAAIAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="22.25" Height="1.2259897894660661" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Media.HorizontalAlignment</FullName>
+        <FileName>Presentation\Media\HorizontalAlignment.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAACACAAAAIAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="2.5" Y="22" Height="1.0593231227993982" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Media.VerticalAlignment</FullName>
+        <FileName>Presentation\Media\VerticalAlignment.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAAAAAAAAAIAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="2.5" Y="21" Height="0.89265645613273037" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Shapes.Direction</FullName>
+        <FileName>Presentation\Shapes\Line.cs</FileName>
+        <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="2.5" Y="19.5" Height="1.2259897894660661" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.VerticalLayoutAlignment</FullName>
+        <FileName>Presentation\VerticalLayoutAlignment.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAAAAAQAAAIAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Enum Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="21" Height="1.0593231227993982" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Visibility</FullName>
+        <FileName>Presentation\Visibility.cs</FileName>
+        <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAEAAA=</HashCode>
+      </TypeIdentifier>
+    </Enum>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="2.75" Y="0.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.KeyEvent</FullName>
+        <FileName>Input\KeyEvent.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="4.5" Y="0.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.OnDismissCallback</FullName>
+        <FileName>Presentation\Controls\DialogBox.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="6.25" Y="0.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ExceptionHandler</FullName>
+        <FileName>Presentation\Controls\Form.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="11.25" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.CreateListItem</FullName>
+        <FileName>Presentation\Controls\ListBrowser.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="16.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.SelectionEventHandler</FullName>
+        <FileName>Presentation\Controls\SelectionEventHandler.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="8" Y="0.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.TransitionCallback</FullName>
+        <FileName>Presentation\Controls\Transition.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="2.5" Y="17.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.ActivateHandler</FullName>
+        <FileName>Presentation\Controls\ViewController.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="2.5" Y="18.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.DeactivateHandler</FullName>
+        <FileName>Presentation\Controls\ViewController.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="17.25" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.Controls.SelectHandler</FullName>
+        <FileName>Presentation\Controls\ViewController.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="0.75" Y="15.5" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.Presentation.IterateDescendentsCallback</FullName>
+        <FileName>Presentation\Element.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+    <Delegate Collapsed="false">
+      <AbsoluteBounds X="21.5" Y="19" Height="0.7" Width="1.5" />
+      <TypeIdentifier>
+        <FullName>Microsoft.SPOT.InvalidIterator</FullName>
+        <FileName>System\ISafeIterator.cs</FileName>
+        <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      </TypeIdentifier>
+    </Delegate>
+  </View>
+</Diagram>

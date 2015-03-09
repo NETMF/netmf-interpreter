@@ -1,0 +1,15 @@
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name Package="{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}" ID="2405" />
+    <Description Package="{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}" ID="2406" />
+    <Icon Package="{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}" ID="4601" />
+    <ProjectType>CSharp</ProjectType>
+    <SortOrder>280</SortOrder>
+    <DefaultName>AssemblyInfo.cs</DefaultName>
+    <TemplateGroupID>MicroFramework</TemplateGroupID>
+    <ShowByDefault>false</ShowByDefault>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

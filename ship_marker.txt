@@ -1,0 +1,6 @@
+The .NET MF v4.1 was shipped from this client_v4_0tov4_1 branch at change 69156 on 2010/07/15 (23:54:17) 
+
+RTM FULL BUILD (RTM flavor only)
+C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\msbuild.exe c:\depot\current\client_v4_1\client_v4_1.branchproj /p:AutomatedBuild=true;CommonBuildTasksDir=C:\depot\current\bin\build;BuildDropDirectoryRoot=c:\Builds;BuildShare=\\NETMFBLD01\Builds;ResultsFolder=C:\DOCUME~1\mfala\LOCALS~1\Temp\75a981b3-d335-4ba7-9065-0624244049f2;BuildNumber=69156;TestBuild=false;NoCommands=false;SendMailTo=spotpt@microsoft.com;SendMailFrom=mfala@microsoft.com;BranchTarget=;IndexSymbols=true;ArchiveSymbols=false;SignBuild=true;DefaultBuildFlavor=RTM /p:IgnoreBuild=false
+
+The .NET MF v4.1 QFE was shipped from this client_v4_0tov4_1 branch at change 69215 on 2010/08/23

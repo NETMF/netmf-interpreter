@@ -1,0 +1,78 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFDeploy", "Application\MFDeploy.csproj", "{322AE920-4781-4D09-834D-71E744C78803}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E9F90713-1AC8-4C59-BA77-27AA7D7C87C2} = {E9F90713-1AC8-4C59-BA77-27AA7D7C87C2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFDeployEngine", "Library\MFDeployEngine.csproj", "{E9F90713-1AC8-4C59-BA77-27AA7D7C87C2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D9DCA6FB-680F-4355-ABEF-128DB02721E6} = {D9DCA6FB-680F-4355-ABEF-128DB02721E6}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFDeployCom", "MFDeployCom\MFDeployCom.csproj", "{322AE920-4781-4D09-834D-71E744C78303}"
+	ProjectSection(ProjectDependencies) = postProject
+		{322AE920-4781-4D09-834D-71E744C78803} = {322AE920-4781-4D09-834D-71E744C78803}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debugger", "..\..\Debugger\Debugger.csproj", "{D9DCA6FB-680F-4355-ABEF-128DB02721E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DAEB83A4-5868-4725-A15D-85F75DB87EAC} = {DAEB83A4-5868-4725-A15D-85F75DB87EAC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinUsb", "..\..\Debugger\WinUsb\WinUsb.csproj", "{DAEB83A4-5868-4725-A15D-85F75DB87EAC}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs15
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\Debugger\\WinUsb\\WinUsb.csproj
+		SccProjectName1 = ../../Debugger/WinUsb
+		SccLocalPath1 = ..\\..\\Debugger\\WinUsb
+		SccProjectUniqueName2 = ..\\..\\Debugger\\Debugger.csproj
+		SccProjectName2 = ../../Debugger
+		SccLocalPath2 = ..\\..\\Debugger
+		SccProjectUniqueName3 = Library\\MFDeployEngine.csproj
+		SccProjectName3 = Library
+		SccLocalPath3 = Library
+		SccProjectUniqueName4 = Application\\MFDeploy.csproj
+		SccProjectName4 = Application
+		SccLocalPath4 = Application
+		SccProjectUniqueName5 = MFDeployCom\\MFDeployCom.csproj
+		SccProjectName5 = MFDeployCom
+		SccLocalPath5 = MFDeployCom
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{322AE920-4781-4D09-834D-71E744C78803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{322AE920-4781-4D09-834D-71E744C78803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{322AE920-4781-4D09-834D-71E744C78803}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{322AE920-4781-4D09-834D-71E744C78803}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{E9F90713-1AC8-4C59-BA77-27AA7D7C87C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9F90713-1AC8-4C59-BA77-27AA7D7C87C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9F90713-1AC8-4C59-BA77-27AA7D7C87C2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9F90713-1AC8-4C59-BA77-27AA7D7C87C2}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{322AE920-4781-4D09-834D-71E744C78303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{322AE920-4781-4D09-834D-71E744C78303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{322AE920-4781-4D09-834D-71E744C78303}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{322AE920-4781-4D09-834D-71E744C78303}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{D9DCA6FB-680F-4355-ABEF-128DB02721E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9DCA6FB-680F-4355-ABEF-128DB02721E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9DCA6FB-680F-4355-ABEF-128DB02721E6}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9DCA6FB-680F-4355-ABEF-128DB02721E6}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{DAEB83A4-5868-4725-A15D-85F75DB87EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAEB83A4-5868-4725-A15D-85F75DB87EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAEB83A4-5868-4725-A15D-85F75DB87EAC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAEB83A4-5868-4725-A15D-85F75DB87EAC}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

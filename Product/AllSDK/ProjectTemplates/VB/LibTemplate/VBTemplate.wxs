@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <?include defines.wxs?>
+    <DirectoryRef Id="WDEXPRESS11_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+      <Component Id="Component_VisualBasicClassLibraryTemplate.WDE110" Guid ="43f85e01-b847-44e1-9350-acb43eff2055">
+        <File Id="FileVisualBasicClassLibraryTemplate.WDE110"
+            Name="ClassLibrary.zip"
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\ClassLibrary.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="VS11_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+      <Component Id="Component_VisualBasicClassLibraryTemplate.VS110" Guid ="43eb6405-2776-4e9d-9def-4c73c9f43b2f">
+        <File Id="FileVisualBasicClassLibraryTemplate.VS110"
+            Name="ClassLibrary.zip" 	
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\ClassLibrary.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+      <DirectoryRef Id="WDEXPRESS12_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+          <Component Id="Component_VisualBasicClassLibraryTemplate.WDE120" Guid ="AA49E4DC-0389-4588-9288-5B9D4FDB9661">
+              <File Id="FileVisualBasicClassLibraryTemplate.WDE120"
+                  Name="ClassLibrary.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\ClassLibrary.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+
+      <DirectoryRef Id="VS12_PROJECT_TEMPLATE_VISUALBASIC_NETMF">
+          <Component Id="Component_VisualBasicClassLibraryTemplate.VS120" Guid ="B26A3CFA-9395-477B-A2C7-C2BF0B9EA2BA">
+              <File Id="FileVisualBasicClassLibraryTemplate.VS120"
+                  Name="ClassLibrary.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_PROJECTS_VISUALBASIC_DEVICE)\ClassLibrary.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

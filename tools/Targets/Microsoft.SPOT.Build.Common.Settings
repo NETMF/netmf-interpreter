@@ -1,0 +1,23 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <!-- Please see the definition of the property 'MainProps'
+       in Microsoft.SPOT.System.Settings and Microsoft.SPOT.Build.Configuration.Settings
+  -->
+
+  <PropertyGroup Condition="'$(PropagatedBy)'=='SDK'">
+    <PLATFORM               Condition="'$(PLATFORM)'==''"               >$(_PLATFORM)</PLATFORM>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TARGETLOCATION         Condition="'$(TARGETLOCATION)'==''"         >$(_TARGETLOCATION)</TARGETLOCATION>
+    <CLEAN_INDEPENDENT_ONLY Condition="'$(CLEAN_INDEPENDENT_ONLY)'==''" >$(_CLEAN_INDEPENDENT_ONLY)</CLEAN_INDEPENDENT_ONLY>
+    <Configuration          Condition="'$(Configuration)'==''"          >$(_Configuration)</Configuration>
+    <TinyCLR_Platform       Condition="'$(TinyCLR_Platform)'==''"       >$(_TinyCLR_Platform)</TinyCLR_Platform>
+    <BuildNumber            Condition="'$(BuildNumber)'==''"            >$(_BuildNumber)</BuildNumber>
+    <RevisionNumber         Condition="'$(RevisionNumber)'==''"         >$(_RevisionNumber)</RevisionNumber>
+    <SignBuild              Condition="'$(SignBuild)'==''"              >$(_SignBuild)</SignBuild>
+    <SolutionRoot           Condition="'$(SolutionRoot)'==''"           >$(_SolutionRoot)</SolutionRoot>
+    <MFSettingsFile         Condition="'$(MFSettingsFile)'==''"         >$(_MFSettingsFile)</MFSettingsFile>
+  </PropertyGroup>
+
+</Project>

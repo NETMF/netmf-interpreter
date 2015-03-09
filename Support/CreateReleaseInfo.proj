@@ -1,0 +1,33 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Targets"/>
+
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn);CreateReleaseInfoSettings</BuildDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ReleaseInfoFile Include="$(SPOCLIENT)\ReleaseInfo.settings" />
+  </ItemGroup>
+
+
+  <!-- USE $(BuildNumber) as an Input parameter so that it rebuilds always (since the dependency should be on the BuildNumber property value) -->
+  <Target Name="CreateReleaseInfoSettings" 
+        Inputs="@(ReleaseInfoFile);$(BuildNumber)"  
+        Outputs="@(ReleaseInfoFile->'$(BUILD_TREE_SERVER)\dll\%(FileName)%(Extension)')">
+
+        <GenerateReleaseInfo
+           InputFile="@(ReleaseInfoFile)"
+           OutputFile="@(ReleaseInfoFile->'$(BUILD_TREE_SERVER)\dll\%(FileName)%(Extension)')"
+           BuildNumber="$(BuildNUmber)"
+        />
+
+        <GenerateFrameworkList
+           BuildOutputDirectory="$(BUILD_TREE_CLIENT)\dll"
+           FrameworkListFile="$(BUILD_TREE_CLIENT)\dll\RedistList\FrameworkList.xml"
+           FrameworkVersion="$(MajorVersion).$(MinorVersion).$(BuildNumber).$(RevisionNumber)"
+           ToolsVersion="4.0"
+           PublicKeyToken="2670f5f21e7f4192"
+        />
+  </Target>
+  
+</Project>

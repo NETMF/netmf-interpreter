@@ -1,0 +1,20 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <OUTPUT_MSM_FILE>MicroFrameworkTestKit.MSI</OUTPUT_MSM_FILE>
+    <OUTPUT_MSM>$(BUILD_TEST_TREE_SERVER)\msm\$(OUTPUT_MSM_FILE)</OUTPUT_MSM>
+    <LinkAllWiXObjects>true</LinkAllWiXObjects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <WiXSource Include="TestSetup.wxs"/>
+
+    <WiXObjectEndian  Include="$(OutputWiXObjServer)..\FeatureFragments\EndianFeatures.wixobj" />
+  </ItemGroup>
+  
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+
+  <PropertyGroup>
+    <CandleIncludeSearchPath>-I$(MSBuildProjectDirectory)</CandleIncludeSearchPath>
+  </PropertyGroup>
+</Project>

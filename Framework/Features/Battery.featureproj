@@ -1,0 +1,19 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Battery</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\hardware.featureproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\BatteryMeasurement_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\BatteryCharger_HAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Battery feature</Description>
+    <Guid>{f6c8bbc0-f47a-421e-b59b-55ff845c421c}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <BATTERY_FEATUREPROJ>True</BATTERY_FEATUREPROJ>
+  </PropertyGroup>
+  <ItemGroup>
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Hardware\Core_Native_Hardware.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+</Project>

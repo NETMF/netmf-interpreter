@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryStreamTests", "MemoryStreamTests.csproj", "{6EEB399A-4EE4-46F6-B4CA-16B65D9BD5A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RTM|Any CPU = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EEB399A-4EE4-46F6-B4CA-16B65D9BD5A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EEB399A-4EE4-46F6-B4CA-16B65D9BD5A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EEB399A-4EE4-46F6-B4CA-16B65D9BD5A0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6EEB399A-4EE4-46F6-B4CA-16B65D9BD5A0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EEB399A-4EE4-46F6-B4CA-16B65D9BD5A0}.RTM|Any CPU.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

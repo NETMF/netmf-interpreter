@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ResultFailure" xml:space="preserve">
+    <value>Failure</value>
+  </data>
+  <data name="TitleUsbFriendlyName" xml:space="preserve">
+    <value>USB Friendly Name:</value>
+  </data>
+  <data name="ErrorInvalidDevice" xml:space="preserve">
+    <value>The device selected is invalid</value>
+  </data>
+  <data name="ResultSuccess" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="DeploymentStatusTitleErase" xml:space="preserve">
+    <value>Erase Deployment Status</value>
+  </data>
+  <data name="HelpCommandList" xml:space="preserve">
+    <value>- Lists available ports (USB and Serial).</value>
+  </data>
+  <data name="LabelStaticIp" xml:space="preserve">
+    <value>Static &amp;IP address:</value>
+  </data>
+  <data name="UsbTitle" xml:space="preserve">
+    <value>Usb Configuration</value>
+  </data>
+  <data name="LabelSecondaryDns" xml:space="preserve">
+    <value>D&amp;NS Secondary Address:</value>
+  </data>
+  <data name="ErrorUnableToUpdateKey" xml:space="preserve">
+    <value>Unable to update key configuration</value>
+  </data>
+  <data name="LabelSubnetMask" xml:space="preserve">
+    <value>&amp;Subnet Mask:</value>
+  </data>
+  <data name="StatusPinging" xml:space="preserve">
+    <value>Pinging... </value>
+  </data>
+  <data name="MFHelpFilename" xml:space="preserve">
+    <value>MFDeploy.chm</value>
+  </data>
+  <data name="HelpCommandPing" xml:space="preserve">
+    <value>- Verifies connection with device.</value>
+  </data>
+  <data name="WarningPlugInHasControlOfPort" xml:space="preserve">
+    <value>Plug-in has control of port {0}</value>
+  </data>
+  <data name="HelpFlags" xml:space="preserve">
+    <value>Where FLAG is:</value>
+  </data>
+  <data name="OpenFileDialogFilterSREC" xml:space="preserve">
+    <value>SREC files (*.hex); NetMF Updates(*.nmf)|ER_FLASH;ER_RAM;ER_CONFIG;ER_DAT;ER_ResetVector;*.hex;*.nmf</value>
+  </data>
+  <data name="SecondaryDnsAddress" xml:space="preserve">
+    <value>Secondary DNS Address</value>
+  </data>
+  <data name="ErrorPrefix" xml:space="preserve">
+    <value>Error: </value>
+  </data>
+  <data name="ErrorKeyRequired" xml:space="preserve">
+    <value>A private key is required for update</value>
+  </data>
+  <data name="TransportSerial" xml:space="preserve">
+    <value>Serial</value>
+  </data>
+  <data name="MenuItemCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ErrorArgumentsInvalid" xml:space="preserve">
+    <value>Invalid argument(s): </value>
+  </data>
+  <data name="HelpCommandErase" xml:space="preserve">
+    <value>- Erases deployment sectors.</value>
+  </data>
+  <data name="LabelPrimaryDns" xml:space="preserve">
+    <value>&amp;DNS Primary Address:</value>
+  </data>
+  <data name="GroupBoxDevice" xml:space="preserve">
+    <value>De&amp;vice</value>
+  </data>
+  <data name="ErrorFailure" xml:space="preserve">
+    <value>Failure - {0}</value>
+  </data>
+  <data name="StatusErasing" xml:space="preserve">
+    <value>Erasing Deployment... </value>
+  </data>
+  <data name="MenuItemPublicKeyConfiguration" xml:space="preserve">
+    <value>Public Key Configuration</value>
+  </data>
+  <data name="ErrorInterfaceMultiple" xml:space="preserve">
+    <value>A maximum of two INTERFACE parameters is valid (the second identifies the default TinyBooter port)</value>
+  </data>
+  <data name="ColumnHeaderFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="ErrorX" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="LabelKeyIndex" xml:space="preserve">
+    <value>Key Index:</value>
+  </data>
+  <data name="ErrorFileCantOpen" xml:space="preserve">
+    <value>The file {0} could not be opened</value>
+  </data>
+  <data name="LabelDeploymentFile" xml:space="preserve">
+    <value>Deployment File:</value>
+  </data>
+  <data name="StatusXComplete" xml:space="preserve">
+    <value>{0} Complete</value>
+  </data>
+  <data name="ErrorCommandMissing" xml:space="preserve">
+    <value>The COMMAND parameter is missing</value>
+  </data>
+  <data name="LabelNewKey" xml:space="preserve">
+    <value>New Key:</value>
+  </data>
+  <data name="ButtonUpdate" xml:space="preserve">
+    <value>&amp;Update</value>
+  </data>
+  <data name="StatusFlashing" xml:space="preserve">
+    <value>Deploying {0}...</value>
+  </data>
+  <data name="WarningNoFilesForDeploy" xml:space="preserve">
+    <value>There are no files selected to deploy</value>
+  </data>
+  <data name="ButtonPing" xml:space="preserve">
+    <value>&amp;Ping</value>
+  </data>
+  <data name="StatusDeployment" xml:space="preserve">
+    <value>Deployment Status</value>
+  </data>
+  <data name="MacAddress" xml:space="preserve">
+    <value>MAC Address</value>
+  </data>
+  <data name="DefaultGateway" xml:space="preserve">
+    <value>Default Gateway</value>
+  </data>
+  <data name="TitleEraseConfirmation" xml:space="preserve">
+    <value>Confirm Application Erase</value>
+  </data>
+  <data name="ButtonClear" xml:space="preserve">
+    <value>&amp;Clear</value>
+  </data>
+  <data name="HelpCommandHelp" xml:space="preserve">
+    <value>- Displays this screen.</value>
+  </data>
+  <data name="ButtonErase" xml:space="preserve">
+    <value>&amp;Erase</value>
+  </data>
+  <data name="ToolStripMenuOptions" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="TitleAppDeploy" xml:space="preserve">
+    <value>Application Deployment</value>
+  </data>
+  <data name="KeyIndexDeployment" xml:space="preserve">
+    <value>Deployment Sector Key</value>
+  </data>
+  <data name="SaveKeyTitle" xml:space="preserve">
+    <value>Save Key As</value>
+  </data>
+  <data name="ToolStripMenuItemImageFileList" xml:space="preserve">
+    <value>Clear Image File List</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Executing at address 0x{0:x08}</value>
+  </data>
+  <data name="IpAddress" xml:space="preserve">
+    <value>IP Address</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="LabelGateway" xml:space="preserve">
+    <value>Default &amp;Gateway:</value>
+  </data>
+  <data name="CheckBoxEnable" xml:space="preserve">
+    <value>&amp;Enable</value>
+  </data>
+  <data name="MFHelpError" xml:space="preserve">
+    <value>Cannot open help file</value>
+  </data>
+  <data name="MessageEraseConfirmation" xml:space="preserve">
+    <value>Are you sure you want to erase your managed device application and data?</value>
+  </data>
+  <data name="WarningPlugInPending" xml:space="preserve">
+    <value>Plug-in command pending, please wait</value>
+  </data>
+  <data name="SubnetMask" xml:space="preserve">
+    <value>Subnet Mask</value>
+  </data>
+  <data name="ErrorCommandsMultiple" xml:space="preserve">
+    <value>Only one COMMAND parameter is valid</value>
+  </data>
+  <data name="HelpCommandVersion" xml:space="preserve">
+    <value>- Displays image version.</value>
+  </data>
+  <data name="ButtonDeploy" xml:space="preserve">
+    <value>&amp;Deploy</value>
+  </data>
+  <data name="HelpUsage" xml:space="preserve">
+    <value>Usage: MFDeploy [COMMAND[:CMD_ARGS]] [/I:INTERFACE[:INTEFACE_ARGS]] [FLAG]
+</value>
+  </data>
+  <data name="HelpCommandReboot" xml:space="preserve">
+    <value>- Reboots the device.  Warm option only restarts the CLR.</value>
+  </data>
+  <data name="ErrorFileNotFound" xml:space="preserve">
+    <value>Error: file not found: {0}</value>
+  </data>
+  <data name="ErrorFileInvalid" xml:space="preserve">
+    <value>Invalid File: {0}</value>
+  </data>
+  <data name="StatusConnectingToDevice" xml:space="preserve">
+    <value>Connecting to device...</value>
+  </data>
+  <data name="ToolStripMenuItemDefaultSerialPort" xml:space="preserve">
+    <value>Default Serial Port</value>
+  </data>
+  <data name="ButtonApply" xml:space="preserve">
+    <value>&amp;Apply</value>
+  </data>
+  <data name="ErrorTitleImageFile" xml:space="preserve">
+    <value>Invalid Image File</value>
+  </data>
+  <data name="HelpFlagTimeout" xml:space="preserve">
+    <value>- Sets timeout mode for command (if available).</value>
+  </data>
+  <data name="ErrorSignatureFileInvalid" xml:space="preserve">
+    <value>The Signature File {0} is invalid</value>
+  </data>
+  <data name="ToolStripMenuPlugIn" xml:space="preserve">
+    <value>Plug-in</value>
+  </data>
+  <data name="MenuItemCreateApplicationDeployment" xml:space="preserve">
+    <value>Create Application Deployment</value>
+  </data>
+  <data name="ButtonBrowse" xml:space="preserve">
+    <value>&amp;Browse...</value>
+  </data>
+  <data name="FileDialogFilterDeploymentFiles" xml:space="preserve">
+    <value>Deployment Files (*.hex)|*.hex|All Files (*.*)|*.*||</value>
+  </data>
+  <data name="ErrorDeviceNotResponding" xml:space="preserve">
+    <value>Failure - Device {0} is invalid or not responding</value>
+  </data>
+  <data name="FileDialogFilterKeys" xml:space="preserve">
+    <value>Key Files (*.key)|*.key|All Files (*.*)|*.*||</value>
+  </data>
+  <data name="ErrorUnableToInstallPlugIn" xml:space="preserve">
+    <value>Unable to install plug-in {0}</value>
+  </data>
+  <data name="PrimaryDnsAddress" xml:space="preserve">
+    <value>Primary DNS Address</value>
+  </data>
+  <data name="ErrorKeyFileInvalid" xml:space="preserve">
+    <value>Invalid Key File: {0}</value>
+  </data>
+  <data name="MenuItemCreateKey" xml:space="preserve">
+    <value>Create Key</value>
+  </data>
+  <data name="ButtonBrowseDotDotDot" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="ButtonCancel" xml:space="preserve">
+    <value>&amp;Cancel</value>
+  </data>
+  <data name="LabelMAC" xml:space="preserve">
+    <value>&amp;MAC Address:</value>
+  </data>
+  <data name="LabelDHCP" xml:space="preserve">
+    <value>D&amp;HCP:</value>
+  </data>
+  <data name="ErrorSignatureFileNotFound" xml:space="preserve">
+    <value>Could not locate signature file: {0}</value>
+  </data>
+  <data name="StatusEraseSector" xml:space="preserve">
+    <value>Erasing sector 0x{0:x08}</value>
+  </data>
+  <data name="TitleErrorInput" xml:space="preserve">
+    <value>Input Error!</value>
+  </data>
+  <data name="StatusRebooting" xml:space="preserve">
+    <value>Rebooting...</value>
+  </data>
+  <data name="HelpInterface" xml:space="preserve">
+    <value>Where INTERFACE is:</value>
+  </data>
+  <data name="HelpInterfaceCom" xml:space="preserve">
+    <value>- Identifies serial port number for the device.</value>
+  </data>
+  <data name="TransportTcpIp" xml:space="preserve">
+    <value>TCP/IP</value>
+  </data>
+  <data name="HelpCommand" xml:space="preserve">
+    <value>Where COMMAND is:</value>
+  </data>
+  <data name="NetworkTitle" xml:space="preserve">
+    <value>Network Configuration</value>
+  </data>
+  <data name="ErrorDeployment" xml:space="preserve">
+    <value>Unable to deploy to device</value>
+  </data>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>.NET Micro Framework Deployment Tool</value>
+  </data>
+  <data name="HelpInterfaceTcpIp" xml:space="preserve">
+    <value>- Identifies TCP/IP address for device.</value>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>Exception: {0}</value>
+  </data>
+  <data name="ErrorUnsupportedConfiguration" xml:space="preserve">
+    <value>Device has old or unsupported configuration</value>
+  </data>
+  <data name="LabelPrivateKey" xml:space="preserve">
+    <value>Key:</value>
+  </data>
+  <data name="ColumnHeaderTimeStamp" xml:space="preserve">
+    <value>Time Stamp</value>
+  </data>
+  <data name="ColumnHeaderSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="HelpInterfaceUsb" xml:space="preserve">
+    <value>- Identifies USB port name for device.</value>
+  </data>
+  <data name="HelpFlagQuiet" xml:space="preserve">
+    <value>- Turns off verbose mode.</value>
+  </data>
+  <data name="ErrorInvalidX" xml:space="preserve">
+    <value>Invalid {0}</value>
+  </data>
+  <data name="GroupBoxImageFile" xml:space="preserve">
+    <value>&amp;Image File</value>
+  </data>
+  <data name="StatusPingNotConnected" xml:space="preserve">
+    <value>Not Connected</value>
+  </data>
+  <data name="LabelOldPrivateKey" xml:space="preserve">
+    <value>Old Key:</value>
+  </data>
+  <data name="TransportUsb" xml:space="preserve">
+    <value>USB</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorTitleSignatureFile" xml:space="preserve">
+    <value>Invalid Signature File</value>
+  </data>
+  <data name="HelpDescription" xml:space="preserve">
+    <value>Description: The .NET Micro Framework MFDeploy tool will be used in conjunction 
+             with the Visual Studio integration to provide users the ability to 
+             re-deploy firmware images and erase the deployment sector.  </value>
+  </data>
+  <data name="StatusPingConnected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="ColumnHeaderBaseAddr" xml:space="preserve">
+    <value>Base Address</value>
+  </data>
+  <data name="HelpCommandFlash" xml:space="preserve">
+    <value>- Deploys the given SREC (.hex) files to the device.</value>
+  </data>
+  <data name="XCommand" xml:space="preserve">
+    <value>{0} Command</value>
+  </data>
+  <data name="WarningVersionNotSupported" xml:space="preserve">
+    <value>Version command not supported (yet)!</value>
+  </data>
+  <data name="KeyIndexFirmware" xml:space="preserve">
+    <value>Firmware Key</value>
+  </data>
+  <data name="CreateDeploymentTitle" xml:space="preserve">
+    <value>Create Deployment File As</value>
+  </data>
+  <data name="HelpInterfaceSpecial" xml:space="preserve">
+    <value>NOTE!!! If two interfaces are given the second is assumed to be for TinyBooter</value>
+  </data>
+  <data name="MenuItemSignHexFile" xml:space="preserve">
+    <value>Sign Deployment File</value>
+  </data>
+  <data name="HelpBanner" xml:space="preserve">
+    <value>**************************** MFDeploy Help (v1.0) ****************************
+Copyright (c) 2015 Microsoft OpenTechnologies Inc. All rights reserved.</value>
+  </data>
+  <data name="ErrorInterfaceMissing" xml:space="preserve">
+    <value>The INTERFACE parameter is missing</value>
+  </data>
+  <data name="ErrorErase" xml:space="preserve">
+    <value>Unable to erase device</value>
+  </data>
+  <data name="CopyrightWarning" xml:space="preserve">
+    <value>Warning: This computer program is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.</value>
+  </data>
+  <data name="ErrorNoDeploymentAssemblies" xml:space="preserve">
+    <value>There were no valid assemblies detected in the deployment area.</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="ConnectingToX" xml:space="preserve">
+    <value>Connecting to {0}...</value>
+  </data>
+  <data name="ErrorNotSupported" xml:space="preserve">
+    <value>Not Supported</value>
+  </data>
+  <data name="UserCanceled" xml:space="preserve">
+    <value>User Cancel...</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Serial</value>
+  </data>
+  <data name="ErrorAppSettings" xml:space="preserve">
+    <value>Error: Invalid Application Settings: {0}</value>
+  </data>
+  <data name="HelpInterfaceWinUsb" xml:space="preserve">
+    <value>- Identifies WinUSB port name for device.</value>
+  </data>
+  <data name="TransportWinUsb" xml:space="preserve">
+    <value>WINUSB</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MFDeployIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\mfdeployicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="netmflogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\netmflogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

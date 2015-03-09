@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{bb063c12-22d6-4e50-a55f-f678d783e61d};{F184B08F-C81C-45f6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <ProjectGuid>{88AB0A71-ABD8-48E1-A647-C30EDCAD427B}</ProjectGuid>
+    <RootNamespace>Microsoft.SPOT.Platform.Tests</RootNamespace>
+    <AssemblyName>Microsoft.SPOT.Platform.Tests.VB.Exceptions</AssemblyName>
+    <MyType>Console</MyType>
+    <OptionCompare>Text</OptionCompare>
+    <OptionExplicit>Off</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <OutputType>Exe</OutputType>
+    <!--    <TinyCLR_ClientOnly>true</TinyCLR_ClientOnly> -->
+    <!--    <TinyCLR_HasUnitTests>true</TinyCLR_HasUnitTests> -->
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <VBRuntime>$(BUILD_TREE_CLIENT)\dll\Microsoft.VisualBasic.dll</VBRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AppDomainExceptionsTests.vb" />
+    <Compile Include="Master.vb" />
+    <Compile Include="ExceptionsTests.vb" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.VisualBasic.Targets" />
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <HintPath>$(BUILD_TEST_TREE_CLIENT)\dll\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFUtility">
+      <HintPath>$(BUILD_TEST_TREE_CLIENT)\dll\Microsoft.SPOT.Platform.Test.MFUtility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

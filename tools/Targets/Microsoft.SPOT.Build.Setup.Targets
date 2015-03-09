@@ -1,0 +1,129 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+   <PropertyGroup>
+       <Microsoft_SPOT_Build_Setup_Targts_Imported>true</Microsoft_SPOT_Build_Setup_Targts_Imported>
+   </PropertyGroup>
+  <Import Project="Microsoft.SPOT.Build.Configuration.Settings" Condition="'$(_Microsoft_SPOT_Build_Configuration_Settings__Included_)' == ''" />
+
+  <Import Project="$(SPOCLIENT)\ReleaseInfo.settings" Condition="'$(_ReleaseInfo__Included_)' == ''" />
+
+<!-- see bug 12640
+    <Import Project="Microsoft.SPOT.Support.Settings" />
+-->
+
+  <PropertyGroup>
+    <ILDASM_FLAGS>/bytes /raweh /tokens /linenum /nobar /header</ILDASM_FLAGS>
+    <PRG_DDT>$(SPOCLIENT)\tools\bin\DownloadDeploymentTool.exe</PRG_DDT>
+    <Optimize>true</Optimize>
+    <Optimize Condition=" '$(Configuration)' == 'Debug' and '$(TinyCLR_Platform)' == 'Server' ">false</Optimize>
+    <ENDIANNESS Condition="'$(ENDIANNESS)'==''">le</ENDIANNESS>
+    <BUILD_TREE>$(BUILD_ROOT)\$(Configuration)</BUILD_TREE>
+    <BUILD_TREE_SERVER>$(BUILD_TREE)\Server</BUILD_TREE_SERVER>
+    <BUILD_TREE_CLIENT>$(BUILD_TREE)\Client</BUILD_TREE_CLIENT>
+    <BUILD_TREE_PLATFORM>$(BUILD_TREE)\$(TinyCLR_Platform)</BUILD_TREE_PLATFORM>
+    <BUILD_TREE_DLL>$(BUILD_TREE_PLATFORM)\dll</BUILD_TREE_DLL>
+    <BUILD_TREE_FRAGMENTS>$(BUILD_TREE_PLATFORM)\Fragments</BUILD_TREE_FRAGMENTS>
+    <BUILD_TREE_OBJ>$(BUILD_TREE_PLATFORM)\obj</BUILD_TREE_OBJ>
+    <BUILD_TREE_PE_NoEndian>$(BUILD_TREE_PLATFORM)\pe</BUILD_TREE_PE_NoEndian>
+    <BUILD_TREE_PE>$(BUILD_TREE_PE_NoEndian)\$(ENDIANNESS)</BUILD_TREE_PE>
+    <BUILD_TREE_LOC>$(BUILD_TREE_PLATFORM)\loc</BUILD_TREE_LOC>
+    <BUILD_TREE_DAT>$(BUILD_TREE_PLATFORM)\dat\$(ENDIANNESS)</BUILD_TREE_DAT>
+    <BUILD_TREE_STUBS>$(BUILD_TREE_PLATFORM)\stubs</BUILD_TREE_STUBS>
+    <BUILD_TREE_DISASM>$(BUILD_TREE_PLATFORM)\disasm</BUILD_TREE_DISASM>
+    <BUILD_TREE_TXT>$(BUILD_TREE_PLATFORM)\txt</BUILD_TREE_TXT>
+    <BUILD_TREE_XML>$(BUILD_TREE_PLATFORM)\xml</BUILD_TREE_XML>
+    <BUILD_TREE_DUMPS>$(BUILD_TREE_PLATFORM)\dumps</BUILD_TREE_DUMPS>
+    <BUILD_TREE_TEMPLATES>$(BUILD_TREE_PLATFORM)\templates</BUILD_TREE_TEMPLATES>
+    <BUILD_TREE_MSM>$(BUILD_TREE_PLATFORM)\msm</BUILD_TREE_MSM>
+
+    <BUILD_TEST_ROOT>$(BUILD_TREE)\Test</BUILD_TEST_ROOT>
+    <BUILD_TEST_TREE>$(BUILD_TREE)\Test</BUILD_TEST_TREE>
+    <BUILD_TEST_TREE_CLIENT>$(BUILD_TEST_TREE)\Client</BUILD_TEST_TREE_CLIENT>
+    <BUILD_TEST_TREE_SERVER>$(BUILD_TEST_TREE)\Server</BUILD_TEST_TREE_SERVER>
+
+    <BUILD_TREE_PE_LE>$(BUILD_TREE_PE_NoEndian)\le</BUILD_TREE_PE_LE>
+    <BUILD_TREE_DAT_LE>$(BUILD_TREE_PLATFORM)\dat\le</BUILD_TREE_DAT_LE>
+    <BUILD_TREE_PE_BE>$(BUILD_TREE_PE_NoEndian)\be</BUILD_TREE_PE_BE>
+    <BUILD_TREE_DAT_BE>$(BUILD_TREE_PLATFORM)\dat\be</BUILD_TREE_DAT_BE>
+
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <DelaySign>false</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+
+    <!-- CSHARP_MACROS gets set by build_support.cmd -->
+    <DefineConstants Condition="'$(CSHARP_MACROS)'!=''" >$(DefineConstants),$(CSHARP_MACROS)</DefineConstants>
+    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">$(DefineConstants),DEBUG,TRACE</DefineConstants>
+    <TinyCLR_Locale>1033</TinyCLR_Locale>
+
+    <TinyCLR_ConvertResourcesDependsOn>BuildChildren_ConvertResources;ConvertResources</TinyCLR_ConvertResourcesDependsOn>
+    <TinyCLR_DisasmDependsOn>StartBuild;BuildChildren_Disasm</TinyCLR_DisasmDependsOn>
+    <TinyCLR_DisasmDependsOn Condition=" '$(TinyCLR_Platform)' == 'Client' ">$(TinyCLR_DisasmDependsOn);EnsureOutputDirectories;Disasm</TinyCLR_DisasmDependsOn>
+
+    <OutputPath Condition="'$(OutputPath)'==''">$(BUILD_TREE_DLL)\</OutputPath>
+    <BaseOutputPath>$(BUILD_TREE_OBJ)\$(AssemblyName)\</BaseOutputPath>
+    <IsMscorlib Condition=" '$(IsMscorlib)' == '' ">false</IsMscorlib>
+    <UseHostCompilerIfAvailable>true</UseHostCompilerIfAvailable>
+    <BaseIntermediateOutputPath>$(BaseOutputPath)__COMMON\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <PlatformFamilyName Condition=" '$(PlatformFamilyName)' == '' ">MicroFramework</PlatformFamilyName>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.SPOT.Tasks.settings"/>
+
+  <PropertyGroup Condition=" '$(TinyCLR_LocalizedAssembly)' == 'true' ">
+    <OutputPath>$(OutputPath)$(TinyCLR_Locale)\</OutputPath>
+    <BaseOutputPath>$(BaseOutputPath)$(TinyCLR_Locale)\</BaseOutputPath>
+  </PropertyGroup>
+
+
+  <Choose>
+    <When Condition=" '$(TinyCLR_Platform)' == 'Client' " >
+      <PropertyGroup>
+        <NoStdLib>true</NoStdLib>
+        <UseVSHostingProcess>false</UseVSHostingProcess>
+        <OutputType Condition=" '$(TinyCLR_OutputTypeClient)' != ''">$(TinyCLR_OutputTypeClient)</OutputType>
+        <TinyCLR_Skip_ConvertResources Condition=" '$(AssemblyName)' == 'mscorlib' ">true</TinyCLR_Skip_ConvertResources>
+        <CONVERT_RESOURCES_DIR>$(CONVERT_RESOURCES_DIR);Resources</CONVERT_RESOURCES_DIR>
+        <TargetFrameworkDirectory>$(BUILD_TREE_DLL)</TargetFrameworkDirectory>
+        <FrameworkRegistryBase>Software\Microsoft\.NETMicroFramework</FrameworkRegistryBase>
+        <TargetFrameworkIdentifier>.NETMicroFramework</TargetFrameworkIdentifier>
+        <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'== ''">v4.4</TargetFrameworkVersion>
+        <AssemblyFoldersSuffix  Condition="'$(AssemblyFoldersSuffix)' == ''">AssemblyFoldersEx</AssemblyFoldersSuffix>
+      </PropertyGroup>
+
+      <ItemGroup>
+        <ReferencePath Condition=" '$(AssemblyName)' != 'mscorlib' And  '$(AssemblyName)' != 'Microsoft.VisualBasic' " Include="$(BUILD_TREE_DLL)\mscorlib.dll" >
+          <InProject>false</InProject>
+        </ReferencePath>
+      </ItemGroup>
+    </When>
+
+
+    <Otherwise> <!-- TinyCLR Platform is Server -->
+      <PropertyGroup>
+        <NoStdLib>false</NoStdLib>
+        <DefineConstants>$(DefineConstants),TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
+        <AssemblyOriginatorKeyFile>$(SPOCLIENT)\Framework\key.snk</AssemblyOriginatorKeyFile>
+        <DelaySign>false</DelaySign>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
+        <OutputType Condition=" '$(TinyCLR_OutputTypeServer)' != ''">$(TinyCLR_OutputTypeServer)</OutputType>
+        <TinyCLR_Skip_ConvertResources>true</TinyCLR_Skip_ConvertResources>
+        <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)'== ''">v4.5</TargetFrameworkVersion>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+
+</Project>

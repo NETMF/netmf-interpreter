@@ -1,0 +1,7 @@
+<OutOfBrowserSettings ShortName="WineCabMonitor" EnableGPUAcceleration="False" ShowInstallMenuItem="True">
+  <OutOfBrowserSettings.Blurb>.Net Micro Framework demo</OutOfBrowserSettings.Blurb>
+  <OutOfBrowserSettings.WindowSettings>
+    <WindowSettings Title="Wine Cabinet Monitor" />
+  </OutOfBrowserSettings.WindowSettings>
+  <OutOfBrowserSettings.Icons />
+</OutOfBrowserSettings>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Platform>x86</Platform>
+    <PlatformTarget>x86</PlatformTarget>
+    <ProjectGuid>{CC339116-1599-4DD4-91D4-A2961A7F8EB1}</ProjectGuid>
+    <AssemblyName>MFDeployBasicTests</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <OutputPath>bin\Debug\</OutputPath>
+    <RootNamespace>Microsoft.SPOT.Platform.Tests</RootNamespace>
+    <TinyCLR_ServerOnly>true</TinyCLR_ServerOnly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Host.Targets" />
+  <ItemGroup>
+    <Reference Include="MFDesktopTestRunner">
+      <HintPath>$(BUILD_TEST_TREE_DLL)\MFDesktopTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="MFDeployEngine">
+      <HintPath>$(BUILD_TREE_DLL)\MFDeployEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Master.cs" />
+    <Compile Include="FeatureTests.cs" />
+  </ItemGroup>
+</Project>

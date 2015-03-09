@@ -1,0 +1,29 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+    <ItemGroup>
+        <Project Include="SystemAssemblies.datproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="LCD\LCD.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Network\Network.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="HelloWorld\HelloWorld.csproj" >
+            <InProject>false</InProject>
+        </Project>        
+        <Project Include="ButtonLib\ButtonLib.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Application\Sample.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="InteropSample\InteropManagedCode\InteropSample.csproj" >
+            <InProject>false</InProject>
+        </Project>
+        <Project Include="Test\build.dirproj" >
+            <InProject>false</InProject>
+        </Project>
+    </ItemGroup>
+</Project>

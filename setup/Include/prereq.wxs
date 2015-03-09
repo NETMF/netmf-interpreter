@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Include>
+  <!--Require Windows 7 SP1 or newer for installation-->
+  <Condition Message="Windows 7 SP1 or newer Operating System Required">(VersionNT = 601 AND ServicePackLevel >= 1) OR VersionNT >= 602</Condition>
+  <Condition Message="[ProductName] requires administrative privileges to be installed. Please re-run setup from an administrator's account.">Privileged</Condition>
+  
+</Include>

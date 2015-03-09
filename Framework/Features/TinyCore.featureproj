@@ -1,0 +1,20 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>TinyCore</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <Import Condition="'$(GRAPHICS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Graphics.featureproj" />
+  <ItemGroup>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.TinyCore.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\TinyCore\TinyCore.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Description>TinyCore graphics subsystem</Description>
+    <Guid>{2abe543e-2c78-4199-b788-c563c5d22292}</Guid>
+    <Groups>Graphics</Groups>
+    <Documentation>
+    </Documentation>
+    <TINYCORE_FEATUREPROJ>True</TINYCORE_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

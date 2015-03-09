@@ -1,0 +1,14 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>WearLeveling</FeatureName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\WearLeveling_HAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Block storage wear leveling</Description>
+    <Guid>{39D361B8-922A-4622-8478-9B850758F871}</Guid>
+    <Groups>BlockStorage</Groups>
+    <Documentation>
+    </Documentation>
+    <WEARLEVELING_FEATUREPROJ>True</WEARLEVELING_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

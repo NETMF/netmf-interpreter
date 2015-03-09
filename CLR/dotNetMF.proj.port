@@ -1,0 +1,24 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>CLR</Directory>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup>
+    <SubDirectories Include="Core"/>
+    <SubDirectories Include="Diagnostics"/>
+    <SubDirectories Include="Graphics"/>
+    <SubDirectories Include="Libraries"/>
+    <SubDirectories Include="StartupLib"/> 
+    <SubDirectories Include="Messaging"/>
+    <SubDirectories Include="Debugger"/>
+    <SubDirectories Condition="'$(PLATFORM_FAMILY)'=='x86'" Include="Include"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

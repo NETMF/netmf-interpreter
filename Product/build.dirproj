@@ -1,0 +1,10 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+    <ItemGroup>
+      <Project Include="$(SPOCLIENT)\Support\FrameworkBase\dotnetmf.proj" />
+      <Project Include="v4.4\build.dirproj" />
+    </ItemGroup>
+
+</Project>

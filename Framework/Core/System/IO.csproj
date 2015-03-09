@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>System.IO</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>System.IO</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <NoWarn>$(NoWarn),0169,0659</NoWarn>
+    <ProjectGuid>{AB39B9E9-9797-4769-A99D-768AC9999218}</ProjectGuid>
+    <ComponentGuid>{89471248-6087-40cd-b7a1-3ca187f47d72}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="IO\Directory.cs" />
+    <Compile Include="IO\DirectoryInfo.cs" />
+    <Compile Include="IO\File.cs" />
+    <Compile Include="IO\FileAccess.cs" />
+    <Compile Include="IO\FileAttributes.cs" />
+    <Compile Include="IO\FileEnum.cs" />
+    <Compile Include="IO\FileInfo.cs" />
+    <Compile Include="IO\FileMode.cs" />
+    <Compile Include="IO\FileShare.cs" />
+    <Compile Include="IO\FileStream.cs" />
+    <Compile Include="IO\FileSystemInfo.cs" />
+    <Compile Include="IO\MemoryStream.cs" />
+    <Compile Include="IO\StreamReader.cs" />
+    <Compile Include="IO\StreamWriter.cs" />
+    <Compile Include="IO\TextReader.cs" />
+    <Compile Include="IO\TextWriter.cs" />
+    <Compile Include="IO\Path.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.IO">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.IO.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

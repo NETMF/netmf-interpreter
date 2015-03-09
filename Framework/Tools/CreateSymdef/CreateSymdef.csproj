@@ -1,0 +1,26 @@
+﻿<Project DefaultTargets="TInyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8E5B0ED1-9C66-4153-92D7-6E757BCA5D8D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CreateSymdef</RootNamespace>
+    <AssemblyName>CreateSymdef</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SPOCLIENT)\framework\key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

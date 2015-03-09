@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "802_15_4_MF", "Stack\Physical\CC2420\802_15_4_MF.csproj", "{66E93520-CC2D-4011-B8B9-0D57AD99D9C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkLayer_MF", "Stack\Network\NetworkLayer_MF.csproj", "{D254F100-F4BA-4863-9B7D-88CA3830557F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{66E93520-CC2D-4011-B8B9-0D57AD99D9C7} = {66E93520-CC2D-4011-B8B9-0D57AD99D9C7}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPHY", "Tests\Physical\TestPHY.csproj", "{F632FEBB-7387-476E-BAF2-E75C1419321C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{66E93520-CC2D-4011-B8B9-0D57AD99D9C7} = {66E93520-CC2D-4011-B8B9-0D57AD99D9C7}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNetworkLayer_MF", "Tests\Network\TestNetworkLayer_MF.csproj", "{CFAA1822-3484-47AB-85FA-D596874D9F5F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D254F100-F4BA-4863-9B7D-88CA3830557F} = {D254F100-F4BA-4863-9B7D-88CA3830557F}
+		{66E93520-CC2D-4011-B8B9-0D57AD99D9C7} = {66E93520-CC2D-4011-B8B9-0D57AD99D9C7}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66E93520-CC2D-4011-B8B9-0D57AD99D9C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E93520-CC2D-4011-B8B9-0D57AD99D9C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E93520-CC2D-4011-B8B9-0D57AD99D9C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E93520-CC2D-4011-B8B9-0D57AD99D9C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D254F100-F4BA-4863-9B7D-88CA3830557F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D254F100-F4BA-4863-9B7D-88CA3830557F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D254F100-F4BA-4863-9B7D-88CA3830557F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D254F100-F4BA-4863-9B7D-88CA3830557F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F632FEBB-7387-476E-BAF2-E75C1419321C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F632FEBB-7387-476E-BAF2-E75C1419321C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F632FEBB-7387-476E-BAF2-E75C1419321C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F632FEBB-7387-476E-BAF2-E75C1419321C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F632FEBB-7387-476E-BAF2-E75C1419321C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F632FEBB-7387-476E-BAF2-E75C1419321C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CFAA1822-3484-47AB-85FA-D596874D9F5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFAA1822-3484-47AB-85FA-D596874D9F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFAA1822-3484-47AB-85FA-D596874D9F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFAA1822-3484-47AB-85FA-D596874D9F5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFAA1822-3484-47AB-85FA-D596874D9F5F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

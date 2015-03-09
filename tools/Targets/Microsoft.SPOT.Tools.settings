@@ -1,0 +1,7 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+
+</Project>

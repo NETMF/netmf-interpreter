@@ -1,0 +1,26 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Graphics</FeatureName>
+  </PropertyGroup>
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Graphics" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Graphics.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Graphics\Core_Native_Graphics.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <!-- Graphics Need to use floating point implementation -->	
+  <Import Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" Project="$(SPOCLIENT)\Framework\Features\NEED_FLOATING_POINT" />
+  
+  <Import Project="$(SPOCLIENT)\Framework\Features\Graphics_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Graphics_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\LCDController_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\LCD_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\SimpleHeap_PAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Core graphics functionality</Description>
+    <Guid>{af24014a-d92b-44dd-a6d0-d46d14d553cc}</Guid>
+    <Groups>Graphics</Groups>
+    <Documentation>
+    </Documentation>
+    <GRAPHICS_FEATUREPROJ>True</GRAPHICS_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

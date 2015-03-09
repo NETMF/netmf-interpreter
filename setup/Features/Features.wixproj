@@ -1,0 +1,22 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  
+  <ItemGroup>
+    <WiXSource Include="BasicSamples.wxs"/>
+    <WiXSource Include="CoreDrivers.wxs"/>
+    <WiXSource Include="CorePlatform.wxs"/>
+    <WiXSource Include="CorePlatformEndian.wxs"/>
+    <WiXSource Include="CoreEmulator.wxs"/>
+    <WiXSource Include="PSDKDocsFeature.wxs"/>
+    <WiXSource Include="Debugger.wxs"/>
+    <WiXSource Include="Tools.wxs"/>
+    <WiXSource Include="DPWS.wxs"/>
+    <WiXSource Include="DPWSEndian.wxs"/>
+    <WixSource Include="NetMFv44.wxs"/>
+  </ItemGroup>
+  
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <PropertyGroup>
+    <BuildDependsOn>DocsCheck;$(BuildDependsOn)</BuildDependsOn>
+    <OUTPUT_WIXOBJ_DIR>$(OutputWiXObjRoot)FeatureFragments\</OUTPUT_WIXOBJ_DIR>
+  </PropertyGroup>
+</Project>

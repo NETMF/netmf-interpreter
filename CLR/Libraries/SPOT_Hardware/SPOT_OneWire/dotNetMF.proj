@@ -1,0 +1,56 @@
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>SPOT_Hardware_OneWire</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>C94F610B-59DE-4FD2-B04B-424C5E42FA5F</ProjectGuid>
+    <Description>OneWire interop library</Description>
+    <Level>CLR</Level>
+    <LibraryFile>SPOT_Hardware_OneWire.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_OneWire\dotNetMF.proj</ProjectPath>
+    <ManifestFile>SPOT_Hardware_OneWire.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Hardware</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_OneWire_CLR" Guid="{49949C30-83BE-4812-B689-130A6D43A4A3}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2011-08-08</Date>
+          <Author>Microsoft</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <CustomSpecific>
+    </CustomSpecific>
+    <Directory>CLR\Libraries\SPOT_Hardware\SPOT_OneWire</Directory>
+    <OutputType>Library</OutputType>
+    <VCProjName>Lib_SPOT_Hardware_OneWire</VCProjName>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\OneWire\DallasSemi" />
+    <HFile   Include="spot_hardware_onewire_native.h" />
+    <Compile Include="spot_hardware_onewire_native.cpp" />
+    <Compile Include="spot_hardware_onewire_native_Microsoft_SPOT_Hardware_OneWire_mshl.cpp" />
+    <HFile   Include="spot_hardware_onewire_native_Microsoft_SPOT_Hardware_OneWire.h" />
+    <Compile Include="spot_hardware_onewire_native_Microsoft_SPOT_Hardware_OneWire.cpp" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

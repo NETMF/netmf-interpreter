@@ -1,0 +1,14 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_CorePlatform">
+    <Feature Id="CorePlatform"
+             Title=".NET Micro Framework Core Platform"
+             Description="A set of managed assemblies that comprise the core of the .NET MF"
+             Display="hidden"
+             Level="1">
+      <ComponentRef Id="Component_Fonts" />
+      <FeatureRef Id="CorePlatformLE" />
+      <FeatureRef Id="CorePlatformBE" />
+    </Feature>
+
+  </Fragment>
+</Wix>

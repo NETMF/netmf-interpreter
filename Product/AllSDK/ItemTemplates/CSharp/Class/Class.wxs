@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_MFClassItemTemplate">
+    <?include defines.wxs?>
+    <DirectoryRef Id="WDEXPRESS11_ITEM_TEMPLATE_CSHARP_CODE">
+      <Component Id="Component_CSharp_ClassItemTemplate.WDE110" Guid ="e1fc49fa-fc38-478c-aea8-880fc4a6c337">
+        <File Id="File_CSharp_ClassItemTemplate.WDE110" 
+            Name="Class.zip" 
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\Class.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VS11_ITEM_TEMPLATE_CSHARP_CODE">
+      <Component Id="Component_CSharp_ClassItemTemplate.VS110" Guid ="8ea739d1-7ee1-4e97-8da7-5b7a4e24a48e">
+        <File Id="File_CSharp_ClassItemTemplate.VS110" 
+            Name="Class.zip" 
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\Class.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+      <DirectoryRef Id="WDEXPRESS12_ITEM_TEMPLATE_CSHARP_CODE">
+          <Component Id="Component_CSharp_ClassItemTemplate.WDE120" Guid ="02A72930-DC21-496A-81F5-74C5A1FB9C3B">
+              <File Id="File_CSharp_ClassItemTemplate.WDE120"
+                  Name="Class.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\Class.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+      <DirectoryRef Id="VS12_ITEM_TEMPLATE_CSHARP_CODE">
+          <Component Id="Component_CSharp_ClassItemTemplate.VS120" Guid ="02A72930-DC21-496A-81F5-74C5A1FB9C3B">
+              <File Id="File_CSharp_ClassItemTemplate.VS120"
+                  Name="Class.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\Class.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

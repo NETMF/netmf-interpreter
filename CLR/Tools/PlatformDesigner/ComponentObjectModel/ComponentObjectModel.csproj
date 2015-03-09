@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{E0580777-E882-46C9-82B5-947D7A69586A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ComponentObjectModel</RootNamespace>
+    <AssemblyName>ComponentObjectModel</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <ComponentGuid>{7436861e-e031-475d-ac47-1f6ffd68053c}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <PlatformTarget>x86</PlatformTarget>
+    <SccProjectName>%24/netmf/client_v4_2_comm/CLR/Tools/PlatformDesigner/ComponentObjectModel</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>https://tfs.codeplex.com/tfs/tfs15</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Engine, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuildScriptWrapper.cs" />
+    <Compile Include="CodeGenerator.cs" />
+    <Compile Include="InventoryFormat.cs">
+      <DependentUpon>InventoryFormat.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="InventoryFormatEx.cs" />
+    <Compile Include="InventoryHelper.cs" />
+    <Compile Include="MsBuildWrapper.cs" />
+    <Compile Include="ScatterfileSchema.cs">
+      <DependentUpon>ScatterfileSchema.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ScatterfileSchemaEx.cs" />
+    <Compile Include="ScatterfileWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InventoryFormat.xsd">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="InventoryFormat.xsx">
+      <DependentUpon>InventoryFormat.xsd</DependentUpon>
+    </None>
+    <None Include="ScatterfileSchema.xsd">
+      <SubType>
+      </SubType>
+    </None>
+    <None Include="ScatterfileSchema.xsx">
+      <DependentUpon>ScatterfileSchema.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

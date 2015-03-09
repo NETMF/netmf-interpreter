@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\MFUpdate\dotNetMF.proj</ProjectPath>
+    <ProjectGuid>{6D5FB2B6-7B6C-49B7-9E45-409579370281}</ProjectGuid>
+    <AssemblyName>MicroBooterUpdate</AssemblyName>
+    <Size>
+    </Size>
+    <Description>MicroBooter update provider</Description>
+    <Level>HAL</Level>
+    <LibraryFile>MicroBooterUpdate.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>MicroBooterUpdate.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Update</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\MFUpdate\Storage</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="MicroBooterUpdate.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\mfupdate\storage\blockstorageupdate.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\mfupdate\storage\fs\fsupdatestorage.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\mfupdate\validation\crc\crcupdatevalidation.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\mfupdate\validation\ssl\sslupdatevalidation.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\mfupdate\validation\x509\x509updatevalidation.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\mfupdate_decl.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptoki.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptokipal.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11f.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11t.h" />
+    <HFiles Include="microbooterupdate.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

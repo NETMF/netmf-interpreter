@@ -1,0 +1,174 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="IO\IOTestsHelper\IOTestsHelper.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="IO\IOTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="IO\IOTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="IO\Path\PathTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="IO\Path\PathTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="IO\Directory\DirectoryTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="IO\Directory\DirectoryTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="IO\File\FileTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="IO\File\FileTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="IO\FileStream\FileStreamTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="IO\FileStream\FileStreamTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="IO\MemoryStream\MemoryStreamTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="IO\MemoryStream\MemoryStreamTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="netTests\netTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="netTests\netTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="socketTests\socketTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="socketTests\socketTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="xmlTests\xmlTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="xmlTests\xmlTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="SPOTXmlTests\SPOTXmlTests.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="SPOTXmlTests\SPOTXmlTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>   
+
+    <Project Include="Http\HttpTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Http\HttpTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Security\SecurityTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\SecurityTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Security\ASYMM\AsymmetricTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\ASYMM\AsymmetricTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+    <Project Include="Security\HASHING\HashTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\HASHING\HashTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+    <Project Include="Security\KEYS\KeyTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\KEYS\KeyTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+    <Project Include="Security\MISC\MiscSecurity.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\MISC\MiscSecurity.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+    <Project Include="Security\PADDING\PaddingTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\PADDING\PaddingTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+    <Project Include="Security\RSA\RSATests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\RSA\RSATests.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+<!--
+    <Project Include="Security\STREAMS\StreamTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\STREAMS\StreamTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+-->
+
+    <Project Include="Security\X509Certificate\CertTests.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\X509Certificate\CertTests.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+    <Project Include="Security\X509Certs\CertsTest2.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Security\X509Certs\CertsTest2.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Text\RegExp\RegEx.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Text\RegExp\RegEx.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Text\StringBuilder\StringBuilder.csproj" >
+      <InProject>false</InProject>
+    </Project>    
+    <Project Include="Text\StringBuilder\StringBuilder.slnproj" >
+      <InProject>false</InProject>
+    </Project>    
+
+    <Project Include="SystemTests.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+</Project>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <!-- Freescale MC9328L, NO SRAM, SDRAM 32M/64M -->
+
+    <Set Name="Valid" Value="false"/>
+
+    <!-- ################################################################################ -->
+
+    <Set Name="Stack_Bottom"    Value="0x081FE000"/>
+    <Set Name="Stack_Top"       Value="0x081FFFF8"/>
+
+    
+    <If Name="TARGETLOCATION" In="FLASH">
+
+        <!-- Template has 8MB of 32-bit FLASH at 0x10000000 -->
+        <Set Name="Code_BaseAddress" Value="0x10000000"/>
+        <Set Name="Code_Size"        Value="0x00020000"/>
+        <Set Name="Valid"            Value="true"/>
+
+    </If>
+
+    <If Name="TARGETLOCATION" In="RAM">
+
+        <Set Name="Code_BaseAddress" Value="0x08200000"/> 
+        <Set Name="Code_Size"        Value="0x00060000"/>
+        <Set Name="Valid"            Value="true"/>
+        
+    </If>
+
+
+    <!-- ################################################################################ -->
+
+    <If Name="Valid" Value="false">
+        <Error Message="Configuration not recognized"/>
+    </If>
+
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
+
+        <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
+
+            <FileMapping Name="FirstEntry.obj"   Options="(+RO, +FIRST)" /> <!-- the entry pointer section goes into this region -->
+
+            <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
+
+            <FileMapping Name="*"                Options="(+RO)" />
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+
+            <FileMapping Name="*"                Options="(+RW-DATA, +ZI)" />
+
+        </ExecRegion>
+
+        <!-- this must go last here to provide a low water mark on the stack -->
+
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>
+	    
+        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Top%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackTop)" />
+        </ExecRegion>
+
+    </LoadRegion>
+
+</ScatterFile>

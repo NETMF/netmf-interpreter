@@ -1,0 +1,35 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>STM32</Name>
+    <CpuName>Cortex-M3</CpuName>
+    <DefaultISA>THUMB2</DefaultISA>
+    <Guid>{00CC0049-00FD-0044-AF40-DB0A37E94271}</Guid>
+    <Description>
+    </Description>
+    <Documentation>
+    </Documentation>
+    <ProjectPath>$(SPOCLIENT)\devicecode\Targets\Native\STM32\STM32.settings</ProjectPath>
+    <PLATFORM_FAMILY>ARM</PLATFORM_FAMILY>
+    <CustomFilter>Cortex</CustomFilter>
+    <INSTRUCTION_SET>THUMB2</INSTRUCTION_SET>
+    <TARGETPROCESSOR>STM32</TARGETPROCESSOR>
+    <TARGETCODEBASE>STM32</TARGETCODEBASE>
+    <TARGETCODEBASETYPE>Native</TARGETCODEBASETYPE>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OEMSystemInfoString>Copyright Oberon microsystems, Inc.</OEMSystemInfoString>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
+    <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M3</DEVICE_TYPE>
+    <BUILD_TOOL_GUID>{1942C531-3AAC-4abb-8B4F-C3111012F9D9}</BUILD_TOOL_GUID>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='MDK'">
+    <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M3</DEVICE_TYPE>
+    <BUILD_TOOL_GUID>{CD24C1A5-2641-4460-AC5A-093B1C6D3D8B}</BUILD_TOOL_GUID>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="devicecode\Targets\Native\STM32" />
+  </ItemGroup>
+</Project>

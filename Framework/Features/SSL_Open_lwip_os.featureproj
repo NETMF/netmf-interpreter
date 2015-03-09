@@ -1,0 +1,23 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>SSL (Open) [for LWIP OS]</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_LWIP_OS.featureproj" />
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Net_Security" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Net.Security.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\Native_net_Security\Core_Net_Security.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\System.Net.security.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\System\Net\Security\NetSecurity.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Net_Security_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>OpenSSL support for networking (LWIP_OS)</Description>
+    <Guid>{51BF9A3A-692F-4521-99BA-EF48EA358A9E}</Guid>
+    <Groups>Networking</Groups>
+    <Documentation>
+    </Documentation>
+    <SSL_OPEN_LWIP_OS_FEATUREPROJ>True</SSL_OPEN_LWIP_OS_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

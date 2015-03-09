@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\CLR\Core\Xml\dotNetMF.proj</ProjectPath>
+    <AssemblyName>Xml</AssemblyName>
+    <Size />
+    <ProjectGuid>45AC9135-01D9-451b-B115-6786AE1A9CBA</ProjectGuid>
+    <Description>Native Xml functionality</Description>
+    <Level>CLR</Level>
+    <LibraryFile>Xml.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>Xml.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Xml</Groups>
+    <Documentation />
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="XML_core_CLR" Guid="{206AD820-45A4-4EAD-8B31-03599CDD4C6F}" ProjectPath="$(SPOCLIENT)\Framework\Features\XML_core_CLR.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2010-06-02</Date>
+          <Author />
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <CustomFilter />
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <Directory>CLR\Core\Xml</Directory>
+    <OutputType>Library</OutputType>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="XmlCharRef.cpp" />
+    <Compile Include="XmlCharType.cpp" />
+    <Compile Include="XmlNameTable.cpp" />
+    <Compile Include="XmlReader.cpp" />
+    <Compile Include="XmlState.cpp" />
+    <Compile Include="XmlState_BetweenElements.cpp" />
+    <Compile Include="XmlState_InAttribute.cpp" />
+    <Compile Include="XmlState_InAttributeValue.cpp" />
+    <Compile Include="XmlState_InEndElement.cpp" />
+    <Compile Include="XmlState_InName.cpp" />
+    <Compile Include="XmlState_InProcessingInstruction.cpp" />
+    <Compile Include="XmlState_InStartElement.cpp" />
+    <Compile Include="XmlState_InValue.cpp" />
+    <Compile Include="XmlState_InXmlDeclaration.cpp" />
+    <Compile Include="XmlState_NewTag.cpp" />
+    <Compile Include="XmlState_Start.cpp" />
+    <ExtraProjects Include="dotNetMF_Stub.proj" />
+    <FastCompileCPPFile Include="Xml_fastcompile.cpp" />
+    <IncludePaths Include="CLR\core" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\libraries\SPOT" />
+    <IncludePaths Include="CLR\libraries\System_Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_version.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_xml.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\system_xml\system_xml.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\system_xml\system_xml_native.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

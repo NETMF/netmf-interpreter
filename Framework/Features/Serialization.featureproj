@@ -1,0 +1,18 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Serialization</FeatureName>
+  </PropertyGroup>
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\CLR\core\serialization\dotNetMF.proj" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Serialization_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Data serialization support</Description>
+    <Guid>{04d97f96-c2ff-4c93-95b2-fe607c1bcbbd}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <SERIALIZATION_FEATUREPROJ>True</SERIALIZATION_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

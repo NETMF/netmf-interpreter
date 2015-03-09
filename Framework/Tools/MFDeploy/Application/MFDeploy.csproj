@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>MFDeploy</AssemblyName>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Microsoft.NetMicroFramework.Tools.MFDeployTool</RootNamespace>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{322AE920-4781-4D09-834D-71E744C78803}</ProjectGuid>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <StartupObject>Microsoft.NetMicroFramework.Tools.MFDeployTool.Program</StartupObject>
+    <ApplicationIcon>MFDeployIcon.ico</ApplicationIcon>
+    <ComponentGuid>{3b010426-1924-4ef8-892d-f22eeca01d94}</ComponentGuid>
+    <ComponentShortcut>.NET Micro Framework Deploy Tool (MFDeploy)</ComponentShortcut>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SPOT.Debugger">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="MFDeployEngine">
+      <HintPath>$(BUILD_TREE_DLL)\MFDeployEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArgumentParser.cs" />
+    <Compile Include="EraseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EraseDialog.Designer.cs">
+      <DependentUpon>EraseDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UsbXmlConfig.cs" />
+    <Compile Include="DeploymentStatusDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeploymentStatusDialog.Designer.cs">
+      <DependentUpon>DeploymentStatusDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MFAboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MFAboutBox.Designer.cs">
+      <DependentUpon>MFAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MFAppDeployDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MFAppDeployDialog.Designer.cs">
+      <DependentUpon>MFAppDeployDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MFConfigNetworkDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MFConfigNetworkDialog.designer.cs">
+      <DependentUpon>MFConfigNetworkDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MFConfigUsbDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MFConfigUsbDialog.designer.cs">
+      <DependentUpon>MFConfigUsbDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MFDebugTasks.cs" />
+    <Compile Include="MFDeployForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MFDeployForm.Designer.cs">
+      <DependentUpon>MFDeployForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <EmbeddedResource Include="DeploymentStatusDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DeploymentStatusDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EraseDialog.resx">
+      <DependentUpon>EraseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MFDeployForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MFDeployForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="NetMFDeviceCert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MFAboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MFAboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MFAppDeployDialog.resx">
+      <DependentUpon>MFAppDeployDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MFConfigNetworkDialog.resx">
+      <DependentUpon>MFConfigNetworkDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MFConfigUsbDialog.resx">
+      <DependentUpon>MFConfigUsbDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MFDeployIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WiXComponentFiles Include="$(BUILD_TREE_DLL)\MFDeploy.exe.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\Documentation\MFDeploy.chm" Condition="EXISTS('..\..\..\..\Documentation\MFDeploy.chm')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="netmflogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SPOCLIENT)\Framework\Tools\MFDeploy\Library\MFDeployEngine.csproj">
+      <Name>MFDeployEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="$(SPOCLIENT)\Framework\Debugger\Debugger.csproj">
+      <Name>Microsoft.SPOT.Debugger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+</Project>

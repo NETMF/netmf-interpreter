@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="InventoryFormat" targetNamespace="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" elementFormDefault="qualified" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" xmlns:mstns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="Library">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Size" type="xsd:integer" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="Dependencies" type="MFComponent" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="Description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="Level" type="LibraryLevel" />
+            <xsd:element name="SourceFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="HeaderFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="IncludePaths" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="FastCompileFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="OtherFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="LibraryFile" type="xsd:string" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="ManifestFile" type="xsd:string" />
+            <xsd:element name="Groups" type="xsd:string" />
+            <xsd:element name="LibraryCategory" type="MFComponent" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="PlatformIndependent" type="xsd:boolean" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="ISASpecific" type="MFComponent" />
+            <xsd:element name="ProcessorSpecific" type="MFComponent"/>
+            <xsd:element name="CustomFilter" type="xsd:string"/>
+            <xsd:element name="Required" type="xsd:boolean" />
+            <xsd:element name="IgnoreDefaultLibPath" type="xsd:boolean" />
+            <xsd:element name="IsStub" type="xsd:boolean" />
+            <xsd:element name="Properties" type="MFProperty" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="IsSolutionWizardVisible" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Feature">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID"/>
+            <xsd:element name="FeatureDependencies" type="MFComponent" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="Description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="Groups" type="xsd:string" />
+            <xsd:element name="ComponentDependencies" type="MFComponent" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="Required" type="xsd:boolean" />
+            <xsd:element name="Hidden" type="xsd:boolean" />
+            <xsd:element name="Assemblies" type="MFComponent" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="IsSolutionWizardVisible" type="xsd:boolean" />
+            <xsd:element name="Filter" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MFAssembly">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID"/>
+            <xsd:element name="Description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="Groups" type="xsd:string" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="AssemblyFile" type="xsd:string" />
+            <xsd:element name="References" type="MFComponent" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="IsSolutionWizardVisible" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MFBuildFile">
+        <xsd:attribute name="ItemName" type="xsd:string" />
+        <xsd:attribute name="File" type="xsd:string" />
+        <xsd:attribute name="Condition" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="MFSolution">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Author" type="xsd:string" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="Guid" type="GUID"/>
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="Projects" type="MFProject" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="BuildTool" type="BuildToolRef" />
+            <xsd:element name="Processor" type="MFComponent" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="DefaultISA" type="MFComponent" />
+            <xsd:element name="MemoryProfile" type="xsd:string" />
+            <xsd:element name="RamBase" type="xsd:int" />
+            <xsd:element name="RamLength" type="xsd:int" />
+            <xsd:element name="FlashBase" type="xsd:int" />
+            <xsd:element name="FlashLength" type="xsd:int" />
+            <xsd:element name="SystemClockSpeed" type="xsd:int" />
+            <xsd:element name="SlowClockSpeed" type="xsd:int" />
+            <xsd:element name="DebuggerPort" type="xsd:string" />
+            <xsd:element name="Properties" type="MFProperty" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="Items" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="CustomFilter" type="xsd:string"/>
+            <xsd:element name="IsSolutionWizardVisible" type="xsd:boolean" />
+            <xsd:element name="ENDIANNESS" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MFProperty">
+        <xsd:attribute name="Name" type="xsd:string" />
+        <xsd:attribute name="Value" type="xsd:string" />
+        <xsd:attribute name="Condition" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="MFProject">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="Guid" type="GUID"/>
+            <xsd:element name="Description" type="xsd:string"/>
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="Directory" type="xsd:string" />
+            <xsd:element name="IsClrProject" type="xsd:boolean" />
+            <xsd:element name="Features" type="MFComponent" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="Libraries" type="MFComponent" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="LibraryCategories" type="MFComponent" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="InteropFeatures" type="xsd:string" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="ExtraAssemblies" type="xsd:string" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="SourceFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="HeaderFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="IncludePaths" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="FastCompileFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="ScatterFile" type="MFBuildFile"/>
+            <xsd:element name="OtherFiles" type="MFBuildFile" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="BuildTool" type="BuildToolRef" />
+            <xsd:element name="MemoryMap" type="MemoryMap" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="SettingsFile" type="xsd:string" />
+            <xsd:element name="Properties" type="MFProperty" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="IsSolutionWizardVisible" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MFComponent">
+        <xsd:sequence>
+            <xsd:element name="VersionDependency" type="Version" />
+            <xsd:element name="ComponentType" type="MFComponentType" />
+        </xsd:sequence>
+        <xsd:attribute name="Name" type="xsd:string" />
+        <xsd:attribute name="Guid" type="GUID" />
+        <xsd:attribute name="ProjectPath" type="xsd:string" />
+        <xsd:attribute name="Conditional" type="xsd:string" />
+        <xsd:attribute name="RefCount" type="xsd:int" />
+    </xsd:complexType>
+    <xsd:simpleType name="MFComponentType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Library"  />
+            <xsd:enumeration value="Feature"  />
+            <xsd:enumeration value="MFAssembly"  />
+            <xsd:enumeration value="MFSolution"  />
+            <xsd:enumeration value="Processor"  />
+            <xsd:enumeration value="OperatingSystem"  />
+            <xsd:enumeration value="BuildTool"  />
+            <xsd:enumeration value="ISA"  />
+            <xsd:enumeration value="BuildParameter" />
+            <xsd:enumeration value="LibraryCategory" />
+            <xsd:enumeration value="Unknown" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="LibraryLevel">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="CLR" />
+            <xsd:enumeration value="PAL" />
+            <xsd:enumeration value="HAL" />
+            <xsd:enumeration value="Support" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="BuildTool">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID"/>
+            <xsd:element name="ObjExt" type="xsd:string" />
+            <xsd:element name="LibExt" type="xsd:string" />
+            <xsd:element name="BinExt" type="xsd:string" />
+            <xsd:element name="DbgExt" type="xsd:string" />
+            <xsd:element name="AsmCompiler" type="BuildToolDefine" />
+            <xsd:element name="CCompiler" type="BuildToolDefine" />
+            <xsd:element name="CppCompiler" type="BuildToolDefine" />
+            <xsd:element name="Linker" type="BuildToolDefine" />
+            <xsd:element name="Archiver" type="BuildToolDefine" />
+            <xsd:element name="FromELF" type="BuildToolDefine" />
+            <xsd:element name="ToolPath" type="xsd:string" />
+            <xsd:element name="SupportedISAs" type="ISA" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="SupportedCpuNames" type="xsd:string" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="BuildOptions" type="ToolChainOptions" />
+            <xsd:element name="BuildToolWrapper" type="xsd:string" />
+            <xsd:element name="MiscTools" type="MiscBuildTool" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="Properties" type="MFProperty" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Items" type="MFProperty" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="IsSolutionWizardVisible" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ISA">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="Description" type="xsd:string" minOccurs="0" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="BuildToolOptions" type="ToolChainOptions"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="GUID">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                The representation of a GUID, generally the id of an element.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    <!--
+    <xsd:complexType name="ProcessorType">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="Family" type="xsd:string" />
+            <xsd:element name="BuildToolOptions" type="ToolChainOptions" maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+    -->
+    <xsd:complexType name="Processor">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="CpuName" type="xsd:string"/>
+            <xsd:element name="DefaultISA" type="xsd:string"/>
+            <xsd:element name="SupportedISAs" type="MFComponent" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="BuildToolOptions" type="BuildToolRef" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="PlatformFamily" type="xsd:string" />
+            <xsd:element name="CustomFilter" type="xsd:string"/>
+            <xsd:element name="Properties" type="MFProperty" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="IsSolutionWizardVisible" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="OperatingSystem">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="SupportedISAs" type="MFComponent" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="BuildToolOptions" type="BuildToolRef" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="CustomCategory" type="xsd:string"/>
+            <xsd:element name="Properties" type="MFProperty" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Version" type="Version" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ToolChainOptions">
+        <xsd:sequence>
+            <xsd:element name="ToolName" type="xsd:string"/>
+            <xsd:element name="Condition" type="xsd:string"/>
+            <xsd:element name="DeviceType" type="xsd:string"/>
+            <xsd:element name="CommonFlags" type="ToolFlag" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="AsmFlags" type="ToolOptions" />
+            <xsd:element name="C_CppFlags" type="ToolFlag" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="CFlags" type="ToolOptions" />
+            <xsd:element name="CppFlags" type="ToolOptions" />
+            <xsd:element name="LinkerFlags" type="ToolOptions" />
+            <xsd:element name="EnvironmentVariables" type="EnvVar" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="ArchiverFlags" type="ToolOptions" />
+<!--            <xsd:element name="ISA" type="MFComponent" /> -->
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="BuildToolRef">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="BuildOptions" type="ToolChainOptions" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="EnvVar">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Value" type="xsd:string" />
+            <xsd:element name="Conditional" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ToolFlag">
+        <xsd:sequence>
+            <xsd:element name="Conditional" type="xsd:string" />
+            <xsd:element name="Flag" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="BuildParameter">
+        <xsd:sequence>
+            <xsd:element name="Parameter" type="xsd:string" />
+            <xsd:element name="Action" type="xsd:string" />
+            <xsd:element name="Description" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MemoryMap">
+        <xsd:sequence>
+            <xsd:element name="Regions" type="MemoryRegion" maxOccurs="unbounded" minOccurs="1" />
+            <xsd:element name="Conditional" type="xsd:string" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="EnvironmentVariables" type="EnvVars"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MemorySymbol">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Options" type="xsd:string" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Conditional" type="xsd:string" />
+            <xsd:element name="Order" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MemoryRegion">
+        <xsd:sequence>
+            <xsd:element name="Sections" type="MemorySection" maxOccurs="unbounded" minOccurs="1" />
+            <xsd:element name="Address" type="xsd:string" />
+            <xsd:element name="Size" type="xsd:string" />
+            <xsd:element name="Options" type="xsd:string" />
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Conditional" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MemorySection">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Symbols" type="MemorySymbol" maxOccurs="unbounded" />
+            <xsd:element name="Address" type="xsd:string" />
+            <xsd:element name="Size" type="xsd:string" />
+            <xsd:element name="Options" type="xsd:string" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Conditional" type="xsd:string" />
+            <xsd:element name="Order" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="EnvVars">
+        <xsd:sequence>
+            <xsd:element name="EnvVarCollection" type="EnvVar" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Conditional" type="xsd:string" />
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="EnvVarsCollection" type="EnvVars" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="LibraryCategory">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Level" type="LibraryLevel" />
+            <xsd:element name="Groups" type="xsd:string" />
+            <xsd:element name="Templates" type="ApiTemplate" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Documentation" type="xsd:string" />
+            <xsd:element name="StubLibrary" type="MFComponent" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="Required" type="xsd:boolean" />
+            <xsd:element name="IgnoreDefaultLibPath" type="xsd:boolean" />
+            <xsd:element name="ProjectPath" type="xsd:string" />
+            <xsd:element name="LibraryProjCache" type="xsd:string" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="FeatureAssociations" type="MFComponent" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="IsTransport" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="BuildToolDefine">
+        <xsd:sequence>
+            <xsd:element name="Exec" type="xsd:string" />
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Conditional" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="BuildScript">
+        <xsd:sequence>
+            <xsd:element name="Conditional" type="xsd:string" />
+            <xsd:element name="Script" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="BuildToolParameters">
+        <xsd:sequence>
+            <xsd:element name="Parameters" type="BuildScript" maxOccurs="unbounded" />
+            <xsd:element name="PreBuild" type="BuildScript" maxOccurs="unbounded" />
+            <xsd:element name="PostBuild" type="BuildScript" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ToolOptions">
+        <xsd:sequence>
+            <xsd:element name="BuildToolParameters" type="BuildToolParameters" />
+            <xsd:element name="ToolFlags" type="ToolFlag" maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ApiTemplate">
+        <xsd:sequence>
+            <xsd:element name="FilePath" type="xsd:string" />
+            <xsd:element name="Description" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MiscBuildTool">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="BuildTool" type="BuildToolDefine" />
+            <xsd:element name="BuildToolOptions" type="ToolOptions"/>
+            <xsd:element name="BuildToolWrapper" type="xsd:string" />
+            <xsd:element name="EnvironmentVariables" type="EnvVar" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="ToolPath" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <!--
+    <xsd:complexType name="BSP">
+        <xsd:sequence>
+            <xsd:element name="Description" type="xsd:string" />
+            <xsd:element name="Name" type="xsd:string" />
+            <xsd:element name="Guid" type="GUID" />
+            <xsd:element name="BuildToolOptions" type="BuildToolRef" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Version" type="Version" />
+            <xsd:element name="Processor" type="MFComponent" />
+        </xsd:sequence>
+    </xsd:complexType>
+    -->
+    <xsd:complexType name="Inventory">
+        <xsd:sequence>
+            <xsd:element name="Libraries"         type="Library" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="Features"          type="Feature" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="Assemblies"        type="MFAssembly" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="Solutions"         type="MFSolution" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="Processors"        type="Processor" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="BuildTools"        type="BuildTool" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="BuildParameters"   type="BuildParameter" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="LibraryCategories" type="LibraryCategory" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="ProjectTemplates" type="MFProject" maxOccurs="unbounded" minOccurs="0" />
+            <xsd:element name="Name"            type="xsd:string" />
+            <xsd:element name="File"            type="xsd:string" />
+            <xsd:element name="Version"         type="Version" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="InventoryCollection">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Inventories" type="Inventory" maxOccurs="unbounded" minOccurs="0" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="Version">
+        <xsd:sequence>
+            <xsd:element name="Major" type="xsd:string" />
+            <xsd:element name="Minor" type="xsd:string" />
+            <xsd:element name="Revision" type="xsd:string" />
+            <xsd:element name="Build" type="xsd:string" />
+            <xsd:element name="Extra" type="xsd:string" />
+            <xsd:element name="Date" type="xsd:date" />
+            <xsd:element name="Author" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

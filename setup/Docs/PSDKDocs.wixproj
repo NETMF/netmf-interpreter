@@ -1,0 +1,23 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <DOCPROJ>PSDK</DOCPROJ>
+    <XBUILDCMD>$(DOCPROJ)</XBUILDCMD>
+    <CHMProject>PSDK</CHMProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <WiXSource Include="PSDKDocs.wxs"/>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <PropertyGroup>
+    <DOCPROJOUTDIR>$(XBUILD_OUTDIR)\$(DOCPROJ)\en-us\</DOCPROJOUTDIR>
+  </PropertyGroup>
+  <ItemGroup>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\PSDK.hxs"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\PSDKCollection.hxc"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\PSDKCollection.hxt"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\PSDKCollectionAIndex.hxk"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\PSDKCollectionFIndex.hxk"/>
+    <DOCPROJOUT Include="$(DOCPROJOUTDIR)\PSDKCollectionKIndex.hxk"/>
+  </ItemGroup>
+    
+</Project>

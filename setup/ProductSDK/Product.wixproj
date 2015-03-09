@@ -1,0 +1,84 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <OUTPUT_MSM_FILE>MicroFrameworkSDK.MSI</OUTPUT_MSM_FILE>
+    <WiXLocalization>$(SPOCLIENT)\Setup\LIB\WixUI_en-us.wxl</WiXLocalization>
+    <!--ISOProject>MicroFrameworkSDK</ISOProject-->
+    <FinalMSI>MicroFrameworkSDK.MSI</FinalMSI>
+    <LinkAllWiXObjects>true</LinkAllWiXObjects>
+  </PropertyGroup>
+
+  <!--
+    Info needed to setup symbol archiving and indexing
+  -->
+  <PropertyGroup>
+    <SymbolProject>MicroFrameworkSDK</SymbolProject>
+    <IndexFile>$(MSBuildProjectDirectory)\Symbols.index</IndexFile>
+    <ArchiveFile>$(MSBuildProjectDirectory)\Symbols.archive</ArchiveFile>
+  </PropertyGroup>
+
+  <!--
+    PropertyGroup for Code Signing
+  -->
+  <PropertyGroup>
+    <SignProject>true</SignProject>
+    <CodeSignJobDescInternal>.NET Micro Framework SDK $(MFSDKShortProductVersion) Internals</CodeSignJobDescInternal>
+    <CodeSignJobKeywInternal>.NET Micro Framework SDK $(MFSDKShortProductVersion) Internals</CodeSignJobKeywInternal>
+    <CodeSignDisplayNameInternal>.NET Micro Framework SDK $(MFSDKShortProductVersion)</CodeSignDisplayNameInternal>
+    <CodeSignJobDescMSI>.NET Micro Framework SDK $(MFSDKShortProductVersion) MSI</CodeSignJobDescMSI>
+    <CodeSignJobKeywMSI>.NET Micro Framework SDK $(MFSDKShortProductVersion) MSI</CodeSignJobKeywMSI>
+    <CodeSignDisplayNameMSI>.NET Micro Framework SDK $(MFSDKShortProductVersion)</CodeSignDisplayNameMSI>
+  </PropertyGroup>
+
+  <!--
+  Hard code the Setup.exe as a Found File so that it gets
+  signed and archive (symbols).
+  -->
+  <!--ItemGroup>
+    <FoundFileOfType Include="$(BUILD_TREE_SERVER)\dll\Setup.exe">
+      <FileType>Executable</FileType>
+    </FoundFileOfType>
+  </ItemGroup-->
+
+  <ItemGroup>
+    <WiXSource Include="Product.wxs"/>
+    <WiXSource Include="MergeSideShowSDK.wxs" Condition="'$(SideShowSdkPath)' != ''" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+
+  <!--
+    Explicitly specify wix libraries to input to light
+  -->
+  <ItemGroup>
+<!-- 
+    <WiXLibrary Include="$(SPOROOT)\tools\x86\WiX\ca_3_5_1315_0\wixca.wixlib" /> 
+-->
+
+    <WiXObject  Include="$(OutputWixObjServer)FrameworkSetupUI\FrameworkSetupUI.wixobj" />
+    <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\CorePlatform.wixobj" />
+    <WiXObjectEndian  Include="$(OutputWiXObjServer)..\FeatureFragments\CorePlatformEndian.wixobj" />
+    <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\CoreEmulator.wixobj" />
+    <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\Debugger.wixobj" />
+    <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\Tools.wixobj" />
+    <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\DPWS.wixobj" />
+    <WiXObjectEndian  Include="$(OutputWiXObjServer)..\FeatureFragments\DPWSEndian.wixobj" />
+    <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\NetMFv44.wixobj" />
+    <!--DocWiXObject  Include="$(OutputWiXObjRoot)FeatureFragments\PSDKDocsFeature.wixobj"/-->
+    <!--WiXDefines Include="SideShowSdkPath"><Value>&quot;$(SideShowSdkPath)&quot;</Value></WiXDefines-->
+  </ItemGroup>
+
+  <PropertyGroup>
+    <BuildDependsOn>DocsCheck;$(BuildDependsOn)</BuildDependsOn>
+    <!--ISOImage>$(BUILD_TREE_SERVER)\ISO\$(ISOProject)\MicroFrameworkSDK_Image.iso</ISOImage-->
+  </PropertyGroup>
+
+  <!--
+    These are the items that go into the ISO (CD) image
+  -->
+  <!--ItemGroup>
+    <ISO_File Include="autorun.inf"/>
+    <ISO_File Include="Micro Framework SDK Release notes.txt"/>
+    <ISO_File Include="$(BUILD_TREE_SERVER)\dll\Setup.exe"/>
+  </ItemGroup-->
+
+</Project>

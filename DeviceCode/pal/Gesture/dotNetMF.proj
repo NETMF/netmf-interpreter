@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Gesture_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{89C9AE3B-6027-470d-BF7F-F30BBE136473}</ProjectGuid>
+    <Description>Gesture set of methods used by Gesture, Ink</Description>
+    <Level>PAL</Level>
+    <LibraryFile>Gesture_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Pal\Gesture\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Gesture_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Touch</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Gesture_PAL" Guid="{19509D5C-151D-4853-9C5D-DB7622D69562}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\Gesture</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <SubDirectories Include="Stubs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gesture_driver.cpp" />
+    <Compile Include="gesture_functions.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="gesture_driver.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

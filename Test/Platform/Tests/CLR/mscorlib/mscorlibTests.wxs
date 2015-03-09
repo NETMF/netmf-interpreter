@@ -1,0 +1,38 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='45264db8-1438-4d84-8bf1-d2d3da196dc9' Keywords="Installer" Description=".NET Micro Framework mscorlibTests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_arrays' />
+      <ComponentRef Id='Component_attributes' />
+      <ComponentRef Id='Component_basicconcepts' />  
+      <ComponentRef Id='Component_bitconverter' />  
+      <ComponentRef Id='Component_classes1' />
+      <ComponentRef Id='Component_classes2' />
+      <ComponentRef Id='Component_classes3' />
+      <ComponentRef Id='Component_collections' />
+      <ComponentRef Id='Component_conversions' />
+      <ComponentRef Id='Component_basic' />
+      <ComponentRef Id='Component_basic2' />
+      <ComponentRef Id='Component_expenum' />
+      <ComponentRef Id='Component_expenum2' />
+      <ComponentRef Id='Component_user' />
+      <ComponentRef Id='Component_enums' />
+      <ComponentRef Id='Component_exceptions' />
+      <!-- <ComponentRef Id='Component_exceptions_VB' /> -->
+      <ComponentRef Id='Component_expressions1' />
+      <ComponentRef Id='Component_expressions2' />
+      <ComponentRef Id='Component_lexical' /> 
+      <ComponentRef Id='Component_selection' />
+      <ComponentRef Id='Component_namespaces' />
+      <ComponentRef Id='Component_statements' />
+      <ComponentRef Id='Component_structs' />
+      <ComponentRef Id='Component_types' />
+      <ComponentRef Id='Component_variables' />
+      <ComponentRef Id='Component_systemlib1' />
+      <ComponentRef Id='Component_systemlib2' />
+      <ComponentRef Id='Component_threads1' />
+      <ComponentRef Id='Component_threads2' />
+      <ComponentRef Id='Component_threads3' /> 
+  </Module>
+</Wix>

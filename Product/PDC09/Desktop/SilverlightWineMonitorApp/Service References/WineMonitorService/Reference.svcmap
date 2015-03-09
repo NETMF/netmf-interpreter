@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="cda669bf-8c37-47ba-bf63-c76bf8047c0b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:52305/WineMonitorService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="WineMonitorService.xsd" MetadataType="Schema" ID="86dd3504-8054-4299-ae29-b8536b152394" SourceId="1" SourceUrl="http://localhost:52305/WineMonitorService.svc?xsd=xsd1" />
+    <MetadataFile FileName="WineMonitorService.wsdl" MetadataType="Wsdl" ID="1edee571-de76-4ca3-b701-a3b67d81ef03" SourceId="1" SourceUrl="http://localhost:52305/WineMonitorService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="WineMonitorService1.wsdl" MetadataType="Wsdl" ID="e6b72fb6-668c-4cb4-b5db-c262ae0f7dc2" SourceId="1" SourceUrl="http://localhost:52305/WineMonitorService.svc?wsdl" />
+    <MetadataFile FileName="WineMonitorService.disco" MetadataType="Disco" ID="c526e40d-7f2f-4b8f-ac28-d82d554506cd" SourceId="1" SourceUrl="http://localhost:52305/WineMonitorService.svc?disco" />
+    <MetadataFile FileName="WineMonitorService1.xsd" MetadataType="Schema" ID="2f071d4a-1acf-4b47-84cd-b58b434f629f" SourceId="1" SourceUrl="http://localhost:52305/WineMonitorService.svc?xsd=xsd2" />
+    <MetadataFile FileName="WineMonitorService2.xsd" MetadataType="Schema" ID="bc1a93f4-7499-4f94-94af-a5de1f55d2d9" SourceId="1" SourceUrl="http://localhost:52305/WineMonitorService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

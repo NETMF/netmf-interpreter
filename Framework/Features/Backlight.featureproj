@@ -1,0 +1,18 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Backlight</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\hardware.featureproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Backlight_HAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Touch screen support</Description>
+    <Guid>{72BD7C76-8603-49d4-8819-0EB2D056E42F}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <BACKLIGHT_FEATUREPROJ>TRUE</BACKLIGHT_FEATUREPROJ>
+  </PropertyGroup>
+  <ItemGroup>
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native\Core_Native.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,5 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartArguments>/msi:E:\depot\current\dot_net_micro_framework_v2_0_rtm\Public\Release\Server\ISO\MicroFrameworkSDK\MicroFrameworkSDK.MSI /out:e:\temp\SIGNOUT</StartArguments>
+  </PropertyGroup>
+</Project>

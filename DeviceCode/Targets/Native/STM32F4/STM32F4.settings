@@ -1,0 +1,37 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <Name>STM32F4</Name>
+        <CpuName>Cortex-M4</CpuName>
+        <DefaultISA>THUMB2FP</DefaultISA>
+        <Guid>{007400A6-0088-008A-A158-3C166CD3322C}</Guid>
+        <Description>
+        </Description>
+        <Documentation>
+        </Documentation>
+        <ProjectPath>$(SPOCLIENT)\devicecode\Targets\Native\STM32F4\STM32F4.settings</ProjectPath>
+        <PLATFORM_FAMILY>ARM</PLATFORM_FAMILY>
+        <CustomFilter>Cortex</CustomFilter>
+        <INSTRUCTION_SET>THUMB2FP</INSTRUCTION_SET>
+        <TARGETPROCESSOR>STM32F4</TARGETPROCESSOR>
+        <TARGETCODEBASE>STM32F4</TARGETCODEBASE>
+        <TARGETCODEBASETYPE>Native</TARGETCODEBASETYPE>
+    </PropertyGroup>
+    <ItemGroup>
+        <CC_CPP_Defines Include="__CORTEX_M4F" />
+    </ItemGroup>
+
+    <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
+        <BUILD_TOOL_GUID>{00C50096-00DD-00E7-BBA9-7FC84D408562}</BUILD_TOOL_GUID>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(COMPILER_TOOL)'=='MDK'">
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
+        <BUILD_TOOL_GUID>{00EC0018-007A-0040-9936-929B39330107}</BUILD_TOOL_GUID>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <IncludePaths Include="Devicecode\Targets\Native\STM32F4" />
+	    <IncludePaths Include="DeviceCode\Targets\Native\STM32F4\DeviceCode" />
+        <IncludePaths Include="DeviceCode\Cores\ARM\CMSIS\Include" />
+    </ItemGroup>
+</Project>

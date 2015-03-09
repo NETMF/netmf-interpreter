@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketServerTest", "SocketServerTest.csproj", "{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RTM|Any CPU = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.RTM|Any CPU.ActiveCfg = RTM|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.RTM|Any CPU.Build.0 = RTM|Any CPU
+		{53D523C3-8ADD-46DD-B379-2504E9CF0C1F}.RTM|Any CPU.Deploy.0 = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

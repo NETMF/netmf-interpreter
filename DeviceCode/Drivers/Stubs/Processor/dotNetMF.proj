@@ -1,0 +1,36 @@
+<!-- Builds the cpu_stubs[_stub].$(LIB_EXT), for SPOT projects -->
+
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>DeviceCode\Drivers\Stubs\Processor</Directory>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup>
+    <SubDirectories Include="stubs_bootstrap"/>
+    <SubDirectories Include="stubs_cache"/>
+    <SubDirectories Include="stubs_cmu"/>
+    <SubDirectories Include="stubs_da"/>    
+    <SubDirectories Include="stubs_dma"/>    
+    <SubDirectories Include="stubs_ebiu"/>    
+    <SubDirectories Include="stubs_gpio"/>
+    <SubDirectories Include="stubs_i2c"/>    
+    <SubDirectories Include="stubs_intc"/>
+    <SubDirectories Include="stubs_LCD"/>
+    <SubDirectories Include="stubs_mmu"/>    
+    <SubDirectories Include="stubs_pcu"/>
+    <SubDirectories Include="stubs_perfcounter"/>    
+    <SubDirectories Include="stubs_power"/>
+    <SubDirectories Include="stubs_spi"/>
+    <SubDirectories Include="stubs_time"/>    
+    <SubDirectories Include="stubs_usart"/>
+    <SubDirectories Include="stubs_usb"/>    
+    <SubDirectories Include="stubs_watchdog"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

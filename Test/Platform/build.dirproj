@@ -1,0 +1,137 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup Condition="EXISTS('$(SPOCLIENT)\Test\Platform\Tools\AutomationTasks\AutomationTasks.csproj')">
+    <Project Include="Tools\AutomationTasks\AutomationTasks.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Desktop\CLR\Microsoft.SPOT.Net.Security\ClientServer\Desktop.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Desktop\CLR\Microsoft.SPOT.Net.Security\ClientServer\Desktop.slnproj" >
+      <InProject>false</InProject>
+    </Project> 
+
+    <Project Include="Tools\MFTestEmulator\TestEmulator.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Tools\MFTestSystem\MFTestSystem.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Tools\MFDpwsTestCaseGenerator\MFDpwsTestCaseGenerator.csproj" >
+      <InProject>false</InProject>
+    </Project>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Project Include="Tools\MFDesktopTestRunner\MFDesktopTestRunner.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="Tools\MFTestRunner\MFTestRunner.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="Tools\MFDpwsTestFixtureUtilities\MFDpwsTestFixtureUtilities.csproj" >
+      <InProject>false</InProject>
+    </Project>
+    <Project Include="Tools\Utility\MFUtility.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+   <!-- Desktop -->
+   <Project Include="Tests\Desktop\MFDeploy\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Tests\Native_MathMethods\Math\build.dirproj" >
+          <InProject>false</InProject>
+    </Project> 
+
+   <!-- DPWS -->
+   <Project Include="Tests\CLR\DPWS\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+   <!-- Microsoft.SPOT.Graphics -->
+   <Project Include="Tests\CLR\Microsoft.SPOT.Graphics\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+   <!-- Microsoft.SPOT.Net -->
+   <Project Include="Tests\CLR\Microsoft.SPOT.Net\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+   <!-- Microsoft.SPOT.Net.Security -->
+   <Project Include="Tests\CLR\Microsoft.SPOT.Net.Security\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+   <!-- Microsoft.SPOT.Time -->
+   <Project Include="Tests\CLR\Microsoft.SPOT.Time\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+   <!-- Microsoft.SPOT.TinyCore -->
+   <Project Include="Tests\CLR\Microsoft.SPOT.TinyCore\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <!--  Microsoft.SPOT.Hardware -->
+    <Project Include="Tests\CLR\Microsoft.SPOT.Hardware\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <!--  Microsoft.SPOT.Interop-->
+    <Project Include="Tests\CLR\Microsoft.SPOT.Interop\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <!-- mscorlib -->
+    <Project Include="Tests\CLR\mscorlib\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <!-- System -->
+    <Project Include="Tests\CLR\System\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <!-- ProfilerTests -->
+    <Project Include="Tests\Performance\ProfilerTests\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <!-- StressTests -->
+    <Project Include="Tests\Performance\Stress\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+    <!-- PerformanceTests -->
+    <Project Include="Tests\Performance\build.dirproj" >
+          <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+
+  <ItemGroup Condition="EXISTS('$(SPOCLIENT)\Test\Platform\Setup\EndianFeatures.wixproj')">
+
+    <!-- DPWS FixtureTests -->
+    <Project Include="Tests\CLR\DPWS\WSDL\DpwsTestFixtures.dpwsproj">
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Setup\EndianFeatures.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Setup\TestSetup.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+
+</Project>

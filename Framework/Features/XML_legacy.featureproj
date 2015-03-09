@@ -1,0 +1,22 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>XML_legacy</FeatureName>
+  </PropertyGroup>
+
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+
+  <ItemGroup>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\system.xml.legacy.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\XML\System.Xml.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Description>Xml utilities component</Description>
+    <Guid>{3B10AC55-E8B3-4156-8B85-5150F12569CF}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <XML_LEGACY_FEATUREPROJ>True</XML_LEGACY_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

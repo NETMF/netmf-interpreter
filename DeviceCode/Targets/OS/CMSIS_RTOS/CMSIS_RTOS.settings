@@ -1,0 +1,27 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>CMSIS_RTOS</Name>
+    <DefaultISA>Thumb2</DefaultISA>
+    <Guid>{BA7FBF24-FEE8-4801-81E8-11BE07DE78C1}</Guid>
+    <Description>
+    </Description>
+    <Documentation>Windows CMSIS_RTOS support</Documentation>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings</ProjectPath>
+    <PLATFORM_FAMILY>Thumb2</PLATFORM_FAMILY>
+    <CustomFilter>
+    </CustomFilter>
+    <INSTRUCTION_SET Condition="'$(INSTRUCTION_SET)'==''">Thumb2</INSTRUCTION_SET>
+    <TARGETPROCESSOR>Thumb2</TARGETPROCESSOR>
+    <TARGETCODEBASE>CMSIS_RTOS</TARGETCODEBASE>
+    <TARGETCODEBASETYPE>OS</TARGETCODEBASETYPE>
+    <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\Cores\arm\CMSIS\Include" />    
+    <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX" />
+    <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX\INC" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
+    <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS\DeviceCode\lwip_1_4_1_os"/>
+  </ItemGroup>
+</Project>

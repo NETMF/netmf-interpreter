@@ -1,0 +1,19 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+    <PropertyGroup>
+        <TasksAssembly Condition="EXISTS('$(BUILD_ROOT)\$(Configuration)\server\dll\Microsoft.SPOT.Tasks.dll')">$(BUILD_ROOT)\$(Configuration)\server\dll\Microsoft.SPOT.Tasks.dll</TasksAssembly>
+        <TasksAssembly Condition="!EXISTS('$(BUILD_ROOT)\$(Configuration)\server\dll\Microsoft.SPOT.Tasks.dll')">$(PROGRAMFILES)\Reference Assemblies\Microsoft\Framework\.NETMicroFramework\$(TargetFrameworkVersion)\Microsoft.SPOT.Tasks.dll</TasksAssembly>
+    </PropertyGroup>
+
+  
+
+    <!-- Msbuild loads tasks by explicit path, but may ignore us and load what it finds in the GAC anyway. Msbuild, you rock! -->
+
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.GetDeviceFrameworkPaths"    AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.ResolveRuntimeDependencies" AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.GenerateTinyResource"       AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.MetaDataProcessor"          AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.RegisterEmulator"           AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.CreateInteropFeatureProj"   AssemblyFile="$(TasksAssembly)"/>
+
+</Project>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>TinyBooterDecompressorLib</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{1d5d804c-7c3f-41a9-8f12-dd0badc69758}</ProjectGuid>
+    <Description>TinyBooter decompressor library</Description>
+    <Level>HAL</Level>
+    <LibraryFile>TinyBooterDecompressorLib.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Application\TinyBooter\TinyBooterDecompressorLib.proj</ProjectPath>
+    <ManifestFile>TinyBooterDecompressorLib.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Tinybooter</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <CustomSpecific>
+    </CustomSpecific>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Application\TinyBooter</Directory>
+    <reducesize>true</reducesize>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="$(SRC_DIR)\TinyBooterDecompressor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_version.h" />
+    <HFiles Include="$(SPOCLIENT)\crypto\inc\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="commands.h" />
+    <HFiles Include="configurationmanager.h" />
+    <HFiles Include="cryptointerface.h" />
+    <HFiles Include="keys.h" />
+    <HFiles Include="tinybooter.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

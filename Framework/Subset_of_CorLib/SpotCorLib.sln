@@ -1,0 +1,31 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotCorLib", "SpotCorLib.csproj", "{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_Client|Any CPU = Debug_Client|Any CPU
+		Debug_Server|Any CPU = Debug_Server|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release_Client|Any CPU = Release_Client|Any CPU
+		Release_Server|Any CPU = Release_Server|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Debug_Client|Any CPU.Build.0 = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Debug_Server|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Debug_Server|Any CPU.Build.0 = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Release_Client|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Release_Client|Any CPU.Build.0 = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Release_Server|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Release_Server|Any CPU.Build.0 = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EAA3D1-45AE-4417-8EB7-A71B7C4A83B0}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

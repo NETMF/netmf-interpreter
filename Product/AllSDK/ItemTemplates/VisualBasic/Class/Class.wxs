@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <?include defines.wxs?>
+
+    <DirectoryRef Id="WDEXPRESS11_ITEM_TEMPLATE_VISUALBASIC_CODE">
+      <Component Id="Component_VisualBasic_ClassItemTemplate.WDE110" Guid ="2264CDC6-C43D-4029-BBF5-6C1F6D55BD33">
+        <File Id="File_VisualBasic_ClassItemTemplate.WDE110" 
+          Name="Class.zip" 	
+          Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_VISUALBASIC_DEVICE)\Class.zip"
+          DiskId="1"
+          />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="VS11_ITEM_TEMPLATE_VISUALBASIC_CODE">
+      <Component Id="Component_VisualBasic_ClassItemTemplate.VS110" Guid ="1664CDC6-C43D-4029-BBF5-6C1F6D55BD32">
+        <File Id="File_VisualBasic_ClassItemTemplate.VS110" 
+          Name="Class.zip" 	
+          Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_VISUALBASIC_DEVICE)\Class.zip"
+          DiskId="1"
+          />
+      </Component>
+    </DirectoryRef>
+
+      <DirectoryRef Id="WDEXPRESS12_ITEM_TEMPLATE_VISUALBASIC_CODE">
+          <Component Id="Component_VisualBasic_ClassItemTemplate.WDE120" Guid ="A8842C30-FBC0-47D1-99DC-82F38A544761">
+              <File Id="File_VisualBasic_ClassItemTemplate.WDE120"
+                Name="Class.zip"
+                Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_VISUALBASIC_DEVICE)\Class.zip"
+                DiskId="1"
+          />
+          </Component>
+      </DirectoryRef>
+
+      <DirectoryRef Id="VS12_ITEM_TEMPLATE_VISUALBASIC_CODE">
+          <Component Id="Component_VisualBasic_ClassItemTemplate.VS120" Guid ="B87CD192-C30D-4DB9-8319-E79188B9E3DD">
+              <File Id="File_VisualBasic_ClassItemTemplate.VS120"
+                Name="Class.zip"
+                Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_VISUALBASIC_DEVICE)\Class.zip"
+                DiskId="1"
+          />
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

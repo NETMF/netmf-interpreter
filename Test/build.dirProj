@@ -1,0 +1,19 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+    <PropertyGroup>
+        <BuildDependsOn>$(BuildDependsOn);CopyTestDlls</BuildDependsOn>
+    </PropertyGroup>
+    <ItemGroup>
+        <Project Include="Platform\build.dirProj" >
+            <InProject>false</InProject>
+        </Project>
+
+        <TestRefDlls Include="Microsoft.SPOT.Debugger.dll"/>
+        <TestRefDlls Include="MFProfiler.exe"/>
+        <TestRefDlls Include="Microsoft.SPOT.Tasks.dll"/>
+    </ItemGroup>
+
+    <Target Name="CopyTestDlls" Inputs="@(TestRefDlls->'$(BUILD_ROOT)\$(Configuration)\Server\dll\%(FileName)%(Extension)')" Outputs="(TestRefDlls->'$(BUILD_ROOT)\$(Configuration)\Test\Server\dll\%(FileName)%(Extension)')">
+        <Copy SourceFiles="@(TestRefDlls->'$(BUILD_ROOT)\$(Configuration)\Server\dll\%(FileName)%(Extension)')" DestinationFiles="@(TestRefDlls->'$(BUILD_ROOT)\$(Configuration)\Test\Server\dll\%(FileName)%(Extension)')"/>
+    </Target>
+</Project>

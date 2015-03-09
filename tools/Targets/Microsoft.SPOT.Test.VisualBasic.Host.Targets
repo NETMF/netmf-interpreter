@@ -1,0 +1,70 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>    
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+  <Import Project="Microsoft.SPOT.Build.Configuration.Settings" Condition="'$(_Microsoft_SPOT_Build_Configuration_Settings__Included_)' == ''" />
+
+  <PropertyGroup>    
+    <BUILD_TEST_ROOT>$(BUILD_ROOT)</BUILD_TEST_ROOT>
+    <BUILD_TEST_TREE>$(BUILD_TEST_ROOT)\$(Configuration)\Test</BUILD_TEST_TREE>
+    <BUILD_TEST_TREE_PLATFORM>$(BUILD_TEST_TREE)\$(TinyCLR_Platform)</BUILD_TEST_TREE_PLATFORM>
+    <BUILD_TEST_TREE_DLL>$(BUILD_TEST_TREE_PLATFORM)\dll</BUILD_TEST_TREE_DLL>
+    <BUILD_TEST_TREE_OBJ>$(BUILD_TEST_TREE_PLATFORM)\obj</BUILD_TEST_TREE_OBJ>
+    <BUILD_TEST_TREE_PE>$(BUILD_TEST_TREE_PLATFORM)\pe</BUILD_TEST_TREE_PE>
+    <BUILD_TEST_TREE_MSM>$(BUILD_TEST_TREE_PLATFORM)\msm</BUILD_TEST_TREE_MSM>
+    <BUILD_TEST_TREE_LOC>$(BUILD_TEST_TREE_PLATFORM)\loc</BUILD_TEST_TREE_LOC>
+    <BUILD_TEST_TREE_DAT>$(BUILD_TEST_TREE_PLATFORM)\dat</BUILD_TEST_TREE_DAT>
+    <BUILD_TEST_TREE_STUBS>$(BUILD_TEST_TREE_PLATFORM)\stubs</BUILD_TEST_TREE_STUBS>
+    <BUILD_TEST_TREE_DISASM>$(BUILD_TEST_TREE_PLATFORM)\disasm</BUILD_TEST_TREE_DISASM>
+    <BUILD_TEST_TREE_TXT>$(BUILD_TEST_TREE_PLATFORM)\txt</BUILD_TEST_TREE_TXT>
+    <BUILD_TEST_TREE_XML>$(BUILD_TEST_TREE_PLATFORM)\xml</BUILD_TEST_TREE_XML>
+    <BUILD_TEST_TREE_DUMPS>$(BUILD_TEST_TREE_PLATFORM)\dumps</BUILD_TEST_TREE_DUMPS>
+    <BUILD_TEST_TREE_TEMPLATES>$(BUILD_TEST_TREE_PLATFORM)\templates</BUILD_TEST_TREE_TEMPLATES>    
+
+    <OutputPath>$(BUILD_TEST_TREE)\$(TinyCLR_Platform)\dll</OutputPath>
+    <BaseOutputPath>$(BUILD_TEST_TREE_OBJ)\$(AssemblyName)\</BaseOutputPath>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.SPOT.VisualBasic.Host.Targets" />
+
+  <ItemGroup>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DLL)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_OBJ)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_PE)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_LOC)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DAT)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_STUBS)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DISASM)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_TXT)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_XML)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DUMPS)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_TEMPLATES)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_MSM)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+  </ItemGroup>
+
+</Project>

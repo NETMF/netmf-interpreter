@@ -1,0 +1,28 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Platform.Tests.Statements</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Native</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FC8B01F8-C5DB-4DCF-8028-46093225E42C}</ProjectGuid>
+    <NoWarn>,1668, 0162, 0168, 0618, 0649,1522,0164,0642,0429,0429,1717,0728</NoWarn>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="Master.cs" />
+    <Compile Include="StatementsTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib">
+      <HintPath>$(BUILD_TREE_DLL)\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

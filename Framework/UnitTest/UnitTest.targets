@@ -1,0 +1,36 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"> 
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+    <PropertyGroup>        
+        <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
+	
+        <MMP_DAT_CreateDatabaseFile>$(BUILD_TREE_DAT)\tinyclr_$(MSBuildProjectName)UnitTest</MMP_DAT_CreateDatabaseFile>
+        <MMP_DAT_CreateDatabaseFileBE>$(BUILD_TREE_DAT_BE)\tinyclr_$(MSBuildProjectName)UnitTest</MMP_DAT_CreateDatabaseFileBE>
+        <MMP_DAT_CreateDatabaseFile Condition=" '$(TINYCLR_DAT_PLATFORM)' != '' ">$(MMP_DAT_CreateDatabaseFile)_$(TINYCLR_DAT_PLATFORM)</MMP_DAT_CreateDatabaseFile>        
+        <MMP_DAT_CreateDatabaseFile>$(MMP_DAT_CreateDatabaseFile).dat</MMP_DAT_CreateDatabaseFile>
+        <MMP_DAT_CreateDatabaseFileBE Condition=" '$(TINYCLR_DAT_PLATFORM)' != '' ">$(MMP_DAT_CreateDatabaseFileBE)_$(TINYCLR_DAT_PLATFORM)</MMP_DAT_CreateDatabaseFileBE>
+        <MMP_DAT_CreateDatabaseFileBE>$(MMP_DAT_CreateDatabaseFileBE).dat</MMP_DAT_CreateDatabaseFileBE>
+ 
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Microsoft.SPOT.Native">
+            <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SPOT.UnitTest">
+            <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.UnitTest.dll</HintPath>
+        </Reference>        
+    </ItemGroup>
+    <ItemGroup>
+        <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\mscorlib.pe">
+            <InProject>false</InProject>
+        </MMP_DAT_CreateDatabase>
+        <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Native.pe">
+            <InProject>false</InProject>
+        </MMP_DAT_CreateDatabase>
+        <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.UnitTest.pe">
+            <InProject>false</InProject>
+        </MMP_DAT_CreateDatabase>        
+        <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\$(AssemblyName).pe">
+            <InProject>false</InProject>
+        </MMP_DAT_CreateDatabase>                
+    </ItemGroup>    
+</Project>

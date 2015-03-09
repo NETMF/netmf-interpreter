@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+    <PropertyGroup>
+        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+        <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+        <SccProjectName>SAK</SccProjectName>
+        <SccLocalPath>SAK</SccLocalPath>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccProvider>SAK</SccProvider>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Platform>x86</Platform>
+        <PlatformTarget>x86</PlatformTarget>
+        <ProductVersion>9.0.30729</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{A9351D9B-872B-455D-85D6-E672B3F3FACD}</ProjectGuid>
+        <OutputType>WinExe</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Microsoft.NetMicroFramework.Tools.MFProfilerTool</RootNamespace>
+        <AssemblyName>MFProfiler</AssemblyName>
+        <ApplicationIcon>MFProfilerIcon.ico</ApplicationIcon>
+        <StartupObject>Microsoft.NetMicroFramework.Tools.MFProfilerTool.Program</StartupObject>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+        <DebugSymbols>true</DebugSymbols>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <DebugType>full</DebugType>
+        <PlatformTarget>x86</PlatformTarget>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+        <DebugSymbols>true</DebugSymbols>
+        <Optimize>true</Optimize>
+        <PlatformTarget>x86</PlatformTarget>
+    </PropertyGroup>
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+    <ItemGroup>
+        <Reference Include="Microsoft.SPOT.Debugger">
+            <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll</HintPath>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Design" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="CLRProfiler\AgeHistogram.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\AllocationDiff.cs" />
+        <Compile Include="CLRProfiler\BitReader.cs" />
+        <Compile Include="CLRProfiler\BitWriter.cs" />
+        <Compile Include="CLRProfiler\CallTreeForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\CommentRangeForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\DiffCallTreeForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\DiffDataNode.cs" />
+        <Compile Include="CLRProfiler\DiffTreeListView.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\Edge.cs" />
+        <Compile Include="CLRProfiler\FilterForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\FindRoutineForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\FunctionFilter.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\FunctionFind.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\Graph.cs" />
+        <Compile Include="CLRProfiler\GraphBase.cs" />
+        <Compile Include="CLRProfiler\GraphViewForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\HistogramViewForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\KillProcessForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\ListViewer.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\LogBase.cs" />
+        <Compile Include="CLRProfiler\MainForm.cs">
+        </Compile>
+        <Compile Include="CLRProfiler\NamedManualResetEvent.cs" />
+        <Compile Include="CLRProfiler\ObjectGraph.cs" />
+        <Compile Include="CLRProfiler\PlacedToolTip.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\ProfileServiceForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\ProgressForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\Readers.cs" />
+        <Compile Include="CLRProfiler\ReadNewLog.cs" />
+        <Compile Include="CLRProfiler\RegisterDLL.cs" />
+        <Compile Include="CLRProfiler\ReportForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\Reports.cs" />
+        <Compile Include="CLRProfiler\SaveFileForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\SelectColumns.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\SetParameterForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\SortAndHighlightSelector.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\SummaryForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\TimeLineViewForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\TreeListView.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\Vertex.cs" />
+        <Compile Include="CLRProfiler\ViewByAddressForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\ViewCommentsForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\ViewFilter.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="CLRProfiler\WaitingForConnectionForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="Exporter_OffProf.cs" />
+        <Compile Include="EmulatorLauncher.cs" />
+        <Compile Include="Exporter_CLRProfiler.cs" />
+        <Compile Include="MFDeviceSelectorComboBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+        <Compile Include="Profiler.cs" />
+        <Compile Include="ProfilerLauncherForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="ProfilerLauncherForm.Designer.cs">
+            <DependentUpon>ProfilerLauncherForm.cs</DependentUpon>
+        </Compile>
+        <Compile Include="ProfilerPackets.cs" />
+        <Compile Include="Program.cs" />
+        <EmbeddedResource Include="CLRProfiler\AgeHistogram.resx">
+            <DependentUpon>AgeHistogram.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\CallTreeForm.resx">
+            <DependentUpon>CallTreeForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\CommentRangeForm.resx">
+            <DependentUpon>CommentRangeForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\DiffCallTreeForm.resx">
+            <DependentUpon>DiffCallTreeForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\DiffTreeListView.resx">
+            <DependentUpon>DiffTreeListView.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\FilterForm.resx">
+            <DependentUpon>FilterForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\FindRoutineForm.resx">
+            <DependentUpon>FindRoutineForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\FunctionFilter.resx">
+            <DependentUpon>FunctionFilter.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\FunctionFind.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\GraphViewForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\HistogramViewForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\KillProcessForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\ListViewer.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\MainForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\PlacedToolTip.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\ProfileServiceForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\ProgressForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\ReportForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\SaveFileForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\SelectColumns.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\SetParameterForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\SortAndHighlightSelector.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\SummaryForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\TimeLineViewForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\TreeListView.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\TreeNodeBase.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\ViewByAddressForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\ViewCommentsForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\ViewFilter.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="CLRProfiler\WaitingForConnectionForm.resx">
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="ProfilerLauncherForm.resx">
+            <DependentUpon>ProfilerLauncherForm.cs</DependentUpon>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+            <SubType>Designer</SubType>
+        </EmbeddedResource>
+        <Compile Include="Properties\Resources.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+        </Compile>
+        <None Include="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+        <Compile Include="Properties\Settings.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Settings.settings</DependentUpon>
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+        </Compile>
+        <Compile Include="Settings.cs" />
+        <Compile Include="MFTransportTypeComboBox.cs">
+            <SubType>Component</SubType>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="App.config" />
+        <None Include="MFProfilerIcon.ico" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="$(SPOCLIENT)\Framework\Debugger\Debugger.csproj">
+            <Name>Microsoft.SPOT.Debugger</Name>
+        </ProjectReference>
+    </ItemGroup>
+</Project>

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <Set Name="Valid" Value="false"/>
+
+    <!-- ################################################################################ -->
+    <Set Name="Heap_Begin"          Value="0x08100000"/>
+    <Set Name="Heap_End"            Value="0x084FEFFC"/>
+    <Set Name="Stack_Bottom"        Value="0x08500000"/>
+    <Set Name="Stack_Top"           Value="0x08502000"/>
+
+    <If Name="TARGETLOCATION" In="FLASH">
+
+        <!-- AUX has 8MB of 32-bit FLASH at 0x10000000 -->
+        <!-- the TINYCLR and Hal Code should lie in one partition and the other data/LOG/DEPLOYMENT session should sit in another partition, -->
+        <!-- in order to optimized for flash operations while erasing flash that it is still able to implement code from other flash partition -->
+         
+        <Set Name="Config_BaseAddress"  Value="0x10040000"/>    
+        <Set Name="Config_Size"         Value="0x00020000"/>
+        <Set Name="Code_BaseAddress"    Value="0x10060000"/>    
+        <Set Name="Deploy_BaseAddress"  Value="0x10160000"/>
+        <Set Name="Code_Size"           Value="%Deploy_BaseAddress - Code_BaseAddress%"/>
+        <Set Name="Valid"               Value="true"/>
+    </If>
+
+    <If Name="TARGETLOCATION" In="RAM">
+
+        <Set Name="Heap_Begin"          Value="0x08300000"/>
+        <Set Name="Heap_End"            Value="0x084FEFFC"/>
+        <Set Name="Code_BaseAddress" Value="0x08020000"/>
+        <Set Name="Code_Size"        Value="0x002D0000"/>
+        <!-- RAM with FLASH config is not needed -->
+        <Set Name="Valid"            Value="true"/>
+
+    </If>
+
+    <!-- ################################################################################ -->
+
+    <If Name="Valid" Value="false">
+        <Error Message="Configuration not recognized"/>
+    </If>
+
+    <!-- we start at 0x10080000 since PortBooter lives at 0x10000000 -->
+
+    <NamedGroup Name="MEMORY">
+      <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Size="%Code_Size%"/>
+      <IfDefined Name="Config_BaseAddress">
+        <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Size="%Config_Size%"/>
+      </IfDefined>
+      <IfDefined Name="Data_BaseAddress">
+        <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Size="%Data_Size%"/>
+      </IfDefined>
+      <LoadRegion Name="HEAP" Base="%Heap_Begin%" Size="%Heap_End - Heap_Begin% + 1"/>
+      <LoadRegion Name="STACK" Base="%Stack_Bottom%" Size="%Stack_Top - Stack_Bottom% + 1"/>
+      <LoadRegion Name="RELOC_RAM" Base="0x00000000" Size="1M"/>
+    </NamedGroup>
+
+    <EntryPoint Name="EntryPoint"/>
+
+    <NamedGroup Name="SECTIONS">
+      <ExecRegion Name="ER_%TARGETLOCATION%" Options="&gt;LR_%TARGETLOCATION%">
+        <FileMapping Name="*" Options="(i.EntryPoint)" />
+        <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+        <FileMapping Name="*" Options="(.text*)" />
+        <FileMapping Name="*" Options="(i.*)" />
+        <FileMapping Name="*" Options="(t.*)" />
+        <If Name="TARGETLOCATION" In="RAM">     
+          <FileMapping Name="*" Options="(SectionForFlashOperations)" />       
+        </If>
+        <FileMapping Name="*" Options="(.rodata*)" />
+        <FileMapping Name="*" Options="(rodata)" />
+        <FileMapping Name="*" Options="(.constdata*)" />
+        <FileMapping Name="*" Options="(.conststring*)" />
+        <IfNotDefined Name="Data_BaseAddress">
+          <FileMapping Name="*" Options="(tinyclr_metadata)" />
+        </IfNotDefined>
+        <IfNotDefined Name="Config_BaseAddress">
+          <FileMapping Name="*" Options="(SectionForConfig)" />
+        </IfNotDefined>
+
+        <!-- libc thinks that it needs these routines, but they are never called -->
+        <Include File="%SPOCLIENT%\Solutions\%PLATFORM%\scatterfile_gcc_missing_symbols.xml"/>
+
+      </ExecRegion>
+      <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;RELOC_RAM AT&gt;LR_%TARGETLOCATION%">
+        <FileMapping Name="*" Options="(VectorsTrampolines)" />
+        <Include File="%SPOCLIENT%\Solutions\%PLATFORM%\TinyCLR\scatterfile_ram_functions.xml"/>
+        <Include File="%SPOCLIENT%\Solutions\%PLATFORM%\TinyCLR\scatterfile_tinyclr_ram_functions.xml"/>
+        <If Name="TARGETLOCATION" In="FLASH">     
+          <FileMapping Name="*" Options="(SectionForFlashOperations)" />       
+        </If>
+      </ExecRegion>      
+      <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;RELOC_RAM AT&gt;LR_%TARGETLOCATION%">
+        <FileMapping Name="*" Options="(rwdata)" />
+        <FileMapping Name="*" Options="(.data*)" />
+        <FileMapping Name="*" Options="(.zidata*)" />
+      </ExecRegion>      
+      <ExecRegion Name=".bss" Align="0x10" Options="&gt;RELOC_RAM AT&gt;LR_%TARGETLOCATION%">
+        <FileMapping Name="*" Options="(.bss*)" />
+        <FileMapping Name="PROVIDE(__exidx_start = .);" />
+        <FileMapping Name="PROVIDE(__exidx_end = .);" />
+      </ExecRegion>
+      <ExecRegion Name="/DISCARD/">
+        <FileMapping Name="*" Options="(.glue*)" />
+        <FileMapping Name="*" Options="(.vfp11*)" />
+        <FileMapping Name="*" Options="(.ARM.exidx*)" />
+        <FileMapping Name="*" Options="(.ARM.extab*)" />
+      </ExecRegion>
+      <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_Begin%">
+        <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+      </ExecRegion>
+      <ExecRegion Name="ER_HEAP_END" Base="%Heap_End%">
+        <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+      </ExecRegion>
+      <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%">
+        <FileMapping Name="*" Options="(SectionForStackBottom)" />
+      </ExecRegion>
+      <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Top%">
+        <FileMapping Name="*" Options="(SectionForStackTop)" />
+      </ExecRegion>
+
+    <IfDefined Name="Config_BaseAddress">         
+      <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
+        <FileMapping Name="*" Options="(SectionForConfig)" />
+      </ExecRegion>
+    </IfDefined>    
+    <IfDefined Name="Data_BaseAddress">      
+      <ExecRegion Name="ER_DAT" Options="&gt;LR_DAT">
+        <FileMapping Name="*" Options="(tinyclr_metadata)" />
+      </ExecRegion>
+    </IfDefined>
+    </NamedGroup>
+
+    <!-- The following variables are used to simulate the ones autogenerated by RVDS -->
+    <GlobalVariable Name="Load$$ER_%TARGETLOCATION%$$Base"          Value="ADDR(ER_%TARGETLOCATION%)"/>
+    <GlobalVariable Name="Image$$ER_%TARGETLOCATION%$$Length"       Value="SIZEOF(ER_%TARGETLOCATION%)"/>
+    <GlobalVariable Name="Image$$ER_RAM_RO$$Base"                   Value="ADDR(ER_RAM_RO)"/>
+    <GlobalVariable Name="Image$$ER_RAM_RO$$Length"                 Value="ADDR(ER_RAM_RW) - ADDR(ER_RAM_RO)"/>
+    <GlobalVariable Name="Load$$ER_RAM_RO$$Base"                    Value="LOADADDR(ER_RAM_RO)"/>
+    <GlobalVariable Name="Image$$ER_RAM_RW$$Base"                   Value="ADDR(ER_RAM_RW)"/>
+    <GlobalVariable Name="Image$$ER_RAM_RW$$Length"                 Value="(ADDR(.bss) + SIZEOF(.bss)) - ADDR(ER_RAM_RW)"/>
+    <GlobalVariable Name="Load$$ER_RAM_RW$$Base"                    Value="LOADADDR(ER_RAM_RO) + (ADDR(ER_RAM_RW) - ADDR(ER_RAM_RO))"/>
+    <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Base"               Value="ADDR(.bss)"/>
+    <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Length"             Value="SIZEOF(.bss)"/>
+    <GlobalVariable Name="__use_no_semihosting_swi"                 Value="0"/>
+
+</ScatterFile>
+

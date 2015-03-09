@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UsbControllerConfiguration
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="UsbClientConfig.xsd">
+  
+  <DeviceDescriptor>
+    <idVendor>#x15A2</idVendor>
+    <idProduct>#x0026</idProduct>
+    <bcdDevice>1.00</bcdDevice>
+    <bMaxPacketSize0>8</bMaxPacketSize0>
+    <iManufacturer>Freescale</iManufacturer>
+    <iProduct>Micro Framework MXS Reference </iProduct>
+  </DeviceDescriptor>
+  
+  <ConfigurationDescriptor>
+    <bMaxPower_mA>280</bMaxPower_mA>
+    <SelfPowered/>
+    
+    <!-- Debug interface -->
+    <InterfaceDescriptor id="0">
+      <bInterfaceClass>#xFF</bInterfaceClass>
+      <bInterfaceSubClass>1</bInterfaceSubClass>
+      <bInterfaceProtocol>1</bInterfaceProtocol>
+      <EndpointDescriptor id="1" direction="in" transfer="bulk">
+        <wMaxPacketSize>64</wMaxPacketSize>
+      </EndpointDescriptor>
+      <EndpointDescriptor id="2" direction="out" transfer="bulk">
+        <wMaxPacketSize>64</wMaxPacketSize>
+      </EndpointDescriptor>
+    </InterfaceDescriptor>
+    
+  </ConfigurationDescriptor>
+  
+  <!-- Display name -->
+  <StringDescriptor index="4">iMXS</StringDescriptor>
+  <!-- Friendly name -->
+  <StringDescriptor index="5">a7e70ea2</StringDescriptor>
+  <!-- Sideshow OS descriptor string -->
+  <StringDescriptor index="#xEE">MSFT100&#xA5;</StringDescriptor>
+  
+  <!-- Here is the OS extended compatible ID for Sideshow -->
+  <GenericDescriptor type="vendor">
+    <bRequest>#xA5</bRequest>
+    <wValue>0</wValue>
+    <wIndex>4</wIndex>
+    <!-- This is the OS extended compatible ID payload -->
+    <dwData>40</dwData>   <!-- Byte count -->
+    <wData>#x100</wData>  <!-- Version 1.00 -->
+    <wData>4</wData>      <!-- wIndex -->
+    <bData>1</bData>      <!-- Interface count -->
+    <bPadding>7</bPadding>
+    <bData>0</bData>      <!-- Interface number -->
+    <bData>1</bData>      <!-- reserved (must be 1) -->
+    <sData>SIDESHW</sData>
+    <bData>0</bData>
+    <sData>ENHV1</sData>
+    <bData>0 0 0</bData>
+    <bPadding>6</bPadding>
+  </GenericDescriptor>
+
+</UsbControllerConfiguration>

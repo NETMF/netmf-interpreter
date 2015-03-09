@@ -1,0 +1,25 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>XML</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\XML_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\XML_core_CLR.libcatproj" />
+
+  <ItemGroup>
+    <InteropFeature Include="System_Xml" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\System.Xml.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\Xml.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Description>Xml utilities component</Description>
+    <Guid>{cd6b1816-656e-4c71-b941-e6950562b9c6}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <XML_FEATUREPROJ>True</XML_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

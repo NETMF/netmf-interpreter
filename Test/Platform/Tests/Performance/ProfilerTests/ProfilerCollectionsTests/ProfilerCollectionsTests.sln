@@ -1,0 +1,22 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfilerCollectionsTests", "ProfilerCollectionsTests.csproj", "{7615AC9E-C21E-4A7A-8888-7A6A188C2262}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		RTM|Any CPU = RTM|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7615AC9E-C21E-4A7A-8888-7A6A188C2262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7615AC9E-C21E-4A7A-8888-7A6A188C2262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7615AC9E-C21E-4A7A-8888-7A6A188C2262}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{7615AC9E-C21E-4A7A-8888-7A6A188C2262}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7615AC9E-C21E-4A7A-8888-7A6A188C2262}.Release|Any CPU.Deploy.0 = Debug|Any CPU
+		{7615AC9E-C21E-4A7A-8888-7A6A188C2262}.RTM|Any CPU.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

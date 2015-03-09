@@ -1,0 +1,13 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_EmulatorSamples">
+    <Feature 
+      Id="EmulatorSamples"
+      Title="Extensible Emulator Samples"
+      Description="Samples that demonstrate extensible emulator features of the .NET Micro Framework"
+      Level="1"
+      ConfigurableDirectory="PFOLDERINSTALLDIR"
+      >
+      <ComponentRef Id="Component_EmulatorSamples"/>
+    </Feature>
+  </Fragment>
+</Wix>

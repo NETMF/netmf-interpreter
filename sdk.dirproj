@@ -1,0 +1,40 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.PseudoInstallerScript.Targets" />
+
+  <ItemGroup>
+    <Project Include="build.dirproj" />
+    <Project Include="Framework\IDE\build.dirproj" />
+    <Project Include="Product\AllSDK\build.dirproj" />
+    <Project Include="Product\Samples\build.dirproj" />
+    <Project Include="CLR\Tools\TFConvert\Fonts\TrueType\TrueTypeFonts.wixproj" />
+    <Project Include="Support\GenerateFrameworkList.proj" />
+    <Project Include="Setup\build.dirproj" />
+    <Project Include="Test\build.dirproj" Condition="'$(NO_BUILD_TESTS)'==''" />
+    <Project Include="Support\CreateReleaseInfo.proj" />
+  </ItemGroup>
+
+  <Target Name="_PrepVS" >
+    <CallTarget Targets="PrepVS" />
+  </Target>
+
+  <Target Name="Help" >
+
+    <Message Text="Targets for MF SDK Components" Importance="high" />
+    <Message Text=" "/>
+    <Message Text="  Target            Function"/>
+    <Message Text="  -------           --------------------------------------------"/>
+    <Message Text="  Build             Builds the SDK tasks and tools, the Win32 implementation" />
+    <Message Text="                    of TinyCLR, the CLR tools like Metadataprocessor, the"/>
+    <Message Text="                    Micro Framework itself, the core emulator library, and a "/>
+    <Message Text="                    sample emulator. Also packages it all up along with sample"/>
+    <Message Text="                    code and project templates in an MSI installer package."/>
+    <Message Text="  PrepVS            Builds the mfpseudoinstaller.cmd script for internal development." />
+    <Message Text="                    This target assumes you have already built the SDK successfully." />
+    <Message Text="  Clean             Throws it all away." />
+    <Message Text=" " />
+    <Message Text="     " />
+  </Target>
+
+</Project>

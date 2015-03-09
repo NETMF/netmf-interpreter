@@ -1,0 +1,425 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <Import Project="$(MFTargetsFile)"                                        Condition=" EXISTS('$(MFTargetsFile)')"/>
+<!-- -->
+  <Import Project="$(MSBuildStartupDirectory)\$(PLATFORM).targets"          Condition="!EXISTS('$(MFTargetsFile)') AND  EXISTS('$(MSBuildStartupDirectory)\$(PLATFORM).targets')"/>
+  <Import Project="$(SPOCLIENT)\Solutions\$(PLATFORM)\$(PLATFORM).targets"  Condition="!EXISTS('$(MFTargetsFile)') AND !EXISTS('$(MSBuildStartupDirectory)\$(PLATFORM).targets') AND EXISTS('$(SPOCLIENT)\Solutions\$(PLATFORM)\$(PLATFORM).targets')"/>
+<!-- -->
+
+  <ItemGroup>
+    <RequiredProjects Condition="'$(TinyCLR_Platform)'!='Server' AND '$(AUTOMATED_BUILD)'=='' AND '$(InPKProj)'    !='True'" Include="$(SPOCLIENT)\PK.proj" />
+    <RequiredProjects Condition="'$(TinyCLR_Platform)'!='Server' AND '$(AUTOMATED_BUILD)'=='' AND '$(InCLRDefines)'!='True'" Include="$(SPOCLIENT)\Framework\Tools\CreateCLRDefines.proj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <LibDirs Include="$(LIB_DIR)" />
+    <LibDirs Include="$(PLATFORM_INDEPENDENT_LIB_DIR)" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Tasks.settings"/>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Manifest.Targets"/>
+
+  <!--enable some debugging message for setting it to 'true' -->
+  <PropertyGroup>
+    <MSBUILD_DEBUG>false</MSBUILD_DEBUG>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType Condition="'$(OutputType)'=='Custom' and '$(CustomTargets)'==''"></OutputType>
+    <PRG_MMP  Condition="'$(PRG_MMP)'==''" >$(TOOLS_DIR)\MetaDataProcessor.exe</PRG_MMP>
+    <OEM_NAME Condition="'$(OEM_NAME)'==''">Microsoft</OEM_NAME>
+    <OEM_ROOT Condition="'$(OEM_ROOT)'==''">$(CLRROOT)\sdk\OEM</OEM_ROOT>
+
+    <OEM_PATH>$(OEM_ROOT)\$(OEM_NAME)</OEM_PATH>
+  </PropertyGroup>
+
+  <Import Condition="'$(PLATFORM_FAMILY)'=='x86'"                                    Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.x86.Targets" />
+  <!-- IMPORT the COMPILER_TOOL specific targets file (if it exists).  COMPILER_TOOL is set by setenv.cmd -->
+  <Import Condition="'$(PLATFORM_FAMILY)'!='x86' and EXISTS('$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.$(COMPILER_TOOL).targets')"    Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.$(COMPILER_TOOL).targets"/>
+
+  <PropertyGroup>
+    <TargetRule Condition="'$(OutputType)'=='Custom'">$(CustomTargets)</TargetRule>
+  </PropertyGroup>
+
+
+<!-- ignoring the patch factor, as it will be removed -->
+<!--
+  <PropertyGroup>
+    <AS_FLAGS>$(AS_FLAGS) $(POS_DEPENDENT)</AS_FLAGS>
+    <CC_FLAGS>$(CC_FLAGS) $(POS_DEPENDENT)</CC_FLAGS>
+    <CPP_FLAGS>$(CPP_FLAGS) $(POS_DEPENDENT)</CPP_FLAGS>
+  </PropertyGroup>
+-->
+  <PropertyGroup Condition="'$(ExtraTargets)'!=''">
+    <TargetRule>$(TargetRule);$(ExtraTargets)</TargetRule>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <PLATFORMS Condition="'@(PLATFORMS)'=='' and '$(PLATFORM)'=='' and '$(PLATFORMS)'!=''" Include="$(PLATFORMS)"/>
+
+    <Subdirectories Include="$(SubDirectories)"/>
+
+    <IncludeDirs Condition="'@(IncludePaths)'!=''" Include="@(IncludePaths->'$(CLRROOT)\%(relativedir)%(filename)')"/>
+
+    <RequiredProjects Condition="'@(DependsOn)'!=''" Include="@(DependsOn->'$(CLRROOT)\%(Identity)')"/>
+    <RequiredProjects Condition="'@(ExtraProjects)'!=''" Include="@(ExtraProjects)"/>
+
+    <HFiles Condition="'@(HFiles)'==''" Include="*.h"/>
+    <Compile Condition="'@(Compile)'==''" Include="*.cpp;*.c;*.s"/>
+
+  </ItemGroup>
+
+  <ItemGroup Condition="'@(FastCompileFile)'==''">
+    <ObjFiles Include="@(Compile->'$(OBJ_DIR)\%(filename).$(OBJ_EXT)')"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'@(FastCompileFile)'!=''">
+    <ObjFiles Include="@(FastCompileFile->'$(OBJ_DIR)\%(filename).$(OBJ_EXT)')"/>
+  </ItemGroup>
+
+  <!-- including all explicitly specified CFiles, CPPFiles, AssemblyFiles into the ObjFiles-->
+  <!-- since this is done before split file, it won't repeat including the CFiles, CPPFiles, AssemblyFiles-->
+  <ItemGroup>
+    <ObjFiles Condition="'$(CFiles)'!=''"           Include="@(CFiles->'$(OBJ_DIR)\%(filename).$(OBJ_EXT)')"/>
+    <ObjFiles Condition="'$(CPPFiles)'!=''"         Include="@(CPPFiles->'$(OBJ_DIR)\%(filename).$(OBJ_EXT)')"/>
+    <ObjFiles Condition="'$(AssemblyFiles)'!=''"    Include="@(AssemblyFiles->'$(OBJ_DIR)\%(filename).$(OBJ_EXT)')"/>
+  </ItemGroup>
+
+
+  <ItemGroup Condition="'$(OutputType)'=='DLL'">
+    <TargetDLL  Condition="'@(TargetDLL)'==''" Include="$(BIN_DIR)\$(AssemblyName).dll"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(OutputType)'=='Library'">
+    <TargetLib  Condition="'@(TargetLib)'==''" Include="$(LIB_DIR)\$(AssemblyName).$(LIB_EXT)"/>
+  </ItemGroup>
+
+  <!-- this has to stay at here as it depends on the ObjFiles, instead of at the xxx.targets -->
+
+  <ItemGroup Condition="'$(OutputType)'=='Executable'">
+
+    <EXEInputs  Include="@(ObjFiles)"/>
+    <EXEInputs  Condition="'$(ExtraEXEInputs)'!=''" Include="$(ExtraEXEInputs)"/>
+    <!-- Item group add-->
+    <EXEInputs  Condition="'@(ExtraEXEInputs)'!=''" Include="@(ExtraEXEInputs)"/>
+
+    <EXEIncludePaths Include="@(IncludeDirs)"/>
+
+    <EXEOutput Include="$(BIN_DIR)\$(AssemblyName).$(EXE_EXT)"/>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Map our files to what the VS csproj would expect so we can use the standard MS CSharp rules -->
+    <CompileFiles Include="@(CSFiles)"/>
+  </ItemGroup>
+
+  <!-- Hook properties and targets -->
+  <!-- Projects may override any of these targets, so long as their versions
+       appear in their project _after_ the Import line that refers to this
+       file. Other than the ExtraEnvironment target, however, the preferred way
+       to hook into the build sequence is to add a private target to your project
+       and add it to the most appropriate 'DependsOn' target list. (See below.)
+       -->
+
+  <!-- These get their initial values from Microsoft.SPOT.System.Settings; to hook
+       your target into the build sequence, define the appropriate property in your
+       own project after <Import Microsoft.SPOT.System.Settings /> and before
+       <Import Microsoft.SPOT.System.Targets />, and build upon any value already set
+       for that property.
+       Examples:
+
+  <PropertyGroup>
+    <PreBuildDependsOn>MyInitializationTarget;$(PreBuildDependsOn)</PreBuildDependsOn>
+    <PostBuildDependsOn>$(PostBuildDependsOn);MyFinalizerTarget</PostBuildDependsOn>
+    <CoreSystemBuildDependsOn>MyCoreSystemBuildHelper;$(CoreSystemBuildDependsOn)</CoreSystemBuildDependsOn>
+  </PropertyGroup>
+
+  -->
+
+  <Target Name="PreBuild" DependsOnTargets="$(PreBuildDependsOn)" />
+  <Target Name="PostBuild" DependsOnTargets="$(PostBuildDependsOn)" />
+  <Target Name="CoreSystemBuild" DependsOnTargets="$(CoreSystemBuildDependsOn)" >
+    <CallTarget Targets="SplitFiles;$(TargetRule)" Condition="'$(TargetRule)'!=''" />
+  </Target>
+  <Target Name="ExtraEnvironment" />
+
+
+  <!-- Real targets -->
+  <Target Name="ShowProps">
+    <Message Text="Property OutputType=$(OutputType)"/>
+    <Message Text="Property CustomTargets=$(CustomTargets)"/>
+    <Message Text="Property TargetRule=$(TargetRule)"/>
+    <Message Text="Property PLATFORM=$(PLATFORM)"/>
+    <Message Text="Property PLATFORMS=$(PLATFORMS)"/>
+    <Message Text="Item PLATFORMS=@(PLATFORMS)"/>
+    <Message Text="Item ObjFiles=@(ObjFiles)"/>
+    <Message Text="Item FastCompileFile=@(FastCompileFile)"/>
+    <Message Text="Item CFFlags=$(CFlags)"/>
+  </Target>
+
+  <Target Name="BuildLocal">
+    <!-- do the build for each specified platform, with no dependancy building and no subdirectory builds -->
+    <Message Condition="'$(PLATFORMS)'!=''" Text="Building local project for platforms @(PLATFORMS,' ')"/>
+    <MSBuild Condition="'$(PLATFORMS)'!=''" Projects="$(ProjectFile)" Targets="BuildLocal" Properties="PLATFORM=%(PLATFORMS.Identity);PLATFORMS=;FLAVOR=$(FLAVOR);MEMORY=$(MEMORY)" />
+    <CallTarget Condition="'$(PLATFORMS)'==''" Targets="DoLocalBuild" />
+  </Target>
+
+  <Target Name="FastBuild">
+    <!-- do the build for each specified platform, with no dependcy building but with subdirectory builds -->
+    <Message Condition="'$(PLATFORMS)'!=''" Text="Building fast for platforms @(PLATFORMS,' ')"/>
+    <MSBuild Condition="'$(PLATFORMS)'!=''" Projects="$(ProjectFile)" Targets="FastBuild" Properties="PLATFORM=%(PLATFORMS.Identity);PLATFORMS=;FLAVOR=$(FLAVOR);MEMORY=$(MEMORY)" />
+    <CallTarget Condition="'$(PLATFORMS)'==''" Targets="DoFastBuild" />
+  </Target>
+
+  <Target Name="Build">
+    <!-- do the build for each specified platform, including dependencies and subdirectories -->
+    <Message Condition="'$(PLATFORMS)'!=''" Text="Building for platforms @(PLATFORMS,' ')"/>
+    <MSBuild Condition="'$(PLATFORMS)'!=''" Projects="$(ProjectFile)" Targets="Build" Properties="PLATFORM=%(PLATFORMS.Identity);PLATFORMS=;FLAVOR=$(FLAVOR);MEMORY=$(MEMORY)" />
+    <CallTarget Condition="'$(PLATFORMS)'==''" Targets="SanityCheck;DoBuild" />
+  </Target>
+
+  <Target Name="Rebuild">
+    <!-- do the build for each specified platform -->
+    <Message Condition="'$(PLATFORMS)'!=''" Text="Rebuilding for platforms @(PLATFORMS,' ')"/>
+    <MSBuild Condition="'$(PLATFORMS)'!=''" Projects="$(ProjectFile)" Targets="Rebuild" Properties="PLATFORM=%(PLATFORMS.Identity);PLATFORMS=;FLAVOR=$(FLAVOR);MEMORY=$(MEMORY)" />
+    <CallTarget Condition="'$(PLATFORMS)'==''" Targets="SanityCheck;Clean;DoBuild"/>
+  </Target>
+
+  <Target Name="SanityCheck" DependsOnTargets="$(AdditionalSanityTargets)">
+    <Error Text="Must specify the Directory property"               Condition="'$(Directory)'==''"/>
+    <Error Text="Must specify CLRROOT"                              Condition="'$(CLRROOT)' == ''" />
+    <Error Text="Must specify SPOCLIENT"                            Condition="'$(SPOCLIENT)' == ''" />
+    <Error Text="Must specify BUILD_ROOT"                           Condition="'$(BUILD_ROOT)' == ''" />
+ </Target>
+
+
+  <Target Name="DoFastBuild"
+    DependsOnTargets="StartMessage;Prebuild;DoPreBuild;ExtraEnvironment;SubdirectoryProjects;CoreSystemBuild;PostBuild"
+    />
+
+  <Target Name="DoLocalBuild"
+    DependsOnTargets="StartMessage;PreBuild;DoPreBuild;ExtraEnvironment;CoreSystemBuild;PostBuild"
+    />
+
+  <Target Name="DoBuild"
+    DependsOnTargets="StartMessage;Prebuild;DoPreBuild;ExtraEnvironment;MakeDirectories;SubdirectoryProjects;BuildDependencies;CoreSystemBuild;PostBuild"
+    />
+
+
+  <Target Name="StartMessage" >
+    <Message Condition="'$(TargetRule)'!=''" Text="Doing build of $(OutputType) $(AssemblyName) - rule is $(TargetRule)"/>
+  </Target>
+
+  <Target Name="RemoveBinDir" Condition="'$(BIN_DIR)'!=''">
+    <Message Text="Removing Bin dir: $(BIN_DIR)"/>
+    <RemoveDir Condition="'$(PLATFORM)'!='WINDOWS'" Directories="$(BIN_DIR)" ContinueOnError="true"/>
+    <Exec Condition="'$(PLATFORM)'=='WINDOWS'" Command="IF EXIST @(SystemCleanFiles->'%(FullPath)','') del /q @(SystemCleanFiles->'%(FullPath)', ' ')"  ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="RemoveHalDir"  Condition="'$(DST_DIR)'!=''">
+    <RemoveDir Directories="$(DST_DIR)\"  ContinueOnError="true" />
+  </Target>
+
+  <Target Name="RemoveClrDir"  Condition="'$(PLATFORM_INDEPENDENT_DST_DIR)'!=''">
+    <RemoveDir Directories="$(PLATFORM_INDEPENDENT_DST_DIR)\"  ContinueOnError="true" />
+  </Target>
+
+  <Target Name="buildproject">
+    <CallTarget Condition="'$(PLATFORMS)'==''" Targets="BuildSystem"/>
+  </Target>
+
+  <Target Name="CleanHal" DependsOnTargets="RemoveHalDir">
+    <Message Text="Clean Hal output directory and build project "/>
+  </Target>
+
+  <Target Name="CleanClr" DependsOnTargets="RemoveClrDir">
+    <Message Text="Clean Clr output directory and build project "/>
+  </Target>
+
+  <Target Name="Clean" DependsOnTargets="CleanCLR;CleanHal">
+    <Message Text="Clean Hal and Clr build directory" />
+  </Target>
+
+  <Target Name="CleanBuild" DependsOnTargets="Clean;buildproject">
+    <Message Text="Clean Hal and Clr build directory and build project "/>
+  </Target>
+
+  <Target Name="CleanObjLib" DependsOnTargets="FindFastCompileFilesExistence;FindCompileFilesExistence;Action_RemoveObjLib;Action_RemoveExtraFiles;">
+    <MSBuild Projects="@(SubDirectories->'%(filename)\dotnetmf.proj')" Condition="'@(SubDirectories)'       !=''" Targets="CleanObjLib" Properties="$(MainProps)"/>
+    <MSBuild Projects="@(RequiredProjects)"                            Condition="'@(RequiredProjects)'     !=''" Targets="CleanObjLib" Properties="$(MainProps)"/>
+    <MSBuild Projects="@(ExtraCleanProjectFile)"                       Condition="'@(ExtraCleanProjectFile)'!=''" Targets="CleanObjLib" Properties="$(MainProps)"/>
+  </Target>
+
+  <Target Name="Action_RemoveExtraFiles" Condition="'@(ExtraCleanFiles)'!='' and ( '$(CLEAN_INDEPENDENT_ONLY)'=='' or ('$(CLEAN_INDEPENDENT_ONLY)'=='TRUE' and '$(PlatformIndependentBuild)'=='true') or ('$(CLEAN_INDEPENDENT_ONLY)'=='FALSE' and '$(PlatformIndependentBuild)'==''))">
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' " text="del ExtraCleanFiles  @(ExtraCleanFiles->'%(FullPath)', ' ')" />
+    <Exec Command="IF EXIST @(ExtraCleanFiles->'%(FullPath)','') del /q @(ExtraCleanFiles->'%(FullPath)', ' ')"  ContinueOnError="true"/>
+  </Target>
+
+  <!-- if one of the files to compile the lib is exist, then the lib can removed, the other non-disclosured file should have obj exists -->
+  <Target Name="Action_RemoveObjLib" Condition="'@(FilesExist)'!=''  and ( '$(CLEAN_INDEPENDENT_ONLY)'=='' or ('$(CLEAN_INDEPENDENT_ONLY)'=='TRUE' and '$(PlatformIndependentBuild)'=='true') or ('$(CLEAN_INDEPENDENT_ONLY)'=='FALSE' and '$(PlatformIndependentBuild)'==''))">
+
+    <!-- remove the whole build dir for cleanbuild -->
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' and @(TargetLib)!='' " text="del targetlib  @(TargetLib->'%(FullPath)', ' ')" />
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' " text="del fileexists @(FilesExist->'$(OBJ_DIR)\%(Filename).*', ' ')"  />
+
+    <Exec Command="IF EXIST @(TargetLib->'%(FullPath)','') del /q @(TargetLib->'%(FullPath)', ' ')" Condition ="@(TargetLib)!=''" ContinueOnError="true"/>
+    <Exec Command="IF EXIST @(TargetLib->'%(FullPath).manifest','') del /q @(TargetLib->'%(FullPath).manifest', ' ')" Condition ="@(TargetLib)!=''" ContinueOnError="true"/>
+    <Exec Command="IF EXIST @(FileExist->'$(OBJ_DIR)\%(Filename).*','') del /q @(FilesExist->'$(OBJ_DIR)\%(Filename).*', ' ')"  ContinueOnError="true"/>
+  </Target>
+
+
+  <Target Name="FindCompileFilesExistence" Condition="'$(OutputType)'!='' and @(FastCompileFile)=='' ">
+    <!-- finding files that are not exists -->
+    <CreateItem Include="@(Compile)" Condition="!Exists('%(FullPath)') and '%(Extension)' != '.h'">
+      <Output TaskParameter="Include" ItemName="FilesNotExist" />
+    </CreateItem>
+
+    <!-- finding files that are exists -->
+    <CreateItem Include="@(Compile)" Condition="Exists('%(FullPath)') and '%(Extension)' != '.h'">
+      <Output TaskParameter="Include" ItemName="FilesExist" />
+    </CreateItem>
+
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true'" Text="split FastCompilefile Not Exist : @(FilesNotExist)"/>
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true'" Text="split FastCompilefile Exist : @(FilesExist)"/>
+  </Target>
+
+
+  <Target Name="FindFastCompileFilesExistence" Condition="'$(OutputType)'!='' and @(FastCompileFile)!=''">
+    <!-- finding files that are not exists -->
+    <CreateItem Include="@(FastCompileFile)" Condition="!Exists('%(FullPath)') and '%(Extension)' != '.h'">
+      <Output TaskParameter="Include" ItemName="FilesNotExist" />
+    </CreateItem>
+
+    <!-- finding files that are exists -->
+    <CreateItem Include="@(FastCompileFile)" Condition="Exists('%(FullPath)') and '%(Extension)' != '.h'">
+      <Output TaskParameter="Include" ItemName="FilesExist" />
+    </CreateItem>
+
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' " Text="split file Not Exist : @(FilesNotExist)"/>
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' " Text="split file Exist : @(FilesExist)"/>
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' " Text="FastCompile file Exist : @(FastCompileFile)"/>
+  </Target>
+
+
+  <Target Name="MakeDirectories" Condition="'$(BIN_DIR)'!='\bin'">
+    <MakeDir Directories="$(DST_DIR)" Condition="!Exists('$(DST_DIR)')" />
+    <MakeDir Directories="$(OBJ_DIR)" Condition="!Exists('$(OBJ_DIR)')" />
+    <MakeDir Directories="$(LIB_DIR)" Condition="!Exists('$(LIB_DIR)')" />
+    <MakeDir Directories="$(BIN_DIR)" Condition="!Exists('$(BIN_DIR)')" />
+  </Target>
+
+  <Target Name="DoPreBuild">
+    <!-- Build any projects that this one depends on -->
+    <MSBuild
+        Projects="@(PreBuildProjects)"
+        Targets="Build"
+        Properties="$(MainProps)"
+        />
+  </Target>
+
+  <Target Name="BuildDependencies">
+    <!-- Build any projects that this one depends on -->
+    <MSBuild
+        Projects="@(RequiredProjects);@(RequiredManagedProjects)"
+        Targets="Build"
+        Properties="$(MainProps)"
+        />
+  </Target>
+
+  <Target Name="RebuildDependencies">
+    <!-- Rebuild any projects that this one depends on -->
+    <MSBuild
+        Projects="@(RequiredProjects);@(RequiredManagedProjects)"
+        Targets="Rebuild"
+        Properties="$(MainProps)"
+        />
+  </Target>
+
+  <Target Name="SubdirectoryProjects">
+    <MSBuild
+        Projects="@(SubDirectories->'%(filename)\dotNetMF.proj')"
+        Targets="$(TARGETS)"
+        Properties="$(MainProps)"
+        />
+  </Target>
+
+
+  <Target Name="RemoveBinDirEx" Condition="'$(incrementalbuild)'!='true'" DependsOnTargets="RemoveBinDir"/>
+
+  <Target Name="BuildSystem" DependsOnTargets="RemoveBinDirEx;Build"/>
+
+
+  <Target Name="TinyCLR_Disasm" />
+
+  <Target Name="TinyCLR_ConvertResources" />
+
+  <Target Name="MakeVCProject" DependsOnTargets="SplitFiles">
+    <Error Condition="'$(PLATFORM_FAMILY)'=='arm'" text="Please specify /p:PLATFORM=W32 when building target MakeVCProj"/>
+    <MakeVCProject ProjectName="$(VCProjName)" TargetName="$(AssemblyName)" TargetType="$(OutputType)" Subsystem="$(Subsystem)" Guid="$(ProjectGuid)" PCH="$(PCHFile)" NoOpt="$(NoOptForParserTarget)" NoOptOptimization="$(NoOptForParserOptimization)" SolutionDir="$(CLRROOT)" IncludePaths="@(IncludeDirs)" CFiles="@(CFiles);@(CPPFiles)" HFiles="@(HFiles)" ResFiles="@(ResFiles)" CharSet="$(CharSet)" NameSpace="$(NameSpace)" ExtraLibs="@(ExtraLibs)" IgnoreLibs="@(IgnoreLibs)" LibDirs="@(LibDirs)" DelayLoadedDlls="@(DelayLoadedDlls)"/>
+  </Target>
+
+  <Target Name="NoOp"/>
+
+  <Target Name="SplitFiles" Condition="'@(Compile)'!=''">
+    <CreateItem Include="@(Compile)" Condition="'%(Extension)' == '.c'">
+      <Output TaskParameter="Include" ItemName="CFiles" />
+    </CreateItem>
+
+    <CreateItem Include="@(Compile)" Condition="'%(Extension)' == '.cpp'">
+      <Output TaskParameter="Include" ItemName="CPPFiles" />
+    </CreateItem>
+    <CreateItem Include="@(Compile)" Condition="'%(Extension)' == '.s'">
+      <Output TaskParameter="Include" ItemName="AssemblyFiles" />
+    </CreateItem>
+
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' and '@(CFiles)'!=''"        Text="split c file : @(CFiles)"/>
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' and '@(CPPFiles)'!=''"      Text="split cPP file : @(CPPFiles)"/>
+    <Message Condition="'$(MSBUILD_DEBUG)'=='true' and '@(AssemblyFiles)'!=''" Text="split asm file  : @(AssemblyFiles)"/>
+
+  </Target>
+
+  <Target Name="CompressImage" Inputs="@(CompressImageFlash);@(CompressImageDat);@(CompressImageCfg);@(CompressImageSymdef)" Outputs="$(BIN_DIR)\TinyCLR.nmf')" Condition="'$(MEMORY)'!='RAM'" >
+    <Message Text="Compressing @(CompressImages)"/>
+    <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageFlashSym) -compress @(CompressImageFlash) @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf')"/>
+    <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageDatSym) -compress @(CompressImageDat) @(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf')" Condition="EXISTS('@(CompressImageDat)')"/>
+    <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageCfgSym) -compress @(CompressImageCfg) @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf')"/>
+
+    <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\TinyCLR.nmf" Condition="EXISTS('@(CompressImageDat)')"/>
+    <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\TinyCLR.nmf" Condition="!EXISTS('@(CompressImageDat)')"/>
+  </Target>
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+
+
+  <Target Name="Help" >
+
+    <Message Text=" "/>
+    <Message Text="msbuild dotNetMF.proj help" Importance="high" />
+    <Message Text=" "/>
+    <Message Text="General form:" Importance="high" />
+    <Message Text="msbuild dotNetMF.proj /p:Property1=Value1;Property2=Value2 ... /t:target=TargetName"/>
+    <Message Text=" "/>
+    <Message Text="Properties used by the MF Build System:" Importance="high" />
+    <Message Text=" "/>
+    <Message Text="  Property          Allowed Values     Definition"/>
+    <Message Text="  ----------        ----------------   ---------------------------"/>
+    <Message Text="  platform          imxs|mote2|etc.    target platform to compile"/>
+    <Message Text="  memory            flash|ram          target memory device for the binaries"/>
+    <Message Text="  flavor            debug|release|rtm  target build flavor"/>
+    <Message Text="  build             Invoke the build target, which builds the platform specified." />
+    <Message Text="                    This is the default target if no target is specified on the"/>
+    <Message Text="                    command line."/>
+    <Message Text="  clean             Invoke the clean files target, which deletes all the dependent"/>
+    <Message Text="                    files for specified platform/memory/flavor."/>
+    <Message Text="  cleanHal          Delete the solution dependent binaries, i.e. the drivers."/>
+    <Message Text="  cleanClr          Delete the solution independent binaries, i.e the CLR."/>
+    <Message Text="  cleanbuild        Invoke clean and then build target."/>
+    <Message Text="  help              Display this helpful usage text."/>
+    <Message Text=" "/>
+ </Target>
+
+</Project>

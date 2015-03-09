@@ -1,0 +1,24 @@
+<Project DefaultTargets="BuildSystem" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>.</Directory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PreBuildProjects Include="$(SPOCLIENT)\Framework\Tools\CreateCLRDefines.proj" />
+    <SubDirectories Include="Support"     Condition="'$(AUTOMATED_BUILD)'!=''"/>
+    <SubDirectories Include="CLR"         Condition="'$(AUTOMATED_BUILD)'!=''"/>
+    <SubDirectories Include="Application" Condition="'$(AUTOMATED_BUILD)'!=''"/>
+
+    <RequiredProjects Include="$(SPOCLIENT)\Solutions\$(PLATFORM)\dotnetmf.proj" Condition="'$(platformindependent)'!='true' AND Exists('$(SPOCLIENT)\Solutions\$(PLATFORM)\dotnetmf.proj')"/>
+  </ItemGroup>
+
+  <!-- If user didn't specify a single platform or set of platforms, build all platforms that make sense for memory target -->
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+
+
+

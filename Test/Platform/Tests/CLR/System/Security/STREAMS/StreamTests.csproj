@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Platform.Tests.Security.Streams</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Microsoft.SPOT.Platform.Tests</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F4D8C9BC-AEB7-4EDC-808C-6B30420D2400}</ProjectGuid>
+    <NoWarn>,1668</NoWarn>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <None Include="AESAPI.cs" />
+    <None Include="AESBlocks.cs" />
+    <None Include="AESInterop.cs" />
+    <None Include="AESKnownDec2.cs" />
+    <None Include="AESKnownEnc2.cs" />
+    <None Include="AESTrans2.cs" />
+    <None Include="Desktop\AESAPI.cs" />
+    <None Include="Desktop\AESBlocks.cs" />
+    <None Include="Desktop\AESInterop.cs" />
+    <None Include="Desktop\AESKnownDec1.cs" />
+    <None Include="Desktop\AESKnownDec2.cs" />
+    <None Include="Desktop\AESKnownEnc1.cs" />
+    <None Include="Desktop\AESKnownEnc2.cs" />
+    <None Include="Desktop\AESPadding.cs" />
+    <None Include="Desktop\AESTrans.cs" />
+    <None Include="Desktop\AESTrans2.cs" />
+    <None Include="Desktop\EncDecFileScn.cs" />
+    <None Include="Desktop\EncDecFileScn1.cs" />
+    <None Include="Desktop\EncDecFileScn2.cs" />
+    <None Include="Desktop\EncDec_AES.cs" />
+    <None Include="Desktop\EncDec_Rijnd.cs" />
+    <None Include="Desktop\RC2Salt1.cs" />
+    <None Include="Desktop\RC2Salt2.cs" />
+    <None Include="Desktop\RC2Salt3.cs" />
+    <None Include="Desktop\RijndaelCFB.cs" />
+    <None Include="Desktop\RijndaelCFBbig.cs" />
+    <None Include="Desktop\RijndaelEncDecCFB.cs" />
+    <None Include="Desktop\RijndKnownDec1.cs" />
+    <None Include="Desktop\RijndKnownDec2.cs" />
+    <None Include="Desktop\RijndKnownEnc1.cs" />
+    <None Include="Desktop\RijndKnownEnc2.cs" />
+    <None Include="Desktop\RijndTrans.cs" />
+    <None Include="Desktop\SimpleEncDecMul_DES.cs" />
+    <None Include="Desktop\SimpleEncDec_AES.cs" />
+    <None Include="Desktop\SimpleEncDec_DES.cs" />
+    <None Include="Desktop\SimpleEncDec_Rijndael.cs" />
+    <None Include="EncDec_AES.cs" />
+    <None Include="SimpleEncDec_AES.cs" />
+    <Compile Include="Master.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.IO">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Security.Pkcs11">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Security.PKCS11.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security">
+      <HintPath>$(BUILD_TREE_DLL)\System.security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFUtility">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFUtility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

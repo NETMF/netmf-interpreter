@@ -1,0 +1,29 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>SerialPort</FeatureName>
+  </PropertyGroup>
+
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'   ==''" Project="$(SPOCLIENT)\Framework\Features\hardware.featureproj" />
+  <Import Condition="'$(SERIAL_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" />
+
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Hardware_SerialPort" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Hardware.SerialPort.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Hardware\Native_UART\Core_Native_Hardware_UART.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InteropFeature Include="Microsoft_SPOT_Hardware_UsartError" />
+    <InteropFeature Include="Microsoft_SPOT_Hardware_UsartEvent" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Hardware_Serial_CLR.libcatproj" />
+  <PropertyGroup>
+    <Description>Serial port component</Description>
+    <Guid>{d7b445ac-6335-4449-a758-504ad93e05b0}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <SERIALPORT_FEATUREPROJ>True</SERIALPORT_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

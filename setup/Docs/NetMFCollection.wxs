@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_NetMFCollection">
+    <?include defines.wxs?>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="CommonFilesFolder" Name="Common">
+        <Directory Id="MSShared" Name="Microsoft Shared">
+          <Directory Id="DevHelp" Name="DevHelp">
+            <Directory Id="NetMFHelp" Name="NetMF" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <DirectoryRef Id="NetMFHelp">
+      <Component Id="Component_NetMFCollection" Guid="d3d7fa8f-3814-4736-80e9-9f8ec97d1458" DiskId="1" >
+        <File Id="NetMFCol_ALinks" Name="_ALinks.hxk" Source="$(env.SPOCLIENT)\setup\Docs\Collection\_ALinks.hxk" />
+        <File Id="NetMFCol_BLinks" Name="_BLinks.hxk" Source="$(env.SPOCLIENT)\setup\Docs\Collection\_BLinks.hxk" />
+        <File Id="NetMFCol_CLinks" Name="_CLinks.hxk" Source="$(env.SPOCLIENT)\setup\Docs\Collection\_CLinks.hxk" />
+        <File Id="NetMFCol_FLinks" Name="_FLinks.hxk" Source="$(env.SPOCLIENT)\setup\Docs\Collection\_FLinks.hxk" />
+        <File Id="NetMFCol_KLinks" Name="_KLinks.hxk" Source="$(env.SPOCLIENT)\setup\Docs\Collection\_KLinks.hxk" />
+        <File Id="NetMFCol_SLinks" Name="_SLinks.hxk" Source="$(env.SPOCLIENT)\setup\Docs\Collection\_SLinks.hxk" />
+
+        <File Id="NetMFCollection.HxC"  Name="NetMFCollection.HxC" Source="$(env.SPOCLIENT)\setup\Docs\Collection\NetMFCollection.HxC" />
+        <File Id="NetMFCollection.HxT"  Name="NetMFCollection.HxT" Source="$(env.SPOCLIENT)\setup\Docs\Collection\NetMFCollection.HxT" />
+
+        <RemoveFile Id="RemoveNetMFCol_ALinks" Name="_ALinks.hxk" On="uninstall" />
+        <RemoveFile Id="RemoveNetMFCol_BLinks" Name="_BLinks.hxk" On="uninstall" />
+        <RemoveFile Id="RemoveNetMFCol_CLinks" Name="_CLinks.hxk" On="uninstall" />
+        <RemoveFile Id="RemoveNetMFCol_FLinks" Name="_FLinks.hxk" On="uninstall" />
+        <RemoveFile Id="RemoveNetMFCol_KLinks" Name="_KLinks.hxk" On="uninstall" />
+        <RemoveFile Id="RemoveNetMFCol_SLinks" Name="_SLinks.hxk" On="uninstall" />
+
+        <RemoveFile Id="RemoveNetMFCollection.HxC" Name="NetMFCollection.HxC" On="uninstall" />
+        <RemoveFile Id="RemoveNetMFCollection.HxT" Name="NetMFCollection.HxT" On="uninstall" />
+        <RemoveFolder Id="RemoveNetMFCollectionFolder" On="uninstall" />
+      </Component>
+    </DirectoryRef>
+
+    <CustomTable Id="HelpNamespace">
+      <Row>
+        <Data Column="NamespaceKey">MSNetMF</Data>
+        <Data Column="NamespaceName">MS.NETMF.v30.1033</Data>
+        <Data Column="File_Collection">NetMFCollection.HxC</Data>
+        <Data Column="Description">Microsoft .NET Micro Framework Collection</Data>
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpFilter">
+      <Row>
+        <Data Column="FilterKey">DotNetMFFilter</Data>
+        <Data Column="Description">.NET Micro Framework</Data>
+        <Data Column="QueryString">"DocSet"="DotNetMicroFramework"</Data>
+      </Row>
+    </CustomTable>
+    <CustomTable Id="HelpFilterToNamespace">
+      <Row>
+        <Data Column="HelpFilter_">DotNetMFFilter</Data>
+        <Data Column="HelpNamespace_">MSNetMF</Data>
+      </Row>
+	  </CustomTable>
+    <CustomTable Id="HelpPlugin">
+      <Row>
+        <Data Column="HelpNamespace_">MSNetMF</Data>
+        <Data Column="HelpNamespace_Parent">$(var.VS10HelpNamespace)</Data>
+        <Data Column="File_HxT">NetMFCollection.HxT</Data>
+        <Data Column="File_HxA" />
+        <Data Column="File_ParentHxT" />
+      </Row>
+    </CustomTable>
+
+    <!--TODO - Find a better way of integrating this so it can be used
+    both for the SDK and the PK?
+    <DirectoryRef Id="VS_90_HELP_FILTERS_1033">
+      <Component Id="Component_PSDKFilter.VS90" Guid="3b298bf7-fd2c-4d02-ae9f-3062d77d5237">
+        <?include vs_skus/VisualStudio9.wxs?>
+        <File Id="File_DNMFFilter10.VS90" Name="DNMFFilter10.xml"
+          Source="$(var.MSBuildProjectDirectory)\DNMFFilter10.xml" DiskId="1"/>
+        <RegistryKey Root="HKLM" Key="$(var.VSInstalledHelpFilesKey)\VisibleFilters">
+          <RegistryValue Name="DNMFFilter10" Type="integer" Value="1"/>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VCS_90_HELP_FILTERS_1033">
+      <Component Id="Component_PSDKFilter.VCS90" Guid="22d463d2-54fd-4905-b85e-038dd6250154">
+        <?include vs_skus/VCSharpExpress9.wxs?>
+        <File Id="File_DNMFFilter10.VCS90" Name="DNMFFilter10.xml"
+          Source="$(var.MSBuildProjectDirectory)\DNMFFilter10.xml" DiskId="1"/>
+        <RegistryKey Root="HKLM" Key="$(var.VSInstalledHelpFilesKey)\VisibleFilters">
+          <RegistryValue Name="DNMFFilter10" Type="integer" Value="1"/>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+    -->
+  </Fragment>
+</Wix>

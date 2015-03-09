@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Directory>DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\rc4</Directory>
+    <AssemblyName>rc4test</AssemblyName>
+    <OutputType>Executable</OutputType>
+    <ProjectGuid>b6b7da7a-f2e1-4b6d-92cf-095ff4e64c95</ProjectGuid>
+    <Subsystem>CONSOLE</Subsystem>
+    <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows2\Windows2.settings</MFSettingsFile>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <Compile Include="rc4test.cpp" />
+    <!--HFiles Include="KeyGen.h" /-->
+    <IncludePaths Include="Support\include" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="CLR\Tools\include" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\include\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Clr\Tools\Tools.Settings" />
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\rc4\dotnetmf.proj" />
+    <DriverLibs Include="rc4_openssl.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\asn1\asn1.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\bio\bio.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\bn\bn.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\buffer\buffer.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\cryptlib.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\ebcdic.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\err\err.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\evp\evp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\lhash\lhash.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\objects\objects.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\objects\obj_mac.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\ossl_typ.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\o_str.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\sha\sha.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\stack\safestack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\stack\stack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\symhacks.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\asn1.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\bio.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\bn.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\buffer.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\ebcdic.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\err.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\evp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\lhash.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\objects.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\obj_mac.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\ossl_typ.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\safestack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\sha.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\stack.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\symhacks.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\ms\uplink.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\tinyclr\ssl_types.h" />
+    <HFiles Include="rc4.h" />
+    <HFiles Include="rc4_locl.h" />
+  </ItemGroup>
+</Project>

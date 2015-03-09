@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Directory>CLR\Tools\Parser</Directory>
+    <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows2\Windows2.settings</MFSettingsFile>
+    <TinyCLR_Platform>Server</TinyCLR_Platform>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <AssemblyName>Parser</AssemblyName>
+    <OutputType Condition="'$(PLATFORM_FAMILY)'=='x86'">Library</OutputType>
+    <VCProjName>Parser</VCProjName>
+    <ProjectGuid>82024823-CBF2-4566-8E70-984123F72C47</ProjectGuid>
+    <Subsystem>CONSOLE</Subsystem>
+    <LibDirs>Crypto\lib\x86</LibDirs>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(PLATFORM_FAMILY)'=='x86'">
+    <Compile Include="AssemblyParser.cpp" />
+    <Compile Include="AssemblyParserDump.cpp" />
+    <Compile Include="ByteCodeParser.cpp" />
+    <Compile Include="ByteCodeParser_Load.cpp" />
+    <Compile Include="ByteCodeParser_Save.cpp" />
+    <Compile Include="Linker.cpp" />
+    <Compile Include="stdafx.cpp" />
+    <Compile Include="Support.cpp" />
+    <IncludePaths Include="Support\include" />
+    <IncludePaths Include="CRT\include" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\Cores\arm\" />
+    <IncludePaths Include="DeviceCode" />
+    <IncludePaths Include="DeviceCode\Targets\OS\Windows" />
+    <IncludePaths Include="CLR\include" />
+    <IncludePaths Include="CLR\Tools\include" />
+    <IncludePaths Include="Crypto\inc" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\assemblyparser.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\cor.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corerror.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corhdr.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corhlpr.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\corsym.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\tools\include\watchassemblybuilder.h" />
+    <HFiles Include="$(SPOCLIENT)\crypto\inc\crypto.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="stdafx.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

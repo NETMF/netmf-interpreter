@@ -1,0 +1,16 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>FileSystem</FeatureName>
+  </PropertyGroup>
+  <Import Condition="'$(STREAM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Stream.featureproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\FileSystem_PAL.libcatproj" />
+  <PropertyGroup>
+    <Description>File system</Description>
+    <Guid>{f2f40b18-709b-4db0-91e7-ae3e16e41534}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <FILESYSTEM_FEATUREPROJ>True</FILESYSTEM_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

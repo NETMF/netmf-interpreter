@@ -1,0 +1,35 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Crypto</FeatureName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Security.PKCS11.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\PKCS11\SecurityPkcs11.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\System.Security.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\System.Security.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <InteropFeature Include="Microsoft_SPOT_Security_PKCS11" />
+    <InteropFeature Include="Microsoft_SPOT_Cryptoki_SlotEvent" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\CryptoConfig_PAL.libcatproj"/>
+  <Import Project="$(SPOCLIENT)\Framework\Features\PKCS11_Crypto_PAL.libcatproj"/>
+  <Import Project="$(SPOCLIENT)\Framework\Features\PKCS11_Storage_PAL.libcatproj"/>
+
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SecurityPkcs11\dotNetMF.proj" />
+    <PlatformIndependentLibs Include="SecurityPkcs11.$(LIB_EXT)" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Description>Cryptographic functionality</Description>
+    <Guid>{f504ee8b-1831-44dd-a645-801905928d5a}</Guid>
+    <Groups>
+    </Groups>
+    <Documentation>
+    </Documentation>
+    <CRYPTO_FEATUREPROJ>True</CRYPTO_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

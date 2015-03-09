@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{E9F90713-1AC8-4C59-BA77-27AA7D7C87C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.NetMicroFramework.Tools.MFDeployTool.Engine</RootNamespace>
+    <AssemblyName>MFDeployEngine</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ComponentGuid>{cb2f6d20-1f0d-4623-a98f-3e9dee61192b}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SPOT.Debugger">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MFAppDeploy.cs" />
+    <Compile Include="MFConfigHelper.cs" />
+    <Compile Include="MFCRC.cs" />
+    <Compile Include="MFCryptoWrapper.cs" />
+    <Compile Include="MFDeploy.cs" />
+    <Compile Include="MFDevice.cs" />
+    <Compile Include="MFExceptions.cs" />
+    <Compile Include="MFKeyConfig.cs" />
+    <Compile Include="MFNetworkConfig.cs" />
+    <Compile Include="MFPlugin.cs" />
+    <Compile Include="MFPlugInExceptions.cs" />
+    <Compile Include="MFPortDefinition.cs" />
+    <Compile Include="MFSslKeyConfig.cs" />
+    <Compile Include="MFUsbConfig.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup Condition="EXISTS('..\..\..\..\crypto\lib\x86\dll\Crypto.dll')">
+    <Content Include="..\..\..\..\crypto\lib\x86\dll\Crypto.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SPOCLIENT)\Framework\Debugger\Debugger.csproj">
+      <Name>Microsoft.SPOT.Debugger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+</Project>

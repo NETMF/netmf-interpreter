@@ -1,0 +1,49 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>cpu_prestackinit_stubs</AssemblyName>
+    <ProjectGuid>{19b183cc-474f-47ce-a544-390acc3e2b62}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>Pre stack initialization stub driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>cpu_prestackinit_stubs.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_PreStackInit\dotNetMF.proj</ProjectPath>
+    <ManifestFile>cpu_prestackinit_stubs.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Processor\stubs</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PreStackInit_HAL" Guid="{5A9E3217-7D6D-40de-A685-28BA44D31E9A}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+          <Author>Microsoft</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <Directory>DeviceCode\Drivers\Stubs\Processor\stubs_PreStackInit</Directory>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType  >Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(AS_SUBDIR)\PreStackInit_stub.s" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

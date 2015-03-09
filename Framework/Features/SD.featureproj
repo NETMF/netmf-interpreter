@@ -1,0 +1,17 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FeatureName>SD</FeatureName>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\Framework\Features\BlockStorage_PAL.libcatproj"/>
+  <Import Project="$(SPOCLIENT)\Framework\Features\SD_HAL.libcatproj"/>
+
+  <PropertyGroup>
+    <Description>SD card feature</Description>
+    <Guid>{C9D30638-8B83-42B7-90A6-C96899B185F1}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <SD_FEATUREPROJ>True</SD_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fragment_MFAssemblyInfoItemTemplate">
+    <?include defines.wxs?>
+    <DirectoryRef Id="WDEXPRESS11_ITEM_TEMPLATE_CSHARP_ASSEMBLYINFO">
+      <Component Id="Component_CSharp_AssemblyInfoItemTemplate.WDE110" Guid ="52b500af-af85-4ca3-bad5-7275fc0f43c4">
+        <File Id="File_CSharp_AssemblyInfoItemTemplate.WDE110" 
+            Name="AssemblyInfo.zip" 
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\AssemblyInfo.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="VS11_ITEM_TEMPLATE_CSHARP_ASSEMBLYINFO">
+      <Component Id="Component_CSharp_AssemblyInfoItemTemplate.VS110" Guid ="bbdb3042-e9c0-4674-b839-543d76713251">
+        <File Id="File_CSharp_AssemblyInfoItemTemplate.VS110" 
+            Name="AssemblyInfo.zip" 
+            Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\AssemblyInfo.zip"
+            DiskId="1"
+      />
+      </Component>
+    </DirectoryRef>
+      <DirectoryRef Id="WDEXPRESS12_ITEM_TEMPLATE_CSHARP_ASSEMBLYINFO">
+          <Component Id="Component_CSharp_AssemblyInfoItemTemplate.WDE120" Guid ="AA99AAF8-BD22-42CD-BCB2-471317903B58">
+              <File Id="File_CSharp_AssemblyInfoItemTemplate.WDE120"
+                  Name="AssemblyInfo.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\AssemblyInfo.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+      <DirectoryRef Id="VS12_ITEM_TEMPLATE_CSHARP_ASSEMBLYINFO">
+          <Component Id="Component_CSharp_AssemblyInfoItemTemplate.VS120" Guid ="0115DD23-8CAE-4EA2-9A97-490A0CE1B1C5">
+              <File Id="File_CSharp_AssemblyInfoItemTemplate.VS120"
+                  Name="AssemblyInfo.zip"
+                  Source="$(var.BUILD_TREE_SERVER_TEMPLATES_ITEMS_CSHARP_DEVICE)\AssemblyInfo.zip"
+                  DiskId="1"
+      />
+          </Component>
+      </DirectoryRef>
+
+  </Fragment>
+</Wix>

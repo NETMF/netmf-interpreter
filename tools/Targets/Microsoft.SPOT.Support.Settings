@@ -1,0 +1,166 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+  <PropertyGroup>
+
+<!--
+  Optional settings/overrides: (true/false)
+
+    no_fcc_limit		- Disables slow frequency scan
+    trace			- Enables Microsoft.SPOT.Trace.Print calls
+    datastuffer			- Enables DataStuffer (Hold Channel + Press Enter)
+    datastuffer_heavy		- Enables DataStuffer (Hold Channel + Press Enter).
+    test_profile		- Backlight button dumps perf counters.
+    trace_delayeddelivery	- Enables tracing of unknown types
+    trace_download		- Enables tracing of Download Manager
+    trace_ldpc_memoryusage	- Enables tracing of LDPC memory usage
+    test_automation		- Backlight button dumps views
+    logging_fragments		- Enables logging of fragment reassembly
+    logging_frames		- Enables logging of frame statistics
+    logging_messages		- Enables logging of received messages
+    logging_packets		- Enables logging of packet statistics
+    logging_tableofcontents	- Enables logging of table of contents
+    logging_channelswitch	- Enables logging of channel switching
+    logging_batteryhistory	- Enables logging of battery levels
+    logging_stocks		- Enables logging of stocks messages
+    db_trace_compact		- Enables tracing of compactmessagehandler
+    db_trace_datalink		- Enables tracing of datalink
+    db_trace_frequencyscan	- Enables tracing of frequency scan
+    db_trace_messagedelivery	- Enables tracing of message delivery
+    db_trace_pending		- Enables tracing of messagereassembler/messagetracker
+    db_trace_roaming		- Enables tracing of roaming status
+    db_trace_sparse		- Enables tracing of sparsemessagehandler
+    db_trace_statemachine	- Enables tracing of datalink state machine
+    db_trace_toc		- Enables tracing of tableofcontentshandler
+    db_trace_toc_query		- Enables tracing of toc slots per service
+    db_trace_toc_request	- Enables tracing of toc requests per service
+    trace_objectfeed		- Enables tracing of objectfeed
+    timetest			- Only get frame headers
+    timetest_fixedfrequency	- Don't scan (you need to edit datalink.cs to set the frequency)
+    stressmode			- Continuously stuff data (best used with timewarp)
+    verbose
+    disasm
+    doc
+    sdk
+    clean
+
+  -->
+
+    <rtm Condition="'$(rtm)'==''">false</rtm>
+    <nofcclimit Condition="'$(nofcclimit)'==''">true</nofcclimit>
+    <trace Condition="'$(trace)'==''">true</trace>
+    <datastuffer Condition="'$(datastuffer)'==''">true</datastuffer>
+    <datastuffer_heavy Condition="'$(datastuffer_heavy)'==''">false</datastuffer_heavy>
+    <test_profile Condition="'$(test_profile)'==''">false</test_profile>
+    <trace_delayeddelivery Condition="'$(trace_delayeddelivery)'==''">true</trace_delayeddelivery>
+    <trace_download Condition="'$(trace_download)'==''">true</trace_download>
+    <trace_ldpc_memoryusage Condition="'$(trace_ldpc_memoryusage)'==''">false</trace_ldpc_memoryusage>
+    <test_automation Condition="'$()'==''">false</test_automation>
+    <logging_fragments Condition="'$(logging_fragments)'==''">true</logging_fragments>
+    <logging_frames Condition="'$(logging_frames)'==''">true</logging_frames>
+    <logging_messages Condition="'$(logging_messages)'==''">true</logging_messages>
+    <logging_packets Condition="'$(logging_packets)'==''">true</logging_packets>
+    <logging_tableofcontents Condition="'$(logging_tableofcontents)'==''">true</logging_tableofcontents>
+    <logging_channelswitch Condition="'$(logging_channelswitch)'==''">true</logging_channelswitch>
+    <logging_batteryhistory Condition="'$(logging_batteryhistory)'==''">true</logging_batteryhistory>
+    <logging_stocks Condition="'$(logging_stocks)'==''">false</logging_stocks>
+    <db_trace_compact Condition="'$(db_trace_compact)'==''">false</db_trace_compact>
+    <db_trace_datalink Condition="'$(db_trace_datalink)'==''">true</db_trace_datalink>
+    <db_trace_frequencyscan Condition="'$(db_trace_frequencyscan)'==''">false</db_trace_frequencyscan>
+    <db_trace_messagedelivery Condition="'$(db_trace_messagedelivery)'==''">true</db_trace_messagedelivery>
+    <db_trace_pending Condition="'$(db_trace_pending)'==''">false</db_trace_pending>
+    <db_trace_roaming Condition="'$(db_trace_roaming)'==''">false</db_trace_roaming>
+    <db_trace_sparse Condition="'$(db_trace_sparse)'==''">false</db_trace_sparse>
+    <db_trace_statemachine Condition="'$(db_trace_statemachine)'==''">false</db_trace_statemachine>
+    <db_trace_toc Condition="'$(db_trace_toc)'==''">false</db_trace_toc>
+    <db_trace_toc_query Condition="'$(db_trace_toc_query)'==''">false</db_trace_toc_query>
+    <db_trace_toc_request Condition="'$(db_trace_toc_request)'==''">false</db_trace_toc_request>
+
+    <trace_objectfeed Condition="'$(trace_objectfeed)'==''">false</trace_objectfeed>
+    <timetest Condition="'$(timetest)'==''">false</timetest>
+    <timetest_fixedfrequency Condition="'$(timetest_fixedfrequency)'==''">false</timetest_fixedfrequency>
+    <stressmode Condition="'$(stressmode)'==''">false</stressmode>
+    <pop_demo Condition="'$(pop_demo)'==''">false</pop_demo>
+
+    <verbose Condition="'$(verbose)'=='' and '$(TINYCLR_QUIET_MSBUILD)'!=''">false</verbose>
+    <verbose Condition="'$(quiet)'=='true'">false</verbose>
+    <verbose Condition="'$(verbose)'==''">true</verbose>
+    <disasm Condition="'$(disasm)'==''">false</disasm>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- I'm not quite sure how to set the verbosity -->
+
+    <MSBuildFlags Condition="'$(verbose)'=='true'">$(MSBuildFlags) /verbosity:n</MSBuildFlags>
+    <MSBuildFlags Condition="'$(verbose)'!='true'">$(MSBuildFlags) /verbosity:m</MSBuildFlags>
+
+    <SupportTargets Condition="'$(clean)'=='true'">$(SupportTargets);TinyCLR_Clean</SupportTargets>
+    <SupportTargets>$(SupportTargets);TinyCLR_Build</SupportTargets>
+
+    <BUILD_FLAVOR_RTM Condition="'$(rtm)'=='true'">1</BUILD_FLAVOR_RTM>
+
+    <FLAVOR_TMP Condition="'$(FLAVOR)'=='Debug' OR '$(FLAVOR)'=='Instrumented'>Debug</FLAVOR_TMP>
+
+    <FLAVOR_DAT Condition="'$(FLAVOR_TMP)'=='Debug'" >Debug</FLAVOR_DAT>
+    <FLAVOR_DAT Condition="'$(FLAVOR_TMP)'!='Debug'" >Release</FLAVOR_WIN>
+    <FLAVOR_WIN Condition="'$(FLAVOR_TMP)'=='Debug'" >Debug</FLAVOR_WIN>
+    <FLAVOR_WIN Condition="'$(FLAVOR_TMP)'!='Debug'" >Release</FLAVOR_WIN>
+
+    <SupportTargets Condition=" '$(disasm)'=='true' and '$(TinyCLR_Platform)'=='Client' ">$(SupportTargets);TinyCLR_Disasm</SupportTargets>
+  </PropertyGroup>
+
+  <!-- We make CSHARP_MACROS an item so we can tweak it using metadata transforms -->
+
+  <PropertyGroup Condition="'$(rtm)'!='true'">
+    <CSHARP_MACROS Condition="'$(nofcclimit)'=='true'"			>$(CSHARP_MACROS);TINYCLR_NO_FCC_LIMIT</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(trace)'=='true'"			>$(CSHARP_MACROS);TINYCLR_TRACE</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(datastuffer)'=='true'"			>$(CSHARP_MACROS);TINYCLR_DATASTUFFER</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(datastuffer_heavy)'=='true'"		>$(CSHARP_MACROS);TINYCLR_DATASTUFFER_HEAVY</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(test_profile)'=='true'"		>$(CSHARP_MACROS);TINYCLR_TEST_PROFILE</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(trace_delayeddelivery)'=='true'"	>$(CSHARP_MACROS);TINYCLR_TRACE_DELAYEDDELIVERY</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(trace_download)'=='true'"		>$(CSHARP_MACROS);TINYCLR_TRACE_DOWNLOAD</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(trace_ldpc_memoryusage)'=='true'"	>$(CSHARP_MACROS);TINYCLR_TRACE_LDPC_MEMORYUSAGE</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(test_automation)'=='true'"		>$(CSHARP_MACROS);TEST_AUTOMATION</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_fragments)'=='true'"		>$(CSHARP_MACROS);TINYCLR_LOGGING_FRAGMENTS</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_frames)'=='true'"		>$(CSHARP_MACROS);TINYCLR_LOGGING_FRAMES</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_messages)'=='true'"		>$(CSHARP_MACROS);TINYCLR_LOGGING_MESSAGES</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_packets)'=='true'"		>$(CSHARP_MACROS);TINYCLR_LOGGING_PACKETS</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_tableofcontents)'=='true'"	>$(CSHARP_MACROS);TINYCLR_LOGGING_TABLEOFCONTENTS</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_channelswitch)'=='true'"	>$(CSHARP_MACROS);TINYCLR_LOGGING_CHANNELSWITCH</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_batteryhistory)'=='true'"	>$(CSHARP_MACROS);TINYCLR_LOGGING_BATTERYHISTORY</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(logging_stocks)'=='true'"		>$(CSHARP_MACROS);TINYCLR_LOGGING_STOCKS</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(trace_objectfeed)'=='true'"		>$(CSHARP_MACROS);TINYCLR_TRACE_OBJECTFEED</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(timetest)'=='true'"			>$(CSHARP_MACROS);TINYCLR_TIMETEST</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(timetest_fixedfrequency)'=='true'"	>$(CSHARP_MACROS);TINYCLR_TIMETEST_FIXEDFREQUENCY</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(stressmode)'=='true'"			>$(CSHARP_MACROS);TINYCLR_STRESSMODE</CSHARP_MACROS>
+    <CSHARP_MACROS Condition="'$(pop_demo)'=='true'"			>$(CSHARP_MACROS);POP_DEMO</CSHARP_MACROS>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(rtm)'=='true'">
+    <CSHARP_MACROS>TINYCLR_RTM</CSHARP_MACROS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <StringTableInputs Include="Microsoft.SPOT.Application.Channels.strings"><InProject>false</InProject></StringTableInputs>
+    <StringTableInputs Include="Microsoft.SPOT.Application.Data.strings"><InProject>false</InProject></StringTableInputs>
+    <StringTableInputs Include="Microsoft.SPOT.Application.TimeChannel.strings"><InProject>false</InProject></StringTableInputs>
+    <StringTableInputs Include="Microsoft.SPOT.Data.strings"><InProject>false</InProject></StringTableInputs>
+    <StringTableInputs Include="Microsoft.SPOT.Native.strings"><InProject>false</InProject></StringTableInputs>
+    <StringTableInputs Include="Microsoft.SPOT.Shell.strings"><InProject>false</InProject></StringTableInputs>
+    <StringTableInputs Include="mscorlib.strings"><InProject>false</InProject></StringTableInputs>
+  </ItemGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <!--=============================================================================================-->
+
+  <Target Name="BuildSupport" DependsOnTargets="ShowConfig;$(SupportTargets)"/>
+
+  <Target Name="ShowConfig">
+    <Message Text="Building targets $(SupportTargets) for configuration $(Configuration)"/>
+  </Target>
+
+  <Target Name="buildstring" Inputs="@(StringTableInputs->'$(BUILD_TREE_CLIENT)\pe\%(Identity).dll')" Outputs="$(BUILD_TREE_CLIENT)\stubs\StringTable.cpp">
+    <Exec Command="$(PRG_MMP) @(StringTableInputs->' -loadstrings $(BUILD_TREE_CLIENT)\pe\%(Identity)') -generateStringsTable $(BUILD_TREE_CLIENT)\stubs\StringTable.cpp"/>
+  </Target>
+
+</Project>

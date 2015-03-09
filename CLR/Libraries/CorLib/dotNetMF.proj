@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>CorLib</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>BFA1A6B0-BA5F-4FF8-85AB-0AFFFB9B4543</ProjectGuid>
+    <Description>Subset of mscorlib</Description>
+    <Level>CLR</Level>
+    <LibraryFile>CorLib.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Libraries\CorLib\dotNetMF.proj</ProjectPath>
+    <ManifestFile>CorLib.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Core</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>true</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Libraries\CorLib</Directory>
+    <OutputType>Library</OutputType>
+    <HasAuxTargets>true</HasAuxTargets>
+    <VCProjName>Lib_CorLib</VCProjName>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\Graphics_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <FastCompileCPPFile Include="CorLib_fastcompile.cpp" />
+    <Compile Include="corlib_native.cpp" />
+    <Compile Include="corlib_native_System_AppDomain.cpp" />
+    <Compile Include="corlib_native_System_Array.cpp" />
+    <Compile Include="corlib_native_System_Attribute.cpp" />
+    <Compile Include="corlib_native_System_BitConverter.cpp" />
+    <Compile Include="corlib_native_System_Collections_ArrayList.cpp" />
+    <Compile Include="corlib_native_System_Collections_Queue.cpp" />
+    <Compile Include="corlib_native_System_Collections_Stack.cpp" />
+    <Compile Include="corlib_native_System_DateTime.cpp" />
+    <Compile Include="corlib_native_System_Delegate.cpp" />
+    <Compile Include="corlib_native_System_Diagnostics_Debugger.cpp" />
+    <Compile Include="corlib_native_System_Double.cpp" />
+    <Compile Include="corlib_native_System_Enum.cpp" />
+    <Compile Include="corlib_native_System_Exception.cpp" />
+    <Compile Include="corlib_native_System_GC.cpp" />
+    <Compile Include="corlib_native_System_Globalization_CultureInfo.cpp" />
+    <Compile Include="corlib_native_System_Globalization_DateTimeFormat.cpp" />
+    <Compile Include="corlib_native_System_Globalization_DaylightTime.cpp" />
+    <Compile Include="corlib_native_System_MarshalByRefObject.cpp" />
+    <Compile Include="corlib_native_System_Math.cpp" />
+    <Compile Include="corlib_native_System_MulticastDelegate.cpp" />
+    <Compile Include="corlib_native_System_Number.cpp" />
+    <Compile Include="corlib_native_System_Object.cpp" />
+    <Compile Include="corlib_native_System_Random.cpp" />
+    <Compile Include="corlib_native_System_Reflection_Assembly.cpp" />
+    <Compile Include="corlib_native_System_Reflection_Binder.cpp" />
+    <Compile Include="corlib_native_System_Reflection_ConstructorInfo.cpp" />
+    <Compile Include="corlib_native_System_Reflection_FieldInfo.cpp" />
+    <Compile Include="corlib_native_System_Reflection_MemberInfo.cpp" />
+    <Compile Include="corlib_native_System_Reflection_MethodBase.cpp" />
+    <Compile Include="corlib_native_System_Reflection_PropertyInfo.cpp" />
+    <Compile Include="corlib_native_System_Reflection_RuntimeFieldInfo.cpp" />
+    <Compile Include="corlib_native_System_Reflection_RuntimeMethodInfo.cpp" />
+    <Compile Include="corlib_native_System_Resources_ResourceManager.cpp" />
+    <Compile Include="corlib_native_System_RuntimeType.cpp" />
+    <Compile Include="corlib_native_System_Runtime_CompilerServices_RuntimeHelpers.cpp" />
+    <Compile Include="corlib_native_System_Runtime_Remoting_RemotingServices.cpp" />
+    <Compile Include="corlib_native_System_String.cpp" />
+    <Compile Include="corlib_native_System_SystemException.cpp" />
+    <Compile Include="corlib_native_System_Text_UTF8Decoder.cpp" />
+    <Compile Include="corlib_native_System_Text_UTF8Encoding.cpp" />
+    <Compile Include="corlib_native_System_Threading_AutoResetEvent.cpp" />
+    <Compile Include="corlib_native_System_Threading_Interlocked.cpp" />
+    <Compile Include="corlib_native_System_Threading_ManualResetEvent.cpp" />
+    <Compile Include="corlib_native_System_Threading_Monitor.cpp" />
+    <Compile Include="corlib_native_System_Threading_Thread.cpp" />
+    <Compile Include="corlib_native_System_Threading_ThreadAbortException.cpp" />
+    <Compile Include="corlib_native_System_Threading_Timer.cpp" />
+    <Compile Include="corlib_native_System_Threading_WaitHandle.cpp" />
+    <Compile Include="corlib_native_System_TimeSpan.cpp" />
+    <Compile Include="corlib_native_System_TimeZone.cpp" />
+    <Compile Include="corlib_native_System_Type.cpp" />
+    <Compile Include="corlib_native_System_ValueType.cpp" />
+    <Compile Include="corlib_native_System_WeakReference.cpp" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="corlib.h" />
+    <HFiles Include="corlib_native.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

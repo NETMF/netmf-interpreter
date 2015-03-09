@@ -1,0 +1,30 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='36b1d3d5-b689-4b6d-811d-c8e042b29514' Keywords="Installer" Description=".NET Micro Framework System Tests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+ <?include ProductVersion.wxs?>
+ <?include Directories.wxs?>
+      <ComponentRef Id='Component_DirectoryTests' />
+      <ComponentRef Id='Component_FileTests' />
+      <ComponentRef Id='Component_FileStreamTests' />
+      <ComponentRef Id='Component_MemoryStreamTests' />
+      <ComponentRef Id='Component_IOTests' />
+      <ComponentRef Id='Component_PathTests' />
+      <ComponentRef Id='Component_netTests' />
+      <ComponentRef Id='Component_socketTests' />
+      <ComponentRef Id='Component_SPOTXmlTests' />
+      <ComponentRef Id='Component_xmlTests' />
+      <ComponentRef Id='Component_HttpTests' />
+      <ComponentRef Id='Component_SecurityTests' />
+      <ComponentRef Id='Component_AsymmetricTests' />
+      <ComponentRef Id='Component_HashTests' />
+      <ComponentRef Id='Component_KeyTests' />
+      <ComponentRef Id='Component_MiscSecurity' />
+      <ComponentRef Id='Component_PaddingTests' />
+      <ComponentRef Id='Component_RSATests' />
+      <ComponentRef Id='Component_CertTests' />
+      <ComponentRef Id='Component_CertsTest2' />
+      <ComponentRef Id='Component_StringBuilder' />
+      <ComponentRef Id='Component_RegEx' />
+      <ComponentRef Id='Component_MathTests' />
+  </Module>
+</Wix>

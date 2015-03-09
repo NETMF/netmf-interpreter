@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Core</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>1AEE6923-2376-48A5-A30B-0FC8A3DE703E</ProjectGuid>
+    <Description>CLR core library</Description>
+    <Level>CLR</Level>
+    <LibraryFile>Core.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Core\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Core.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Core</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>true</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Core</Directory>
+    <OutputType>Library</OutputType>
+    <HasAuxTargets>true</HasAuxTargets>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\Debugger_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <SubDirectories Include="HeapPersistence" />
+    <SubDirectories Include="I2C" />
+    <SubDirectories Include="IOPort" />
+    <SubDirectories Include="RPC" />
+    <SubDirectories Include="Serialization" />
+    <SubDirectories Include="Stream" />
+    <SubDirectories Include="Hardware" />
+    <SubDirectories Include="Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <FastCompileCPPFile Include="core_fastcompile.cpp" />
+    <Compile Include="AVLTree.cpp" />
+    <Compile Include="Cache.cpp" />
+    <Compile Include="Checks.cpp" />
+    <Compile Include="CLR_RT_DblLinkedList.cpp" />
+    <Compile Include="CLR_RT_HeapBlock.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Array.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_ArrayList.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_BinaryBlob.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Delegate.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Delegate_List.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Finalizer.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Lock.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_LockRequest.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Node.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Queue.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Stack.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_String.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_Timer.cpp" />
+    <Compile Include="CLR_RT_HeapBlock_WaitForObject.cpp" />
+    <Compile Include="CLR_RT_HeapCluster.cpp" />
+    <Compile Include="CLR_RT_Interop.cpp" />
+    <Compile Include="CLR_RT_Memory.cpp" />
+    <Compile Include="CLR_RT_MemoryRange.cpp" />
+    <Compile Include="CLR_RT_ObjectToEvent_Destination.cpp" />
+    <Compile Include="CLR_RT_ObjectToEvent_Source.cpp" />
+    <Compile Include="CLR_RT_StackFrame.cpp" />
+    <Compile Include="CLR_RT_SystemAssembliesTable.cpp" />
+    <Compile Include="CLR_RT_UnicodeHelper.cpp" />
+    <Compile Include="core.cpp" />
+    <Compile Include="Execution.cpp" />
+    <Compile Include="GarbageCollector.cpp" />
+    <Compile Include="GarbageCollector_Compaction.cpp" />
+    <Compile Include="GarbageCollector_ComputeReachabilityGraph.cpp" />
+    <Compile Include="GarbageCollector_Info.cpp" />
+    <Compile Include="Interpreter.cpp" />
+    <Compile Include="Random.cpp" />
+    <Compile Include="Streams.cpp" />
+    <Compile Include="StringTable.cpp" />
+    <Compile Include="Thread.cpp" />
+    <Compile Include="TypeSystem.cpp" />
+    <Compile Include="TypeSystemLookup.cpp" />
+    <Compile Include="Various.cpp" />
+    <IncludePaths Include="CLR\libraries\corlib" />
+    <IncludePaths Include="CLR\libraries\SPOT" />
+    <IncludePaths Include="CLR\libraries\SPOT_Graphics" />
+    <IncludePaths Include="CLR\libraries\SPOT_Hardware" />
+    <IncludePaths Include="CLR\libraries\SPOT_IO" />
+    <IncludePaths Include="CLR\libraries\SPOT_Net" />
+    <IncludePaths Include="CLR\libraries\SPOT_Net_Security" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(PLATFORM_FAMILY)'=='WCE'">
+    <Compile Include="FileStore_Win32.cpp" />
+    <Compile Include="ParseOptions_Win32.cpp" />
+    <Compile Include="XmlUtil.cpp" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(PLATFORM_FAMILY)'=='x86'">
+    <Compile Include="Cache_Win32.cpp" />
+    <Compile Include="FileStore_Win32.cpp" />
+    <Compile Include="ParseOptions_Win32.cpp" />
+    <Compile Include="XmlUtil.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\clr_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_checks.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_diagnostics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_handler.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_jitter.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_jitter_arm.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_jitter_arm_emulation.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_parseoptions.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_stream.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_xml.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\corlib\corlib_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot\spot_native.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\libraries\spot_hardware\spot_hardware_native.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+    <HFiles Include="core.h" />
+    <HFiles Include="corhdr_private.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -1,0 +1,59 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Windows Builds -->
+  <ItemGroup Condition="'$(COMPILER_TOOL)' == 'VS'">
+    <CryptoLib Include="x86">
+      <AdditionalProperties>CryptoDLL=false</AdditionalProperties>
+      <InstructionSet>x86</InstructionSet>
+    </CryptoLib>
+    <CryptoLib Include="x86">
+      <AdditionalProperties>CryptoDLL=true</AdditionalProperties>
+      <InstructionSet>x86</InstructionSet>
+    </CryptoLib>
+  </ItemGroup>
+
+  <!-- ARC Builds -->
+  <ItemGroup Condition="'$(COMPILER_TOOL)' == 'ARC'">
+    <CryptoLib Include="ARC">
+      <Condition></Condition>
+      <InstructionSet>ARC</InstructionSet>
+    </CryptoLib>
+  </ItemGroup>
+
+  <!-- ARM Builds -->
+  <ItemGroup Condition="'$(COMPILER_TOOL)' == 'RVDS'">
+    <CryptoLib Include="ARM">
+      <Condition></Condition>
+      <InstructionSet>ARM</InstructionSet>
+    </CryptoLib>
+  </ItemGroup>
+
+  <!-- ARM Thumb Builds -->
+  <ItemGroup Condition="'$(COMPILER_TOOL_VERSION)' == 'RVDS3.1'">
+    <CryptoLib Include="ARM">
+      <InstructionSet>Thumb</InstructionSet>
+    </CryptoLib>
+    <CryptoLib Include="ARM">
+      <InstructionSet>Thumb2</InstructionSet>
+      <!--ARMv7 with Thumb-2 only and without hardware divide-->
+      <AdditionalProperties>DEVICE_TYPE=7</AdditionalProperties>
+    </CryptoLib>
+  </ItemGroup>
+
+  <Target Name="Build">
+    <Error Text="Crypto tree is not in $(SPOCLIENT)\crypto\private_crypto"
+      Condition="!Exists('$(SPOCLIENT)\crypto\private_crypto\dotNetMF.proj')" />
+
+    <MSBuild Projects="private_crypto\dotNetMF.proj" Targets="Build"
+      Properties="PLATFORM_FAMILY=%(CryptoLib.Identity);INSTRUCTION_SET=%(CryptoLib.InstructionSet);%(CryptoLib.AdditionalProperties);"/>
+  </Target>
+
+  <Target Name="Clean">
+    <Error Text="Crypto tree is not in $(SPOCLIENT)\crypto\private_crypto"
+      Condition="!Exists('$(SPOCLIENT)\crypto\private_crypto\dotNetMF.proj')" />
+
+    <MSBuild Projects="private_crypto\dotNetMF.proj" Targets="Clean"
+      Properties="PLATFORM_FAMILY=%(CryptoLib.Identity);INSTRUCTION_SET=%(CryptoLib.InstructionSet);%(CryptoLib.AdditionalProperties);"/>
+  </Target>
+
+</Project>

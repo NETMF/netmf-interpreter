@@ -1,0 +1,15 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>InterruptHandler</FeatureName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\InterruptHandler_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\InterruptController_HAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Support for interrupt handling</Description>
+    <Guid>{6ce5acb1-aef6-4d61-abad-aa3f2c5f3d3f}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <INTERRUPTHANDLER_FEATUREPROJ>True</INTERRUPTHANDLER_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

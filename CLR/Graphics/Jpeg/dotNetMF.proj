@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Graphics_Jpeg</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>F6CF2FB1-BC74-4CED-9F4C-54BBA92FC34C</ProjectGuid>
+    <Description>JPEG library for graphics subsystem</Description>
+    <Level>CLR</Level>
+    <LibraryFile>Graphics_Jpeg.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\CLR\Graphics\Jpeg\dotNetMF.proj</ProjectPath>
+    <ManifestFile>Graphics_Jpeg.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Graphics</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Graphics_JPG_CLR" Guid="{F7A2D3C6-F6A5-4102-9D94-0E0079442872}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>CLR\Graphics\Jpeg</Directory>
+    <OutputType>Library</OutputType>
+    <PCHFile>none</PCHFile>
+    <NameSpace>Graphics_Jpeg</NameSpace>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <NoOptForParserOptimization>false</NoOptForParserOptimization>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <ExtraFlags Condition="'$(INSTRUCTION_SET)'=='x86' or '$(INSTRUCTION_SET)'=='armv4'">/Gd</ExtraFlags>
+    <ExtraFlags Condition="'$(INSTRUCTION_SET)'=='BLACKFIN'"> -D_NO_CPP_INLINES </ExtraFlags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Graphics_Jpeg.c" />
+    <Compile Include="jbytearraydatasrc.c" />
+    <Compile Include="jcapimin.c" />
+    <Compile Include="jcapistd.c" />
+    <Compile Include="jccoefct.c" />
+    <Compile Include="jccolor.c" />
+    <Compile Include="jcdctmgr.c" />
+    <Compile Include="jchuff.c" />
+    <Compile Include="jcinit.c" />
+    <Compile Include="jcmainct.c" />
+    <Compile Include="jcmarker.c" />
+    <Compile Include="jcmaster.c" />
+    <Compile Include="jcomapi.c" />
+    <Compile Include="jcparam.c" />
+    <Compile Include="jcphuff.c" />
+    <Compile Include="jcprepct.c" />
+    <Compile Include="jcsample.c" />
+    <Compile Include="jctrans.c" />
+    <Compile Include="jdapimin.c" />
+    <Compile Include="jdapistd.c" />
+    <Compile Include="jdcoefct.c" />
+    <Compile Include="jdcolor.c" />
+    <Compile Include="jddctmgr.c" />
+    <Compile Include="jdhuff.c" />
+    <Compile Include="jdinput.c" />
+    <Compile Include="jdmainct.c" />
+    <Compile Include="jdmarker.c" />
+    <Compile Include="jdmaster.c" />
+    <Compile Include="jdmerge.c" />
+    <Compile Include="jdphuff.c" />
+    <Compile Include="jdpostct.c" />
+    <Compile Include="jdsample.c" />
+    <Compile Include="jdtrans.c" />
+    <Compile Include="jerror.c" />
+    <Compile Include="jfdctflt.c" />
+    <Compile Include="jfdctfst.c" />
+    <Compile Include="jfdctint.c" />
+    <Compile Include="jidctflt.c" />
+    <Compile Include="jidctfst.c" />
+    <Compile Include="jidctint.c" />
+    <Compile Include="jidctred.c" />
+    <Compile Include="jmemmgr.c" />
+    <Compile Include="jmemtinyclr.cpp" />
+    <Compile Include="Jpeg.cpp" />
+    <Compile Include="jquant1.c" />
+    <Compile Include="jquant2.c" />
+    <Compile Include="jutils.c" />
+    <Compile Include="mcbcr.c" />
+    <Compile Include="mfint.c" />
+    <Compile Include="miint.c" />
+    <Compile Include="pfint.c" />
+    <Compile Include="piint.c" />
+    <Compile Include="transupp.c" />
+    <ExtraProjects Include="dotNetMF_Stub.proj" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\clr\graphics\graphics.h" />
+    <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_debugging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_graphics.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_hardware.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_messaging.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_profiling.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__heapblock.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_runtime__serialization.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_types.h" />
+    <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+    <HFiles Include="jchuff.h" />
+    <HFiles Include="jconfig.h" />
+    <HFiles Include="jdct.h" />
+    <HFiles Include="jdhuff.h" />
+    <HFiles Include="jerror.h" />
+    <HFiles Include="jinclude.h" />
+    <HFiles Include="jmemsys.h" />
+    <HFiles Include="jmorecfg.h" />
+    <HFiles Include="jpegint.h" />
+    <HFiles Include="jpeglib.h" />
+    <HFiles Include="jversion.h" />
+    <HFiles Include="mcbcr.h" />
+    <HFiles Include="transupp.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

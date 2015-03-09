@@ -1,0 +1,469 @@
+<Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
+
+   <PropertyGroup>
+    <BuildToolName>SHC</BuildToolName>
+    <BuildToolGuid>{1942C531-3AAC-4abb-8B4F-C3111012F9D9}</BuildToolGuid>
+    <Documentation></Documentation>
+    <ProcessorTypes></ProcessorTypes>
+    <ISAs></ISAs>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <ADS_WRAPPER Condition="'$(NO_ADS_WRAPPER)'==''">$(SPO_SDK)\tools\make\ADSwrapper.cmd</ADS_WRAPPER>
+    <TARGETCURRENT>$(SPO_BUILD)\$(INSTRUCTION_SET)\$(TARGETLOCATION)\$(OLD_FLAVOR)\$(TARGETPLATFORM)\bin</TARGETCURRENT>
+
+    <!-- build Tools -->
+    <CPP > "$(SHC_TOOLS_BIN)\shcpp.exe"</CPP>	
+    <CC  > "$(SHC_TOOLS_BIN)\shc.exe"</CC>
+    <AS  > "$(SHC_TOOLS_BIN)\asmsh.exe"</AS>
+    <LINK>"$(SHC_TOOLS_BIN)\optlnk.exe"</LINK>
+    <AR  >"$(SHC_TOOLS_BIN)\optlnk.exe"</AR>
+    <STDLIB>"$(SHC_TOOLS_BIN)\lbgsh.exe"</STDLIB>
+    <FROMELF>"$(SHC_TOOLS_BIN)\HELFCNV.exe"</FROMELF>
+
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- the compiler are not able to take string macro with Space, bracket, full-stop.... -->
+    <OEMSystemInfoString>Microsoft_Copyright_Microsoft_Corporation_All_Rights_Reserved</OEMSystemInfoString>
+    <POS_DEPENDENT   >-Pic=0</POS_DEPENDENT>
+    <POS_INDEPENDENT >-Pic=1</POS_INDEPENDENT>
+
+
+
+    <!-- ONLY USE CPU specification for platform specific code (HAL), this probably not apply to SHC platfoms. -->
+<!--    <CPU_TYPE_FLAGS Condition="'$(PlatformIndependentBuild)'=='true'"></CPU_TYPE_FLAGS> -->
+    <CPU_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' != ''">-cpu=$(DEVICE_TYPE) </CPU_TYPE_FLAGS>
+
+    <ENDIAN_FLAGS Condition="'$(ENDIANNESS)'=='le'"> -Endian=little </ENDIAN_FLAGS>
+    <ENDIAN_FLAGS Condition="'$(ENDIANNESS)'=='be'"> -Endian=big </ENDIAN_FLAGS>
+
+
+<!--- *** temporary set CPU to sh1 to make the following options valid -->
+
+    <AS_CC_CPP_COMMON_FLAGS>$(AS_CC_CPP_COMMON_FLAGS) -LATIN1 -nologo $(CPU_TYPE_FLAGS) $(ENDIAN_FLAGS)</AS_CC_CPP_COMMON_FLAGS>
+
+    <AS_CC_CPP_COMMON_FLAGS >$(AS_CC_CPP_COMMON_FLAGS) </AS_CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)</CC_CPP_COMMON_FLAGS>
+
+ 
+    <!-- *** DEFAULTS in SH *******************-->
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -gbr=auto  -global_volatile=1 -CONST_Var_propagate=1  -opt_range=all -del_vacant_loop=0  -infinite_loop=0  </CC_CPP_COMMON_FLAGS>
+
+    <!-- *** Compatible with RVDS *******************-->
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -auto_enum -strict_ansi </CC_CPP_COMMON_FLAGS>
+
+    <!--** CPU related *************-->
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)  -bit_order=left </CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(CC_CPP_TARGETTYPE_FLAGS) -Nodebug  -OP=1 -Speed -noinline</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"       >$(CC_CPP_TARGETTYPE_FLAGS) -debug    -OP=Debug_only</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'">$(CC_CPP_TARGETTYPE_FLAGS) -debug    -OP=Debug_only</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"     >$(CC_CPP_TARGETTYPE_FLAGS) -Nodebug  -OP=0 -noinline</CC_CPP_TARGETTYPE_FLAGS>
+
+    <CC_CPP_TARGETTYPE_FLAGS>$(CC_CPP_TARGETTYPE_FLAGS)  </CC_CPP_TARGETTYPE_FLAGS>
+
+    <AS_FLAGS>$(AS_FLAGS) </AS_FLAGS>
+
+    <CC_FLAGS  >$(CC_FLAGS)  </CC_FLAGS>
+    <CPP_FLAGS >$(CPP_FLAGS)  -exception </CPP_FLAGS>
+   
+    <LINK_FLAGS>$(LINK_FLAGS)</LINK_FLAGS>
+
+    <STDLIB_FLAGS> $(STDLIB_FLAGS) -head=runtime,new,math,mathf,stdio,stdlib,stdarg,string,cppstring </STDLIB_FLAGS>
+    <STDLIB_FLAGS> $(STDLIB_FLAGS) -gbr=auto -bit_order=left -exception -rtti=on $(CPU_TYPE_FLAGS) $(ENDIAN_FLAGS) </STDLIB_FLAGS>
+
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <AS_DEF_FLAGS Condition="'$(FLAVOR)'=='RTM'"            Include="BUILD_RTM=%22 1 %22"/>
+    <!-- Adjust the compiler/assembler flags according to the settings -->
+    <AS_DEF_FLAGS  Condition="'$(FLAVOR)'=='Instrumented'"  Include="PROFILE_BUILD=%22 1 %22"/>
+    <AS_DEF_FLAGS  Condition="'$(sampleprof)'=='true'"      Include="FIQ_SAMPLING_PROFILER=%22 1 %22"/>
+    <AS_DEF_FLAGS  Condition="'$(latencyprof)'=='true'"     Include="FIQ_LATENCY_PROFILER=%22 1 %22"/>
+
+    <AS_DEF_FLAGS                                           Include="TargetLocation=%22 $(TARGETLOCATION)%22"/>
+    <AS_DEF_FLAGS                                           Include="TargetType=%22$(OLD_FLAVOR)%22"/>
+    <AS_DEF_FLAGS                                           Include="TargetModel=%22$(TARGETPLATFORM) %22"/>
+    <AS_DEF_FLAGS                                           Include="TargetPlatformName=%22PLATFORM_$(TARGETPLATFORM)%22"/>
+    <AS_DEF_FLAGS                                           Include="CompilerVersion=%22$(COMPILER_TOOL_VERSION)%22"/>
+    <AS_DEF_FLAGS                                           Include="TargetPlatformProcessor=%22 PLATFORM_$(TARGETPROCESSOR)%22"/>
+    <AS_DEF_FLAGS  Condition="'$(reducesize)'=='true'"      Include="HAL_REDUCESIZE= %22 1%22"/>
+  </ItemGroup>
+
+  <!-- Assembler flags -->
+  <PropertyGroup>
+
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(AS_TARGETTYPE_FLAGS) -Nodebug       </AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"       >$(AS_TARGETTYPE_FLAGS) -debug   -show </AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'">$(AS_TARGETTYPE_FLAGS) -debug   -show </AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"     >$(AS_TARGETTYPE_FLAGS) -Nodebug -show </AS_TARGETTYPE_FLAGS>
+
+    <AS_FLAGS>$(AS_FLAGS) $(AS_CC_CPP_COMMON_FLAGS) $(AS_TARGETTYPE_FLAGS) $(AS_INCS) -define=@(AS_DEF_FLAGS,',')  </AS_FLAGS>
+
+    <!-- These would have to be conditional for non-Ollie support -->
+  </PropertyGroup>
+
+
+  <!-- Use ItemGroup, as SHC don't take multiple -define in command line -->
+
+  <ItemGroup>
+    <CC_CPP_MARCO_FLAGS                                              Include="COMPILE_SH" />
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='RTM'"               Include="BUILD_RTM" />
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Debug'"             Include="DEBUG"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Debug'"             Include="_DEBUG"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented'"      Include="NDEBUG"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(reducesize)'=='true'"          Include="HAL_REDUCESIZE"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(timewarp)'=='true'"            Include="HAL_TIMEWARP"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(profile)'=='true'"             Include="ARM_PROFILE_ACTIVE"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(logcpu)'=='true'"              Include="TINYCLR_ENABLE_LOGGING_CPU"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(logcpu)'=='true' or '$(measurecpu)'=='1'" Include="CPU_UTILIZATION_MEASURE"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(measurecpu)'=='true'"          Include="CPU_UTILIZATION_MEASURE_SPEW"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(extralog)'=='true'"            Include="HAL_EXTRALOG"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(demomode)'=='true'"            Include="TINYCLR_DEMOMODE"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'!='RTM'"               Include="TINYCLR_ENABLE_SOURCELEVELDEBUGGING"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented'"      Include="TINYCLR_PROFILE_NEW"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented'"      Include="TINYCLR_PROFILE_NEW_CALLS"/> 
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented'"      Include="TINYCLR_PROFILE_NEW_ALLOCATIONS"/> 
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented'"      Include="TINYCLR_PROFILE_HANDLER"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(sampleprof)'=='true'"          Include="FIQ_SAMPLING_PROFILER"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(latencyprof)'=='true'"         Include="FIQ_LATENCY_PROFILER"/>
+
+<!---*************-->
+
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented' and '$(NATIVE_PROFILE_CLR)'!=''"  Include=" NATIVE_PROFILE_CLR=$(NATIVE_PROFILE_CLR)"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented' and '$(NATIVE_PROFILE_PAL)'!=''"  Include=" NATIVE_PROFILE_PAL=$(NATIVE_PROFILE_PAL)"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(FLAVOR)'=='Instrumented' and '$(NATIVE_PROFILE_HAL)'!=''"  Include=" NATIVE_PROFILE_HAL=$(NATIVE_PROFILE_HAL)"/>
+
+    <!-- BUILD VERSIONS -->
+    <CC_CPP_MARCO_FLAGS  Include="VERSION_MAJOR=$(MajorVersion)"/>
+    <CC_CPP_MARCO_FLAGS  Include="VERSION_MINOR=$(MinorVersion)"/>
+    <CC_CPP_MARCO_FLAGS  Include="VERSION_BUILD=$(BuildNumber)"/>
+    <CC_CPP_MARCO_FLAGS  Include="VERSION_REVISION=$(RevisionNumber)"/>
+<!--    <CC_CPP_MARCO_FLAGS  Include="OEMSYSTEMINFOSTRING=%22%5C%22$(OemSystemInfoString)%5c%22%22"/> -->
+    <CC_CPP_MARCO_FLAGS  Include="OEMSTRING=$(OemSystemInfoString)"/> 
+
+    <CC_CPP_MARCO_FLAGS                                          Include="PLATFORM_$(TARGETPLATFORM)"/>
+    <CC_CPP_MARCO_FLAGS                                          Include="TARGETLOCATION_$(TARGETLOCATION)"/>
+    <CC_CPP_MARCO_FLAGS  Condition="'$(ENDIANNESS)'=='le'"       Include="LITTLE_ENDIAN"/>
+    <CC_CPP_MARCO_FLAGS  Condition="'$(ENDIANNESS)'=='be'"       Include="BIG_ENDIAN" />
+
+    <CC_CPP_MARCO_FLAGS  Condition="'$(PATCH_BUILD)'=='Active'"  Include="PATCH_BUILD"/>
+    <CC_CPP_MARCO_FLAGS  Condition="'$(OS_PLATFORM)'=='true'"    Include="PLATFORM_ARM_OS_PORT"/> 
+
+	<CC_CPP_MARCO_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'"    Include="TCPIP_LWIP_OS"/>
+	
+    <CC_CPP_MARCO_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP'"    Include="TCPIP_LWIP"/>
+    <CC_CPP_MARCO_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP'"    Include="PACK_STRUCT_USE_INCLUDES"/>
+
+    <CC_CPP_MARCO_FLAGS Include="@(TinyCLR_Defines)"/>
+
+    <CC_CPP_MARCO_FLAGS Include="@(CC_CPP_Defines)"/>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <CC_CPP_INCS Include="$(CLRROOT)\$(Directory)" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\DeviceCode\Include" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\DeviceCode\Cores" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\Support\Include" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\crypto\inc" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\CLR\Include" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\CLR\Libraries\CorLib" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\CLR\Libraries\SPOT" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\CLR\Libraries\SPOT_Hardware" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\CLR\Libraries\SPOT_Graphics" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\CLR\Libraries\SPOT_Net" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\CLR\Libraries\SPOT_Net_Security" />
+    <CC_CPP_INCS Include="$(SPO_SDK)\DeviceCode"/>
+  </ItemGroup>
+
+
+<!-- flags depends on different type of MCD type -->
+  <PropertyGroup Condition="'$(DEVICE_TYPE)'=='SH1'">
+
+    <AS_CC_CPP_COMMON_FLAGS >$(AS_CC_CPP_COMMON_FLAGS) </AS_CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)</CC_CPP_COMMON_FLAGS>
+
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(DEVICE_TYPE)'=='SH2'">
+
+    <AS_CC_CPP_COMMON_FLAGS >$(AS_CC_CPP_COMMON_FLAGS) </AS_CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)</CC_CPP_COMMON_FLAGS>
+
+    <RTIP_INSTRUCTION_SET Condition ="$(RTIP_INSTRUCTION_SET)==''">SH2</RTIP_INSTRUCTION_SET>	
+
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(DEVICE_TYPE)'=='SH2A'">
+
+    <AS_CC_CPP_COMMON_FLAGS >$(AS_CC_CPP_COMMON_FLAGS) </AS_CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)</CC_CPP_COMMON_FLAGS>
+
+    <RTIP_INSTRUCTION_SET Condition ="$(RTIP_INSTRUCTION_SET)==''">SH2</RTIP_INSTRUCTION_SET>	
+
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(DEVICE_TYPE)'=='SH2AFPU'">
+
+    <AS_CC_CPP_COMMON_FLAGS >$(AS_CC_CPP_COMMON_FLAGS) </AS_CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)</CC_CPP_COMMON_FLAGS>
+
+    <RTIP_INSTRUCTION_SET Condition ="$(RTIP_INSTRUCTION_SET)==''">SH2</RTIP_INSTRUCTION_SET>	
+
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(DEVICE_TYPE)'=='SH3'">
+
+    <AS_CC_CPP_COMMON_FLAGS >$(AS_CC_CPP_COMMON_FLAGS) </AS_CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)</CC_CPP_COMMON_FLAGS>
+
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(DEVICE_TYPE)'=='SH4'">
+
+    <AS_CC_CPP_COMMON_FLAGS >$(AS_CC_CPP_COMMON_FLAGS) </AS_CC_CPP_COMMON_FLAGS>
+
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS)</CC_CPP_COMMON_FLAGS>
+
+  </PropertyGroup>
+
+
+
+    
+  <PropertyGroup>
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) $(AS_CC_CPP_COMMON_FLAGS) $(CC_CPP_TARGETTYPE_FLAGS) -Include=@(IncludePaths->'$(CLRROOT)\%(relativedir)%(filename)',', '), @(CC_CPP_INCS,', '), @(DirectIncludePaths->'%(FullPath)',', ')  -define=@(CC_CPP_MARCO_FLAGS,', ') $(ExtraFlags)</CC_CPP_COMMON_FLAGS>
+  </PropertyGroup>
+
+  <!-- CC flags -->
+  <PropertyGroup>
+    <CC_FLAGS>$(CC_FLAGS) $(CC_CPP_COMMON_FLAGS) $(ExtraCCFlags)</CC_FLAGS>
+  </PropertyGroup>
+
+
+  <!-- CPP flags -->
+  <PropertyGroup>
+    <CPP_FLAGS>$(CPP_FLAGS) $(CC_CPP_COMMON_FLAGS) $(ExtraCPPFlags)</CPP_FLAGS>
+  </PropertyGroup>
+
+<!-- other flags -->
+  <PropertyGroup Condition="'$(TARGETLOCATION)'=='flash'">
+    <LINK_ADDR Condition="'$(ER_INIT_EXEC)'!=''">-rom=D=R,P=X</LINK_ADDR>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ARFLAGS>$(ARFLAGS) </ARFLAGS>
+
+    <LINK_TARGETTYPE_FLAGS>$(LINK_TARGETTYPE_FLAGS) </LINK_TARGETTYPE_FLAGS>
+
+    <!-- Don't leave extra space for this options, which will have error -->
+    <LINK_ADDR Condition="'$(ER_INIT_EXEC)'!=''">-rom=D=R</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_INIT_EXEC)'!='' and '$(FRAM_ADDR)'!=''">-rom=D=R,PFRAM=RPFRAM</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_INIT_EXEC)'!='' and '$(PROG_RAM_ADDR)'!=''">-rom=D=R,P=X</LINK_ADDR>
+    <LINK_ADDR>$(LINK_ADDR) -start=DVECTTBL,DINTTBL,PIntPRG/$(ER_VTR_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_PReset_ADDR)'!=''">$(LINK_ADDR),PResetPRG,C$VTBL,CIntPRG/$(ER_PReset_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_PROG_ADDR)'!='' and '$(FRAM_ADDR)'==''"  >$(LINK_ADDR),P,C,C$BSEC,C$DSEC,C$INIT/$(ER_PROG_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_PROG_ADDR)'!='' and '$(FRAM_ADDR)'!=''">$(LINK_ADDR),P,C,C$BSEC,C$DSEC,C$INIT,PFRAM/$(ER_PROG_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_INIT_LOAD)'!=''"  >$(LINK_ADDR),D/$(ER_INIT_LOAD)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_INIT_EXEC)'!=''"  >$(LINK_ADDR),R/$(ER_INIT_EXEC)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_RW_ADDR)'!=''"    >$(LINK_ADDR),B/$(ER_RW_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(PROG_RAM_ADDR)'!=''"     >$(LINK_ADDR),X/$(PROG_RAM_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(STACK_ADDR)'!=''"    >$(LINK_ADDR),S/$(STACK_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_CONFIG_ADDR)'!=''">$(LINK_ADDR),CSectionForConfig/$(ER_CONFIG_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(ER_DATA_ADDR)'!=''"  >$(LINK_ADDR),ER_DATA_ADDR/$(ER_DATA_ADDR)</LINK_ADDR>
+
+    <LINK_ADDR Condition="'$(HEAP_ADDR)'!=''"     >$(LINK_ADDR),BHEAP_BEGIN/$(HEAP_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(HEAP_END)'!=''"      >$(LINK_ADDR),BHEAP_END/$(HEAP_END)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(VRAM_ADDR)'!=''"     >$(LINK_ADDR),BVRAM_BUFF/$(VRAM_ADDR)</LINK_ADDR>
+    <LINK_ADDR Condition="'$(FRAM_ADDR)'!=''"     >$(LINK_ADDR),RPFRAM/$(FRAM_ADDR)</LINK_ADDR>
+
+
+    <LINK_FLAGS>$(LINK_FLAGS) $(LINK_TARGETTYPE_FLAGS) $(LINK_ADDR)</LINK_FLAGS>
+
+
+    <LINK_FLAGS Condition="'$(OutputType)'=='Executable' and '$(LINK_ENTRY_SET)'!='true'">$(LINK_FLAGS) </LINK_FLAGS>
+
+    <LINK_FLAGS Condition="'$(OutputType)'=='Executable' ">$(LINK_FLAGS) $(ExtraLinkFlags) -noprelink -nodebug </LINK_FLAGS>
+
+    <LINK_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >$(LINK_FLAGS) -nodebug</LINK_FLAGS>
+    <LINK_FLAGS Condition="'$(FLAVOR)'=='release'"      >$(LINK_FLAGS) -nodebug</LINK_FLAGS>
+    <LINK_FLAGS Condition="'$(FLAVOR)'=='debug'"        >$(LINK_FLAGS) -debug</LINK_FLAGS>
+    <LINK_FLAGS Condition="'$(FLAVOR)'=='instrumented'" >$(LINK_FLAGS) -debug</LINK_FLAGS>
+            
+    <EXEName>$(BIN_DIR)\$(AssemblyName)</EXEName>
+
+    <TargetRule Condition="'$(OutputType)'=='Library'"   >ShBuildLib</TargetRule>
+    <TargetRule Condition="'$(OutputType)'=='STDLibrary'">SHBuildSTDLib</TargetRule>
+    <TargetRule Condition="'$(OutputType)'=='Executable'">BuildEXE</TargetRule>
+
+  </PropertyGroup>
+
+
+<!-- item group  -->
+  <ItemGroup Condition="'$(OutputType)'=='STDLibrary'">
+    <TargetLib  Condition="'@(TargetLib)'==''" Include="$(LIB_DIR)\$(AssemblyName).$(LIB_EXT)"/>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <MakeAXFInputs Include="$(MakeAXFInputs)"/>
+    <FastCompileFile Condition="'$(ENABLE_FASTCOMPILE)'=='true'" Include="@(FastCompileCFile)"/>
+    <FastCompileFile Condition="'$(ENABLE_FASTCOMPILE)'=='true'" Include="@(FastCompileCPPFile)"/>
+  </ItemGroup>
+
+
+  <ItemGroup Condition="'$(OutputType)'=='Executable'">
+    <EXEIncludePaths Include="$(ARMINC)"/>
+  </ItemGroup>
+
+
+<!-- target group for compile,assembler,linker, librarian, loader -->
+
+  <Target Name="ShCompileCPP" Condition="'@(CPPFiles)'!='' or '@(FastCompileCPPFile)'!=''" Inputs="@(FastCompileCPPFile);@(CPPFiles);@(HFiles)" Outputs="@(ObjFiles)">
+   <Exec Condition="Exists('%(FastCompileCPPFile.FullPath)') and '@(FastCompileCPPFile)'!='' and '$(ENABLE_FASTCOMPILE)'=='true'" Command="$(CPP) $(CPP_FLAGS) $(POS_DEPENDENT) -OB=$(OBJ_DIR)\%(FastCompileCPPFile.Filename).$(OBJ_EXT)  %(FastCompileCPPFile.FullPath) "/>
+   <Exec Condition="Exists('%(CPPFiles.FullPath)') and '@(CPPFiles)'!=''and ('$(ENABLE_FASTCOMPILE)'!='true' or '@(FastCompileCPPFile)'=='')" Command="$(CPP) $(CPP_FLAGS) $(POS_DEPENDENT) -Listfile=$(OBJ_DIR)\%(CPPFiles.Filename).lst -OB=$(OBJ_DIR)\%(CPPFiles.Filename).$(OBJ_EXT) %(CPPFiles.FullPath)  "/>
+  </Target>
+
+
+  <Target Name="ShCompileC" Condition="'@(CFiles)'!='' or '@(FastCompileCFile)'==''" Inputs="@(FastCompileCFile);@(CFiles);@(HFiles)" Outputs="@(CFiles->'$(OBJ_DIR)\%(filename).$(OBJ_EXT)')">
+    <Exec Condition="Exists('%(FastCompileCFile.FullPath)') and  '@(FastCompileCFile)'!='' and '$(ENABLE_FASTCOMPILE)'=='true'" Command="$(CC) $(CC_FLAGS) $(POS_DEPENDENT) -OB=$(OBJ_DIR)\%(FastCompileCFile.Filename).$(OBJ_EXT)  %(FastCompileCFile.FullPath) "/>
+    <Exec Condition="Exists('%(CFiles.FullPath)') and  '@(CFiles)'!=''and ('$(ENABLE_FASTCOMPILE)'!='true' or '@(FastCompileCFile)'=='')" Command="$(CC) $(CC_FLAGS) $(POS_DEPENDENT) -Listfile=$(OBJ_DIR)\%(CFiles.Filename).lst -OB=$(OBJ_DIR)\%(CFiles.Filename).$(OBJ_EXT) %(CFiles.FullPath) "/>
+  </Target>
+
+
+  <Target Name="ShAssemble" Condition="'@(AssemblyFiles)'!=''" Inputs="@(AssemblyFiles);@(HFiles)" Outputs="@(AssemblyFiles->'$(OBJ_DIR)\%(FileName).$(OBJ_EXT)')">
+    <!-- has to delete the obj manually, as the armas won't delete the old one -->
+    <Exec Condition="Exists('%(AssemblyFiles.FullPath)')" Command="del /q  $(OBJ_DIR)\%(AssemblyFiles.Filename).$(OBJ_EXT)" ContinueOnError="true" />
+    <Exec Condition="Exists('%(AssemblyFiles.FullPath)')" Command="$(AS) $(AS_PLATFORM_FLAGS) $(AS_FLAGS) -LIST=$(OBJ_DIR)\%(AssemblyFiles.Filename).txt -object=$(OBJ_DIR)\%(AssemblyFiles.Filename).$(OBJ_EXT) %(AssemblyFiles.FullPath)"/>
+  </Target>
+
+
+  <Target Name="DelBuildLib" Condition="'$(OutputType)'=='Library'" Inputs="@(FastCompileCPPFile);@(CPPFiles);@(FastCompileCFile);@(CFiles);@(AssemblyFiles);@(HFiles)" Outputs="@(TargetLib)">
+    <Exec Condition="'@(FilesExist)'!='' " Command="del /q  @(TargetLib->'%(FullPath)', ' ')" ContinueOnError="true" />
+    <Exec Condition="'@(FilesExist)'!='' " Command="del /q  @(TargetLib->'%(FullPath).manifest', ' ')" ContinueOnError="true" />
+  </Target>
+
+
+  <Target Name="ShBuildLib" Condition="'$(OutputType)'=='Library'" DependsOnTargets="FindCompileFilesExistence;FindFastCompileFilesExistence;DelBuildLib;ShCompileC;ShCompileCPP;ShAssemble;CreateLibManifest;$(ExtraTargets);" Inputs="@(ObjFiles);@(LIB_FIRSTENTRY_OBJ);@(OEM_TARGETS);@(OEM_TARGETS_OBJ)" Outputs="@(TargetLib);@(TargetLib->'%(FullPath).manifest')">
+    <Exec WorkingDirectory="$(OBJ_DIR)" Condition="'@(FilesExist)'!='' " Command="$(AR) -form=library $(ARFLAGS)  -list=@(TargetLib->'%(FullPath).lst') -show=SYmbol,SEction -output=@(TargetLib) @(ObjFiles->'%(FileName)%(Extension)', ' ') @(LIB_FIRSTENTRY_OBJ,' ') @(OEM_TARGETS,' ') @(OEM_TARGETS_OBJ,' ')"/>
+  </Target>
+
+
+  <Target Name="ShBuildSTDLib" Condition="'$(OutputType)'=='STDLibrary'" DependsOnTargets="FindCompileFilesExistence;FindFastCompileFilesExistence;DelBuildLib;ShCompileC;ShCompileCPP;ShAssemble;CreateLibManifest;$(ExtraTargets);" Inputs="@(ObjFiles);@(LIB_FIRSTENTRY_OBJ);@(OEM_TARGETS);@(OEM_TARGETS_OBJ)" Outputs="@(TargetLib);@(TargetLib->'%(FullPath).manifest')">
+    <Exec Condition="'@(FilesExist)'!='' " Command="$(STDLIB) $(STDLIB_FLAGS) -output=@(TargetLib) @(ObjFiles,' ') @(LIB_FIRSTENTRY_OBJ,' ') @(OEM_TARGETS,' ') @(OEM_TARGETS_OBJ,' ')"/>
+  </Target>
+
+
+
+  <Target Name="BuildEXE" Condition="'$(OutputType)'=='Executable'" DependsOnTargets="ShCompileCPP;ShCompileC;ShAssemble;$(ExtraEXETargets);" Inputs="@(EXEInputs);@(InputLibs);@(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_LIB_DIR)\%(FileName)%(Extension)');@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)')" Outputs="@(EXEOutput)">
+    <!-- Uncomment to print build inputs to the console
+       <Message Text="~~~~BuildEXE Inputs: @(EXEInputs,' ') @(InputLibs,' ') @(DriverLibs,' ')  @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_LIB_DIR)\%(FileName)%(Extension)',' ') @(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)',' ')" />
+    -->
+
+    <!-- TOO MANY INPUTS FOR LINKER/COMMAND WINDOW, SO BREAK THE LINKER STAGE UP BY ARCHIVING ALL DRIVER FILES INTO ONE LIB THEN LINKING CLR LIBS AND COMBINED DRIVER LIB -->
+    <Exec WorkingDirectory="$(PLATFORM_INDEPENDENT_LIB_DIR)" Command="$(AR) -form=library $(ARFLAGS) -output=$(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT) -Library=@(PlatformIndependentLibs->'%(FileName)%(Extension)',',')"/>
+    <!-- Group other libs -->
+    <Exec WorkingDirectory="$(LIB_DIR)" Command="$(AR) -form=library $(ARFLAGS) -output=$(LIB_DIR)\tmp2_$(AssemblyName).$(LIB_EXT) -Library=@(DriverLibs->'%(FileName)%(Extension)', ',')"/>
+
+    <Message Text="$(LINK) -form=Absolute $(LINK_FLAGS) -list=$(EXEName).lst -show=SYmbol,Reference,Xreference -map=$(EXEName).map  %22@(EXEInputs,'%22,%22')%22  -library=$(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT),$(LIB_DIR)\tmp2_$(AssemblyName).$(LIB_EXT),$(LIB_DIR)\shstd.lib@(InputLibs->',%(FullPath)', '')  -output=@(EXEOutput)" />
+
+    <Exec Condition="!Exists('$(LIB_DIR)\shstd.lib')"  Command="$(STDLIB) $(STDLIB_FLAGS) -output=$(LIB_DIR)\shstd.lib "/>
+    <Exec Command="$(LINK) -form=Absolute $(LINK_FLAGS) -list=$(EXEName).lst -show=SYmbol,Reference,Xreference -map=$(EXEName).map  %22@(EXEInputs,'%22,%22')%22  -library=$(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT),$(LIB_DIR)\tmp2_$(AssemblyName).$(LIB_EXT),$(LIB_DIR)\shstd.lib@(InputLibs->',%(FullPath)', '')  -output=@(EXEOutput)" />
+
+    <Exec Command="del /q $(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT)"/>
+    <Exec Command="del /q $(LIB_DIR)\tmp2_$(AssemblyName).$(LIB_EXT)"/>
+
+    <!-- abs to bin  record -->
+<!--    <Exec Command="$(LINK) -form=binary -nodebug -output=$(EXEName).bin  @(EXEOutput)" /> -->
+
+    <!-- abs to motorola s3 record -->
+    <Exec Command="$(LINK) -form=stype -nodebug -record=S3  -output=$(EXEName).hex  @(EXEOutput)" />
+
+  </Target>
+
+  <Target Name="FindBinFilesForSig">
+    <!-- create signature files-->
+    <CreateItem
+            Include="$(EXEName).bin\*"
+            AdditionalMetadata="OutputDir=$(EXEName).hex\" >
+           <Output
+               TaskParameter="Include"
+               ItemName="SigFilesInHexDir"/>
+    </CreateItem>
+
+    <CreateItem
+            Include="$(EXEName).bin"
+            Condition="'@(SigFilesInHexDir)'==''"
+            AdditionalMetadata="OutputDir=$(BIN_DIR)\" >
+           <Output
+               TaskParameter="Include"
+               ItemName="SigFiles"/>
+    </CreateItem>
+
+    <CreateItem
+            Include="@(SigFilesInHexDir);@(SigFiles)">
+           <Output
+               TaskParameter="Include"
+               ItemName="AllSigFiles"/>
+    </CreateItem>
+
+    <Exec Command="del /q $(EXEName).sig"       Condition="Exists('$(EXEName).sig')" ContinueOnError="true"/>
+    <Exec Command="del /q $(EXEName).hex\*.sig" Condition="'@(SigFilesInHexDir)'!=''"   ContinueOnError="true"/>
+
+    <Message Text="file selected @(SigFilesInHexDir)"/>
+    <Message Text="file selected @(SigFiles)"/>
+    <Message Text="file selected @(AllSigFiles)"/>
+
+
+  </Target>
+
+  <Target Name="CompressBin" Inputs="@(CompressBinAsm);@(CompressBinFile);@(CompressBinFile->'%(RootDir)%(Directory)%(FileName).symdefs')" Outputs="@(CompressBinOutput);@(CompressBinComp)" >
+    <Message Text="Compressing @(CompressBinFile)"/>
+    <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressBinFile->'%(RootDir)%(Directory)%(FileName).symdefs') EntryPoint -compress @(CompressBinFile) @(CompressBinComp)"/>
+    <Exec Command="$(AS) $(AS_FLAGS) -I=$(OBJ_DIR) $(POS_DEPENDENT) -list @(CompressBinOutput->'%(RootDir)%(Directory)%(FileName).txt') -xref -o @(CompressBinOutput) @(CompressBinAsm)"/>
+    <Exec Command="del /q @(CompressBinFile->'%(RootDir)%(Directory)%(FileName).hex')" ContinueOnError="true"/>
+  </Target>
+
+  <Target Name="BuildSigFiles"
+            Inputs="@(AllSigFiles)"
+            Outputs="@(AllSigFiles->%(OutputDir)%(FileName).sig)"
+            DependsOnTargets="FindBinFilesForSig"
+            Condition="EXISTS('$(SPO_SDK)\crypto\lib\x86\dll\crypto.dll')" >
+
+    <Message Text="Create Signature files for @(AllSigFiles)"/>
+    <Exec Command="$(PRG_MMP) -sign_file %(RelativeDir)%(AllSigFiles.Filename)%(Extension) $(SPO_SDK)\tools\bin\tinybooter_private_key.bin %(Outputdir)%(Filename).sig"/>
+  </Target>
+
+  <Target Name="TinyClrDat">
+    <Message Text="Target: TinyClrDat "/>
+    <Message                               Text="***************************************************************************************************"/>
+    <Message Text="Target: TinyClrDat with outputs $(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)"/>
+    <Message Condition="'$(FORCEDAT)'!=''" Text="Building Tinyclr.dat from $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat"/>
+    <Message Condition="'$(FORCEDAT)'==''" Text="Building Tinyclr.dat from the features specified in the tinyclr.proj file"/>
+    <Exec Condition="'$(FORCEDAT)'!='' AND EXISTS('$(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat')" Command="copy /y $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat $(BIN_DIR)\tinyclr.dat" />
+    <Message                               Text="========== Database file content:"/>    
+    <Exec Command="$(PRG_MMP) -dump_dat $(BIN_DIR)\tinyclr.dat" />
+    <Message                               Text="========== End of Database file content"/>    
+    <Message                               Text="***************************************************************************************************"/>
+    <Exec Command="copy /BVY $(BIN_DIR)\tinyclr.dat $(BIN_DIR)\tinyclr.dat.fromlastbuildrun" />
+    <!-- don't delete tinyclr.dat, as it is using at the final linking, the tinyclr_dat.s is not built for shc -->	
+  </Target>
+
+  <Target Name="DelTinyCLRDATFile" >
+     <Exec Command="del /Q /F $(BIN_DIR)\tinyclr.dat"/>
+  </Target>
+
+</Project>
+

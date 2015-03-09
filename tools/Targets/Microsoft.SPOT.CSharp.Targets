@@ -1,0 +1,51 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)'=='.NETMicroFramework' OR '$(TargetFrameworkIdentifier)'==''">
+    <DocFile Condition=" '$(TinyCLR_CSharp_Documentation)'=='true' ">$(OutputPath)$(AssemblyName).xml</DocFile>
+    <NoWarn>$(NoWarn),1668</NoWarn>
+    <AllowUnsafeBlocks Condition="'$(AllowUnsafeBlocks)'==''" >false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow Condition="'$(CheckForOverflowUnderflow)'==''" >false</CheckForOverflowUnderflow>
+    <CommonAssemblyInfoTemplate>$(SPOCLIENT)\tools\AssemblyInfo.cs.template</CommonAssemblyInfoTemplate>
+    <CommonAssemblyInfoItemName>Compile</CommonAssemblyInfoItemName>
+    <CommonAssemblyInfoLanguage>CSharp</CommonAssemblyInfoLanguage>
+
+    <TargetFrameworkIdentifier Condition=" '$(TargetFrameworkIdentifier)' == '' ">.NETMicroFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.4</TargetFrameworkVersion>
+    <AssemblyFoldersSuffix Condition=" '$(AssemblyFoldersSuffix)' == '' ">AssemblyFoldersEx</AssemblyFoldersSuffix>
+    <TargetingClr2Framework>true</TargetingClr2Framework>
+    
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v3.0'">$(DefineConstants),MF_FRAMEWORK_VERSION_V3_0</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.0'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_0</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.1'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_1</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.2'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_2</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.3'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_3</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.4'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_4</DefineConstants>
+ </PropertyGroup>
+
+  <PropertyGroup Condition="Exists('$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets') And '$(TargetFrameworkVersion)'!='v4.4'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets') And '$(TargetFrameworkVersion)'!='v4.4'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <Import Condition="'$(TargetFrameworkVersion)'=='v4.4'" Project="Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <Import Condition="'$(TargetFrameworkVersion)'!='v4.4'" Project="$(SPOCLIENT)\framework\IDE\Targets\$(TargetFrameworkVersion)\Device.Targets" />
+  <Import Condition="'$(TargetFrameworkVersion)'=='v4.4'" Project="Microsoft.SPOT.Build.Targets" />
+
+  <PropertyGroup>
+    <ImportToSDK>false</ImportToSDK>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,30 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.CC2420</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.Wireless.IEEE_802_15_4</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{88E93520-CC2D-4011-B8B9-0D57AD99D9C7}</ProjectGuid>
+    <DefineConstants>TRACE;DEBUG;MICROFRAMEWORK;RTEXTENSIONS</DefineConstants>	
+    <NoWarn>,1668,0067</NoWarn>
+    <ComponentGuid>{90fba41e-a6d6-41e0-986a-5994fc339377}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="PHY\CC2420\CC2420.Driver.cs" />
+    <Compile Include="PHY\CC2420\CC2420.HAL.cs" />
+    <Compile Include="PHY\CC2420\CC2420.PinConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

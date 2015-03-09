@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Platform.Tests.Security.Hashing</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Microsoft.SPOT.Platform.Tests</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{077FB2BB-EB7E-4F2B-9488-AB9DC1957285}</ProjectGuid>
+    <NoWarn>,1668</NoWarn>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <None Include="Desktop\CorrectHMAC.cs" />
+    <None Include="Desktop\DefaultHMAC.cs" />
+    <!-- <None Include="Desktop\GetHashvsStream.cs" /> -->
+    <Compile Include="Desktop\HashCompare.cs" />
+    <None Include="Desktop\HashDriver.cs" />
+    <!-- <None Include="Desktop\HashTestCase.cs" /> -->
+    <!-- <None Include="Desktop\Hash_HMACSHA1known.cs" /> -->
+    <Compile Include="Desktop\Hash_MD5known.cs" />
+    <!-- <None Include="Desktop\Hash_SHA256.cs" /> -->
+    <!-- <None Include="Desktop\Hash_SHA256known.cs" /> -->
+    <Compile Include="Desktop\Hash_SHA384.cs" />
+    <Compile Include="Desktop\Hash_SHA384known.cs" />
+    <Compile Include="Desktop\Hash_SHA512.cs" />
+    <Compile Include="Desktop\Hash_SHA512known.cs" />
+    <None Include="Desktop\LegacyHMAC.cs" />
+    <None Include="Desktop\MAC3DES1.cs" />
+    <None Include="Desktop\SHACSP_CNG_API.cs" />
+    <Compile Include="Desktop\SHAVS.cs" />
+    <None Include="Desktop\Sim_SHA1.cs" />
+    <Compile Include="GetHashvsStream.cs" />
+    <Compile Include="Hash_HMACSHA1known.cs" />
+    <Compile Include="Hash_SHA256.cs" />
+    <Compile Include="Hash_SHA256known.cs" />
+    <Compile Include="HMACTestVectors.cs" />
+    <Compile Include="Sim_SHA1.cs" />
+    <Compile Include="master.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.IO">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Security.Pkcs11">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Security.PKCS11.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>$(BUILD_TREE_DLL)\System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>$(BUILD_TREE_DLL)\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security">
+      <HintPath>$(BUILD_TREE_DLL)\System.security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFUtility">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFUtility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

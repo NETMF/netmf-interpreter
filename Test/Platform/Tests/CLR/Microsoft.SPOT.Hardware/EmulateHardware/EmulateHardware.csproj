@@ -1,0 +1,47 @@
+﻿<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>EmulateHardware</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>UsbClient</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{239484D6-F7E4-4F47-A90D-B9A8D79577CB}</ProjectGuid>
+    <NoWarn>,1668</NoWarn>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="FeatureTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Master.cs" />
+    <Compile Include="TestPorts.cs" />
+    <Compile Include="TestPower.cs" />
+    <Compile Include="TestSerialPort.cs" />
+    <Compile Include="TestWatchdog.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware.SerialPort">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.SerialPort.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware.Usb">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.Usb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFTestRunner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFTestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Platform.Test.MFUtility, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(BUILD_TEST_TREE_DLL)\Microsoft.SPOT.Platform.Test.MFUtility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

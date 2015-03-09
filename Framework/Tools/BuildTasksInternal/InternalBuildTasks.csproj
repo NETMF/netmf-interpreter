@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" />
+    <PropertyGroup>
+        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+        <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+        <SccProjectName>SAK</SccProjectName>
+        <SccLocalPath>SAK</SccLocalPath>
+        <SccAuxPath>SAK</SccAuxPath>
+        <SccProvider>SAK</SccProvider>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyName>Microsoft.SPOT.Tasks.Internal</AssemblyName>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Microsoft.SPOT.Tasks.Internal</RootNamespace>
+        <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <ProjectGuid>{04903C08-F89B-4CF0-A25F-E3D541542146}</ProjectGuid>
+        <ProductVersion>9.0.21022</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+    </PropertyGroup>
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+    <ItemGroup>
+        <Compile Include="BuildTaskUtility.cs" />
+        <Compile Include="CreateZip.cs" />
+        <Compile Include="CharacterReplace.cs" />
+        <Compile Include="CompressSample.cs" />
+        <Compile Include="CreateAssemblyFragment.cs" />
+        <Compile Include="CreateSymbolRequest.cs" />
+        <Compile Include="DirectorySearch.cs" />
+        <Compile Include="FindWixObjects.cs" />
+        <Compile Include="GenerateCLRDefines.cs" />
+        <Compile Include="GenerateFrameworkList.cs" />
+        <Compile Include="GenerateVSTemplate.cs" />
+        <Compile Include="GetGuid.cs" />
+        <Compile Include="GetOrSetXmlAttribute.cs" />
+        <Compile Include="GetProjectFiles.cs" />
+        <Compile Include="ProjectEx.cs" />
+        <Compile Include="RegexReplace.cs" />
+        <Compile Include="ResourceConverter.cs" />
+        <Compile Include="SignMSI.cs" />
+        <Compile Include="SignMSIAssemblies.cs" />
+        <Compile Include="Solution.cs" />
+        <Compile Include="SubmitSymbols.cs" />
+        <Compile Include="TargetLock.cs" />
+        <Compile Include="BBCover.cs" />
+        <Compile Include="CommandRunner.cs" />
+        <Compile Include="CreatePseudoInstallScript.cs" />
+        <Compile Include="BuildTaskResource.Designer.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>BuildTaskResource.resx</DependentUpon>
+        </Compile>
+        <Compile Include="TransmorgificationUtilities.cs" />
+        <Compile Include="TransmorgifyProject.cs" />
+        <Compile Include="TransmorgifyTemplateFiles.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="BuildTaskResource.resx">
+            <SubType>Designer</SubType>
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>BuildTaskResource.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Microsoft.Build" />
+        <Reference Include="Microsoft.Build.Engine" />
+        <Reference Include="Microsoft.Build.Framework" />
+        <Reference Include="Microsoft.Build.Tasks.v4.0" />
+        <Reference Include="Microsoft.Build.Utilities.v4.0" />
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="wix">
+            <Name>wix</Name>
+            <HintPath>$(SPOROOT)\tools\x86\WiX\tools_3_5_1315_0\wix.dll</HintPath>
+            <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SPOT.WiX">
+            <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.WiX.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SPOT.AutomatedBuild.BuildSigner">
+            <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.AutomatedBuild.BuildSigner.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <AppDesigner Include="Properties\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="depot2sdk.csproj.xslt" />
+        <Content Include="depot2sdk.vbproj.xslt" />
+        <Content Include="SolutionTemplate.txt" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="$(SPOCLIENT)\Support\FrameworkBase\dotnetmf.proj" />
+
+    <Project Include="MFDeploy\build.dirproj" />
+    <Project Include="MFProfiler\MFProfiler.csproj" />
+    <Project Include="MFSvcUtil\build.dirproj"/>
+    <Project Include="PortBooterClient\PortBooterClient.csproj" />
+    <Project Include="PortBooterHost\PortBooterHost.csproj" />
+    <Project Include="AbortHandlerClient\AbortHandlerClient.csproj" />
+    <Project Include="DumpTypeHashes\DumpTypeHashes.csproj" />
+    <Project Include="SerialDump\SerialDump.csproj" />
+    <Project Include="Emulator\Emulator.csproj" />
+    <Project Include="Emulators\build.dirproj" />
+    <Project Include="SrecUtility\SrecUtility.csproj" />
+    <Project Include="CreateSymdef\CreateSymdef.csproj" />
+<!--
+    <Project Include="NativeProfilerFilter\NativeProfilerFilter.csproj" />
+    <Project Include="NativeProfilerViewer\NativeProfilerViewer.csproj" />
+-->
+  </ItemGroup>
+</Project>

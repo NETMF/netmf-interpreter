@@ -1,0 +1,125 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <TinyCLR_Platform>Client</TinyCLR_Platform>
+  </PropertyGroup>
+  <Import Project="Microsoft.SPOT.Build.Configuration.Settings" Condition="'$(_Microsoft_SPOT_Build_Configuration_Settings__Included_)' == ''" />
+
+  <PropertyGroup>
+    <ENDIANNESS Condition="'$(ENDIANNESS)'==''">le</ENDIANNESS>
+    <BUILD_TEST_ROOT>$(BUILD_ROOT)</BUILD_TEST_ROOT>
+    <BUILD_TEST_TREE>$(BUILD_TEST_ROOT)\$(Configuration)\Test</BUILD_TEST_TREE>
+    <BUILD_TEST_TREE_PLATFORM>$(BUILD_TEST_TREE)\$(TinyCLR_Platform)</BUILD_TEST_TREE_PLATFORM>
+    <BUILD_TEST_TREE_DLL>$(BUILD_TEST_TREE_PLATFORM)\dll</BUILD_TEST_TREE_DLL>
+    <BUILD_TEST_TREE_OBJ>$(BUILD_TEST_TREE_PLATFORM)\obj</BUILD_TEST_TREE_OBJ>
+    <BUILD_TEST_TREE_PE>$(BUILD_TEST_TREE_PLATFORM)\pe\$(ENDIANNESS)</BUILD_TEST_TREE_PE>
+    <BUILD_TEST_TREE_MSM>$(BUILD_TEST_TREE_PLATFORM)\msm</BUILD_TEST_TREE_MSM>
+    <BUILD_TEST_TREE_LOC>$(BUILD_TEST_TREE_PLATFORM)\loc</BUILD_TEST_TREE_LOC>
+    <BUILD_TEST_TREE_DAT>$(BUILD_TEST_TREE_PLATFORM)\dat\$(ENDIANNESS)</BUILD_TEST_TREE_DAT>
+    <BUILD_TEST_TREE_STUBS>$(BUILD_TEST_TREE_PLATFORM)\stubs</BUILD_TEST_TREE_STUBS>
+    <BUILD_TEST_TREE_DISASM>$(BUILD_TEST_TREE_PLATFORM)\disasm</BUILD_TEST_TREE_DISASM>
+    <BUILD_TEST_TREE_TXT>$(BUILD_TEST_TREE_PLATFORM)\txt</BUILD_TEST_TREE_TXT>
+    <BUILD_TEST_TREE_XML>$(BUILD_TEST_TREE_PLATFORM)\xml</BUILD_TEST_TREE_XML>
+    <BUILD_TEST_TREE_DUMPS>$(BUILD_TEST_TREE_PLATFORM)\dumps</BUILD_TEST_TREE_DUMPS>
+    <BUILD_TEST_TREE_TEMPLATES>$(BUILD_TEST_TREE_PLATFORM)\templates</BUILD_TEST_TREE_TEMPLATES>
+
+    <BUILD_TEST_TREE_PE_LE>$(BUILD_TEST_TREE_PLATFORM)\pe\le</BUILD_TEST_TREE_PE_LE>
+    <BUILD_TEST_TREE_DAT_LE>$(BUILD_TEST_TREE_PLATFORM)\dat\le</BUILD_TEST_TREE_DAT_LE>
+
+    <BUILD_TEST_TREE_PE_BE>$(BUILD_TEST_TREE_PLATFORM)\pe\be</BUILD_TEST_TREE_PE_BE>
+    <BUILD_TEST_TREE_DAT_BE>$(BUILD_TEST_TREE_PLATFORM)\dat\be</BUILD_TEST_TREE_DAT_BE>
+
+    <OutputPath>$(BUILD_TEST_TREE)\$(TinyCLR_Platform)\dll</OutputPath>
+    <BaseOutputPath>$(BUILD_TEST_TREE_OBJ)\$(AssemblyName)\</BaseOutputPath>
+  </PropertyGroup>
+
+  <Import Project="Microsoft.SPOT.CSharp.Targets" />
+
+  <PropertyGroup>
+    <!-- MMP_PE -->
+    <MMP_PE_SKIP>false</MMP_PE_SKIP>
+    <MMP_PE_Parse>$(BUILD_TEST_TREE_DLL)\$(TargetFileName)</MMP_PE_Parse>
+    <MMP_PE_Minimize>true</MMP_PE_Minimize>
+    <MMP_PE_Compile_NoExt>$(BUILD_TEST_TREE_PE)\$(TargetName)</MMP_PE_Compile_NoExt>
+    <MMP_PE_Compile>$(MMP_PE_Compile_NoExt).pe</MMP_PE_Compile>
+    <MMP_PE_Compile_BE>$(BUILD_TEST_TREE_PE_BE)\$(TargetName).pe</MMP_PE_Compile_BE>
+    <MMP_PE_SaveStrings>$(BUILD_TEST_TREE_PE)\$(TargetName).strings</MMP_PE_SaveStrings>
+    <MMP_PE_SaveStrings_BE>$(BUILD_TEST_TREE_PE_BE)\$(TargetName).strings</MMP_PE_SaveStrings_BE>
+
+    <!-- MMP_DUMP -->
+    <MMP_DUMP_SKIP>false</MMP_DUMP_SKIP>
+    <MMP_DUMP_DumpAll>$(BUILD_TEST_TREE_DUMPS)\$(TargetName).dump</MMP_DUMP_DumpAll>
+
+    <!-- MMP_STUB -->
+    <MMP_STUB_SKIP>true</MMP_STUB_SKIP>
+    <MMP_STUB_DumpAll>$(BUILD_TEST_TREE_TXT)\$(TargetName)_exports2.txt</MMP_STUB_DumpAll>
+    <MMP_STUB_GenerateSkeletonName>$(AssemblyName)</MMP_STUB_GenerateSkeletonName>
+    <MMP_STUB_RefreshAssemblyName>$(AssemblyName)</MMP_STUB_RefreshAssemblyName>
+    <MMP_STUB_RefreshAssemblyOutput>$(MMP_PE_Compile)</MMP_STUB_RefreshAssemblyOutput>
+    <MMP_STUB_Resolve>true</MMP_STUB_Resolve>
+
+    <!-- MMP_DAT -->
+    <MMP_DAT_SKIP>true</MMP_DAT_SKIP>
+
+    <!-- MMP_XML -->
+    <MMP_XML_SKIP>true</MMP_XML_SKIP>
+    <MMP_XML_Resolve>true</MMP_XML_Resolve>
+    <MMP_XML_GenerateDependency>$(BUILD_TEST_TREE_XML)\$(TargetName).xml</MMP_XML_GenerateDependency>
+
+    <!-- DDT -->
+    <DDT_CreateDownload>false</DDT_CreateDownload>
+    <DDT_ImportDescriptor>$(BUILD_TEST_TREE_PE)\$(TargetName).pe_downloads</DDT_ImportDescriptor>
+    <DDT_Import_DependencyGraph>$(BUILD_TEST_TREE_XML)\$(TargetName).xml</DDT_Import_DependencyGraph>
+
+    <!-- misc -->
+    <TinyCLR_DisasmInput>$(BUILD_TEST_TREE_DLL)\$(TargetFileName)</TinyCLR_DisasmInput>
+    <TinyCLR_DisasmOutput>$(BUILD_TEST_TREE_DISASM)\$(TargetName).il</TinyCLR_DisasmOutput>
+  
+</PropertyGroup>
+
+  <ItemGroup>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DLL)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_OBJ)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_PE)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_PE_BE)">
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_LOC)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DAT)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DAT_BE)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_STUBS)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DISASM)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_TXT)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_XML)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_DUMPS)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_TEMPLATES)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+    <OUTPUT_DIR Include="$(BUILD_TEST_TREE_MSM)" >
+      <InProject>false</InProject>
+    </OUTPUT_DIR>
+  </ItemGroup>
+
+</Project>

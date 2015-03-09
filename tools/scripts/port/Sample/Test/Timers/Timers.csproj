@@ -1,0 +1,57 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Test.Timers</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Microsoft.SPOT.Test.Timers</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{332F8643-496C-44C1-9C19-3A75119DB3FC}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <PropertyGroup>
+    <MMP_PE_NoBitmapCompression>true</MMP_PE_NoBitmapCompression>
+    <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
+    <MMP_DAT_CreateDatabaseFile>$(BUILD_TREE_DAT)\tinyclr_Test_Timers_Microsoft.dat</MMP_DAT_CreateDatabaseFile>
+    <MMP_DAT_CreateDatabaseFileOtherEnd>$(BUILD_TREE_DAT_OTHEREND)\tinyclr_Test_Timers_Microsoft.dat</MMP_DAT_CreateDatabaseFileOtherEnd>
+    <MMP_XML_SKIP>false</MMP_XML_SKIP>
+    <MMP_XML_GenerateDependency>$(BUILD_TREE_XML)\DependencyGraph_Test_Timers.xml</MMP_XML_GenerateDependency>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Name>Microsoft.SPOT.TestFramework.dll</Name>
+    </ProjectReference>
+    <Reference Include="Microsoft.SPOT.TestFramework">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.TestFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\mscorlib.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Native.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.TestFramework.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_PE)\Microsoft.SPOT.Test.Timers.pe">
+      <InProject>false</InProject>
+    </MMP_DAT_CreateDatabase>
+    <MMP_XML_Load Include="@(MMP_DAT_CreateDatabase)">
+      <InProject>false</InProject>
+    </MMP_XML_Load>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

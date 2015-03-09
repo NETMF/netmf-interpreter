@@ -1,0 +1,69 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>STM32_bootstrap</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{C599A16C-84AB-4ABC-AAB1-9A06E7953C22}</ProjectGuid>
+    <Description>STM32 bootstrap driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>STM32_bootstrap.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\STM32_Bootstrap\dotNetMF.proj</ProjectPath>
+    <ManifestFile>STM32_bootstrap.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Processor\STM32</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Bootstrap_HAL" Guid="{15AB3FEB-4D7A-40AD-B1A0-4BF663A6EF93}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+          <Author>Oberon microsystems, Inc.</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <ProcessorSpecific>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="STM32" Guid="{00CC0049-00FD-0044-AF40-DB0A37E94271}" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+          <Author>Oberon microsystems, Inc.</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">Processor</ComponentType>
+      </MFComponent>
+    </ProcessorSpecific>
+    <Directory>DeviceCode\Targets\Native\STM32\DeviceCode\STM32_Bootstrap</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ARMBUILD_ONLY>true</ARMBUILD_ONLY>
+  </PropertyGroup>
+  
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <HFiles Include="..\stm32f10x.h" />
+    <Compile Include="STM32_bootstrap.cpp" />
+    
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\ARM9\Bootstrap\dotnetmf.proj" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

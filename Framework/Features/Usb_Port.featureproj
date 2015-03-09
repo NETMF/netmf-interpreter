@@ -1,0 +1,15 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>USB</FeatureName>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\USB_PAL.libcatproj" />
+  <PropertyGroup>
+    <Description>Usb Transport</Description>
+    <Guid>{1C6EAC37-2CA0-4071-8C77-156244956E02}</Guid>
+    <Groups>Hardware</Groups>
+    <Documentation>
+    </Documentation>
+    <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
+    <USB_PORT_FEATUREPROJ>True</USB_PORT_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

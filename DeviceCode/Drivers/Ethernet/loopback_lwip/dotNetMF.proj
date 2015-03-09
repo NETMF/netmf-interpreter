@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>Ethernet_loopback_lwip</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{8872d04a-2b92-4783-9978-a254ca102f91}</ProjectGuid>
+    <Description>Loopback Ethernet Driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>ETHERNET_loopback_lwip.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Ethernet\Loopback_lwip\dotNetMF.proj</ProjectPath>
+    <ManifestFile>ETHERNET_loopback_lwip.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Network</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="EthernetLoopback_HAL" Guid="{63642AC7-9164-48AA-AC2D-524D6FBE21CE}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>LWIP</CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\Ethernet\loopback_lwip</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="loopback_lwip.cpp" />
+    <Compile Include="loopback_lwip_driver.cpp" />
+    <Compile Include="loopback_lwip_driver_config.cpp" />
+    <IncludePaths Include="DeviceCode\arm\Drivers\Ethernet\enc28j60_lwip" />
+    <IncludePaths Include="DeviceCode\arm\Drivers\Ethernet\loopback_lwip" />
+    <IncludePaths Include="DeviceCode\pal\net" />
+    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include" />
+    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include\ipv4" />
+    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include\arch" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\arch\cc.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\inet.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\ip.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\ip_addr.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\arch.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\debug.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\def.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\err.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\netif.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\opt.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\pbuf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\netif\etharp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\net\network_defines_lwip.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\net\net_decl_lwip.h" />
+    <HFiles Include="loopback_lwip_driver.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

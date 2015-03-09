@@ -1,0 +1,62 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Wireless.IEEE_802_15_4</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.Wireless.IEEE_802_15_4</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D254F100-F4BA-4863-9B7D-88CA3830557F}</ProjectGuid>
+    <ComponentGuid>{12b9c5e0-5227-40d8-aaf1-75484996b5e8}</ComponentGuid>
+    <DefineConstants>TRACE;MICROFRAMEWORK</DefineConstants>
+    <TinyCLR_CSharp_Documentation>true</TinyCLR_CSharp_Documentation>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>$(NoWarn),0169,0649,1591</NoWarn>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+
+  <ItemGroup>
+    <Compile Include="AddressServer.cs" />
+    <Compile Include="Fragmentation\BitArray.cs" />
+    <Compile Include="Fragmentation\DataRequestQueue.cs" />
+    <Compile Include="Fragmentation\Fragment.cs" />
+    <Compile Include="Fragmentation\Fragmentation.cs" />
+    <Compile Include="Fragmentation\FragmentationMessage.cs" />
+    <Compile Include="Fragmentation\FragmentationMessageTimer.cs" />
+    <Compile Include="Fragmentation\FragmentationMesssageAssociations.cs" />
+    <Compile Include="Fragmentation\IFragmentation.cs" />
+    <Compile Include="Fragmentation\NotifyingQueue.cs" />
+    <Compile Include="Fragmentation\TransmissionCharacteristicStorage.cs" />
+    <Compile Include="MessageContext.cs" />
+    <Compile Include="Messages_6LoWPAN.cs" />
+    <Compile Include="Messages_custom.cs" />
+    <Compile Include="NeighbourTable.cs" />
+    <Compile Include="NetworkLayer.cs" />
+    <Compile Include="NetworkMgmt.cs" />
+    <Compile Include="Properties_MF\AssemblyInfo.cs" />
+    <Compile Include="INetwork.cs" />
+    <Compile Include="Routing.cs" />
+    <Compile Include="RoutingTable.cs" />
+    <Compile Include="Singleton.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.CC2420">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.CC2420.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Wireless.IEEE_802_15_4.Mac">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Wireless.IEEE_802_15_4.Mac.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>cast_openssl</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{9d25b1ab-1e6a-4230-bd24-da13b82fd0f0}</ProjectGuid>
+    <Description>Crypto Cast library from OpenSSL</Description>
+    <Level>PAL</Level>
+    <LibraryFile>cast_openssl.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\cast\dotNetMF.proj</ProjectPath>
+    <ManifestFile>cast_openssl.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\cast</Directory>
+    <OutputType>Library</OutputType>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <!--
+  <ItemGroup>
+    <SubDirectories Include="Stubs"/>
+  </ItemGroup>
+-->
+  <ItemGroup>
+    <Compile Include="c_skey.cpp" />
+    <Compile Include="c_ecb.cpp" />
+    <Compile Include="c_enc.cpp" />
+    <Compile Include="c_cfb64.cpp" />
+    <Compile Include="c_ofb64.cpp" />
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\include\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\o_str.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\e_os2.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslconf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\include\openssl\opensslv.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\tinyclr\ssl_types.h" />
+    <HFiles Include="cast.h" />
+    <HFiles Include="cast_lcl.h" />
+    <HFiles Include="cast_s.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

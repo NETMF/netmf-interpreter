@@ -1,0 +1,6 @@
+SubmitToArchive=All
+SubmitToInternet=Yes
+ProductGroup=SBA
+ProductName=.NET Micro Framework SDK
+Release=3.0.<BuildRevision>.0
+Build=<BuildNumber>

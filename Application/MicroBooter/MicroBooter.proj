@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>MicroBooterLib</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{ED29E688-9C35-47af-A007-848798F20CE4}</ProjectGuid>
+    <Description>MicroBooter Library</Description>
+    <Level>HAL</Level>
+    <ProjectPath>$(SPOCLIENT)\Application\MicroBooter\MicroBooter.proj</ProjectPath>
+    <LibraryFile>MicroBooterLib.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>MicroBooterLib.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>MicroBooter</Groups>
+    <Documentation>
+    </Documentation>
+    <CustomSpecific>
+    </CustomSpecific>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Application\MicroBooter</Directory>
+    <reducesize>true</reducesize>
+    <Version>3.0.0.0</Version>
+    <PlatformIndependent>False</PlatformIndependent>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="$(SRC_DIR)\SRECProcessor.cpp" />
+    <Compile Include="$(SRC_DIR)\Microbooter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\devicecode\drivers\mfupdate\storage\blockstorageupdate.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\mfupdate_decl.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\microbooter_decl.h" />
+    <HFiles Include="srecprocessor.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

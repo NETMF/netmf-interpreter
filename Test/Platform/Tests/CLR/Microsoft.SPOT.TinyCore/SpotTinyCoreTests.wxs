@@ -1,0 +1,11 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Module Id='Module_TestModule' Language='1033' Version='1.0.0.0'>
+      <Package Id='e3d62c2a-a99c-426c-af46-e3f6de86cbd2' Keywords="Installer" Description=".NET Micro Framework TinyCoreTests" Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved." Manufacturer="Microsoft Corporation" InstallerVersion="200" Languages="1033" SummaryCodepage="1252"  />
+      <?include ProductVersion.wxs?>
+      <?include Directories.wxs?>
+      <ComponentRef Id='Component_Presentation' /> 
+      <ComponentRef Id='Component_Controls' /> 
+      <ComponentRef Id='Component_Shapes' /> 
+      <ComponentRef Id='Component_Media' /> 
+  </Module>
+</Wix>

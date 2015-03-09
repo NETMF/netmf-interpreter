@@ -1,0 +1,49 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Microsoft.NetMicroFramework.Tools.MFDeployTool.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DefaultSerialPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM1</Value>
+    </Setting>
+    <Setting Name="TcpIpAddresses" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;10.52.32.196&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="MRUFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Value>
+    </Setting>
+    <Setting Name="DiscoveryMulticastAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">234.102.98.44</Value>
+    </Setting>
+    <Setting Name="DiscoveryMulticastAddressRecv" Type="System.String" Scope="User">
+      <Value Profile="(Default)">234.102.98.45</Value>
+    </Setting>
+    <Setting Name="DiscoveryMulticastTimeout" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3000</Value>
+    </Setting>
+    <Setting Name="DiscoveryMulticastPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">26001</Value>
+    </Setting>
+    <Setting Name="DiscoveryMulticastToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DOTNETMF</Value>
+    </Setting>
+    <Setting Name="DiscoveryTTL" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="PlugIns" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PlugIn</Value>
+    </Setting>
+    <Setting Name="EraseSectors" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Deployment; StorageA; StorageB</Value>
+    </Setting>
+    <Setting Name="SslCert" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NetMFDeviceCert.pfx</Value>
+    </Setting>
+    <Setting Name="SslRequireClientCert" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>CRC</AssemblyName>
+    <OutputType>Library</OutputType>
+    <Size>
+    </Size>
+    <ProjectGuid>ECFD7742-DDCC-49DF-95DF-6294EFD3AE02</ProjectGuid>
+    <Description>CRC library</Description>
+    <Level>Support</Level>
+    <LibraryFile>CRC.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Support\CRC\dotNetMF.proj</ProjectPath>
+    <ManifestFile>CRC.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>
+    </Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="CRC_Support" Guid="{AC264A78-6B0B-4d51-AB92-A3283460055E}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>True</PlatformIndependent>
+    <CustomSpecific>
+    </CustomSpecific>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Support\CRC</Directory>
+    <VCProjName>Support_CRC</VCProjName>
+    <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <ExtraFlags Condition="'$(PLATFORM_FAMILY)'=='x86'">/wd4996</ExtraFlags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CRC.cpp" />
+    <Compile Include="stdafx.cpp" Condition="'$(PLATFORM_FAMILY)'=='x86'" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="stdafx.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

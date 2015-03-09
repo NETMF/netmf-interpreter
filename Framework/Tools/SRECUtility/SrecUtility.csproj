@@ -1,0 +1,32 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{676933B6-CB9B-43B1-B805-EF6C7352C1CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.NetMicroFramework.Tools</RootNamespace>
+    <AssemblyName>SrecUtility</AssemblyName>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SPOT.Debugger">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="SrecUtility.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SPOCLIENT)\Framework\Debugger\Debugger.csproj">
+      <Name>Microsoft.SPOT.Debugger</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

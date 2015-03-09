@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <!-- Freescale MC9328L, NO SRAM, SDRAM 32M/64M -->
+
+    <Set Name="Valid" Value="false"/>
+
+    <!-- ################################################################################ -->
+
+    <Set Name="Heap_Begin"      Value="0x08100000"/>
+    <Set Name="Heap_End"        Value="0x084FFFF8"/>
+    <Set Name="Stack_Bottom"    Value="+0"/>
+    <Set Name="Stack_Top"       Value="0x08502000"/>
+
+    
+    <If Name="TARGETLOCATION" In="FLASH">
+
+        <!-- iMXS has 8MB of 32-bit FLASH at 0x10000000 -->
+        <Set Name="Code_BaseAddress" Value="0x10000000"/>
+        <Set Name="Code_Size"        Value="0x00020000"/>
+        <Set Name="RAM_RO_Base"      Value="0x00000000"/>
+        <Set Name="Valid"            Value="true"/>
+
+    </If>
+
+    <If Name="TARGETLOCATION" In="RAM">
+
+        <Set Name="Code_BaseAddress" Value="0x08200000"/> 
+        <Set Name="Code_Size"        Value="0x00030000"/>
+        <Set Name="RAM_RO_Base"      Value="+0"/>
+        <Set Name="Valid"            Value="true"/>
+        
+    </If>
+
+
+    <!-- ################################################################################ -->
+
+    <If Name="Valid" Value="false">
+        <Error Message="Configuration not recognized"/>
+    </If>
+
+    <!-- we start at 0x10080000 since PortBooter lives at 0x10000000 -->
+    <!-- the address and sizes for both load regions (LR_*) are chosen to start and completely fill a flash partition in the 28F320W18 flash chip -->
+
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
+
+        <!-- we have arbitrarily asigned 0x00080000 offset in FLASH for the CLR code, and size of 0x00080000 -->
+
+        <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
+
+            <FileMapping Name="FirstEntry.obj" Options="(+RO, +FIRST)" /> <!-- the entry pointer section goes into this region -->
+
+            <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+            <FileMapping Name="*" Options="(+RO)" />
+
+        </ExecRegion>
+
+        <!-- skip vector area -->
+
+        <ExecRegion Name="ER_RAM_RO" Base="%RAM_RO_Base%" Options="ABSOLUTE" Size="">
+
+            <FileMapping Name="VectorsTrampolines.obj" Options="(+RO, +FIRST)" /> <!-- for vector handlers to be far from the vectors -->
+
+            <FileMapping Name="*" Options="(i.IDelayLoop)" Comment="00004a98 24 16 IDelayLoop" />
+            <FileMapping Name="*" Options="(i._Z23Time_Sleep_MicroSecondsj)" Comment="_Z23Time_Sleep_MicroSecondsj" />
+            <FileMapping Name="*" Options="(i._Z40Time_Sleep_MicroSeconds_InterruptEnabledj)" Comment="_Z40Time_Sleep_MicroSeconds_InterruptEnabledj" />
+            <FileMapping Name="*" Options="(i._Z23CPU_MicrosecondsToTicksj)" Comment="_Z23CPU_MicrosecondsToTicksj" />    
+            <FileMapping Name="*" Options="(i._Z17Events_MaskedReadj)" Comment="000070ec 20 20787 Events_MaskedRead__FUi" />
+            <FileMapping Name="*" Options="(i._ZN16MC9328MXL_Driver5PauseEv)" />
+            <FileMapping Name="*" Options="(i._ZN21MC9328MXL_TIME_Driver12CounterValueEv)" Comment="00007840 40 712150 _ZN21MC9328MXL_TIME_Driver12CounterValueEv" />
+            <FileMapping Name="*" Options="(i._ZN21MC9328MXL_AITC_Driver17ActivateInterruptEjjPFvPvES0_h)" Comment="00007604 76 231095 _ZN21MC9328MXL_AITC_Driver17ActivateInterruptEjjPFvPvES0_h" />
+            <FileMapping Name="*" Options="(i._ZN21MC9328MXL_AITC_Driver19DeactivateInterruptEj)" Comment="00007604 76 231095 _ZN21MC9328MXL_AITC_Driver19DeactivateInterruptEj" />
+            <FileMapping Name="*" Options="(i._ZN21MC9328MXL_TIME_Driver15SetCompareValueEy)" Comment="00007868 96 181492 _ZN21MC9328MXL_TIME_Driver15SetCompareValueEy" />
+            <FileMapping Name="*" Options="(i._ZN21MC9328MXL_TIME_Driver11CurrentTimeEv)" Comment="000079d0 88 94500 _ZN21MC9328MXL_TIME_Driver11CurrentTimeEv" />
+            <FileMapping Name="*" Options="(i._ZN25MC9328MXL_WATCHDOG_Driver12ResetCounterEv)" Comment="00007adc 24 22218 _ZN25MC9328MXL_WATCHDOG_Driver12ResetCounterEv" />
+            <FileMapping Name="*" Options="(i._Z18SUPPORT_ComputeCRCPKvij)" Comment="00006654 72 1709347 SUPPORT_ComputeCRC__FPCviUi" />
+            <FileMapping Name="rt_sdiv.o" Options="(+RO)" />
+            <FileMapping Name="rt_memclr.o" Options="(+RO)" />
+            <FileMapping Name="rt_memclr_w.o" Options="(+RO)" />
+            <FileMapping Name="rt_memcpy.o" Options="(+RO)" />
+            <FileMapping Name="rt_memcpy_w.o" Options="(+RO)" />
+            <FileMapping Name="llshl.o" Options="(+RO)" />
+            <FileMapping Name="llsdiv.o" Options="(+RO)" />
+            <FileMapping Name="llushr.o" Options="(+RO)" />
+            <FileMapping Name="lludiv.o" Options="(+RO)" />
+
+            <FileMapping Name="*" Options="(SectionForFlashOperations)" />
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_Begin%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for a heap -->
+
+        <ExecRegion Name="ER_HEAP_END" Base="%Heap_End%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        </ExecRegion>
+
+
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>
+	    
+        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Top%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackTop)" />
+        </ExecRegion>
+
+    </LoadRegion>
+
+</ScatterFile>

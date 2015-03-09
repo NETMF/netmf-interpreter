@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+    <PropertyGroup>
+        <CurBuildNumber>$(Registry:HKEY_LOCAL_MACHINE\Software\Microsoft\.NETMicroFramework\v4.4@BuildNumber)</CurBuildNumber>
+        <CurRevNumber>$(Registry:HKEY_LOCAL_MACHINE\Software\Microsoft\.NETMicroFramework\v4.4@RevisionNumber)</CurRevNumber>
+        <TasksAssembly>$(Registry:HKEY_LOCAL_MACHINE\Software\Microsoft\.NETMicroFramework\v4.4@InstallRoot)\Tools\Microsoft.SPOT.Tasks.dll</TasksAssembly>
+    </PropertyGroup>
+
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.GetDeviceFrameworkPaths"    AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.ResolveRuntimeDependencies" AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.GenerateTinyResource"       AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.MetaDataProcessor"          AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.RegisterEmulator"           AssemblyFile="$(TasksAssembly)"/>
+    <UsingTask TaskName="Microsoft.SPOT.Tasks.CreateInteropFeatureProj"   AssemblyFile="$(TasksAssembly)"/>
+
+</Project>

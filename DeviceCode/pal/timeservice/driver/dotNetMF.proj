@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>timeservice_hal_generic</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{77AD60C9-CA8B-4efd-A93E-8240A83BE722}</ProjectGuid>
+    <Description>Time Service hal library</Description>
+    <Level>HAL</Level>
+    <LibraryFile>timeservice_hal_generic.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\pal\timeservice\driver\dotNetMF.proj</ProjectPath>
+    <ManifestFile>timeservice_hal_generic.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>TimeService</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TimeService_HAL" Guid="{E15EE896-52D2-4c05-8E75-161424483439}" ProjectPath="$(SPOCLIENT)\Framework\Features\TimeService_HAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+          <Author>Microsoft</Author>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <Ishal>True</Ishal>
+    <Directory>DeviceCode\pal\timeservice\driver</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <FastCompileCPPFile Include="fastcompile_timeservice.cpp" />
+    <Compile Include="ntp.cpp" />
+    <Compile Include="timeservice_generic_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="ntp.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

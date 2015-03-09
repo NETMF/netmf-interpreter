@@ -1,0 +1,31 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>TEMPLATE</Name>
+    <CpuName>arm920t</CpuName>
+    <DefaultISA>ARM</DefaultISA>
+    <Guid>{94FDD980-06BA-449c-A5B4-785674C425C6}</Guid>
+    <Description>
+    </Description>
+    <Documentation>
+    </Documentation>
+    <ProjectPath>$(SPOCLIENT)\devicecode\Targets\Native\Template\Template.settings</ProjectPath>
+    <PLATFORM_FAMILY>ARM</PLATFORM_FAMILY>
+    <CustomFilter>ARM9;Template</CustomFilter>
+    <INSTRUCTION_SET Condition="'$(INSTRUCTION_SET)'==''">ARM</INSTRUCTION_SET>
+    <TARGETPROCESSOR>TEMPLATE</TARGETPROCESSOR>
+    <TARGETCODEBASE>TEMPLATE</TARGETCODEBASE>
+    <TARGETCODEBASETYPE>Native</TARGETCODEBASETYPE>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
+    <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">arm920t</DEVICE_TYPE>
+    <DEVICE_TYPE Condition="'$(INSTRUCTION_SET)'=='thumb2'">Cortex-M3</DEVICE_TYPE>
+    <BUILD_TOOL_GUID>{3B60DBC2-6E80-41FA-883E-9A36704A1772}</BUILD_TOOL_GUID>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'">
+    <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">arm920t</DEVICE_TYPE>
+    <BUILD_TOOL_GUID>{722B0D5D-1243-4557-913F-61FAB04E9209}</BUILD_TOOL_GUID>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="devicecode\Targets\Native\TEMPLATE" />
+  </ItemGroup>
+</Project>

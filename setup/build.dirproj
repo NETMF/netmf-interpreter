@@ -1,0 +1,19 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="
+        CustomActions\build.dirproj;
+        UnManagedAssemblies\build.dirproj;
+        Features\Features.wixproj;
+        Misc\Fonts.wixproj;
+        UI\FrameworkSetupUI.wixproj"
+        />
+    <!-- <Project Include="Docs\build.dirproj" Condition=" '$(Configuration)' != 'Debug' " /> -->
+    <!-- For unofficial/local dev builds generate the MSI, otherwise wait for the later stage after the binaries are signed -->
+    <Project Include="ProductSDK\Product.wixproj" Condition=" '$(SignBuild)' != 'true' "/>
+    <Project Include="ProductSDK\VsixPackages.dirproj" Condition="'$(SignBuild)' != 'true' "/>
+</ItemGroup>
+
+</Project>

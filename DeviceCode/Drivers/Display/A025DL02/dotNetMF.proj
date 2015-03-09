@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>A025DL02</AssemblyName>
+    <ProjectGuid>{7d7a3f3e-82f3-4f02-9bc4-99366e43c1b3}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>A025DL02 display driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>A025DL02.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Display\A025DL02\dotNetMF.proj</ProjectPath>
+    <ManifestFile>A025DL02.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Display</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="LCD_HAL" Guid="{9F6063F2-7ED0-49F7-95A3-2A2D2219EEAB}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Drivers\Display\A025DL02</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\A025DL02_Config_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Display_Font_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\LCDController_Config_HAL.libcatproj" />
+  <PropertyGroup />
+  <ItemGroup>
+    <FastCompileCPPFile Include="fastcompile_A025DL02.cpp" />
+    <Compile Include="A025DL02_driver.cpp" />
+    <Compile Include="A025DL02_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <HFiles Include="a025dl02.h" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

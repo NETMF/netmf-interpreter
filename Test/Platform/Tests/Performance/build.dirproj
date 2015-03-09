@@ -1,0 +1,18 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
+
+  <ItemGroup>
+    <Project Include="Sockets\Sockets.csproj" >
+      <InProject>false</InProject>
+    </Project>
+
+    <Project Include="Strings\Strings.csproj" >
+      <InProject>false</InProject>
+    </Project>
+       
+    <Project Include="PerformanceTests.wixproj" >
+      <InProject>false</InProject>
+    </Project>
+
+  </ItemGroup>
+</Project>

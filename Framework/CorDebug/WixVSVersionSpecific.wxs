@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Include>
+  <?include defines.wxs?>
+
+  <!-- See VsProjectCSharp.cs -->
+  <?define ProjectGuidCSharp="{b69e3092-b931-443c-abe7-7e7b65f2a37f}"?>
+  <!-- See VsProjectVisualBasic.cs -->
+  <?define ProjectGuidVisualBasic="{bb063c12-22d6-4e50-a55f-f678d783e61d}"?>
+  <!-- See CorDebug.cs -->
+  <?define EngineGuid="{009e15ee-439a-4ce2-b078-08136a4712b1}"?>
+  <!-- See DebugPortSupplier.cs -->
+  <?define PortSupplierGuid="{499dc3d0-66c1-42a2-a292-6ee253d7f708}"?>
+  <!-- See VsPackage.cs -->
+  <?define PackageGuid="{78581CBA-38EF-44C8-B0AF-D022375AFFE4}"?>
+  <!-- See DebugPortSupplier.cs -->
+  <?define PortSupplierCLSID="{A1A9D1C3-1F8E-4c82-BD58-474106DE8A9E}"?>
+  <!-- See CorDebug.cs -->
+  <?define CorDebugCLSID="{D9BC7C21-9AD2-49a2-B33A-5AB2145E6C56}"?>
+  <!-- See PropertyPageProjectOptionsComObject.cs -->
+  <?define PropertyPageCLSID="{AFBAC3D0-7526-4d80-9F42-2A975120BB5F}"?>
+
+  <?define EngineCLSID="{7386310B-D5CB-4369-9BDD-609B3F103914}"?>
+
+  <DirectoryRef Id="ToolsDir">
+    <!-- Visual Studio 2005 SKUs:
+    <?define  VBTemplateIDs="BitMap,ClassDiagram,CodeFile,HTMLPage,Resource,StyleSheet,TextFile,XMLFile,XMLSchema,XSLTFile"?>
+    <?define VCSTemplateIDs="BitMap,ClassDiagram,CodeFile,HTMLPage,Resource,StyleSheet,TextFile,XMLFile,XMLSchema,XSLTFile"?>-->
+
+    <!-- Visual Studio 2008 SKUs: -->
+    <?define VBTemplateIDs="Microsoft.VisualBasic.General.Bitmap,Microsoft.VisualBasic.General.ClassDiagram,Microsoft.VisualBasic.Code.CodeFile,Microsoft.VisualBasic.Web.HtmlPage,Microsoft.VisualBasic.General.Resource,Microsoft.WAP.VisualBasic.StyleSheet,Microsoft.VisualBasic.General.Text,Microsoft.VisualBasic.Data.XmlFile,Microsoft.VisualBasic.Data.XMLSchema,Microsoft.VisualBasic.Data.XSLTFile"?>
+
+    <?define VCSTemplateIDs="Microsoft.CSharp.Bitmap,Microsoft.CSharp.ClassDiagram,Microsoft.CSharp.CodeFile,Microsoft.CSharp.HTMLPage,Microsoft.CSharp.Resource,Microsoft.CSharp.StyleSheet,Microsoft.CSharp.TextFile,Microsoft.CSharp.XmlFile,Microsoft.CSharp.XmlSchema,Microsoft.CSharp.XsltFile"?>
+
+    <Component Id="Component_Microsoft.SPOT.Debugger.CorDebug.WDE110" Guid="5518e46d-f8cd-4159-a4b6-b00aa3309bc7">
+      <?include vs_skus\WDExpress11.wxs?>
+      <?include $(env.SPOCLIENT)\Framework\CorDebug\WixRegistryInclude.wxs ?>
+      <?include $(env.SPOCLIENT)\Framework\CorDebug\WixVSCommon.wxs ?>
+    </Component>
+    <Component Id="Component_Microsoft.SPOT.Debugger.CorDebug.VS110" Guid="b1a16025-bf6f-4224-ae02-2c5a397ced58">
+      <?include vs_skus\VisualStudio11.wxs?>
+      <?include $(env.SPOCLIENT)\Framework\CorDebug\WixRegistryInclude.wxs ?>
+      <?include $(env.SPOCLIENT)\Framework\CorDebug\WixVSCommon.wxs ?>
+    </Component>
+  </DirectoryRef>
+</Include>

@@ -1,0 +1,15 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  
+  <PropertyGroup>
+    <ComponentGuid>{cd22acc2-385e-4600-9270-0a9ddae7efe0}</ComponentGuid>
+    <DirectoryRef>FontsDir</DirectoryRef>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <WiXComponentFiles Include="$(SPOCLIENT)\Fonts\NinaB.tinyfnt"/>
+    <WiXComponentFiles Include="$(SPOCLIENT)\Fonts\small.tinyfnt"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+
+</Project>

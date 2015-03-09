@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>$safeprojectname$</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>$safeprojectname$</RootNamespace>
+    <ProjectTypeGuids>{bb063c12-22d6-4e50-a55f-f678d783e61d};{F184B08F-C81C-45f6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>$guid1$</ProjectGuid>
+    <MyType />
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(MSBuildExtensionsPath32)\Microsoft\.NET Micro Framework\</NetMfTargetsBaseDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartupObject>Sub Main</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartupObject>Sub Main</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="Program.vb" />
+    </ItemGroup>
+    <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Condition="EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\VisualBasic.Targets')" Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\VisualBasic.Targets" />
+  <Import Condition="!EXISTS('$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\VisualBasic.Targets')" Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>

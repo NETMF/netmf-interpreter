@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <!-- STM32 with external RAM -->
+
+    <Set Name="Valid" Value="false"/>
+
+    <!-- ################################################################################ -->
+
+    <Set Name="RAM_Start"      Value="0x20000000"/>
+
+    <!-- Custom heap used for interrupt handler table only -->
+    <Set Name="Custom_Heap_Begin"       Value="0x2000C000"/>
+    <Set Name="Custom_Heap_End"         Value="0x2000C1F8"/>
+
+    <Set Name="Stack_Bottom"            Value="0x2000C200"/>
+    <Set Name="Stack_Top"               Value="0x2000FFF8"/>
+
+    <Set Name="Heap_Begin"              Value="0x68000000"/>
+    <Set Name="Heap_End"                Value="0x680FFFF8"/>
+
+    <IfDefined Name="PROFILE_BUILD">
+        <Set Name="Heap_End"            Value="0x680EFFF8"/>
+        <Set Name="ProfileBuffer_Begin" Value="0x680F0000"/>
+        <Set Name="ProfileBuffer_End"   Value="0x680FFFFC"/>
+    </IfDefined>
+
+    <If Name="TARGETLOCATION" In="FLASH">
+        <Set Name="Config_BaseAddress"  Value="0x08060000"/>    
+        <Set Name="Config_Size"         Value="0x00002000"/>
+        <Set Name="Code_BaseAddress"    Value="0x0800B000"/>
+        <Set Name="Code_Size"           Value="%Config_BaseAddress - Code_BaseAddress%" />
+        <Set Name="Valid"               Value="true"/>
+    </If>
+
+    <If Name="TARGETLOCATION" In="RAM">
+        <Set Name="Code_BaseAddress"    Value="0x68000000"/>
+        <Set Name="Code_Size"           Value="0x00080000"/>
+        <Set Name="Heap_Begin"          Value="0x68080000"/>
+        <Set Name="Valid"               Value="true"/>
+    </If>
+
+  
+    <!-- ################################################################################ -->
+
+    <If Name="Valid" Value="false">
+        <Error Message="Configuration not recognized"/>
+    </If>
+
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
+
+        <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
+
+            <FileMapping Name="FirstEntry.obj"    Options="(+RO, +FIRST)" /> <!-- the entry pointer section goes into this region -->
+            <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+            <FileMapping Name="*" Options="(+RO-CODE)" />
+            <FileMapping Name="*" Options="(+RO-DATA)" />
+
+            <!-- Fiq profile -->
+            <IfDefined Name="FIQ_SAMPLING_PROFILER">
+                <FileMapping Name="FiqSubhandler_STM32.obj"  Options="(+RO)" />
+                <FileMapping Name="sampling_profiler_RAM.obj" Options="(+RO)" />
+            </IfDefined>
+            
+            <IfNotDefined Name="Data_BaseAddress">
+                <FileMapping Name="tinyclr_dat.obj" Options="(+RO, +LAST)" />
+            </IfNotDefined>
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RO" Base="%RAM_Start%" Options="ABSOLUTE" Size="">
+
+            <!-- Flash programming from Flash is save on STM32 -->
+            <!-- No need to place Flash programming code in RAM -->
+            <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
+
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+
+        </ExecRegion>
+        
+        <!-- Profile build -->
+
+        <IfDefined Name="PROFILE_BUILD">
+            <ExecRegion Name="ER_PROFILERBUFFER_BEGIN" Base="%ProfileBuffer_Begin%" Options="ABSOLUTE" Size="UNINIT">
+                <FileMapping Name="*" Options="(SectionForProfilerBufferBegin)" />
+            </ExecRegion>
+
+            <!-- everything between profilebufferbegin and profilebufferend will be allocated for a buffer -->
+
+            <ExecRegion Name="ER_PROFILERBUFFER_END" Base="%ProfileBuffer_End%" Options="ABSOLUTE" Size="UNINIT">
+                <FileMapping Name="*" Options="(SectionForProfilerBufferEnd)" />
+            </ExecRegion>
+        </IfDefined>
+
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_Begin%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for a heap -->
+
+        <ExecRegion Name="ER_HEAP_END" Base="%Heap_End%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="%Custom_Heap_Begin%" Options="ABSOLUTE" Size="UNINIT">
+          <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
+
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="%Custom_Heap_End%" Options="ABSOLUTE" Size="UNINIT">
+          <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
+        </ExecRegion>
+
+        <!-- this must go last here to provide a low water mark on the stack -->
+
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>
+        
+        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Top%" Options="ABSOLUTE" Size="UNINIT">
+            <FileMapping Name="*" Options="(SectionForStackTop)" />
+        </ExecRegion>
+
+    </LoadRegion>
+
+    <!-- If this variable is defined, create a separate section for the tinyclr.dat file -->
+
+    <IfDefined Name="Data_BaseAddress">
+
+        <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Options="ABSOLUTE" Size="%Data_Size%">
+
+            <ExecRegion Name="ER_DAT" Base="%Data_BaseAddress%" Options="FIXED" Size="%Data_Size%">
+
+                <FileMapping Name="tinyclr_dat.obj" Options="(+RO)" />
+
+            </ExecRegion>
+
+        </LoadRegion>
+
+    </IfDefined>
+
+    <IfDefined Name="Config_BaseAddress">
+
+        <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
+
+            <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
+
+                <FileMapping Name="*" Options="(SectionForConfig)" />
+
+            </ExecRegion>
+
+        </LoadRegion>
+
+    </IfDefined>
+
+</ScatterFile>
+

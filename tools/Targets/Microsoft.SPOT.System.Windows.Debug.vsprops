@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="11.00"
+	Name="MFPK default settings for Debug builds"
+	InheritedPropertySheets="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.System.Windows.vsprops"
+    >
+	<Tool Name="VCCLCompilerTool"
+		PreprocessorDefinitions="DEBUG;_DEBUG"
+		Optimization="0"
+		MinimalRebuild="false"
+		BasicRuntimeChecks="0"
+		RuntimeLibrary="3"
+		UsePrecompiledHeader="2"
+        />
+	<Tool
+		Name="VCLinkerTool"
+		AssemblyDebug="1"
+	    />
+	<Tool Name="VCResourceCompilerTool"
+		PreprocessorDefinitions="DEBUG;_DEBUG"
+	    />
+</VisualStudioPropertySheet>

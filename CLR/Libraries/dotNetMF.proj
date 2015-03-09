@@ -1,0 +1,27 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <Directory>CLR\Libraries</Directory>
+    <PlatformIndependentBuild>true</PlatformIndependentBuild>
+  </PropertyGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+  <ItemGroup>
+    <SubDirectories Include="CorLib"/>
+    <SubDirectories Include="SPOT"/>
+    <SubDirectories Include="SPOT_Graphics"/>
+    <SubDirectories Include="SPOT_Hardware"/>
+    <SubDirectories Include="SPOT_IO"/>
+    <SubDirectories Include="SPOT_Net"/>
+    <SubDirectories Include="SPOT_Net_Security"/>
+    <SubDirectories Include="SPOT_TimeService"/>
+    <SubDirectories Include="SPOT_Touch"/>
+    <SubDirectories Include="SPOT_Update"/>
+    <SubDirectories Include="System_Xml"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+</Project>
+

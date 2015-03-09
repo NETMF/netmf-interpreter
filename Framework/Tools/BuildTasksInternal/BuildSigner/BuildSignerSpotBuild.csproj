@@ -1,0 +1,25 @@
+﻿<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1A12104F-10D3-4746-8798-6D0DCDC5F58C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.AutomatedBuild.BuildSigner</RootNamespace>
+    <AssemblyName>Microsoft.SPOT.AutomatedBuild.BuildSigner</AssemblyName>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <ItemGroup>
+    <Reference Include="CODESIGN.Submitter">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SPOROOT)\tools\x86\CODESIGN\CODESIGN.Submitter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuildSigner.cs" />
+  </ItemGroup>
+</Project>

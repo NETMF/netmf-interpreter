@@ -1,0 +1,13 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <DOCPROJ>MFDeploy</DOCPROJ>
+    <CHMProject>MFDeploy</CHMProject>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.WiX.Targets" />
+  <PropertyGroup>
+    <DOCPROJOUTDIR>$(XBUILD_OUTDIR)\$(DOCPROJ)\en-us\</DOCPROJOUTDIR>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+    
+</Project>

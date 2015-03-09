@@ -1,0 +1,24 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>Windows</Name>
+    <CpuName>
+    </CpuName>
+    <DefaultISA>x86</DefaultISA>
+    <Guid>{05380b9c-7913-4232-8da2-eeb0818671eb}</Guid>
+    <Description>
+    </Description>
+    <Documentation>Windows support</Documentation>
+    <ProjectPath>$(SPOCLIENT)\devicecode\Targets\OS\Windows\Windows.settings</ProjectPath>
+    <PLATFORM_FAMILY>x86</PLATFORM_FAMILY>
+    <CustomFilter>
+    </CustomFilter>
+    <INSTRUCTION_SET Condition="'$(INSTRUCTION_SET)'==''">x86</INSTRUCTION_SET>
+    <TARGETPROCESSOR>x86</TARGETPROCESSOR>
+    <TARGETCODEBASE>WINDOWS</TARGETCODEBASE>
+    <TARGETCODEBASETYPE>OS</TARGETCODEBASETYPE>
+    <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="devicecode\Targets\OS\Windows" />
+  </ItemGroup>
+</Project>

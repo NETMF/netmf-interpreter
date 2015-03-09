@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <AssemblyName>MFUpdate_config_stub</AssemblyName>
+    <ProjectGuid>{030B2DAA-3EE8-440F-9742-BE465FDF64CC}</ProjectGuid>
+    <Description>MFUpdate config stub component</Description>
+    <Level>HAL</Level>
+    <LibraryFile>MFUpdate_config_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\MFUpdate\stubs\config\dotnetmf.proj</ProjectPath>
+    <Size />
+    <ManifestFile>MFUpdate_config_stub.$(LIB_EXT).manifest</ManifestFile>
+    <Groups />
+    <LibraryCategory>
+<MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="MFUpdate_Config_PAL" Guid="{9283C9C3-E1CF-4029-B53E-5E5801C6ADDC}" ProjectPath="$(SPOCLIENT)\Framework\Features\MFUpdate_Config_PAL.libcatproj" Conditional="" xmlns="">
+  <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+    <Major>4</Major>
+    <Minor>0</Minor>
+    <Revision>0</Revision>
+    <Build>0</Build>
+    <Extra />
+    <Date>2011-09-15</Date>
+    <Author />
+  </VersionDependency>
+  <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+</MFComponent></LibraryCategory>
+    <Documentation />
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter />
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>True</IsStub>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <HasLibraryCategory>True</HasLibraryCategory>
+    <AssemblyName>MFUpdate_config_stub</AssemblyName>
+    <ProjectGuid>{030B2DAA-3EE8-440F-9742-BE465FDF64CC}</ProjectGuid>
+    <Description>MFUpdate config stub component</Description>
+    <Level>HAL</Level>
+    <LibraryFile>MFUpdate_config_stub.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\MFUpdate\stubs\config\dotnetmf.proj</ProjectPath>
+    <Directory>DeviceCode\PAL\MFUpdate\stubs\config</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="MFUpdate_config_stub.cpp" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\include\mfupdate_decl.h" />
+    <IncludePaths Include="DeviceCode\PAL" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

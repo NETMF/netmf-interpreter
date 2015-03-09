@@ -1,0 +1,85 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <PropertyGroup>
+         <TinyCLR_Platform>Server</TinyCLR_Platform>
+    </PropertyGroup>
+    
+  <!--
+    PropertyGroup for Code Signing
+  -->
+  <PropertyGroup>
+    <SignProject>false</SignProject>
+    <CodeSignJobDescInternal>.NET Micro Framework SDK $(MFSDKShortProductVersion) Internals</CodeSignJobDescInternal>
+    <CodeSignJobKeywInternal>.NET Micro Framework SDK $(MFSDKShortProductVersion) Internals</CodeSignJobKeywInternal>
+    <CodeSignDisplayNameInternal>.NET Micro Framework SDK $(MFSDKShortProductVersion)</CodeSignDisplayNameInternal>
+    <CodeSignJobDescVSX>.NET Micro Framework SDK $(MFSDKShortProductVersion) VSX</CodeSignJobDescVSX>
+    <CodeSignJobKeywVSX>.NET Micro Framework SDK $(MFSDKShortProductVersion) VSX</CodeSignJobKeywVSX>
+    <CodeSignDisplayNameVSX>.NET Micro Framework SDK $(MFSDKShortProductVersion)</CodeSignDisplayNameVSX>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />  
+
+  <ItemGroup>
+    <Project Include="$(SPOCLIENT)\Framework\CorDebug\vs11\netmfvs2012.csproj" />
+    <Project Include="$(SPOCLIENT)\Framework\CorDebug\vs12\netmfvs2013.csproj" />
+    <Project Condition="Exists('$(VSSDK14INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs14\netmfvs14.csproj" />
+  </ItemGroup>
+
+  <Target Name="SignVsixContents">
+    <ItemGroup>
+      <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll" >
+        <FileType>dll</FileType>
+      </FoundFileOfType>
+      <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.dll" >
+        <FileType>dll</FileType>
+      </FoundFileOfType>
+      <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.12.dll" >
+        <FileType>dll</FileType>
+      </FoundFileOfType>
+    </ItemGroup>
+      <ItemGroup Condition="Exists('$(VSSDK14INSTALLDIR)')" >
+          <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.14.dll" >
+              <FileType>dll</FileType>
+          </FoundFileOfType>
+      </ItemGroup>
+    <Message Text="Signing VSIX Content" Importance="high" />
+
+    <!-- Although the task name implies it is specific to MSI assemblies, it's actually general enough to handle VSIX packages with the CodeSignOpcCert.-->
+    <SignMSIAssemblies
+      Files="@(FoundFileOfType)"
+      FileTypes="dll"
+      StageDirectory="$(BUILD_TREE_MSM)\$(MSBuildProjectName)\bin"
+      JobDescription="$(CodeSignJobDescInternal)"
+      JobKeywords="$(CodeSignJobKeywInternal)"
+      Certificate="$(CodeSignAuthenticodeCert)"
+      Approvers="$(CodeSignApprovers)"
+      DisplayName="$(CodeSignDisplayNameInternal)"
+      DisplayURL="http://netmf.com"
+      />
+  </Target>
+  
+  <Target Name="SignVsixPackages"  AfterTargets="Build"
+          DependsOnTargets="SignVsixContents"
+          Condition="'$(SignBuild)' == 'true' And '$(Configuration)' == 'Release'" >
+    <ItemGroup>
+      <FoundFileOfType Include="$(BUILD_TREE_DLL)\*.vsix" >
+        <FileType>vsix</FileType>
+      </FoundFileOfType>
+    </ItemGroup>
+
+    <Message Text="Signing VSIX Packages: @(FoundFileOfType)" Importance="high" />
+    
+    <!-- Although the task name implies it is specific to MSI assemblies, it's actually general enough to handle VSIX packages with the CodeSignOpcCert.-->
+    <SignMSIAssemblies
+      Files="@(FoundFileOfType)"
+      FileTypes="vsix"
+      StageDirectory="$(BUILD_TREE_MSM)\$(MSBuildProjectName)"
+      JobDescription="$(CodeSignJobDescInternal)"
+      JobKeywords="$(CodeSignJobKeywInternal)"
+      Certificate="$(CodeSignOpcCert)"
+      Approvers="$(CodeSignApprovers)"
+      DisplayName="$(CodeSignDisplayNameInternal)"
+      DisplayURL="http://netmf.com"
+      />
+
+  </Target>
+ 
+</Project>
