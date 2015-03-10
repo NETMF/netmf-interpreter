@@ -158,7 +158,7 @@ private:
     BOOL m_usingSSL;
     
     static void MulticastDiscoveryRespond(void* arg);
-	static void Sockets_LWIP_Driver::MulticastDiscoverySchedule();
+	static void MulticastDiscoverySchedule();
 
     static void CloseDebuggerSocket();
     static void OnDebuggerTimeout(void* arg);

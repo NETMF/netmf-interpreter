@@ -7,16 +7,50 @@
 
     <!-- ################################################################################ -->
         
-    <!-- CCM 64K -->
-    <Set Name="CCM_Size"                Value="0x00010000" />
-    <Set Name="Stack_Bottom"            Value="0x10000000"/>
-    <Set Name="Stack_Size"              Value="0x00008000"/>
+    <!-- Memory Region base and size values for physical hardware to help clarify the mapping
+         by making Symbolic names available instead of a bunch of numbers. These values are
+         fixed in hardware and therefore, don't change.
+    -->
+    <Set Name="IFLASH_BaseAddress"      Value="0x08000000"/>
+    <Set Name="IFLASH_Size"             Value="0x00100000"/><!-- 1MB -->
+    
+    <Set Name="CCM_BaseAddress"         Value="0x10000000"/>
+    <Set Name="CCM_Size"                Value="0x00010000"/><!-- 64KB -->
 
+    <Set Name="IRAM_BaseAddress"        Value="0x20000000"/>
+    <Set Name="IRAM_Size"               Value="0x00020000"/><!-- 128KB -->
+
+    <Set Name="NOR_BaseAddress"         Value="0x60000000"/>
+    <Set Name="NOR_Size"                Value="0x00800000"/><!-- 8MB -->
+    
+    <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
+    <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
+
+    <!-- The only target currently supported is FLASH -->
     <If Name="TARGETLOCATION" In="FLASH">
-        <Set Name="Config_BaseAddress"  Value="0x0800C000"/>    
-        <Set Name="Config_Size"         Value="0x00004000"/>
-        <Set Name="Code_BaseAddress"    Value="0x08010000"/>
-        <Set Name="Code_Size"           Value="0x00070000"/>
+        <Set Name="TinyBooter_Code_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
+        <Set Name="TinyBooter_Code_Size"         Value="0x0000C000"/><!-- 48KB -->
+
+        <Set Name="Config_BaseAddress"  Value="%TinyBooter_Code_BaseAddress% + %TinyBooter_Code_Size%"/>    
+        <Set Name="Config_Size"         Value="0x00004000"/><!-- 16KB -->
+        <Set Name="Code_BaseAddress"    Value="%Config_BaseAddress% + %Config_Size%"/>
+        <Set Name="Code_Size"           Value="0x000F0000"/><!-- 960KB -->
+        
+        <!-- ALL of external RAM is enabled for the CLR HEAP -->
+        <Set Name="Heap_BaseAddress"    Value="%EXTRAM_BaseAddress%"/>
+        <Set Name="Heap_Size"           Value="%EXTRAM_Size%"/>
+        
+        <!-- DAT region goes into external NOR Flash -->
+        <!-- Theoretically Thumb2 code can execute from NOR, however in practice
+             it doesn't work. The Debugger can't set breakpoints and doesn't resolve
+             source, etc... so at best you are left with single stepping through
+             disassembly. :(
+        -->
+        <Set Name="Data_BaseAddress"    Value="%NOR_BaseAddress%"/>
+        <Set Name="Data_Size"           Value="0x00020000"/><!-- 64KB -->
+
+        <Set Name="Stack_Bottom"        Value="%CCM_BaseAddress%"/>
+
         <Set Name="Valid"               Value="true"/>
     </If>
 
@@ -29,7 +63,7 @@
     <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
 
         <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
-            <!-- the entry pointer section goes into this region -->
+            <!-- The entry point section goes into this region -->
             <FileMapping Name="AppEntry.obj" Options="(+RO, +FIRST)" />
             <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
             <FileMapping Name="*" Options="(+RO-CODE)" />
@@ -55,12 +89,13 @@
         <ExecRegion Name="ER_RT_STACK" Base="AlignExpr( +0, 8)" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(rtx_stack)" />
         </ExecRegion>
+        
         <!-- The rest of the CCM is used as a general stack during startup. This can't overlap with the ER_RT_STACK
-                region as the kernel will zero that out during initialization, which would overwrite the stack of the
-                code running the initialization, causing an early FAULT. Size and alignment are critical here. The stack
-                must be aligned on an 8 byte boundary AND the size of this region must not extend it past the end of the
-                actual physical CCM space. The CRT startup code will initialize the region and, if the aligned size
-                puts the end outside of physical memory it will generate an imprecise abort.
+             region as the kernel will zero that out during initialization, which would overwrite the stack of the
+             code running the initialization, causing an early FAULT. Size and alignment are critical here. The stack
+             must be aligned on an 8 byte boundary AND the size of this region must not extend it past the end of the
+             actual physical CCM space. The CRT startup code will initialize the region and, if the aligned size
+             puts the end outside of physical memory it will generate an imprecise abort.
         -->
         <ExecRegion Name="ER_STACK" Base="+0" Options="ABSOLUTE EMPTY" Size="(AlignExpr(%CCM_Size% - 8 - ImageLength(ER_RT_STACK), 8))" />
         <ExecRegion Name="ER_STACK_TOP" Base="+0" Options="ABSOLUTE UNINIT" Size="">
@@ -69,7 +104,7 @@
 
         <!-- internal SRAM -->
         <!-- Custom heap used to mark location of vector table in RAM -->
-        <!-- this is a rather inflexible abuse of Custom Heap sections, as it prevents the use
+        <!-- This is a rather inflexible abuse of Custom Heap sections, as it prevents the use
              of an actual heap for those devices (like MCBSTM32F400 ) that have external RAM available
              Leaving it for now to simplify getting the base port going, but this should be moved
              to a dedicated section for the vector table in RAM in the future. 
@@ -82,7 +117,7 @@
             (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
             Since this starts the SRAM block, it's aligned just fine for any size table.
         -->
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="0x20000000" Options="ABSOLUTE" Size="UNINIT">
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="%IRAM_BaseAddress%" Options="ABSOLUTE" Size="UNINIT">
             <FileMapping Name="*" Options="(VectorTable +FIRST)" />
             <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
         </ExecRegion>
@@ -109,14 +144,12 @@
         <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
-        
-        <ExecRegion Name="ER_HEAP_BEGIN" Base="+0" Options="ALIGN 16 ABSOLUTE" Size="UNINIT">
+
+        <!-- everything between heapbegin and heapend will be allocated for the CLR heap -->
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE" Size="UNINIT">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
         </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for a heap -->
-        <!-- small (64K) heap for now, until support for enabling the external SRAM is done -->
-        <ExecRegion Name="ER_HEAP_END" Base="+0x10000" Options="ABSOLUTE" Size="UNINIT">
+        <ExecRegion Name="ER_HEAP_END" Base="+%Heap_Size%" Options="ABSOLUTE" Size="UNINIT">
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
         </ExecRegion>
 
@@ -128,7 +161,6 @@
             </ExecRegion>
 
             <!-- everything between profilebufferbegin and profilebufferend will be allocated for a buffer -->
-
             <ExecRegion Name="ER_PROFILERBUFFER_END" Base="%ProfileBuffer_End%" Options="ABSOLUTE" Size="UNINIT">
                 <FileMapping Name="*" Options="(SectionForProfilerBufferEnd)" />
             </ExecRegion>

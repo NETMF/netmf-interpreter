@@ -18,10 +18,17 @@ extern struct BlockStorageDevice  g_STM32F4_BS;
 extern struct IBlockStorageDevice g_STM32F4_Flash_DeviceTable;
 extern struct BLOCK_CONFIG        g_STM32F4_BS_Config;
 
+extern struct BlockStorageDevice  g_M29W640FB_BS;
+extern struct IBlockStorageDevice g_M29W640FB_Flash_DeviceTable;
+extern struct BLOCK_CONFIG        g_M29W640FB_BS_Config;
+
 
 void BlockStorage_AddDevices() {
-    BlockStorageList::AddDevice( &g_STM32F4_BS,
+	BlockStorageList::AddDevice( &g_STM32F4_BS,
                                  &g_STM32F4_Flash_DeviceTable,
                                  &g_STM32F4_BS_Config, FALSE );
+	BlockStorageList::AddDevice( &g_M29W640FB_BS,
+                                 &g_M29W640FB_Flash_DeviceTable,
+                                 &g_M29W640FB_BS_Config, FALSE );
 }
 

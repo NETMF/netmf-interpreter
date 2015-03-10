@@ -14,7 +14,7 @@ struct OPENSSL_TYPE__FILE
 extern OPENSSL_TYPE__FILE SSL_STDERR;
 extern OPENSSL_TYPE__FILE SSL_STDOUT;
 extern OPENSSL_TYPE__FILE SSL_STDIN;
-#if defined(__RENESAS__)
+#if defined(__RENESAS__) || defined(__CC_ARM)
 extern "C" volatile int errno;
 #else
 extern "C" int errno;

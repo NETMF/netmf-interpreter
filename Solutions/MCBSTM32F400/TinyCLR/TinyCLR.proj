@@ -20,52 +20,58 @@
         <OutputType>Executable</OutputType>
         <MultipleOutputSections Condition="'$(MEMORY)'=='FLASH'">true</MultipleOutputSections>
         <ADD_LOAD_IMAGE_CRC>true</ADD_LOAD_IMAGE_CRC>
-        <ExtraTargets>BuildSigFiles</ExtraTargets>
+        <ExtraTargets>BuildSigFiles;CompressImage</ExtraTargets>
         <ExtraEXETargets>MetaDataProcessorDat;TinyClrDat</ExtraEXETargets>
         <ImageLocation Condition="'$(MEMORY)'=='FLASH'">\ER_FLASH</ImageLocation>
         <LINK_FLAGS Condition="'$(COMPILER_TOOL)'!='GCC'">$(LINK_FLAGS) --verbose $(SWTC)keep *(.init_array)</LINK_FLAGS>
         <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
         <MMP_DAT_CreateDatabaseFile>$(BIN_DIR)\tinyclr.dat</MMP_DAT_CreateDatabaseFile>
-        <ExtraTargets>$(ExtraTargets);CompressImage</ExtraTargets>
+        <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_tinyclr_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
         <CompressImageFlashSym>EntryPoint</CompressImageFlashSym>
         <CompressImageDatSym>TinyClr_Dat_Start</CompressImageDatSym>
         <CompressImageCfgSym>g_ConfigurationSector</CompressImageCfgSym>
-        <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_tinyclr_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+        <USE_SSL Condition="'$(FLAVOR)'=='Release'">true</USE_SSL>
     </PropertyGroup>
-
     <ItemGroup>
+        <CompressImageSymdef Include="$(BIN_DIR)\TinyCLR.symdefs" />
+        <CompressImageFlash Include="$(BIN_DIR)\TinyCLR.bin\ER_FLASH" />
+        <CompressImageDat Include="$(BIN_DIR)\TinyCLR.bin\ER_DAT" />
+        <CompressImageCfg Include="$(BIN_DIR)\TinyCLR.bin\ER_CONFIG" />
+    </ItemGroup>
+    <ItemGroup>
+        <IncludePaths Include="DeviceCode\PAL" />
+        <IncludePaths Include="DeviceCode\PAL\OpenSSL" />
+        <IncludePaths Include="DeviceCode\PAL\OpenSSL\OpenSSL_1_0" />
+        <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS\DeviceCode\lwip_1_4_1_os" />
         <Compile Include="allocator.cpp" />
         <Compile Include="tinyclr.cpp" />
-        <CompressImageCfg Include="$(BIN_DIR)\TinyCLR.bin\ER_CONFIG" />
-        <CompressImageFlash Include="$(BIN_DIR)\TinyCLR.bin\ER_FLASH" />
-        <CompressImageSymdef Include="$(BIN_DIR)\TinyCLR.symdefs" />
         <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
         <ObjFiles Include="$(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)" />
         <ScatterFileReferences Include="$(SRC_DIR)\scatterfile_tinyclr_$(COMPILER_TOOL).$(SCATTER_EXT)" />
-        <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS\DeviceCode\lwip_1_4_1_os" />
     </ItemGroup>
-    <Import Project="$(SPOCLIENT)\Framework\Features\Core.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\NativeEventDispatcher.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\BlockStorage.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\Debugger.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\SerialPort.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\USB_Port.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\Usb.featureproj" />
-    <!-- <Import Project="$(SPOCLIENT)\Framework\Features\I2C.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\SPI.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\PWM.featureproj" /> /-->
-    <Import Project="$(SPOCLIENT)\Framework\Features\InterruptHandler.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\DataStorage.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\Diagnostics.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\Serialization.featureproj" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" />
-    <Import Project="$(SPOCLIENT)\Framework\Features\Network_lwip_os.featureproj" />
+    <Import Condition="'$(CORE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+    <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+    <Import Condition="'$(NATIVEEVENTDISPATCHER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\NativeEventDispatcher.featureproj" />
+    <Import Condition="'$(DATASTORAGE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\DataStorage.featureproj" />
+    <Import Condition="'$(BLOCKSTORAGE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\BlockStorage.featureproj" />
+    <Import Condition="'$(DEBUGGER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Debugger.featureproj" />
+    <Import Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" />
+    <Import Condition="'$(USB_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\USB_Port.featureproj" />
+    <Import Condition="'$(USB_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Usb.featureproj" />
+    <Import Condition="'$(INTERRUPTHANDLER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\InterruptHandler.featureproj" />
+    <Import Condition="'$(SERIAL_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" />
+    <Import Condition="'$(SERIALPORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SerialPort.featureproj" />
+    <Import Condition="'$(DIAGNOSTICS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Diagnostics.featureproj" />
+    <Import Condition="'$(I2C_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\I2C.featureproj" />
+    <Import Condition="'$(SPI_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SPI.featureproj" />
+    <Import Condition="'$(SERIALIZATION_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Serialization.featureproj" />
+    <Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_lwip_os.featureproj" />
+    <Import Condition="'$(CRYPTO_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />
+    <Import Condition="'$(SSL_OPEN_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_OPEN.featureproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
     <ItemGroup>
         <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\LargeBuffer\stubs\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\stubs\dotnetmf.proj" />
     </ItemGroup>
     <ItemGroup>
         <PlatformIndependentLibs Include="Core.$(LIB_EXT)" />
@@ -111,7 +117,6 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\CortexM3\GlobalLock\dotNetMF.proj" />
         <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
     </ItemGroup>
-
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_PreStackInit\dotNetMF.proj" />
@@ -377,14 +382,6 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\MFUpdate\stubs\dotnetmf.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="ssl_pal_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\ssl\stubs\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PlatformIndependentLibs Include="SecurityPkcs11.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SecurityPkcs11\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
         <PlatformIndependentLibs Include="SPOT_Update.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Update\dotNetMF.proj" />
     </ItemGroup>
@@ -409,17 +406,14 @@
         <DriverLibs Include="CMSIS_RTX.$(LIB_EXT)" />
     </ItemGroup>
     <ItemGroup>
-      <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\CMSIS_RTX_Config\dotNetMF.proj" />
-      <DriverLibs Include="CMSIS_RTX_Config.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\CMSIS_RTX_Config\dotNetMF.proj" />
+        <DriverLibs Include="CMSIS_RTX_Config.$(LIB_EXT)" />
     </ItemGroup>
-    
+
     <!-- lwIP STACK LIBRARIES -->
     <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
         <RequiredProjects Include="$(SPOCLIENT)\devicecode\drivers\timeservice\stubs\dotNetMF.proj" />
         <DriverLibs Include="timeservice_hal_stubs.$(LIB_EXT)" />
-
-        <!--<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets_lwip_os\stubs\dotNetMF.proj" />
-        <DriverLibs Include="sockets_pal_lwip_os_stubs.$(LIB_EXT)" />-->
 
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets_lwip_os\dotNetMF.proj" />
         <DriverLibs Include="sockets_pal_lwip_os.$(LIB_EXT)" />
@@ -429,7 +423,7 @@
 
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_OS\SocketsDriver\dotnetmf.proj" />
         <DriverLibs Include="SocketsDriver_PAL_LWIP_os.$(LIB_EXT)" />
-		
+
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_OS\LWIP\src\dotnetmf_sockets.proj" />
         <DriverLibs Include="sockets_hal_sockets_lwIP_os.$(LIB_EXT)" />
 
@@ -445,10 +439,52 @@
         <DriverLibs Include="STM32F4_ETH_lwip_os.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_ETH_lwip_os\dotNetMF.proj" />
     </ItemGroup>
+    <ItemGroup Condition="'$(USE_SSL)'!='true'">
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets\openssl\stubs\dotnetmf.proj" />
+        <DriverLibs Include="openssl_pal_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(USE_SSL)'=='true'">
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Crypto\dotnetmf.proj" />
+        <DriverLibs Include="Crypto_Config_MCBSTM32F400.$(LIB_EXT)" />
 
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SecurityPkcs11\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SecurityPkcs11.$(LIB_EXT)" />
+
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net_security\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Net_Security.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets\openssl\dotnetmf.proj" />
+        <DriverLibs Include="openssl_pal.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\ssl\dotnetmf.proj" />
+        <DriverLibs Include="libssl_openssl.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\tinyclr\dotnetmf.proj" />
+        <DriverLibs Include="ssl_types.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleStorage\dotNetMF.proj" />
+        <DriverLibs Include="SimpleStorage_PAL.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\dotNetMF.proj" />
+        <DriverLibs Include="PKCS11_Engine.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\OpenSSL\dotNetMF.proj" />
+        <DriverLibs Include="OpenSSL_PKCS11_Crypto.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\dotnetmf.proj" />
+        <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
+    </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="Network_Config_HAL_MCBSTM32F400.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Network_Config_HAL\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="M29W640FB_Flash.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
+    </ItemGroup>
+	<ItemGroup>
+        <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT)" />
