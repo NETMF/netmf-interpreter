@@ -91,10 +91,16 @@ ERROR - WE SHOULD NOT INCLUDE THIS HEADER IF NOT BUILDING A STM32F2/F4 PLATFORM
 // communicaiton facilities
 /////////////////////////////////////////////////////////
 
+// disable conflicting and overly generic macro definitions
+#undef FLASH
+#undef CRC
+#undef HASH
+
 // CMSIS-Core SOC Specific header
 #include "stm32f4xx.h"
 
 // disable conflicting and overly generic macro definitions
 #undef FLASH
 #undef CRC
+#undef HASH
 #endif

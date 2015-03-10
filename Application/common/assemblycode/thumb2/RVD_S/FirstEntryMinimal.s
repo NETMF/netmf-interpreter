@@ -43,7 +43,7 @@ STACK_MODE_PROCESS  EQU     2048
     ;*************************************************************************
     AREA SectionForStackBottom, DATA, NOINIT
 StackBottom DCD 0
-    AREA SectionForStackTop,    DATA, NOINIT
+    AREA SectionForStackTop,    DATA, NOINIT, ALIGN=3
 StackTop    DCD 0
     AREA SectionForHeapBegin,   DATA, NOINIT
 HeapBegin   DCD 0

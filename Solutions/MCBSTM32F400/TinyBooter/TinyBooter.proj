@@ -246,6 +246,14 @@
         <DriverLibs Include="STM32F4_DA.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_DA\dotNetMF.proj" />
     </ItemGroup>
+	<ItemGroup>
+        <DriverLibs Include="M29W640FB_Flash.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
+    </ItemGroup>
+	<ItemGroup>
+        <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
+    </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj" />

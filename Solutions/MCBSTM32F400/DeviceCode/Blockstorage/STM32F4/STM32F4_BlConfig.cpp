@@ -13,9 +13,6 @@
 
 #include <tinyhal.h>
 
-//--//
-
-
 #define FLASH_MANUFACTURER_CODE              0x0000  // not used
 #define FLASH_DEVICE_CODE                    0x0000  // not used
 #define FLASH_BASE_ADDRESS1                  0x08000000
@@ -34,8 +31,6 @@
 #define FLASH_SECTOR_WRITE_MAX_TIME_USEC     100     // not used
 #define FLASH_BLOCK_ERASE_ACTUAL_TIME_USEC   10000   // not used
 
-//--//
-
 // EBIU Information
 
 #define STM32F4__CHIP_SELECT       0
@@ -47,12 +42,6 @@
 #define STM32F4__WP_GPIO_PIN       GPIO_PIN_NONE
 #define STM32F4__WP_ACTIVE         FALSE
 
-
-
-//--//
-
-
-
 // BlockDeviceInformation
 
 #define STM32F4__IS_REMOVABLE      FALSE
@@ -60,19 +49,6 @@
 #define STM32F4__WRITE_PROTECTED   FALSE
 #define STM32F4__SUPP_COPY_BACK    FALSE
 #define STM32F4__NUM_REGIONS       3
-
-
-
-//--//
-
-#if defined(BUILD_RTM)
-        #define MEMORY_BLOCKTYPE_SPECIAL  BlockRange::BLOCKTYPE_DEPLOYMENT
-#else
-        #define MEMORY_BLOCKTYPE_SPECIAL  BlockRange::BLOCKTYPE_FILESYSTEM 
-#endif
-
-//--//
-
 
 const BlockRange g_STM32F4_BlockRange1[] =
 {
@@ -88,9 +64,8 @@ const BlockRange g_STM32F4_BlockRange2[] =
 const BlockRange g_STM32F4_BlockRange3[] =
 {
     { BlockRange::BLOCKTYPE_CODE      ,   0, 2 },  // 08020000 CLR         384k
-    { BlockRange::BLOCKTYPE_DEPLOYMENT,   3, 6 },  // 08080000 deployment  512k
+    { BlockRange::BLOCKTYPE_CODE      ,   3, 6 },  // 08080000 CLR         512k
 };
-
 
 const BlockRegionInfo  g_STM32F4_BlkRegion[STM32F4__NUM_REGIONS] = 
 {
@@ -119,10 +94,6 @@ const BlockRegionInfo  g_STM32F4_BlkRegion[STM32F4__NUM_REGIONS] =
     }
 };
 
-
-//--//
-
-
 const BlockDeviceInfo g_STM32F4_DeviceInfo=
 {
     {  
@@ -140,7 +111,6 @@ const BlockDeviceInfo g_STM32F4_DeviceInfo=
     STM32F4__NUM_REGIONS,                  // UINT32 NumRegions;
     g_STM32F4_BlkRegion,                   // const BlockRegionInfo* pRegions;
 };
-
 
 struct MEMORY_MAPPED_NOR_BLOCK_CONFIG g_STM32F4_BS_Config =
 {
@@ -171,18 +141,5 @@ struct MEMORY_MAPPED_NOR_BLOCK_CONFIG g_STM32F4_BS_Config =
     FLASH_DEVICE_CODE,                     // UINT32 DeviceCode;
 };
 
-//--//
-
-
-#if defined(ADS_LINKER_BUG__NOT_ALL_UNUSED_VARIABLES_ARE_REMOVED)
-#pragma arm section rodata = "g_STM32F4_BS"
-#endif
-
 struct BlockStorageDevice g_STM32F4_BS;
-
-#if defined(ADS_LINKER_BUG__NOT_ALL_UNUSED_VARIABLES_ARE_REMOVED)
-#pragma arm section rodata 
-#endif 
-
-//--//
 

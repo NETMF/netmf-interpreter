@@ -777,7 +777,7 @@ HRESULT LWIP_SOCKETS_Driver::UpdateAdapterConfiguration( UINT32 interfaceIndex, 
     }
     
     BOOL fEnableDhcp = (0 != (config->flags & SOCK_NETWORKCONFIGURATION_FLAGS_DHCP));
-    BOOL fDynamicDns = (0 != (config->flags & SOCK_NETWORKCONFIGURATION_FLAGS_DYNAMIC_DNS));
+    //BOOL fDynamicDns = (0 != (config->flags & SOCK_NETWORKCONFIGURATION_FLAGS_DYNAMIC_DNS));
     BOOL fDhcpStarted;
 
     struct netif *pNetIf = netif_find_interface(g_LWIP_SOCKETS_Driver.m_interfaces[interfaceIndex].m_interfaceNumber);
