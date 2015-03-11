@@ -37,6 +37,6 @@ is achieved by providing the options for generating a detailed log file but use 
 follows:  
 `msbuild /flp:verbosity=detailed /clp:verbosity=minimal`
 
-More info on building the framework and internal development guides will appear on the wiki. If you have content that
+More info on building the framework and internal development guides will appear on the [wiki](https://github.com/NETMF/netmf-interpreter/wiki). If you have content that
 is relevant to the NETMF development community that you would like to contribute feel free to join in and participate in
 the future of the .NET Micro Framework. 
