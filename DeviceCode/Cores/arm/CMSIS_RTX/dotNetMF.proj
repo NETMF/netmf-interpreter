@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AssemblyName>CMSIS_RTX</AssemblyName>
+        <Size>
+        </Size>
+        <ProjectGuid>{E2856248-4EC5-4C21-AE1B-1EF28E195840}</ProjectGuid>
+        <Description>CMSIS-RTX OS</Description>
+        <Level>HAL</Level>
+        <LibraryFile>CMSIS_RTX.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS_RTX\dotNetMF.proj</ProjectPath>
+        <ManifestFile>CMSIS_RTX.$(LIB_EXT).manifest</ManifestFile>
+        <Groups>OS\CMSIS_RTOS</Groups>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <CustomFilter>
+        </CustomFilter>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>False</IsStub>
+        <Directory>DeviceCode\Cores\arm\CMSIS_RTX</Directory>
+        <OutputType>Library</OutputType>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+    <ItemGroup>
+        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX\INC" />
+        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX\SRC" />
+        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS\Include" />
+        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS\Driver\Include" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\SVC_Table.s" />
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\SVC_Table.s" />
+        <Compile Include="SRC\HAL_CM.c" />
+        <Compile Include="SRC\rt_CMSIS.c" />
+        <Compile Include="SRC\rt_Event.c" />
+        <Compile Include="SRC\rt_List.c" />
+        <Compile Include="SRC\rt_Mailbox.c" />
+        <Compile Include="SRC\rt_MemBox.c" />
+        <Compile Include="SRC\rt_Memory.c" />
+        <Compile Include="SRC\rt_Mutex.c" />
+        <Compile Include="SRC\rt_Robin.c" />
+        <Compile Include="SRC\rt_Semaphore.c" />
+        <Compile Include="SRC\rt_System.c" />
+        <Compile Include="SRC\rt_Task.c" />
+        <Compile Include="SRC\rt_Time.c" />
+        <Compile Include="SRC\rt_Timer.c" />
+      
+        <HFiles Include="SRC\RTX_Config.h" />
+        <HFiles Include="SRC\rt_Event.h" />
+        <HFiles Include="SRC\rt_HAL_CM.h" />
+        <HFiles Include="SRC\rt_List.h" />
+        <HFiles Include="SRC\rt_Mailbox.h" />
+        <HFiles Include="SRC\rt_MemBox.h" />
+        <HFiles Include="SRC\rt_Memory.h" />
+        <HFiles Include="SRC\rt_Mutex.h" />
+        <HFiles Include="SRC\rt_Robin.h" />
+        <HFiles Include="SRC\rt_Semaphore.h" />
+        <HFiles Include="SRC\rt_System.h" />
+        <HFiles Include="SRC\rt_Task.c" />
+        <HFiles Include="SRC\rt_Task.h" />
+        <HFiles Include="SRC\rt_Time.c" />
+        <HFiles Include="SRC\rt_Time.h" />
+        <HFiles Include="SRC\rt_Timer.h" />
+        <HFiles Include="SRC\rt_TypeDef.h" />
+    </ItemGroup>
+    <!-- REVIEW:
+         It may be worth considering a seperate lib for these so that
+         this library can remain core neutral. We'll have the same
+         sort of thing with the CMSIS libs and support as well since
+         those have support specific to an architecture, a core, an
+         SOC and a physical board. 
+    -->
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4'">
+        <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM4.c" />
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM4.c" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M3'">
+        <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM3.c" />
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM3.c" />
+    </ItemGroup>
+	<Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

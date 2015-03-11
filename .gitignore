@@ -9,7 +9,7 @@ obj/
 
 # CMSIS and CMSIS_RTX
 /DeviceCode/Cores/arm/CMSIS/
-/DeviceCode/Cores/arm/CMSIS_RTX/
+/DeviceCode/Cores/arm/CMSIS_RTX/*
 !/DeviceCode/Cores/arm/CMSIS_RTX/dotNetMF.proj
 
 # WinPCAP
