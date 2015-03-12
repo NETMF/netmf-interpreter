@@ -1,7 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
-  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.PseudoInstallerScript.Targets" />
 
   <ItemGroup>
     <Project Include="build.dirproj" />

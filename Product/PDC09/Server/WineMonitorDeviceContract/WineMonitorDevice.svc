@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="WineMonitorDevice.WineMonitorDevice" CodeBehind="WineMonitorDevice.svc.cs" %>

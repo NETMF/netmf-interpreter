@@ -7,7 +7,6 @@
 <!-- -->
 
   <ItemGroup>
-    <RequiredProjects Condition="'$(TinyCLR_Platform)'!='Server' AND '$(AUTOMATED_BUILD)'=='' AND '$(InPKProj)'    !='True'" Include="$(SPOCLIENT)\PK.proj" />
     <RequiredProjects Condition="'$(TinyCLR_Platform)'!='Server' AND '$(AUTOMATED_BUILD)'=='' AND '$(InCLRDefines)'!='True'" Include="$(SPOCLIENT)\Framework\Tools\CreateCLRDefines.proj" />
   </ItemGroup>
 

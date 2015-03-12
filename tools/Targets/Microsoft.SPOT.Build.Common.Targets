@@ -16,10 +16,6 @@
   </PropertyGroup>
   <Import Project="$(CommonAssemblyInfoFile)" />
 
-  <Import Condition=" '$(InstrumentForCoverage)' == 'true' "
-    Project="Microsoft.SPOT.Build.Magellan.Targets"
-    />
-
   <Import Project="Microsoft.SPOT.SDK.Targets" />
 
   <ItemGroup>
