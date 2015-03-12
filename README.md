@@ -3,12 +3,17 @@ Welcome to the .NET Micro Framework interpreter GitHub repository.
 
 ## Getting Started
 1. Clone or fork the repository from GitHub  
-It is recommended to use at least one level of directory hierarchy from the root to accommodate the binaries from step #3
+It is recommended to use at least one level of directory hierarchy from the root to accommodate the binaries from step #3 see the example following theses steps for more details.    
 2. Download the [binary tools](http://netmf.github.io/downloads/build-tools.zip) zip file  
-The zip contains binaries necessary to build the SDK and support files needed to build custom device images. Our longer term
-goal is to remove the need for these binaries so they are a separate download at present.
-3. Unzip the contents of the tools zip to the parent folder of the repository, that is the tools and bin folders in the zip
-should become siblings of the folder containing the repository.
+The zip contains binaries necessary to build the SDK along with support files needed to build custom device images. Our longer term goal is to remove the need for these binaries so they are a separate download at present.
+3. Unzip the contents of the tools zip to the parent folder of the repository, that is the tools and bin folders in the zip should become siblings of the folder containing the repository.
+
+Example:  
+```  
+...\GitHub\NETMF\Bin  
+...\GitHub\NETMF\netmf-interpreter  
+...\GitHub\NETMF\Tools  
+```  
 
 ## Building the code
 
