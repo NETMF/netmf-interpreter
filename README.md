@@ -10,25 +10,29 @@ The zip contains binaries necessary to build the SDK along with support files ne
 
 Example:  
 ```  
-...\GitHub\NETMF\Bin  
-...\GitHub\NETMF\netmf-interpreter  
-...\GitHub\NETMF\Tools  
+...\GitHub\NETMF\
+|
++---------------\Bin  
+|
++---------------\netmf-interpreter  
+|
++---------------\Tools  
 ```  
 
 ## Building the code
 
 ### Build Requirements:
-1. To build the SDK you must have Visual Studio 2013 Community, Pro, or Ultimate editions and the Visual Studio 2013 SDK
+1. To build the SDK you must have Visual Studio 2013 Community, Pro, or Ultimate editions and the Visual Studio 2013 SDK  
 If you want to generate a VSIX package for Visual Studio 2015 Preview, you must also have the Visual Studio 2015 SDK installed.
 
 ### Building the SDK
 1. Open a command prompt and navigate to the root of the repository
-2. Run the build_sdk.cmd command script to generate a new SDK MSI and VSIX packages.  
+2. Run the build_sdk.cmd command script to generate a new SDK MSI and VSIX packages  
 This will generate the SDK installer MSI and the VSIX packages in the BuildOutput folder
 
 ### Building a firmware solution
 1. Open a command prompt and navigate to the root of the repository
-2. run setenv_<toolset> <args> to set up the build environment for the tool-set you have.  
+2. run setenv_<toolset> <args> to set up the build environment for the tool-set you have  
 Example: `C:\GitHub\Netmf\netmf-interpreter>setenv_mdk 5.05`
 3. navigate to the Solutions\<platformname> folder for the platform you wish to build
 4. Select the build flavor of the tools  
