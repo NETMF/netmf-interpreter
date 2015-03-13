@@ -2,7 +2,7 @@
 
     <!-- You can override in your project the file that contains your ReleaseInfo settings if you need to. You can
          even avoid having such a file entirely by defining the standard release info and setting the property
-         _Microsoft_SPOT_CommonAssemblyInfo_Targets__Included_ to 'true'
+         _ReleaseInfo__Included_ to 'true'
          -->
     <PropertyGroup>
         <ReleaseInfo Condition="'$(ReleaseInfo)'==''" >$(SPOCLIENT)\ReleaseInfo.settings</ReleaseInfo>
