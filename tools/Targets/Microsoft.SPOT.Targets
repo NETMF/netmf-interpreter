@@ -10,13 +10,25 @@
     </Project>
   </ItemDefinitionGroup>
 
-
   <Import Project="Microsoft.SPOT.Build.Setup.Targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.Targets" />
   <Import Project="Microsoft.SPOT.Build.Common.Targets" />
   <Target Name="CreateManifestResourceNames" />
   <Target Name="Compile" />
   <Target Name="CopyFilesToOutputDirectory" />
+
+  <!-- Nop this target.  Properties are set in Build.Targets. -->
+  <Target Name="GetFrameworkPaths"/>
+
+  <!-- Nop the GetReferenceAssemblyPaths target for devices; the version in .NET 3.0+ makes
+       TargetFrameworkDirectory a list of paths to a set of directories that in sum contain
+       the .NET framework assemblies for the desktop; we continue to treat TargetFrameworkDirectory
+       as a single path to the one directory containing the entire .NET MF.
+  -->
+
+  <Target Name="GetReferenceAssemblyPaths"
+    DependsOnTargets="$(GetReferenceAssemblyPathsDependsOn)">
+  </Target>
 
   <PropertyGroup>
     <MMP_PE_SKIP>true</MMP_PE_SKIP>
