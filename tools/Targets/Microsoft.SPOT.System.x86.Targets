@@ -184,6 +184,7 @@
           MANIFESTFILE="$(EmbeddedManifestFile)"
           DELAYSIGN="$(DelaySign)"
           KEYFILE="$(SIGNING_KEY_FILE)"
+          IGNORE="$(LinkIgnore)"
           />
     <Exec Condition="'$(EmbedManifest)'=='true'" Command="mt /outputresource:&quot;$(TargetFile);#1&quot; /manifest $(EmbeddedManifestFile) /nologo $(ManifestFlag)"/>
     <Exec Condition="'$(ManagedCode)'=='true' And '$(SIGNING_KEY_FILE)'!=''" Command="sn /R &quot;$(TargetFile)&quot; $(SPOCLIENT)\Framework\key.snk"/>
@@ -199,6 +200,7 @@
           OUT="$(TargetFile)"
           OBJFILES="@(ObjFiles);@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)', ' ')"
           DEBUG="false"
+          IGNORE="$(LinkIgnore)"
           />
   </Target>
 
@@ -222,6 +224,7 @@
           DELAYSIGN="$(DelaySign)"
           KEYFILE="$(SIGNING_KEY_FILE)"
           ModuleDefinitionFile="@(ModuleDefinitionFile)"
+          IGNORE="$(LinkIgnore)"
           />
     <Exec Condition="'$(EmbedManifest)'=='true'" Command="mt /outputresource:&quot;$(TargetFile);#2&quot; /manifest $(EmbeddedManifestFile) /nologo $(ManifestFlag)"/>
     <Exec Condition="'$(ManagedCode)'=='true' And '$(SIGNING_KEY_FILE)'!=''" Command="sn /R &quot;$(TargetFile)&quot; $(SPOCLIENT)\Framework\key.snk"/>

@@ -64,12 +64,6 @@
     <Compile Include="asn_moid.cpp" />
     <Compile Include="a_bytes.cpp" />
     <Compile Include="a_strnid.cpp" />
-    <Compile Include="evp_asn1.cpp" />
-    <Compile Include="asn_pack.cpp" />
-    <Compile Include="p5_pbe.cpp" />
-    <Compile Include="p5_pbev2.cpp" />
-    <Compile Include="p8_pkey.cpp" />
-    <Compile Include="asn_moid.cpp" />
     <IncludePaths Include="DeviceCode\include" />
     <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\" />
     <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\include\" />

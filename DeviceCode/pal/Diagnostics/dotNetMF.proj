@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Native_Profiler.cpp" />
-    <Compile Include="Native_Profiler.h" />
     <IncludePaths Include="DeviceCode\include" />
   </ItemGroup>
   <ItemGroup>

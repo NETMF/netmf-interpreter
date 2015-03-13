@@ -47,7 +47,12 @@ namespace Microsoft.SPOT.Tasks.NativeBuild
             set { debug = value; }
         }
 
-
+        protected string linkIgnore = string.Empty;
+        public string IGNORE
+        {
+            get { return linkIgnore; }
+            set { linkIgnore = value; }
+        }
 
         //  Linker /DEFAULTLIB variables
         protected ITaskItem[] deflibs;
@@ -329,6 +334,11 @@ namespace Microsoft.SPOT.Tasks.NativeBuild
             {
                 builder.AppendSwitch("/DEBUG");
                 builder.AppendSwitch("/ASSEMBLYDEBUG");
+            }
+
+            if( !string.IsNullOrWhiteSpace( linkIgnore ) )
+            {
+                builder.AppendSwitch( string.Format( "/IGNORE:{0}", linkIgnore ) );
             }
 
             if (null != DEFLIBS)
