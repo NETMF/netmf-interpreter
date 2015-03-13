@@ -12,9 +12,9 @@
         $(SPOCLIENT)\Framework\Tools\buildTasks.dirproj;
         $(SPOCLIENT)\Framework\Tools\CreateCLRDefines.proj;
         $(SPOCLIENT)\Framework\Debugger\Debugger.csproj;
-        $(SPOCLIENT)\Framework\CorDebug\vs11\CorDebug.csproj;
-        $(SPOCLIENT)\Framework\CorDebug\vs12\CorDebugvs12.csproj;
         " />
+    <Project Condition="Exists('$(VSSDK11INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs11\CorDebug.csproj"/>
+    <Project Condition="Exists('$(VSSDK12INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs12\CorDebugvs12.csproj"/>
     <Project Condition="Exists('$(VSSDK14INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs14\CorDebugvs14.csproj"/>
 
   </ItemGroup>
