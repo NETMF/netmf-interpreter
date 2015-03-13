@@ -5,7 +5,7 @@
     <AssemblyName>BogusAssemblyName</AssemblyName>
   </PropertyGroup>
 
-  <Import Project="Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Condition="'$(Microsoft_SPOT_Build_Setup_Targts_Imported)'==''" Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Build.Setup.Targets"/>
   <Import Project="$(MSBuildBinPath)\Microsoft.Common.Targets" />
   <Import Project="Microsoft.SPOT.Build.Targets" />
 

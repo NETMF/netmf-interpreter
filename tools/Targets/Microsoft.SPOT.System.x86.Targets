@@ -36,7 +36,7 @@
     <CommonAssemblyInfoFile Condition="'$(CommonAssemblyInfoFile)'==''"
         >$(SPOCLIENT)\tools\targets\Microsoft.SPOT.CommonAssemblyInfo.Targets</CommonAssemblyInfoFile>
   </PropertyGroup>
-  <Import Project="$(CommonAssemblyInfoFile)" />
+  <Import Condition="'$(Microsoft_SPOT_CommonAssemblyInfo_Targets)'!='true'" Project="$(CommonAssemblyInfoFile)" />
 
   <ItemGroup Condition="'$(IgnoreNetMFStandardLibs)' != 'true'">
     <ExtraLibs       Include="dbghelp.lib" />

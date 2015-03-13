@@ -10,8 +10,8 @@
   CSharpFiles - optional list of C# files to add to the generated project.
     
   -->
-  
-  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Build.Setup.Targets"/>
+
+  <Import Condition="'$(Microsoft_SPOT_Build_Setup_Targts_Imported)'==''" Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Build.Setup.Targets"/>
 
   <ItemGroup>
     <!--Removed Alarm.wsdl:  Test case need to be able to properly handle 

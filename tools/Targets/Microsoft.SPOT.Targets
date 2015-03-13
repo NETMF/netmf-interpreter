@@ -10,7 +10,7 @@
     </Project>
   </ItemDefinitionGroup>
 
-  <Import Project="Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Condition="'$(Microsoft_SPOT_Build_Setup_Targts_Imported)'==''" Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Build.Setup.Targets"/>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.Targets" />
   <Import Project="Microsoft.SPOT.Build.Common.Targets" />
   <Target Name="CreateManifestResourceNames" />

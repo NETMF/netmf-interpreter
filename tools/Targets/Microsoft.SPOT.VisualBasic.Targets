@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 
-  <Import Project="Microsoft.SPOT.Build.Setup.Targets" />
+  <Import Condition="'$(Microsoft_SPOT_Build_Setup_Targts_Imported)'==''" Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.Build.Setup.Targets"/>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />
   <Import Project="Microsoft.SPOT.Build.Targets" />
 
