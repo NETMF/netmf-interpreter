@@ -39,7 +39,6 @@
   <ItemGroup>
     <FastCompileCPPFile Include="Spot_time_fastcompile.cpp" />
     <Compile Include="spot_Time_native.cpp" />
-    <Compile Include="spot_Time_native.h" />
     <Compile Include="spot_Time_native_Microsoft_SPOT_Time_TimeService.cpp" />
     <IncludePaths Include="CLR\libraries\corlib" />
     <IncludePaths Include="CLR\libraries\SPOT" />

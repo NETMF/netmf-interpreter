@@ -8,6 +8,9 @@
     <ProjectGuid>7912281B-4F88-41be-8531-697982965A76</ProjectGuid>
     <HasAuxTargets>true</HasAuxTargets>
     <NoOptForParserTarget>Release</NoOptForParserTarget>
+    <!--LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library -->
+    <!-- Due to conditional compilation it is entirely plausible that some of the OBJ files are effectively empty -->
+    <LinkIgnore>4221</LinkIgnore>
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <ItemGroup>
