@@ -90,7 +90,7 @@
                />
         <Error Code="NETMFBLD"
                Condition="!EXISTS('$(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS_RTX\SRC')"
-               Text="Missing CMSIS-CORE installation at: $(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS_RTX"
+               Text="Missing CMSIS-RTX installation at: $(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS_RTX"
                />
     </Target>
 </Project>
