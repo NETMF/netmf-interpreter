@@ -15,3 +15,5 @@
 
 #include <WinBase.h>
 
+#include <MetaHost.h>
+#pragma comment(lib, "mscoree.lib")
