@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" InitialTargets="CheckPreRquisitesInstalled" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <AssemblyName>CMSIS_RTX</AssemblyName>
         <Size>
@@ -82,5 +82,15 @@
         <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM3.c" />
         <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM3.c" />
     </ItemGroup>
-	<Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+    <Target Name="CheckPreRquisitesInstalled">
+        <Error Code="NETMFBLD"
+               Condition="!EXISTS('$(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS\Include')"
+               Text="Missing CMSIS-CORE installation at: $(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS\"
+               />
+        <Error Code="NETMFBLD"
+               Condition="!EXISTS('$(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS_RTX\SRC')"
+               Text="Missing CMSIS-RTX installation at: $(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS_RTX"
+               />
+    </Target>
 </Project>

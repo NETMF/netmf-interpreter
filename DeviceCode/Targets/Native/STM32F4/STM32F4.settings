@@ -1,4 +1,4 @@
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" InitialTargets="CheckPreRquisitesInstalled" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <Name>STM32F4</Name>
         <CpuName>Cortex-M4</CpuName>
@@ -31,7 +31,13 @@
 
     <ItemGroup>
         <IncludePaths Include="Devicecode\Targets\Native\STM32F4" />
-	    <IncludePaths Include="DeviceCode\Targets\Native\STM32F4\DeviceCode" />
+        <IncludePaths Include="DeviceCode\Targets\Native\STM32F4\DeviceCode" />
         <IncludePaths Include="DeviceCode\Cores\ARM\CMSIS\Include" />
     </ItemGroup>
+    <Target Name="CheckPreRquisitesInstalled">
+        <Error Code="NETMFBLD"
+               Condition="!EXISTS('$(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS\Include')"
+               Text="Missing CMSIS-CORE installation at: $(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS\"
+               />
+    </Target>
 </Project>
