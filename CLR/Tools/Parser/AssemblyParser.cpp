@@ -2299,6 +2299,9 @@ HRESULT MetaData::Parser::ParseByteCode( MethodDef& db )
 }
 
 //--//
+_COM_SMRT_PTR(ICLRMetaHost);
+_COM_SMRT_PTR(ICLRRuntimeInfo);
+
 
 HRESULT MetaData::Parser::Analyze( LPCWSTR szFileName )
 {
@@ -2317,7 +2320,11 @@ HRESULT MetaData::Parser::Analyze( LPCWSTR szFileName )
 
     m_pe.OpenAndDecode( szFileName );
 
-    TINYCLR_CHECK_HRESULT(::CoCreateInstance( CLSID_CorMetaDataDispenser, NULL, CLSCTX_INPROC_SERVER, IID_IMetaDataDispenserEx, (void **)&m_pDisp ));
+    ICLRMetaHostPtr spMetaHost;
+    ICLRRuntimeInfoPtr spRuntimeInfo;
+    TINYCLR_CHECK_HRESULT(CLRCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&spMetaHost)));
+    TINYCLR_CHECK_HRESULT(spMetaHost->GetRuntime(L"v4.0.30319", IID_PPV_ARGS(&spRuntimeInfo)));
+    TINYCLR_CHECK_HRESULT(spRuntimeInfo->GetInterface(CLSID_CorMetaDataDispenser, IID_IMetaDataDispenserEx, (LPVOID*)&m_pDisp));
 
     TINYCLR_CHECK_HRESULT(m_pDisp->OpenScope( szFileName, ofRead, IID_IMetaDataImport, (IUnknown**)&m_pImport ));
     

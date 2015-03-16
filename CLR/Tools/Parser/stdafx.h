@@ -15,3 +15,4 @@
 
 #include <WinBase.h>
 
+#include <MetaHost.h>
