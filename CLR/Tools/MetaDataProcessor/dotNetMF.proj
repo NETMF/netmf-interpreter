@@ -19,6 +19,7 @@
     <IncludePaths Include="Support\include" />
     <IncludePaths Include="DeviceCode\include" />
     <IncludePaths Include="CLR\Tools\include" />
+    <ExtraLibs Include="mscoree.lib" />
   </ItemGroup>
   <ItemGroup>
     <HFiles Include="$(SPOCLIENT)\clr\graphics\gif\giffile.h" />

@@ -67,7 +67,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/DEBUGTYPE:cv,fixup /nxcompat"
-				AdditionalDependencies="dbghelp.lib crypto.lib "
+				AdditionalDependencies="dbghelp.lib crypto.lib mscoree.lib"
 				OutputFile="$(OutDir)/MetaDataProcessor.exe"
 				LinkIncremental="0"
 				AdditionalLibraryDirectories="$(SolutionDir)Crypto\lib\x86"
@@ -157,7 +157,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/DEBUGTYPE:cv,fixup /nxcompat"
-				AdditionalDependencies="crypto.lib"
+				AdditionalDependencies="crypto.lib mscoree.lib"
 				OutputFile="$(OutDir)/MetaDataProcessor.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(SolutionDir)Crypto\lib\x86"
