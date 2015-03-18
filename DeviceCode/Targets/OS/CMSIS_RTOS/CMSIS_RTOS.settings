@@ -17,9 +17,9 @@
     <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
   </PropertyGroup>
   <ItemGroup>
-    <IncludePaths Include="DeviceCode\Cores\arm\CMSIS\Include" />    
-    <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX" />
-    <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX\INC" />
+    <IncludePaths Include="CMSIS\CMSIS\Include" />    
+    <IncludePaths Include="CMSIS\CMSIS_RTX" />
+    <IncludePaths Include="CMSIS\CMSIS_RTX\INC" />
   </ItemGroup>
   <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
     <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS\DeviceCode\lwip_1_4_1_os"/>

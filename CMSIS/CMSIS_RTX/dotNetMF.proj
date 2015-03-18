@@ -8,7 +8,7 @@
         <Description>CMSIS-RTX OS</Description>
         <Level>HAL</Level>
         <LibraryFile>CMSIS_RTX.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS_RTX\dotNetMF.proj</ProjectPath>
+        <ProjectPath>$(SPOCLIENT)\CMSIS\CMSIS_RTX\dotNetMF.proj</ProjectPath>
         <ManifestFile>CMSIS_RTX.$(LIB_EXT).manifest</ManifestFile>
         <Groups>OS\CMSIS_RTOS</Groups>
         <Documentation>
@@ -19,17 +19,17 @@
         <Required>False</Required>
         <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
         <IsStub>False</IsStub>
-        <Directory>DeviceCode\Cores\arm\CMSIS_RTX</Directory>
+        <Directory>CMSIS\CMSIS_RTX</Directory>
         <OutputType>Library</OutputType>
         <PlatformIndependentBuild>false</PlatformIndependentBuild>
         <Version>4.0.0.0</Version>
     </PropertyGroup>
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
     <ItemGroup>
-        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX\INC" />
-        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS_RTX\SRC" />
-        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS\Include" />
-        <IncludePaths Include="DeviceCode\Cores\arm\CMSIS\Driver\Include" />
+        <IncludePaths Include="CMSIS\CMSIS_RTX\INC" />
+        <IncludePaths Include="CMSIS\CMSIS_RTX\SRC" />
+        <IncludePaths Include="CMSIS\CMSIS\Include" />
+        <IncludePaths Include="CMSIS\CMSIS\Driver\Include" />
     </ItemGroup>
     <ItemGroup>
         <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\SVC_Table.s" />

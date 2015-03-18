@@ -5,9 +5,11 @@
 *.feedback
 
 # CMSIS and CMSIS_RTX
-/DeviceCode/Cores/arm/CMSIS/
-/DeviceCode/Cores/arm/CMSIS_RTX/*
-!/DeviceCode/Cores/arm/CMSIS_RTX/dotNetMF.proj
+/CMSIS/CMSIS/
+/CMSIS/CMSIS_RTX/*
+/CMSIS/Device/*
+/CMSIS/ARM.CMSIS.pdsc
+!/CMSIS/CMSIS_RTX/dotNetMF.proj
 
 # Visual Studio
 *.aps
