@@ -1,8 +1,5 @@
 # Build results
 /BuildOutput
-bin/
-obj/
-*.cache
 *.log
 *_assemblyinfo.txt
 *.feedback
@@ -11,6 +8,24 @@ obj/
 /DeviceCode/Cores/arm/CMSIS/
 /DeviceCode/Cores/arm/CMSIS_RTX/*
 !/DeviceCode/Cores/arm/CMSIS_RTX/dotNetMF.proj
+
+# Visual Studio
+*.aps
+*.[Cc]ache
+*.ilk
+*.ncb
+*.[Oo]bj
+*.opensdf
+*.pch
+*.sbr
+*.sdf
+*.sln.docstates
+*.suo
+*.vspscc
+*.vssscc
+[Bb]in/
+[Oo]bj/
+ipch/
 
 # WinPCAP
 /DeviceCode/Targets/OS/Win32/DeviceCode/WinPcap_Eth/Dependencies/WpdPack/
