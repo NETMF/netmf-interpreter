@@ -32,7 +32,7 @@
     <ItemGroup>
         <IncludePaths Include="Devicecode\Targets\Native\STM32F4" />
         <IncludePaths Include="DeviceCode\Targets\Native\STM32F4\DeviceCode" />
-        <IncludePaths Include="DeviceCode\Cores\ARM\CMSIS\Include" />
+        <IncludePaths Include="CMSIS\CMSIS\Include" />
     </ItemGroup>
     <Target Name="CheckPreRquisitesInstalled">
         <Error Code="NETMFBLD"
