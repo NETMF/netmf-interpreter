@@ -254,7 +254,7 @@ void TinyBooter_OnStateChange( TinyBooterState state, void* data, void ** retDat
 bool CheckFlashSectorPermission( BlockStorageDevice *pDevice, ByteAddress address )
 {
     bool fAllowWrite = false;
-    UINT32 BlockType, iRegion, iRange;
+    UINT32 iRegion, iRange;
     
 
     if(pDevice->FindRegionFromAddress(address, iRegion, iRange))

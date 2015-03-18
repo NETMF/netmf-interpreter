@@ -167,8 +167,6 @@ BOOL M25P64_Flash_Driver::Write(void* context, ByteAddress Address, UINT32 NumBy
     // Read-modify-write is used for FAT filesystems only
     if (ReadModifyWrite) return FALSE;
     
-    ByteAddress EndAddress = (ByteAddress)(Address + NumBytes);
-    
     BYTE wr_cmd[260];
     wr_cmd[0] = Write_Instr;
     
