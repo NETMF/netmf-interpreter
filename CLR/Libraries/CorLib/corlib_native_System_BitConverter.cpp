@@ -34,7 +34,7 @@ HRESULT Library_corlib_native_System_BitConverter::get_IsLittleEndian___STATIC__
 	BYTE* p = reinterpret_cast<BYTE*>(&x);
 	stack.SetResult_Boolean(*p == 0x78);
 
-	TINYCLR_NOCLEANUP();
+	TINYCLR_NOCLEANUP_NOLABEL();
 }
 
 HRESULT Library_corlib_native_System_BitConverter::DoubleToInt64Bits___STATIC__I8__R8( CLR_RT_StackFrame& stack )
