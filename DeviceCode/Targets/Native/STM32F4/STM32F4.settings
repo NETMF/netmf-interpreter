@@ -36,8 +36,8 @@
     </ItemGroup>
     <Target Name="CheckPreRquisitesInstalled">
         <Error Code="NETMFBLD"
-               Condition="!EXISTS('$(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS\Include')"
-               Text="Missing CMSIS-CORE installation at: $(SPOCLIENT)\DeviceCode\Cores\arm\CMSIS\"
+               Condition="!EXISTS('$(SPOCLIENT)\CMSIS\ARM.CMSIS.pdsc')"
+               Text="Missing CMSIS installation at: $(SPOCLIENT)\CMSIS\*"
                />
     </Target>
 </Project>

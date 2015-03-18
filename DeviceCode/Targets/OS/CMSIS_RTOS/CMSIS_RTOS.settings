@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="4.0" InitialTargets="CheckPreRquisitesInstalled" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Name>CMSIS_RTOS</Name>
     <DefaultISA>Thumb2</DefaultISA>
@@ -17,11 +17,17 @@
     <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
   </PropertyGroup>
   <ItemGroup>
-    <IncludePaths Include="CMSIS\CMSIS\Include" />    
+    <IncludePaths Include="CMSIS\CMSIS\Include" />
     <IncludePaths Include="CMSIS\CMSIS_RTX" />
     <IncludePaths Include="CMSIS\CMSIS_RTX\INC" />
   </ItemGroup>
   <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
     <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS\DeviceCode\lwip_1_4_1_os"/>
   </ItemGroup>
+    <Target Name="CheckPreRquisitesInstalled">
+        <Error Code="NETMFBLD"
+               Condition="!EXISTS('$(SPOCLIENT)\CMSIS\ARM.CMSIS.pdsc')"
+               Text="Missing CMSIS installation at: $(SPOCLIENT)\CMSIS\*"
+               />
+    </Target>
 </Project>
