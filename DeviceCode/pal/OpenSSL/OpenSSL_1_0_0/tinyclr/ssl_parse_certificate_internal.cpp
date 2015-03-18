@@ -7,11 +7,13 @@
 #include <openssl/err.h>
 #include <openssl/pkcs12.h>
 
-static const char *mon[12]=
+#if defined(DEBUG) || defined(_DEBUG)
+static const char *mon[12] =
 { 
     "Jan","Feb","Mar","Apr","May","Jun",
     "Jul","Aug","Sep","Oct","Nov","Dec"
 };
+#endif
 
 static int ssl_get_ASN1_UTCTIME(const ASN1_UTCTIME *tm, DATE_TIME_INFO *dti);
 
