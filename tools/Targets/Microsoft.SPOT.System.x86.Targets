@@ -236,7 +236,7 @@
     Inputs="@(RCFile)"
     Outputs="@(RCFile->'$(OBJ_DIR)\%(filename).res')"
     >
-    <Exec Command="rc.exe $(CharSetFlags) /fo&quot;@(RCFile->'$(OBJ_DIR)\%(filename).res')&quot; %(RCFile.Identity)"/>
+    <Exec Command="rc.exe /nologo $(CharSetFlags) /fo&quot;@(RCFile->'$(OBJ_DIR)\%(filename).res')&quot; %(RCFile.Identity)"/>
   </Target>
 
 </Project>
