@@ -42,6 +42,7 @@ rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 SET SPOCLIENT=%CLRROOT%
 pushd %SPOCLIENT%\..
 SET SPOROOT=%CD%
+if EXIST alias.txt DOSKEY /macrofile=alias.txt
 popd
 
 set NetMfTargetsBaseDir=%SPOCLIENT%\Framework\IDE\Targets\
