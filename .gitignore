@@ -3,6 +3,7 @@
 *.log
 *_assemblyinfo.txt
 *.feedback
+/alias.txt
 
 # CMSIS and CMSIS_RTX
 /CMSIS/CMSIS/
@@ -28,6 +29,10 @@
 [Bb]in/
 [Oo]bj/
 ipch/
+
+#uVision
+*.uvguix*
+Listings/
 
 # WinPCAP
 /DeviceCode/Targets/OS/Win32/DeviceCode/WinPcap_Eth/Dependencies/WpdPack/
