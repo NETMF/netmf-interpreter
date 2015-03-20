@@ -15,7 +15,6 @@
     <BHL_EXE Condition="'$(BHL_EXE)'==''">$(BUILD_TREE_SERVER)\dll\BuildHelper.exe</BHL_EXE>
     <MDP_EXE Condition="'$(MDP_EXE)'==''">$(BUILD_TREE_SERVER)\dll\MetadataProcessor.exe</MDP_EXE>
     <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(SPOCLIENT)\Framework\IDE\Targets\</NetMfTargetsBaseDir>
-    <FLAVOR_ARM Condition="'$(FLAVOR_ARM)'==''">$(Configuration)</FLAVOR_ARM>
     <FLAVOR_DAT Condition="'$(FLAVOR_DAT)'==''">$(Configuration)</FLAVOR_DAT>
     <FLAVOR_WIN Condition="'$(FLAVOR_WIN)'==''">$(Configuration)</FLAVOR_WIN>
     <FLAVOR_MEMORY Condition="'$(FLAVOR_MEMORY)'==''">FLASH</FLAVOR_MEMORY>

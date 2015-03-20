@@ -10,7 +10,7 @@
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />	
 
   <ItemGroup>
-    <RequiredProjects        Include="$(SPOCLIENT)\Framework\Tools\BuildTasks.dirproj"                   Condition="!EXISTS('$(BUILD_ROOT)\$(FLAVOR)\Server\DLL\Microsoft.SPOT.Tasks')"/>
+    <RequiredProjects        Include="$(SPOCLIENT)\Framework\Tools\BuildTasks.dirproj"                   Condition="!EXISTS('$(BUILD_ROOT)\$(FLAVOR)\Server\DLL\Microsoft.SPOT.Tasks.dll')"/>
     <RequiredProjects        Include="$(SPOCLIENT)\Framework\Tools\CreateCLRDefines.proj"                Condition="!EXISTS('$(PLATFORM_INDEPENDENT_LIB_DIR)\TinyCLR_Defines.h')"/>
     <RequiredProjects        Include="$(SPOCLIENT)\clr\tools\dotnetmf.proj"                              Condition="!EXISTS('$(BUILD_ROOT)\$(FLAVOR)\Server\DLL\MetaDataProcessor.exe')"/>
     <RequiredManagedProjects Include="$(SPOCLIENT)\clr\tools\EmulatorInterface\EmulatorInterface.csproj" Condition="!EXISTS('$(BUILD_ROOT)\$(FLAVOR)\Server\DLL\Microsoft.SPOT.Emulator.Interface.dll')"/>

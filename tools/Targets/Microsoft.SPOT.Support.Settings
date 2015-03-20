@@ -98,10 +98,10 @@
 
     <BUILD_FLAVOR_RTM Condition="'$(rtm)'=='true'">1</BUILD_FLAVOR_RTM>
 
-    <FLAVOR_TMP Condition="'$(FLAVOR)'=='Debug' OR '$(FLAVOR)'=='Instrumented'>Debug</FLAVOR_TMP>
+    <FLAVOR_TMP Condition="'$(FLAVOR)'=='Debug' OR '$(FLAVOR)'=='Instrumented'">Debug</FLAVOR_TMP>
 
     <FLAVOR_DAT Condition="'$(FLAVOR_TMP)'=='Debug'" >Debug</FLAVOR_DAT>
-    <FLAVOR_DAT Condition="'$(FLAVOR_TMP)'!='Debug'" >Release</FLAVOR_WIN>
+    <FLAVOR_DAT Condition="'$(FLAVOR_TMP)'!='Debug'" >Release</FLAVOR_DAT>
     <FLAVOR_WIN Condition="'$(FLAVOR_TMP)'=='Debug'" >Debug</FLAVOR_WIN>
     <FLAVOR_WIN Condition="'$(FLAVOR_TMP)'!='Debug'" >Release</FLAVOR_WIN>
 
