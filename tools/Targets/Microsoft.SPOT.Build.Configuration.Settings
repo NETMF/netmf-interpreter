@@ -13,8 +13,8 @@
   <PropertyGroup>
     <Platform     Condition="'$(Platform)'==''" >AnyCPU</Platform>
     <FLAVOR       Condition="'$(FLAVOR)'=='' And '$(Configuration)'!=''">$(Configuration)</FLAVOR>
-    <FLAVOR       Condition="'$(FLAVOR)'=='' And '$(Configuration)'==''">Debug</FLAVOR>
-    <MEMORY       Condition="'$(MEMORY)'==''"   >RAM</MEMORY>
+    <FLAVOR       Condition="'$(FLAVOR)'=='' And '$(Configuration)'==''">Release</FLAVOR>
+    <MEMORY       Condition="'$(MEMORY)'==''"   >FLASH</MEMORY>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == '' ">

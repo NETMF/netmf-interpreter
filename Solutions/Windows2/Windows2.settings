@@ -11,7 +11,7 @@
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
     <ENDIANNESS>le</ENDIANNESS>
     <MEMORY>RAM</MEMORY>
-    <FLAVOR Condition="'$(FLAVOR)'==''">Debug</FLAVOR>
+    <FLAVOR Condition="'$(FLAVOR)'==''">Release</FLAVOR>
   </PropertyGroup>
   <ItemGroup>
     <IncludePaths Include="Solutions\Windows2" />

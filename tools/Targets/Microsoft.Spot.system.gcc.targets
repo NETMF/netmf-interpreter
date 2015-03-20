@@ -302,13 +302,13 @@
   </Target>
 
   <Target Name="ArmAssemble" Condition="'@(AssemblyFiles)'!=''" Inputs="@(AssemblyFiles)" Outputs="@(AssemblyFiles->'$(OBJ_DIR)\%(FileName).$(OBJ_EXT)')">
-    <Exec Condition="Exists('%(AssemblyFiles.FullPath)')" Command="del /q  $(OBJ_DIR)\%(AssemblyFiles.Filename).$(OBJ_EXT)" ContinueOnError="true" />
+    <Delete Condition="Exists('$(OBJ_DIR)\%(AssemblyFiles.Filename).$(OBJ_EXT)')" Files="$(OBJ_DIR)\%(AssemblyFiles.Filename).$(OBJ_EXT)" ContinueOnError="true" />
     <Exec Condition="Exists('%(AssemblyFiles.FullPath)')" Command="$(AS) $(AS_FLAGS) -a=$(OBJ_DIR)\%(AssemblyFiles.Filename).txt -o $(OBJ_DIR)\%(AssemblyFiles.Filename).$(OBJ_EXT) %(AssemblyFiles.FullPath)"/>
   </Target>
 
   <Target Name="DelBuildLib" Condition="'$(OutputType)'=='Library'" Inputs="@(FastCompileCPPFile);@(CPPFiles);@(FastCompileCFile);@(CFiles);@(AssemblyFiles);@(HFiles)" Outputs="@(TargetLib)">
-    <Exec Condition="'@(FilesExist)'!='' " Command="del /q  @(TargetLib)" ContinueOnError="true" />
-    <Exec Condition="'@(FilesExist)'!='' " Command="del /q  @(TargetLib->'%(FullPath).manifest', ' ')" ContinueOnError="true" />
+    <Delete Condition="EXISTS(@(TargetLib->'%(FullPath)', ' '))" Files="@(TargetLib->'%(FullPath)', ' ')" ContinueOnError="true" />
+    <Delete Condition="EXISTS(@(TargetLib->'%(FullPath).manifest', ' '))" Files="@(TargetLib->'%(FullPath).manifest', ' ')" ContinueOnError="true" />
  </Target>
 
   <Target Name="ArmBuildLib" Condition="'$(OutputType)'=='Library'" DependsOnTargets="FindCompileFilesExistence;FindFastCompileFilesExistence;DelBuildLib;ArmCompileC;ArmCompileCPP;ArmAssemble;CreateLibManifest;$(ExtraTargets);" Inputs="@(ObjFiles)" Outputs="@(TargetLib);@(TargetLib->'%(FullPath).manifest')">

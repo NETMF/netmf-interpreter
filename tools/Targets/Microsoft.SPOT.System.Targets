@@ -266,7 +266,7 @@
 
         <Exec Command="IF EXIST @(TargetLib->'%(FullPath)','') del /q @(TargetLib->'%(FullPath)', ' ')" Condition ="@(TargetLib)!=''" ContinueOnError="true"/>
         <Exec Command="IF EXIST @(TargetLib->'%(FullPath).manifest','') del /q @(TargetLib->'%(FullPath).manifest', ' ')" Condition ="@(TargetLib)!=''" ContinueOnError="true"/>
-        <Exec Command="IF EXIST @(FileExist->'$(OBJ_DIR)\%(Filename).*','') del /q @(FilesExist->'$(OBJ_DIR)\%(Filename).*', ' ')"  ContinueOnError="true"/>
+        <Exec Command="IF EXIST @(FilesExist->'$(OBJ_DIR)\%(Filename).*','') del /q @(FilesExist->'$(OBJ_DIR)\%(Filename).*', ' ')"  ContinueOnError="true"/>
     </Target>
 
 

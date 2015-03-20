@@ -12,16 +12,10 @@ cd %PREVCD%
 
 @rem - CONFIGURATION OF DEBUG vs RELEASE FOR FIRMWARE, TOOLS, AND ASSEMBLIES
 
-if /I "%FLAVOR_WIN%"   == "Debug"   set FLAVOR_WIN=Debug
-if /I "%FLAVOR_WIN%"   == "Release" set FLAVOR_WIN=Release
-if    "%FLAVOR_WIN%"   == ""        set FLAVOR_WIN=Release
-
 if /I "%FLAVOR_DAT%"   == "Debug"   set FLAVOR_DAT=Debug
 if /I "%FLAVOR_DAT%"   == "Release" set FLAVOR_DAT=Release
 if    "%FLAVOR_DAT%"   == ""        set FLAVOR_DAT=Release
 
-if "%FLAVOR_ARM%"      == "" set FLAVOR_ARM=release
-if "%FLAVOR_PLATFORM%" == "" set FLAVOR_PLATFORM=iMXS
 if "%FLAVOR_MEMORY%"   == "" set FLAVOR_MEMORY=Flash
 
 if "%OEM_NAME%"        == "" set OEM_NAME=Microsoft
@@ -61,12 +55,6 @@ set BUILD_TEST_TREE_SERVER=%BUILD_TEST_ROOT%\server
 
 set OEM_PATH=%OEM_ROOT%\%OEM_NAME%
 set CLRLIB=%CLRROOT%\Tools\Libraries
-
-@rem ################################################################################
-
-set TARGETCURRENT=%CLRROOT%_BUILD\arm\%FLAVOR_MEMORY%\%FLAVOR_ARM%\%FLAVOR_PLATFORM%\bin
-
-@rem ################################################################################
 
 set PREVCD=
 set TEMPTOOLPATH=

@@ -39,7 +39,7 @@
     <profile Condition="'$(profile)'==''"           >false</profile>
     <sampleprof Condition="'$(sampleprof)'==''"     >false</sampleprof>
     <latencyprof Condition="'$(latencyprof)'==''"   >false</latencyprof>
-    <FLAVOR Condition="'$(FLAVOR)'==''"             >Debug</FLAVOR>
+    <FLAVOR Condition="'$(FLAVOR)'==''"             >Release</FLAVOR>
     <MEMORY Condition="'$(MEMORY)'==''"             >FLASH</MEMORY>
     <ENABLE_FASTCOMPILE Condition="'$(ENABLE_FASTCOMPILE)'==''"   >true</ENABLE_FASTCOMPILE>
     <FourByteCrytoLib>false</FourByteCrytoLib>
