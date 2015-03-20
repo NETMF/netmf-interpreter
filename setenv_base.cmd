@@ -44,6 +44,8 @@ pushd %SPOCLIENT%\..
 SET SPOROOT=%CD%
 popd
 
+if EXIST alias.txt DOSKEY /macrofile=alias.txt
+
 set NetMfTargetsBaseDir=%SPOCLIENT%\Framework\IDE\Targets\
 
 set _SDROOT_=%SPOROOT:current=%
