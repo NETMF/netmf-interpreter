@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" InitialTargets="CheckForPrerequisites" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
     <PropertyGroup>
          <TinyCLR_Platform>Server</TinyCLR_Platform>
     </PropertyGroup>
@@ -83,7 +83,10 @@
       DisplayName="$(CodeSignDisplayNameInternal)"
       DisplayURL="http://netmf.com"
       />
-
   </Target>
- 
+    <Target Name="CheckForPrerequisites">
+        <Warning Condition="!Exists('$(VSSDK11INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2012 SDK not found VSIX package will not be generated" />
+        <Warning Condition="!Exists('$(VSSDK12INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2013 SDK not found VSIX package will not be generated" />
+        <Warning Condition="!Exists('$(VSSDK14INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2015 SDK not found VSIX package will not be generated" />
+    </Target>
 </Project>
