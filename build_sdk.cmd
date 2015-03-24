@@ -60,5 +60,5 @@ GOTO :EOF
 goto :EOF
 
 :MissingVSSDK
-@ECHO ERROR: Visual Studio 2012 SDK (VSSDK) was not detected, this SDK is required to build the .NET Micro Framework SDK source code
+@ECHO ERROR: Visual Studio 2013 SDK (VSSDK) was not detected, this SDK is required to build the .NET Micro Framework SDK source code
 goto :EOF
