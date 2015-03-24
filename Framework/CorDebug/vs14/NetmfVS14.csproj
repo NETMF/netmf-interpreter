@@ -1,19 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F15F8516-14E8-4CE2-8810-59CB869E1C38}</ProjectGuid>
@@ -31,7 +28,9 @@
     <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
     <Prefer32Bit>false</Prefer32Bit>
     <DeployExtension Condition=" '$(AUTOMATED_BUILD)' == 'true' ">False</DeployExtension>
+    <NetMFBuildVsSdkVersion>14</NetMFBuildVsSdkVersion>
   </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -80,13 +79,13 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <Link>Microsoft.SPOT.Tasks.dll</Link>
     </Content>
-    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.12.dll">
+    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.14.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
-      <Link>Microsoft.SPOT.Debugger.CorDebug.12.dll</Link>
+      <Link>Microsoft.SPOT.Debugger.CorDebug.14.dll</Link>
     </Content>
-    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.12.pkgdef">
+    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.14.pkgdef">
       <IncludeInVSIX>true</IncludeInVSIX>
-      <Link>Microsoft.SPOT.Debugger.CorDebug.12.pkgdef</Link>
+      <Link>Microsoft.SPOT.Debugger.CorDebug.14.pkgdef</Link>
     </Content>
     <Content Include="$(BUILD_TREE_DLL)\WinUsbInvoke.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -183,6 +182,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,105 +1,99 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <PropertyGroup>
-        <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-        <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
-        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-        <SccProjectName>SAK</SccProjectName>
-        <SccLocalPath>SAK</SccLocalPath>
-        <SccAuxPath>SAK</SccAuxPath>
-        <SccProvider>SAK</SccProvider>
-    </PropertyGroup>
-    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <SchemaVersion>2.0</SchemaVersion>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
+  <PropertyGroup>
+    <OutDir>$(BUILD_TREE_SERVER)\DLL</OutDir>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <OutDir>$(BUILD_TREE_SERVER)\DLL</OutDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
         <ProjectGuid>{A4E5FFED-D422-4895-BC62-116EDC4F3FF2}</ProjectGuid>
-        <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <OutputType>Library</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>NetmfVS2012</RootNamespace>
         <AssemblyName>NetmfVS2012</AssemblyName>
-        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-        <GeneratePkgDefFile>false</GeneratePkgDefFile>
-        <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
-        <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-        <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
-        <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
-        <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
-        <Prefer32Bit>false</Prefer32Bit>
-        <DeployExtension Condition=" '$(AUTOMATED_BUILD)' == 'true' ">False</DeployExtension>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DeployExtension Condition=" '$(AUTOMATED_BUILD)' == 'true' ">False</DeployExtension>
         <NetMFBuildVsSdkVersion>11</NetMFBuildVsSdkVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath Condition="$(OutputPath)==''">bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath Condition="$(OutputPath)==''">bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
     <DeployExtension>$(BuildingInsideVisualStudio)</DeployExtension>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath Condition="$(OutputPath)==''">bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath Condition="$(OutputPath)==''">bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
     <DeployExtension>$(BuildingInsideVisualStudio)</DeployExtension>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="source.extension.vsixmanifest">
-            <SubType>Designer</SubType>
-        </None>
-    </ItemGroup>
-    
-    <ItemGroup>
-        <Content Include="..\Resources\NetMFLogo.png">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>NetMFLogo.png</Link>
-        </Content>
-        <Content Include="$(SPOCLIENT)\Setup\ProductSDK\Micro Framework SDK Release notes.txt">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>Micro Framework SDK Release notes.txt</Link>
-        </Content>
-        <Content Include="$(SPOCLIENT)\Setup\ProductSDK\License.rtf">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>License.rtf</Link>
-        </Content>
-
-        <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>Microsoft.SPOT.Debugger.dll</Link>
-        </Content>
-        <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Tasks.dll">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>Microsoft.SPOT.Tasks.dll</Link>
-        </Content>
-        <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.dll">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>Microsoft.SPOT.Debugger.CorDebug.dll</Link>
-        </Content>
-        <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.pkgdef">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>Microsoft.SPOT.Debugger.CorDebug.pkgdef</Link>
-        </Content>
-        <Content Include="$(BUILD_TREE_DLL)\WinUsbInvoke.dll">
-            <IncludeInVSIX>true</IncludeInVSIX>
-            <Link>WinUsbInvoke.dll</Link>
-        </Content>
-        
-    </ItemGroup>
-    
-    <!-- Project and item template content -->
-  <ItemGroup >
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Resources\NetMFLogo.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>NetMFLogo.png</Link>
+    </Content>
+    <Content Include="$(SPOCLIENT)\Setup\ProductSDK\Micro Framework SDK Release notes.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>Micro Framework SDK Release notes.txt</Link>
+    </Content>
+    <Content Include="$(SPOCLIENT)\Setup\ProductSDK\License.rtf">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>License.rtf</Link>
+    </Content>
+    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>Microsoft.SPOT.Debugger.dll</Link>
+    </Content>
+    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Tasks.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>Microsoft.SPOT.Tasks.dll</Link>
+    </Content>
+    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>Microsoft.SPOT.Debugger.CorDebug.dll</Link>
+    </Content>
+    <Content Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.pkgdef">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>Microsoft.SPOT.Debugger.CorDebug.pkgdef</Link>
+    </Content>
+    <Content Include="$(BUILD_TREE_DLL)\WinUsbInvoke.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <Link>WinUsbInvoke.dll</Link>
+    </Content>
+  </ItemGroup>
+  <!-- Project and item template content -->
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Product\AllSDK\ItemTemplates\CSharp\AssemblyInfo\AssemblyInfoTemplateProject.csproj">
       <Project>{422d820b-8b80-4ff1-9828-3ab113c2abc0}</Project>
       <Name>AssemblyInfoTemplateProject</Name>
@@ -188,6 +182,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

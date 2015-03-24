@@ -9,6 +9,9 @@ if "%1" == "-?" goto :ShowUsage
 if /i "%1" == "/h" goto :ShowUsage
 if /i "%1" == "-h" goto :ShowUsage
 
+if /i "%VSSDK120Install%"=="" goto :MissingVSSDK
+if NOT EXIST "%VSSDK120Install%" goto :MissingVSSDK
+
 SET BUILD_VERSION=%1
 if "%BUILD_VERSION%"=="" set BUILD_VERSION=0
 SET BUILD_SHARE=%2
@@ -54,3 +57,8 @@ GOTO :EOF
 @ECHO     RELEASE_NAME = Name for the release [ Default = "(%%USERNAME%%)"]
 @echo example:
 @ECHO     build_sdk.cmd 1234 \\NETMFBLD02\Builds\69423 client_vNext "(RC1)"
+goto :EOF
+
+:MissingVSSDK
+@ECHO ERROR: Visual Studio 2012 SDK (VSSDK) was not detected, this SDK is required to build the .NET Micro Framework SDK source code
+goto :EOF
