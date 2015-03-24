@@ -608,7 +608,7 @@ BOOL BlockStorageStream::IsErased( UINT32 length )
         }
     }
 
-    while(len >= this->BlockLength)
+    while(len >= (INT32)this->BlockLength)
     {
         if(!this->Device->IsBlockErased(this->BaseAddress + this->CurrentIndex, this->BlockLength)) return FALSE;
 

@@ -325,9 +325,9 @@ TouchPoint* TouchPanel_Driver::AddTouchPoint(UINT16 source, UINT16 x, UINT16 y, 
         if (lastAddedX != 0xFFFF)
         {
             /// dist2 is distance squared.
-            UINT32 dx = abs(x - lastAddedX);
-            UINT32 dy = abs(y - lastAddedY);
-            UINT32 dist2 = dx * dx + dy * dy;
+            INT32 dx = abs(x - lastAddedX);
+            INT32 dy = abs(y - lastAddedY);
+            INT32 dist2 = dx * dx + dy * dy;
 
             /// Ignore this point if it is too far from last point.
             if (dist2 > g_TouchPanel_Sampling_Settings.MaxFilterDistance) return NULL; 
@@ -335,10 +335,10 @@ TouchPoint* TouchPanel_Driver::AddTouchPoint(UINT16 source, UINT16 x, UINT16 y, 
 
         if(g_PAL_RunningAvg_Buffer_Size > 1)
         {
-            if (m_runavgIndex >= g_PAL_RunningAvg_Buffer_Size)
+            if (m_runavgIndex >= (INT32)g_PAL_RunningAvg_Buffer_Size)
                 m_runavgIndex = 0;
 
-            if (m_runavgCount >= g_PAL_RunningAvg_Buffer_Size)
+            if (m_runavgCount >= (INT32)g_PAL_RunningAvg_Buffer_Size)
             {
                 m_runavgTotalX -= g_PAL_RunningAvg_Buffer[m_runavgIndex].sx;
                 m_runavgTotalY -= g_PAL_RunningAvg_Buffer[m_runavgIndex].sy;            
@@ -387,13 +387,13 @@ TouchPoint* TouchPanel_Driver::AddTouchPoint(UINT16 source, UINT16 x, UINT16 y, 
     {
         m_tail ++;
 
-        if(m_tail >= g_PAL_TouchPointBufferSize) m_tail = 0;
+        if(m_tail >= (INT32)g_PAL_TouchPointBufferSize) m_tail = 0;
 
         if (m_tail == m_head)
         {
             m_head++;
 
-            if(m_head >= g_PAL_TouchPointBufferSize) m_head = 0;
+            if(m_head >= (INT32)g_PAL_TouchPointBufferSize) m_head = 0;
         }
     }
 
