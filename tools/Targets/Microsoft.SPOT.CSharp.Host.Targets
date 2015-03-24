@@ -16,16 +16,19 @@
   
   <PropertyGroup Condition="'$(NetMFBuildVsSdkVersion)'=='11'">
     <VSSDKINSTALLDIR>$(VSSDK11INSTALLDIR)</VSSDKINSTALLDIR>
+    <VSToolsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v11.0</VSToolsPath>
     <!-- Additional VS SDK version specific properties go here -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(NetMFBuildVsSdkVersion)'=='12'">
     <VSSDKINSTALLDIR>$(VSSDK12INSTALLDIR)</VSSDKINSTALLDIR>
+    <VSToolsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v12.0</VSToolsPath>
     <!-- Additional VS SDK version specific properties go here -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(NetMFBuildVsSdkVersion)'=='14'">
     <VSSDKINSTALLDIR>$(VSSDK14INSTALLDIR)</VSSDKINSTALLDIR>
+    <VSToolsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v14.0</VSToolsPath>
     <!-- Additional VS SDK version specific properties go here -->
   </PropertyGroup>
     

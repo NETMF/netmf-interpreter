@@ -2,6 +2,9 @@
   
   <!-- Provide properties for Environment variables normally set by setenvbase.cmd -->
   <PropertyGroup>
+    <FLAVOR Condition="'$(FLAVOR)'==''">Release</FLAVOR>
+    <Configuration Condition="'$(Configuration)'=='' AND '$(FLAVOR)'!='RTM'">$(FLAVOR)</Configuration>
+    <Configuration Condition="'$(Configuration)'=='' AND '$(FLAVOR)'!='RTM'">Release</Configuration>
     <SPOCLIENT Condition="'$(SPOCLIENT)'==''">$(MsBuildThisFileDirectory.TrimEnd('\'))</SPOCLIENT>
     <CLRROOT Condition="'$(CLRROOT)'==''">$(SPOCLIENT)</CLRROOT>
     <SPOROOT Condition="'$(SPOROOT)'==''">$([System.IO.Path]::GetDirectoryName('$(SPOCLIENT)'))</SPOROOT>
@@ -10,13 +13,15 @@
     <BUILD_ROOT_BASE Condition="'$(BUILD_ROOT_BASE)'==''">$(COMMON_BUILD_ROOT)\BuildOutput</BUILD_ROOT_BASE>
     <BUILD_ROOT Condition="'$(BUILD_ROOT)'==''">$(BUILD_ROOT_BASE)\Public</BUILD_ROOT>
     <BUILD_TREE Condition="'$(BUILD_TREE)'==''">$(BUILD_ROOT)\$(Configuration)</BUILD_TREE>
-    <BUILD_TREE_CLIENT Condition="'$(BUILD_TREE_CLIENT)'==''">$(BUILD_TREE)\Client</BUILD_TREE_CLIENT>
-    <BUILD_TREE_SERVER Condition="'$(BUILD_TREE_SERVER)'==''">$(BUILD_TREE)\Server</BUILD_TREE_SERVER>
+    <BUILD_TREE_CLIENT>$(BUILD_TREE)\Client</BUILD_TREE_CLIENT>
+    <BUILD_TREE_SERVER>$(BUILD_TREE)\Server</BUILD_TREE_SERVER>
     <BHL_EXE Condition="'$(BHL_EXE)'==''">$(BUILD_TREE_SERVER)\dll\BuildHelper.exe</BHL_EXE>
     <MDP_EXE Condition="'$(MDP_EXE)'==''">$(BUILD_TREE_SERVER)\dll\MetadataProcessor.exe</MDP_EXE>
     <NetMfTargetsBaseDir Condition="'$(NetMfTargetsBaseDir)'==''">$(SPOCLIENT)\Framework\IDE\Targets\</NetMfTargetsBaseDir>
-    <FLAVOR_DAT Condition="'$(FLAVOR_DAT)'==''">$(Configuration)</FLAVOR_DAT>
-    <FLAVOR_WIN Condition="'$(FLAVOR_WIN)'==''">$(Configuration)</FLAVOR_WIN>
+    <FLAVOR_DAT Condition="'$(FLAVOR_DAT)'=='' AND '$(Configuration)'=='Debug'" >Debug</FLAVOR_DAT>
+    <FLAVOR_DAT Condition="'$(FLAVOR_DAT)'=='' AND '$(Configuration)'!='Debug'" >Release</FLAVOR_DAT>
+    <FLAVOR_WIN Condition="'$(FLAVOR_WIN)'=='' AND '$(Configuration)'=='Debug'" >Debug</FLAVOR_WIN>
+    <FLAVOR_WIN Condition="'$(FLAVOR_WIN)'=='' AND '$(Configuration)'!='Debug'" >Release</FLAVOR_WIN>
     <FLAVOR_MEMORY Condition="'$(FLAVOR_MEMORY)'==''">FLASH</FLAVOR_MEMORY>
     <CLRLIB Condition="'$(CLRLIB)'==''">$(SPOCLIENT)\Tools\Libraries</CLRLIB>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)'==''" >12.0</VisualStudioVersion>
