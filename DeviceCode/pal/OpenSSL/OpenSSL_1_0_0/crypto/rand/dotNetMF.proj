@@ -22,7 +22,10 @@
     <Version>4.0.0.0</Version>
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
-  <PropertyGroup />
+  <PropertyGroup>
+    <!-- warning C4996: '<apiname>': was declared deprecated -->
+    <ExtraFlags Condition="'$(PLATFORM_FAMILY)'=='x86'">/wd4996</ExtraFlags>
+  </PropertyGroup>
   <!--
   <ItemGroup>
     <SubDirectories Include="Stubs"/>
