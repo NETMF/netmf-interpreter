@@ -437,6 +437,8 @@ void HAL_Windows_FastSleep( INT64 ticks )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#pragma unmanaged
+
 void debug_printf( char const* format, ... )
 {
     va_list arg_ptr;
@@ -535,6 +537,8 @@ int hal_vsnprintf( char* buffer, size_t len, const char* format, va_list arg )
 {
     return _vsnprintf_s( buffer, len, len-1/* force space for trailing zero*/, format, arg );
 }
+
+#pragma managed
 
 ///////////////////////////////////////////////////////////////
 
