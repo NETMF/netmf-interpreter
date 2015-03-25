@@ -347,7 +347,7 @@ void CLR_Messaging::Initialize(
     m_Lookup_Replies[ 1 ].owner = owner;
     m_Lookup_Replies[ 1 ].size  = replyLookupCount;
 
-    m_fDebuggerInitialized = DebuggerPort_Initialize( port );
+    m_fDebuggerInitialized = (DebuggerPort_Initialize( port ) != FALSE);
 
     m_fInitialized = true;
 
