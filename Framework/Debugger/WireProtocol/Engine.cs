@@ -1690,6 +1690,7 @@ namespace Microsoft.SPOT.Debugger
 
         public bool EraseMemory( uint address, uint length )
         {
+            DebuggerEventSource.Log.EngineEraseMemory( address, length );
             var cmd = new Commands.Monitor_EraseMemory
                     {
                         m_address = address,
@@ -3146,6 +3147,7 @@ namespace Microsoft.SPOT.Debugger
             {
                 if( mh != null )
                     mh( string.Format( "Deployment storage (size: {0} bytes) was not large enough to fit deployment assemblies (size: {1} bytes)", status.m_storageLength, deployLength ) );
+                
                 return false;
             }
 
@@ -3239,6 +3241,9 @@ namespace Microsoft.SPOT.Debugger
                     {
                         if( !EraseMemory( sector.m_start, sector.m_length ) )
                         {
+                            if( mh != null )
+                                mh( string.Format( "FAILED to erase device memory @0x{0:X8} with Length=0x{1:X8}", sector.m_start, sector.m_length ) );
+
                             return false;
                         }
 
@@ -3256,6 +3261,9 @@ namespace Microsoft.SPOT.Debugger
 
                         if( !WriteMemory( sector.m_start, sectorData, 0, ( int )iSectorIndex ) )
                         {
+                            if( mh != null )
+                                mh( string.Format( "FAILED to write device memory @0x{0:X8} with Length={1:X8}", sector.m_start, ( int )iSectorIndex ) );
+
                             return false;
                         }
 #if DEBUG

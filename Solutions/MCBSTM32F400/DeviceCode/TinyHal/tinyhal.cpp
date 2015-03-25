@@ -293,9 +293,11 @@ void HAL_UnReserveAllGpios()
 // is located correctly but the fixed up pointer stored
 // in the literal pool that this code loads for the address
 // of the load base (src) is off by some factor. In initial
-// testing it was always 144, unfortunately it turns out
-// not to be consistent and is now at 0xED0...
-const UINT32 ArmLinkerLoadRegionOffsetHack = 0x00000ED0;
+// testing it was always 0x90, unfortunately it turns out
+// not to be consistent and bumped up to 0xED0, and is now
+// back at 0x90... Sigh... Hope to hear back from ARM support
+// on this soon.
+const UINT32 ArmLinkerLoadRegionOffsetHack = 0x00000090;
 
 void LwipRegionInit()
 {

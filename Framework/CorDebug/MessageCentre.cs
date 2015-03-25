@@ -231,7 +231,7 @@ namespace Microsoft.SPOT.Debugger
                     pane.OutputStringThreadSafe(msg + "\r\n");
                 }
             }
-            catch (InvalidOperationException)
+            catch( InvalidComObjectException )
             {
             }
 

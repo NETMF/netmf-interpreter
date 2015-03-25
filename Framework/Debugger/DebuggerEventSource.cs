@@ -32,6 +32,13 @@ namespace Microsoft.SPOT.Debugger
             WriteEvent( 3, ( int )state );
         }
 
+        [Event(4)]
+        public void EngineEraseMemory( uint address, uint length )
+        {
+            Trace.TraceInformation( "EreaseMemory: @{0:X08}; LEN={1:X08}", address, length );
+            WriteEvent( 4, ( int )address, ( int )length );
+        }
+
         private DebuggerEventSource()
         {
         }
