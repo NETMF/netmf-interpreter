@@ -361,7 +361,7 @@ HRESULT FAT_FileHandle::Seek( INT64 offset, UINT32 origin, INT64* position )
     {
         if (m_dataIndex >= (-1 * offset)) // Unless we're still staying in the same cluster
         {
-            m_dataIndex += offset; // offset is < 0
+            m_dataIndex = (UINT32)(m_dataIndex + offset); // offset is < 0
             m_position  += offset; // offset is < 0
 
             if(position) *position = m_position;
