@@ -16,6 +16,7 @@
     <BuildNumber            Condition="'$(BuildNumber)'==''"            >$(_BuildNumber)</BuildNumber>
     <RevisionNumber         Condition="'$(RevisionNumber)'==''"         >$(_RevisionNumber)</RevisionNumber>
     <SignBuild              Condition="'$(SignBuild)'==''"              >$(_SignBuild)</SignBuild>
+    <reducesize             Condition="'$(reducesize)'==''"             >$(_reducesize)</reducesize>
   </PropertyGroup>
 
   <Import Project="$(SPOCLIENT)\ReleaseInfo.settings"/>
@@ -77,7 +78,7 @@
     <TOOLS_DIR>$(SPO_BUILD)\public\$(Configuration)\Server\dll</TOOLS_DIR>
 
     <!-- TODO: finish consolidation of parallel build trees (eg, see other def'n of MainProps in Microsoft.SPOT.Build.Configuration.Settings) -->
-    <MainProps>_FLAVOR=$(FLAVOR);_PLATFORMS=$(PLATFORMS);_PLATFORM=$(PLATFORM);_TARGETLOCATION=$(TARGETLOCATION);_MEMORY=$(MEMORY);_CLEAN_INDEPENDENT_ONLY=$(CLEAN_INDEPENDENT_ONLY);_BuildNumber=$(BuildNumber);_RevisionNumber=$(RevisionNumber);_Configuration=$(Configuration);_TinyCLR_Platform=$(TinyCLR_Platform);_SignBuild=$(SignBuild);_SolutionRoot=$(SolutionRoot);_MFSettingsFile=$(MFSettingsFile);PropagatedBy=System</MainProps>
+    <MainProps>_FLAVOR=$(FLAVOR);_PLATFORMS=$(PLATFORMS);_PLATFORM=$(PLATFORM);_TARGETLOCATION=$(TARGETLOCATION);_MEMORY=$(MEMORY);_CLEAN_INDEPENDENT_ONLY=$(CLEAN_INDEPENDENT_ONLY);_BuildNumber=$(BuildNumber);_RevisionNumber=$(RevisionNumber);_Configuration=$(Configuration);_TinyCLR_Platform=$(TinyCLR_Platform);_SignBuild=$(SignBuild);_SolutionRoot=$(SolutionRoot);_MFSettingsFile=$(MFSettingsFile);PropagatedBy=System;_reducesize=$(reducesize)</MainProps>
 
     <CLRLIB>$(CLRROOT)\Tools\Libraries</CLRLIB>
 

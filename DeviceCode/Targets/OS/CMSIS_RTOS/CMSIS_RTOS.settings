@@ -17,6 +17,9 @@
     <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
   </PropertyGroup>
   <ItemGroup>
+    <CC_CPP_Defines Include="__CMSIS_RTOS" />
+  </ItemGroup>
+  <ItemGroup>
     <IncludePaths Include="CMSIS\CMSIS\Include" />
     <IncludePaths Include="CMSIS\CMSIS_RTX" />
     <IncludePaths Include="CMSIS\CMSIS_RTX\INC" />
