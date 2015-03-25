@@ -460,8 +460,11 @@ HRESULT TouchPanel_Driver::GetSetTouchInfo(UINT32 flags, INT32* param1, INT32* p
             // Touch Move events are queued up and sent at the given time frequency (StylusMoveFrequency)
             // We should not set the move frequency to be less than the sample frequency, otherwise there
             // would be no data available occassionally.
-            else if(ticks < min_ms_per_touchsample) return CLR_E_OUT_OF_RANGE;
-            else                                    ticks = TOUCH_PANEL_SAMPLE_MS_TO_TICKS(ms_per_touchmove_event);
+            else
+            {
+              ticks = TOUCH_PANEL_SAMPLE_MS_TO_TICKS(ms_per_touchmove_event);
+              if(ticks < min_ms_per_touchsample) return CLR_E_OUT_OF_RANGE;
+            }
 
             g_TouchPanel_Sampling_Settings.SampleRate.MaxTimeForMoveEvent_ticks = ticks;
         }
