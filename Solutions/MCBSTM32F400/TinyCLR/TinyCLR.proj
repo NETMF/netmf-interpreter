@@ -67,7 +67,7 @@
     <Import Condition="'$(SERIALIZATION_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Serialization.featureproj" />
     <Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_lwip_os.featureproj" />
     <Import Condition="'$(CRYPTO_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />
-    <Import Condition="'$(SSL_OPEN_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_OPEN.featureproj" />
+    <Import Condition="'$(SSL_OPEN_LWIP_OS_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
     <ItemGroup>
         <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
