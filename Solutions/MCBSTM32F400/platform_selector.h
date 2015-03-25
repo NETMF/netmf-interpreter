@@ -30,10 +30,6 @@
 #define STM32F4_ETH_PHY_RMII 1
 #define USB_ALLOW_CONFIGURATION_OVERRIDE  1
 
-#if !HAL_REDUCESIZE
-#define PLATFORM_ARM_OS_PORT 1
-#endif
-
 //
 // processor and features
 //
