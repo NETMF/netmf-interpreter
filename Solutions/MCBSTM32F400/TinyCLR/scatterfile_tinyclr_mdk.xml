@@ -145,6 +145,8 @@
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
 
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
+        </ExecRegion>
         <!-- everything between heapbegin and heapend will be allocated for the CLR heap -->
         <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE" Size="UNINIT">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
