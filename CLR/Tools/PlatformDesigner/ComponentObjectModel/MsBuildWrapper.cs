@@ -4335,7 +4335,8 @@ namespace ComponentObjectModel
 
                 foreach (string subdir in Directory.GetDirectories(Path.GetDirectoryName(fullpath)))
                 {
-                    if (subdir.TrimEnd().ToUpper().EndsWith("DEVICECODE")) continue;
+                    if (subdir.EndsWith("DeviceCode", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (subdir.EndsWith("ManagedCode", StringComparison.OrdinalIgnoreCase)) continue;
 
                     foreach (string projFile in Directory.GetFiles(subdir, "*.proj"))
                     {
