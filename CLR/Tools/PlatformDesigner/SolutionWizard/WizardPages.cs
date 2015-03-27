@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -863,6 +864,12 @@ namespace SolutionWizard
             foreach (MFProject prj in projRemoveList)
             {
                 m_solution.Projects.Remove(prj);
+            }
+
+            var oldProjAll = m_solution.Projects.Where(p => p.Name == Properties.Resources.AllProjects).FirstOrDefault();
+            if (oldProjAll != null)
+            {
+                m_solution.Projects.Remove(oldProjAll);
             }
 
             MFProject projAll = new MFProject();
