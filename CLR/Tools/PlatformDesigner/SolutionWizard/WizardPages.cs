@@ -929,7 +929,7 @@ namespace SolutionWizard
 
                 e.Page = wpChooseFeatures;
             }
-            else if (m_solution.Projects.Count > 0)
+            else if (m_solution.Projects.Count > 1)
             {
                 e.Page = wpChooseLibraries;
             }
