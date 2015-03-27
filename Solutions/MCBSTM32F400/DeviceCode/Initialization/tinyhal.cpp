@@ -1,47 +1,29 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// This file is part of the Microsoft .NET Micro Framework Porting Kit Code Samples and is unsupported. 
+// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use these files except in compliance with the License.
+// You may obtain a copy of the License at:
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing
+// permissions and limitations under the License.
+// 
 #include <tinyhal.h>
+#include "stm32f4xx.h"
 
-#if !defined(__GNUC__)
-#include <rt_fp.h>
+#if defined(PLATFORM_ARM_OS_PORT)
+#include <cmsis_os.h>
+#include <cstdint>
 #endif
-
-#include "..\..\..\..\DeviceCode\Targets\Native\STM32F4\DeviceCode\stm32f4xx.h"
 
 #undef  TRACE_ALWAYS
 #define TRACE_ALWAYS               0x00000001
 
 #undef  DEBUG_TRACE
 #define DEBUG_TRACE (TRACE_ALWAYS)
-
-
-#if !defined(BUILD_RTM) && !defined(PLATFORM_ARM_OS_PORT)
-
-UINT32 Stack_MaxUsed()
-{
-    // this is the value we check for stack overruns
-    const UINT32 StackCheckVal = 0xBAADF00D;
-
-    size_t  size = (size_t)&StackTop - (size_t)&StackBottom;
-    UINT32* ptr  = (UINT32*)&StackBottom;
-
-    DEBUG_TRACE1(TRACE_ALWAYS, "Stack Max  = %d\r\n", size);
-
-    while(*ptr == StackCheckVal)
-    {
-        size -= 4;
-        ptr++;
-    }
-
-    DEBUG_TRACE1(TRACE_ALWAYS, "Stack Used = %d\r\n", size);
-
-    return size;
-}
-
-#endif  // !defined(BUILD_RTM)
-
 // these define the region to zero initialize
 extern UINT32 Image$$ER_RAM_RW$$ZI$$Base;
 extern UINT32 Image$$ER_RAM_RW$$ZI$$Length;
@@ -80,6 +62,14 @@ extern UINT32 Image$$ER_FLASH$$Length;
 UINT32 LOAD_IMAGE_Start;
 UINT32 LOAD_IMAGE_Length;
 UINT32 LOAD_IMAGE_CalcCRC;
+
+#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
+extern UINT32 Load$$ER_LWIP_OS$$RW$$Base; 
+extern UINT32 Image$$ER_LWIP_OS$$RW$$Base;
+extern UINT32 Image$$ER_LWIP_OS$$RW$$Length; 
+extern UINT32 Image$$ER_LWIP_OS$$ZI$$Base;
+extern UINT32 Image$$ER_LWIP_OS$$ZI$$Length;
+#endif
 
 #pragma arm section code = "SectionForBootstrapOperations"
 
@@ -134,6 +124,7 @@ static void __section(SectionForBootstrapOperations) Prepare_Zero( UINT32* dst, 
     }
 }
 
+#if !defined(PLATFORM_ARM_OS_PORT)
 void __section(SectionForBootstrapOperations) PrepareImageRegions()
 {
     //
@@ -168,26 +159,24 @@ void __section(SectionForBootstrapOperations) PrepareImageRegions()
         Prepare_Zero( dst, len );
     }
 }
+#else
+extern "C" void PrepareImageRegions()
+{
+    // This space intentionally left blank... 8^)
+    //
+    // The OS boot of CLR on CMSIS-RTX doesn't
+    // use this as it relies on the C/C++ runtime
+    // to handle initialization. However, to keep
+    // from adding more libraries or #if checks
+    // in code this is defined to allow normal
+    // linking with the same HAL libs used in a 
+    // boot loader.
+}
+#endif
 
 #pragma arm section code
 
 //--//
-
-static void InitCRuntime()
-{
-#if (defined(HAL_REDUCESIZE) || defined(PLATFORM_EMULATED_FLOATINGPOINT))
-
-    // Don't initialize floating-point on small builds.
-
-#else
-
-#if  !defined(__GNUC__)
-    _fp_init();
-#endif
-
-   setlocale( LC_ALL, "" );
-#endif
-}
 
 #if !defined(BUILD_RTM)
 static UINT32 g_Boot_RAMConstants_CRC = 0;
@@ -328,6 +317,17 @@ bool g_fDoNotUninitializeDebuggerPort = false;
 
 void HAL_Initialize()
 {    
+#if defined(PLATFORM_ARM_OS_PORT)
+    // Interrupts must be enabled to handle calls to OS
+    // (Network stack uses the CMSIS-RTX OS, which uses
+    // SVC calls, which will hard fault if the interrupts
+    // are disabled at the Svc instruction )
+    // SystemInit handles this for the startup from reset
+    // However, this is also called from the CLR when doing
+    // a soft reboot.
+    __enable_irq();
+#endif
+	
     HAL_CONTINUATION::InitializeList();
     HAL_COMPLETION  ::InitializeList();
 
@@ -339,8 +339,10 @@ void HAL_Initialize()
     CPU_GPIO_Initialize();
     CPU_SPI_Initialize();
 
+#if !defined(PLATFORM_ARM_OS_PORT)
     // this is the place where interrupts are enabled after boot for the first time after boot
     ENABLE_INTERRUPTS();
+#endif
 
     // have to initialize the blockstorage first, as the USB device needs to update the configure block
 
@@ -394,6 +396,42 @@ void HAL_UnReserveAllGpios()
         CPU_GPIO_ReservePin((GPIO_PIN)i, false);
     }
 }
+
+#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
+// Hack: refer to work item #2374
+// For reasons unknown, the ARM linker is getting the
+// fixup for the LoadRegion symbol incorrect. The data
+// is located correctly but the fixed up pointer stored
+// in the literal pool that this code loads for the address
+// of the load base (src) is off by some factor. In initial
+// testing it was always 0x90, unfortunately it turns out
+// not to be consistent and bumped up to 0xED0, and is now
+// back at 0x90... Sigh... Hope to hear back from ARM support
+// on this soon.
+const UINT32 ArmLinkerLoadRegionOffsetHack = 0x00000090;
+void LwipRegionInit()
+{
+    // Copy RAM RW regions into proper location.
+    {
+        UINT32* src = &Load$$ER_LWIP_OS$$RW$$Base; 
+        UINT32* dst = &Image$$ER_LWIP_OS$$RW$$Base;
+        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$RW$$Length; 
+
+        // Hack: refer to work item #2374
+        src = reinterpret_cast<UINT32*>(reinterpret_cast<UINT32>(src) - ArmLinkerLoadRegionOffsetHack );
+			  
+        Prepare_Copy( src, dst, len );
+    }
+
+    // Initialize RAM ZI regions.
+    {
+        UINT32* dst = &Image$$ER_LWIP_OS$$ZI$$Base;
+        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$ZI$$Length;
+
+        Prepare_Zero( dst, len );
+    }
+}
+#endif
 
 void HAL_Uninitialize()
 {
@@ -459,8 +497,13 @@ void HAL_Uninitialize()
 
     HAL_CONTINUATION::Uninitialize();
     HAL_COMPLETION  ::Uninitialize();
+    
+#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
+    LwipRegionInit();
+#endif
 }
 
+#if !defined(PLATFORM_ARM_OS_PORT)
 extern "C"
 {
 
@@ -506,8 +549,6 @@ void BootEntry()
 #else
     !ERROR
 #endif
-
-    InitCRuntime();
 
     LOAD_IMAGE_Length += (UINT32)&IMAGE_RAM_RO_LENGTH + (UINT32)&Image$$ER_RAM_RW$$Length;
 
@@ -563,7 +604,7 @@ void BootEntry()
  
     // HAL initialization completed.  Interrupts are enabled.  Jump to the Application routine
     ApplicationEntryPoint();
-
+	
     debug_printf("main exited!!???.  Halting CPU\r\n");
 
 #if defined(BUILD_RTM)
@@ -574,6 +615,39 @@ void BootEntry()
 }
 
 } // extern "C"
+
+#endif
+
+#if defined(PLATFORM_ARM_OS_PORT)
+extern "C" void STM32F4_BootstrapCode();
+
+// performs base level system initialization
+// This typically consists of setting up clocks
+// and PLLs along with any external memory needed
+// to boot. 
+// NOTE:
+// It is important to keep in mind that this is 
+// called *BEFORE* any C/C++ runtime initialization
+// That is, zero init of uninitialied writeable data
+// and copying of initialized values for initialized 
+// writeable data have not yet occured. Thus, any code
+// called from SystemInit must not use or rely on 
+// initializtion having occured. This also precludes
+// the use of any OS provided primitives and support
+// as the kernel isn't initialized yet either.
+extern "C" void SystemInit()
+{
+    STM32F4_BootstrapCode();
+    CPU_Initialize();
+    __enable_irq();
+}
+
+extern "C" void HARD_Breakpoint()
+{
+    __breakpoint( 0 );
+}
+
+#endif //PLATFORM_ARM_OS_PORT
 
 #if !defined(BUILD_RTM)
 
@@ -586,9 +660,12 @@ void debug_printf( const char* format, ... )
 
    int len = hal_vsnprintf( buffer, sizeof(buffer)-1, format, arg_ptr );
 
-   // send characters directly to the trace port
-   for( char* p = buffer; *p != '\0' || p-buffer >= 256 ; ++p )
-        ITM_SendChar( *p );
+   { // take CLR lock to send whole message
+       GLOBAL_LOCK(clrLock);
+       // send characters directly to the trace port
+       for( char* p = buffer; *p != '\0' || p-buffer >= 256; ++p )
+            ITM_SendChar( *p );
+   }
 
     va_end( arg_ptr );
 }
@@ -604,63 +681,7 @@ void lcd_printf( const char* format, ... )
 
 #endif  // !defined(BUILD_RTM)
 
-volatile INT32 SystemStates[SYSTEM_STATE_TOTAL_STATES];
-
-#if defined(PLATFORM_ARM)
-
- void SystemState_SetNoLock( SYSTEM_STATE State )
-{
-    //ASSERT(State < SYSTEM_STATE_TOTAL_STATES);
-
-    ASSERT_IRQ_MUST_BE_OFF();
-
-    SystemStates[State]++;
-
-    //ASSERT(SystemStates[State] > 0);
-}
-
-void SystemState_ClearNoLock( SYSTEM_STATE State )
-{
-    //ASSERT(State < SYSTEM_STATE_TOTAL_STATES);
-
-    ASSERT_IRQ_MUST_BE_OFF();
-
-    SystemStates[State]--;
-
-    //ASSERT(SystemStates[State] >= 0);
-}
-
-BOOL SystemState_QueryNoLock( SYSTEM_STATE State )
-{
-    //ASSERT(State < SYSTEM_STATE_TOTAL_STATES);
-
-    ASSERT_IRQ_MUST_BE_OFF();
-
-    return (SystemStates[State] > 0) ? TRUE : FALSE;
-}
-
-#endif
-
-void SystemState_Set( SYSTEM_STATE State )
-{
-    GLOBAL_LOCK(irq);
-
-    SystemState_SetNoLock( State );
-}
-
-void SystemState_Clear( SYSTEM_STATE State )
-{
-    GLOBAL_LOCK(irq);
-
-    SystemState_ClearNoLock( State );
-}
-
-BOOL SystemState_Query( SYSTEM_STATE State )
-{
-    GLOBAL_LOCK(irq);
-
-    return SystemState_QueryNoLock( State );
-}
+//--//
 
 #if !defined(BUILD_RTM)
 

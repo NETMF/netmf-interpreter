@@ -3,29 +3,16 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <tinyhal.h>
-
-//--//
+#include <platform_selector.h>
 
 HAL_SYSTEM_CONFIG HalSystemConfig =
 {
     { TRUE },                                       // HAL_DRIVER_CONFIG_HEADER Header;
-            
-    //--//
-
-    {                                               // UINT32      DebuggerPorts[MAX_DEBUGGERS];
-        DEBUGGER_PORT,
-    },
-
-    {
-        MESSAGING_PORT,                             // UINT32      MessagingPorts[MAX_MESSAGING];
-    },
-
-    //--//
-
+    { DEBUGGER_PORT },                              // UINT32      DebuggerPorts[MAX_DEBUGGERS];
+    { MESSAGING_PORT },                             // UINT32      MessagingPorts[MAX_MESSAGING];
     DEBUG_TEXT_PORT,                                // UINT32  DebugTextPort;
     115200,                                         // UINT32  USART_DefaultBaudRate;
     STDIO,                                          // FILE*   stdio;
-
     { SRAM1_MEMORY_Base, SRAM1_MEMORY_Size },       // HAL_SYSTEM_MEMORY_CONFIG RAM1;
     { FLASH_MEMORY_Base, FLASH_MEMORY_Size },       // HAL_SYSTEM_MEMORY_CONFIG FLASH;
 };
@@ -34,16 +21,10 @@ HAL_SYSTEM_CONFIG HalSystemConfig =
 
 const char HalName[] = HAL_SYSTEM_NAME;
 
-//--//
-
 OEM_MODEL_SKU OEM_Model_SKU;
-
-//--//
 
 #define OEM_ALL         0
 #define OEM_MS          0xFF
-
-//--//
 
 #pragma arm section rodata = "SectionForConfig"
 
@@ -172,16 +153,12 @@ const ConfigurationSector __section(SectionForConfig) g_ConfigurationSector =
         }
     },
 
-    //--//--//--//
-
     // OEM_MODEL_SKU OEM_Model_SKU;
     {
         OEM_MS,     // UINT8   OEM;
         0,          // UINT8   Model;
         0xFFFF,     // UINT16  SKU;
     },
-
-    //--//--//--//
 
     // OEM_SERIAL_NUMBERS OemSerialNumbers
     {
@@ -222,8 +199,6 @@ const ConfigurationSector __section(SectionForConfig) g_ConfigurationSector =
         0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 
         0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 
     },
-
-    //--//--//--//
 
     // HAL_CONFIG_BLOCK FirstConfigBlock;
     {

@@ -12,12 +12,12 @@
         <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\TinyBooter\TinyBooter.proj</ProjectPath>
         <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+        <reducesize>true</reducesize>
     </PropertyGroup>
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
     <PropertyGroup>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <OutputType>Executable</OutputType>
-        <reducesize>true</reducesize>
         <MultipleOutputSections>false</MultipleOutputSections>
         <CustomAssemblyName>TinyBooter</CustomAssemblyName>
         <ExtraTargets>BuildSigFiles</ExtraTargets>
@@ -43,8 +43,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\CortexM3\GlobalLock\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="TinyHal_Cortex.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\CortexM3\TinyHal\dotNetMF.proj" />
+        <DriverLibs Include="MCBSTM32F400_tinyhal_loader.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\TinyHal\dotNetMF_loader.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
