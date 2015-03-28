@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <AssemblyName>MCBSTM32F400_initialization_hal_loader</AssemblyName>
-    <ProjectGuid>{c37646ed-b790-4420-b165-65e86b4031cd}</ProjectGuid>
+    <ProjectGuid>{8977FA77-FFD4-4D13-966D-E62E5E654D9F}</ProjectGuid>
     <Size>
     </Size>
     <Description>System initialization library for MCBSTM32F400 (for boot loaders)</Description>
