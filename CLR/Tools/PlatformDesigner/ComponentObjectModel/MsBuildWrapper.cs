@@ -3138,12 +3138,11 @@ namespace ComponentObjectModel
 
                     ProjectPropertyGroupElement bpg = SaveStringProps(proj, mfproj, tbl);
 
-                    if (mfproj.Properties.Any(p => p.Name == "reducesize"))
+                    var reducesizeProp = mfproj.Properties.FirstOrDefault(p => p.Name == "reducesize");
+                    if (reducesizeProp != null)
                     {
-                        var prop = mfproj.Properties.First(p => p.Name == "reducesize");
-                        bpg.AddProperty("reducesize", prop.Value);
+                        bpg.AddProperty("reducesize", reducesizeProp.Value);
                     }
-
 
                     ProjectImportElement pi = proj.Xml.AddImport(@"$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings");
 
