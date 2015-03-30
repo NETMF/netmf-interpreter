@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <AssemblyName>MCBSTM32F400_tinyhal</AssemblyName>
-        <ProjectGuid>{b65a0478-f1a0-417a-9c5e-88d4424a1696}</ProjectGuid>
+        <ProjectGuid>{4700A10C-F4E9-4D12-B0E7-B941E80BB402}</ProjectGuid>
         <Size>
         </Size>
         <Description>MCBSTM32F400 tinyhal library</Description>
