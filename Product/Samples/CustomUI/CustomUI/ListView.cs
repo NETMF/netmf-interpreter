@@ -10,9 +10,8 @@ using Microsoft.SPOT.Presentation.Controls;
 using Microsoft.SPOT.Presentation.Media;
 using Microsoft.SPOT.Touch;
 
-namespace FileSystem
+namespace CustomUI
 {
-
     /// <summary>
     /// Holds a sub-item for a list view.
     /// </summary>
@@ -196,7 +195,6 @@ namespace FileSystem
         /// <param name="dc"></param>
         protected virtual void RenderItems(DrawingContext dc)
         {
-
             // Create the brushes and pens for drawing the items.
             Brush[] brushes = new Brush[] { _emptyBrush, _lightCyanBrush, _grayBrush };
             Pen[] pens = new Pen[] { _emptyPen, _cyanPen };
@@ -213,7 +211,6 @@ namespace FileSystem
                 // Only draw the items that are visible.
                 if (cy >= _columnHeaderHeight)
                 {
-
                     // If the item is selected...
                     if (((ListViewItem)Items[ii]) == SelectedItem)
                     {

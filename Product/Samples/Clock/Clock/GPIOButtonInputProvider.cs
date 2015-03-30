@@ -38,12 +38,8 @@ namespace Clock
             // ReportInput method.
             callback = new DispatcherOperationCallback(delegate(object report)
                 {
-#if MF_FRAMEWORK_VERSION_V3_0
-                    return site.ReportInput((InputReport)report);
-#else
                     InputReportArgs args = (InputReportArgs)report;
                     return site.ReportInput(args.Device, args.Report);
-#endif
                 });
             Dispatcher = Dispatcher.CurrentDispatcher;
 
@@ -61,9 +57,11 @@ namespace Clock
             // Use the hardware provider to get the pins.  If the left pin is 
             // not set, assume none of the pins are set, and set the left pin 
             // back to the default emulator value.
-            if ((pinLeft = hwProvider.GetButtonPins(Button.VK_LEFT)) ==
-                Cpu.Pin.GPIO_NONE)
+            pinLeft = hwProvider.GetButtonPins(Button.VK_LEFT);
+            if (pinLeft == Cpu.Pin.GPIO_NONE)
+            {
                 pinLeft = Cpu.Pin.GPIO_Pin0;
+            }
             else
             {
                 pinRight = hwProvider.GetButtonPins(Button.VK_RIGHT);
@@ -110,9 +108,7 @@ namespace Clock
             {
                 this.sink = sink;
                 this.button = button;
-#if !MF_FRAMEWORK_VERSION_V3_0
                 this.buttonDevice = InputManager.CurrentInputManager.ButtonDevice;
-#endif
 
                 /// Do not set an InterruptPort with GPIO_NONE.
                 if (pin != Cpu.Pin.GPIO_NONE)
@@ -151,11 +147,7 @@ namespace Clock
             /// <param name="data1"></param>
             /// <param name="data2"></param>
             /// <param name="time"></param>
-#if MF_FRAMEWORK_VERSION_V3_0
-            void Interrupt(uint data1, uint data2, TimeSpan time)
-#else
             void Interrupt(uint data1, uint data2, DateTime time)
-#endif
             {
                 RawButtonActions action = (data2 != 0) ?
                     RawButtonActions.ButtonUp : RawButtonActions.ButtonDown;
@@ -164,11 +156,7 @@ namespace Clock
                     sink.source, time, button, action);
 
                 // Queue the button press to the input provider site.
-#if MF_FRAMEWORK_VERSION_V3_0
-                sink.Dispatcher.BeginInvoke(sink.callback, report);
-#else
                 sink.Dispatcher.BeginInvoke(sink.callback, new InputReportArgs(buttonDevice, report));
-#endif
             }
         }
     }

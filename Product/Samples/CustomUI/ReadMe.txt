@@ -1,14 +1,10 @@
-FileSystem Sample
+CustomUI Sample
 ============
 This sample demonstrates the following:
--  Using the File System features of the Micro Framework.
 -  Using the Touch Panel API.
--  Formatting a volume.
--  Enumerating directories and files.
--  Getting and setting the current directory.
--  Creating files.
--  Writing to files.
--  Deleting files.
+-  Creating custom UIElement controls.
+-  Registering for touch events.
+-  Using the File System features of the Micro Framework.
 
 This sample runs on the following devices:
 -  The .NET Micro Framework SDK Emulator.
@@ -17,7 +13,7 @@ This sample runs on the following devices:
 -  Any emulator that implements the Microsoft.SPOT.BlockStorage interface.
 
 To build and run this sample:
-1. Open FileSystem.sln in Visual Studio.
+1. Open CustomUI.sln in Visual Studio.
 
 2. To run this sample in the Emulator, open the project Properties page, click
    the .NET Micro Framework tab, set the Transport property to Emulator, and
