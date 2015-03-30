@@ -6,7 +6,7 @@ using Microsoft.SPOT.Presentation;
 using Microsoft.SPOT.Presentation.Controls;
 using Microsoft.SPOT.Presentation.Media;
 
-namespace FileSystem
+namespace CustomUI
 {
     class ButtonControl : UIElement
     {

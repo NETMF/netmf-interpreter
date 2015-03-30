@@ -8,7 +8,7 @@ using Microsoft.SPOT.Presentation;
 using Microsoft.SPOT.Presentation.Controls;
 using Microsoft.SPOT.Touch;
 
-namespace FileSystem
+namespace CustomUI
 {
     public class Program : Microsoft.SPOT.Application
     {
@@ -229,12 +229,10 @@ namespace FileSystem
             // If an item is selected, delete the item.
             if (_listView.SelectedItem != null)
             {
-
                 // Get the sub-item that has the name.
                 ListViewSubItem subItem = (ListViewSubItem)_listView.SelectedItem.SubItems[0];
                 if (subItem != null)
                 {
-
                     // If the name starts with [ and ends with ],
                     // then it is a directory.  This is only because
                     // we put the [ and ] on our directory names.
@@ -249,7 +247,6 @@ namespace FileSystem
                         // Make sure the directory exists.
                         if (Directory.Exists(name))
                         {
-
                             // Delete the directory.
                             Directory.Delete(name);
 

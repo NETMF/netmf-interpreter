@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FileSystem
+namespace CustomUI
 {
     
     internal partial class Resources

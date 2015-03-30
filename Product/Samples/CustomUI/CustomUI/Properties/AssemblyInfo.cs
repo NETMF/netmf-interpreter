@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corp.")]
-[assembly: AssemblyProduct("FileSystem")]
+[assembly: AssemblyProduct("CustomUI")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corp. 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
