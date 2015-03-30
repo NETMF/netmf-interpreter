@@ -69,5 +69,6 @@
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\netif\etharp.h" />
     <HFiles Include="lwip_sockets.h" />
   </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\EthernetDriver_HAL.libcatproj" />
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>
