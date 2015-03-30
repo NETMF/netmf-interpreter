@@ -133,7 +133,7 @@ BOOL CPU_USART_IsBaudrateSupported( int ComPortNum, UINT32 & BaudrateHz )
 
 BOOL USART_ConnectEventSink( int ComPortNum, int EventType, void* pContext, PFNUsartEvent pfnUsartEvtHandler, void** ppArg )
 {
-    if(ComPortNum < 0 || ComPortNum >= ARRAYSIZE(s_EmuUsartState) || ComPortNum >= CPU_USART_PortsCount()) return FALSE;
+    if(ComPortNum < 0 || ComPortNum >= ARRAYSIZE(s_EmuUsartState) || ComPortNum >= (int)CPU_USART_PortsCount()) return FALSE;
 
     s_EmuUsartState[ComPortNum].PortIndex = ComPortNum;
     
@@ -165,7 +165,7 @@ BOOL USART_ConnectEventSink( int ComPortNum, int EventType, void* pContext, PFNU
 
 void USART_SetEvent( int ComPortNum, unsigned int event )
 {
-    if((ComPortNum < 0) || (ComPortNum >= ARRAYSIZE(s_EmuUsartState)) ||(ComPortNum >= CPU_USART_PortsCount())) return;
+    if((ComPortNum < 0) || (ComPortNum >= ARRAYSIZE(s_EmuUsartState)) ||(ComPortNum >= (int)CPU_USART_PortsCount())) return;
 
     // Inorder to reduce the number of methods, we combine Error events and Data events in native code
     // and the event codes go from 0 to 6 (0-4 for error events and 5-6 for data events).

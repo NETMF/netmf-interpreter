@@ -151,6 +151,10 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\Processor\stubs_watchdog\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
+        <DriverLibs Include="MCBSTM32F400_initialization_hal.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Initialization\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="MCBSTM32F400_tinyhal.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\TinyHal\dotNetMF.proj" />
     </ItemGroup>

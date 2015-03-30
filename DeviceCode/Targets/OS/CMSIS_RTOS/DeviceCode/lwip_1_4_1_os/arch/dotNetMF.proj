@@ -9,6 +9,12 @@
         <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\OS\CMSIS_RTOS\DeviceCode\lwip_1_4_1_os\arch\dotNetMF.proj</ProjectPath>
         <ManifestFile>lwip_1_4_1_os_CMSIS_RTOS.$(LIB_EXT).manifest</ManifestFile>
         <Documentation />
+        <Groups>Network</Groups>
+        <LibraryCategory>
+          <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="LWIP_SysArch" Guid="{1E8D7B61-F062-45B2-A1E3-790DB1C6F4BA}" ProjectPath="" Conditional="" xmlns="">
+            <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+          </MFComponent>
+        </LibraryCategory>
         <PlatformIndependent>False</PlatformIndependent>
         <CustomFilter />
         <Required>False</Required>

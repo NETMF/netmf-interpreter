@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <AssemblyName>MCBSTM32F400_initialization_hal_loader</AssemblyName>
-    <ProjectGuid>{8977FA77-FFD4-4D13-966D-E62E5E654D9F}</ProjectGuid>
+    <AssemblyName>MCBSTM32F400_initialization_hal</AssemblyName>
+    <ProjectGuid>{A3ABD645-7EFD-4A8A-B355-34B4C166314E}</ProjectGuid>
     <Size>
     </Size>
-    <Description>System initialization library for MCBSTM32F400 (for boot loaders)</Description>
+    <Description>System initialization library for MCBSTM32F400</Description>
     <Level>HAL</Level>
-    <LibraryFile>MCBSTM32F400_initialization_hal_loader.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Initialization\dotNetMF_loader.proj</ProjectPath>
-    <ManifestFile>MCBSTM32F400_initialization_hal_loader.$(LIB_EXT).manifest</ManifestFile>
+    <LibraryFile>MCBSTM32F400_initialization_hal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Initialization\dotNetMF.proj</ProjectPath>
+    <ManifestFile>MCBSTM32F400_initialization_hal.$(LIB_EXT).manifest</ManifestFile>
     <Groups>System</Groups>
     <LibraryCategory>
       <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Initialization_HAL" Guid="{34EDFFBE-0FB6-49CC-A673-03BD96EDE0A9}" ProjectPath="" Conditional="" xmlns="">
@@ -32,8 +32,7 @@
     <Required>False</Required>
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>False</IsStub>
-    <Directory>DeviceCode\Targets\Native\STM32F4\DeviceCode\Initialization\reducesize</Directory>
-    <reducesize>true</reducesize>
+    <Directory>DeviceCode\Targets\Native\STM32F4\DeviceCode\Initialization</Directory>
     <PlatformIndependentBuild>false</PlatformIndependentBuild>
     <Version>4.0.0.0</Version>
   </PropertyGroup>
@@ -48,7 +47,6 @@
   <Import Project="$(SPOCLIENT)\Framework\Features\Time_PAL.libcatproj" />
   <Import Project="$(SPOCLIENT)\Framework\Features\TimeService_PAL.libcatproj" />
   <Import Project="$(SPOCLIENT)\Framework\Features\Heap_PAL.libcatproj" />
-
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <PropertyGroup>
     <OutputType>Library</OutputType>

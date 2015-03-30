@@ -73,7 +73,7 @@ BOOL AD_GetAvailablePrecisionsForChannel( ANALOG_CHANNEL channel, INT32* precisi
     // let's simulate 3 channels
     INT32 precisionStart = 8;
     INT32 precisionIncr = 4;
-    INT32 channelIdx = 0;
+    UINT32 channelIdx = 0;
     for( ; channelIdx < 3 && channelIdx < size; ++channelIdx)
     {
         precisions[channelIdx] = precisionStart + channelIdx * precisionIncr;
@@ -153,7 +153,7 @@ BOOL DA_GetAvailablePrecisionsForChannel( DA_CHANNEL channel, INT32* precisions,
     // let's simulate 3 channels
     INT32 precisionStart = 8;
     INT32 precisionIncr = 4;
-    INT32 channelIdx = 0;
+    UINT32 channelIdx = 0;
     for( ; channelIdx < 3 && channelIdx < size; ++channelIdx)
     {
         precisions[channelIdx] = precisionStart + channelIdx * precisionIncr;

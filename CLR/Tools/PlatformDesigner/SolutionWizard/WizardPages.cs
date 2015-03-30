@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -865,6 +866,12 @@ namespace SolutionWizard
                 m_solution.Projects.Remove(prj);
             }
 
+            var oldProjAll = m_solution.Projects.Where(p => p.Name == Properties.Resources.AllProjects).FirstOrDefault();
+            if (oldProjAll != null)
+            {
+                m_solution.Projects.Remove(oldProjAll);
+            }
+
             MFProject projAll = new MFProject();
             projAll.Name = Properties.Resources.AllProjects;
             projAll.Guid = m_allProjectsGuid;
@@ -929,7 +936,7 @@ namespace SolutionWizard
 
                 e.Page = wpChooseFeatures;
             }
-            else if (m_solution.Projects.Count > 0)
+            else if (m_solution.Projects.Count > 1)
             {
                 e.Page = wpChooseLibraries;
             }

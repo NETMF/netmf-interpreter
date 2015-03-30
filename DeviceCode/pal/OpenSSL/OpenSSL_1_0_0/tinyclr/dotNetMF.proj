@@ -35,7 +35,10 @@
     <Version>4.0.0.0</Version>
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
-  <PropertyGroup />
+  <PropertyGroup>
+    <!-- warning C4018: '>' : signed/unsigned mismatch -->
+    <ExtraFlags Condition="'$(PLATFORM_FAMILY)'=='x86'">/wd4018</ExtraFlags>
+  </PropertyGroup>
   <ItemGroup>
     <IncludePaths Include="DeviceCode\PAL" />
     <IncludePaths Include="DeviceCode\PAL\OpenSSL" />

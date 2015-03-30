@@ -18,7 +18,7 @@
 IDelayLoop
     subs    r0, r0, #4          ;; 1 cycle
     bgt     IDelayLoop          ;; 3 cycles taken, 1 cycle not taken.
-    mov     pc, lr              ;; 3 cycles
+    bx      lr                  ;; 3 cycles
 
 
     END

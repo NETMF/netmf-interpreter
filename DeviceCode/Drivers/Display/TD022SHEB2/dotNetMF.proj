@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <AssemblyName>TD022SHEB2</AssemblyName>
-    <ProjectGuid>{eac50a10-364f-489e-a9a3-6b0a3c740c4d}</ProjectGuid>
+    <ProjectGuid>{42883606-7F97-4B30-9673-50BAFA09C511}</ProjectGuid>
     <Size>
     </Size>
     <Description>TD022SHEB2 display driver</Description>
