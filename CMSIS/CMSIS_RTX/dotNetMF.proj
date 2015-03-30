@@ -11,6 +11,11 @@
         <ProjectPath>$(SPOCLIENT)\CMSIS\CMSIS_RTX\dotNetMF.proj</ProjectPath>
         <ManifestFile>CMSIS_RTX.$(LIB_EXT).manifest</ManifestFile>
         <Groups>OS\CMSIS_RTOS</Groups>
+        <LibraryCategory>
+            <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OS" Guid="{F0C31986-B463-437E-9814-EDAB2BE46109}" ProjectPath="" Conditional="" xmlns="">
+                <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+            </MFComponent>
+        </LibraryCategory>
         <Documentation>
         </Documentation>
         <PlatformIndependent>False</PlatformIndependent>
@@ -82,6 +87,7 @@
         <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM3.c" />
         <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM3.c" />
     </ItemGroup>
+	<Import Project="$(SPOCLIENT)\Framework\Features\RTX_Config.libcatproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
     <Target Name="CheckPreRquisitesInstalled">
         <Error Code="NETMFBLD"

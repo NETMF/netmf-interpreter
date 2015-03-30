@@ -17,6 +17,7 @@
     <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\System.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
   </ItemGroup>
   <Import Project="$(SPOCLIENT)\Framework\Features\spot_net_CLR.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\OS.libcatproj" />
   <PropertyGroup>
     <Description>Network core functionality for lwIP 1.4.1 stack on a multi-threaded OS</Description>
     <Guid>{FC481D0B-784B-402B-8EE0-0BD1D29823A9}</Guid>
