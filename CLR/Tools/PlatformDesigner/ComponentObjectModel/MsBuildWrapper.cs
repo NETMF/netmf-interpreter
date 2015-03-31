@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.IO;
+using System.Linq;
 using XsdInventoryFormatObject;
 using Microsoft.Build.Framework;
 //using Microsoft.Build.BuildEngine;
@@ -3136,6 +3137,12 @@ namespace ComponentObjectModel
                     tbl["Guid"] = "ProjectGuid";
 
                     ProjectPropertyGroupElement bpg = SaveStringProps(proj, mfproj, tbl);
+
+                    var reducesizeProp = mfproj.Properties.FirstOrDefault(p => p.Name == "reducesize");
+                    if (reducesizeProp != null)
+                    {
+                        bpg.AddProperty("reducesize", reducesizeProp.Value);
+                    }
 
                     ProjectImportElement pi = proj.Xml.AddImport(@"$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings");
 

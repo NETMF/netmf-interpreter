@@ -5,6 +5,7 @@
     <Directory>Solutions\$(PLATFORM)\TinyCLR</Directory>
     <IsClrProject>True</IsClrProject>
     <ProjectPath>$(SPOCLIENT)\ProjectTemplates\TinyCLR\TinyCLR.proj</ProjectPath>
+    <reducesize>false</reducesize>
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Targets" />
