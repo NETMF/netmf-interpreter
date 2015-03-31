@@ -43,10 +43,6 @@ HRESULT Library_spot_hardware_native_Microsoft_SPOT_Hardware_TristatePort::set_A
     {
         TINYCLR_CHECK_HRESULT(Library_spot_hardware_native_Microsoft_SPOT_Hardware_Port::ChangeState( pThis, port, activate ));
     }
-    else
-    {
-        TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_OPERATION);
-    }
     
     TINYCLR_NOCLEANUP();
 }
