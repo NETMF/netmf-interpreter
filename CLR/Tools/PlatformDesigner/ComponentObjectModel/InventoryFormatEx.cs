@@ -400,7 +400,10 @@ namespace XsdInventoryFormatObject
             {
                 if (0 == string.Compare(prop.Name, "ReduceSize", true))
                 {
-                    return true;
+                    if (0 == string.Compare(prop.Value, "true", true))
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -1367,7 +1370,10 @@ namespace XsdInventoryFormatObject
             {
                 if (0 == string.Compare(prop.Name, "ReduceSize", true))
                 {
-                    return true;
+                    if (0 == string.Compare(prop.Value, "true", true))
+                    {
+                        return true;
+                    }
                 }
             }
 
