@@ -33,17 +33,11 @@ Namespace $safeprojectname$
 
             ' Create a delegate that refers to the InputProviderSite object's 
             '     callback = New DispatcherOperationCallback(Function(report As Object)
-#If MF_FRAMEWORK_VERSION_V3_0 Then
-                 callback = New DispatcherOperationCallback(Function(report As Object)
-                               Return site.ReportInput(DirectCast(report, InputReport))
-                                                            End Function)
-#Else
             callback = New DispatcherOperationCallback(Function(report As Object)
                                                            Dim args As InputReportArgs = DirectCast(report, InputReportArgs)
                                                            Return site.ReportInput(args.Device, args.Report)
                                                        End Function)
-#End If
-            
+
             Dispatcher = Dispatcher.CurrentDispatcher
 
             ' Create a hardware provider.
@@ -99,11 +93,7 @@ Namespace $safeprojectname$
             Public Sub New(sink As GPIOButtonInputProvider, button As Button, pin As Cpu.Pin)
                 Me.sink = sink
                 Me.button = button
-#If Not MF_FRAMEWORK_VERSION_V3_0 Then
                 Me.buttonDevice = InputManager.CurrentInputManager.ButtonDevice
-#End If
-
-
 
                 ''' Do not set an InterruptPort with GPIO_NONE.
                 If pin <> Cpu.Pin.GPIO_NONE Then
@@ -135,21 +125,13 @@ Namespace $safeprojectname$
             ''' <param name="data1"></param>
             ''' <param name="data2"></param>
             ''' <param name="time"></param>
-#If MF_FRAMEWORK_VERSION_V3_0 Then
-            Private Sub Interrupt(data1 As UInteger, data2 As UInteger, time As Timespan)
-#Else
             Private Sub Interrupt(data1 As UInteger, data2 As UInteger, time As DateTime)
-#End If
                 Dim action As RawButtonActions = If((data2 <> 0), RawButtonActions.ButtonUp, RawButtonActions.ButtonDown)
 
                 Dim report As New RawButtonInputReport(sink.source, time, button, action)
 
                 ' Queue the button press to the input provider site.
-#If MF_FRAMEWORK_VERSION_V3_0 Then
-				sink.Dispatcher.BeginInvoke(sink.callback, report)
-#Else
                 sink.Dispatcher.BeginInvoke(sink.callback, New InputReportArgs(buttonDevice, report))
-#End If
             End Sub
 
         End Class
