@@ -11,6 +11,20 @@
     <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Crypto\dotNetMF.proj</ProjectPath>
     <ManifestFile>Crypto_config_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\MCBSTM32F400</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="CryptoConfig" Guid="{FDB90E9E-5023-45E9-94FC-5D2543866AD9}" ProjectPath="$(SPOCLIENT)\Framework\Features\CryptoConfig_PAL.libcatproj" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2011-07-18</Date>
+          <Author />
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
     <Documentation>
     </Documentation>
     <PlatformIndependent>False</PlatformIndependent>
