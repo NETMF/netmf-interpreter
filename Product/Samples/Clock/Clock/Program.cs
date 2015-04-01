@@ -99,20 +99,20 @@ namespace Clock
         {
             ButtonEventArgs e = (ButtonEventArgs)evt;
 
-            int timeZoneOffset = -8 * 60;
+            const int timeZoneOffsetInMinutes = -8 * 60;
 
             switch (e.Button)
             {
                 case Microsoft.SPOT.Hardware.Button.VK_UP:
                     // Reset the time to an arbitrary value.
                     TimeService.SetUtcTime(128752416000000000);
-                    TimeService.SetTimeZoneOffset(timeZoneOffset);
+                    TimeService.SetTimeZoneOffset(timeZoneOffsetInMinutes);
                     break;
 
                 case Microsoft.SPOT.Hardware.Button.VK_SELECT:
                     // Perform a one time sync with the time server.
                     TimeServiceStatus status = TimeService.UpdateNow(TimeServerIPAddress, 10);
-                    TimeService.SetTimeZoneOffset(timeZoneOffset);
+                    TimeService.SetTimeZoneOffset(timeZoneOffsetInMinutes);
                     break;
 
                 case Microsoft.SPOT.Hardware.Button.VK_DOWN:
@@ -126,7 +126,7 @@ namespace Clock
                     TimeService.Settings = settings;
 
                     TimeService.Start();
-                    TimeService.SetTimeZoneOffset(timeZoneOffset);
+                    TimeService.SetTimeZoneOffset(timeZoneOffsetInMinutes);
                     break;
             }
         }
