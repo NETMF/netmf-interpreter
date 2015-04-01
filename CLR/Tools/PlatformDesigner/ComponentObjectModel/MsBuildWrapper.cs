@@ -3868,6 +3868,20 @@ namespace ComponentObjectModel
                         proj.Xml.AddImport(prc.ProjectPath);
                     }
 
+                    // TODO: this is a hack so that if an OS library is selected, the corresponding target of that OS is imported.
+                    //       for any os library, a clause to the below ifelse should be added to capture the additional target import.
+                    if (defProj != null)
+                    {
+                        foreach (MFComponent l in defProj.Libraries)
+                        {
+                            if (l.Name.Equals("CMSIS_RTX", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                var im = proj.Xml.AddImport(@"$(SPOCLIENT)\devicecode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings");
+                                im.Condition = @"'$(reducesize)' == 'false'";
+                            }
+                        }
+                    }
+
                     proj.Save(fullpath);
 
                     
