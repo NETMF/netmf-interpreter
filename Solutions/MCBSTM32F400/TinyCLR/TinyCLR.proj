@@ -159,10 +159,6 @@
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\TinyHal\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="EthernetDriver_HAL_MCBSTM32F400.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\EthernetDriver_HAL\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
         <DriverLibs Include="Watchdog_pal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Watchdog\stubs\dotNetMF.proj" />
     </ItemGroup>

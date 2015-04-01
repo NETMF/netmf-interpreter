@@ -48,5 +48,6 @@
   <ItemGroup>
     <ExtraProjects Include="dotNetMF_loader.proj" />
   </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\LCD_HAL.libcatproj" />
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>

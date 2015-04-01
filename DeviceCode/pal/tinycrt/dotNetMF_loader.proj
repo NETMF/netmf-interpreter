@@ -45,5 +45,6 @@
     <IncludePaths Include="DeviceCode\include" />
   </ItemGroup>
   <ItemGroup />
+  <Import Project="$(SPOCLIENT)\Framework\Features\LCD_HAL.libcatproj" />
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>

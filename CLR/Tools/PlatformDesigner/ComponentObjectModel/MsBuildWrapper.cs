@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.IO;
+using System.Linq;
 using XsdInventoryFormatObject;
 using Microsoft.Build.Framework;
 //using Microsoft.Build.BuildEngine;
@@ -3137,6 +3138,12 @@ namespace ComponentObjectModel
 
                     ProjectPropertyGroupElement bpg = SaveStringProps(proj, mfproj, tbl);
 
+                    var reducesizeProp = mfproj.Properties.FirstOrDefault(p => p.Name == "reducesize");
+                    if (reducesizeProp != null)
+                    {
+                        bpg.AddProperty("reducesize", reducesizeProp.Value);
+                    }
+
                     ProjectImportElement pi = proj.Xml.AddImport(@"$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings");
 
                     if (mfproj.IsClrProject)
@@ -3781,25 +3788,39 @@ namespace ComponentObjectModel
                     if (defProj != null)
                     {
                         ///
-                        /// If we have the LWIP feature project then we need to add the following property to the 
+                        /// If we have the LWIP or LWIP OS feature project then we need to add the following property to the 
                         /// solutions settings file
                         /// 
                         bool AddLWIP = false;
+                        bool AddLWIPOS = false;
                         foreach (MFComponent f in defProj.Features)
                         {
-                            if (f.Name.Equals("Network (RTIP)", StringComparison.InvariantCultureIgnoreCase))
+                            if (f.Name.Equals("Network (Emulator)", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 AddLWIP = false;
+                                AddLWIPOS = false;
                                 break;
                             }
                             else if (f.Name.Equals("Network (LWIP)", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 AddLWIP = true;
+                                AddLWIPOS = false;
+                                break;
+                            }
+                            else if (f.Name.Equals("Network (LWIP OS)", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                AddLWIP = false;
+                                AddLWIPOS = true;
+                                break;
                             }
                         }
                         if (AddLWIP)
                         {
                             mainGrp.AddProperty("TCP_IP_STACK", "LWIP");
+                        }
+                        else if (AddLWIPOS)
+                        {
+                            mainGrp.AddProperty("TCP_IP_STACK", "LWIP_1_4_1_OS");
                         }
                     }
 
@@ -3845,6 +3866,20 @@ namespace ComponentObjectModel
                     if (prc != null)
                     {
                         proj.Xml.AddImport(prc.ProjectPath);
+                    }
+
+                    // TODO: this is a hack so that if an OS library is selected, the corresponding target of that OS is imported.
+                    //       for any os library, a clause to the below ifelse should be added to capture the additional target import.
+                    if (defProj != null)
+                    {
+                        foreach (MFComponent l in defProj.Libraries)
+                        {
+                            if (l.Name.Equals("CMSIS_RTX", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                var im = proj.Xml.AddImport(@"$(SPOCLIENT)\devicecode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings");
+                                im.Condition = @"'$(reducesize)' == 'false'";
+                            }
+                        }
                     }
 
                     proj.Save(fullpath);
