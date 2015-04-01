@@ -3898,6 +3898,15 @@ namespace ComponentObjectModel
                         {
                             CopyClonedFile(cloneRoot + "lwip_selector.h", newRoot + "lwip_selector.h", solution.m_cloneSolution.Name, solution.Name);
                         }
+
+                        ///
+                        /// Copy the lwipopts file for the cloned solution
+                        /// 
+                        if (File.Exists(cloneRoot + "lwipopts.h"))
+                        {
+                            CopyClonedFile(cloneRoot + "lwipopts.h", newRoot + "lwipopts.h", solution.m_cloneSolution.Name, solution.Name);
+                        }
+
                         //CopyClonedFile(cloneRoot + "dotnetmf.proj", newRoot + "dotnetmf.proj", solution.m_cloneSolution.Name, solution.Name);
                         //CopyClonedFiles(cloneRoot + "DeviceCode\\", newRoot + "DeviceCode\\", solution.m_cloneSolution.Name, solution.Name);
                     }
@@ -3916,6 +3925,26 @@ namespace ComponentObjectModel
                                 if (f.Name.Equals("Network (LWIP)", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     CopyClonedFile(lwipSel, Path.Combine(dir, "lwip_selector.h"), "<TEMPLATE>", solution.Name);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    ///
+                    /// copy the generic lwip_selector file in the case the cloned solution doesn't have one or we are creating a
+                    /// new solution with LWIP_OS
+                    /// 
+                    if (!File.Exists(Path.Combine(dir, "lwipopts.h")))
+                    {
+                        string lwipSel = ExpandEnvVars("$(SPOCLIENT)\\DeviceCode\\PAL\\lwip_1_4_1_os\\config\\lwipopts.h", "");
+                        if (File.Exists(lwipSel) && defProj != null)
+                        {
+                            foreach (MFComponent f in defProj.Features)
+                            {
+                                if (f.Name.Equals("Network (LWIP OS)", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    CopyClonedFile(lwipSel, Path.Combine(dir, "lwipopts.h"), "<TEMPLATE>", solution.Name);
                                     break;
                                 }
                             }
