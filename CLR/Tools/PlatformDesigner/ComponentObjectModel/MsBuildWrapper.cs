@@ -3788,25 +3788,39 @@ namespace ComponentObjectModel
                     if (defProj != null)
                     {
                         ///
-                        /// If we have the LWIP feature project then we need to add the following property to the 
+                        /// If we have the LWIP or LWIP OS feature project then we need to add the following property to the 
                         /// solutions settings file
                         /// 
                         bool AddLWIP = false;
+                        bool AddLWIPOS = false;
                         foreach (MFComponent f in defProj.Features)
                         {
-                            if (f.Name.Equals("Network (RTIP)", StringComparison.InvariantCultureIgnoreCase))
+                            if (f.Name.Equals("Network (Emulator)", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 AddLWIP = false;
+                                AddLWIPOS = false;
                                 break;
                             }
                             else if (f.Name.Equals("Network (LWIP)", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 AddLWIP = true;
+                                AddLWIPOS = false;
+                                break;
+                            }
+                            else if (f.Name.Equals("Network (LWIP OS)", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                AddLWIP = false;
+                                AddLWIPOS = true;
+                                break;
                             }
                         }
                         if (AddLWIP)
                         {
                             mainGrp.AddProperty("TCP_IP_STACK", "LWIP");
+                        }
+                        else if (AddLWIPOS)
+                        {
+                            mainGrp.AddProperty("TCP_IP_STACK", "LWIP_1_4_1_OS");
                         }
                     }
 
