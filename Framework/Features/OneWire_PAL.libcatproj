@@ -14,7 +14,7 @@
     <FilePath>$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\onewire_stubs.cpp</FilePath>
   </Templates>
   <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
-  <StubLibrary Name="onewire_pal_stubs" Guid="{24E1C771-7E4F-471C-A85C-78D693C259B6}" ProjectPath="$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+  <StubLibrary Name="onewire_pal_stubs" Guid="{238A3F72-46C6-4267-88BE-D15C09594103}" ProjectPath="$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <VersionDependency>
       <Major>4</Major>
       <Minor>0</Minor>
