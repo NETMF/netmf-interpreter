@@ -73,5 +73,7 @@
     <HFiles Include="spot.h" />
     <HFiles Include="spot_native.h" />
   </ItemGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\Backlight_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\Piezo_PAL.libcatproj" />
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>
