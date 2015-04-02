@@ -16,7 +16,6 @@
 
   <Import Project="$(SPOCLIENT)\Framework\Features\CryptoConfig_PAL.libcatproj"/>
   <Import Project="$(SPOCLIENT)\Framework\Features\PKCS11_Crypto_PAL.libcatproj"/>
-  <Import Project="$(SPOCLIENT)\Framework\Features\PKCS11_Storage_PAL.libcatproj"/>
 
   <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SecurityPkcs11\dotNetMF.proj" />
