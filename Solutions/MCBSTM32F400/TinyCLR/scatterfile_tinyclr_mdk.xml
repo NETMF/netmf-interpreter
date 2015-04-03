@@ -11,47 +11,70 @@
          by making Symbolic names available instead of a bunch of numbers. These values are
          fixed in hardware and therefore, don't change.
     -->
+    <!-- Internal FLASH -->
     <Set Name="IFLASH_BaseAddress"      Value="0x08000000"/>
     <Set Name="IFLASH_Size"             Value="0x00100000"/><!-- 1MB -->
     
+    <!-- Core Coupled Memory (D-Bus) -->
     <Set Name="CCM_BaseAddress"         Value="0x10000000"/>
     <Set Name="CCM_Size"                Value="0x00010000"/><!-- 64KB -->
 
+    <!-- Internal SRAM -->
     <Set Name="IRAM_BaseAddress"        Value="0x20000000"/>
     <Set Name="IRAM_Size"               Value="0x00020000"/><!-- 128KB -->
 
+    <!-- External NOR Flash-->
     <Set Name="NOR_BaseAddress"         Value="0x60000000"/>
     <Set Name="NOR_Size"                Value="0x00800000"/><!-- 8MB -->
     
+    <!-- External SRAM -->
     <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
     <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
 
     <!-- The only target currently supported is FLASH -->
     <If Name="TARGETLOCATION" In="FLASH">
+        <!-- TinyBooter sits at power on Reset vector-->
         <Set Name="TinyBooter_Code_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
         <Set Name="TinyBooter_Code_Size"         Value="0x0000C000"/><!-- 48KB -->
-
-        <Set Name="Config_BaseAddress"  Value="%TinyBooter_Code_BaseAddress% + %TinyBooter_Code_Size%"/>    
-        <Set Name="Config_Size"         Value="0x00004000"/><!-- 16KB -->
-        <Set Name="Code_BaseAddress"    Value="%Config_BaseAddress% + %Config_Size%"/>
-        <Set Name="Code_Size"           Value="0x000F0000"/><!-- 960KB -->
         
-        <!-- ALL of external RAM is enabled for the CLR HEAP -->
-        <Set Name="Heap_BaseAddress"    Value="%EXTRAM_BaseAddress%"/>
-        <Set Name="Heap_Size"           Value="%EXTRAM_Size%"/>
+        <!-- Configuration section immediately follows boot loader area -->
+        <Set Name="Config_BaseAddress"           Value="%TinyBooter_Code_BaseAddress% + %TinyBooter_Code_Size%"/>    
+        <Set Name="Config_Size"                  Value="0x00004000"/><!-- 16KB -->
         
-        <!-- DAT region goes into external NOR Flash -->
-        <!-- Theoretically Thumb2 code can execute from NOR, however in practice
-             it doesn't work. The Debugger can't set breakpoints and doesn't resolve
-             source, etc... so at best you are left with single stepping through
-             disassembly. :(
-        -->
-        <Set Name="Data_BaseAddress"    Value="%NOR_BaseAddress%"/>
-        <Set Name="Data_Size"           Value="0x00020000"/><!-- 64KB -->
+        <!-- CLR Code section -->
+        <Set Name="Code_BaseAddress"             Value="%Config_BaseAddress% + %Config_Size%"/>
+        <Set Name="Code_Size"                    Value="0x000F0000"/><!-- 960KB -->
+        
+        <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
+        <Set Name="Stack_Bottom"                 Value="%CCM_BaseAddress%"/>
 
-        <Set Name="Stack_Bottom"        Value="%CCM_BaseAddress%"/>
-
-        <Set Name="Valid"               Value="true"/>
+        <If Name="TARGETTYPE" Value="Release">
+            <!-- ALL of external RAM is enabled for the CLR HEAP -->
+            <Set Name="Heap_BaseAddress"    Value="%EXTRAM_BaseAddress%"/>
+            <Set Name="Heap_Size"           Value="%EXTRAM_Size%"/>
+        
+            <!-- DAT region goes into external NOR Flash -->
+            <!-- Theoretically, Thumb2 code can execute from NOR, however in practice
+                 it doesn't work. The Debugger can't set breakpoints and doesn't resolve
+                 source, etc... so at best you are left with single stepping through
+                 disassembly. :(
+            -->
+            <Set Name="Data_BaseAddress"    Value="%NOR_BaseAddress%"/>
+            <Set Name="Data_Size"           Value="0x00020000"/><!-- 64KB -->
+            <Set Name="Valid"               Value="true"/>
+        </If>
+        <If Name="TARGETTYPE" Value="Debug">
+            <!-- Use only 1MB of external RAM for the CLR HEAP.
+                 Can't use all of external RAM as the address pins overlap
+                 with the SWD pins used for ETM tracing in Debug builds.
+            -->
+            <Set Name="Heap_BaseAddress"    Value="%EXTRAM_BaseAddress%"/>
+            <Set Name="Heap_Size"           Value="0x00100000"/><!--1MB-->
+            
+            <!-- No DAT section, everything is downloaded as needed for debug build -->
+            
+            <Set Name="Valid"               Value="true"/>
+        </If>
     </If>
 
     <!-- ################################################################################ -->
@@ -69,12 +92,6 @@
             <FileMapping Name="*" Options="(+RO-CODE)" />
             <FileMapping Name="*" Options="(+RO-DATA)" />
 
-            <!-- Fiq profile -->
-            <IfDefined Name="FIQ_SAMPLING_PROFILER">
-                <FileMapping Name="FiqSubhandler_STM32.obj"  Options="(+RO)" />
-                <FileMapping Name="sampling_profiler_RAM.obj" Options="(+RO)" />
-            </IfDefined>
-            
             <IfNotDefined Name="Data_BaseAddress">
                 <FileMapping Name="tinyclr_dat.obj" Options="(+RO, +LAST)" />
             </IfNotDefined>
@@ -147,6 +164,7 @@
 
         <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
         </ExecRegion>
+        
         <!-- everything between heapbegin and heapend will be allocated for the CLR heap -->
         <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE" Size="UNINIT">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
@@ -154,20 +172,6 @@
         <ExecRegion Name="ER_HEAP_END" Base="+%Heap_Size%" Options="ABSOLUTE" Size="UNINIT">
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
         </ExecRegion>
-
-        <!-- Profile build -->
-
-        <IfDefined Name="PROFILE_BUILD">
-            <ExecRegion Name="ER_PROFILERBUFFER_BEGIN" Base="%ProfileBuffer_Begin%" Options="ABSOLUTE" Size="UNINIT">
-                <FileMapping Name="*" Options="(SectionForProfilerBufferBegin)" />
-            </ExecRegion>
-
-            <!-- everything between profilebufferbegin and profilebufferend will be allocated for a buffer -->
-            <ExecRegion Name="ER_PROFILERBUFFER_END" Base="%ProfileBuffer_End%" Options="ABSOLUTE" Size="UNINIT">
-                <FileMapping Name="*" Options="(SectionForProfilerBufferEnd)" />
-            </ExecRegion>
-        </IfDefined>
-
     </LoadRegion>
 
     <!-- If this variable is defined, create a separate section for the tinyclr.dat file -->
