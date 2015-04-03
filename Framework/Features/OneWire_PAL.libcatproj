@@ -14,7 +14,7 @@
     <FilePath>$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\onewire_stubs.cpp</FilePath>
   </Templates>
   <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
-  <StubLibrary Name="onewire_pal_stubs" Guid="{24E1C771-7E4F-471C-A85C-78D693C259B6}" ProjectPath="$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+  <StubLibrary Name="onewire_pal_stubs" Guid="{238A3F72-46C6-4267-88BE-D15C09594103}" ProjectPath="$(SPOCLIENT)\DeviceCode\PAL\OneWire\stubs\dotNetMF.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <VersionDependency>
       <Major>4</Major>
       <Minor>0</Minor>
@@ -38,7 +38,7 @@
   <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
   <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
   <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\OneWire_PAL.libcatproj</ProjectPath>
-  <FeatureAssociations Name="OneWire" Guid="{C9D30638-8B83-42B7-90A6-C96899B185F1}" ProjectPath="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+  <FeatureAssociations Name="OneWire" Guid="{3401dd69-cab5-45fc-a759-1d1eded247c7}" ProjectPath="$(SPOCLIENT)\Framework\Features\OneWire.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <VersionDependency>
       <Major>4</Major>
       <Minor>0</Minor>
