@@ -72,18 +72,24 @@ void __section(SectionForBootstrapOperations) InitSram()
 
 void __section(SectionForBootstrapOperations) BootstrapCode_GPIO()
 {
-	/* GPIO pins connected to NOR Flash and SRAM on the MCBSTM32F400 board */
-	const uint8_t PortD_PinList[] = {0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13, 14, 15};
-	const uint8_t PortE_PinList[] = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-	const uint8_t PortF_PinList[] = {0, 1, 2, 3, 4, 5, 12, 13, 14, 15};
-	const uint8_t PortG_PinList[] = {0, 1, 2, 3, 4, 5, 10};
-	
-	const uint32_t pinConfig = 0x3C2;	// Speed 100Mhz, AF12 FSMC, Alternate Mode
-	const uint32_t pinMode = pinConfig & 0xF;
-	const GPIO_ALT_MODE alternateMode = (GPIO_ALT_MODE) pinConfig;
-	const GPIO_RESISTOR resistorConfig = RESISTOR_PULLUP;
-	
-	uint32_t i;
+    /* GPIO pins connected to NOR Flash and SRAM on the MCBSTM32F400 board */
+    const uint8_t PortD_PinList[] = {0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13, 14, 15};
+#ifdef DEBUG
+    // PE2,3,4,5 are used for TRACECLK and TRACEDATA0-3 so don't enable them as address pins in debug builds
+    // This limits external FLASH and SRAM to 1MB addressable space each.
+    const uint8_t PortE_PinList[] = {0, 1, /*2, 3, 4, 5,*/ 7, 8, 9, 10, 11, 12, 13, 14, 15};
+#else
+    const uint8_t PortE_PinList[] = {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+#endif
+    const uint8_t PortF_PinList[] = {0, 1, 2, 3, 4, 5, 12, 13, 14, 15};
+    const uint8_t PortG_PinList[] = {0, 1, 2, 3, 4, 5, 10};
+    
+    const uint32_t pinConfig = 0x3C2;	// Speed 100Mhz, AF12 FSMC, Alternate Mode
+    const uint32_t pinMode = pinConfig & 0xF;
+    const GPIO_ALT_MODE alternateMode = (GPIO_ALT_MODE) pinConfig;
+    const GPIO_RESISTOR resistorConfig = RESISTOR_PULLUP;
+    
+    uint32_t i;
 
     /* Enable GPIO clocks */  
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN
