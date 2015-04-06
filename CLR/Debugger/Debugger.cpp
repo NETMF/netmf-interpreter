@@ -667,14 +667,14 @@ bool CLR_DBG_Debugger::AccessMemory( CLR_UINT32 location, UINT32 lengthInBytes, 
                 }
 
 
-                if (!success)
+                if(!success)
                 {
                     break;
                 }
 
                 accessLenInBytes -= NumOfBytes;
 
-                if (accessLenInBytes <= 0)
+                if(accessLenInBytes <= 0)
                 {
                     break;
                 }
