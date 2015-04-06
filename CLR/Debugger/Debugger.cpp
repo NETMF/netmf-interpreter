@@ -622,7 +622,7 @@ bool CLR_DBG_Debugger::AccessMemory( CLR_UINT32 location, UINT32 lengthInBytes, 
                 {
                     case AccessMemory_Check:
                     case AccessMemory_Read:
-                        if (deviceInfo->Attribute.SupportsXIP)
+                        if(deviceInfo->Attribute.SupportsXIP)
                         {
                             memcpy( (BYTE*)bufPtr, (const void*)accessAddress, NumOfBytes );
                             success = TRUE;
@@ -674,7 +674,7 @@ bool CLR_DBG_Debugger::AccessMemory( CLR_UINT32 location, UINT32 lengthInBytes, 
 
                 accessLenInBytes -= NumOfBytes;
 
-                if(accessLenInBytes <= 0)
+                if (accessLenInBytes <= 0)
                 {
                     break;
                 }
