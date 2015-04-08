@@ -543,14 +543,14 @@ bool CLR_DBG_Debugger::CheckPermission( ByteAddress address, int mode )
 #endif
             switch(range.RangeType)
             {
-                case BlockRange::BLOCKTYPE_DEPLOYMENT:   // fall through
-                case BlockRange::BLOCKTYPE_FILESYSTEM:   // fall through
-                case BlockRange::BLOCKTYPE_STORAGE_A:    // fall through
+                case BlockRange::BLOCKTYPE_DEPLOYMENT:
+                case BlockRange::BLOCKTYPE_FILESYSTEM:
+                case BlockRange::BLOCKTYPE_STORAGE_A:
                 case BlockRange::BLOCKTYPE_STORAGE_B:
                 case BlockRange::BLOCKTYPE_SIMPLE_A:
                 case BlockRange::BLOCKTYPE_SIMPLE_B:
                 case BlockRange::BLOCKTYPE_UPDATE:
-                case BlockRange::BLOCKTYPE_CONFIG:         // fall through
+                case BlockRange::BLOCKTYPE_CONFIG:
                     hasPermission = true;
                     break;
             }
@@ -650,25 +650,34 @@ bool CLR_DBG_Debugger::AccessMemory( CLR_UINT32 location, UINT32 lengthInBytes, 
                             }
                         }
                         break;
+
                     case AccessMemory_Write:
                         success = m_deploymentStorageDevice->Write( accessAddress , NumOfBytes, (BYTE *)bufPtr, FALSE );
                         break;
 
-                     case AccessMemory_Erase:
-                        success = m_deploymentStorageDevice->EraseBlock( accessAddress );
+                    case AccessMemory_Erase:
+                        if (!m_deploymentStorageDevice->IsBlockErased( accessAddress, NumOfBytes ))
+                        {
+                            success = m_deploymentStorageDevice->EraseBlock( accessAddress );
+                        }
                         break;
+
                      default:
                         break;
                 }
 
 
                 if(!success)
+                {
                     break;
+                }
 
                 accessLenInBytes -= NumOfBytes;
 
                 if (accessLenInBytes <= 0)
+                {
                     break;
+                }
 
                 bufPtr        += NumOfBytes;
                 accessAddress += NumOfBytes;
