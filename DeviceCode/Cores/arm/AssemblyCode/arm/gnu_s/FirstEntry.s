@@ -115,11 +115,7 @@ EntryPoint:
 
 
 PreStackEntry:
-    B       PreStackInit
-
-
-PreStackInit_Exit_Pointer:
-
+    BL       PreStackInit
     ldr     r0, =StackTop               @ new SYS stack pointer for a full decrementing stack
 
     msr     cpsr_c, #PSR_MODE_ABORT     @ go into ABORT mode, interrupts off

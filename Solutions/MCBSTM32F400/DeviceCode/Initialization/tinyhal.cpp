@@ -642,12 +642,12 @@ extern "C" void SystemInit()
     __enable_irq();
 }
 
+#endif //PLATFORM_ARM_OS_PORT
+
 extern "C" void HARD_Breakpoint()
 {
     __breakpoint( 0 );
 }
-
-#endif //PLATFORM_ARM_OS_PORT
 
 #if !defined(BUILD_RTM)
 

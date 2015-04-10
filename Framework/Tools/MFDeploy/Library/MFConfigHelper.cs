@@ -468,21 +468,15 @@ namespace Microsoft.NetMicroFramework.Tools.MFDeployTool.Engine
             // read in the configuration data if the config sector was found
             if (m_cfg_sector.m_address != uint.MaxValue)
             {
-                int hal_static_cfg_size = 0;
-                unsafe
-                {
-                    hal_static_cfg_size = sizeof(HAL_CONFIGURATION_SECTOR);
-                }
-
                 // read in the static portion of the config sector
-                engine.ReadMemory(m_cfg_sector.m_address, (uint)hal_static_cfg_size, out m_all_cfg_data);
+                engine.ReadMemory( m_cfg_sector.m_address, ( uint )hal_config_static_size, out m_all_cfg_data );
 
                 m_StaticConfig = (HAL_CONFIGURATION_SECTOR)UnmarshalData(m_all_cfg_data, typeof(HAL_CONFIGURATION_SECTOR));
 
                 // uninitialized config sector, lets try to fix it
                 if (m_StaticConfig.ConfigurationLength == 0xFFFFFFFF)
                 {
-                    m_StaticConfig.ConfigurationLength = (uint)hal_static_cfg_size;
+                    m_StaticConfig.ConfigurationLength = ( uint )hal_config_static_size;
                     m_StaticConfig.Version.Major = 3;
                     m_StaticConfig.Version.Minor = 0;
                     m_StaticConfig.Version.Extra = 0;

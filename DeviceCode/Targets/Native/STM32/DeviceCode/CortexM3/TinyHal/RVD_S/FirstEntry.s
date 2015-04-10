@@ -13,9 +13,6 @@
 
     EXPORT  EntryPoint
 
-    EXPORT  PreStackInit_Exit_Pointer
-    EXPORT  ARM_Vectors
-
     EXPORT StackBottom
     EXPORT StackTop
     EXPORT HeapBegin
@@ -24,7 +21,6 @@
     EXPORT CustomHeapEnd
 
     IMPORT  PreStackInit
-
 
     IF HAL_REDUCESIZE = "1"
         IMPORT BootEntryLoader
@@ -40,21 +36,23 @@
 
     AREA SectionForStackBottom,       DATA
 StackBottom       DCD 0
+    
     AREA SectionForStackTop,          DATA
 StackTop          DCD 0
+    
     AREA SectionForHeapBegin,         DATA
 HeapBegin         DCD 0
+    
     AREA SectionForHeapEnd,           DATA
 HeapEnd           DCD 0
+    
     AREA SectionForCustomHeapBegin,   DATA
-ARM_Vectors       SPACE   84*4   ; exception vector table (max 84 entries)
 CustomHeapBegin   DCD 0
+    
     AREA SectionForCustomHeapEnd,     DATA
 CustomHeapEnd     DCD 0
 
-
     AREA ||i.EntryPoint||, CODE, READONLY
-
     ENTRY
 
 EntryPoint
@@ -80,10 +78,7 @@ Start
     ; allow per processor pre-stack initialization
 
 PreStackEntry
-    b       PreStackInit
-
-PreStackInit_Exit_Pointer 
-
+    bl      PreStackInit
     ldr     sp,StackTop_Ptr
     bl      BootstrapCode
 
@@ -101,6 +96,5 @@ StackTop_Ptr
 
 Fault_Handler
     b       Fault_Handler
-
 
     END
