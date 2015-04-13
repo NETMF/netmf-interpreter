@@ -1022,17 +1022,23 @@ namespace Microsoft.SPOT.Platform.Test
 
             if (m_isDevEnvironment)
             {
-                string flavWin = Environment.GetEnvironmentVariable("FLAVOR_WIN");
+                string flav = Environment.GetEnvironmentVariable("FLAVOR");
+                
+                if (string.IsNullOrEmpty(flav))
+                {
+                    flav = "Release";
+                }
+
                 buildPath = Environment.GetEnvironmentVariable("SPOCLIENT")
-                    + @"\buildoutput\public\" + flavWin
+                    + @"\buildoutput\public\" + flav
                     + @"\test\" + pathValue + @"\dll\";
 
                 if (!Directory.Exists(buildPath))
                 {
-                    flavWin = flavWin.ToLower() == "release" ? "Debug" : "Release";
+                    flav = flav.ToLower() == "release" ? "Debug" : "Release";
 
                     buildPath = Environment.GetEnvironmentVariable("SPOCLIENT")
-                        + @"\buildoutput\public\" + flavWin
+                        + @"\buildoutput\public\" + flav
                         + @"\test\" + pathValue + @"\dll\";
                 }
             }

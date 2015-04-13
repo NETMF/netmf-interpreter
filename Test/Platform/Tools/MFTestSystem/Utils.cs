@@ -22,25 +22,25 @@ namespace Microsoft.SPOT.Platform.Test
         {
             if (m_isDevEnvironment)
             {
-                string flavWin = Environment.GetEnvironmentVariable("FLAVOR_WIN");
+                string flav = Environment.GetEnvironmentVariable("FLAVOR");
 
-                if (string.IsNullOrEmpty(flavWin))
+                if (string.IsNullOrEmpty(flav))
                 {
-                    flavWin = "Release";
+                    flav = "Release";
                 }
 
                 string devEnvFile =
                 Environment.GetEnvironmentVariable("SPOCLIENT")
-                                + @"\buildoutput\public\" + flavWin
+                                + @"\buildoutput\public\" + flav
                                 + @"\client\" + file;
 
                 if (!File.Exists(devEnvFile))
                 {
-                    flavWin = (flavWin.ToLower() == "release" ? "Debug" : "Release");
+                    flav = (flav.ToLower() == "release" ? "Debug" : "Release");
 
                     devEnvFile =
                         Environment.GetEnvironmentVariable("SPOCLIENT")
-                                + @"\buildoutput\public\" + flavWin
+                                + @"\buildoutput\public\" + flav
                                 + @"\client\" + file;
                 }
 
