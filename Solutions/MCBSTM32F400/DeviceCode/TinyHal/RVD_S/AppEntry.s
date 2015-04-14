@@ -27,6 +27,7 @@
     EXPORT CustomHeapBegin
     EXPORT CustomHeapEnd
     EXPORT __initial_sp
+    EXPORT Reset_Handler
 
     IMPORT  SystemInit
     IMPORT  __main
@@ -37,15 +38,20 @@
 
     AREA SectionForStackBottom,       DATA
 StackBottom       DCD 0
+
     AREA SectionForStackTop,          DATA
 __initial_sp 
 StackTop          DCD 0
+
     AREA SectionForHeapBegin,         DATA
 HeapBegin         DCD 0
+
     AREA SectionForHeapEnd,           DATA
 HeapEnd           DCD 0
+
     AREA SectionForCustomHeapBegin,   DATA
 CustomHeapBegin   DCD 0
+
     AREA SectionForCustomHeapEnd,     DATA
 CustomHeapEnd     DCD 0
 
@@ -57,7 +63,7 @@ EntryPoint
 
 ; The first word has a dual role:
 ; - It is the entry point of the application loaded or discovered by
-;   the bootloader
+;   the bootloader and therfore must be valid executable code
 ; - it contains a signature word used to identify application blocks
 ;   in TinyBooter (see: Tinybooter_ProgramWordCheck() for more details )
 ; * The additional entries in this table are completely ignored and
@@ -74,7 +80,7 @@ EntryPoint
 ;   ]
 ; The actual word used is 0x2000E00C
 
-    b       Start         ; 0xE00C
+    b       Reset_Handler ; 0xE00C
     DCW     0x2000        ; Booter signature is 0x2000E00C
     DCD     0 ; [ UNUSED ]
     DCD     0 ; [ UNUSED ]
@@ -83,7 +89,8 @@ EntryPoint
     DCD     0 ; [ UNUSED ]
     DCD     0 ; [ UNUSED ]
 
-Start
+Reset_Handler
+    ;; reload the stack pointer as there's no returning to the loader
     ldr     sp, =__initial_sp
     LDR     R0, =SystemInit
     BLX     R0
@@ -93,11 +100,12 @@ Start
     ALIGN
 
 ;*******************************************************************************
-; User Stack and Heap initialization
+; User Stack and Heap initialization for ARMCC CRT
 ;*******************************************************************************
     EXPORT  __user_setup_stackheap
                  
 __user_setup_stackheap
+    ;; enforce 8 byte alignment
     LDR     R0, = HeapBegin
     ADD     R0, R0, #8 ; adjust up to 8 byte alignment
     BIC     R0, #3     ; mask down to get final aligned value

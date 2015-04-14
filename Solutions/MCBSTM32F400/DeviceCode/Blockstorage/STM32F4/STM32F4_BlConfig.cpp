@@ -52,8 +52,7 @@
 
 const BlockRange g_STM32F4_BlockRange1[] =
 {
-    { BlockRange::BLOCKTYPE_BOOTSTRAP ,   0, 2 },  // 08000000 bootloader   48k
-    { BlockRange::BLOCKTYPE_CONFIG    ,   3, 3 },  // 0800C000 config       16k
+    { BlockRange::BLOCKTYPE_BOOTSTRAP ,   0, 3 },  // 08000000 bootloader   64k
 };
 
 const BlockRange g_STM32F4_BlockRange2[] =

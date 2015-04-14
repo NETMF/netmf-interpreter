@@ -4,8 +4,6 @@
 
     EXPORT  PreStackInit
 
-    IMPORT  PreStackInit_Exit_Pointer
-
     PRESERVE8
 
     AREA SectionForBootstrapOperations, CODE, READONLY
@@ -25,19 +23,16 @@ PreStackInit
     ; TODO: Enter your pre stack initialization code here (if needed)
     ;       e.g. SDRAM initialization if you don't have/use SRAM for the stack
     ;
+    ; For "M" Profiles of the ARM Architecture (e.g. Cortex-M ) a stack is
+    ; provided at power on reset so additional calls are allowed here. For
+    ; other Architectures there may not be any valid stack at this point so
+    ; no other method calls are allowed and the link register (LR) must be
+    ; retained for the return.
     
     ; << ADD CODE HERE >>
 
-    ;*************************************************************************
-    ; DO NOT CHANGE THE FOLLOWING CODE! we can not use pop to return because we 
-    ; loaded the PC register to get here (since the stack has not been initialized).  
-    ; Make sure the PreStackInit_Exit_Pointer is within range and 
-    ; in the SectionForBootstrapOperations
-    ; go back to the firstentry(_loader) code 
-    ;
-    ;
-PreStackEnd
-    B     PreStackInit_Exit_Pointer
+    ; return to caller
+    BX lr
 
     ;
     ;**************************************************************************

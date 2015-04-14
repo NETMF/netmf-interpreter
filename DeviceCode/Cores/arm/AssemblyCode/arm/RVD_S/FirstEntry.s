@@ -94,7 +94,7 @@ EntryPoint
     msr     cpsr_c, #PSR_MODE_SYSTEM    ; go into System mode, interrupts off
 
 
-	IF TargetPlatformProcessor = "PLATFORM_ARM_LPC24XX"
+    IF TargetPlatformProcessor = "PLATFORM_ARM_LPC24XX"
     ; LPC24XX on chip bootloader requires valid checksum in internal Flash
     ; location 0x14 ( ARM reserved vector ).
     B       PreStackEntry
@@ -105,9 +105,7 @@ EntryPoint
     ; allow per processor pre-stack initialization initialization
 
 PreStackEntry
-    B       PreStackInit
-
-PreStackInit_Exit_Pointer 
+    BL      PreStackInit
 
     ldr     r0, =StackTop               ; new SYS stack pointer for a full decrementing stack
 

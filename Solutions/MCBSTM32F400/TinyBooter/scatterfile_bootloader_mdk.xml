@@ -1,38 +1,89 @@
 <?xml version="1.0"?>
 <ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
 
-    <!-- STM32F4 -->
+    <!-- STM32F4 with 1M Flash, 128k SRAM, and 64k DATA CCM -->
 
     <Set Name="Valid" Value="false"/>
 
     <!-- ################################################################################ -->
 
+    <!-- Memory Region base and size values for physical hardware to help clarify the mapping
+         by making Symbolic names available instead of a bunch of numbers. These values are
+         fixed in hardware and therefore, don't change.
+    -->
+    <!-- Internal FLASH -->
+    <Set Name="IFLASH_BaseAddress"      Value="0x08000000"/>
+    <Set Name="IFLASH_Size"             Value="0x00100000"/><!-- 1MB -->
 
-    <Set Name="RAM_Start"             Value="0x20010000"/>
-    <Set Name="Custom_Heap_Begin"     Value="0x20014000"/>
-    <Set Name="Custom_Heap_End"       Value="0x20014FF8"/>
-    <Set Name="Stack_Bottom"          Value="0x20018000"/>
-    <Set Name="Stack_Top"             Value="0x2001BFF8"/>
+    <!-- Core Coupled Memory (CCM) [D-Bus] -->
+    <Set Name="CCM_BaseAddress"         Value="0x10000000"/>
+    <Set Name="CCM_Size"                Value="0x00010000"/><!-- 64KB -->
 
-    <Set Name="Heap_Begin"            Value="0x2001C000"/>
-    <Set Name="Heap_End"              Value="0x2001FFF8"/>
+    <!-- Internal SRAM -->
+    <Set Name="IRAM_BaseAddress"        Value="0x20000000"/>
+    <Set Name="IRAM_Size"               Value="0x00020000"/><!-- 128KB -->
 
-    <If Name="TARGETLOCATION" Value="FLASH">
+    <!-- External NOR Flash-->
+    <Set Name="NOR_BaseAddress"         Value="0x60000000"/>
+    <Set Name="NOR_Size"                Value="0x00800000"/><!-- 8MB -->
 
-        <Set Name="Code_BaseAddress"  Value="0x08000000"/>
-        <Set Name="Code_Size"         Value="0x0000C000"/>
-        <Set Name="Valid"             Value="true"/>
+    <!-- External SRAM -->
+    <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
+    <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
 
-    </If>
+    <!-- Solution specific usage settings -->
+    <!-- Internal CCM (D-Bus) -->
+    <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
+    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
 
-    <If Name="TARGETLOCATION" Value="RAM">
+    <!-- External SRAM -->
+    <Set Name="Heap_BaseAddress"        Value="%EXTRAM_BaseAddress%"/>
 
-        <Set Name="Code_BaseAddress"  Value="0x20000000"/> 
-        <Set Name="Code_Size"         Value="0x0000C000"/>
-        <Set Name="Valid"             Value="true"/>
+    <!-- External NOR FLASH -->
+    <!-- Configuration section is at base of external NOR flash
+         This needs to be in the same block storage device as the
+         deployment region to enable the MFDeploy to access it.
+         ( Due to device side library implementation limit )
+    -->
+    <Set Name="Config_BaseAddress"      Value="%NOR_BaseAddress%"/>
+    <Set Name="Config_Size"             Value="0x00010000"/><!-- 64KB -->
+
+    <!-- DAT region goes into external NOR Flash -->
+    <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
+    <Set Name="Data_Size"               Value="0x00020000"/><!-- 128KB -->
+    <!-- Deployment fills the rest of external NOR flash... -->
+
+    <!-- Internal FLASH -->
+    <!-- TinyBooter sits at power on Reset vector-->
+    <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
+    <Set Name="BooterCode_Size"         Value="0x00010000"/><!-- 64KB -->
         
-    </If>
+    <If Name="TARGETLOCATION" Value="FLASH">
+        <!-- Internal FLASH -->
+        
+        <!-- Native Code section -->
+        <Set Name="Code_BaseAddress"         Value="%BooterCode_BaseAddress%"/>
+        <Set Name="Code_Size"                Value="%BooterCode_Size%"/>
 
+        <!-- =========================================================== -->
+        <If Name="TARGETTYPE" Value="Release">
+            <!-- ALL of external RAM is enabled for the CLR HEAP -->
+            <Set Name="Heap_Size"               Value="0x00080000"/><!-- 512K -->
+            <Set Name="CustomHeap_Size"         Value="0x00080000"/><!-- 512K -->
+        
+            <Set Name="Valid"                   Value="true"/>
+        </If>
+        <If Name="TARGETTYPE" Value="Debug">
+            <!-- Use only 1MB of external RAM for Debug builds.
+                 Can't use all of external RAM as the address pins overlap
+                 with the SWD pins used for ETM tracing in Debug builds.
+            -->
+            <Set Name="Heap_Size"               Value="0x00100000"/><!--1MB-->
+            <Set Name="CustomHeap_Size"         Value="0x00100000"/><!--1MB-->
+            
+            <Set Name="Valid"               Value="true"/>
+        </If>
+    </If>
 
     <!-- ################################################################################ -->
 
@@ -42,53 +93,56 @@
 
     <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
 
+        <!-- ========= INTERNAL FLASH ============================================ -->
         <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
-            <FileMapping Name="FirstEntry.obj"   Options="(+RO, +FIRST)" /> <!-- the entry pointer section goes into this region -->
+            <FileMapping Name="FirstEntry.obj"   Options="(+RO, +FIRST)" />
             <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
             <FileMapping Name="*" Options="(+RO-CODE)" />
             <FileMapping Name="*" Options="(+RO-DATA)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RO" Base="%RAM_Start%" Options="ABSOLUTE" Size="">
-            <!-- Flash programming from Flash is save on STM32 -->
+        <!-- ========= INTERNAL RAM ============================================= -->
+        <ExecRegion Name="ER_RAM_RW" Base="%IRAM_BaseAddress%" Options="ABSOLUTE" Size="">
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
+            <!-- Flash programming from Flash is safe on STM32 -->
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
-            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
-        </ExecRegion>
-
-        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_Begin%" Options="ABSOLUTE" Size="UNINIT">
+        <!-- ========= EXTERNAL RAM ============================================= -->
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for a heap -->
 
-        <ExecRegion Name="ER_HEAP_END" Base="%Heap_End%" Options="ABSOLUTE" Size="UNINIT">
+        <ExecRegion Name="ER_HEAP_END" Base="+%Heap_Size%" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="%Custom_Heap_Begin%" Options="ABSOLUTE" Size="UNINIT">
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="+0" Options="ABSOLUTE UNINIT" Size="">
           <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="%Custom_Heap_End%" Options="ABSOLUTE" Size="UNINIT">
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="+%CustomHeap_Size%" Options="ABSOLUTE UNINIT" Size="">
           <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
-        <!-- this must go last here to provide a low water mark on the stack -->
-
-        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE" Size="UNINIT">
+        <!-- ========= Internal CCM ============================================ -->
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForStackBottom)" />
         </ExecRegion>
-	    
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Top%" Options="ABSOLUTE" Size="UNINIT">
-            <FileMapping Name="*" Options="(SectionForStackTop)" />
+
+        <!-- -8 for the two 32bit values in the SectionForStack* sections, This keeps the region
+             limit from exceeding the size of physical memory.
+        -->
+        <ExecRegion Name="ER_STACK_TOP" Base="AlignExpr(+%CCM_Size% -8, 8 )" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
         </ExecRegion>
-
     </LoadRegion>
-
 </ScatterFile>

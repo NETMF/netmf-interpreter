@@ -43,12 +43,20 @@
 
 const BlockRange g_M29W640FB_BlockRange1[] =
 {
-    { BlockRange::BLOCKTYPE_CODE,   0,  7 },    // 8x8KB=64KB
+    // ER_CONFIG
+    { BlockRange::BLOCKTYPE_CONFIG,   0,  7 },    // 8x8KB=64KB
 };
 
 const BlockRange g_M29W640FB_BlockRange2[] =
 {
-    { BlockRange::BLOCKTYPE_DEPLOYMENT,   0,  126 },  // 128x64KB = 8128KB
+    // ER_DAT
+    { BlockRange::BLOCKTYPE_CODE,   0,  0 },    // 2x64KB = 128KB
+#ifdef DEBUG
+    // In debug builds with TRACE pins enabled, only 1MB is available
+    { BlockRange::BLOCKTYPE_DEPLOYMENT,   2,  15 },   // 14x64KB = 896KB
+#else
+    { BlockRange::BLOCKTYPE_DEPLOYMENT,   2,  126 },  // 125x64KB = 8000KB
+#endif
 };
 
 

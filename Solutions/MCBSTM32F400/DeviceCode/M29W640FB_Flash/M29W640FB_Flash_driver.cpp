@@ -22,9 +22,9 @@ extern ARM_DRIVER_FLASH Driver_Flash0;
 BOOL M29W640FB_WaitReady()
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
-	
+    
     while(Driver_Flash0.GetStatus().busy == 1);
-	
+    
     return TRUE;
 }
 
@@ -47,11 +47,11 @@ BOOL M29W640FB_WaitReady()
 BOOL M29W640FB_Flash_Driver::ChipInitialize( void* context )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
-		
-	if(Driver_Flash0.Initialize(NULL) != ARM_DRIVER_OK)
-	{
-		return FALSE;
-	}
+        
+    if(Driver_Flash0.Initialize(NULL) != ARM_DRIVER_OK)
+    {
+        return FALSE;
+    }
 
     return TRUE;
 }
@@ -105,15 +105,15 @@ BOOL  M29W640FB_Flash_Driver::Read( void* context, ByteAddress StartSector, UINT
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
-	int32_t wordsReadCount;
-	uint32_t NumWords = NumBytes / 2;
+    int32_t wordsReadCount;
+    uint32_t NumWords = NumBytes / 2;
 
-	M29W640FB_WaitReady();
-	wordsReadCount = Driver_Flash0.ReadData(StartSector, pSectorBuff, NumWords);	
-	if(wordsReadCount != NumWords)
-	{
-		return FALSE;
-	}
+    M29W640FB_WaitReady();
+    wordsReadCount = Driver_Flash0.ReadData(StartSector, pSectorBuff, NumWords);	
+    if(wordsReadCount != NumWords)
+    {
+        return FALSE;
+    }
 
     return TRUE;
 }
@@ -140,21 +140,21 @@ BOOL M29W640FB_Flash_Driver::Write(void* context, ByteAddress Address, UINT32 Nu
 {
     NATIVE_PROFILE_PAL_FLASH();
     int32_t wordsWrittenCount;
-	uint32_t NumWords = NumBytes / 2;
-		
-	// Read-modify-write is used for FAT filesystems only
+    uint32_t NumWords = NumBytes / 2;
+        
+    // Read-modify-write is used for FAT filesystems only
     if (ReadModifyWrite)
-	{
-		return FALSE;
-	}
-	
-	M29W640FB_WaitReady();
-	wordsWrittenCount = Driver_Flash0.ProgramData(Address, pSectorBuff, NumWords);
-	if(wordsWrittenCount != NumWords)
-	{
-		return FALSE;
-	}
-	
+    {
+        return FALSE;
+    }
+    
+    M29W640FB_WaitReady();
+    wordsWrittenCount = Driver_Flash0.ProgramData(Address, pSectorBuff, NumWords);
+    if(wordsWrittenCount != NumWords)
+    {
+        return FALSE;
+    }
+    
     return TRUE;
 }
 
@@ -195,44 +195,44 @@ BOOL M29W640FB_Flash_Driver::SetSectorMetadata(void* context, ByteAddress Sector
 //    
 BOOL M29W640FB_Flash_Driver::IsBlockErased( void* context, ByteAddress BlockStart, UINT32 BlockLength )
 {
-	const uint32_t bufLenWords = 128;
-	const uint32_t bufLenBytes = bufLenWords * 2;
-	uint16_t readBuffer[bufLenWords];
-	uint32_t wordsReadCount;
-	uint32_t numWords;
-	uint32_t currentAddress = BlockStart;
-	uint32_t endAddress = BlockStart + BlockLength;
-	
+    const uint32_t bufLenWords = 128;
+    const uint32_t bufLenBytes = bufLenWords * 2;
+    uint16_t readBuffer[bufLenWords];
+    uint32_t wordsReadCount;
+    uint32_t numWords;
+    uint32_t currentAddress = BlockStart;
+    uint32_t endAddress = BlockStart + BlockLength;
+    
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
-	while(currentAddress < endAddress)
+    while(currentAddress < endAddress)
     {
-		/* The number of bytes to read will be equal to readBufLen unless the BlockLength is not a even multiple of readBufLen */
-		if((endAddress - currentAddress) < bufLenBytes)
-		{
-			numWords = (endAddress - currentAddress) / 2;
-		}
-		else
-		{
-			numWords = bufLenWords;
-		}
-		
-		/* Read data from flash */
-		M29W640FB_WaitReady();
-		wordsReadCount = Driver_Flash0.ReadData(currentAddress, readBuffer, numWords);
-		if(wordsReadCount != numWords)
-		{
-			return FALSE;
-		}
-		
-		currentAddress += wordsReadCount * 2;
-		
-		/* Validate the data we get back is all erased to 0xFF */
+        /* The number of bytes to read will be equal to readBufLen unless the BlockLength is not a even multiple of readBufLen */
+        if((endAddress - currentAddress) < bufLenBytes)
+        {
+            numWords = (endAddress - currentAddress) / 2;
+        }
+        else
+        {
+            numWords = bufLenWords;
+        }
+        
+        /* Read data from flash */
+        M29W640FB_WaitReady();
+        wordsReadCount = Driver_Flash0.ReadData(currentAddress, readBuffer, numWords);
+        if(wordsReadCount != numWords)
+        {
+            return FALSE;
+        }
+        
+        currentAddress += wordsReadCount * 2;
+        
+        /* Validate the data we get back is all erased to 0xFF */
         for (int i = 0; i < wordsReadCount; i++) {
             if (readBuffer[i] != 0xFFFF)
-			{
-				return FALSE;
-			}
+            {
+                return FALSE;
+            }
         }
     }
 
@@ -257,8 +257,8 @@ BOOL M29W640FB_Flash_Driver::EraseBlock( void* context, ByteAddress Sector )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
-	M29W640FB_WaitReady();
-	Driver_Flash0.EraseSector(Sector);
+    M29W640FB_WaitReady();
+    Driver_Flash0.EraseSector(Sector);
 
     return TRUE;
 }

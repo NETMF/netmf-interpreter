@@ -86,8 +86,9 @@
 
   <ItemGroup>
     <Compile Include="$(AS_SUBDIR)\FirstEntry.s" />
+    <Compile Include="$(AS_SUBDIR)\VectorTable.s" />
     <Compile Include="$(AS_SUBDIR)\IDelayLoop.s" />
-    <Compile Include="$(AS_SUBDIR)\VectorsHandlers.s" />
+    <Compile Include="$(AS_SUBDIR)\DefaultHandlers.s" />
     <Compile Include="$(AS_SUBDIR)\Interlocked.s" />
   </ItemGroup>
 
