@@ -1760,20 +1760,25 @@ namespace Microsoft.SPOT.Platform.Test
                     // Add the DPWS fixture tests which are built by the build system to the test list.
                     string dpwsFixtureTestPath = "";
 
-                    string flavWin = Environment.GetEnvironmentVariable("FLAVOR_WIN");
+                    string flav = Environment.GetEnvironmentVariable("FLAVOR");
+                    
+                    if (string.IsNullOrEmpty(flav))
+                    {
+                        flav = "Release";
+                    }
 
                     dpwsFixtureTestPath = string.Format(@"{0}\BuildOutput\public\{1}\test\server\dpws",
                         Environment.GetEnvironmentVariable("SPOCLIENT"),
-                        flavWin);
+                        flav);
 
                     if (!Directory.Exists(dpwsFixtureTestPath))
                     {
-                        if (flavWin.ToLower() == "debug") flavWin = "Release";
-                        else flavWin = "Debug";
+                        if (flav.ToLower() == "debug") flav = "Release";
+                        else flav = "Debug";
 
                         dpwsFixtureTestPath = string.Format(@"{0}\BuildOutput\public\{1}\test\server\dpws",
                             Environment.GetEnvironmentVariable("SPOCLIENT"),
-                            flavWin);
+                            flav);
                     }
 
                     if (Directory.Exists(dpwsFixtureTestPath))
