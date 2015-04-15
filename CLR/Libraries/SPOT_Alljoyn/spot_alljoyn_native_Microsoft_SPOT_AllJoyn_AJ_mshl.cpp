@@ -27,8 +27,8 @@
 #include "spot_alljoyn_native.h"
 #include "spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ.h"
 
-#include "PropertyStoreOEMProvisioning.h"
-#include <alljoyn/services_common/PropertyStore.h>
+//#include "PropertyStoreOEMProvisioning.h"
+//#include <alljoyn/services_common/PropertyStore.h>
 
 using namespace Microsoft::SPOT::AllJoyn;
 
