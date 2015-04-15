@@ -1,0 +1,64 @@
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>ajtcl_target_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{44F7AA56-20EA-4264-8025-BAF1211A9E5E}</ProjectGuid>
+    <Description>AllJoyn target library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>ajtcl_target_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\target\netmf\dotNetMF.proj</ProjectPath>
+    <ManifestFile>ajtcl_target_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Library</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ajtcl_target_pal" Guid="{44F7AA56-20EA-4264-8025-BAF1211A9E5E}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2014-11-19</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\ajtcl\target\netmf</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\pal\ajtcl\inc" />
+    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" />
+    <IncludePaths Include="DeviceCode\pal\ajtcl\external\sha2" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\Include" />
+    <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0" />
+    <IncludePaths Include="DeviceCode\pal\lwip\lwip_1_3_2\src\include" />
+    <IncludePaths Include="DeviceCode\pal\lwip\lwip_1_3_2\src\include\ipv4" />
+    <IncludePaths Include="DeviceCode\pal\lwip\lwip_1_3_2\contrib\ports\arm\proj\lwIPv4lib" />
+    <IncludePaths Include="DeviceCode\pal\lwip\lwip_1_3_2\contrib\ports\arm\include" />
+    <IncludePaths Include="DeviceCode\pal\lwip\SocketsDriver" />
+    <IncludePaths Include="DeviceCode\pal\lwip\TinyCLR" />
+    <IncludePaths Include="DeviceCode\pal\COM\sockets_lwip" />
+    <IncludePaths Include="DeviceCode\pal\net" />
+    <Compile Include="aj_net.cpp" />
+    <Compile Include="aj_target_crypto.cpp" />
+    <Compile Include="aj_target_nvram.cpp" />
+    <Compile Include="aj_target_util.cpp" />
+    <Compile Include="..\..\external\sha2\sha2.cpp" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
