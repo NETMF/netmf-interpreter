@@ -1,6 +1,9 @@
 <Project DefaultTargets="BuildSupport" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
     <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />
     <ItemGroup>
+        <Project Include="Native_Alljoyn\Core_Alljoyn.csproj" >
+          <InProject>false</InProject>
+        </Project>
         <Project Include="Native_Hardware\Native_UART\Core_Native_Hardware_UART.csproj" >
             <InProject>false</InProject>
         </Project>
