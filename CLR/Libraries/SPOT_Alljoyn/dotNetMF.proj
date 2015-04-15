@@ -1,0 +1,41 @@
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+  
+    <Description>Alljoyn interop library</Description>
+    <Level>CLR</Level>
+    <Groups>Alljoyn</Groups>
+  
+    <ProjectPath>$(SPOCLIENT)\CLR\Libraries\SPOT_Alljoyn\dotnetmf.proj</ProjectPath>
+    <AssemblyName>SPOT_AllJoyn</AssemblyName>
+    <LibraryFile>SPOT_Alljoyn.$(LIB_EXT)</LibraryFile>
+    <Directory>CLR\Libraries\SPOT_Alljoyn</Directory>
+    <ManifestFile>SPOT_Alljoyn.$(LIB_EXT).manifest</ManifestFile>    
+    <PlatformIndependent>True</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <PlatformIndependentBuild>True</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+    
+<ItemGroup>
+
+    <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
+    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
+    <IncludePaths Include="DeviceCode\pal\ajtcl\inc"/>
+
+    <HFile Include="spot_alljoyn_native.h" />
+    <Compile Include="spot_alljoyn_native.cpp" />
+    <Compile Include="spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_mshl.cpp" />
+    <HFile Include="spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ.h" />
+</ItemGroup>
+
+<Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
