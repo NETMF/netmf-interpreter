@@ -1,0 +1,73 @@
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>ajtcl_core_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{A5BB59F7-A536-4346-8F83-61B0DA20604A}</ProjectGuid>
+    <Description>AllJoyn core library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>ajtcl_core_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\src\dotNetMF.proj</ProjectPath>
+    <ManifestFile>ajtcl_core_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Library</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OneWire_PAL" Guid="{8B4E8B4B-774D-4F2F-AA52-085848AA8D70}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2014-11-11</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\ajtcl\src</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\ajtcl\inc;DeviceCode\pal\ajtcl\external\sha2;" />
+    <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
+    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
+    <Compile Include="aj_about.cpp" />
+    <Compile Include="aj_bufio.cpp" />
+    <Compile Include="aj_bus.cpp" />
+    <Compile Include="aj_cert.cpp" />
+    <Compile Include="aj_connect.cpp" />
+    <Compile Include="aj_crc16.cpp" />
+    <Compile Include="aj_creds.cpp" />
+    <Compile Include="aj_crypto.cpp" />
+    <Compile Include="aj_debug.cpp" />
+    <Compile Include="aj_disco.cpp" />
+    <Compile Include="aj_guid.cpp" />
+    <Compile Include="aj_helper.cpp" />
+    <Compile Include="aj_init.cpp" />
+    <Compile Include="aj_introspect.cpp" />
+    <Compile Include="aj_keyauthentication.cpp" />
+    <Compile Include="aj_keyexchange.cpp" />
+    <Compile Include="aj_link_timeout.cpp" />
+    <Compile Include="aj_msg.cpp" />
+    <Compile Include="aj_nvram.cpp" />
+    <Compile Include="aj_peer.cpp" />
+    <Compile Include="aj_serial.cpp" />
+    <Compile Include="aj_serial_rx.cpp" />
+    <Compile Include="aj_serial_tx.cpp" />
+    <Compile Include="aj_std.cpp" />
+    <Compile Include="aj_util.cpp" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
