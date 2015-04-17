@@ -33,6 +33,9 @@
 #include "STM32F4_ETH_tx_desc.h"
 #include "STM32F4_ETH_gpio.h"
 
+#define _DEBUG_TRACE    1
+
+
 //--------------------------------------------------------------------------------------------
 // Constant defines
 //--------------------------------------------------------------------------------------------
@@ -81,8 +84,6 @@ extern void lwip_interrupt_continuation(void);
  */
 BOOL STM32F4_ETH_LWIP_open(Netif_t *const pNetif)
 { 
-    // Initialize PHY
-    eth_initPhy();
 
     // Init interrupt handler
     eth_initReceiveIntHandler(lwip_interrupt_continuation);
@@ -493,23 +494,30 @@ static BOOL initEthernet(Netif_t *const pNetif)
 {   
     EthMode mode = ETHMODE_FAIL;
 
+
+   // Select MII interface
+    eth_selectMii();
+   
+
+   // Enable ethernet clocks
+    eth_enableClocks();
+
     // Initialize Ethernet GPIOs
     eth_initEthGpio();
 
-    // Select MII interface
-    eth_selectMii();
-    
-    // Enable ethernet clocks
-    eth_enableClocks();
-   
+
+    eth_powerUpPhy( TRUE );
+
+
     // Reset MAC module
-    if (!eth_macReset())
+    if (!eth_macDMAReset())
     {
         return FALSE;
     }
 
     // Initialize DMA and MAC registers
     eth_initDmaMacRegisters();
+
 
     // Reset PHY
     if (!eth_phyReset())
@@ -559,6 +567,7 @@ static BOOL initEthernet(Netif_t *const pNetif)
 
     default:
         LWIP_PLATFORM_DIAG((" INVALID!\n"));
+        debug_printf(" Mode %x \r\n", mode);
         return FALSE;
     }
 
