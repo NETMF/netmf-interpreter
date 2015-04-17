@@ -37,6 +37,8 @@ extern NETWORK_CONFIG g_NetworkConfig;
 
 extern void SignalClr();
 
+
+
 err_t STM32F4_ETH_ethhw_init( struct netif *myNetIf )
 {
     /* Initialize netif */
@@ -88,19 +90,24 @@ void lwip_network_uptime_completion( void *arg )
 {
     NATIVE_PROFILE_PAL_NETWORK( );
     BOOL status;
+#if 0 
 
+    // FOR power saving when LINK is down. But it is quite troublesome to turn ON/OFF to check
+    // LINK state to accomodate STM32F4 of no LINK interrupt.
     /* Power up PHY and wait while it starts */
     if (!LinkStatus && !isPhyPoweringUp)
     {
         eth_powerUpPhy(TRUE);
+        debug_printf(" POWer up\r\n");
         isPhyPoweringUp = TRUE;
         LwipUpTimeCompletion.EnqueueDelta64( 4000000 );
         nAttempts++;
         return;
     }
-
     /* PHY should now have started, get the network status */
     isPhyPoweringUp = FALSE;
+
+#endif
     status = eth_isPhyLinkValid(FALSE);
 
     /* Check whether network status has changed */
@@ -111,14 +118,15 @@ void lwip_network_uptime_completion( void *arg )
         /* Check status */
         if( status )
         {
-            /* Network is up, open ethernet driver */
+
             SOCK_NetworkConfiguration *pNetCfg = &g_NetworkConfig.NetworkInterfaces[ 0 ];
             STM32F4_ETH_LWIP_open( pNetIf );
 			eth_netif_set_link_up( pNetIf );
             if( pNetCfg->flags & SOCK_NETWORKCONFIGURATION_FLAGS_DHCP )
                 eth_netif_dhcp_start( pNetIf );
-
+            
             nAttempts = 0;
+
         }
         else
         {
@@ -132,22 +140,19 @@ void lwip_network_uptime_completion( void *arg )
         LinkStatus = status;
     }
 
-    /* Power down PHY if network is down */
     if( !LinkStatus )
-    {
-        eth_powerUpPhy( FALSE );
-    }
+        nAttempts ++;
 
     /* Schedule the next link status check */
     if( LinkStatus || ( nAttempts < 12 ) )
     {
         /* When link is up or has been up, check every second */
-        LwipUpTimeCompletion.EnqueueDelta64( 1000000 );
+        LwipUpTimeCompletion.EnqueueDelta64( 2000000 );
     }
     else
     {
-        /* When link is down, check only once every 15s */
-        LwipUpTimeCompletion.EnqueueDelta64( 15000000 );
+        /* When link is down, check only once every 5s */
+        LwipUpTimeCompletion.EnqueueDelta64( 5000000 );
     }
 }
 
@@ -156,7 +161,7 @@ void InitContinuations( struct netif *pNetIf )
     InterruptTaskContinuation.InitializeCallback( (HAL_CALLBACK_FPN)lwip_interrupt_continuation_callback, (void*)pNetIf );
 
     LwipUpTimeCompletion.InitializeForUserMode( ( HAL_CALLBACK_FPN )lwip_network_uptime_completion, ( void* )pNetIf );
-    LwipUpTimeCompletion.EnqueueDelta64( 2000000 );
+    LwipUpTimeCompletion.EnqueueDelta64( 500000 );
 }
 
 void DeInitContinuations( )
@@ -201,11 +206,14 @@ int STM32F4_ETH_LWIP_Driver::Open( int index )
     const SOCK_NetworkConfiguration *iface;
 
     EthernetPrepareZero( );
+    // Explicilty to turn on the power on PHY, as we turn it off at Close, has to turn it back after CLR_reset
+    eth_powerUpPhy( TRUE );
 
     /* Enable Phy Powerdown on Deepsleep */
     STM32F4_SetPowerHandlers( EthernetDeepSleep, EthernetWakeUp );
 
     /* Apply network configuration */
+
     iface = &g_NetworkConfig.NetworkInterfaces[ index ];
 
     len = g_STM32F4_ETH_NetIF.hwaddr_len;
@@ -263,3 +271,4 @@ BOOL STM32F4_ETH_LWIP_Driver::IsNetworkConnected( void )
 {
     return LinkStatus;
 }
+

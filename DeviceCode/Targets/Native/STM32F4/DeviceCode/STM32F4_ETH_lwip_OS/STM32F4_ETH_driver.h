@@ -94,7 +94,7 @@ typedef void (*pIntHandler)();
 // DMA and MAC functions
 void eth_initDmaMacRegisters();
 void eth_initMacAddress(const uint8_t *const pAddress);
-BOOL eth_macReset();
+BOOL eth_macDMAReset();
 void eth_selectMii();
 void eth_enableClocks();
 void eth_disableClocks();
@@ -107,13 +107,13 @@ void eth_dmaInterruptHandler();
 // Interrupt handler
 void eth_initReceiveIntHandler(pIntHandler receiveHandler);
 
-// PHY
-void eth_initPhy();
-
 // Descriptors
 void eth_initTxDescList(uint32_t txAddress);
 void eth_initRxDescList(uint32_t rxAddress);
 
+// For PHY driver to read/write PHY registers
+BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_t *const pMiiData);
+BOOL eth_writePhyRegister(uint32_t phyAddress, const uint32_t miiAddress, const uint16_t miiData);
 //--------------------------------------------------------------------------------------------
 #ifdef __cplusplus
 }
