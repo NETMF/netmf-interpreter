@@ -358,7 +358,7 @@ namespace Microsoft.SPOT.Debugger {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{0}] Iteration {1}.
+        ///   Looks up a localized string similar to Attempting to connect to device &apos;{0}:{1}&apos; Iteration {2}.
         /// </summary>
         internal static string Iteration {
             get {
