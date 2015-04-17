@@ -825,7 +825,7 @@ namespace Microsoft.SPOT.Debugger
             
             for(int retries = 0; retries < 60; retries++)
             {
-                VsPackage.MessageCentre.DeploymentMsg(String.Format(DiagnosticStrings.Iteration, retries));
+                VsPackage.MessageCentre.DeploymentMsg(String.Format(DiagnosticStrings.Iteration, DeployDeviceName, retries));
                 
                 try
                 {   
