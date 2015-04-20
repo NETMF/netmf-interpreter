@@ -2,7 +2,11 @@
 
 namespace Microsoft.SPOT.Debugger
 {
+<<<<<<< HEAD
     /// <summary>Equality comparer to compare device names of USB ports independent of the interface</summary>
+=======
+    /// <summary>Equality comparer to compare devce names of USB ports independent of the interface</summary>
+>>>>>>> 86c80b6f534eccd6dd2d7438069709d321edb33b
     /// <remarks>
     /// Port "file" names take a specific format that includes the interface as a GUID string at the end
     /// This is used to eliminate duplicates when allowing legacy permiscuous WinUSB support. This comparer
