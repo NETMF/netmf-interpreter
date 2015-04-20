@@ -55,8 +55,8 @@ BOOL AD_Initialize( ANALOG_CHANNEL channel, INT32 precisionInBits )
 	// init this channel if it's listed in the STM32F4_AD_CHANNELS array
     for (int i = 0; i < STM32F4_AD_NUM ; i++) {
         if (g_STM32F4_AD_Channel[i] == chNum) {
-	  	   // valid channel
-    	   if (!(RCC->APB2ENR & RCC_APB2ENR_ADCxEN)) { // not yet initialized
+		// valid channel
+			if (!(RCC->APB2ENR & RCC_APB2ENR_ADCxEN)) { // not yet initialized
                RCC->APB2ENR |= RCC_APB2ENR_ADCxEN; // enable AD clock
                ADC->CCR = 0; // ADCCLK = PB2CLK / 2;
                ADCx->SQR1 = 0; // 1 conversion
@@ -64,14 +64,14 @@ BOOL AD_Initialize( ANALOG_CHANNEL channel, INT32 precisionInBits )
                ADCx->CR2 = ADC_CR2_ADON; // AD on
                ADCx->SMPR1 = 0x01249249 * STM32F4_AD_SAMPLE_TIME;
                ADCx->SMPR2 = 0x09249249 * STM32F4_AD_SAMPLE_TIME;
-    	   }
+		}
 
-	   	   // set pin as analog input if channel is not one of the internally connected
-           if(chNum <= 15) {
-              CPU_GPIO_DisablePin(AD_GetPinForChannel(channel), RESISTOR_DISABLED, 0, GPIO_ALT_MODE_1);
-           }
+			// set pin as analog input if channel is not one of the internally connected
+			if(chNum <= 15) {
+				CPU_GPIO_DisablePin(AD_GetPinForChannel(channel), RESISTOR_DISABLED, 0, GPIO_ALT_MODE_1);
+			}
 
-	   	   return TRUE;
+			return TRUE;
 		}
     }
 
