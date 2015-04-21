@@ -42,6 +42,21 @@ void AJ_Sleep(uint32_t time)
     HAL_Time_Sleep_MicroSeconds_InterruptEnabled(timeMicroSeconds);
 }
 
+
+
+#ifndef NDEBUG
+AJ_Status _AJ_GetDebugTime(AJ_Time* timer)
+{
+    AJ_Status status;
+    INT64 now = Time_GetTickCount();
+    timer->seconds = now / 1000;
+    timer->milliseconds = now % 1000;
+    status = AJ_OK;
+    return status;
+}
+#endif
+
+
 uint32_t AJ_GetElapsedTime(AJ_Time* timer, uint8_t cumulative)
 {
     uint32_t elapsed;

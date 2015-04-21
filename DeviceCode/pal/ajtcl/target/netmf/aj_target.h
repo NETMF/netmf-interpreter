@@ -25,6 +25,9 @@
 #include <string.h>
 
 
+#undef  NDEBUG
+#define AJ_DEBUG_RESTRICT AJ_DEBUG_ALL
+
 #ifndef TRUE
 #define TRUE (1)
 #endif
@@ -56,9 +59,12 @@
     do { /**/ } while (0)
 #else
 #include <TinyCLR_Runtime.h>
-//#define AJ_Printf(fmat, ...) \
-//    do { CLR_Debug::Printf(fmat, ## __VA_ARGS__); } while (0)
 
+
+#define AJ_Printf(fmat, ...) \
+    do { CLR_Debug::Printf(fmat, ## __VA_ARGS__); } while (0)
+
+#if 0
 #define AJ_Printf(fmat, ...) \
     do { \
         va_list args; \
@@ -69,6 +75,8 @@
         ::OutputDebugStringA(szBuffer); \
         va_end(args); \
     } while (0) 
+
+#endif    
 #endif
 
 
@@ -96,6 +104,10 @@ extern uint8_t dbgTARGET_UTIL;
 
 #define AJ_EXPORT
 
+#if defined(__arm)
+ int hal_snprintf( char* buffer, size_t len, const char* format, ... );
+#endif
+/**
 /*
  * Main method allows argc, argv
  */

@@ -27,6 +27,7 @@
 #include "spot_alljoyn_native.h"
 #include "spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ.h"
 
+#define AJ_InfoPrintf(_msg)
 
 using namespace Microsoft::SPOT::AllJoyn;
 
