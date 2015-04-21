@@ -343,8 +343,11 @@ struct BitFieldManager
                                     if(iAbsBlock <= blockIndex && blockIndex <= (iAbsBlock + rangeBlocks))
                                     {
                                         ByteAddress eraseAddress = pRegion->BlockAddress(blockIndex - iAbsBlock);
-                                        
-                                        device->EraseBlock( eraseAddress );
+
+                                        if (CheckFlashSectorPermission(device, eraseAddress))
+                                            device->EraseBlock( eraseAddress );
+                                        else
+                                            debug_printf(" BOOTER BLOCK IS Dirty ??? !!! ");
 
                                         found = true;
                                         break;
