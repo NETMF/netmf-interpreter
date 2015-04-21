@@ -39,7 +39,11 @@
         <CompressImageDat Include="$(BIN_DIR)\TinyCLR.bin\ER_DAT" />
         <CompressImageCfg Include="$(BIN_DIR)\TinyCLR.bin\ER_CONFIG" />
     </ItemGroup>
+
     <ItemGroup>
+	    <IncludePaths Include="DeviceCode\pal\ajtcl\inc" />
+	    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" />    
+    
         <IncludePaths Include="DeviceCode\PAL" />
         <IncludePaths Include="DeviceCode\PAL\OpenSSL" />
         <IncludePaths Include="DeviceCode\PAL\OpenSSL\OpenSSL_1_0" />
@@ -69,7 +73,135 @@
     <Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_lwip_os.featureproj" />
     <Import Condition="'$(CRYPTO_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />
     <Import Condition="'$(SSL_OPEN_LWIP_OS_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" />
+
+    <Import Project="$(SPOCLIENT)\Framework\Features\AllJoyn.featureproj" />
+
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
+
+
+
+<!--
+
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets\openssl\dotnetmf.proj" />
+    <DriverLibs Include="openssl_pal.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\ssl\dotnetmf.proj" />
+    <DriverLibs Include="libssl_openssl.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\tinyclr\dotnetmf.proj" />
+    <DriverLibs Include="ssl_types.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\OpenSSL\dotNetMF.proj" />
+    <DriverLibs Include="OpenSSL_PKCS11_Crypto.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\dotnetmf.proj" />
+    <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
+  </ItemGroup>
+-->
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\alljoyn\dotnetmf.proj" />
+    <DriverLibs Include="TestAllJoyn.$(LIB_EXT)" />
+  </ItemGroup>
+
+<!--
+  <ItemGroup>
+	<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\base_tcl\dotNetMF.proj" />
+    <DriverLibs Include="base_tcl_pal.$(LIB_EXT)" />
+  </ItemGroup>
+-->  
+   <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\ajtcl\dotNetMF.proj" />
+    <DriverLibs Include="ajtcl_core_pal.$(LIB_EXT)" />
+    <DriverLibs Include="ajtcl_target_pal.$(LIB_EXT)" />
+    <DriverLibs Include="ajtcl_crypto_pal.$(LIB_EXT)" />
+    <!-- note: the following projects are necessary for 'proper' AJ_RandBytes implementation
+         but it increases NetduinoPlus2 flash memory use by roughly 1 64k page -->
+
+
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\aes\dotNetMF.proj" />
+    <DriverLibs Include="aes_openssl.$(LIB_EXT)" />
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\modes\dotNetMF.proj" />
+    <DriverLibs Include="modes_openssl.$(LIB_EXT)" />
+
+<!--
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\OpenSSL\stubs\dotNetMF.proj" />
+    <DriverLibs Include="openssl_pal_stubs.$(LIB_EXT)" />
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\dotNetMF.proj" />
+    <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\TinyCLR\dotNetMF.proj" />
+    <DriverLibs Include="ssl_types.$(LIB_EXT)" />
+-->
+ </ItemGroup>
+
+<!--
+  <ItemGroup Condition="'$(COMPILER_TOOL)'!='RVDS'">
+    <DriverLibs Include="aes_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="asn1_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="asn1pt2_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="bf_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="bio_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="buffer_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="bn_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="cast_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="comp_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="conf_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="des_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="dh_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="dsa_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="dso_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="ecdh_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="ec_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="ecdsa_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="engine_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="err_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="evp_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="hmac_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="lhash_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="md2_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="md4_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="md5_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="modes_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="ocsp_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="objects_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="pem_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="pkcs7_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="pkcs12_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="pqueue_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="rand_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="rc2_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="rc4_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="ripemd_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="rsa_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="seed_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="sha_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="stack_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="ts_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="txt_db_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="ui_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="whrlpool_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="x509_openssl.$(LIB_EXT)" />
+    <DriverLibs Include="x509v3_openssl.$(LIB_EXT)" />
+  </ItemGroup>
+-->
+
+
+  <ItemGroup>
+    <PlatformIndependentLibs Include="SPOT_IO.$(LIB_EXT)" />
+    <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_IO\dotNetMF.proj" />
+  </ItemGroup>
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net_security\dotNetMF.proj" />
+    <PlatformIndependentLibs Include="SPOT_Net_Security.$(LIB_EXT)" />
+  </ItemGroup>
+
+
+
+
     <ItemGroup>
         <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\stubs\dotnetmf.proj" />
