@@ -294,7 +294,6 @@ void eth_enableTxRx()
     // Enable DMA interrupts
     ETH->DMAIER |= ( DMA_MASK );
     
-    
     // Start DMA and MAC reception and transmission
     flushTxFifo();
     ETH->DMAOMR |= ETH_DMAOMR_SR | ETH_DMAOMR_ST;
@@ -595,7 +594,9 @@ static void flushTxFifo()
  */
 static void initMACCR()
 {
-    volatile uint32_t crValue = 0;
+    volatile uint32_t value = 0;
+
+    value = ETH->MACCR;
 
     // Watchdog enabled
     // Jabber enabled
@@ -615,17 +616,28 @@ static void initMACCR()
     // Defferal check disabled
     // Transmitter disabled
     // Received disabled
+    value = value & (~( ETH_MACCR_WD 
+                      | ETH_MACCR_JD 
+                      | ETH_MACCR_IFG 
+                      | ETH_MACCR_CSD
+                      | ETH_MACCR_FES 
+                      | ETH_MACCR_DM 
+                      | ETH_MACCR_ROD 
+                      | ETH_MACCR_LM 
+                      | ETH_MACCR_IPCO 
+                      | ETH_MACCR_RD 
+                      | ETH_MACCR_APCS 
+                      | ETH_MACCR_BL
+                      | ETH_MACCR_DC 
+                      | ETH_MACCR_TE 
+                      | ETH_MACCR_RE));
 
-
-    crValue = ETH->MACCR;
-    ETH->MACCR = crValue & (~ETH_MACCR_WD )  & (~ETH_MACCR_JD) & (~ETH_MACCR_IFG) 
-                         | ETH_MACCR_IFG_96Bit & (~ETH_MACCR_CSD) | ETH_MACCR_FES
-                         | ETH_MACCR_DM & (~ETH_MACCR_ROD) & (~ETH_MACCR_LM)
-                         & (~ETH_MACCR_IPCO) | ETH_MACCR_RD & (~ETH_MACCR_APCS)
-                         & (~ETH_MACCR_BL) | ETH_MACCR_BL_10 & (~ETH_MACCR_DC) 
-                         & (~ETH_MACCR_TE) & (~ETH_MACCR_RE);
-
-
+    value = value | ETH_MACCR_IFG_96Bit 
+                  | ETH_MACCR_FES 
+                  | ETH_MACCR_DM
+                  | ETH_MACCR_RD 
+                  | ETH_MACCR_BL_10;
+    ETH->MACCR = value;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -650,11 +662,18 @@ static void initMACFFR()
     // Hash multicast disabled
     // Hash unicast disabled
     // Promiscuous mode disabled
-
-    value = value & (~ETH_MACFFR_RA) & (~ETH_MACFFR_HPF) & (~ETH_MACFFR_SAF) & (~ETH_MACFFR_SAIF)
-                  & (~ETH_MACFFR_PCF) | (ETH_MACFFR_PCF_BlockAll) & (~ETH_MACFFR_BFD) & (~ETH_MACFFR_PAM)
-                  & (~ETH_MACFFR_DAIF) & (~ETH_MACFFR_HM) & (~ETH_MACFFR_HU) & (~ETH_MACFFR_PM);
-
+    value = value & (~( ETH_MACFFR_RA 
+                      | ETH_MACFFR_HPF 
+                      | ETH_MACFFR_SAF 
+                      | ETH_MACFFR_SAIF
+                      | ETH_MACFFR_PCF  
+                      | ETH_MACFFR_BFD 
+                      | ETH_MACFFR_PAM
+                      | ETH_MACFFR_DAIF 
+                      | ETH_MACFFR_HM 
+                      | ETH_MACFFR_HU 
+                      | ETH_MACFFR_PM ));
+    value = value | ETH_MACFFR_PCF_BlockAll ;
     ETH->MACFFR = value;
 }
 
@@ -669,7 +688,6 @@ static void initMACMIIAR()
     value = ETH->MACMIIAR;
     // Select the clock range HCLK/62
     ETH->MACMIIAR = (value & (~ETH_MACMIIAR_CR)) | ETH_MACMIIAR_CR_Div62;
-    
 }
 
 //--------------------------------------------------------------------------------------------
@@ -690,10 +708,15 @@ static void initMACFCR()
     // Receive flow control disabled
     // Transmit flow control disabled
     // Flow control busy/back pressure activate disabled
+    value = value & (~( ETH_MACFCR_PT 
+                      | ETH_MACFCR_ZQPD 
+                      | ETH_MACFCR_PLT
+                      | ETH_MACFCR_UPFD 
+                      | ETH_MACFCR_RFCE 
+                      | ETH_MACFCR_TFCE 
+                      | ETH_MACFCR_FCBBPA ));
 
-    value = value & (~ETH_MACFCR_PT) | ETH_MACFCR_ZQPD & (~ETH_MACFCR_PLT) | ETH_MACFCR_PLT_Minus4
-                  & (~ETH_MACFCR_UPFD) & (~ETH_MACFCR_RFCE) &(~ETH_MACFCR_TFCE) &(~ETH_MACFCR_FCBBPA);
-
+    value = value | ETH_MACFCR_ZQPD | ETH_MACFCR_PLT_Minus4 ;
     ETH->MACFCR = value;
 }
 
@@ -716,22 +739,33 @@ static void initDMABMR()
     volatile uint32_t value;
 
     value = ETH->DMABMR;
-// Rx DMA PBL:
-//   32
-// Fixed burst enabled
-// Rx Tx priority ratio:
-//   1:1
-// Programmable burst length:
-//   32
-// Enhanced descriptor format disabled
-// Descriptor skip length: contiguous
-// DMA Arbitration: round robin
-    value = value | ETH_DMABMR_AAB & (~ETH_DMABMR_FPM) | ETH_DMABMR_USP & (~ETH_DMABMR_RDP)
-                  | ETH_DMABMR_RDP_32Beat | ETH_DMABMR_FB & (~ETH_DMABMR_RTPR) | ETH_DMABMR_RTPR_1_1 
-                  & (~ETH_DMABMR_PBL) | ETH_DMABMR_PBL_32Beat & (~ETH_DMABMR_EDE) & (~ETH_DMABMR_DSL) 
-                  & (~ETH_DMABMR_DA);
+    // Rx DMA PBL:
+    //   32
+    // Fixed burst enabled
+    // Rx Tx priority ratio:
+    //   1:1
+    // Programmable burst length:
+    //   32
+    // Enhanced descriptor format disabled
+    // Descriptor skip length: contiguous
+    // DMA Arbitration: round robin
+    value = value & (~( ETH_DMABMR_AAB 
+                      | ETH_DMABMR_FPM 
+                      | ETH_DMABMR_USP 
+                      | ETH_DMABMR_RDP 
+                      | ETH_DMABMR_FB 
+                      | ETH_DMABMR_RTPR 
+                      | ETH_DMABMR_PBL 
+                      | ETH_DMABMR_EDE 
+                      | ETH_DMABMR_DSL 
+                      | ETH_DMABMR_DA ));
+    value = value | ETH_DMABMR_AAB 
+                  | ETH_DMABMR_USP 
+                  | ETH_DMABMR_RDP_32Beat 
+                  | ETH_DMABMR_FB
+                  | ETH_DMABMR_RTPR_1_1 
+                  | ETH_DMABMR_PBL_32Beat;
     ETH->DMABMR = value;
-
 }
 
 //--------------------------------------------------------------------------------------------
@@ -741,6 +775,8 @@ static void initDMABMR()
 static void initDMAOMR()
 {
     volatile uint32_t value;
+    
+    value = ETH->DMAOMR;
 
     // Dropping of TCP/IP checksum error frames enabled
     // Receive store and forwared enabled
@@ -755,23 +791,30 @@ static void initDMAOMR()
     // Operate on second frame disabled (otherwise 
     // frames might be sent twice since there is only 
     // one TX descriptor)
-    value = ETH->DMAOMR;
-    value = value & (~ETH_DMAOMR_DTCEFD) | ETH_DMAOMR_RSF & (~ETH_DMAOMR_DFRF) & (~ETH_DMAOMR_TSF)
-                  & (~ETH_DMAOMR_TTC) | ETH_DMAOMR_TTC_16Bytes & (~ETH_DMAOMR_FEF) & (~ETH_DMAOMR_FUGF)
-                  & (~ETH_DMAOMR_RTC) | ETH_DMAOMR_RTC_64Bytes & (~ETH_DMAOMR_OSF);
+    value = value & (~( ETH_DMAOMR_DTCEFD 
+                      | ETH_DMAOMR_RSF 
+                      | ETH_DMAOMR_DFRF  
+                      | ETH_DMAOMR_TSF
+                      | ETH_DMAOMR_TTC  
+                      | ETH_DMAOMR_FEF 
+                      | ETH_DMAOMR_FUGF 
+                      | ETH_DMAOMR_RTC 
+                      | ETH_DMAOMR_OSF ));
 
+    value = value | ETH_DMAOMR_RSF | ETH_DMAOMR_TTC_16Bytes | ETH_DMAOMR_RTC_64Bytes;
+    ETH->DMAOMR = value;
 }
 
 //--------------------------------------------------------------------------------------------
 /**
  * Read a PHY register through MII.
+ * @param phyAddress, the physical phy address of the PHY chip to be read
  * @param miiAddress the address of the register to read.
  * @param pMiiData a pointer to a variable where the read value is copied.
  * @return Error status.
  *   @retval TRUE if read successful.
  *   @retval FALSE otherwise (pMiiData is not modified).
  */
-
 BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_t *const pMiiData)
 {
     uint32_t nWait = 0U; 
@@ -810,6 +853,7 @@ BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_
 //--------------------------------------------------------------------------------------------
 /**
  * Write to a PHY register through MII.
+ * @param phyAddress, the physical phy address of the PHY chip to be write
  * @param miiAddress the address of the register to write.
  * @param miiData the value to write.
  * @return Error status.

@@ -147,7 +147,7 @@ void lwip_network_uptime_completion( void *arg )
     if( LinkStatus || ( nAttempts < 12 ) )
     {
         /* When link is up or has been up, check every second */
-        LwipUpTimeCompletion.EnqueueDelta64( 2000000 );
+        LwipUpTimeCompletion.EnqueueDelta64( 1000000 );
     }
     else
     {
