@@ -103,10 +103,6 @@
     <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
   </ItemGroup>
 -->
-  <ItemGroup>
-    <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\alljoyn\dotnetmf.proj" />
-    <DriverLibs Include="TestAllJoyn.$(LIB_EXT)" />
-  </ItemGroup>
 
 <!--
   <ItemGroup>
