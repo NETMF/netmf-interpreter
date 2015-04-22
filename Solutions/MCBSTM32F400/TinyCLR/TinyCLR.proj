@@ -103,7 +103,6 @@
     <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
   </ItemGroup>
 -->
-
 <!--
   <ItemGroup>
 	<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\base_tcl\dotNetMF.proj" />
