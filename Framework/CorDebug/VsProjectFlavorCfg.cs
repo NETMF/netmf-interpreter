@@ -619,13 +619,10 @@ namespace Microsoft.SPOT.Debugger
 
             DebugPort port = GetDebugPort();
 
-
             if (port == null)
-            {
                 SetDeployFailure(string.Format("Invalid device transport setting '{0}', could not find a debug port", this.DeployTransportName));
-            }
-
-            //VsPackage.MessageCentre.DeploymentMsg(string.Format(DiagnosticStrings.FoundDevicePort, port.Name, port.PortId, port.PortFilter));
+            else
+                VsPackage.MessageCentre.DeploymentMsg(string.Format( DiagnosticStrings.FoundDevicePort, port.Name, port.PortId, port.PortFilter));
 
             hr = m_deployState.m_deploySuccess ? Utility.COM_HResults.S_OK : Utility.COM_HResults.E_FAIL;
 
@@ -825,7 +822,7 @@ namespace Microsoft.SPOT.Debugger
             
             for(int retries = 0; retries < 60; retries++)
             {
-                VsPackage.MessageCentre.DeploymentMsg(String.Format(DiagnosticStrings.Iteration, retries));
+                VsPackage.MessageCentre.DeploymentMsg( String.Format( DiagnosticStrings.Iteration, port.Name, DeployDeviceName, retries ) );
                 
                 try
                 {   
