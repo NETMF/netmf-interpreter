@@ -91,13 +91,14 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
     
     // control
     UINT16 ctrl = USART_CR1_TE | USART_CR1_RE;
-    if (DataBits == 9) ctrl |= USART_CR1_M;
-    if (Parity) ctrl |= USART_CR1_PCE;
+    if (Parity) { ctrl |= USART_CR1_PCE; DataBits++; }
     if (Parity == USART_PARITY_ODD) ctrl |= USART_CR1_PS;
+    if (DataBits == 9) ctrl |= USART_CR1_M;
+    else if (DataBits != 8) return false;
     uart->CR1 = ctrl;
     
-    if (DataBits == USART_STOP_BITS_ONE) DataBits = 0;
-    uart->CR2 = (UINT16)(DataBits << 12);
+    if (StopBits == USART_STOP_BITS_ONE) StopBits = 0;
+    uart->CR2 = (UINT16)(StopBits << 12);
     
     ctrl = 0;
     if (FlowValue & USART_FLOW_HW_OUT_EN) ctrl |= USART_CR3_CTSE;
