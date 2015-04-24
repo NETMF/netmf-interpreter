@@ -26,15 +26,12 @@
 //--------------------------------------------------------------------------------------------
  
 #include <tinyhal.h>
-
+#include "lwip/tcpip.h"
 #include "STM32F4_ETH_lwip.h"
 #include "STM32F4_ETH_driver.h"
 #include "STM32F4_ETH_rx_desc.h"
 #include "STM32F4_ETH_tx_desc.h"
 #include "STM32F4_ETH_gpio.h"
-
-#define _DEBUG_TRACE    1
-
 
 //--------------------------------------------------------------------------------------------
 // Constant defines
@@ -84,6 +81,8 @@ extern void lwip_interrupt_continuation(void);
  */
 BOOL STM32F4_ETH_LWIP_open(Netif_t *const pNetif)
 { 
+    // Initialize PHY
+    eth_initPhy();
 
     // Init interrupt handler
     eth_initReceiveIntHandler(lwip_interrupt_continuation);
@@ -270,12 +269,16 @@ static Pbuf_t* copyRxDescToPbuf(Pbuf_t *pbuf, const uint8_t *const pBuffer)
 
 //--------------------------------------------------------------------------------------------
 /**
- * Formward a frame contained in a pbuf to the lwip stack.
+ * Forward a frame contained in a pbuf to the lwip stack.
  * @param pNetif the lwip network interface.
  * @param pbuf the pbuf containing the frame.
  */
 static void forwardFrameToLwip(Netif_t *const pNetif, Pbuf_t* pbuf)
 {
+#if LWIP_NETIF_API
+    // post the input packet to the stack
+    tcpip_input( pbuf, pNetif );
+#else
     // Transmit the frame to the lwip stack
     err_t err = pNetif->input(pbuf, pNetif);
     if (err != ERR_OK)
@@ -283,6 +286,7 @@ static void forwardFrameToLwip(Netif_t *const pNetif, Pbuf_t* pbuf)
         pbuf_free(pbuf);
         pbuf = NULL;
     }
+#endif
 }
 
 //--------------------------------------------------------------------------------------------
@@ -494,30 +498,23 @@ static BOOL initEthernet(Netif_t *const pNetif)
 {   
     EthMode mode = ETHMODE_FAIL;
 
-
-   // Select MII interface
-    eth_selectMii();
-   
-
-   // Enable ethernet clocks
-    eth_enableClocks();
-
     // Initialize Ethernet GPIOs
     eth_initEthGpio();
 
-
-    eth_powerUpPhy( TRUE );
-
-
+    // Select MII interface
+    eth_selectMii();
+    
+    // Enable ethernet clocks
+    eth_enableClocks();
+   
     // Reset MAC module
-    if (!eth_macDMAReset())
+    if (!eth_macReset())
     {
         return FALSE;
     }
 
     // Initialize DMA and MAC registers
     eth_initDmaMacRegisters();
-
 
     // Reset PHY
     if (!eth_phyReset())
@@ -567,7 +564,6 @@ static BOOL initEthernet(Netif_t *const pNetif)
 
     default:
         LWIP_PLATFORM_DIAG((" INVALID!\n"));
-        debug_printf(" Mode %x \r\n", mode);
         return FALSE;
     }
 

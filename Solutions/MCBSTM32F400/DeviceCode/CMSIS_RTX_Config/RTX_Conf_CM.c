@@ -36,7 +36,7 @@
 #include "cmsis_os.h"
 #include "lwip/opt.h"
 
-// <MSOPENTECH_CHANGE>
+// [MSOPENTECH_CHANGE]
 // These macros are applied as attributes to the declaration of
 // the buffer arrays that hold the system and user stacks in
 // "RTX_CM_lib.h", which is included below. This allows placing
@@ -46,7 +46,7 @@
 // of the stack in faster memory regions such as CCM data space.
 #define ATTRIB_SYSTEM_STACK __attribute__((section ("rtx_stack")))
 #define ATTRIB_USER_STACK ATTRIB_SYSTEM_STACK
-//</MSOPENTECH_CHANGE>
+//[ END MSOPENTECH_CHANGE ]
 
 /*----------------------------------------------------------------------------
  *      RTX User configuration part BEGIN
@@ -67,7 +67,7 @@
 //   <i> Defines default stack size for threads with osThreadDef stacksz = 0
 //   <i> Default: 200
 #ifndef OS_STKSIZE
- #define OS_STKSIZE     256    // this stack size value is in words
+ #define OS_STKSIZE     512    // this stack size value is in words
 #endif
  
 //   <o>Main Thread stack size [bytes] <64-32768:8><#/4>
@@ -143,7 +143,7 @@
 //
 // <i> Enables Round-Robin Thread switching.
 #ifndef OS_ROBIN
- #define OS_ROBIN       0
+ #define OS_ROBIN       1
 #endif
  
 //   <o>Round-Robin Timeout [ticks] <1-1000>

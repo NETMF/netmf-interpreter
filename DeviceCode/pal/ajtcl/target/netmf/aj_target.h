@@ -62,7 +62,7 @@
 
 
 #define AJ_Printf(fmat, ...) \
-    do { CLR_Debug::Printf(fmat, ## __VA_ARGS__); } while (0)
+    do { debug_printf(fmat, ## __VA_ARGS__); } while (0)
 
 #if 0
 #define AJ_Printf(fmat, ...) \

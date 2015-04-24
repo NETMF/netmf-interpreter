@@ -748,28 +748,24 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalMsg___Mi
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
-		UINT32 param0 = stack.Arg1().NumericByRef().u4;
+		UINT32 bus = stack.Arg1().NumericByRef().u4;
 		
         AJ_Message msg;
-        CLR_RT_HeapBlock * managedMsg = stack.Arg2().Dereference();  FAULT_ON_NULL(managedMsg);                
+        CLR_RT_HeapBlock * managedMsg = stack.Arg2().Dereference();  
+        FAULT_ON_NULL(managedMsg);                
         
         CopyFromManagedMsg(managedMsg, &msg);
         
-		UINT32 param3 = stack.Arg3().NumericByRef().u4;
+		UINT32 timeout = stack.Arg3().NumericByRef().u4;
 
-        UINT32 * param2;
-        UINT8 heapblock2[CLR_RT_HEAP_BLOCK_SIZE];
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock2, 3, param2 ) );
-
+        
 		AJ_Status status = AJ_OK;
 
-		status = AJ_UnmarshalMsg((AJ_BusAttachment *)param0, &msg, param3);
+		status = AJ_UnmarshalMsg((AJ_BusAttachment *)bus, &msg, timeout);
 
-		*param2 = msg.msgId;
-
+		
         CopyToManagedMsg(managedMsg, &msg);
         
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock2, 3 ) );
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_INT32( stack, (INT32)status );
     }

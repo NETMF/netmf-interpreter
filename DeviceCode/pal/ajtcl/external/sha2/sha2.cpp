@@ -48,8 +48,13 @@
  ******************************************************************************/
 
 #include <string.h>	/* memcpy()/memset() or bcopy()/bzero() */
+#ifdef NDEBUG
 #include <assert.h>	/* assert() */
+#else
+#define assert(x)
+#endif
 #include "sha2.h"
+
 
 /*
  * ASSERT NOTE:

@@ -27,7 +27,7 @@
 // uncomment the following lines for debug messages
 #undef  NDEBUG
 #define AJ_DEBUG_RESTRICT AJ_DEBUG_WARN // AJ_DEBUG_INFO
-//#define AJ_DEBUG_RESTRICT  AJ_DEBUG_INFO
+#define AJ_DEBUG_RESTRICT AJ_DEBUG_INFO
 #define AJ_PRINTF   1
 ////////////////////////////////////
 
@@ -400,7 +400,7 @@ static uint8_t sendToBroadcast(int sock, uint16_t port, void* ptr, size_t tx)
                 sin_bcast->sin_addr.S_un.S_un_b.s_b3,
                 sin_bcast->sin_addr.S_un.S_un_b.s_b4
                 ));
-            SOCK_sendto(sock, (const char *)ptr, tx, 0/*MSG_NOSIGNAL*/, (struct SOCK_sockaddr*) sin_bcast, sizeof(struct SOCK_sockaddr_in));
+            ret = SOCK_sendto(sock, (const char *)ptr, tx, 0/*MSG_NOSIGNAL*/, (struct SOCK_sockaddr*) sin_bcast, sizeof(struct SOCK_sockaddr_in));
             if (tx == ret) {
                 sendSucceeded = TRUE;
             } else {

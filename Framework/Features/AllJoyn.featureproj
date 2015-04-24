@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!--<DriverLibs Include="SPOT_Alljoyn.$(LIB_EXT)" />-->
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\Native_Alljoyn\Core_Alljoyn.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
     <PlatformIndependentLibs Include="SPOT_Alljoyn.$(LIB_EXT)" />
     <InteropFeature Include="Microsoft_SPOT_Alljoyn" />
     <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Alljoyn.pe" />

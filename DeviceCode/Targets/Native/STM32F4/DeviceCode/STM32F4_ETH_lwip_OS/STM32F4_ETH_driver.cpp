@@ -27,122 +27,8 @@
  
 #include <tinyhal.h>
 
+
 #include "STM32F4_ETH_driver.h"
-#include "STM32F4_ETH_PHY.h"
-
-//--------------------------------------------------------------------------------------------
-// Normal interrupt summary
-#if INT_ENABLE_NIS
-#define ETH_DMAIER_NISE_MASK         ETH_DMAIER_NISE
-#else
-#define ETH_DMAIER_NISE_MASK         0
-#endif
-
-// Abnormal interrupt summary
-#if INT_ENABLE_AIS
-#define ETH_DMAIER_AISE_MASK         ETH_DMAIER_AISE         
-#else
-#define ETH_DMAIER_AISE_MASK         0
-#endif
-
-// Early receive
-#if INT_ENABLE_ERI
-#define  ETH_DMAIER_ERIE_MASK       ETH_DMAIER_ERIE
-#else
-#define  ETH_DMAIER_ERIE_MASK       0
-#endif
-
-// Fatal bus error
-#if INT_ENABLE_FBEI
-#define  ETH_DMAIER_FBEIE_MASK      ETH_DMAIER_FBEIE
-#else
-#define  ETH_DMAIER_FBEIE_MASK      0
-#endif
-
-// Early transmit interrupt
-
-#if INT_ENABLE_ETI
-#define     ETH_DMAIER_ETIE_MASK    ETH_DMAIER_ETIE
-#else
-#define     ETH_DMAIER_ETIE_MASK    0
-#endif
-
-// Receive watchdog timeout
-#if INT_ENABLE_RWTI
-#define     ETH_DMAIER_RWTIE_MASK   ETH_DMAIER_RWTIE        
-#else
-#define     ETH_DMAIER_RWTIE_MASK   0        
-#endif
-
-// Receive process stopped
-#if INT_ENABLE_RPSI
-#define     ETH_DMAIER_RPSIE_MASK   ETH_DMAIER_RPSIE        
-#else
-#define     ETH_DMAIER_RPSIE_MASK   0        
-#endif
-
-// Receive buffer unavailable
-#if INT_ENABLE_RBUI
-#define     ETH_DMAIER_RBUIE_MASK   ETH_DMAIER_RBUIE        
-#else
-#define     ETH_DMAIER_RBUIE_MASK   0
-#endif
-
-// Received
-
-#if INT_ENABLE_RI
-#define     ETH_DMAIER_RIE_MASK     ETH_DMAIER_RIE
-#else
-#define     ETH_DMAIER_RIE_MASK     0
-#endif
-
-// Transmit underflow
-#if INT_ENABLE_TUI
-#define     ETH_DMAIER_TUIE_MASK    ETH_DMAIER_TUIE         
-#else
-#define     ETH_DMAIER_TUIE_MASK    0
-#endif
-
-// Receive overflow
-#if INT_ENABLE_ROI
-#define     ETH_DMAIER_ROIE_MASK    ETH_DMAIER_ROIE         
-#else
-#define     ETH_DMAIER_ROIE_MASK    0
-#endif
-
-// Transmit jabber timeout
-#if INT_ENABLE_TJTI
-#define     ETH_DMAIER_TJTIE_MASK   ETH_DMAIER_TJTIE        
-#else
-#define     ETH_DMAIER_TJTIE_MASK   0
-#endif
-
-// Transmit buffer unavailable
-#if INT_ENABLE_TBUI
-#define     ETH_DMAIER_TBUIE_MASK   ETH_DMAIER_TBUIE        
-#else
-#define     ETH_DMAIER_TBUIE_MASK   0
-#endif
-
-// Transmit process stopped
-#if INT_ENABLE_TPSI
-#define     ETH_DMAIER_TPSIE_MASK   ETH_DMAIER_TPSIE        
-#else
-#define     ETH_DMAIER_TPSIE_MASK   0
-#endif
-
-// Transmit
-#if INT_ENABLE_TI
-#define     ETH_DMAIER_TIE_MASK     ETH_DMAIER_TIE          
-#else
-#define     ETH_DMAIER_TIE_MASK     0
-#endif
-
-#define DMA_MASK   (ETH_DMAIER_NISE_MASK | ETH_DMAIER_AISE_MASK | ETH_DMAIER_ERIE_MASK | ETH_DMAIER_FBEIE_MASK |\
-                    ETH_DMAIER_ETIE_MASK | ETH_DMAIER_RWTIE_MASK | ETH_DMAIER_RPSIE_MASK | ETH_DMAIER_RBUIE_MASK |\
-                    ETH_DMAIER_RIE_MASK  | ETH_DMAIER_TUIE_MASK | ETH_DMAIER_ROIE_MASK | ETH_DMAIER_TJTIE_MASK  |\
-                    ETH_DMAIER_TBUIE_MASK | ETH_DMAIER_TPSIE_MASK | ETH_DMAIER_TIE_MASK )
-
 
 //--------------------------------------------------------------------------------------------
 // Local declarations
@@ -154,6 +40,8 @@ static void (*receiveIntHandler)();
 // Local functions declarations
 //--------------------------------------------------------------------------------------------
 
+static void enableDmaInterrupts();
+static void disableDmaInterrupts();
 static void flushTxFifo();
 static void initMACCR();
 static void initMACFFR();
@@ -162,6 +50,8 @@ static void initMACFCR();
 static void initMACIMR();
 static void initDMABMR();
 static void initDMAOMR();
+static BOOL readPhyRegister(const uint32_t miiAddress, uint16_t *const miiData);
+static BOOL writePhyRegister(const uint32_t miiAddress, const uint16_t miiData);
 
 //--------------------------------------------------------------------------------------------
 // Functions definitions
@@ -175,6 +65,7 @@ static void initDMAOMR();
 void eth_initDmaMacRegisters()
 {
     // Init DMA and MAC registers
+    initMACMIIAR();
     initMACCR();
     initMACFFR();
     initMACFCR();
@@ -207,24 +98,15 @@ void eth_initMacAddress(const uint8_t *const pAddress)
  */ 
 void eth_selectMii()
 {
-   // enable system controller
-    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
-
-    //reset mac
-    RCC->AHB1RSTR |= RCC_AHB1RSTR_ETHMACRST;
-
     // Select PHY interface
-
+    RCC->AHB1RSTR |= RCC_AHB1RSTR_ETHMACRST;
+    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 #ifdef STM32F4_ETH_PHY_MII
     SYSCFG->PMC &= ~SYSCFG_PMC_MII_RMII;
 #else
     SYSCFG->PMC |= SYSCFG_PMC_MII_RMII;
 #endif
     RCC->AHB1RSTR &= ~RCC_AHB1RSTR_ETHMACRST;
-
-    // init MII clock    
-    initMACMIIAR();
-
 }
 
 //--------------------------------------------------------------------------------------------
@@ -262,7 +144,7 @@ void eth_disableClocks()
  *   @retval TRUE if reset successful.
  *   @retval FALSE if timeout elapsed.
  */
-BOOL eth_macDMAReset()
+BOOL eth_macReset()
 {
     volatile uint32_t nWait = 0U;
     BOOL retval = TRUE;
@@ -282,6 +164,7 @@ BOOL eth_macDMAReset()
     {
         retval = FALSE;
     }
+    
     return retval;
 }
 
@@ -292,8 +175,7 @@ BOOL eth_macDMAReset()
 void eth_enableTxRx()
 {
     // Enable DMA interrupts
-    ETH->DMAIER |= ( DMA_MASK );
-    
+    enableDmaInterrupts();
     
     // Start DMA and MAC reception and transmission
     flushTxFifo();
@@ -312,7 +194,7 @@ void eth_disableTxRx()
     ETH->DMAOMR &= ~(ETH_DMAOMR_SR | ETH_DMAOMR_ST);
     
     // Disable DMA interrupts
-    ETH->DMAIER &= (~DMA_MASK );
+    disableDmaInterrupts();
 }
  
 //--------------------------------------------------------------------------------------------
@@ -558,6 +440,11 @@ void eth_initRxDescList(uint32_t rxAddress)
 /**
  * Initialize PHY.
  */
+void eth_initPhy()
+{
+    initReadPhyCallback(&readPhyRegister);
+    initWritePhyCallback(&writePhyRegister);
+}
 
 //--------------------------------------------------------------------------------------------
 /**
@@ -568,6 +455,113 @@ void eth_initReceiveIntHandler(pIntHandler receiveHandler)
     receiveIntHandler = receiveHandler;
 }
 
+//--------------------------------------------------------------------------------------------
+/**
+ * Enable DMA interrupts.
+ */
+void enableDmaInterrupts()
+{
+    // Enable DMA interrupts
+    #if INT_ENABLE_NIS
+    ETH->DMAIER |= ETH_DMAIER_NISE;         // Normal interrupt summary
+    #endif
+    #if INT_ENABLE_AIS
+    ETH->DMAIER |= ETH_DMAIER_AISE;         // Abnormal interrupt summary
+    #endif
+    #if INT_ENABLE_ERI
+    ETH->DMAIER |= ETH_DMAIER_ERIE;         // Early receive
+    #endif
+    #if INT_ENABLE_FBEI
+    ETH->DMAIER |= ETH_DMAIER_FBEIE;        // Fatal bus error
+    #endif
+    #if INT_ENABLE_ETI
+    ETH->DMAIER |= ETH_DMAIER_ETIE;         // Early transmit interrupt
+    #endif
+    #if INT_ENABLE_RWTI
+    ETH->DMAIER |= ETH_DMAIER_RWTIE;        // Receive watchdog timeout
+    #endif
+    #if INT_ENABLE_RPSI
+    ETH->DMAIER |= ETH_DMAIER_RPSIE;        // Receive process stopped
+    #endif
+    #if INT_ENABLE_RBUI
+    ETH->DMAIER |= ETH_DMAIER_RBUIE;        // Receive buffer unavailable
+    #endif
+    #if INT_ENABLE_RI
+    ETH->DMAIER |= ETH_DMAIER_RIE;          // Received
+    #endif
+    #if INT_ENABLE_TUI
+    ETH->DMAIER |= ETH_DMAIER_TUIE;         // Transmit underflow
+    #endif
+    #if INT_ENABLE_ROI
+    ETH->DMAIER |= ETH_DMAIER_ROIE;         // Receive overflow
+    #endif
+    #if INT_ENABLE_TJTI
+    ETH->DMAIER |= ETH_DMAIER_TJTIE;        // Transmit jabber timeout
+    #endif
+    #if INT_ENABLE_TBUI
+    ETH->DMAIER |= ETH_DMAIER_TBUIE;        // Transmit buffer unavailable
+    #endif
+    #if INT_ENABLE_TPSI
+    ETH->DMAIER |= ETH_DMAIER_TPSIE;        // Transmit process stopped
+    #endif
+    #if INT_ENABLE_TI
+    ETH->DMAIER |= ETH_DMAIER_TIE;          // Transmit
+    #endif
+}
+
+//--------------------------------------------------------------------------------------------
+/**
+ * Disable DMA interrupts.
+ */
+void disableDmaInterrupts()
+{
+    // Disable DMA interrupts
+    #if INT_ENABLE_NIS
+    ETH->DMAIER &= ~ETH_DMAIER_NISE;        // Normal interrupt summary
+    #endif
+    #if INT_ENABLE_AIS
+    ETH->DMAIER &= ~ETH_DMAIER_AISE;        // Abnormal interrupt summary
+    #endif
+    #if INT_ENABLE_ERI
+    ETH->DMAIER &= ~ETH_DMAIER_ERIE;        // Early receive
+    #endif
+    #if INT_ENABLE_FBEI
+    ETH->DMAIER &= ~ETH_DMAIER_FBEIE;       // Fatal bus error
+    #endif
+    #if INT_ENABLE_ETI
+    ETH->DMAIER &= ~ETH_DMAIER_ETIE;        // Early transmit interrupt
+    #endif
+    #if INT_ENABLE_RWTI
+    ETH->DMAIER &= ~ETH_DMAIER_RWTIE;       // Receive watchdog timeout
+    #endif
+    #if INT_ENABLE_RPSI
+    ETH->DMAIER &= ~ETH_DMAIER_RPSIE;       // Receive process stopped
+    #endif
+    #if INT_ENABLE_RBUI
+    ETH->DMAIER &= ~ETH_DMAIER_RBUIE;       // Receive buffer unavailable
+    #endif
+    #if INT_ENABLE_RI
+    ETH->DMAIER &= ~ETH_DMAIER_RIE;         // Received
+    #endif
+    #if INT_ENABLE_TUI
+    ETH->DMAIER &= ~ETH_DMAIER_TUIE;        // Transmit underflow
+    #endif
+    #if INT_ENABLE_ROI
+    ETH->DMAIER &= ~ETH_DMAIER_ROIE;        // Receive overflow
+    #endif
+    #if INT_ENABLE_TJTI
+    ETH->DMAIER &= ~ETH_DMAIER_TJTIE;       // Transmit jabber timeout
+    #endif
+    #if INT_ENABLE_TBUI
+    ETH->DMAIER &= ~ETH_DMAIER_TBUIE;       // Transmit buffer unavailable
+    #endif
+    #if INT_ENABLE_TPSI
+    ETH->DMAIER &= ~ETH_DMAIER_TPSIE;       // Transmit process stopped
+    #endif
+    #if INT_ENABLE_TI
+    ETH->DMAIER &= ~ETH_DMAIER_TIE;         // Transmit
+    #endif
+}
 
 //--------------------------------------------------------------------------------------------
 /**
@@ -595,37 +589,25 @@ static void flushTxFifo()
  */
 static void initMACCR()
 {
-    volatile uint32_t crValue = 0;
-
-    // Watchdog enabled
-    // Jabber enabled
-    // Interframe gap:
-    // 96 bit times
-    // Carrier sense enabled
-    // 100 Mbit/s fast ethernet mode
-    // Full-duplex mode
+    ETH->MACCR &= ~ETH_MACCR_WD;                // Watchdog enabled
+    ETH->MACCR &= ~ETH_MACCR_JD;                // Jabber enabled
+    ETH->MACCR &= ~ETH_MACCR_IFG;               // Interframe gap:
+    ETH->MACCR |=  ETH_MACCR_IFG_96Bit;         //   96 bit times
+    ETH->MACCR &= ~ETH_MACCR_CSD;               // Carrier sense enabled
     
-    // Receive own enabled
-    // Loopback mode disabled
-    // Checksum offload disabled
-    // Retry disabled
-    // Automatic pad/CRC stripping disabled
-    // Back-off limit:
-    //   min(n, 10)
-    // Defferal check disabled
-    // Transmitter disabled
-    // Received disabled
+    ETH->MACCR |=  ETH_MACCR_FES;               // 100 Mbit/s fast ethernet mode
+    ETH->MACCR |=  ETH_MACCR_DM;                // Full-duplex mode
 
-
-    crValue = ETH->MACCR;
-    ETH->MACCR = crValue & (~ETH_MACCR_WD )  & (~ETH_MACCR_JD) & (~ETH_MACCR_IFG) 
-                         | ETH_MACCR_IFG_96Bit & (~ETH_MACCR_CSD) | ETH_MACCR_FES
-                         | ETH_MACCR_DM & (~ETH_MACCR_ROD) & (~ETH_MACCR_LM)
-                         & (~ETH_MACCR_IPCO) | ETH_MACCR_RD & (~ETH_MACCR_APCS)
-                         & (~ETH_MACCR_BL) | ETH_MACCR_BL_10 & (~ETH_MACCR_DC) 
-                         & (~ETH_MACCR_TE) & (~ETH_MACCR_RE);
-
-
+    ETH->MACCR &= ~ETH_MACCR_ROD;               // Receive own enabled
+    ETH->MACCR &= ~ETH_MACCR_LM;                // Loopback mode disabled
+    ETH->MACCR &= ~ETH_MACCR_IPCO;              // Checksum offload disabled
+    ETH->MACCR |=  ETH_MACCR_RD;                // Retry disabled
+    ETH->MACCR &= ~ETH_MACCR_APCS;              // Automatic pad/CRC stripping disabled
+    ETH->MACCR &= ~ETH_MACCR_BL;                // Back-off limit:
+    ETH->MACCR |=  ETH_MACCR_BL_10;             //   min(n, 10)
+    ETH->MACCR &= ~ETH_MACCR_DC;                // Defferal check disabled
+    ETH->MACCR &= ~ETH_MACCR_TE;                // Transmitter disabled
+    ETH->MACCR &= ~ETH_MACCR_RE;                // Received disabled
 }
 
 //--------------------------------------------------------------------------------------------
@@ -634,28 +616,18 @@ static void initMACCR()
  */
 static void initMACFFR()
 {
-    uint32_t value;
-
-    value = ETH->MACFFR;
-
-    // Receive all disabled
-    // Hash or perfect filter disabled
-    // Source address filter disabled
-    // Source address inverse filtering disabled
-    // Pass control frames:
-    // prevents all control frames
-    // Broadcast frames enabled
-    // Pass all multicast disabled
-    // Destination address inverse filtering disabled
-    // Hash multicast disabled
-    // Hash unicast disabled
-    // Promiscuous mode disabled
-
-    value = value & (~ETH_MACFFR_RA) & (~ETH_MACFFR_HPF) & (~ETH_MACFFR_SAF) & (~ETH_MACFFR_SAIF)
-                  & (~ETH_MACFFR_PCF) | (ETH_MACFFR_PCF_BlockAll) & (~ETH_MACFFR_BFD) & (~ETH_MACFFR_PAM)
-                  & (~ETH_MACFFR_DAIF) & (~ETH_MACFFR_HM) & (~ETH_MACFFR_HU) & (~ETH_MACFFR_PM);
-
-    ETH->MACFFR = value;
+    ETH->MACFFR &= ~ETH_MACFFR_RA;              // Receive all disabled
+    ETH->MACFFR &= ~ETH_MACFFR_HPF;             // Hash or perfect filter disabled
+    ETH->MACFFR &= ~ETH_MACFFR_SAF;             // Source address filter disabled
+    ETH->MACFFR &= ~ETH_MACFFR_SAIF;            // Source address inverse filtering disabled
+    ETH->MACFFR &= ~ETH_MACFFR_PCF;             // Pass control frames:
+    ETH->MACFFR |=  ETH_MACFFR_PCF_BlockAll;    //   prevents all control frames
+    ETH->MACFFR &= ~ETH_MACFFR_BFD;             // Broadcast frames enabled
+    ETH->MACFFR &= ~ETH_MACFFR_PAM;             // Pass all multicast disabled
+    ETH->MACFFR &= ~ETH_MACFFR_DAIF;            // Destination address inverse filtering disabled
+    ETH->MACFFR &= ~ETH_MACFFR_HM;              // Hash multicast disabled
+    ETH->MACFFR &= ~ETH_MACFFR_HU;              // Hash unicast disabled
+    ETH->MACFFR &= ~ETH_MACFFR_PM;              // Promiscuous mode disabled
 }
 
 //--------------------------------------------------------------------------------------------
@@ -664,12 +636,11 @@ static void initMACFFR()
  */
 static void initMACMIIAR()
 { 
-    volatile uint32_t value;
-
-    value = ETH->MACMIIAR;
-    // Select the clock range HCLK/62
-    ETH->MACMIIAR = (value & (~ETH_MACMIIAR_CR)) | ETH_MACMIIAR_CR_Div62;
+    // Clear the clock range
+    ETH->MACMIIAR &= ~ETH_MACMIIAR_CR;
     
+    // Select the clock range HCLK/62
+    ETH->MACMIIAR |= ETH_MACMIIAR_CR_Div62;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -678,23 +649,14 @@ static void initMACMIIAR()
  */
 static void initMACFCR()
 {
-    volatile uint32_t value;
-
-    value = ETH->MACFCR;
-
-    // Pause time: 0
-    // Zero-quanta pause disabled
-    // Pause low threshold:
-    // pause time minus 4 slot times
-    // Unicast pause frame detect disabled
-    // Receive flow control disabled
-    // Transmit flow control disabled
-    // Flow control busy/back pressure activate disabled
-
-    value = value & (~ETH_MACFCR_PT) | ETH_MACFCR_ZQPD & (~ETH_MACFCR_PLT) | ETH_MACFCR_PLT_Minus4
-                  & (~ETH_MACFCR_UPFD) & (~ETH_MACFCR_RFCE) &(~ETH_MACFCR_TFCE) &(~ETH_MACFCR_FCBBPA);
-
-    ETH->MACFCR = value;
+    ETH->MACFCR &= ~ETH_MACFCR_PT;              // Pause time: 0
+    ETH->MACFCR |=  ETH_MACFCR_ZQPD;            // Zero-quanta pause disabled
+    ETH->MACFCR &= ~ETH_MACFCR_PLT;             // Pause low threshold:
+    ETH->MACFCR |=  ETH_MACFCR_PLT_Minus4;      //   pause time minus 4 slot times
+    ETH->MACFCR &= ~ETH_MACFCR_UPFD;            // Unicast pause frame detect disabled
+    ETH->MACFCR &= ~ETH_MACFCR_RFCE;            // Receive flow control disabled
+    ETH->MACFCR &= ~ETH_MACFCR_TFCE;            // Transmit flow control disabled
+    ETH->MACFCR &= ~ETH_MACFCR_FCBBPA;          // Flow control busy/back pressure activate disabled
 }
 
 //--------------------------------------------------------------------------------------------
@@ -703,8 +665,8 @@ static void initMACFCR()
  */
 static void initMACIMR()
 {
-    // Time stamp trigger interrupt disabled,  PMT interrupt disabled
-    ETH->MACIMR |= ( ETH_MACIMR_TSTIM  | ETH_MACIMR_PMTIM );   
+    ETH->MACIMR |= ETH_MACIMR_TSTIM;            // Time stamp trigger interrupt disabled
+    ETH->MACIMR |= ETH_MACIMR_PMTIM;            // PMT interrupt disabled
 }
  
 //--------------------------------------------------------------------------------------------
@@ -713,25 +675,19 @@ static void initMACIMR()
  */
 static void initDMABMR()
 {
-    volatile uint32_t value;
-
-    value = ETH->DMABMR;
-// Rx DMA PBL:
-//   32
-// Fixed burst enabled
-// Rx Tx priority ratio:
-//   1:1
-// Programmable burst length:
-//   32
-// Enhanced descriptor format disabled
-// Descriptor skip length: contiguous
-// DMA Arbitration: round robin
-    value = value | ETH_DMABMR_AAB & (~ETH_DMABMR_FPM) | ETH_DMABMR_USP & (~ETH_DMABMR_RDP)
-                  | ETH_DMABMR_RDP_32Beat | ETH_DMABMR_FB & (~ETH_DMABMR_RTPR) | ETH_DMABMR_RTPR_1_1 
-                  & (~ETH_DMABMR_PBL) | ETH_DMABMR_PBL_32Beat & (~ETH_DMABMR_EDE) & (~ETH_DMABMR_DSL) 
-                  & (~ETH_DMABMR_DA);
-    ETH->DMABMR = value;
-
+    ETH->DMABMR |=  ETH_DMABMR_AAB;             // Address-aligned beat enabled
+    ETH->DMABMR &= ~ETH_DMABMR_FPM;             // 4xPBL mode disabled
+    ETH->DMABMR |=  ETH_DMABMR_USP;             // Use separeate PBL enabled
+    ETH->DMABMR &= ~ETH_DMABMR_RDP;             // Rx DMA PBL:
+    ETH->DMABMR |=  ETH_DMABMR_RDP_32Beat;      //   32
+    ETH->DMABMR |=  ETH_DMABMR_FB;              // Fixed burst enabled
+    ETH->DMABMR &= ~ETH_DMABMR_RTPR;            // Rx Tx priority ratio:
+    ETH->DMABMR |=  ETH_DMABMR_RTPR_1_1;        //   1:1
+    ETH->DMABMR &= ~ETH_DMABMR_PBL;             // Programmable burst length:
+    ETH->DMABMR |=  ETH_DMABMR_PBL_32Beat;      //   32
+    ETH->DMABMR &= ~ETH_DMABMR_EDE;             // Enhanced descriptor format disabled
+    ETH->DMABMR &= ~ETH_DMABMR_DSL;             // Descriptor skip length: contiguous
+    ETH->DMABMR &= ~ETH_DMABMR_DA;              // DMA Arbitration: round robin
 }
 
 //--------------------------------------------------------------------------------------------
@@ -740,26 +696,19 @@ static void initDMABMR()
  */
 static void initDMAOMR()
 {
-    volatile uint32_t value;
-
-    // Dropping of TCP/IP checksum error frames enabled
-    // Receive store and forwared enabled
-    // Flushing of received frames enabled
-    // Transmit store and forwared disabled       
-    // Transmit threshold control:
-    //   16
-    // Forward error frames disabled
-    // Forward undersized good frames disabled
-    // Receive threshold control:
-    //   no matter because RSF enabled
-    // Operate on second frame disabled (otherwise 
-    // frames might be sent twice since there is only 
-    // one TX descriptor)
-    value = ETH->DMAOMR;
-    value = value & (~ETH_DMAOMR_DTCEFD) | ETH_DMAOMR_RSF & (~ETH_DMAOMR_DFRF) & (~ETH_DMAOMR_TSF)
-                  & (~ETH_DMAOMR_TTC) | ETH_DMAOMR_TTC_16Bytes & (~ETH_DMAOMR_FEF) & (~ETH_DMAOMR_FUGF)
-                  & (~ETH_DMAOMR_RTC) | ETH_DMAOMR_RTC_64Bytes & (~ETH_DMAOMR_OSF);
-
+    ETH->DMAOMR &= ~ETH_DMAOMR_DTCEFD;          // Dropping of TCP/IP checksum error frames enabled
+    ETH->DMAOMR |=  ETH_DMAOMR_RSF;             // Receive store and forwared enabled
+    ETH->DMAOMR &= ~ETH_DMAOMR_DFRF;            // Flushing of received frames enabled
+    ETH->DMAOMR &= ~ETH_DMAOMR_TSF;             // Transmit store and forwared disabled       
+    ETH->DMAOMR &= ~ETH_DMAOMR_TTC;             // Transmit threshold control:
+    ETH->DMAOMR |=  ETH_DMAOMR_TTC_16Bytes;     //   16
+    ETH->DMAOMR &= ~ETH_DMAOMR_FEF;             // Forward error frames disabled
+    ETH->DMAOMR &= ~ETH_DMAOMR_FUGF;            // Forward undersized good frames disabled
+    ETH->DMAOMR &= ~ETH_DMAOMR_RTC;             // Receive threshold control:
+    ETH->DMAOMR |=  ETH_DMAOMR_RTC_64Bytes;     //   no matter because RSF enabled
+    ETH->DMAOMR &= ~ETH_DMAOMR_OSF;             // Operate on second frame disabled (otherwise 
+                                                // frames might be sent twice since there is only 
+                                                // one TX descriptor)
 }
 
 //--------------------------------------------------------------------------------------------
@@ -771,11 +720,10 @@ static void initDMAOMR()
  *   @retval TRUE if read successful.
  *   @retval FALSE otherwise (pMiiData is not modified).
  */
-
-BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_t *const pMiiData)
+static BOOL readPhyRegister(const uint32_t miiAddress, uint16_t *const pMiiData)
 {
-    uint32_t nWait = 0U; 
-    uint32_t value = 0;
+    volatile uint32_t nWait = 0U; 
+    
     // Wait for PHY availability
     while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
             (nWait < MII_BUSY_TIMEOUT) )
@@ -786,25 +734,38 @@ BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_
     {
         return FALSE;
     }
-   
-    value = ETH->MACMIIAR & ETH_MACMIIAR_CR;
-    ETH->MACMIIAR  = value | (phyAddress << MACMIIAR_PA_POSITION) | (miiAddress << MACMIIAR_MR_POSITION) | ETH_MACMIIAR_MB;
-   
+    
+    // Write PHY address
+    ETH->MACMIIAR &= ~ETH_MACMIIAR_PA;
+    ETH->MACMIIAR |= ((PHY_ADDRESS << MACMIIAR_PA_POSITION) & ETH_MACMIIAR_PA);
+    
+    // Write PHY register
+    ETH->MACMIIAR &= ~ETH_MACMIIAR_MR;
+    ETH->MACMIIAR |= ((miiAddress << MACMIIAR_MR_POSITION) & ETH_MACMIIAR_MR);
+    
+    // Clear MII write
+    ETH->MACMIIAR &= ~ETH_MACMIIAR_MW;
+    
+    // Set MII busy
+    ETH->MACMIIAR |= ETH_MACMIIAR_MB;
+    
     // Wait for completion
     nWait = 0U;
-    while ( nWait < MII_BUSY_TIMEOUT ) 
+    while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
+            (nWait < MII_BUSY_TIMEOUT) )
     {
-        if ( !(ETH->MACMIIAR & ETH_MACMIIAR_MB) )
-        {
-            // Data Ready , Read data
-            *pMiiData = ETH->MACMIIDR;
-            return TRUE;
-        }
         nWait++;
     }
-    
-    return FALSE;
 
+    if (nWait == MII_BUSY_TIMEOUT)
+    {
+        return FALSE;
+    }
+
+    // Read data
+    *pMiiData = ETH->MACMIIDR;
+    
+    return TRUE;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -816,14 +777,13 @@ BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_
  *   @retval TRUE if write successful.
  *   @retval FALSE otherwise.
  */
-BOOL eth_writePhyRegister(uint32_t phyAddress, const uint32_t miiAddress, const uint16_t miiData)
+static BOOL writePhyRegister(const uint32_t miiAddress, const uint16_t miiData)
 {
-    uint32_t nWait = 0U; 
-    uint32_t value = 0U;
-
-  
+    volatile uint32_t nWait = 0U; 
+    
     // Wait for PHY availability
-    while ( (ETH->MACMIIAR & ETH_MACMIIAR_MB) &&(nWait < MII_BUSY_TIMEOUT) )
+    while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
+            (nWait < MII_BUSY_TIMEOUT) )
     {
         nWait++;
     }
@@ -831,23 +791,36 @@ BOOL eth_writePhyRegister(uint32_t phyAddress, const uint32_t miiAddress, const 
     {
         return FALSE;
     }
-    // Write MII data first 
+    
+    // Write PHY address
+    ETH->MACMIIAR &= ~ETH_MACMIIAR_PA;
+    ETH->MACMIIAR |= ((PHY_ADDRESS << MACMIIAR_PA_POSITION) & ETH_MACMIIAR_PA);
+    
+    // Write MII register
+    ETH->MACMIIAR &= ~ETH_MACMIIAR_MR;
+    ETH->MACMIIAR |= ((miiAddress << MACMIIAR_MR_POSITION) & ETH_MACMIIAR_MR);
+    
+    // Set MII write
+    ETH->MACMIIAR |= ETH_MACMIIAR_MW;
+    
+    // Write MII data
     ETH->MACMIIDR = miiData;
-
-    value = ETH->MACMIIAR & ETH_MACMIIAR_CR;
-    ETH->MACMIIAR  = value | (phyAddress << MACMIIAR_PA_POSITION) | (miiAddress << MACMIIAR_MR_POSITION) | ETH_MACMIIAR_MW | ETH_MACMIIAR_MB;
-
-
-    while ( nWait < MII_BUSY_TIMEOUT ) 
+    
+    // Set MII busy
+    ETH->MACMIIAR |= ETH_MACMIIAR_MB;
+    
+    // Wait for completion
+    nWait = 0U;
+    while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
+            (nWait < MII_BUSY_TIMEOUT) )
     {
-        if ( !(ETH->MACMIIAR & ETH_MACMIIAR_MB) )
-        {
-            return TRUE;
-        }
         nWait++;
     }
-    
-    return FALSE;
+    if (nWait == MII_BUSY_TIMEOUT)
+    {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 //--------------------------------------------------------------------------------------------

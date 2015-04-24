@@ -41,9 +41,8 @@
     </ItemGroup>
 
     <ItemGroup>
-	    <IncludePaths Include="DeviceCode\pal\ajtcl\inc" />
-	    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" />    
-    
+        <IncludePaths Include="DeviceCode\pal\ajtcl\inc" />
+        <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" />    
         <IncludePaths Include="DeviceCode\PAL" />
         <IncludePaths Include="DeviceCode\PAL\OpenSSL" />
         <IncludePaths Include="DeviceCode\PAL\OpenSSL\OpenSSL_1_0" />
@@ -103,10 +102,10 @@
     <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
   </ItemGroup>
 -->
-  <ItemGroup>
+  <!--<ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\alljoyn\dotnetmf.proj" />
     <DriverLibs Include="TestAllJoyn.$(LIB_EXT)" />
-  </ItemGroup>
+  </ItemGroup>-->
 
 <!--
   <ItemGroup>
@@ -247,8 +246,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\Crypto\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\CortexM3\GlobalLock\dotNetMF.proj" />
-        <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\GlobalLock\dotNetMF.proj" />
+        <DriverLibs Include="GlobalLock_hal_RTOS.$(LIB_EXT)" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
