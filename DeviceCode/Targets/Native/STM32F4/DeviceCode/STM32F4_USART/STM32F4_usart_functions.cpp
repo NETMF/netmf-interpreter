@@ -149,8 +149,10 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
     
     // control
     UINT16 ctrl = USART_CR1_TE | USART_CR1_RE;
-    if (Parity)
-        {ctrl |= USART_CR1_PCE; DataBits++;}
+    if (Parity) {
+        ctrl |= USART_CR1_PCE;
+        DataBits++;
+    }
 
     if (Parity == USART_PARITY_ODD)
         ctrl |= USART_CR1_PS;
