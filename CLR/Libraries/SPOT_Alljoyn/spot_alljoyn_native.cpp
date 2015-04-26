@@ -21,6 +21,11 @@ static const CLR_RT_MethodHandler method_lookup[] =
     NULL,
     NULL,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::Initialize___U4,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SendNotification___VOID__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetBusLinkTimeout___MicrosoftSPOTAllJoynAJStatus__U4__U4,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::NotifyLinkActive___VOID,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusLinkStateProc___MicrosoftSPOTAllJoynAJStatus__U4,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetIdleTimeouts___MicrosoftSPOTAllJoynAJStatus__U4__U4__U4,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4__I4,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AlwaysPrintf___VOID__STRING,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AboutIconHandleGetContent___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage__SZARRAY_U1,
@@ -106,7 +111,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_Microsoft_SPOT_Alljoyn =
 {
     "Microsoft.SPOT.Alljoyn", 
-    0xD0E7AF00,
+    0x6B6EC8E9,
     method_lookup
 };
 

@@ -30,11 +30,24 @@
     <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
     <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
     <IncludePaths Include="DeviceCode\pal\ajtcl\inc"/>
+    <!-- <IncludePaths Include="DeviceCode\pal\base_tcl\services_common\inc;" />
+    <IncludePaths Include="DeviceCode\pal\base_tcl\sample_apps\AppsCommon\inc" />
+    <IncludePaths Include="DeviceCode\pal\base_tcl\notification\inc" /> -->
 
     <HFile Include="spot_alljoyn_native.h" />
     <Compile Include="spot_alljoyn_native.cpp" />
     <Compile Include="spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_mshl.cpp" />
     <HFile Include="spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ.h" />
+    
+    <HFile Include="NotificationCommon.h" />
+    
+    <Compile Include="PropertyStore.cpp" />
+    <Compile Include="ToasterNotifications.cpp" />
+    <Compile Include="NotificationCommon.cpp" />
+    <Compile Include="NotificationProducer.cpp" />
+    <Compile Include="ServicesCommon.cpp" />
+    <Compile Include="ServicesHandlers.cpp" />
+    
 </ItemGroup>
 
 <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />

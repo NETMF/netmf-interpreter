@@ -324,6 +324,8 @@ namespace Microsoft.SPOT.AllJoyn
             return status;
         }
 
+        
+        
         public AJ_Status BusGetProp(AJ_Message msg, PropertyCB propCB)
         {
             return ProcessProperty(msg, propCB, AJ.AJ_PROP_GET);
@@ -340,10 +342,25 @@ namespace Microsoft.SPOT.AllJoyn
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern UInt32 Initialize();                
-                
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern void SendNotification(string text);
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern void PrintXML(string localPath, string localInterfaceDescription, byte localFlags, IntPtr localContext);
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status SetBusLinkTimeout(UInt32 bus, UInt32 timeout);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern void NotifyLinkActive();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]        
+        public extern AJ_Status BusLinkStateProc(UInt32 bus);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]        
+        public extern AJ_Status SetIdleTimeouts(UInt32 bus, UInt32 idleTo, UInt32 probeTo);
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status StartService(UInt32 bus,
                                                       string daemonName,

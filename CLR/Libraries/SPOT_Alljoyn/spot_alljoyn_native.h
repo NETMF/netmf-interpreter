@@ -27,6 +27,11 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     static const int FIELD__propertyStore = 12;
 
     TINYCLR_NATIVE_DECLARE(Initialize___U4);
+    TINYCLR_NATIVE_DECLARE(SendNotification___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(SetBusLinkTimeout___MicrosoftSPOTAllJoynAJStatus__U4__U4);
+    TINYCLR_NATIVE_DECLARE(NotifyLinkActive___VOID);
+    TINYCLR_NATIVE_DECLARE(BusLinkStateProc___MicrosoftSPOTAllJoynAJStatus__U4);
+    TINYCLR_NATIVE_DECLARE(SetIdleTimeouts___MicrosoftSPOTAllJoynAJStatus__U4__U4__U4);
     TINYCLR_NATIVE_DECLARE(StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4__I4);
     TINYCLR_NATIVE_DECLARE(AlwaysPrintf___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(AboutIconHandleGetContent___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage__SZARRAY_U1);
@@ -190,13 +195,14 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_PropertyStore
 {
     static const int FIELD_STATIC__DefaultLanguage = 0;
 
-    static const int FIELD__Properties = 1;
-    static const int FIELD__RuntimeValues = 2;
-    static const int FIELD__DefaultValues = 3;
-    static const int FIELD__DefaultLanguagesKeyName = 4;
-    static const int FIELD__SupportedLanguages = 5;
-    static const int FIELD__NumberOfLanguages = 6;
-    static const int FIELD__AppId = 7;
+    static const int FIELD__props = 1;
+    static const int FIELD__Properties = 2;
+    static const int FIELD__RuntimeValues = 3;
+    static const int FIELD__DefaultValues = 4;
+    static const int FIELD__DefaultLanguagesKeyName = 5;
+    static const int FIELD__SupportedLanguages = 6;
+    static const int FIELD__NumberOfLanguages = 7;
+    static const int FIELD__AppId = 8;
 
     TINYCLR_NATIVE_DECLARE(GetLocalGUID___MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1);
 

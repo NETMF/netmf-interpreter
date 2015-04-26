@@ -10,9 +10,18 @@
 
 #include <alljoyn.h>
 #include <aj_guid.h>    // for AJ_CreateNewGUID
-//#include <aj_creds.h>   // for AJ_GetLocalGUID
 #include <aj_crypto.h>  // for AJ_RandBytes
 #include <aj_helper.h>
+
+#include <aj_link_timeout.h>
+#include "PropertyStoreOEMProvisioning.h"
+
+//#include <alljoyn/services_common/PropertyStore.h>
+//#include <alljoyn/services_common/ServicesCommon.h>
+//#include <alljoyn/services_common/ServicesHandlers.h>
+#include "NotificationCommon.h"
+#include "NotificationProducer.h"
+
 
 #include <TinyCLR_Runtime.h>
 #include <TinyCLR_Checks.h>
@@ -22,12 +31,147 @@
 #include <TinyCLR_Interop.h>
 #include <TinyCLR_Version.h>
 
-
-
 #include "spot_alljoyn_native.h"
 #include "spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ.h"
 
+#define AJSVC_PROPERTY_STORE_NUMBER_OF_KEYS 13
+
+
+
+/**
+ * Services Provisioning
+ */
+
+const char* deviceManufactureName = "Microsoft";
+const char* deviceProductName = ".NET Micro Framework Weather Station";
+
+/**
+ * About supported PropertyStore provisioning
+ */
+static const char DEFAULT_LANGUAGE[] = "en";
+static const char* DEFAULT_LANGUAGES[] = { DEFAULT_LANGUAGE };
+static const char* SUPPORTED_LANGUAGES[] = { DEFAULT_LANGUAGE, NULL };
+const char* const* propertyStoreDefaultLanguages = SUPPORTED_LANGUAGES;
+
+/**
+ * property array of structure with defaults
+ */
+static const char DEFAULT_DEVICE_NAME_LANG1[] = { "Weather stations" }; // Leave empty to be generated at run-time
+static const char* DEFAULT_DEVICE_NAMES[] = { DEFAULT_DEVICE_NAME_LANG1 };
+static const char* DEFAULT_PRODUCER_APP_NAME[] = { "NETMF Weather Station" };
+static const char DEFAULT_DESCRIPTION_LANG1[] = "NETMF Alljoyn Weather Station";
+static const char* DEFAULT_DESCRIPTIONS[] = { DEFAULT_DESCRIPTION_LANG1 };
+static const char DEFAULT_MANUFACTURER_LANG1[] = "Microsoft";
+static const char* DEFAULT_MANUFACTURERS[] = { DEFAULT_MANUFACTURER_LANG1 };
+static const char* DEFAULT_DEVICE_MODELS[] = { "0.0.1" };
+static const char* DEFAULT_DATE_OF_MANUFACTURES[] = { "2014-10-27" };
+static const char* DEFAULT_SOFTWARE_VERSIONS[] = { "0.0.1" };
+static const char* DEFAULT_HARDWARE_VERSIONS[] = { "0.0.1" };
+
+const char** propertyStoreDefaultValues[AJSVC_PROPERTY_STORE_NUMBER_OF_KEYS] =
+{
+// "Default Values per language",                    "Key Name"
+    NULL,                                           /*DeviceId*/
+    NULL,                                           /*AppId*/
+    DEFAULT_DEVICE_NAMES,                           /*DeviceName*/
+    DEFAULT_LANGUAGES,                              /*DefaultLanguage*/
+// Add other runtime keys above this line
+    DEFAULT_PRODUCER_APP_NAME,                      /*AppName*/
+    DEFAULT_DESCRIPTIONS,                           /*Description*/
+    DEFAULT_MANUFACTURERS,                          /*Manufacturer*/
+    DEFAULT_DEVICE_MODELS,                          /*ModelNumber*/
+    DEFAULT_DATE_OF_MANUFACTURES,                   /*DateOfManufacture*/
+    DEFAULT_SOFTWARE_VERSIONS,                      /*SoftwareVersion*/
+    NULL,                                           /*AJSoftwareVersion*/
+// Add other mandatory about keys above this line
+    DEFAULT_HARDWARE_VERSIONS,                      /*HardwareVersion*/
+    NULL,                                           /*SupportUrl*/
+// Add other optional about keys above this line
+};
+
+/**
+ * properties array of runtime values' buffers
+ */
+static char machineIdVar[MACHINE_ID_LENGTH + 1] = { 0 };
+static char* machineIdVars[] = { machineIdVar };
+static char deviceNameVar[DEVICE_NAME_VALUE_LENGTH + 1] = { "Weather Device" };
+static char* deviceNameVars[] = { deviceNameVar, deviceNameVar };
+
+PropertyStoreConfigEntry propertyStoreRuntimeValues[AJSVC_PROPERTY_STORE_NUMBER_OF_RUNTIME_KEYS] =
+{
+//  {"Buffers for Values per language", "Buffer Size"},                 "Key Name"
+    { machineIdVars,             MACHINE_ID_LENGTH + 1 },               /*DeviceId*/
+    { machineIdVars,             MACHINE_ID_LENGTH + 1 },               /*AppId*/
+    { deviceNameVars,            DEVICE_NAME_VALUE_LENGTH + 1 },        /*DeviceName*/
+// Add other persisted keys above this line
+};
+
+/**
+ * AboutIcon Provisioning
+ */
+
+static const char* aboutIconMimetype = { "image/png" };
+static const uint8_t aboutIconContent[] =
+{ 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52 \
+    , 0x00, 0x00, 0x00, 0x32, 0x00, 0x00, 0x00, 0x32, 0x02, 0x03, 0x00, 0x00, 0x00, 0x63, 0x51, 0x60 \
+    , 0x22, 0x00, 0x00, 0x00, 0x0c, 0x50, 0x4c, 0x54, 0x45, 0x65, 0x2d, 0x67, 0xeb, 0x00, 0x88, 0xec \
+    , 0x06, 0x8d, 0xf1, 0x44, 0xaa, 0x1f, 0x54, 0xd3, 0x5b, 0x00, 0x00, 0x00, 0x01, 0x74, 0x52, 0x4e \
+    , 0x53, 0x00, 0x40, 0xe6, 0xd8, 0x66, 0x00, 0x00, 0x00, 0xe8, 0x49, 0x44, 0x41, 0x54, 0x28, 0xcf \
+    , 0x95, 0x92, 0x51, 0x0a, 0xc3, 0x20, 0x0c, 0x86, 0xd3, 0xc0, 0x40, 0x84, 0xdd, 0x61, 0xec, 0x49 \
+    , 0x72, 0x9f, 0xde, 0x47, 0xfa, 0x34, 0x3c, 0x45, 0x18, 0x85, 0x49, 0x4e, 0xb9, 0x18, 0xab, 0xd6 \
+    , 0xb1, 0x97, 0x06, 0xb4, 0x7e, 0xa6, 0x26, 0xbf, 0x89, 0x00, 0x97, 0xec, 0xb6, 0x9e, 0xc9, 0x8b \
+    , 0x0e, 0xee, 0x04, 0x40, 0x92, 0x1b, 0x49, 0x04, 0x7a, 0xcb, 0x01, 0x28, 0x20, 0xc4, 0xd4, 0x7c \
+    , 0x0f, 0x90, 0x11, 0x04, 0x39, 0xd0, 0x29, 0x24, 0xd3, 0x39, 0x41, 0x0c, 0x53, 0x3e, 0x4c, 0x1b \
+    , 0x4b, 0x4f, 0x87, 0x29, 0x65, 0x49, 0x7b, 0x89, 0x01, 0x64, 0x91, 0x44, 0xf6, 0x2a, 0xc4, 0x26 \
+    , 0xf1, 0x1f, 0x5d, 0x10, 0xbb, 0xba, 0xe5, 0x77, 0x93, 0x15, 0x4c, 0x40, 0xb5, 0x64, 0xc1, 0x9a \
+    , 0x66, 0x37, 0x91, 0x2d, 0x10, 0xda, 0xf5, 0x9e, 0xba, 0xc0, 0xad, 0x39, 0x31, 0xea, 0xc0, 0xfe \
+    , 0xab, 0x2b, 0x5b, 0x9d, 0x42, 0x11, 0x3e, 0xd0, 0x68, 0x5c, 0x18, 0x13, 0x74, 0xf2, 0x01, 0x4b \
+    , 0x71, 0xea, 0x95, 0x3d, 0x05, 0x56, 0xcc, 0x5a, 0xb9, 0xb2, 0x19, 0x20, 0xfb, 0xa8, 0x5f, 0x3e \
+    , 0x0a, 0xcd, 0xc4, 0x07, 0x89, 0xd3, 0x84, 0xcd, 0xb7, 0xa8, 0x8b, 0x4c, 0x4f, 0x39, 0xb7, 0x68 \
+    , 0xd6, 0x1a, 0xbc, 0xcc, 0xf7, 0x58, 0x7c, 0xad, 0x43, 0x77, 0x8d, 0xf3, 0xd2, 0x72, 0x0c, 0xd2 \
+    , 0x16, 0x0d, 0x95, 0x34, 0x91, 0xfa, 0x46, 0x67, 0x21, 0x45, 0xcb, 0xd0, 0x1a, 0x56, 0xc7, 0x41 \
+    , 0x7a, 0xc6, 0xe7, 0x89, 0xe4, 0x3f, 0x81, 0x51, 0xfc, 0x79, 0x3f, 0xc3, 0x96, 0xf5, 0xda, 0x5b \
+    , 0x84, 0x2f, 0x85, 0x3b, 0x47, 0x0d, 0xe8, 0x0d, 0xca, 0xd3, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45 \
+    , 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82, 0x82 };
+static const size_t aboutIconContentSize = sizeof(aboutIconContent);
+static const char* aboutIconUrl = { "https://www.alljoyn.org/sites/all/themes/at_alljoyn/images/img-alljoyn-logo.png" };
+
+
+/**
+ * Notification content
+ */
+const static char* lang1  = "en";
+const static char* hello1 = "Toast is done!";
+
+
 #define AJ_InfoPrintf(_msg)
+#define NUM_TEXTS   1
+static AJNS_DictionaryEntry textToSend[NUM_TEXTS];
+
+static AJNS_NotificationContent notificationContent;
+void InitToasterNotificationContent()
+{
+    notificationContent.numTexts = NUM_TEXTS;
+    textToSend[0].key   = lang1;
+    textToSend[0].value = hello1;
+    notificationContent.texts = textToSend;
+
+    AJNS_Producer_Start();
+
+}
+
+void SendNotification(AJ_BusAttachment* busAttachment)
+{
+    uint16_t messageType = AJNS_NOTIFICATION_MESSAGE_TYPE_INFO;
+    uint32_t ttl = AJNS_NOTIFICATION_TTL_MIN; /* Note needs to be in the range AJNS_NOTIFICATION_TTL_MIN..AJNS_NOTIFICATION_TTL_MAX */ 
+
+    uint32_t serialNum = 4;
+
+    AJNS_Producer_SendNotification(busAttachment, &notificationContent, messageType, ttl, &serialNum);
+}
+
+//extern void InitToasterNotificationContent();
+//extern void SendNotification(AJ_BusAttachment* busAttachment);
 
 using namespace Microsoft::SPOT::AllJoyn;
 
@@ -42,12 +186,70 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::Initialize___U4( 
     TINYCLR_HEADER(); hr = S_OK;
     {
         AJ_Initialize();
+        //PropertyStore_Init();
+        //InitToasterNotificationContent();
 		UINT32 retVal = 1;
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_UINT32( stack, 1 );
     }
     TINYCLR_NOCLEANUP();
 }
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetBusLinkTimeout___MicrosoftSPOTAllJoynAJStatus__U4__U4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_BusAttachment * bus = (AJ_BusAttachment *) stack.Arg1().NumericByRef().u4;  FAULT_ON_NULL(bus);
+        UINT32 timeout = stack.Arg2().NumericByRef().u4;
+        
+        AJ_Status status = AJ_SetBusLinkTimeout(bus, timeout);
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, status );
+
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::NotifyLinkActive___VOID( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {        
+        AJ_NotifyLinkActive( );
+        TINYCLR_CHECK_HRESULT( hr );
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusLinkStateProc___MicrosoftSPOTAllJoynAJStatus__U4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_BusAttachment * bus = (AJ_BusAttachment *) stack.Arg1().NumericByRef().u4;  FAULT_ON_NULL(bus);
+        
+        AJ_Status status = AJ_BusLinkStateProc( bus );
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, status );
+
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetIdleTimeouts___MicrosoftSPOTAllJoynAJStatus__U4__U4__U4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_BusAttachment * bus = (AJ_BusAttachment *) stack.Arg1().NumericByRef().u4;  FAULT_ON_NULL(bus);
+        UINT32 idleTo = stack.Arg2().NumericByRef().u4;
+        UINT32 probeTo = stack.Arg3().NumericByRef().u4;
+        
+        AJ_Status status = AJ_SetIdleTimeouts(bus, idleTo, probeTo );
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, status );
+
+    }
+    TINYCLR_NOCLEANUP();
+}
+
 
 AJ_Status CustomStartService(AJ_BusAttachment* bus,
                           const char* daemonName,
@@ -171,7 +373,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
 		UINT32 param6 = stack.Arg7().NumericByRef().u4;
 		INT32 param7 = stack.ArgN(8).NumericByRef().s4;
 
-		INT32 retVal = CustomStartService((AJ_BusAttachment*)param0, NULL, param2, param3, param4, param5->StringText(), param6, NULL);
+		INT32 retVal = CustomStartService((AJ_BusAttachment*)param0, param1->StringText(), param2, param3, param4, param5->StringText(), param6, NULL);
         SetResult_INT32( stack, retVal );
 
     }
@@ -867,16 +1069,36 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusReplyAcceptSes
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusHandleBusMessageInner___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage( CLR_RT_StackFrame& stack )
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SendNotification___VOID__STRING( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
+        CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
+
+        FAULT_ON_NULL(pMngObj);
+
+        CLR_RT_HeapBlock_String * text = stack.Arg1().DereferenceString();
+        
+        
+        textToSend[0].key   = lang1;
+        textToSend[0].value = text->StringText();
+        SendNotification(&BusInstance);
+        
+        TINYCLR_CHECK_HRESULT( hr );
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusHandleBusMessageInner___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {                
         AJ_Message msg;
         CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                        
         CopyFromManagedMsg(managedMsg, &msg);
         
         INT32 retVal = AJ_BusHandleBusMessage(&msg);
-        
+                       
         CopyToManagedMsg(managedMsg, &msg);
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_INT32( stack, retVal );
@@ -960,7 +1182,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::PrxMessageId___ST
         UINT32 param1 = stack.Arg1().NumericByRef().u4;
         UINT32 param2 = stack.Arg2().NumericByRef().u4;
 
-        UINT32 retVal = (param0, param1, param2);
+        UINT32 retVal = AJ_PRX_MESSAGE_ID(param0, param1, param2);
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_UINT32( stack, retVal );
     }
@@ -1022,7 +1244,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::CreateBus___VOID_
         TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock0, 1, param0 ) );
 
         *param0 = (UINT32)&BusInstance;
-    
+        
         TINYCLR_CHECK_HRESULT( hr );
         TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock0, 1 ) );
     }
