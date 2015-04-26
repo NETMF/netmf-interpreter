@@ -197,6 +197,7 @@ AJ_Status AJ_Net_Send(AJ_IOBuffer* buf)
     ASSERT(buf->direction == AJ_IO_BUF_TX);
 
     if (tx > 0) {
+        do{
         do {
             ret = SOCK_send(context->tcpSock, (const char *)buf->readPtr, tx, 0);
         } while ((ret == -1) && (SOCK_getlasterror() == SOCK_EWOULDBLOCK));  
@@ -205,7 +206,9 @@ AJ_Status AJ_Net_Send(AJ_IOBuffer* buf)
             AJ_ErrPrintf(("AJ_Net_Send(): send() failed. errno=%d, status=AJ_ERR_WRITE\n", SOCK_getlasterror()));
             return AJ_ERR_WRITE;
         }
+        tx -= ret;
         buf->readPtr += ret;
+        } while ((tx > 0) /*&& (SOCK_getlasterror() == SOCK_EWOULDBLOCK)*/);  
     }
     if (AJ_IO_BUF_AVAIL(buf) == 0) {
         AJ_IO_BUF_RESET(buf);
