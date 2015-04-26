@@ -186,8 +186,8 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::Initialize___U4( 
     TINYCLR_HEADER(); hr = S_OK;
     {
         AJ_Initialize();
-        //PropertyStore_Init();
-        //InitToasterNotificationContent();
+        PropertyStore_Init();
+        InitToasterNotificationContent();
 		UINT32 retVal = 1;
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_UINT32( stack, 1 );
