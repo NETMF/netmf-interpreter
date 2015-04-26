@@ -373,7 +373,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
 		UINT32 param6 = stack.Arg7().NumericByRef().u4;
 		INT32 param7 = stack.ArgN(8).NumericByRef().s4;
 
-		INT32 retVal = CustomStartService((AJ_BusAttachment*)param0, param1->StringText(), param2, param3, param4, param5->StringText(), param6, NULL);
+		INT32 retVal = CustomStartService((AJ_BusAttachment*)param0, NULL, param2, param3, param4, param5->StringText(), param6, NULL);
         SetResult_INT32( stack, retVal );
 
     }
