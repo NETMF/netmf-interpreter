@@ -1,0 +1,33 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Windows.Devices</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Windows.Devices</RootNamespace>
+    <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <NoWarn>$(NoWarn),0169,0659</NoWarn>
+    <ProjectGuid>{F6C38CB6-97EF-46F7-8962-64619CC18253}</ProjectGuid>
+    <ComponentGuid>{B0722FA2-86CB-44B8-94C8-0E68ECD5ED12}</ComponentGuid>
+    <AssemblyBothEndian>true</AssemblyBothEndian>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="Enumeration\DeviceInformation.cs" />
+    <Compile Include="Gpio\GpioController.cs" />
+    <Compile Include="Gpio\GpioEnums.cs" />
+    <Compile Include="Gpio\GpioPin.cs" />
+    <Compile Include="Gpio\GpioPinValueChangedEventArgs.cs" />
+    <Compile Include="I2c\I2cConnectionSettings.cs" />
+    <Compile Include="I2c\I2cDevice.cs" />
+    <Compile Include="I2c\I2cEnums.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>$(BUILD_TREE_DLL)\System.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
