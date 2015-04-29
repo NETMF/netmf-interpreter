@@ -1,0 +1,18 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <FeatureName>Windows.Devices</FeatureName>
+  </PropertyGroup>
+  <ItemGroup>
+    <InteropFeature Include="Windows_Devices" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Windows.Devices.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Windows\Devices\Devices.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+  </ItemGroup>
+  <Import Condition="'$(CORE_FEATUREPROJ)'    ==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+  <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+  <PropertyGroup>
+    <Description>Windows.Devices component</Description>
+    <Guid>{FF51FD8A-77E7-42E6-B577-AE39342D12AA}</Guid>
+    <Groups />
+    <WINDOWS_DEVICES_FEATUREPROJ>True</WINDOWS_DEVICES_FEATUREPROJ>
+  </PropertyGroup>
+</Project>

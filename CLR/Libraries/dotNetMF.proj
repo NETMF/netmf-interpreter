@@ -19,6 +19,7 @@
     <SubDirectories Include="SPOT_Touch"/>
     <SubDirectories Include="SPOT_Update"/>
     <SubDirectories Include="System_Xml"/>
+    <SubDirectories Include="Windows_Devices"/>
   </ItemGroup>
 
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />

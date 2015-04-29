@@ -1,5 +1,5 @@
 using System;
-using Microsoft.SPOT.Hardware;
+using System.Runtime.CompilerServices;
 
 namespace Windows.Devices.Gpio
 {
@@ -7,12 +7,10 @@ namespace Windows.Devices.Gpio
     {
         // Public properties
 
-        public int PinCount
+        extern public int PinCount
         {
-            get
-            {
-                return HardwareProvider.HwProvider.GetPinsCount();
-            }
+            [MethodImplAttribute(MethodImplOptions.InternalCall)]
+            get;
         }
 
         // Public methods
