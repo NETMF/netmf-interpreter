@@ -24,8 +24,8 @@
 #include <aj_debug.h>
 
 #include <alljoyn.h>
-#include "ServicesCommon.h"
-#include "PropertyStore.h"
+#include <alljoyn/services_common/ServicesCommon.h>
+#include <alljoyn/services_common/PropertyStore.h>
 #ifdef ONBOARDING_SERVICE
 #include <alljoyn/onboarding/OnboardingManager.h>
 #endif

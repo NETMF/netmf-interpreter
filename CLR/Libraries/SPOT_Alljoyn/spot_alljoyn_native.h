@@ -23,9 +23,14 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     static const int FIELD__AJ_BUGFIX_VERSION = 8;
     static const int FIELD__AJ_RELEASE_TAG = 9;
     static const int FIELD__APP_ID_SIGNATURE = 10;
-    static const int FIELD__doAnnounce = 11;
-    static const int FIELD__propertyStore = 12;
+    static const int FIELD__propertyStore = 11;
+    static const int FIELD__doAnnounce = 12;
+    static const int FIELD__AJNS_NotificationVersion = 13;
+    static const int FIELD__NotificationId = 14;
+    static const int FIELD__lastSentNotifications = 15;
 
+    TINYCLR_NATIVE_DECLARE(GetUniqueName___STRING__U4);
+    TINYCLR_NATIVE_DECLARE(SendNotifySignal___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJAJNSNotification__U4__STRING__BYREF_U4);
     TINYCLR_NATIVE_DECLARE(Initialize___U4);
     TINYCLR_NATIVE_DECLARE(SendNotification___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(SetBusLinkTimeout___MicrosoftSPOTAllJoynAJStatus__U4__U4);
@@ -36,6 +41,7 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(AlwaysPrintf___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(AboutIconHandleGetContent___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage__SZARRAY_U1);
     TINYCLR_NATIVE_DECLARE(BusHandleBusMessageInner___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
+    TINYCLR_NATIVE_DECLARE(BusCancelSessionless___MicrosoftSPOTAllJoynAJStatus__U4__U4);
     TINYCLR_NATIVE_DECLARE(MarshalReplyMsg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(MarshalSignal___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJMessage__U4__U4__U4__U1__U4);
     TINYCLR_NATIVE_DECLARE(DeliverMsg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
@@ -61,6 +67,8 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(MarshalObjectDescriptions___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(MarshalDefaultProps___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(GetArgPtr___U4__I4);
+    TINYCLR_NATIVE_DECLARE(Initialize_NotificationService___MicrosoftSPOTAllJoynAJStatus);
+    TINYCLR_NATIVE_DECLARE(GetLocalGUID___STATIC__MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1);
     TINYCLR_NATIVE_DECLARE(RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN);
     TINYCLR_NATIVE_DECLARE(PrintXML___STATIC__VOID__STRING__STRING__U1__I4);
     TINYCLR_NATIVE_DECLARE(AppMessageId___STATIC__U4__U4__U4__U4);
@@ -69,6 +77,32 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(AppPropertyId___STATIC__U4__U4__U4__U4);
     TINYCLR_NATIVE_DECLARE(BusPropertyId___STATIC__U4__U4__U4__U4);
     TINYCLR_NATIVE_DECLARE(PrxPropertyId___STATIC__U4__U4__U4__U4);
+
+    //--//
+
+};
+
+struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ__AJNS_MessageTracking
+{
+    static const int FIELD__notificationId = 1;
+    static const int FIELD__serialNum = 2;
+
+
+    //--//
+
+};
+
+struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ__AJNS_Notification
+{
+    static const int FIELD__version = 1;
+    static const int FIELD__messageType = 2;
+    static const int FIELD__notificationId = 3;
+    static const int FIELD__originalSenderName = 4;
+    static const int FIELD__deviceId = 5;
+    static const int FIELD__deviceName = 6;
+    static const int FIELD__appId = 7;
+    static const int FIELD__appName = 8;
+
 
     //--//
 
@@ -204,7 +238,6 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_PropertyStore
     static const int FIELD__NumberOfLanguages = 7;
     static const int FIELD__AppId = 8;
 
-    TINYCLR_NATIVE_DECLARE(GetLocalGUID___MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1);
 
     //--//
 

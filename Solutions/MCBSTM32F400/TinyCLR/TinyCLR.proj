@@ -107,17 +107,18 @@
     <DriverLibs Include="TestAllJoyn.$(LIB_EXT)" />
   </ItemGroup>-->
 
-<!--
+
   <ItemGroup>
 	<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\base_tcl\dotNetMF.proj" />
     <DriverLibs Include="base_tcl_pal.$(LIB_EXT)" />
   </ItemGroup>
--->  
+
    <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\ajtcl\dotNetMF.proj" />
     <DriverLibs Include="ajtcl_core_pal.$(LIB_EXT)" />
     <DriverLibs Include="ajtcl_target_pal.$(LIB_EXT)" />
     <DriverLibs Include="ajtcl_crypto_pal.$(LIB_EXT)" />
+        
     <!-- note: the following projects are necessary for 'proper' AJ_RandBytes implementation
          but it increases NetduinoPlus2 flash memory use by roughly 1 64k page -->
 

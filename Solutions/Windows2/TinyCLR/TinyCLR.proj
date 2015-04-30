@@ -145,6 +145,11 @@
   </ItemGroup>
   
   <ItemGroup>
+	<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\base_tcl\dotNetMF.proj" />
+    <DriverLibs Include="base_tcl_pal.$(LIB_EXT)" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\tinyclr\dotnetmf.proj" />
     <DriverLibs Include="ssl_types.$(LIB_EXT)" />
   </ItemGroup>

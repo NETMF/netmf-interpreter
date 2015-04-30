@@ -25,9 +25,9 @@
 
 #include <alljoyn.h>
 
-#include "ServicesCommon.h"
-#include "PropertyStore.h"
-#include "ServicesHandlers.h"
+#include <alljoyn/services_common/ServicesCommon.h>
+#include <alljoyn/services_common/PropertyStore.h>
+#include <alljoyn/services_common/ServicesHandlers.h>
 #ifdef CONFIG_SERVICE
 #include <alljoyn/config/ConfigService.h>
 #endif

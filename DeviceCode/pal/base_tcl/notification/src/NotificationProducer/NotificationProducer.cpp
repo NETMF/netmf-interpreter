@@ -23,9 +23,9 @@
 #include <aj_debug.h>
 
 #include <alljoyn.h>
-#include "NotificationCommon.h"
-#include "NotificationProducer.h"
-#include "PropertyStore.h"
+#include <alljoyn/notification/NotificationCommon.h>
+#include <alljoyn/notification/NotificationProducer.h>
+#include <alljoyn/services_common/PropertyStore.h>
 #include <aj_crypto.h>
 #include <aj_config.h>
 
@@ -471,7 +471,7 @@ ErrorExit:
 /**
  * Send notify signal
  */
-static AJ_Status AJNS_Producer_SendNotifySignal(AJ_BusAttachment* busAttachment, AJNS_Notification* notification, uint32_t ttl, uint32_t* messageSerialNumber)
+AJ_Status AJNS_Producer_SendNotifySignal(AJ_BusAttachment* busAttachment, AJNS_Notification* notification, uint32_t ttl, uint32_t* messageSerialNumber)
 {
     AJ_Status status;
     AJ_Message msg;

@@ -24,8 +24,8 @@
 
 #include <alljoyn.h>
 #include <aj_config.h>
-#include "ServicesCommon.h"
-#include "PropertyStore.h"
+#include <alljoyn/services_common/ServicesCommon.h>
+#include <alljoyn/services_common/PropertyStore.h>
 
 /**
  * Device manufacture name

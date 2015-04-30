@@ -10,13 +10,7 @@ namespace Microsoft.SPOT.AllJoyn
 {       
     public partial class AJ
     {    
-        public bool doAnnounce = false;
-        PropertyStore propertyStore = null;                            
-        
-        public void SetPropertyStore(PropertyStore ps)
-        {
-            propertyStore = ps;
-        }
+        public bool doAnnounce = false;        
         
         byte A2H(char val)
         {

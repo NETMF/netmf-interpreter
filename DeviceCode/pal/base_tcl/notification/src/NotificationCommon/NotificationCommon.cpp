@@ -22,8 +22,8 @@
 #define AJ_MODULE AJNS
 #include <aj_debug.h>
 
-#include "NotificationCommon.h"
-#include "ServicesCommon.h"
+#include <alljoyn/notification/NotificationCommon.h>
+#include <alljoyn/services_common/ServicesCommon.h>
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value

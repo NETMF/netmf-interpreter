@@ -17,8 +17,8 @@
 #ifndef NOTIFICATIONPRODUCER_H_
 #define NOTIFICATIONPRODUCER_H_
 
-#include "NotificationCommon.h"
-#include "ServicesCommon.h"
+#include <alljoyn/notification/NotificationCommon.h>
+#include <alljoyn/services_common/ServicesCommon.h>
 
 /** @defgroup NotificationProducer Notification Producer
  * details Functions and variables that assist in writing Notification Producers

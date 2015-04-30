@@ -208,7 +208,7 @@ AJ_Status AJ_Net_Send(AJ_IOBuffer* buf)
         }
         tx -= ret;
         buf->readPtr += ret;
-        } while ((tx > 0) /*&& (SOCK_getlasterror() == SOCK_EWOULDBLOCK)*/);  
+        } while ((tx > 0));  
     }
     if (AJ_IO_BUF_AVAIL(buf) == 0) {
         AJ_IO_BUF_RESET(buf);

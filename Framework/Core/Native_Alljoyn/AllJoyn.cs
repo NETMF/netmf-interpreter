@@ -205,6 +205,42 @@ namespace Microsoft.SPOT.AllJoyn
         public string AJ_RELEASE_TAG = "rtm";              
         public string APP_ID_SIGNATURE = "ay";
                 
+        PropertyStore propertyStore = null;                            
+        
+        public static string GetGUID()
+        {
+            string guid = String.Empty;
+            
+            byte [] ba = new byte[16];                                    
+            AJ_Status status = GetLocalGUID(ba);
+            if (status == AJ_Status.AJ_OK)
+            {
+                guid = BitConverter.ToString(ba);
+                
+                StringBuilder aStr = new StringBuilder(guid);
+                for (int i = 0; i < aStr.Length; i++)
+                {
+                    if (aStr[i] == '-')
+                    {
+                        aStr.Remove(i, 1);
+                    }
+                }
+                
+                guid = aStr.ToString();
+            }
+            
+            return guid;
+        }
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern AJ_Status GetLocalGUID(byte [] b);
+        
+        public void SetPropertyStore(PropertyStore ps)
+        {
+            propertyStore = ps;
+            ps.InitMandatoryFields();
+        }        
+                
         public void SetAboutIconContent(byte [] b)
         {
             AboutIconContent = b;
@@ -335,10 +371,16 @@ namespace Microsoft.SPOT.AllJoyn
         {
             return ProcessProperty(msg, propCB, AJ.AJ_PROP_SET);
         }
-        
+                        
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern void RegisterObjects(string localPath, string localInterfaceDescription, byte localFlags, IntPtr localContext,
                                               bool useProperties);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern string GetUniqueName(UInt32 bus);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status SendNotifySignal(UInt32 bus, AJNS_Notification not, UInt32 ttl, string message, ref UInt32 serialNumber);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern UInt32 Initialize();                
@@ -379,6 +421,9 @@ namespace Microsoft.SPOT.AllJoyn
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status BusHandleBusMessageInner(AJ_Message msg);                
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status BusCancelSessionless(UInt32 bus, UInt32 serialNum);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status MarshalReplyMsg(AJ_Message msg, AJ_Message replyMsg);

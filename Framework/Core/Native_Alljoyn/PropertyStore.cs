@@ -247,23 +247,7 @@ namespace Microsoft.SPOT.AllJoyn
         {
             if (AppId == String.Empty)
             {
-                byte [] ba = new byte[16];                                    
-                AJ_Status status = GetLocalGUID(ba);
-                if (status == AJ_Status.AJ_OK)
-                {
-                    AppId = BitConverter.ToString(ba);
-                    
-                    StringBuilder aStr = new StringBuilder(AppId);
-                    for (int i = 0; i < aStr.Length; i++)
-                    {
-                        if (aStr[i] == '-')
-                        {
-                            aStr.Remove(i, 1);
-                        }
-                    }
-                    
-                    AppId = aStr.ToString();
-                }
+                AppId = AJ.GetGUID();
             }    
             DefaultValues[(int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_APP_ID] = new string[1]{AppId};
             DefaultValues[(int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_DEVICE_ID] = new string[1]{AppId};
@@ -344,10 +328,7 @@ namespace Microsoft.SPOT.AllJoyn
                 }
             }
             return ERROR_LANGUAGE_INDEX;
-        }
-        
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern AJ_Status GetLocalGUID(byte [] b);
+        }                
     }
     
     

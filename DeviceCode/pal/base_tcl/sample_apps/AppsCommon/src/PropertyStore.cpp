@@ -25,8 +25,8 @@
 #include <alljoyn.h>
 #include <errno.h>
 #include "PropertyStoreOEMProvisioning.h"
-#include "PropertyStore.h"
-#include "ServicesCommon.h"
+#include <alljoyn/services_common/PropertyStore.h>
+#include <alljoyn/services_common/ServicesCommon.h>
 #ifdef ONBOARDING_SERVICE
     #include <alljoyn/onboarding/OnboardingManager.h>
 #endif
@@ -36,13 +36,8 @@
 #include <aj_config.h>
 
 #ifndef NDEBUG
-//extern AJ_EXPORT uint8_t dbgAJSVCAPP;
-
-#define dbgAJSVCAPP(x) ()
-
+extern AJ_EXPORT uint8_t dbgAJSVCAPP;
 #endif
-
-
 
 const PropertyStoreEntry propertyStoreProperties[AJSVC_PROPERTY_STORE_NUMBER_OF_KEYS] =
 {
@@ -393,7 +388,7 @@ AJ_Status AJSVC_PropertyStore_LoadAll()
                 size = propertyStoreRuntimeValues[fieldIndex].size;
                 entry = (int)fieldIndex + (int)langIndex * (int)AJSVC_PROPERTY_STORE_NUMBER_OF_RUNTIME_KEYS;
                 status = PropertyStore_ReadConfig(AJ_PROPERTIES_NV_ID_BEGIN + entry, buf, size);
-                AJ_InfoPrintf(("nvram read fieldIndex=%d [%s] langIndex=%d [%s] entry=%d val=%s size=%u status=%s\n", (int)fieldIndex, propertyStoreProperties[fieldIndex].keyName, (int)langIndex, propertyStoreDefaultLanguages[langIndex], (int)entry, propertyStoreRuntimeValues[fieldIndex].value[langIndex], (int)size, AJ_StatusText(status)));
+                //AJ_InfoPrintf(("nvram read fieldIndex=%d [%s] langIndex=%d [%s] entry=%d val=%s size=%u status=%s\n", (int)fieldIndex, propertyStoreProperties[fieldIndex].keyName, (int)langIndex, propertyStoreDefaultLanguages[langIndex], (int)entry, propertyStoreRuntimeValues[fieldIndex].value[langIndex], (int)size, AJ_StatusText(status)));
             }
         }
     }
@@ -422,7 +417,7 @@ AJ_Status AJSVC_PropertyStore_SaveAll()
                 size = propertyStoreRuntimeValues[fieldIndex].size;
                 entry = (int)fieldIndex + (int)langIndex * (int)AJSVC_PROPERTY_STORE_NUMBER_OF_RUNTIME_KEYS;
                 status = PropertyStore_WriteConfig(AJ_PROPERTIES_NV_ID_BEGIN + entry, buf, size, "w");
-                AJ_InfoPrintf(("nvram write fieldIndex=%d [%s] langIndex=%d [%s] entry=%d val=%s size=%u status=%s\n", (int)fieldIndex, propertyStoreProperties[fieldIndex].keyName, (int)langIndex, propertyStoreDefaultLanguages[langIndex], (int)entry, propertyStoreRuntimeValues[fieldIndex].value[langIndex], (int)size, AJ_StatusText(status)));
+                //AJ_InfoPrintf(("nvram write fieldIndex=%d [%s] langIndex=%d [%s] entry=%d val=%s size=%u status=%s\n", (int)fieldIndex, propertyStoreProperties[fieldIndex].keyName, (int)langIndex, propertyStoreDefaultLanguages[langIndex], (int)entry, propertyStoreRuntimeValues[fieldIndex].value[langIndex], (int)size, AJ_StatusText(status)));
             }
         }
     }
@@ -506,7 +501,7 @@ AJ_Status AJSVC_PropertyStore_ReadAll(AJ_Message* msg, AJSVC_PropertyStoreCatego
                     if (status != AJ_OK) {
                         return status;
                     }
-                    AJ_InfoPrintf(("Has key [%s] runtime Value [%d]\n", propertyStoreProperties[AJSVC_PROPERTY_STORE_MAX_LENGTH].keyName, DEVICE_NAME_VALUE_LENGTH));
+                    //AJ_InfoPrintf(("Has key [%s] runtime Value [%d]\n", propertyStoreProperties[AJSVC_PROPERTY_STORE_MAX_LENGTH].keyName, DEVICE_NAME_VALUE_LENGTH));
 #endif
                 } else if (fieldIndex == AJSVC_PROPERTY_STORE_AJ_SOFTWARE_VERSION) {
                     ajVersion = AJ_GetVersion();
