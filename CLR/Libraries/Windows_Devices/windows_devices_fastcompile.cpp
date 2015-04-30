@@ -4,3 +4,4 @@
 
 #include "windows_devices_native.cpp"
 #include "windows_devices_native_Windows_Devices_Gpio_GpioController.cpp"
+#include "windows_devices_native_Windows_Devices_Gpio_GpioPin.cpp"
