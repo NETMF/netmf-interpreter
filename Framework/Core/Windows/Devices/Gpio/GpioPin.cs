@@ -15,8 +15,12 @@ namespace Windows.Devices.Gpio
 
         internal GpioPin(int pinNumber)
         {
-            m_pinNumber = pinNumber;
-            SetDriveModeInternal(GpioPinDriveMode.Input);
+            // TODO: Remove this. Without it, the compiler complains that this value is unused.
+            if (m_lastOutputValue == GpioPinValue.Low)
+            {
+            }
+
+            Init(pinNumber);
         }
 
         ~GpioPin()
@@ -81,38 +85,13 @@ namespace Windows.Devices.Gpio
 
         // Public properties
 
-        // FUTURE: This should be of type TimeSpan.
-        public bool DebounceTimeout
+        extern public TimeSpan DebounceTimeout
         {
-            get
-            {
-                lock (m_syncLock)
-                {
-                    if (m_disposed)
-                    {
-                        throw new ObjectDisposedException();
-                    }
+            [MethodImplAttribute(MethodImplOptions.InternalCall)]
+            get;
 
-                    return m_debounceTimeout;
-                }
-            }
-
-            set
-            {
-                lock (m_syncLock)
-                {
-                    if (m_disposed)
-                    {
-                        throw new ObjectDisposedException();
-                    }
-
-                    if (value != m_debounceTimeout)
-                    {
-                        m_debounceTimeout = value;
-                        m_inputPort.GlitchFilter = value;
-                    }
-                }
-            }
+            [MethodImplAttribute(MethodImplOptions.InternalCall)]
+            set;
         }
 
         public int PinNumber
@@ -140,6 +119,12 @@ namespace Windows.Devices.Gpio
         }
 
         // Public methods
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public GpioPinValue Read();
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern public void Write(GpioPinValue value);
 
         public bool IsDriveModeSupported(GpioPinDriveMode driveMode)
         {
@@ -189,36 +174,7 @@ namespace Windows.Devices.Gpio
                 }
 
                 SetDriveModeInternal(driveMode);
-            }
-        }
-
-        public void Write(GpioPinValue value)
-        {
-            lock (m_syncLock)
-            {
-                if (m_disposed)
-                {
-                    throw new ObjectDisposedException();
-                }
-
-                m_lastOutputValue = (value != GpioPinValue.Low);
-                if (m_outputPort != null)
-                {
-                    m_outputPort.Write(m_lastOutputValue);
-                }
-            }
-        }
-
-        public GpioPinValue Read()
-        {
-            lock (m_syncLock)
-            {
-                if (m_disposed)
-                {
-                    throw new ObjectDisposedException();
-                }
-
-                return m_inputPort.Read() ? GpioPinValue.High : GpioPinValue.Low;
+                m_driveMode = driveMode;
             }
         }
 
@@ -237,21 +193,14 @@ namespace Windows.Devices.Gpio
 
         // Private methods
 
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (m_inputPort != null)
-                {
-                    m_inputPort.Dispose();
-                }
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern private void Init(int pinNumber);
 
-                if (m_outputPort != null)
-                {
-                    m_outputPort.Dispose();
-                }
-            }
-        }
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern private void Dispose(bool disposing);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern private void SetDriveModeInternal(GpioPinDriveMode driveMode);
 
         private void OnInterrupt(uint port, uint state, DateTime time)
         {
@@ -266,71 +215,21 @@ namespace Windows.Devices.Gpio
 
         private void UpdateInterruptHandler()
         {
-            if (m_inputPort == null)
+            if (m_driveMode == GpioPinDriveMode.Output)
             {
+                // TODO: Unregister for interrupts.
                 m_registeredHandler = false;
             }
-            else
+            else if ((m_callbacks == null) && m_registeredHandler)
             {
-                if ((m_callbacks == null) && m_registeredHandler)
-                {
-                    m_inputPort.OnInterrupt -= OnInterrupt;
-                }
-                else if ((m_callbacks != null) && !m_registeredHandler)
-                {
-                    m_inputPort.OnInterrupt += OnInterrupt;
-                }
+                // TODO: Uneregister for interrupts.
+                m_registeredHandler = false;
             }
-        }
-
-        private void SetDriveModeInternal(GpioPinDriveMode driveMode)
-        {
-            if (driveMode == GpioPinDriveMode.Output)
+            else if ((m_callbacks != null) && !m_registeredHandler)
             {
-                if (m_inputPort != null)
-                {
-                    m_inputPort.Dispose();
-                    m_inputPort = null;
-
-                    UpdateInterruptHandler();
-                }
-
-                m_outputPort = new OutputPort((Cpu.Pin)m_pinNumber, m_lastOutputValue);
+                // TODO: Register for interrupts
+                m_registeredHandler = true;
             }
-            else
-            {
-                if (m_outputPort != null)
-                {
-                    m_outputPort.Dispose();
-                    m_outputPort = null;
-                }
-
-                Port.ResistorMode resistorMode = Port.ResistorMode.Disabled;
-                if (driveMode == GpioPinDriveMode.InputWithPullUp)
-                {
-                    m_inputPort.Resistor = Port.ResistorMode.PullUp;
-                }
-                else if (driveMode == GpioPinDriveMode.InputWithPullDown)
-                {
-                    m_inputPort.Resistor = Port.ResistorMode.PullDown;
-                }
-
-                if (m_inputPort == null)
-                {
-                    m_inputPort = new InterruptPort(
-                        (Cpu.Pin)m_pinNumber,
-                        m_debounceTimeout,
-                        resistorMode,
-                        Port.InterruptMode.InterruptEdgeBoth);
-                    UpdateInterruptHandler();
-                }
-                else
-                {
-                    m_inputPort.Resistor = resistorMode;
-                }
-            }
-
-            m_driveMode = driveMode;
         }
 
         // Private fields
@@ -340,12 +239,9 @@ namespace Windows.Devices.Gpio
         private int m_pinNumber = -1;
 
         private GpioPinDriveMode m_driveMode = GpioPinDriveMode.Input;
-        private bool m_debounceTimeout = false;
-        private bool m_lastOutputValue = false;
+        private GpioPinValue m_lastOutputValue = GpioPinValue.Low;
         private bool m_registeredHandler = false;
 
-        private InterruptPort m_inputPort = null;
-        private OutputPort m_outputPort = null;
         private GpioPinValueChangedEventHandler m_callbacks = null;
     }
 }

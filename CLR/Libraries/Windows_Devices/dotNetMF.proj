@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="windows_devices_native.cpp" />
     <Compile Include="windows_devices_native_Windows_Devices_Gpio_GpioController.cpp" />
+    <Compile Include="windows_devices_native_Windows_Devices_Gpio_GpioPin.cpp" />
     <ExtraProjects Include="dotNetMF_stub.proj" />
     <FastCompileCPPFile Include="windows_devices_fastcompile.cpp" />
     <IncludePaths Include="CLR\libraries\corlib" />

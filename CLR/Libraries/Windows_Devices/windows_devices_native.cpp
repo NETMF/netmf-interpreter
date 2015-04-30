@@ -32,17 +32,18 @@ static const CLR_RT_MethodHandler method_lookup[] =
     NULL,
     NULL,
     NULL,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::get_DebounceTimeout___mscorlibSystemTimeSpan,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::set_DebounceTimeout___VOID__mscorlibSystemTimeSpan,
+    NULL,
+    NULL,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Read___WindowsDevicesGpioGpioPinValue,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Write___VOID__WindowsDevicesGpioGpioPinValue,
     NULL,
     NULL,
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Init___VOID__I4,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Dispose___VOID__BOOLEAN,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::SetDriveModeInternal___VOID__WindowsDevicesGpioGpioPinDriveMode,
     NULL,
     NULL,
     NULL,
@@ -80,7 +81,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_Windows_Devices =
 {
     "Windows.Devices", 
-    0xC9B96958,
+    0x0EA34314,
     method_lookup
 };
 
