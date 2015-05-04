@@ -96,10 +96,10 @@
 
 // AD CHANNELS (ADC1 or ADC3)
 #define STM32F4_ADC 1
-// channel:   0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15
+// channel:   0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17
 // AD pins: PA0,PA1,PA2,PA3,PA4,PA5,PA6,PA7,PB0,PB1,PC0,PC1,PC2,PC3,PC4,PC5
 //#define STM32F4_ADC 3
-// channel:   0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15
+// channel:   0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17
 // AD pins: PA0,PA1,PA2,PA3,PF6,PF7,PF8,PF9,F10,PF3,PC0,PC1,PC2,PC3,PF4,PF5
 #define STM32F4_AD_CHANNELS {10,11,12,13} // PC0-PC3
 
