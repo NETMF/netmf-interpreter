@@ -115,8 +115,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\Crypto\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\CortexM3\GlobalLock\dotNetMF.proj" />
-        <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\GlobalLock\dotNetMF.proj" />
+        <DriverLibs Include="GlobalLock_hal_RTOS.$(LIB_EXT)" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
