@@ -149,9 +149,6 @@ BOOL STM32_GPIO_Set_Interrupt( UINT32 pin, GPIO_INTERRUPT_SERVICE_ROUTINE ISR, v
     UINT32 config = (pin >> 4) << shift; // port number configuration
     
     STM32_Int_State* state = &g_int_state[num];
-    state->ISR = ISR;
-    state->completion.Abort();
-    state->completion.SetArgument(state);
     
     GLOBAL_LOCK(irq);
     
@@ -164,6 +161,9 @@ BOOL STM32_GPIO_Set_Interrupt( UINT32 pin, GPIO_INTERRUPT_SERVICE_ROUTINE ISR, v
         state->mode = (BYTE)mode;
         state->debounce = (BYTE)GlitchFilterEnable;
         state->param = ISR_Param;
+        state->ISR = ISR;
+        state->completion.Abort();
+        state->completion.SetArgument(state);
         
         EXTI->RTSR &= ~bit;
         EXTI->FTSR &= ~bit;
@@ -197,6 +197,8 @@ BOOL STM32_GPIO_Set_Interrupt( UINT32 pin, GPIO_INTERRUPT_SERVICE_ROUTINE ISR, v
         }
     } else if ((AFIO->EXTICR[idx] & mask) == config) {
         EXTI->IMR &= ~bit; // disable interrupt
+        state->ISR = NULL;
+        state->completion.Abort();
     }
     return TRUE;
 }
