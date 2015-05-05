@@ -27,7 +27,7 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     static const int FIELD__doAnnounce = 12;
     static const int FIELD__AJNS_NotificationVersion = 13;
     static const int FIELD__NotificationId = 14;
-    static const int FIELD__lastSentNotifications = 15;
+    static const int FIELD__LastSentNotifications = 15;
 
     TINYCLR_NATIVE_DECLARE(GetUniqueName___STRING__U4);
     TINYCLR_NATIVE_DECLARE(SendNotifySignal___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJAJNSNotification__U4__STRING__BYREF_U4);

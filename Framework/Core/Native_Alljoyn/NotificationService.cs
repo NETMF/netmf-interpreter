@@ -24,7 +24,6 @@ namespace Microsoft.SPOT.AllJoyn
             public string deviceName;                        // device name of originating producer application 
             public string appId;                             // application id of originating producer application 
             public string appName;                           // application name of originating producer application 
-            //AJNS_NotificationContent* content;             // content of notification 
         };
         
         public class AJNS_MessageTracking
@@ -40,7 +39,7 @@ namespace Microsoft.SPOT.AllJoyn
         
         UInt32 NotificationId = 123456;
         
-        public AJNS_MessageTracking [] lastSentNotifications = new AJNS_MessageTracking[3]
+        public AJNS_MessageTracking [] LastSentNotifications = new AJNS_MessageTracking[3]
         {
             new AJNS_MessageTracking(),
             new AJNS_MessageTracking(),
@@ -65,7 +64,7 @@ namespace Microsoft.SPOT.AllJoyn
             return false;
         }
         
-        public AJ_Status AJNS_Producer_SendNotification(UInt32 bus, string message, UInt16 messageType, UInt32 ttl, ref UInt32 messageSerialNumber)
+        public AJ_Status SendNotification(UInt32 bus, string message, UInt16 messageType, UInt32 ttl, ref UInt32 messageSerialNumber)
         {
             AJ_Status status;
             AJNS_Notification notification = new AJNS_Notification();
@@ -80,10 +79,10 @@ namespace Microsoft.SPOT.AllJoyn
                 return AJ_Status.AJ_ERR_DISALLOWED;
             }
 
-            notification.deviceId = propertyStore.GetValue((int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_DEVICE_ID);
+            notification.deviceId   = propertyStore.GetValue((int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_DEVICE_ID);
             notification.deviceName = propertyStore.GetValueForLang((int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_DEVICE_NAME, propertyStore.GetLanguageIndex(""));
-            notification.appId = propertyStore.GetValue((int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_APP_ID);
-            notification.appName = propertyStore.GetValue((int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_APP_NAME);
+            notification.appId      = propertyStore.GetValue((int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_APP_ID);
+            notification.appName    = propertyStore.GetValue((int)PropertyStoreFieldIndices.AJSVC_PROPERTY_STORE_APP_NAME);
 
             if ((IsNullOrEmpty(notification.deviceId)) || (IsNullOrEmpty(notification.deviceName)) ||
                 (IsNullOrEmpty(notification.appId)) || (IsNullOrEmpty(notification.appName))) {
@@ -111,8 +110,8 @@ namespace Microsoft.SPOT.AllJoyn
             status = SendNotifySignal(bus, notification, ttl, message, ref serialNumber);
 
             if (status == AJ_Status.AJ_OK) {
-                lastSentNotifications[messageType].notificationId = NotificationId++;
-                lastSentNotifications[messageType].serialNum = serialNumber;
+                LastSentNotifications[messageType].notificationId = NotificationId++;
+                LastSentNotifications[messageType].serialNum = serialNumber;
                 messageSerialNumber = serialNumber;
             }
 
@@ -128,7 +127,7 @@ namespace Microsoft.SPOT.AllJoyn
                 return AJ_Status.AJ_ERR_DISALLOWED;
             }
 
-            lastSentSerialNumber = lastSentNotifications[messageType].serialNum;
+            lastSentSerialNumber = LastSentNotifications[messageType].serialNum;
             if (lastSentSerialNumber == 0) {
                 return AJ_Status.AJ_OK;
             }
@@ -139,13 +138,13 @@ namespace Microsoft.SPOT.AllJoyn
                 return status;
             }
 
-            lastSentNotifications[messageType].notificationId = 0;
-            lastSentNotifications[messageType].serialNum = 0;
+            LastSentNotifications[messageType].notificationId = 0;
+            LastSentNotifications[messageType].serialNum = 0;
 
             return status;
         }
         
-        public AJ_Status AJNS_Producer_CancelNotification(UInt32 busAttachment, UInt32 serialNum)
+        public AJ_Status CancelNotification(UInt32 busAttachment, UInt32 serialNum)
         {
             AJ_Status status;
             UInt32 messageType = 0;
@@ -155,7 +154,7 @@ namespace Microsoft.SPOT.AllJoyn
             }
             
             for (; messageType < AJNS_NUM_MESSAGE_TYPES; messageType++) {
-                if (lastSentNotifications[messageType].serialNum == serialNum) {
+                if (LastSentNotifications[messageType].serialNum == serialNum) {
                     break;
                 }
             }
@@ -170,8 +169,8 @@ namespace Microsoft.SPOT.AllJoyn
                 return status;
             }
 
-            lastSentNotifications[messageType].notificationId = 0;
-            lastSentNotifications[messageType].serialNum = 0;
+            LastSentNotifications[messageType].notificationId = 0;
+            LastSentNotifications[messageType].serialNum = 0;
 
             return status;
         }
