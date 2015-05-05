@@ -85,7 +85,7 @@ void AD_Uninitialize( ANALOG_CHANNEL channel )
     // free GPIO pin if this channel is listed in the STM32F4_AD_CHANNELS array 
     // and if it's not one of the internally connected ones as these channels don't take any GPIO pins
     if(chNum <= 15) {
-        CPU_GPIO_DisablePin(AD_GetPinForChannel(channel), RESISTOR_DISABLED, 0, GPIO_ALT_MODE_1);
+        CPU_GPIO_DisablePin(AD_GetPinForChannel(channel), RESISTOR_DISABLED, 0, GPIO_ALT_PRIMARY);
     }
 }
 
