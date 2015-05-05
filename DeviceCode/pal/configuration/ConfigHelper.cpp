@@ -15,7 +15,7 @@
 #undef  DEBUG_TRACE
 #define DEBUG_TRACE (TRACE_ALWAYS)
 
-//--//
+const size_t ConfigLengthCookie = offsetof( ConfigurationSector, FirstConfigBlock );
 
 BOOL HAL_CONFIG_BLOCK::IsGoodBlock() const
 {
@@ -285,7 +285,7 @@ BOOL HAL_CONFIG_BLOCK::UpdateBlockWithName( const char* Name, void* Data, size_t
     if(!GetConfigSectorAddress(blData))
         return FALSE;
 
-    if(g_ConfigurationSector.ConfigurationLength == 0xFFFFFFFF)
+    if(g_ConfigurationSector.ConfigurationLength != ConfigLengthCookie )
     {
         return FALSE;
     }
@@ -386,7 +386,7 @@ BOOL HAL_CONFIG_BLOCK::UpdateBlockWithName( const char* Name, void* Data, size_t
 
             pConfig = pConfig->Find(Name, FALSE, TRUE);
 
-            pLastConfig = pConfig->Find("", FALSE, TRUE);            
+            pLastConfig = pConfig->Find("", FALSE, TRUE);
         }
     }
 
@@ -417,7 +417,8 @@ BOOL HAL_CONFIG_BLOCK::ApplyConfig( const char* Name, void* Address, size_t Leng
 
     if(!GetConfigSectorAddress(blData)) return FALSE;
 
-    if(g_ConfigurationSector.ConfigurationLength == 0xFFFFFFFF) return FALSE;
+    if(g_ConfigurationSector.ConfigurationLength != ConfigLengthCookie )
+        return FALSE;
 
     if(blData.isXIP)
     {

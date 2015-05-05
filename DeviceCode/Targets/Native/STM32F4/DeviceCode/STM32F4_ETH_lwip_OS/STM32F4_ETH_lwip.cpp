@@ -26,7 +26,7 @@
 //--------------------------------------------------------------------------------------------
  
 #include <tinyhal.h>
-
+#include "lwip/tcpip.h"
 #include "STM32F4_ETH_lwip.h"
 #include "STM32F4_ETH_driver.h"
 #include "STM32F4_ETH_rx_desc.h"
@@ -269,12 +269,16 @@ static Pbuf_t* copyRxDescToPbuf(Pbuf_t *pbuf, const uint8_t *const pBuffer)
 
 //--------------------------------------------------------------------------------------------
 /**
- * Formward a frame contained in a pbuf to the lwip stack.
+ * Forward a frame contained in a pbuf to the lwip stack.
  * @param pNetif the lwip network interface.
  * @param pbuf the pbuf containing the frame.
  */
 static void forwardFrameToLwip(Netif_t *const pNetif, Pbuf_t* pbuf)
 {
+#if LWIP_NETIF_API
+    // post the input packet to the stack
+    tcpip_input( pbuf, pNetif );
+#else
     // Transmit the frame to the lwip stack
     err_t err = pNetif->input(pbuf, pNetif);
     if (err != ERR_OK)
@@ -282,6 +286,7 @@ static void forwardFrameToLwip(Netif_t *const pNetif, Pbuf_t* pbuf)
         pbuf_free(pbuf);
         pbuf = NULL;
     }
+#endif
 }
 
 //--------------------------------------------------------------------------------------------

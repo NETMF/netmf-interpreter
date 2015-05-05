@@ -407,8 +407,15 @@ void HAL_UnReserveAllGpios()
 // testing it was always 0x90, unfortunately it turns out
 // not to be consistent and bumped up to 0xED0, and is now
 // back at 0x90... Sigh... Hope to hear back from ARM support
-// on this soon.
-const UINT32 ArmLinkerLoadRegionOffsetHack = 0x00000090;
+// on this soon. ARM has confirmed the bug as related to the
+// use of a non-compressed region in the scatter file. Since
+// the code here doesn't understand the linker compression
+// the region is uncompressed, however the linker bug is 
+// that an uncompressed region that follows after a compressed
+// one will get the invalid Load$$xxx$$Base value. If the
+// scatter file is updated to ensure all regions occuring
+// before this one are also uncompressed it works ok.
+const UINT32 ArmLinkerLoadRegionOffsetHack = 0x00000000;
 void LwipRegionInit()
 {
     // Copy RAM RW regions into proper location.

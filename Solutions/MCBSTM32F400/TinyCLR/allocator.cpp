@@ -15,28 +15,24 @@ static void RuntimeFault( const char* szText )
     HARD_BREAKPOINT();
 }
 
-void *operator new(size_t) 
+void *operator new( size_t n )
 {
-    RuntimeFault( "new(size_t)" );
-
-    return NULL;
+    return private_malloc( n );
 }
 
-void *operator new[](size_t)
+void *operator new[]( size_t n )
 {
-    RuntimeFault( "new[](size_t)" );
-
-    return NULL;
+    return private_malloc( n );
 }
 
-void operator delete (void*)
+void operator delete( void* p )
 {
-    RuntimeFault( "delete(void*)" );
+    return private_free( p );
 }
 
-void operator delete[] (void*)
+void operator delete[]( void* p )
 {
-    RuntimeFault( "delete[](void*)" );
+    return private_free( p );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
