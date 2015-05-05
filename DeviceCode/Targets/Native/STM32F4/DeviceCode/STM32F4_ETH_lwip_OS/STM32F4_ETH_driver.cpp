@@ -50,8 +50,6 @@ static void initMACFCR();
 static void initMACIMR();
 static void initDMABMR();
 static void initDMAOMR();
-static BOOL readPhyRegister(const uint32_t miiAddress, uint16_t *const miiData);
-static BOOL writePhyRegister(const uint32_t miiAddress, const uint16_t miiData);
 
 //--------------------------------------------------------------------------------------------
 // Functions definitions
@@ -438,16 +436,6 @@ void eth_initRxDescList(uint32_t rxAddress)
 
 //--------------------------------------------------------------------------------------------
 /**
- * Initialize PHY.
- */
-void eth_initPhy()
-{
-    initReadPhyCallback(&readPhyRegister);
-    initWritePhyCallback(&writePhyRegister);
-}
-
-//--------------------------------------------------------------------------------------------
-/**
  * Initialize the receive interrupt handler.
  */
 void eth_initReceiveIntHandler(pIntHandler receiveHandler)
@@ -714,15 +702,17 @@ static void initDMAOMR()
 //--------------------------------------------------------------------------------------------
 /**
  * Read a PHY register through MII.
+ * @param phyAddress, the physical phy address of the PHY chip to be read
  * @param miiAddress the address of the register to read.
  * @param pMiiData a pointer to a variable where the read value is copied.
  * @return Error status.
  *   @retval TRUE if read successful.
  *   @retval FALSE otherwise (pMiiData is not modified).
  */
-static BOOL readPhyRegister(const uint32_t miiAddress, uint16_t *const pMiiData)
+BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_t *const pMiiData)
 {
-    volatile uint32_t nWait = 0U; 
+    uint32_t nWait = 0U; 
+    uint32_t value = 0;
     
     // Wait for PHY availability
     while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
@@ -730,97 +720,77 @@ static BOOL readPhyRegister(const uint32_t miiAddress, uint16_t *const pMiiData)
     {
         nWait++;
     }
+
     if (nWait == MII_BUSY_TIMEOUT)
     {
         return FALSE;
     }
-    
-    // Write PHY address
-    ETH->MACMIIAR &= ~ETH_MACMIIAR_PA;
-    ETH->MACMIIAR |= ((PHY_ADDRESS << MACMIIAR_PA_POSITION) & ETH_MACMIIAR_PA);
-    
-    // Write PHY register
-    ETH->MACMIIAR &= ~ETH_MACMIIAR_MR;
-    ETH->MACMIIAR |= ((miiAddress << MACMIIAR_MR_POSITION) & ETH_MACMIIAR_MR);
-    
-    // Clear MII write
-    ETH->MACMIIAR &= ~ETH_MACMIIAR_MW;
-    
-    // Set MII busy
-    ETH->MACMIIAR |= ETH_MACMIIAR_MB;
-    
+   
+    value = ETH->MACMIIAR & ETH_MACMIIAR_CR; // Clear all bits except the clock rate
+    ETH->MACMIIAR  = value
+                   | (phyAddress << MACMIIAR_PA_POSITION)
+                   | (miiAddress << MACMIIAR_MR_POSITION)
+                   | ETH_MACMIIAR_MB;
+   
     // Wait for completion
-    nWait = 0U;
-    while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
-            (nWait < MII_BUSY_TIMEOUT) )
+    for( nWait = 0; nWait < MII_BUSY_TIMEOUT; ++nWait )
     {
-        nWait++;
+        if( !(ETH->MACMIIAR & ETH_MACMIIAR_MB) )
+        {
+            // Data Ready , Read data
+            *pMiiData = ETH->MACMIIDR;
+            return TRUE;
+        }
     }
-
-    if (nWait == MII_BUSY_TIMEOUT)
-    {
-        return FALSE;
-    }
-
-    // Read data
-    *pMiiData = ETH->MACMIIDR;
     
-    return TRUE;
+    return FALSE;
+
 }
 
 //--------------------------------------------------------------------------------------------
 /**
  * Write to a PHY register through MII.
+ * @param phyAddress, the physical phy address of the PHY chip to be write
  * @param miiAddress the address of the register to write.
  * @param miiData the value to write.
  * @return Error status.
  *   @retval TRUE if write successful.
  *   @retval FALSE otherwise.
  */
-static BOOL writePhyRegister(const uint32_t miiAddress, const uint16_t miiData)
+BOOL eth_writePhyRegister(uint32_t phyAddress, const uint32_t miiAddress, const uint16_t miiData)
 {
-    volatile uint32_t nWait = 0U; 
-    
+    uint32_t nWait = 0U; 
+    uint32_t value = 0U;
+
+  
     // Wait for PHY availability
-    while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
-            (nWait < MII_BUSY_TIMEOUT) )
+    while ( (ETH->MACMIIAR & ETH_MACMIIAR_MB) &&(nWait < MII_BUSY_TIMEOUT) )
     {
         nWait++;
     }
+
     if (nWait == MII_BUSY_TIMEOUT)
     {
         return FALSE;
     }
-    
-    // Write PHY address
-    ETH->MACMIIAR &= ~ETH_MACMIIAR_PA;
-    ETH->MACMIIAR |= ((PHY_ADDRESS << MACMIIAR_PA_POSITION) & ETH_MACMIIAR_PA);
-    
-    // Write MII register
-    ETH->MACMIIAR &= ~ETH_MACMIIAR_MR;
-    ETH->MACMIIAR |= ((miiAddress << MACMIIAR_MR_POSITION) & ETH_MACMIIAR_MR);
-    
-    // Set MII write
-    ETH->MACMIIAR |= ETH_MACMIIAR_MW;
-    
-    // Write MII data
+    // Write MII data first 
     ETH->MACMIIDR = miiData;
-    
-    // Set MII busy
-    ETH->MACMIIAR |= ETH_MACMIIAR_MB;
-    
-    // Wait for completion
-    nWait = 0U;
-    while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
-            (nWait < MII_BUSY_TIMEOUT) )
+
+    value = ETH->MACMIIAR & ETH_MACMIIAR_CR;
+    ETH->MACMIIAR  = value | (phyAddress << MACMIIAR_PA_POSITION) | (miiAddress << MACMIIAR_MR_POSITION) | ETH_MACMIIAR_MW | ETH_MACMIIAR_MB;
+
+
+    while ( nWait < MII_BUSY_TIMEOUT ) 
     {
+        if ( !(ETH->MACMIIAR & ETH_MACMIIAR_MB) )
+        {
+            return TRUE;
+        }
         nWait++;
     }
-    if (nWait == MII_BUSY_TIMEOUT)
-    {
-        return FALSE;
-    }
-    return TRUE;
+    
+    return FALSE;
 }
 
 //--------------------------------------------------------------------------------------------
+
