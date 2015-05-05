@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
+﻿<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <AssemblyName>Microsoft.SPOT.Platform.Tests.Arrays</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -10,8 +8,6 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5311E955-CFD7-4237-9528-C619B65CA8D0}</ProjectGuid>
     <NoWarn>,1668,0251,0219,0169,0649</NoWarn>
-    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Test.CSharp.Targets" />
   <ItemGroup>
