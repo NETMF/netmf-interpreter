@@ -27,21 +27,24 @@ namespace Windows.Devices.Gpio
 
         public GpioPin OpenPin(int pinNumber, GpioSharingMode sharingMode)
         {
-            GpioPin pin;
-            GpioOpenStatus openStatus;
-            if (!TryOpenPin(pinNumber, sharingMode, out pin, out openStatus))
-            {
-                // TODO: Is this the right exception?
-                throw new InvalidOperationException();
-            }
-
-            return pin;
+            return new GpioPin(pinNumber);
         }
 
         public bool TryOpenPin(int pinNumber, GpioSharingMode sharingMode, out GpioPin pin, out GpioOpenStatus openStatus)
         {
-            // TODO: Check whether the pin is available.
-            pin = new GpioPin(pinNumber);
+            pin = null;
+
+            try
+            {
+                pin = OpenPin(pinNumber, sharingMode);
+            }
+            catch
+            {
+                // FUTURE: Catch only targeted exceptions.
+                openStatus = GpioOpenStatus.PinUnavailable;
+                return false;
+            }
+
             openStatus = GpioOpenStatus.PinOpened;
             return true;
         }
