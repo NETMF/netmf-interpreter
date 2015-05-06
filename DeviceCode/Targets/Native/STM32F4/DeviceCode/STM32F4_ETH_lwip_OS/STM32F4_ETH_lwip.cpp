@@ -81,9 +81,6 @@ extern void lwip_interrupt_continuation(void);
  */
 BOOL STM32F4_ETH_LWIP_open(Netif_t *const pNetif)
 { 
-    // Initialize PHY
-    eth_initPhy();
-
     // Init interrupt handler
     eth_initReceiveIntHandler(lwip_interrupt_continuation);
 
