@@ -507,24 +507,28 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             Log.Comment("Section 13.4 Interface implementations");
             Log.Comment("A class that inherits an interface implementation is permitted to re-implement the interface by including it in the base class list");
-            Log.Comment("This Test is an expected fail");
             if (Interface_TestClass_ifreimp_01.testMethod())
+            {
+                return MFTestResults.Pass;
+            }
+            else
             {
                 return MFTestResults.Fail;
             }
-            return MFTestResults.Pass;
         }
         [TestMethod]
         public MFTestResults Interface_ifreimp_02_Test()
         {
             Log.Comment("Section 13.4 Interface implementations");
             Log.Comment("Inherited public member declarations and inherited explicit interface member declarations participate in the interface mapping process for re-implemented interfaces (Bug 90165)");
-            Log.Comment("This Test is an expected fail");
             if (Interface_TestClass_ifreimp_02.testMethod())
+            {
+                return MFTestResults.Pass;
+            }
+            else
             {
                 return MFTestResults.Fail;
             }
-            return MFTestResults.Pass;
         }
         [TestMethod]
         public MFTestResults Interface_ifreimp_03_Test()
@@ -2326,6 +2330,7 @@ namespace Microsoft.SPOT.Platform.Tests
             void Interface_TestClass_ifreimp_01_I1.Paint()
             {
                 Log.Comment("Interface_TestClass_ifreimp_01_1.Interface_TestClass_ifreimp_01_I1.Paint()");
+                throw new Exception("Incorrect method got called!");
             }
         }
         class Interface_TestClass_ifreimp_01_3 : Interface_TestClass_ifreimp_01_1, Interface_TestClass_ifreimp_01_I1
@@ -2337,26 +2342,18 @@ namespace Microsoft.SPOT.Platform.Tests
         }
         class Interface_TestClass_ifreimp_01
         {
-            public static void Main_old()
-            {
-                Interface_TestClass_ifreimp_01_1 c = new Interface_TestClass_ifreimp_01_1();
-                Interface_TestClass_ifreimp_01_3 m = new Interface_TestClass_ifreimp_01_3();
-                Interface_TestClass_ifreimp_01_I1 ic = c;
-                Interface_TestClass_ifreimp_01_I1 im = m;
-                m.Paint();
-                ic.Paint();
-                im.Paint();
-            }
             public static bool testMethod()
             {
+                Interface_TestClass_ifreimp_01_I1 instance = new Interface_TestClass_ifreimp_01_3();
                 try
                 {
-                    Main_old();
+                    instance.Paint();
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
                     return false;
                 }
+
                 return true;
             }
         }
@@ -2372,6 +2369,7 @@ namespace Microsoft.SPOT.Platform.Tests
             void Interface_TestClass_ifreimp_02_I1.F()
             {
                 Log.Comment("Interface_TestClass_ifreimp_02_2.Interface_TestClass_ifreimp_02_I1.F()");
+                throw new Exception("Incorrect method got called!");
             }
 
             void Interface_TestClass_ifreimp_02_I1.G()
@@ -2382,6 +2380,7 @@ namespace Microsoft.SPOT.Platform.Tests
             public void H()
             {
                 Log.Comment("Interface_TestClass_ifreimp_02_2.H()");
+                throw new Exception("Incorrect method got called!");
             }
 
             public void I()
@@ -2403,25 +2402,21 @@ namespace Microsoft.SPOT.Platform.Tests
         }
         class Interface_TestClass_ifreimp_02
         {
-            public static void Main_old()
-            {
-                Interface_TestClass_ifreimp_02_1 d = new Interface_TestClass_ifreimp_02_1();
-                Interface_TestClass_ifreimp_02_I1 im = d;
-                im.F();
-                im.G();
-                im.H();
-                im.I();
-            }
             public static bool testMethod()
             {
                 try
                 {
-                    Main_old();
+                    Interface_TestClass_ifreimp_02_I1 im = new Interface_TestClass_ifreimp_02_1(); ;
+                    im.F();
+                    im.G();
+                    im.H();
+                    im.I();
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
                     return false;
                 }
+
                 return true;
             }
         }
