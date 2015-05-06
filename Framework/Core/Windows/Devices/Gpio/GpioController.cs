@@ -32,7 +32,7 @@ namespace Windows.Devices.Gpio
             if (!TryOpenPin(pinNumber, sharingMode, out pin, out openStatus))
             {
                 // TODO: Is this the right exception?
-                throw new InvalidOperationException("Could not open pin " + pinNumber);
+                throw new InvalidOperationException();
             }
 
             return pin;
@@ -40,11 +40,6 @@ namespace Windows.Devices.Gpio
 
         public bool TryOpenPin(int pinNumber, GpioSharingMode sharingMode, out GpioPin pin, out GpioOpenStatus openStatus)
         {
-            if (sharingMode != GpioSharingMode.Exclusive)
-            {
-                throw new ArgumentException("Shared mode not available in .NET Micro Framework.", "sharingMode");
-            }
-
             // TODO: Check whether the pin is available.
             pin = new GpioPin(pinNumber);
             openStatus = GpioOpenStatus.PinOpened;

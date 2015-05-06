@@ -56,17 +56,12 @@ namespace Windows.Devices.I2c
         {
             if (settings.AddressingMode != I2cAddressingMode.SevenBit)
             {
-                throw new ArgumentException("Ten-bit addressing mode not supported.", "settings");
+                throw new ArgumentException();
             }
 
-            if (settings.SharingMode != I2cSharingMode.Exclusive)
+            if ((settings.SlaveAddress > 0) || (settings.SlaveAddress < 127))
             {
-                throw new ArgumentException("Shared mode not supported on single-process devices.", "settings");
-            }
-
-            if ((settings.SlaveAddress > ushort.MaxValue) || (settings.SlaveAddress < ushort.MinValue))
-            {
-                throw new ArgumentOutOfRangeException("Slave address is out of range.", "settings");
+                throw new ArgumentOutOfRangeException();
             }
 
             if (deviceId != "I2C0")
@@ -75,7 +70,6 @@ namespace Windows.Devices.I2c
                 //throw new InvalidOperationException();
             }
 
-            // TODO: Should we protect against creating two devices at the same bus and address?
             return new I2cDevice((ushort)settings.SlaveAddress, settings.BusSpeed);
         }
 

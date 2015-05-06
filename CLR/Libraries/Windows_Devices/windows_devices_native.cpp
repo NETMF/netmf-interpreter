@@ -44,7 +44,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Init___VOID__I4,
     Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Dispose___VOID__BOOLEAN,
     Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::SetDriveModeInternal___VOID__WindowsDevicesGpioGpioPinDriveMode,
-    NULL,
+    Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::SetInterruptsEnabled___VOID__BOOLEAN,
     NULL,
     NULL,
     NULL,
@@ -81,7 +81,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_Windows_Devices =
 {
     "Windows.Devices", 
-    0x0EA34314,
+    0x621349C9,
     method_lookup
 };
 

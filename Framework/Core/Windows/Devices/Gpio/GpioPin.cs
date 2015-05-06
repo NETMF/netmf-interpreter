@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Microsoft.SPOT.Hardware;
 
 namespace Windows.Devices.Gpio
 {
@@ -46,7 +47,7 @@ namespace Windows.Devices.Gpio
                     try
                     {
                         m_callbacks = callbacksNew;
-                        UpdateInterruptHandler();
+                        SetDriveModeInternal(m_driveMode);
                     }
                     catch
                     {
@@ -71,7 +72,7 @@ namespace Windows.Devices.Gpio
                     try
                     {
                         m_callbacks = callbacksNew;
-                        UpdateInterruptHandler();
+                        SetDriveModeInternal(m_driveMode);
                     }
                     catch
                     {
@@ -154,11 +155,6 @@ namespace Windows.Devices.Gpio
 
         public void SetDriveMode(GpioPinDriveMode driveMode)
         {
-            if (!IsDriveModeSupported(driveMode))
-            {
-                throw new ArgumentException("Drive mode not supported", "driveMode");
-            }
-
             lock (m_syncLock)
             {
                 if (m_disposed)
@@ -166,14 +162,11 @@ namespace Windows.Devices.Gpio
                     throw new ObjectDisposedException();
                 }
 
-                // Short-circuit if the drive mode is unchanged.
-                if (driveMode == m_driveMode)
+                if (driveMode != m_driveMode)
                 {
-                    return;
+                    SetDriveModeInternal(driveMode);
+                    m_driveMode = driveMode;
                 }
-
-                SetDriveModeInternal(driveMode);
-                m_driveMode = driveMode;
             }
         }
 
@@ -201,33 +194,16 @@ namespace Windows.Devices.Gpio
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         extern private void SetDriveModeInternal(GpioPinDriveMode driveMode);
 
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern private void SetInterruptsEnabled(bool enabled);
+
         private void OnInterrupt(uint port, uint state, DateTime time)
         {
             var callbacks = m_callbacks;
             if (callbacks != null)
             {
-                // TODO: Validate that this state is translated correctly.
-                GpioPinEdge edge = (state == 1) ? GpioPinEdge.RisingEdge : GpioPinEdge.FallingEdge;
+                GpioPinEdge edge = (state == 0) ? GpioPinEdge.FallingEdge : GpioPinEdge.RisingEdge;
                 callbacks(this, new GpioPinValueChangedEventArgs(edge));
-            }
-        }
-
-        private void UpdateInterruptHandler()
-        {
-            if (m_driveMode == GpioPinDriveMode.Output)
-            {
-                // TODO: Unregister for interrupts.
-                m_registeredHandler = false;
-            }
-            else if ((m_callbacks == null) && m_registeredHandler)
-            {
-                // TODO: Uneregister for interrupts.
-                m_registeredHandler = false;
-            }
-            else if ((m_callbacks != null) && !m_registeredHandler)
-            {
-                // TODO: Register for interrupts
-                m_registeredHandler = true;
             }
         }
 
@@ -239,8 +215,8 @@ namespace Windows.Devices.Gpio
 
         private GpioPinDriveMode m_driveMode = GpioPinDriveMode.Input;
         private GpioPinValue m_lastOutputValue = GpioPinValue.Low;
-        private bool m_registeredHandler = false;
 
+        private object m_eventDispatcher;
         private GpioPinValueChangedEventHandler m_callbacks = null;
     }
 }

@@ -39,11 +39,10 @@ struct Library_windows_devices_native_Windows_Devices_Gpio_GpioPin
     static const int FIELD__m_syncLock = 1;
     static const int FIELD__m_disposed = 2;
     static const int FIELD__m_pinNumber = 3;
-    static const int FIELD__m_flags = 4;
-    static const int FIELD__m_driveMode = 5;
-    static const int FIELD__m_lastOutputValue = 6;
-    static const int FIELD__m_debounceTimeout = 7;
-    static const int FIELD__m_callbacks = 8;
+    static const int FIELD__m_driveMode = 4;
+    static const int FIELD__m_lastOutputValue = 5;
+    static const int FIELD__m_eventDispatcher = 6;
+    static const int FIELD__m_callbacks = 7;
 
     TINYCLR_NATIVE_DECLARE(get_DebounceTimeout___mscorlibSystemTimeSpan);
     TINYCLR_NATIVE_DECLARE(set_DebounceTimeout___VOID__mscorlibSystemTimeSpan);
@@ -52,6 +51,7 @@ struct Library_windows_devices_native_Windows_Devices_Gpio_GpioPin
     TINYCLR_NATIVE_DECLARE(Init___VOID__I4);
     TINYCLR_NATIVE_DECLARE(Dispose___VOID__BOOLEAN);
     TINYCLR_NATIVE_DECLARE(SetDriveModeInternal___VOID__WindowsDevicesGpioGpioPinDriveMode);
+    TINYCLR_NATIVE_DECLARE(SetInterruptsEnabled___VOID__BOOLEAN);
 
     //--//
 
