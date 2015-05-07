@@ -1897,21 +1897,6 @@ HRESULT CLR_RT_HeapBlock::TransparentProxyValidate() const
 #endif //TINYCLR_APPDOMAINS
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
-
-static void MyAssert()
-{
-    NATIVE_PROFILE_CLR_CORE();
-    DebugBreak();
-}
-
-#else
-
-static void MyAssert() {}
-
-#endif
-
-
 void CLR_RT_HeapBlock::Relocate__HeapBlock()
 {
     NATIVE_PROFILE_CLR_CORE();
