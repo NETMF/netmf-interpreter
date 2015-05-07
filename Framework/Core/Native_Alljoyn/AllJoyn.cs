@@ -147,6 +147,13 @@ namespace Microsoft.SPOT.AllJoyn
         IntPtr container;  // pointer to container
     };
 
+    public class AJ_SessionOpts
+    {
+        public byte traffic;                // traffic type
+        public byte proximity;              // proximity
+        public UInt16 transports;           // allowed transports
+        public UInt32 isMultipoint;         // multi-point session capable
+    };
     
     [StructLayout(LayoutKind.Sequential)]
     public struct AJ_Object
@@ -174,19 +181,19 @@ namespace Microsoft.SPOT.AllJoyn
 
         public const uint ALLJOYN_FLAG_SESSIONLESS = 0x10;
         
-        public const uint AJ_SIGNAL_ABOUT_ANNOUNCE = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (3));
+        public const uint AJ_SIGNAL_ABOUT_ANNOUNCE                  = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (3));
         
-        public const uint AJ_METHOD_ABOUT_GET_PROP = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(0)) << 8) | (AJ_PROP_GET));
-        public const uint AJ_METHOD_ABOUT_GET_ABOUT_DATA = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (1));
-        public const uint AJ_METHOD_ABOUT_ICON_GET_PROP = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(0)) << 8) | (1));        
-        public const uint AJ_METHOD_ABOUT_GET_OBJECT_DESCRIPTION = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (2));
-        public const uint AJ_METHOD_ABOUT_ICON_GET_URL = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (3));
-        public const uint AJ_METHOD_ABOUT_ICON_GET_CONTENT = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (4));
+        public const uint AJ_METHOD_ABOUT_GET_PROP                  = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(0)) << 8) | (AJ_PROP_GET));
+        public const uint AJ_METHOD_ABOUT_GET_ABOUT_DATA            = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (1));
+        public const uint AJ_METHOD_ABOUT_ICON_GET_PROP             = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(0)) << 8) | (1));        
+        public const uint AJ_METHOD_ABOUT_GET_OBJECT_DESCRIPTION    = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (2));
+        public const uint AJ_METHOD_ABOUT_ICON_GET_URL              = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (3));
+        public const uint AJ_METHOD_ABOUT_ICON_GET_CONTENT          = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (4));
         
-        public const uint AJ_PROPERTY_ABOUT_VERSION = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (0));
-        public const uint AJ_PROPERTY_ABOUT_ICON_VERSION_PROP = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (0));
-        public const uint AJ_PROPERTY_ABOUT_ICON_MIMETYPE_PROP = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (1));
-        public const uint AJ_PROPERTY_ABOUT_ICON_SIZE_PROP = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (2));
+        public const uint AJ_PROPERTY_ABOUT_VERSION             = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(5)) << 16) | (((uint)(1)) << 8) | (0));
+        public const uint AJ_PROPERTY_ABOUT_ICON_VERSION_PROP   = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (0));
+        public const uint AJ_PROPERTY_ABOUT_ICON_MIMETYPE_PROP  = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (1));
+        public const uint AJ_PROPERTY_ABOUT_ICON_SIZE_PROP      = (((uint)(AJ_BUS_ID_FLAG) << 24) | (((uint)(6)) << 16) | (((uint)(1)) << 8) | (2));
 
         public const uint ABOUT_VERSION = 1;
         public const uint ABOUT_ICON_VERSION = 1;
@@ -268,14 +275,14 @@ namespace Microsoft.SPOT.AllJoyn
             return sb.ToString();
         }
         
-        public void RegisterObjectsInterface(AJ_Object local, bool useProperties)
+        public void RegisterObjectsInterface(AJ_Object ajObj, bool useProperties, bool local)
         {
-            string localPath = local.path;
-            byte localFlags = local.flags;
-            string localInterfaces = ConvertStringArrayToString(local.interfaces);
-            IntPtr localContext = local.context;
+            string path = ajObj.path;
+            byte flags = ajObj.flags;
+            string interfaces = ConvertStringArrayToString(ajObj.interfaces);
+            IntPtr context = ajObj.context;
 
-            AJ.RegisterObjects(localPath, localInterfaces, localFlags, localContext, useProperties);
+            AJ.RegisterObjects(path, interfaces, flags, context, useProperties, local);
         }
         
         private AJ_Status ProcessProperty(AJ_Message msg, PropertyCB propCB, uint propType)
@@ -373,8 +380,7 @@ namespace Microsoft.SPOT.AllJoyn
         }
                         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern void RegisterObjects(string localPath, string localInterfaceDescription, byte localFlags, IntPtr localContext,
-                                              bool useProperties);
+        private static extern void RegisterObjects(string path, string interfaceDescription, byte flags, IntPtr context, bool useProperties, bool local);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern string GetUniqueName(UInt32 bus);
@@ -405,14 +411,26 @@ namespace Microsoft.SPOT.AllJoyn
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status StartService(UInt32 bus,
-                                                      string daemonName,
-                                                      UInt32 timeout,
-                                                      sbyte connected,
-                                                      UInt16 port,
-                                                      string name,
-                                                      UInt32 flags,
-                                                      IntPtr opts);
+                                            string daemonName,
+                                            UInt32 timeout,
+                                            sbyte connected,
+                                            UInt16 port,
+                                            string name,
+                                            UInt32 flags,
+                                            IntPtr opts);
 
+                                                      
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status StartClientByName(UInt32 bus,
+                                                  string daemonName,
+                                                  UInt32 timeout,
+                                                  byte connected,
+                                                  string name,
+                                                  UInt16 port,
+                                                  ref UInt32 sessionId,
+                                                  AJ_SessionOpts opts,
+                                                  ref string fullName);
+                                                      
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern void AlwaysPrintf(string msg);                
         
@@ -439,6 +457,18 @@ namespace Microsoft.SPOT.AllJoyn
                                                 UInt32 ttl)	;
         
         [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status MarshalMethodCall( UInt32 bus,
+                                                      AJ_Message msg,
+                                                      UInt32 msgId,
+                                                      string destination,
+                                                      UInt32 sessionId,
+                                                      byte flags,
+                                                      UInt32 timeout);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status UnmarshalArg(AJ_Message msg, UInt32 argPtr);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status DeliverMsg(AJ_Message msg);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -457,12 +487,15 @@ namespace Microsoft.SPOT.AllJoyn
         public extern AJ_Status UnmarshalArgs(AJ_Message msg, string sig, UInt16 port, UInt32 sessionId, string joiner);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern AJ_Status UnmarshalArgs(AJ_Message msg, string sig, ref uint arg);                        
+        public extern AJ_Status UnmarshalArgs(AJ_Message msg, string sig, ref uint arg);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern string UnmarshalArgs(AJ_Message msg, string sig);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status UnmarshalArgs(AJ_Message msg, string sig, ref uint arg1, ref uint arg2);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]        
         public extern string UnmarshalPropertyArgs(AJ_Message msg, ref UInt32 propId);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -473,6 +506,9 @@ namespace Microsoft.SPOT.AllJoyn
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status MarshalArgs(AJ_Message msg, string sig, string val1, string val2, string val3);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status MarshalArgs(AJ_Message msg, string sig, string val1, string val2);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status MarshalArgs(AJ_Message msg, string sig, string val1, byte [] val2);

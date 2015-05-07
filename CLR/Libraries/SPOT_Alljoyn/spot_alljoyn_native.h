@@ -38,12 +38,15 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(BusLinkStateProc___MicrosoftSPOTAllJoynAJStatus__U4);
     TINYCLR_NATIVE_DECLARE(SetIdleTimeouts___MicrosoftSPOTAllJoynAJStatus__U4__U4__U4);
     TINYCLR_NATIVE_DECLARE(StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4__I4);
+    TINYCLR_NATIVE_DECLARE(StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING);
     TINYCLR_NATIVE_DECLARE(AlwaysPrintf___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(AboutIconHandleGetContent___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage__SZARRAY_U1);
     TINYCLR_NATIVE_DECLARE(BusHandleBusMessageInner___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(BusCancelSessionless___MicrosoftSPOTAllJoynAJStatus__U4__U4);
     TINYCLR_NATIVE_DECLARE(MarshalReplyMsg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(MarshalSignal___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJMessage__U4__U4__U4__U1__U4);
+    TINYCLR_NATIVE_DECLARE(MarshalMethodCall___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJMessage__U4__STRING__U4__U1__U4);
+    TINYCLR_NATIVE_DECLARE(UnmarshalArg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__U4);
     TINYCLR_NATIVE_DECLARE(DeliverMsg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(BusSetPasswordCallback___VOID);
     TINYCLR_NATIVE_DECLARE(UnmarshalMsg___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJMessage__U4);
@@ -52,10 +55,12 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(UnmarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__U2__U4__STRING);
     TINYCLR_NATIVE_DECLARE(UnmarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__BYREF_U4);
     TINYCLR_NATIVE_DECLARE(UnmarshalArgs___STRING__MicrosoftSPOTAllJoynAJMessage__STRING);
+    TINYCLR_NATIVE_DECLARE(UnmarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__BYREF_U4__BYREF_U4);
     TINYCLR_NATIVE_DECLARE(UnmarshalPropertyArgs___STRING__MicrosoftSPOTAllJoynAJMessage__BYREF_U4);
     TINYCLR_NATIVE_DECLARE(MarshalArg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__U4);
     TINYCLR_NATIVE_DECLARE(MarshalArg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__STRING);
     TINYCLR_NATIVE_DECLARE(MarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__STRING__STRING__STRING);
+    TINYCLR_NATIVE_DECLARE(MarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__STRING__STRING);
     TINYCLR_NATIVE_DECLARE(MarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__STRING__SZARRAY_U1);
     TINYCLR_NATIVE_DECLARE(MarshalContainer___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__U4__U1);
     TINYCLR_NATIVE_DECLARE(MarshalCloseContainer___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__U4);
@@ -67,9 +72,10 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(MarshalObjectDescriptions___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(MarshalDefaultProps___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(GetArgPtr___U4__I4);
+    TINYCLR_NATIVE_DECLARE(GetArgString___STRING__I4);
     TINYCLR_NATIVE_DECLARE(Initialize_NotificationService___MicrosoftSPOTAllJoynAJStatus);
     TINYCLR_NATIVE_DECLARE(GetLocalGUID___STATIC__MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1);
-    TINYCLR_NATIVE_DECLARE(RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN);
+    TINYCLR_NATIVE_DECLARE(RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN__BOOLEAN);
     TINYCLR_NATIVE_DECLARE(PrintXML___STATIC__VOID__STRING__STRING__U1__I4);
     TINYCLR_NATIVE_DECLARE(AppMessageId___STATIC__U4__U4__U4__U4);
     TINYCLR_NATIVE_DECLARE(BusMessageId___STATIC__U4__U4__U4__U4);
@@ -219,6 +225,18 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_Object
     static const int FIELD__interfaces = 2;
     static const int FIELD__flags = 3;
     static const int FIELD__context = 4;
+
+
+    //--//
+
+};
+
+struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_SessionOpts
+{
+    static const int FIELD__traffic = 1;
+    static const int FIELD__proximity = 2;
+    static const int FIELD__transports = 3;
+    static const int FIELD__isMultipoint = 4;
 
 
     //--//

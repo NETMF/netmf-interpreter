@@ -301,7 +301,6 @@ namespace Microsoft.SPOT.AllJoyn
             if (status == AJ_Status.AJ_OK) {
                 MarshalReplyMsg(msg, reply);
                 if (propertyStore != null) {
-                    //status = propStoreGetterCB(reply, language, this);
                     status = AboutPropGetter(reply, language);
                 } else {
                     status = MarshalDefaultProps(reply);
@@ -320,7 +319,10 @@ namespace Microsoft.SPOT.AllJoyn
         public extern AJ_Status MarshalDefaultProps(AJ_Message msg);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private extern UInt32 GetArgPtr(int idx);
+        public extern UInt32 GetArgPtr(int idx);
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern string GetArgString(int idx);
 
     }
 }

@@ -303,6 +303,64 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     TINYCLR_NOCLEANUP();
 }
 
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
+{
+    typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_SessionOpts Managed_AJ_SessionOpts;
+    
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        // Some of the params can be null, so check for null
+        // pointer (0x0000) before dereferencing
+        
+        AJ_BusAttachment * bus = (AJ_BusAttachment *) stack.Arg1().NumericByRef().u4;
+        FAULT_ON_NULL(bus);
+
+        LPCSTR daemonName = stack.Arg2().RecoverString();
+        UINT32 timeout = stack.Arg3().NumericByRef().u4;
+        uint8_t connected = stack.Arg4().NumericByRef().u1;
+        LPCSTR name = stack.Arg5().RecoverString();
+        UINT16 port = stack.Arg6().NumericByRef().u2;
+
+        UINT32 * pSessionId;
+        UINT8 heapblock6[CLR_RT_HEAP_BLOCK_SIZE];
+        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock6, 7, pSessionId ) );
+               
+        CLR_RT_HeapBlock * managedOpts = stack.ArgN(8).Dereference();                
+        AJ_SessionOpts opts = {0};
+        
+        if (NULL != managedOpts)
+        {
+            opts.traffic      =  managedOpts[ Managed_AJ_SessionOpts::FIELD__traffic      ].NumericByRef().u1;
+            opts.proximity    =  managedOpts[ Managed_AJ_SessionOpts::FIELD__proximity    ].NumericByRef().u1;
+            opts.transports   =  managedOpts[ Managed_AJ_SessionOpts::FIELD__transports   ].NumericByRef().u2;
+            opts.isMultipoint =  managedOpts[ Managed_AJ_SessionOpts::FIELD__isMultipoint ].NumericByRef().u4;
+        }
+
+        //LPCSTR fullName = stack.ArgN(9).RecoverString();
+
+        static char fullServiceName[AJ_MAX_SERVICE_NAME_SIZE];
+        
+        uint32_t sessionId = 0;
+                
+        INT32 retVal = AJ_StartClientByName( bus, 
+                                            daemonName,
+                                            timeout,
+                                            connected,
+                                            name,
+                                            port,
+                                            &sessionId,
+                                            managedOpts == NULL ? NULL : &opts,
+                                            fullServiceName );
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, retVal );
+
+        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock6, 7 ) );
+        
+        //TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, fullServiceName, 8 ) );
+    }
+    TINYCLR_NOCLEANUP();
+}
+
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AlwaysPrintf___VOID__STRING( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
@@ -380,6 +438,38 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalReplyMsg__
     TINYCLR_NOCLEANUP();
 }
 
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalMethodCall___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJMessage__U4__STRING__U4__U1__U4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_BusAttachment * bus = (AJ_BusAttachment *) stack.Arg1().NumericByRef().u4;
+        FAULT_ON_NULL(bus);
+
+        AJ_Message msg;
+        CLR_RT_HeapBlock* managedMsg = stack.Arg2().Dereference();
+        FAULT_ON_NULL(managedMsg); 
+        CopyFromManagedMsg(managedMsg, &msg);
+        
+        UINT32 msgId = stack.Arg3().NumericByRef().u4;
+        CLR_RT_HeapBlock_String * destination = stack.Arg4().DereferenceString();
+        FAULT_ON_NULL(destination);
+
+        AJ_SessionId sessionId = (AJ_SessionId) stack.Arg5().NumericByRef().u4;
+        
+        UINT8 flags = (UINT8) stack.Arg6().NumericByRef().u1;
+        UINT32 timeout = stack.Arg7().NumericByRef().u4;
+        
+        INT32 retVal = AJ_MarshalMethodCall( bus, &msg, msgId, destination->StringText(), sessionId, flags, timeout );
+        TINYCLR_CHECK_HRESULT( hr );
+        
+        CopyToManagedMsg(managedMsg, &msg);
+        
+        SetResult_INT32( stack, retVal );
+
+    }
+    TINYCLR_NOCLEANUP();
+}
+
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::DeliverMsg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
@@ -401,7 +491,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalSignal___M
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
-        AJ_BusAttachment * bus              = (AJ_BusAttachment *) stack.Arg1().NumericByRef().u4;  FAULT_ON_NULL(bus);               
+        AJ_BusAttachment * bus              = (AJ_BusAttachment *) stack.Arg1().NumericByRef().u4;  FAULT_ON_NULL(bus);
         CLR_RT_HeapBlock * managedMsg       = stack.Arg2().Dereference();  FAULT_ON_NULL(managedMsg);    
         uint32_t msgId                      = stack.Arg3().NumericByRef().u4;
         const char * destination            = (const char *) stack.Arg4().NumericByRef().u4;
@@ -494,6 +584,33 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalArgs___Mic
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_INT32( stack, status );
 
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__STRING__STRING( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_Message msg;
+        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);     
+
+        CopyFromManagedMsg(managedMsg, &msg);
+        
+        CLR_RT_HeapBlock_String * sig  = stack.Arg2().DereferenceString();
+        CLR_RT_HeapBlock_String * arg1 = stack.Arg3().DereferenceString();
+        CLR_RT_HeapBlock_String * arg2 = stack.Arg4().DereferenceString();
+
+        const char * a = sig->StringText();
+        const char * b = arg1->StringText();
+        const char * c = arg2->StringText();
+                
+        AJ_Status status = AJ_MarshalArgs(&msg, a, b, c);
+        
+        CopyToManagedMsg(managedMsg, &msg);
+        
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, status );
     }
     TINYCLR_NOCLEANUP();
 }
@@ -613,6 +730,24 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetArgPtr___U4__I
     }
     TINYCLR_NOCLEANUP();
 }
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetArgString___STRING__I4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+
+        INT32 idx = stack.Arg1().NumericByRef().s4;    
+        AJ_Arg & arg = ArgPool[idx];
+        
+        LPCSTR retVal = arg.val.v_string;
+        
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_LPCSTR( stack, retVal );
+
+    }
+    TINYCLR_NOCLEANUP();
+}
+
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalContainer___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__U4__U1( CLR_RT_StackFrame& stack )
 {
@@ -734,57 +869,93 @@ void DeserializeInterfaceString(const char * data, char * testinterface[])
 	testinterface[i - 1] = '\0';
 }
 
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN( CLR_RT_StackFrame& stack )
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN__BOOLEAN( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
         const int MAX_OBJS = 5;
-        static char* localInterface[MAX_DIM_INTERFACE] = {0,};
+        static char* theInterface[MAX_DIM_INTERFACE] = {0,};
     
-        CLR_RT_HeapBlock_String * pLocalPath = stack.Arg0().DereferenceString();        
-        CLR_RT_HeapBlock_String * pLocalInterfaces = stack.Arg1().DereferenceString();
+        CLR_RT_HeapBlock_String * pPath = stack.Arg0().DereferenceString();        
+        CLR_RT_HeapBlock_String * pInterfaces = stack.Arg1().DereferenceString();
                 
-        uint8_t localFlags = stack.Arg2().NumericByRef().u1;
-        uint8_t localContext = stack.Arg3().NumericByRef().u4;
+        uint8_t flags = stack.Arg2().NumericByRef().u1;
+        uint8_t context = stack.Arg3().NumericByRef().u4;
         
         bool useProperties = !! stack.Arg4().NumericByRef().u1;
+        bool local = !! stack.Arg5().NumericByRef().u1;
         
-        const char * path = pLocalPath->StringText();
-        const char * ifaces = pLocalInterfaces->StringText();
+        const char * path = pPath->StringText();
+        const char * ifaces = pInterfaces->StringText();
 
-        DeserializeInterfaceString(ifaces, localInterface);
+        DeserializeInterfaceString(ifaces, theInterface);
         
-        if (useProperties == true)
+        if (local == true)
         {
-            static const AJ_InterfaceDescription localInterfaces[] = {
-                AJ_PropertiesIface,     // This must be included for any interface that has properties. 
-                localInterface,
-                NULL
-            };    
-            
-            static const AJ_Object appLocalObjects[] = {
-                { path, localInterfaces,  AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED  },  // make them announceable
-                { NULL }
-            };
-            
-            AJ_RegisterObjects(appLocalObjects, NULL);
-            AJ_PrintXML(appLocalObjects);
+            if (useProperties == true)
+            {
+                static const AJ_InterfaceDescription localInterfaces[] = {
+                    AJ_PropertiesIface,     // This must be included for any interface that has properties. 
+                    theInterface,
+                    NULL
+                };    
+                
+                static const AJ_Object appLocalObjects[] = {
+                    { path, localInterfaces,  AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED  },  // make them announceable
+                    { NULL }
+                };
+                
+                AJ_RegisterObjects(appLocalObjects, NULL);
+                AJ_PrintXML(appLocalObjects);
+            }
+            else
+            {
+                static const AJ_InterfaceDescription localInterfaces[] = {
+                    theInterface,
+                    NULL
+                };
+                
+                static const AJ_Object appLocalObjects[] = {
+                    { path, localInterfaces, AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED  },  // make them announceable
+                    { NULL }
+                };
+                
+                AJ_RegisterObjects(appLocalObjects, NULL);
+            }
         }
         else
         {
-            static const AJ_InterfaceDescription localInterfaces[] = {
-                localInterface,
-                NULL
-            };
-            
-            static const AJ_Object appLocalObjects[] = {
-                { path, localInterfaces, AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED  },  // make them announceable
-                { NULL }
-            };
-            
-            AJ_RegisterObjects(appLocalObjects, NULL);
+            if (useProperties == true)
+            {
+                static const AJ_InterfaceDescription proxyInterfaces[] = {
+                    AJ_PropertiesIface,     // This must be included for any interface that has properties. 
+                    theInterface,
+                    NULL
+                };    
+                
+                static const AJ_Object appProxyObjects[] = {
+                    { path, proxyInterfaces,  AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED  },  // make them announceable
+                    { NULL }
+                };
+                
+                AJ_RegisterObjects(NULL, appProxyObjects);
+                AJ_PrintXML(appProxyObjects);
+            }
+            else
+            {
+                static const AJ_InterfaceDescription proxyInterfaces[] = {
+                    theInterface,
+                    NULL
+                };
+                
+                static const AJ_Object appProxyObjects[] = {
+                    { path, proxyInterfaces, AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED  },  // make them announceable
+                    { NULL }
+                };
+                
+                AJ_RegisterObjects(NULL, appProxyObjects);
+            }
         }
-        
         TINYCLR_CHECK_HRESULT( hr );
     }
     TINYCLR_NOCLEANUP();
@@ -796,7 +967,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalVariant_
     TINYCLR_HEADER(); hr = S_OK;
     {
         AJ_Message msg;
-        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
+        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);
         
         CopyFromManagedMsg(managedMsg, &msg);
         
@@ -899,6 +1070,26 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalMsg___Mi
     TINYCLR_NOCLEANUP();
 }
 
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__U4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_Message msg;
+        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  
+        FAULT_ON_NULL(managedMsg);                
+        
+        CopyFromManagedMsg(managedMsg, &msg);
+        
+		AJ_Arg * pArg = (AJ_Arg *) stack.Arg2().NumericByRef().u4;
+
+        AJ_Status status = AJ_UnmarshalArg( &msg, pArg );
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, status );
+
+    }
+    TINYCLR_NOCLEANUP();
+}
+
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__U2__U4__STRING( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
@@ -968,6 +1159,39 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArgs___S
         
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_LPCSTR( stack, data );
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__BYREF_U4__BYREF_U4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_Message msg;
+        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
+        
+        CopyFromManagedMsg(managedMsg, &msg);
+
+        CLR_RT_HeapBlock_String *  sig = stack.Arg2().DereferenceString();
+        
+        UINT32 * arg1;
+        UINT8 heapblock2[CLR_RT_HEAP_BLOCK_SIZE];
+        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock2, 3, arg1 ) );
+
+        UINT32 * arg2;
+        UINT8 heapblock3[CLR_RT_HEAP_BLOCK_SIZE];
+        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock3, 4, arg2 ) );
+
+        AJ_Status status = AJ_UnmarshalArgs( &msg, sig->StringText(), arg1, arg2 );
+        TINYCLR_CHECK_HRESULT( hr );
+        
+
+        CopyToManagedMsg(managedMsg, &msg);
+        
+        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock2, 3 ) );
+        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock3, 4 ) );
+        
+        SetResult_INT32( stack, status );
     }
     TINYCLR_NOCLEANUP();
 }
