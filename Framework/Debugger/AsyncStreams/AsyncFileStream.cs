@@ -48,7 +48,7 @@ namespace Microsoft.SPOT.Debugger
 
                 if(NativeMethods.PeekNamedPipe( m_handle.DangerousGetHandle(), (byte*)NativeMethods.NULL, 0, out bytesRead, out totalBytesAvail, out bytesLeftThisMessage ) == false)
                 {
-                    totalBytesAvail = 1;
+                    totalBytesAvail = 0;
                 }
 
                 return totalBytesAvail;
