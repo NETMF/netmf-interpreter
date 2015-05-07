@@ -2643,30 +2643,20 @@ Execute_RestartDecoding:
             //----------------------------------------------------------------------------------------------------------//
 
             OPDEF(CEE_STELEM,                     "stelem",           PopRef+PopI+Pop1,   Push0,       InlineType,         IObjModel,   1,  0xFF,    0xA4,    NEXT)
+            // Stack: ... ... <obj> <index> <value> -> ...
             {
-                // TODO: treat this like ldelema + stobj
-                /* LDELEMA:
-                    ip += 2; // Skip argument, not used...
+                // Treat STELEM like ldelema + stobj
+                ip += 2; // Skip type argument, not used...
 
-                    evalPos--;
-                    CHECKSTACK(stack,evalPos);
+                evalPos -= 3; // "pop" args from evaluation stack
+                CHECKSTACK(stack,evalPos);
 
-                    TINYCLR_CHECK_HRESULT(evalPos[ 0 ].InitializeArrayReference( evalPos[ 0 ], evalPos[ 1 ].NumericByRef().s4 ));
+                TINYCLR_CHECK_HRESULT(evalPos[ 1 ].InitializeArrayReference( evalPos[ 1 ], evalPos[ 2 ].NumericByRef().s4 ));
+                evalPos[ 1 ].FixArrayReferenceForValueTypes();
 
-                    evalPos[ 0 ].FixArrayReferenceForValueTypes();
-                */
-                /*
-                    ip += 2; // Skip argument, not used...
+                // Reassign will make sure these are objects of the same type.
+                TINYCLR_CHECK_HRESULT(evalPos[ 1 ].Reassign( evalPos[ 3 ] ));
 
-                    evalPos -= 2; CHECKSTACK(stack,evalPos);
-
-                    //
-                    // Reassign will make sure these are objects of the same type.
-                    //
-                    TINYCLR_CHECK_HRESULT(evalPos[ 1 ].Reassign( evalPos[ 2 ] ));
-                */
-
-                TINYCLR_CHECK_HRESULT(CLR_Checks::VerifyUnsupportedInstruction( op ));
                 break;
             }
 
