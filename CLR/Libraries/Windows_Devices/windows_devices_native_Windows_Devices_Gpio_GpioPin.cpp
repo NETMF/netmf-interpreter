@@ -4,14 +4,12 @@
 
 #include "windows_devices.h"
 
-typedef Library_windows_devices_native_Windows_Devices_Gpio_GpioPin GpioPin;
-
 enum GpioPinDriveMode
 {
     GpioPinDriveMode_Input = 0,
     GpioPinDriveMode_Output,
-    GpioPinDriveMode_InputWithPullUp,
-    GpioPinDriveMode_InputWithPullDown,
+    GpioPinDriveMode_InputPullUp,
+    GpioPinDriveMode_InputPullDown,
     GpioPinDriveMode_OutputStrongLow,
     GpioPinDriveMode_OutputStrongLowPullUp,
     GpioPinDriveMode_OutputStrongHigh,
@@ -28,11 +26,11 @@ static GPIO_RESISTOR GetResisterMode(GpioPinDriveMode driveMode)
 {
     switch (driveMode)
     {
-    case GpioPinDriveMode_InputWithPullUp:
+    case GpioPinDriveMode_InputPullUp:
     case GpioPinDriveMode_OutputStrongLowPullUp:
         return RESISTOR_PULLUP;
 
-    case GpioPinDriveMode_InputWithPullDown:
+    case GpioPinDriveMode_InputPullDown:
     case GpioPinDriveMode_OutputStrongHighPullDown:
         return RESISTOR_PULLDOWN;
     }
@@ -40,42 +38,10 @@ static GPIO_RESISTOR GetResisterMode(GpioPinDriveMode driveMode)
     return RESISTOR_DISABLED;
 }
 
-static CLR_RT_HeapBlock_NativeEventDispatcher* GetEventDispatcher(CLR_RT_HeapBlock* pThis)
-{
-    CLR_RT_ObjectToEvent_Source* source = CLR_RT_ObjectToEvent_Source::ExtractInstance( pThis[ GpioPin::FIELD__m_eventDispatcher ] );
-    if (source == NULL)
-    {
-        return NULL;
-    }
-
-    return (CLR_RT_HeapBlock_NativeEventDispatcher*)source->m_eventPtr;
-}
-
 void IsrProcedure( GPIO_PIN pin, BOOL pinState, void* context )
 {
     ASSERT_IRQ_MUST_BE_OFF();
-
-    // Get the GpioPin object and bail out early if it was disposed.
-    CLR_RT_HeapBlock* pThis = (CLR_RT_HeapBlock*)context;
-    if ((pThis == NULL) || (pThis[ GpioPin::FIELD__m_disposed ].NumericByRef().s1 != 0))
-    {
-        return;
-    }
-
-    CLR_RT_HeapBlock_NativeEventDispatcher* dispatcher = GetEventDispatcher(pThis);
-    if (dispatcher == NULL)
-    {
-        return;
-    }
-
-    /* TODO: Once we move to level interrupts, we'll need to disable the interrupt each time it fires.
-    GPIO_PIN portId = pThis[ GpioPin::FIELD__m_pinNumber ].NumericByRefConst().u4;
-    GPIO_RESISTOR resistorMode = GetResistorMode((GpioPinDriveMode)pThis[ GpioPin::FIELD__m_driveMode ].NumericByRefConst().s4);
-    ::CPU_GPIO_EnableInputPin2(portId, FALSE, NULL, NULL, GPIO_INT_NONE, resistorMode);
-    */
-
-    // To calling SaveToHALQueue saves data to 128 slot HAL queue and finally causes dispatch to managed callback. 
-    dispatcher->SaveToHALQueue( pin, pinState );
+    PostManagedEvent( EVENT_GPIO, 0, pin, pinState );
 }
 
 HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::get_DebounceTimeout___mscorlibSystemTimeSpan( CLR_RT_StackFrame& stack )
@@ -100,6 +66,8 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::get_Debounc
 HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::set_DebounceTimeout___VOID__mscorlibSystemTimeSpan( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
+
+    CLR_INT64 value;
     CLR_RT_HeapBlock* pThis = stack.This(); FAULT_ON_NULL(pThis);
 
     if (pThis[ FIELD__m_disposed ].NumericByRef().s1 != 0)
@@ -107,9 +75,10 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::set_Debounc
         TINYCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
     }
 
-    // TODO: Set debounce individually per pin.
-    //CLR_INT64 val = (CLR_INT64_TEMP_CAST) stack.Arg1().NumericByRef().s8 / TIME_CONVERSION__TO_MILLISECONDS;
-    //if (!::CPU_GPIO_SetDebounce( val ))
+    value = (CLR_INT64_TEMP_CAST) stack.Arg1().NumericByRef().s8 / TIME_CONVERSION__TO_MILLISECONDS;
+
+    // TODO: Set debounce individually per pin once the HAL has that capability.
+    //if (!::CPU_GPIO_SetDebounce( value ))
     //{
     //    TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_PARAMETER);
     //}
@@ -160,7 +129,7 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Read___Wind
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Init___VOID__I4( CLR_RT_StackFrame& stack )
+HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::InitNative___VOID__I4( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
 
@@ -185,9 +154,6 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Init___VOID
 
     pThis[ FIELD__m_pinNumber ].NumericByRef().u4 = portId;
 
-    // Allocate and initialize an event dispatcher instance.
-    TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_NativeEventDispatcher::CreateInstance( *pThis, pThis[ FIELD__m_eventDispatcher ] ));
-
     // Initialize the default drive mode.
     if (!::CPU_GPIO_EnableInputPin2( portId, false, NULL, NULL, GPIO_INT_NONE, RESISTOR_DISABLED ))
     {
@@ -205,28 +171,18 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Init___VOID
     TINYCLR_CLEANUP_END();
 }
 
-HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Dispose___VOID__BOOLEAN( CLR_RT_StackFrame& stack )
+HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::DisposeNative___VOID( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
 
+    GPIO_PIN portId;
     CLR_RT_HeapBlock* pThis = stack.This(); FAULT_ON_NULL(pThis);
 
-    // If disposing (not finalizing), clean up.
-    if (stack.Arg1().NumericByRef().u1)
-    {
-        GPIO_PIN portId = pThis[ FIELD__m_pinNumber ].NumericByRefConst().u4;
+    portId = pThis[ FIELD__m_pinNumber ].NumericByRefConst().u4;
 
-        // Remove our event dispatcher from the HAL queue.
-        CLR_RT_HeapBlock_NativeEventDispatcher* dispatcher = GetEventDispatcher(pThis);
-        if (dispatcher != NULL)
-        {
-            dispatcher->RemoveFromHALQueue();
-        }
-
-        // Set pin to input state so the pin is in "weak" state and does not drain power. Then release the pin.
-        ::CPU_GPIO_EnableInputPin2( portId, false, NULL, NULL, GPIO_INT_NONE, RESISTOR_PULLUP );
-        ::CPU_GPIO_ReservePin( portId, FALSE );
-    }
+    // Set pin to input state so the pin is in "weak" state and does not drain power. Then release the pin.
+    ::CPU_GPIO_EnableInputPin2( portId, false, NULL, NULL, GPIO_INT_NONE, RESISTOR_PULLUP );
+    ::CPU_GPIO_ReservePin( portId, FALSE );
 
     TINYCLR_NOCLEANUP();
 }
@@ -255,19 +211,18 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::SetDriveMod
         break;
 
     case GpioPinDriveMode_Input:
-    case GpioPinDriveMode_InputWithPullUp:
-    case GpioPinDriveMode_InputWithPullDown:
+    case GpioPinDriveMode_InputPullUp:
+    case GpioPinDriveMode_InputPullDown:
         {
             // TODO: Find a way to move this to level interrupts.
             BOOL callbacksRegistered = (pThis[ FIELD__m_callbacks ].Dereference() != NULL);
-            GPIO_RESISTOR resistorMode = GetResisterMode(driveMode);
             ::CPU_GPIO_EnableInputPin2(
                 portId,
                 true,
                 IsrProcedure,
-                pThis,
+                NULL,
                 callbacksRegistered ? GPIO_INT_EDGE_BOTH : GPIO_INT_NONE,
-                resistorMode );
+                GetResisterMode(driveMode) );
         }
         break;
 

@@ -17,8 +17,8 @@ namespace Windows.Devices.Gpio
     {
         Input = 0,
         Output,
-        InputWithPullUp,
-        InputWithPullDown,
+        InputPullUp,
+        InputPullDown,
         OutputStrongLow,
         OutputStrongLowPullUp,
         OutputStrongHigh,
@@ -33,7 +33,7 @@ namespace Windows.Devices.Gpio
 
     public enum GpioPinEdge
     {
-        RisingEdge = 0,
-        FallingEdge,
+        FallingEdge = 0,
+        RisingEdge,
     }
 }

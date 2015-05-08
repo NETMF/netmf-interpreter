@@ -28,6 +28,7 @@
     <Compile Include="Gpio\GpioController.cs" />
     <Compile Include="Gpio\GpioEnums.cs" />
     <Compile Include="Gpio\GpioPin.cs" />
+    <Compile Include="Gpio\GpioPinEventListener.cs" />
     <Compile Include="Gpio\GpioPinValueChangedEventArgs.cs" />
     <Compile Include="I2c\I2cConnectionSettings.cs" />
     <Compile Include="I2c\I2cDevice.cs" />
@@ -39,6 +40,9 @@
     </Reference>
     <Reference Include="Microsoft.SPOT.Hardware">
       <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

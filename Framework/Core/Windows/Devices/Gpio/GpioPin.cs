@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using Microsoft.SPOT.Hardware;
 
 namespace Windows.Devices.Gpio
 {
@@ -15,12 +14,10 @@ namespace Windows.Devices.Gpio
 
         internal GpioPin(int pinNumber)
         {
-            // TODO: Remove this. Without it, the compiler complains that this value is unused.
-            if (m_lastOutputValue == GpioPinValue.Low)
-            {
-            }
+            if (m_lastOutputValue == GpioPinValue.Low) { } // Silence an unused variable warning.
 
-            Init(pinNumber);
+            InitNative(pinNumber);
+            s_eventListener.AddPin(pinNumber, this);
         }
 
         ~GpioPin()
@@ -132,8 +129,8 @@ namespace Windows.Devices.Gpio
             {
             case GpioPinDriveMode.Input:
             case GpioPinDriveMode.Output:
-            case GpioPinDriveMode.InputWithPullUp:
-            case GpioPinDriveMode.InputWithPullDown:
+            case GpioPinDriveMode.InputPullUp:
+            case GpioPinDriveMode.InputPullDown:
                 return true;
             }
 
@@ -183,31 +180,47 @@ namespace Windows.Devices.Gpio
             }
         }
 
-        // Private methods
-
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern private void Init(int pinNumber);
-
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern private void Dispose(bool disposing);
-
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern private void SetDriveModeInternal(GpioPinDriveMode driveMode);
-
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        extern private void SetInterruptsEnabled(bool enabled);
-
-        private void OnInterrupt(uint port, uint state, DateTime time)
+        internal void OnPinChangedInternal(GpioPinEdge edge)
         {
-            var callbacks = m_callbacks;
+            GpioPinValueChangedEventHandler callbacks = null;
+
+            lock (m_syncLock)
+            {
+                if (!m_disposed)
+                {
+                    callbacks = m_callbacks;
+                }
+            }
+
             if (callbacks != null)
             {
-                GpioPinEdge edge = (state == 0) ? GpioPinEdge.FallingEdge : GpioPinEdge.RisingEdge;
                 callbacks(this, new GpioPinValueChangedEventArgs(edge));
             }
         }
 
+        // Private methods
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern private void InitNative(int pinNumber);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern private void DisposeNative();
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        extern private void SetDriveModeInternal(GpioPinDriveMode driveMode);
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                DisposeNative();
+                s_eventListener.RemovePin(m_pinNumber);
+            }
+        }
+
         // Private fields
+
+        private static GpioPinEventListener s_eventListener = new GpioPinEventListener();
 
         private object m_syncLock = new object();
         private bool m_disposed = false;
@@ -215,8 +228,6 @@ namespace Windows.Devices.Gpio
 
         private GpioPinDriveMode m_driveMode = GpioPinDriveMode.Input;
         private GpioPinValue m_lastOutputValue = GpioPinValue.Low;
-
-        private object m_eventDispatcher;
         private GpioPinValueChangedEventHandler m_callbacks = null;
     }
 }

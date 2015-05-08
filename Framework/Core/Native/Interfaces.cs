@@ -21,6 +21,7 @@ namespace Microsoft.SPOT
         PowerLevel  = 6,
         TimeService = 7,
         LargeBuffer = 8,
+        Gpio        = 9,
         Custom      = 100,
     }
 

@@ -39,14 +39,14 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Write___VOI
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Init___VOID__I4( CLR_RT_StackFrame& stack )
+HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::InitNative___VOID__I4( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
     TINYCLR_SET_AND_LEAVE(stack.NotImplementedStub());
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Dispose___VOID__BOOLEAN( CLR_RT_StackFrame& stack )
+HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::DisposeNative___VOID( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
     TINYCLR_SET_AND_LEAVE(stack.NotImplementedStub());
