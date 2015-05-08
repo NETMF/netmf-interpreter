@@ -1,11 +1,5 @@
 namespace Windows.Devices.I2c
 {
-    public enum I2cAddressingMode
-    {
-        SevenBit = 0,
-        TenBit,
-    }
-
     public enum I2cBusSpeed
     {
         StandardMode = 0,   // 100kHz

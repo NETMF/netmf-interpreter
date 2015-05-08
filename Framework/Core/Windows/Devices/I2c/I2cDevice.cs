@@ -54,11 +54,6 @@ namespace Windows.Devices.I2c
         // FUTURE: This should be "Task<I2cDevice> FromIdAsync(...)"
         public static I2cDevice FromId(string deviceId, I2cConnectionSettings settings)
         {
-            if (settings.AddressingMode != I2cAddressingMode.SevenBit)
-            {
-                throw new ArgumentException();
-            }
-
             if ((settings.SlaveAddress > 0) || (settings.SlaveAddress < 127))
             {
                 throw new ArgumentOutOfRangeException();

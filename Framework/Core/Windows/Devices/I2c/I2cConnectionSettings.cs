@@ -52,24 +52,10 @@ namespace Windows.Devices.I2c
             }
         }
 
-        public I2cAddressingMode AddressingMode
-        {
-            get
-            {
-                return m_addressingMode;
-            }
-
-            set
-            {
-                m_addressingMode = value;
-            }
-        }
-
         // Private fields
 
         private int m_slaveAddress = 0;
         private I2cBusSpeed m_busSpeed = I2cBusSpeed.StandardMode;
         private I2cSharingMode m_sharingMode = I2cSharingMode.Exclusive;
-        private I2cAddressingMode m_addressingMode = I2cAddressingMode.SevenBit;
     }
 }
