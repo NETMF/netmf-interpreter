@@ -31,32 +31,13 @@ namespace Microsoft
 
                 static LPCSTR& Get_AboutIconURL( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AboutIconURL ); }
 
-                static LPCSTR& Get_AJ_RELEASE_YEAR( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AJ_RELEASE_YEAR ); }
-
-                static LPCSTR& Get_AJ_RELEASE_MONTH( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AJ_RELEASE_MONTH ); }
-
-                static LPCSTR& Get_AJ_FEATURE_VERSION( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AJ_FEATURE_VERSION ); }
-
-                static LPCSTR& Get_AJ_BUGFIX_VERSION( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AJ_BUGFIX_VERSION ); }
-
-                static LPCSTR& Get_AJ_RELEASE_TAG( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AJ_RELEASE_TAG ); }
-
-                static LPCSTR& Get_APP_ID_SIGNATURE( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__APP_ID_SIGNATURE ); }
-
-                static UNSUPPORTED_TYPE& Get_propertyStore( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UNSUPPORTED_TYPE( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__propertyStore ); }
-
                 static INT8& Get_doAnnounce( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_INT8( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__doAnnounce ); }
 
-                static UINT16& Get_AJNS_NotificationVersion( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UINT16( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AJNS_NotificationVersion ); }
-
-                static UINT32& Get_NotificationId( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UINT32( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__NotificationId ); }
-
-                static UNSUPPORTED_TYPE& Get_LastSentNotifications( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UNSUPPORTED_TYPE( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__LastSentNotifications ); }
+                static UNSUPPORTED_TYPE& Get_AboutPropGetterCB( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UNSUPPORTED_TYPE( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AboutPropGetterCB ); }
                 */
                 
                 // Declaration of stubs. These functions are implemented by Interop code developers
                 static LPCSTR GetUniqueName( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
-                static INT32 SendNotifySignal( CLR_RT_HeapBlock* pMngObj, UINT32 param0, UNSUPPORTED_TYPE param1, UINT32 param2, UINT32 param3, LPCSTR param4, HRESULT &hr );
                 static UINT32 Initialize( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
                 static void SendNotification( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
                 static INT32 SetBusLinkTimeout( CLR_RT_HeapBlock* pMngObj, UINT32 param0, UINT32 param1, HRESULT &hr );
@@ -99,7 +80,6 @@ namespace Microsoft
                 static INT32 MarshalDefaultProps( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, HRESULT &hr );
                 static UINT32 GetArgPtr( CLR_RT_HeapBlock* pMngObj, INT32 param0, HRESULT &hr );
                 static LPCSTR GetArgString( CLR_RT_HeapBlock* pMngObj, INT32 param0, HRESULT &hr );
-                static INT32 Initialize_NotificationService( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
                 static INT32 GetLocalGUID( CLR_RT_TypedArray_UINT8 param0, HRESULT &hr );
                 static void RegisterObjects( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, INT8 param4, INT8 param5, HRESULT &hr );
                 static void PrintXML( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, HRESULT &hr );

@@ -122,7 +122,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetBusLinkTimeout
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::Initialize_NotificationService___MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_Services_AJ_Services::Initialize_NotificationService___MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
@@ -1441,11 +1441,11 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusCancelSessionl
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SendNotifySignal___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynAJAJNSNotification__U4__STRING__BYREF_U4( CLR_RT_StackFrame& stack )
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_Services_AJ_Services::SendNotifySignal___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynServicesAJServicesAJNSNotification__U4__STRING__BYREF_U4( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
-        typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ__AJNS_Notification Managed_AJNS_Notification;
+        typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_Services_AJ_Services__AJNS_Notification Managed_AJNS_Notification;
         
         AJ_BusAttachment * bus =  (AJ_BusAttachment *)stack.Arg1().NumericByRef().u4;
         
