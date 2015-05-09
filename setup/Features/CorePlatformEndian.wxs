@@ -21,7 +21,6 @@
       <ComponentRef Id="Component_le_Microsoft.SPOT.Ink" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Security.PKCS11" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Update" />
-      <ComponentRef Id="Component_le_Microsoft.VisualBasic" />
       <ComponentRef Id="Component_le_MFUpdate" />
       <ComponentRef Id="Component_le_mscorlib" />
       <ComponentRef Id="Component_le_System" />
@@ -37,7 +36,6 @@
       <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Mac" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.CC2420" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy" />
-
     </Feature>
 
   </Fragment>
@@ -64,7 +62,6 @@
       <ComponentRef Id="Component_be_Microsoft.SPOT.Ink"/>
       <ComponentRef Id="Component_be_Microsoft.SPOT.Security.PKCS11" />
       <ComponentRef Id="Component_be_Microsoft.SPOT.Update" />
-      <ComponentRef Id="Component_be_Microsoft.VisualBasic" />
       <ComponentRef Id="Component_be_MFUpdate" />
       <ComponentRef Id="Component_be_mscorlib"/>
       <ComponentRef Id="Component_be_System"/>

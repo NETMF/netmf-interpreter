@@ -1144,9 +1144,9 @@
         <Control Id="CompText" Type="Text" X="80" Y="94" Width="246" Height="35">
           <Text><![CDATA[All program features will be installed. (Requires the most disk space.)]]></Text>
         </Control>
-	
-	<Control Id="TypicalIco" Type="Icon" X="34" Y="144" Width="24" Height="24" FixedSize="yes" IconSize="32" Text="NewBinary6" />
-	<Control Id="TypicalText" Type="Text" X="80" Y="144" Width="246" Height="35">
+    
+        <Control Id="TypicalIco" Type="Icon" X="34" Y="144" Width="24" Height="24" FixedSize="yes" IconSize="32" Text="NewBinary6" />
+        <Control Id="TypicalText" Type="Text" X="80" Y="144" Width="246" Height="35">
           <Text><![CDATA[Installs commonly used features. Recommended.]]></Text>
         </Control>
 

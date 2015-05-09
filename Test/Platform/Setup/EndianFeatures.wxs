@@ -11,8 +11,6 @@
              Level="1">
       <ComponentRef Id='Component_le_Microsoft.SPOT.Platform.Test.MFTestRunner' />
       <ComponentRef Id='Component_be_Microsoft.SPOT.Platform.Test.MFTestRunner' />
-      <ComponentRef Id='Component_le_MFDpwsTestFixtureUtilities' />
-      <ComponentRef Id='Component_be_MFDpwsTestFixtureUtilities' />
       <ComponentRef Id='Component_le_Microsoft.SPOT.Platform.Test.MFUtility' />
       <ComponentRef Id='Component_be_Microsoft.SPOT.Platform.Test.MFUtility' />
       <ComponentRef Id='Component_le_Microsoft.SPOT.Platform.Tests.IOTestsHelper' />

@@ -12,17 +12,14 @@
 
     <Project Include="Desktop\CLR\Microsoft.SPOT.Net.Security\ClientServer\Desktop.slnproj" >
       <InProject>false</InProject>
-    </Project> 
+    </Project>
+ 
 
     <Project Include="Tools\MFTestEmulator\TestEmulator.csproj" >
       <InProject>false</InProject>
     </Project>
 
     <Project Include="Tools\MFTestSystem\MFTestSystem.csproj" >
-      <InProject>false</InProject>
-    </Project>
-
-    <Project Include="Tools\MFDpwsTestCaseGenerator\MFDpwsTestCaseGenerator.csproj" >
       <InProject>false</InProject>
     </Project>
   </ItemGroup>
@@ -32,9 +29,6 @@
       <InProject>false</InProject>
     </Project>
     <Project Include="Tools\MFTestRunner\MFTestRunner.csproj" >
-      <InProject>false</InProject>
-    </Project>
-    <Project Include="Tools\MFDpwsTestFixtureUtilities\MFDpwsTestFixtureUtilities.csproj" >
       <InProject>false</InProject>
     </Project>
     <Project Include="Tools\Utility\MFUtility.csproj" >
@@ -49,11 +43,6 @@
     <Project Include="Tests\Native_MathMethods\Math\build.dirproj" >
           <InProject>false</InProject>
     </Project> 
-
-   <!-- DPWS -->
-   <Project Include="Tests\CLR\DPWS\build.dirproj" >
-          <InProject>false</InProject>
-    </Project>
 
    <!-- Microsoft.SPOT.Graphics -->
    <Project Include="Tests\CLR\Microsoft.SPOT.Graphics\build.dirproj" >
@@ -118,11 +107,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="EXISTS('$(SPOCLIENT)\Test\Platform\Setup\EndianFeatures.wixproj')">
-
-    <!-- DPWS FixtureTests -->
-    <Project Include="Tests\CLR\DPWS\WSDL\DpwsTestFixtures.dpwsproj">
-      <InProject>false</InProject>
-    </Project>
 
     <Project Include="Setup\EndianFeatures.wixproj" >
       <InProject>false</InProject>
