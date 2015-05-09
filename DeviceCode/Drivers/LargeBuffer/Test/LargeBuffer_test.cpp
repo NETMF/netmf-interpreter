@@ -15,7 +15,7 @@ void LargeBuffer_PostEvent( UINT16 marshalId )
 
 void LargeBufferTest_Completion(void* arg)
 {
-    LargeBuffer_PostEvent( (UINT16)arg );
+    LargeBuffer_PostEvent( (UINT16)(UINT32)arg );
 }
 
 static UINT8 s_Data[800*600*2];

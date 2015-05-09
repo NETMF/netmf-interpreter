@@ -14,7 +14,20 @@
     <ComponentGuid>{8ed2587d-e7d2-4766-b70b-c9f3c5c1f503}</ComponentGuid>
     <AssemblyBothEndian>true</AssemblyBothEndian>
   </PropertyGroup>
+  
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <Target Name="GenerateCompilerResponseFile" BeforeTargets="CoreCompile" > 
+    <Message Text="Generating RuntimeMetadataversion response file: $(IntermediateOutputPath)RuntimeMetadataversion.rsp" /> 
+    <WriteLinesToFile File="$(IntermediateOutputPath)RuntimeMetadataversion.rsp" 
+                      Lines="/runtimemetadataversion:v4.0.30319" 
+                      Overwrite="true" /> 
+     <ItemGroup> 
+       <Clean Include="$(IntermediateOutputPath)RuntimeMetadataversion.rsp" /> 
+     </ItemGroup> 
+     <PropertyGroup> 
+       <CompilerResponseFile>$(IntermediateOutputPath)RuntimeMetadataversion.rsp</CompilerResponseFile> 
+     </PropertyGroup> 
+   </Target> 
   <PropertyGroup>
     <!-- CSC overridden options -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -28,6 +41,7 @@
     <MMP_STUB_GenerateSkeletonProject>CorLib</MMP_STUB_GenerateSkeletonProject>
     <MMP_STUB_LegacySkeletonInterop>true</MMP_STUB_LegacySkeletonInterop>
   </PropertyGroup>
+ 
   <ItemGroup>
     <Compile Include="System\BitConverter.cs" />
     <Compile Include="System\AppDomain.cs" />

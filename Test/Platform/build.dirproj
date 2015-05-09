@@ -12,7 +12,8 @@
 
     <Project Include="Desktop\CLR\Microsoft.SPOT.Net.Security\ClientServer\Desktop.slnproj" >
       <InProject>false</InProject>
-    </Project> 
+    </Project>
+ 
 
     <Project Include="Tools\MFTestEmulator\TestEmulator.csproj" >
       <InProject>false</InProject>

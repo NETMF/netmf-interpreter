@@ -22,11 +22,6 @@
         <InProject>false</InProject>
     </Project>
 
-    <!-- BUILD VB.NET RUNTIME --> 
-    <Project Include="Subset_of_VisualBasic\SpotVBasic.vbproj" >
-      <InProject>false</InProject>
-    </Project>
-
     <!-- Security ASSEMBLY DEPENDS ON PKCS11 --> 
     <Project Include="PKCS11\SecurityPkcs11.csproj" >
       <InProject>false</InProject>
