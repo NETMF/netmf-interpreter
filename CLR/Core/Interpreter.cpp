@@ -2556,6 +2556,51 @@ Execute_RestartDecoding:
 
                 goto Execute_LoadAndPromote;
             }
+            //----------------------------------------------------------------------------------------------------------//
+
+            OPDEF(CEE_LDELEM,                     "ldelem",           PopRef+PopI,        Push1,       InlineType,         IObjModel,   1,  0xFF,    0xA3,    NEXT)
+            // Stack: ... <obj> <index> -> <value>
+            {
+                // treat this like ldelema + ldobj
+                // read the type token argument from the instruction and advance the instruction pointer accordingly
+                // LDELEMA doesn't need the type token, but the ldobj portion does
+                FETCH_ARG_COMPRESSED_TYPETOKEN(arg,ip);
+
+                //<LDELEMA>
+                // move stack pointer back so that evalpos[0] is the array
+                evalPos--;
+                CHECKSTACK(stack,evalPos);
+
+                TINYCLR_CHECK_HRESULT(evalPos[ 0 ].InitializeArrayReference( evalPos[ 0 ], evalPos[ 1 ].NumericByRef().s4 ));
+
+                evalPos[ 0 ].FixArrayReferenceForValueTypes();
+                //</LDELEMA>
+                // <LDOBJ>
+                CLR_RT_TypeDef_Instance type;
+                CLR_RT_TypeDef_Index cls;
+
+                if( !type.ResolveToken( arg, assm ) )
+                    TINYCLR_SET_AND_LEAVE(CLR_E_WRONG_TYPE);
+
+                TINYCLR_CHECK_HRESULT(CLR_RT_TypeDescriptor::ExtractTypeIndexFromObject( evalPos[ 0 ], cls ));
+
+                // Check this is an object of the requested type.
+                if( type.m_data != cls.m_data )
+                    TINYCLR_SET_AND_LEAVE(CLR_E_WRONG_TYPE);
+
+                UPDATESTACK(stack,evalPos);
+                {
+                    // Save the pointer to the object to load/copy and protect it from GC.
+                    CLR_RT_HeapBlock safeSource;
+                    safeSource.Assign( evalPos[ 0 ] );
+                    CLR_RT_ProtectFromGC gc( safeSource );
+
+                    TINYCLR_CHECK_HRESULT(evalPos[ 0 ].LoadFromReference( safeSource ));
+                }
+                
+                goto Execute_LoadAndPromote;
+                //<LDOBJ>
+            }
 
             //----------------------------------------------------------------------------------------------------------//
 
@@ -2592,6 +2637,26 @@ Execute_RestartDecoding:
                 evalPos[ 3 ].Promote();
 
                 TINYCLR_CHECK_HRESULT(evalPos[ 3 ].StoreToReference( ref, size ));
+                break;
+            }
+
+            //----------------------------------------------------------------------------------------------------------//
+
+            OPDEF(CEE_STELEM,                     "stelem",           PopRef+PopI+Pop1,   Push0,       InlineType,         IObjModel,   1,  0xFF,    0xA4,    NEXT)
+            // Stack: ... ... <obj> <index> <value> -> ...
+            {
+                // Treat STELEM like ldelema + stobj
+                ip += 2; // Skip type argument, not used...
+
+                evalPos -= 3; // "pop" args from evaluation stack
+                CHECKSTACK(stack,evalPos);
+
+                TINYCLR_CHECK_HRESULT(evalPos[ 1 ].InitializeArrayReference( evalPos[ 1 ], evalPos[ 2 ].NumericByRef().s4 ));
+                evalPos[ 1 ].FixArrayReferenceForValueTypes();
+
+                // Reassign will make sure these are objects of the same type.
+                TINYCLR_CHECK_HRESULT(evalPos[ 1 ].Reassign( evalPos[ 3 ] ));
+
                 break;
             }
 
@@ -2919,8 +2984,6 @@ Execute_RestartDecoding:
             OPDEF(CEE_MKREFANY,                   "mkrefany",         PopI,               Push1,       InlineType,         IPrimitive,  1,  0xFF,    0xC6,    NEXT)
             OPDEF(CEE_REFANYTYPE,                 "refanytype",       Pop1,               PushI,       InlineNone,         IPrimitive,  2,  0xFE,    0x1D,    NEXT)
             OPDEF(CEE_REFANYVAL,                  "refanyval",        Pop1,               PushI,       InlineType,         IPrimitive,  1,  0xFF,    0xC2,    NEXT)
-            OPDEF(CEE_LDELEM,                     "ldelem",           PopRef+PopI,        Push1,       InlineType,         IObjModel,   1,  0xFF,    0xA3,    NEXT)
-            OPDEF(CEE_STELEM,                     "stelem",           PopRef+PopI+Pop1,   Push0,       InlineType,         IObjModel,   1,  0xFF,    0xA4,    NEXT)            
             OPDEF(CEE_READONLY,                   "readonly.",        Pop0,               Push0,       InlineNone,         IPrefix,     2,  0xFE,    0x1E,    META)
 
             TINYCLR_CHECK_HRESULT(CLR_Checks::VerifyUnsupportedInstruction( op ));

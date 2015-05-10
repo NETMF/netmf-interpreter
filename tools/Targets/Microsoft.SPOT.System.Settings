@@ -42,7 +42,7 @@
     <latencyprof Condition="'$(latencyprof)'==''"   >false</latencyprof>
     <FLAVOR Condition="'$(FLAVOR)'==''"             >Release</FLAVOR>
     <MEMORY Condition="'$(MEMORY)'==''"             >FLASH</MEMORY>
-    <ENABLE_FASTCOMPILE Condition="'$(ENABLE_FASTCOMPILE)'==''"   >true</ENABLE_FASTCOMPILE>
+    <ENABLE_FASTCOMPILE Condition="'$(ENABLE_FASTCOMPILE)'==''">false</ENABLE_FASTCOMPILE>
     <FourByteCrytoLib>false</FourByteCrytoLib>
     <CLEAN_INDEPENDENT_ONLY Condition="'$(CLEAN_INDEPENDENT_ONLY)'==''"></CLEAN_INDEPENDENT_ONLY>
     <Configuration Condition="'$(Configuration)'=='' And '$(FLAVOR)'=='Debug'"       >$(FLAVOR)</Configuration>

@@ -6,7 +6,6 @@
 
     <Project Include="MFDeploy\build.dirproj" />
     <Project Include="MFProfiler\MFProfiler.csproj" />
-    <Project Include="MFSvcUtil\build.dirproj"/>
     <Project Include="PortBooterClient\PortBooterClient.csproj" />
     <Project Include="PortBooterHost\PortBooterHost.csproj" />
     <Project Include="AbortHandlerClient\AbortHandlerClient.csproj" />

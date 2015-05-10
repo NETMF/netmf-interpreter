@@ -58,9 +58,6 @@
         <Project Include="Xml\System.Xml.csproj">
             <InProject>false</InProject>
         </Project>
-        <Project Include="Dpws\build.dirproj" >
-            <InProject>false</InProject>
-        </Project>
         <Project Include="Native_Update\Core_Update.csproj" >
             <InProject>false</InProject>
         </Project>

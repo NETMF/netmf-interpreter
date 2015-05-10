@@ -921,6 +921,16 @@ struct Library_corlib_native_System_String
     static HRESULT ConvertToCharArray( LPCSTR szText           , CLR_RT_HeapBlock& ref, CLR_RT_HeapBlock_Array*& array, int startIndex, int length );
 };
 
+struct Library_corlib_native_System_StringEnumerator
+{
+    static const int FIELD__Pos = 1;
+    static const int FIELD__Str = 2;
+
+
+    //--//
+
+};
+
 struct Library_corlib_native_System_Text_StringBuilder
 {
     static const int FIELD__m_MaxCapacity = 1;

@@ -9,7 +9,6 @@ using System;
 using System.Text;
 using Microsoft.SPOT;
 using Microsoft.SPOT.Platform.Test;
-using System.Ext.Xml;
 using System.IO;
 using System.Xml;
 

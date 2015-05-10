@@ -34,7 +34,9 @@ ipch/
 #uVision
 *.uvguix*
 Listings/
+{*/
 
 # WinPCAP
 /DeviceCode/Targets/OS/Win32/DeviceCode/WinPcap_Eth/Dependencies/WpdPack/
+
 

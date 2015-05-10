@@ -9,8 +9,6 @@
     <WiXSource Include="PSDKDocsFeature.wxs"/>
     <WiXSource Include="Debugger.wxs"/>
     <WiXSource Include="Tools.wxs"/>
-    <WiXSource Include="DPWS.wxs"/>
-    <WiXSource Include="DPWSEndian.wxs"/>
     <WixSource Include="NetMFv44.wxs"/>
   </ItemGroup>
   

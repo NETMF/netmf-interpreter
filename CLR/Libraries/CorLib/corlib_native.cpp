@@ -683,6 +683,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
     NULL,
     NULL,
     NULL,
+    NULL,
     Library_corlib_native_System_String::CompareTo___I4__OBJECT,
     NULL,
     Library_corlib_native_System_String::get_Chars___CHAR__I4,
@@ -733,6 +734,10 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_corlib_native_System_String::Concat___STATIC__STRING__STRING__STRING__STRING,
     Library_corlib_native_System_String::Concat___STATIC__STRING__STRING__STRING__STRING__STRING,
     Library_corlib_native_System_String::Concat___STATIC__STRING__SZARRAY_STRING,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -922,7 +927,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_mscorlib =
 {
     "mscorlib", 
-    0x4EB3CA01,
+    0xE6845B81,
     method_lookup
 };
 

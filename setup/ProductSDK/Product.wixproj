@@ -60,8 +60,6 @@
     <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\CoreEmulator.wixobj" />
     <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\Debugger.wixobj" />
     <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\Tools.wixobj" />
-    <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\DPWS.wixobj" />
-    <WiXObjectEndian  Include="$(OutputWiXObjServer)..\FeatureFragments\DPWSEndian.wixobj" />
     <WiXObject  Include="$(OutputWiXObjServer)..\FeatureFragments\NetMFv44.wixobj" />
     <!--DocWiXObject  Include="$(OutputWiXObjRoot)FeatureFragments\PSDKDocsFeature.wixobj"/-->
     <!--WiXDefines Include="SideShowSdkPath"><Value>&quot;$(SideShowSdkPath)&quot;</Value></WiXDefines-->

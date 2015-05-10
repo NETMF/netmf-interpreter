@@ -13,14 +13,6 @@ using System.Globalization;
 
 using Microsoft.SPOT;
 
-namespace System.Text
-{
-    internal abstract class TextReader
-    {
-        public abstract int Read(char[] dest, int index, int count);
-    }
-}
-
 /////////////////////////////////
 namespace System.Xml
 {

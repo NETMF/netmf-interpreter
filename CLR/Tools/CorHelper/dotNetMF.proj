@@ -11,6 +11,8 @@
     <OutputType>Library</OutputType>
     <VCProjName>CorHelper</VCProjName>
     <ProjectGuid>079E1BC1-3B21-46E8-B1BA-AEDB68CCDC11</ProjectGuid>
+    <!-- warning C4091: 'typedef ': ignored on left of 'NGenHintEnum' when no variable is declared -->
+    <ExtraFlags>/wd4091</ExtraFlags>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="corhlpr.cpp" />

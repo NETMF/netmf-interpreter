@@ -8,7 +8,6 @@
 using System;
 using Microsoft.SPOT;
 using Microsoft.SPOT.Platform.Test;
-using System.Ext.Xml;
 using System.IO;
 using System.Text;
 using System.Xml;

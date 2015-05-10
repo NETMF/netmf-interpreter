@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="WcfMtomService.DataAccessService" CodeBehind="Service1.svc.cs" %>

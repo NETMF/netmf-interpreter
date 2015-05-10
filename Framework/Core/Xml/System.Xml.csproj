@@ -43,10 +43,14 @@
     <Compile Include="System\Xml\XmlSpace.cs" />
     <Compile Include="System\Xml\XmlTextReader.cs" />
     <Compile Include="System\Xml\XmlWrappingReader.cs" />
+    <Compile Include="System\Xml\XmlWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SPOT.Native">
       <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>$(BUILD_TREE_DLL)\System.IO.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

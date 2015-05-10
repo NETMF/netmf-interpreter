@@ -23,9 +23,6 @@
     <Compile Include="XmlNameTableTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MFDpwsExtensions">
-      <HintPath>$(BUILD_TREE_DLL)\MFDpwsExtensions.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.SPOT.Native">
       <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
     </Reference>
