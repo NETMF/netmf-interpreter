@@ -11,6 +11,7 @@
     <SubDirectories Include="CorLib"/>
     <SubDirectories Include="SPOT"/>
     <SubDirectories Include="SPOT_Alljoyn"/>
+    <SubDirectories Include="SPOT_Alljoyn_Services"/>
     <SubDirectories Include="SPOT_Graphics"/>
     <SubDirectories Include="SPOT_Hardware"/>
     <SubDirectories Include="SPOT_IO"/>

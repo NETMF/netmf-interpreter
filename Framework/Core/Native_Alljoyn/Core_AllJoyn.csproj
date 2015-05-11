@@ -24,10 +24,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="AllJoyn.cs" />
+    <Compile Include="AllJoyn.cs" />    
     <Compile Include="AboutService.cs" />
-    <Compile Include="NotificationService.cs" />
-    <Compile Include="PropertyStore.cs" />    
   </ItemGroup>
   
   <ItemGroup>

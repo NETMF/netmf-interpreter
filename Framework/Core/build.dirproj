@@ -4,6 +4,9 @@
         <Project Include="Native_Alljoyn\Core_Alljoyn.csproj" >
           <InProject>false</InProject>
         </Project>
+        <Project Include="Native_Alljoyn\Alljoyn_Services.csproj" >
+          <InProject>false</InProject>
+        </Project>        
         <Project Include="Native_Hardware\Native_UART\Core_Native_Hardware_UART.csproj" >
             <InProject>false</InProject>
         </Project>

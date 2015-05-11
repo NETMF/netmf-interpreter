@@ -9,11 +9,10 @@ using Microsoft.SPOT;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 
-namespace Microsoft.SPOT.AllJoyn
+namespace Microsoft.SPOT.AllJoyn.Services
 {
-    public partial class AJ
-    {
-        
+    public partial class AJ_Services
+    {        
         public class AJNS_Notification
         {
             public UInt16 version;                           // version of notification 
@@ -48,6 +47,9 @@ namespace Microsoft.SPOT.AllJoyn
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status Initialize_NotificationService();
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status SendNotifySignal(UInt32 bus, AJNS_Notification not, UInt32 ttl, string message, ref UInt32 serialNumber);
         
         private bool IsNullOrEmpty(string s)
         {
@@ -90,7 +92,7 @@ namespace Microsoft.SPOT.AllJoyn
             }
             
             if (notification.version > 1) {
-                notification.originalSenderName = GetUniqueName(bus);
+                notification.originalSenderName = AjInst.GetUniqueName(bus);
 
                 if (IsNullOrEmpty(notification.originalSenderName)) {
                     return AJ_Status.AJ_ERR_DISALLOWED;
@@ -132,7 +134,7 @@ namespace Microsoft.SPOT.AllJoyn
                 return AJ_Status.AJ_OK;
             }
 
-            status = BusCancelSessionless(busAttachment, lastSentSerialNumber);
+            status = AjInst.BusCancelSessionless(busAttachment, lastSentSerialNumber);
 
             if (status != AJ_Status.AJ_OK) {
                 return status;
@@ -163,7 +165,7 @@ namespace Microsoft.SPOT.AllJoyn
                 return AJ_Status.AJ_OK;
             }
 
-            status = BusCancelSessionless(busAttachment, serialNum);
+            status = AjInst.BusCancelSessionless(busAttachment, serialNum);
 
             if (status != AJ_Status.AJ_OK) {
                 return status;

@@ -14,10 +14,6 @@
 #include <aj_helper.h>
 #include <aj_link_timeout.h>
 
-#include <alljoyn/services_common/ServicesCommon.h>
-#include <alljoyn/notification/NotificationCommon.h>
-#include <alljoyn/notification/NotificationProducer.h>
-
 #include <TinyCLR_Runtime.h>
 #include <TinyCLR_Checks.h>
 #include <TinyCLR_Diagnostics.h>
@@ -29,33 +25,10 @@
 #include "spot_alljoyn_native.h"
 #include "spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ.h"
 
-#define AJSVC_PROPERTY_STORE_NUMBER_OF_KEYS 13
-
-AJ_Status AJNS_Producer_SendNotifySignal(AJ_BusAttachment* busAttachment, AJNS_Notification* notification, uint32_t ttl, uint32_t* messageSerialNumber);
-AJ_Status InitNotificationContent();
-
-typedef struct _PropertyStoreRuntimeEntry {
-    char** value; // An array of size 1 or AJSVC_PROPERTY_STORE_NUMBER_OF_LANGUAGES mutable buffers depending on whether the property is multilingual
-    uint8_t size; // The size of the value buffer(s)
-} PropertyStoreConfigEntry;
-
-
-const char*** propertyStoreDefaultValues = NULL;
-const char* const* propertyStoreDefaultLanguages = NULL;
-const char* deviceProductName = NULL;
-const char* deviceManufactureName = NULL;
-PropertyStoreConfigEntry* propertyStoreRuntimeValues = NULL;
-
-const static char* lang1  = "en";
-const static char* hello1 = "Toast is done!";
-
 #define AJ_InfoPrintf(_msg)
 #define NUM_TEXTS   1
 
 using namespace Microsoft::SPOT::AllJoyn;
-
-static AJNS_DictionaryEntry textToSend[NUM_TEXTS];
-static AJNS_NotificationContent notificationContent;
 
 extern AJ_Status MarshalDefaultProps(AJ_Message* msg);
 extern AJ_Status MarshalObjectDescriptions(AJ_Message* msg);
@@ -63,48 +36,17 @@ extern AJ_Status MarshalObjectDescriptions(AJ_Message* msg);
 static AJ_BusAttachment BusInstance;
 static AJ_Arg ArgPool[10];
 
+
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::Initialize___U4( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
         AJ_Initialize();
-        //PropertyStore_Init();
-        //InitNotificationContent();
 		UINT32 retVal = 1;
         TINYCLR_CHECK_HRESULT( hr );
         SetResult_UINT32( stack, 1 );
     }
     TINYCLR_NOCLEANUP();
-}
-
-AJ_Status InitNotificationContent()
-{
-    notificationContent.numTexts = NUM_TEXTS;
-    textToSend[0].key   = lang1;
-    textToSend[0].value = hello1;
-    notificationContent.texts = textToSend;
-
-    return AJNS_Producer_Start();
-    
-    //uint8_t i = NOTIFICATION_PRODUCER_OBJECTS_INDEX;
-
-    //AJNS_Common_RegisterObjects();
-    //for (; i < NOTIFICATION_PRODUCER_OBJECTS_INDEX + NOTIFICATION_PRODUCER_OBJECTS_COUNT; i++) {
-    //    AJNS_ObjectList[i].flags &= ~(AJ_OBJ_FLAG_HIDDEN | AJ_OBJ_FLAG_DISABLED);
-    //    AJNS_ObjectList[i].flags |= AJ_OBJ_FLAG_ANNOUNCED;
-    //}
-
-    //return AJ_RegisterObjectList(AJNS_ObjectList, AJNS_OBJECT_LIST_INDEX);
-}
-
-void SendNotification(AJ_BusAttachment* busAttachment)
-{
-    uint16_t messageType = AJNS_NOTIFICATION_MESSAGE_TYPE_INFO;
-    uint32_t ttl = AJNS_NOTIFICATION_TTL_MIN; /* Note needs to be in the range AJNS_NOTIFICATION_TTL_MIN..AJNS_NOTIFICATION_TTL_MAX */ 
-
-    uint32_t serialNum = 4;
-
-    AJNS_Producer_SendNotification(busAttachment, &notificationContent, messageType, ttl, &serialNum);
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetBusLinkTimeout___MicrosoftSPOTAllJoynAJStatus__U4__U4( CLR_RT_StackFrame& stack )
@@ -120,18 +62,9 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetBusLinkTimeout
 
     }
     TINYCLR_NOCLEANUP();
-}
+} 
+       
 
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_Services_AJ_Services::Initialize_NotificationService___MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
-{
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        AJ_Status status =InitNotificationContent();
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, status );
-    }
-    TINYCLR_NOCLEANUP();
-}
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::NotifyLinkActive___VOID( CLR_RT_StackFrame& stack )
 {
@@ -1222,18 +1155,18 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SendNotification_
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
-        CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
+        //CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
+//
+  //      FAULT_ON_NULL(pMngObj);
 
-        FAULT_ON_NULL(pMngObj);
-
-        CLR_RT_HeapBlock_String * text = stack.Arg1().DereferenceString();
+    //    CLR_RT_HeapBlock_String * text = stack.Arg1().DereferenceString();
         
         
-        textToSend[0].key   = lang1;
-        textToSend[0].value = text->StringText();
-        SendNotification(&BusInstance);
+      //  textToSend[0].key   = lang1;
+       // textToSend[0].value = text->StringText();
+       // SendNotification(&BusInstance);
         
-        TINYCLR_CHECK_HRESULT( hr );
+      //  TINYCLR_CHECK_HRESULT( hr );
     }
     TINYCLR_NOCLEANUP();
 }
@@ -1441,47 +1374,3 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusCancelSessionl
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_Services_AJ_Services::SendNotifySignal___MicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynServicesAJServicesAJNSNotification__U4__STRING__BYREF_U4( CLR_RT_StackFrame& stack )
-{
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_Services_AJ_Services__AJNS_Notification Managed_AJNS_Notification;
-        
-        AJ_BusAttachment * bus =  (AJ_BusAttachment *)stack.Arg1().NumericByRef().u4;
-        
-        CLR_RT_HeapBlock * managedObj = stack.Arg2().Dereference();
-        FAULT_ON_NULL(managedObj);
-        
-        AJNS_Notification ntf = {0};
-        ntf.version             = managedObj[Managed_AJNS_Notification::FIELD__version].NumericByRef().u2;
-        ntf.messageType         = managedObj[Managed_AJNS_Notification::FIELD__messageType].NumericByRef().u2;
-        ntf.notificationId      = managedObj[Managed_AJNS_Notification::FIELD__notificationId].NumericByRef().s4;
-        ntf.originalSenderName  = managedObj[Managed_AJNS_Notification::FIELD__originalSenderName].DereferenceString()->StringText();
-        ntf.deviceId            = managedObj[Managed_AJNS_Notification::FIELD__deviceId].DereferenceString()->StringText();
-        ntf.deviceName          = managedObj[Managed_AJNS_Notification::FIELD__deviceName].DereferenceString()->StringText();
-        ntf.appId               = managedObj[Managed_AJNS_Notification::FIELD__appId].DereferenceString()->StringText();
-        ntf.appName             = managedObj[Managed_AJNS_Notification::FIELD__appName].DereferenceString()->StringText();
-        ntf.content             = &notificationContent;
-
-        
-        UINT32 ttl = stack.Arg3().NumericByRef().u4;
-        CLR_RT_HeapBlock_String * message = stack.Arg4().DereferenceString();
-        
-        UINT32 * param4;
-        UINT8 heapblock2[CLR_RT_HEAP_BLOCK_SIZE];
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock2, 5, param4 ) );
-
-        textToSend[0].key   = lang1;
-        textToSend[0].value = message->StringText();
-
-        AJ_Status status = AJNS_Producer_SendNotifySignal(bus, &ntf, ttl, param4);
-        
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, status );
-
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock2, 5 ) );
-
-        
-    }
-    TINYCLR_NOCLEANUP();
-}

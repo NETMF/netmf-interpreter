@@ -101,6 +101,7 @@
   <Import Condition="'$(XML_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Xml.featureproj" />
   <Import Condition="'$(PWM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\PWM.featureproj" />
   <Import Condition="'$(ALLJOYN_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Alljoyn.featureproj" />
+  <Import Condition="'$(ALLJOYN_SERVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Alljoyn_Services.featureproj" />
   <Import Condition="'$(ONEWIRE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\OneWire.featureproj" />
   <Import Condition="'$(INTEROPSAMPLE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\InteropSample.featureproj" />
   <Import Condition="'$(SERIALPORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SerialPort.featureproj" />

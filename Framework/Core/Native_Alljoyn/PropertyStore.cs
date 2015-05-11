@@ -26,7 +26,7 @@ using Microsoft.SPOT.Hardware;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 
-namespace Microsoft.SPOT.AllJoyn
+namespace Microsoft.SPOT.AllJoyn.Services
 {
     // Indices for referencing keys in property store array
     

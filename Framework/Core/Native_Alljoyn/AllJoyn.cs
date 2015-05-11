@@ -165,7 +165,7 @@ namespace Microsoft.SPOT.AllJoyn
     }        
     
     // callback supplied by user to process get/set property requests    
-    public delegate AJ_Status PropertyCB(AJ_Message reply, AJ_Message msg, uint propId, AJ aj);    
+    public delegate AJ_Status PropertyCB(AJ_Message reply, AJ_Message msg, uint propId, AJ aj);
     
     public partial class AJ
     {        
@@ -205,14 +205,14 @@ namespace Microsoft.SPOT.AllJoyn
                 
         public const uint AJ_REP_ID_FLAG = 0x80;  /**< Indicates a message is a reply message */                          
                 
-        public string AJ_RELEASE_YEAR = "2015";
-        public string AJ_RELEASE_MONTH = "4";
-        public string AJ_FEATURE_VERSION = "1";
-        public string AJ_BUGFIX_VERSION = "0";
-        public string AJ_RELEASE_TAG = "rtm";              
-        public string APP_ID_SIGNATURE = "ay";
+        public const string AJ_RELEASE_YEAR = "2015";
+        public const string AJ_RELEASE_MONTH = "4";
+        public const string AJ_FEATURE_VERSION = "1";
+        public const string AJ_BUGFIX_VERSION = "0";
+        public const string AJ_RELEASE_TAG = "rtm";              
+        public const string APP_ID_SIGNATURE = "ay";
                 
-        PropertyStore propertyStore = null;                            
+        
         
         public static string GetGUID()
         {
@@ -240,13 +240,7 @@ namespace Microsoft.SPOT.AllJoyn
         }
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern AJ_Status GetLocalGUID(byte [] b);
-        
-        public void SetPropertyStore(PropertyStore ps)
-        {
-            propertyStore = ps;
-            ps.InitMandatoryFields();
-        }        
+        public static extern AJ_Status GetLocalGUID(byte [] b);                       
                 
         public void SetAboutIconContent(byte [] b)
         {
@@ -258,7 +252,7 @@ namespace Microsoft.SPOT.AllJoyn
             AboutIconURL = URL;
         }                
                 
-        string GetVersion()
+        public string GetVersion()
         {
             string version = AJ_RELEASE_YEAR + "." + AJ_RELEASE_MONTH + "." + AJ_FEATURE_VERSION + AJ_BUGFIX_VERSION + " Tag " + AJ_RELEASE_TAG;
             return version;
@@ -365,9 +359,7 @@ namespace Microsoft.SPOT.AllJoyn
                 AboutAnnounce(bus, busAboutPort);
             }
             return status;
-        }
-
-        
+        }        
         
         public AJ_Status BusGetProp(AJ_Message msg, PropertyCB propCB)
         {
@@ -383,10 +375,7 @@ namespace Microsoft.SPOT.AllJoyn
         private static extern void RegisterObjects(string path, string interfaceDescription, byte flags, IntPtr context, bool useProperties, bool local);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern string GetUniqueName(UInt32 bus);
-        
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern AJ_Status SendNotifySignal(UInt32 bus, AJNS_Notification not, UInt32 ttl, string message, ref UInt32 serialNumber);
+        public extern string GetUniqueName(UInt32 bus);                
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern UInt32 Initialize();                
