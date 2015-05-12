@@ -378,7 +378,7 @@ namespace Microsoft.SPOT.AllJoyn
         public extern string GetUniqueName(UInt32 bus);                
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern UInt32 Initialize();                
+        public extern void Initialize();                
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern void SendNotification(string text);
@@ -405,9 +405,7 @@ namespace Microsoft.SPOT.AllJoyn
                                             sbyte connected,
                                             UInt16 port,
                                             string name,
-                                            UInt32 flags,
-                                            IntPtr opts);
-
+                                            UInt32 flags);
                                                       
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status StartClientByName(UInt32 bus,
@@ -500,7 +498,7 @@ namespace Microsoft.SPOT.AllJoyn
         public extern AJ_Status MarshalArgs(AJ_Message msg, string sig, string val1, string val2);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern AJ_Status MarshalArgs(AJ_Message msg, string sig, string val1, byte [] val2);
+        public extern AJ_Status MarshalArgs(AJ_Message msg, string sig, string val1, byte[] val2);
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status MarshalContainer(AJ_Message msg, UInt32 argPtr, byte typeId);

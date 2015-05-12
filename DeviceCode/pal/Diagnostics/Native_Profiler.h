@@ -77,6 +77,7 @@ struct native_profiler_data
 #define NATIVE_PROFILE_CLR_HEAP_PERSISTENCE__flag      0x00000800
 #define NATIVE_PROFILE_CLR_IOPORT__flag                0x00001000
 #define NATIVE_PROFILE_CLR_IO__flag                    0x00002000
+#define NATIVE_PROFILE_CLR_ALLJOYN__flag               0x00004000
 #define NATIVE_PROFILE_CLR__flag_ALL                   0x00002FFF
 
 //--//  HAL level
@@ -172,6 +173,12 @@ struct native_profiler_data
     #define NATIVE_PROFILE_CLR_HARDWARE() Native_Profiler profiler_obj
 #else
     #define NATIVE_PROFILE_CLR_HARDWARE()
+#endif
+
+#if NATIVE_PROFILE_CLR & NATIVE_PROFILE_CLR_ALLJOYN__flag
+    #define NATIVE_PROFILE_CLR_ALLJOYN() Native_Profiler profiler_obj
+#else
+    #define NATIVE_PROFILE_CLR_ALLJOYN()
 #endif
 
 #if NATIVE_PROFILE_CLR & NATIVE_PROFILE_CLR_GRAPHICS__flag

@@ -11,6 +11,7 @@
 #define _SPOT_ALLJOYN_NATIVE_H_
 
 #include <TinyCLR_Interop.h>
+
 struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
 {
     static const int FIELD__AboutIconMime = 1;
@@ -21,13 +22,13 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     static const int FIELD__AboutPropGetterCB = 6;
 
     TINYCLR_NATIVE_DECLARE(GetUniqueName___STRING__U4);
-    TINYCLR_NATIVE_DECLARE(Initialize___U4);
+    TINYCLR_NATIVE_DECLARE(Initialize___VOID);
     TINYCLR_NATIVE_DECLARE(SendNotification___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(SetBusLinkTimeout___MicrosoftSPOTAllJoynAJStatus__U4__U4);
     TINYCLR_NATIVE_DECLARE(NotifyLinkActive___VOID);
     TINYCLR_NATIVE_DECLARE(BusLinkStateProc___MicrosoftSPOTAllJoynAJStatus__U4);
     TINYCLR_NATIVE_DECLARE(SetIdleTimeouts___MicrosoftSPOTAllJoynAJStatus__U4__U4__U4);
-    TINYCLR_NATIVE_DECLARE(StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4__I4);
+    TINYCLR_NATIVE_DECLARE(StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4);
     TINYCLR_NATIVE_DECLARE(StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING);
     TINYCLR_NATIVE_DECLARE(AlwaysPrintf___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(AboutIconHandleGetContent___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage__SZARRAY_U1);

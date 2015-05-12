@@ -18,7 +18,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
     NULL,
     NULL,
     NULL,
-    Library_spot_alljoyn_native_services_Microsoft_SPOT_AllJoyn_Services_AJ_Services::Initialize_NotificationService___MicrosoftSPOTAlljoynMicrosoftSPOTAllJoynAJStatus,
+    Library_spot_alljoyn_native_services_Microsoft_SPOT_AllJoyn_Services_AJ_Services::Initialize_NotificationService___MicrosoftSPOTAlljoynMicrosoftSPOTAllJoynAJStatus__STRING,
     Library_spot_alljoyn_native_services_Microsoft_SPOT_AllJoyn_Services_AJ_Services::SendNotifySignal___MicrosoftSPOTAlljoynMicrosoftSPOTAllJoynAJStatus__U4__MicrosoftSPOTAllJoynServicesAJServicesAJNSNotification__U4__STRING__BYREF_U4,
     NULL,
     NULL,
@@ -49,7 +49,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_Microsoft_SPOT_Alljoyn_Services =
 {
     "Microsoft.SPOT.Alljoyn.Services", 
-    0x17B881A6,
+    0x62930E74,
     method_lookup
 };
 
