@@ -55,12 +55,6 @@
       <Component Id="Component_SampleDirectoryShortcut" Guid="717602b2-745f-47ac-b070-83cae29f3a72">
         <Shortcut Id="Shortcut_SampleDirectory" Directory="ProgramMenuDir" Name="Samples" Target="[SamplesDir]" />
       </Component>
-      <Component Id="Component_DpwsSampleReadme" Guid="0A143634-97DD-4D56-99D8-4AFE86D0D862">
-        <File Id="File_DpwsSampleReadme" 
-            Name="DPWS_WCF_ReadMe.txt"
-            Source="..\..\Product\Samples\DPWS\WCFSample\DPWS_WCF_ReadMe.txt"
-            DiskId="1"/>
-      </Component>
     </DirectoryRef>
   </Module>
 </Wix>
