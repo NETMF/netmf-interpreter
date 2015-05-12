@@ -29,6 +29,20 @@
 
 #define AJSVC_PROPERTY_STORE_NUMBER_OF_KEYS 13
 
+typedef struct _PropertyStoreRuntimeEntry {
+    char** value;
+    uint8_t size;
+} PropertyStoreConfigEntry;
+
+// externs required to compile base_tcl. However, they are not used,
+// so OK to make them NULL
+
+const char*** propertyStoreDefaultValues = NULL;
+const char* const* propertyStoreDefaultLanguages = NULL;
+const char* deviceProductName = NULL;
+const char* deviceManufactureName = NULL;
+PropertyStoreConfigEntry* propertyStoreRuntimeValues = NULL;
+
 AJ_Status AJNS_Producer_SendNotifySignal(AJ_BusAttachment* busAttachment, AJNS_Notification* notification, uint32_t ttl, uint32_t* messageSerialNumber);
 AJ_Status InitNotificationContent();
 
