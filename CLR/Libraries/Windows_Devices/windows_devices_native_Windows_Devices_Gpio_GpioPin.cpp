@@ -77,7 +77,7 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::set_Debounc
 
     value = (CLR_INT64_TEMP_CAST) stack.Arg1().NumericByRef().s8 / TIME_CONVERSION__TO_MILLISECONDS;
 
-    // TODO: Set debounce individually per pin once the HAL has that capability.
+    // TODO: Issue #101 Set debounce individually per pin once the HAL has that capability.
     //if (!::CPU_GPIO_SetDebounce( value ))
     //{
     //    TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_PARAMETER);
@@ -129,12 +129,12 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::Read___Wind
     TINYCLR_NOCLEANUP();
 }
 
-HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::InitNative___VOID__I4( CLR_RT_StackFrame& stack )
+HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::InitNative___BOOLEAN__I4( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
 
     GPIO_PIN portId = GPIO_PIN_NONE;
-    BOOL pinAllocated = FALSE;
+    bool pinAllocated = false;
     CLR_RT_HeapBlock* pThis = stack.This(); FAULT_ON_NULL(pThis);
 
     portId = stack.Arg1().NumericByRef().u4;
@@ -142,17 +142,15 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::InitNative_
     // Ensure the pin exists.
     if (::CPU_GPIO_Attributes( portId ) == 0)
     {
-        TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_PARAMETER);
+        TINYCLR_SET_AND_LEAVE(S_OK);
     }
 
     // Reserve the pin. If this fails, it's already in use.
-    pinAllocated = ::CPU_GPIO_ReservePin( portId, TRUE );
+    pinAllocated = !!::CPU_GPIO_ReservePin( portId, TRUE );
     if (!pinAllocated)
     {
-        TINYCLR_SET_AND_LEAVE(CLR_E_PIN_UNAVAILABLE);
+        TINYCLR_SET_AND_LEAVE(S_OK);
     }
-
-    pThis[ FIELD__m_pinNumber ].NumericByRef().u4 = portId;
 
     // Initialize the default drive mode.
     if (!::CPU_GPIO_EnableInputPin2( portId, false, NULL, NULL, GPIO_INT_NONE, RESISTOR_DISABLED ))
@@ -160,7 +158,10 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::InitNative_
         TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_OPERATION);
     }
 
+    pThis[ FIELD__m_pinNumber ].NumericByRef().u4 = portId;
+
     TINYCLR_CLEANUP();
+
     if (FAILED(hr))
     {
         if (pinAllocated)
@@ -168,6 +169,9 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::InitNative_
             ::CPU_GPIO_ReservePin( portId, FALSE );
         }
     }
+
+    stack.SetResult_Boolean( pinAllocated );
+
     TINYCLR_CLEANUP_END();
 }
 

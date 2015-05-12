@@ -49,7 +49,7 @@ struct Library_windows_devices_native_Windows_Devices_Gpio_GpioPin
     TINYCLR_NATIVE_DECLARE(set_DebounceTimeout___VOID__mscorlibSystemTimeSpan);
     TINYCLR_NATIVE_DECLARE(Read___WindowsDevicesGpioGpioPinValue);
     TINYCLR_NATIVE_DECLARE(Write___VOID__WindowsDevicesGpioGpioPinValue);
-    TINYCLR_NATIVE_DECLARE(InitNative___VOID__I4);
+    TINYCLR_NATIVE_DECLARE(InitNative___BOOLEAN__I4);
     TINYCLR_NATIVE_DECLARE(DisposeNative___VOID);
     TINYCLR_NATIVE_DECLARE(SetDriveModeInternal___VOID__WindowsDevicesGpioGpioPinDriveMode);
 
@@ -90,7 +90,6 @@ struct Library_windows_devices_native_Windows_Devices_I2c_I2cConnectionSettings
     static const int FIELD__m_slaveAddress = 1;
     static const int FIELD__m_busSpeed = 2;
     static const int FIELD__m_sharingMode = 3;
-    static const int FIELD__m_addressingMode = 4;
 
 
     //--//
@@ -103,9 +102,11 @@ struct Library_windows_devices_native_Windows_Devices_I2c_I2cDevice
     static const int FIELD_STATIC__s_deviceRefs = 5;
     static const int FIELD_STATIC__s_device = 6;
 
-    static const int FIELD__m_syncLock = 1;
-    static const int FIELD__m_disposed = 2;
-    static const int FIELD__m_configuration = 3;
+    static const int FIELD__m_deviceId = 1;
+    static const int FIELD__m_settings = 2;
+    static const int FIELD__m_syncLock = 3;
+    static const int FIELD__m_disposed = 4;
+    static const int FIELD__m_configuration = 5;
 
 
     //--//

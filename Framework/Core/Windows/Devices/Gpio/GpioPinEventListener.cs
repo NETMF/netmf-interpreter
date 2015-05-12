@@ -12,7 +12,8 @@ namespace Windows.Devices.Gpio
 
     internal class GpioPinEventListener : IEventProcessor, IEventListener
     {
-        // Construction and destruction
+        // Map of pin numbers to GpioPin objects.
+        private IDictionary m_pinMap = new Hashtable();
 
         public GpioPinEventListener()
         {
@@ -20,19 +21,15 @@ namespace Windows.Devices.Gpio
             EventSink.AddEventListener(EventCategory.Gpio, this);
         }
 
-        // IEventProcessor methods
-
         public BaseEvent ProcessEvent(uint data1, uint data2, DateTime time)
         {
             return new GpioPinEvent
             {
                 // Data1 is packed by PostManagedEvent, so we need to unpack the high word.
-                PinNumber = (int)((data1 >> 16) & 65535u),
+                PinNumber = (int)(data1 >> 16),
                 Edge = (data2 == 0) ? GpioPinEdge.FallingEdge : GpioPinEdge.RisingEdge,
             };
         }
-
-        // IEventListener methods
 
         public void InitializeForEventSource()
         {
@@ -60,8 +57,6 @@ namespace Windows.Devices.Gpio
             return true;
         }
 
-        // Public methods
-
         public void AddPin(int pinNumber, GpioPin pin)
         {
             lock (m_pinMap)
@@ -80,10 +75,5 @@ namespace Windows.Devices.Gpio
                 }
             }
         }
-
-        // Private fields
-
-        // Map of pin numbers to GpioPin objects.
-        private IDictionary m_pinMap = new Hashtable();
     }
 }
