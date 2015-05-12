@@ -25,10 +25,14 @@
     <Compile Include="Xml\XmlReader.cs" />
     <Compile Include="Xml\XmlReaderSettings.cs" />
     <Compile Include="Xml\XmlSpace.cs" />
+    <Compile Include="Xml\XmlWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SPOT.Native">
       <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+        <HintPath>$(BUILD_TREE_DLL)\System.IO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

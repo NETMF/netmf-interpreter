@@ -2,7 +2,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 
-namespace System.Ext.Xml
+namespace System.Xml
 {
     // Summary:
     //     Specifies the state of the System.Xml.XmlWriter.
@@ -54,38 +54,6 @@ namespace System.Ext.Xml
         public WriteState State = WriteState.Element;
         public bool IsEmpty = true;
     }
-
-    public class XmlMemoryWriter : XmlWriter
-    {
-        MemoryStream _Stream;
-        
-        protected XmlMemoryWriter(MemoryStream stream) : base(stream)
-        {
-            _Stream = stream;
-        }
-
-        public MemoryStream InnerStream { get { return _Stream; } }
-
-        public static XmlMemoryWriter Create()
-        {
-            return new XmlMemoryWriter(new MemoryStream());
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _Stream = null;
-
-            // _Stream disposed in XmlWriter dispose call
-            base.Dispose(disposing);
-        }
-
-        public byte[] ToArray()
-        {
-            Flush();
-            return _Stream.ToArray();
-        }
-    }
-
 
     // Summary:
     //     Represents a writer that provides a fast, non-cached, forward-only means
@@ -400,8 +368,8 @@ namespace System.Ext.Xml
                 localPrefix = "";
 
             value = value.Trim('\"');
-            
-            if(localPrefix.Length == 0)
+
+            if (localPrefix.Length == 0)
                 this.WriteRaw(" " + localName + "=" + "\"" + value + "\"");
             else
                 this.WriteRaw(" xmlns:" + localPrefix + "=" + "\"" + ns + "\"" + " " + localPrefix + ":" + localName + "=" + "\"" + value + "\"");
@@ -437,7 +405,7 @@ namespace System.Ext.Xml
         //     index or count is less than zero.
         public void WriteBase64(byte[] buffer, int index, int count)
         {
-            this.WriteString( buffer != null ? System.Convert.ToBase64String(buffer, index, count) : "" );
+            this.WriteString(buffer != null ? System.Convert.ToBase64String(buffer, index, count) : "");
         }
 
         //
@@ -802,7 +770,7 @@ namespace System.Ext.Xml
 
             string localPrefix = "";
 
-            if(prefix != null && prefix.Length == 0) prefix = null;
+            if (prefix != null && prefix.Length == 0) prefix = null;
 
             // Check for special xmlns processing
             if (prefix == "xmlns" || ns == "http://www.w3.org/2000/xmlns/")
@@ -912,7 +880,7 @@ namespace System.Ext.Xml
             string localNS = "";
             string childPrefix = "";
 
-            if(prefix != null && prefix.Length == 0) prefix = null;
+            if (prefix != null && prefix.Length == 0) prefix = null;
 
             // if prefix == null and ns == null, only localName will write
             // if prefix == null and ns != null, prefix is set to xmlns and ns will be writen
@@ -929,7 +897,7 @@ namespace System.Ext.Xml
             {
                 if (_ElementStack.Count > 0)
                 {
-                    if(((ElementInfo)_ElementStack.Peek()).NameSpaceName != ns)
+                    if (((ElementInfo)_ElementStack.Peek()).NameSpaceName != ns)
                     {
                         childPrefix = "b" + _autoPrefixIndex++;
                         localNS = " xmlns:" + childPrefix + "=" + "\"" + ns + "\"";
@@ -937,7 +905,7 @@ namespace System.Ext.Xml
                     else
                     {
                         prefix = ((ElementInfo)_ElementStack.Peek()).ChildNSPrefix;
-                        if(prefix != null && prefix != "")
+                        if (prefix != null && prefix != "")
                         {
                             localPrefix = prefix + ":";
                             childPrefix = prefix;
@@ -949,10 +917,10 @@ namespace System.Ext.Xml
                     localNS = " xmlns" + "=" + "\"" + ns + "\"";
                 }
             }
-            else if(_ElementStack.Count > 0)
+            else if (_ElementStack.Count > 0)
             {
                 prefix = ((ElementInfo)_ElementStack.Peek()).ChildNSPrefix;
-                if(prefix != null && prefix != "")
+                if (prefix != null && prefix != "")
                 {
                     localPrefix = prefix + ":";
                 }
@@ -1028,6 +996,35 @@ namespace System.Ext.Xml
             return;
         }
     }
+
+    public class XmlMemoryWriter : XmlWriter
+    {
+        MemoryStream _Stream;
+
+        protected XmlMemoryWriter(MemoryStream stream) : base(stream)
+        {
+            _Stream = stream;
+        }
+
+        public MemoryStream InnerStream { get { return _Stream; } }
+
+        public static XmlMemoryWriter Create()
+        {
+            return new XmlMemoryWriter(new MemoryStream());
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _Stream = null;
+
+            // _Stream disposed in XmlWriter dispose call
+            base.Dispose(disposing);
+        }
+
+        public byte[] ToArray()
+        {
+            Flush();
+            return _Stream.ToArray();
+        }
+    }
 }
-
-
