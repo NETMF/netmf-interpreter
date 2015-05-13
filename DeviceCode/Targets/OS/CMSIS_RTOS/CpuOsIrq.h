@@ -84,10 +84,6 @@ private:
 
 #endif
 
-#if defined(__CC_ARM)
-register unsigned int PRIMASK __asm("primask");
-#endif
-
 // determines if the current system context is that of a physical interrupt
 inline bool sys_InIsr()
 {
