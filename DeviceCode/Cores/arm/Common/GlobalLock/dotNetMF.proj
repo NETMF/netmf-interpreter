@@ -43,8 +43,9 @@
     <SubDirectories Include="thumb2" Condition="'$(COMPILER_TOOL)'=='RVDS' and '$(INSTRUCTION_SET)' == 'thumb2'"/>
     <SubDirectories Include="arm"    Condition="'$(COMPILER_TOOL)'=='MDK'  and '$(INSTRUCTION_SET)' != 'thumb2'"/>
     <SubDirectories Include="thumb2" Condition="'$(COMPILER_TOOL)'=='MDK'  and '$(INSTRUCTION_SET)' == 'thumb2'"/>
-    <SubDirectories Include="gcc"    Condition="'$(COMPILER_TOOL)'=='GCC' and '$(INSTRUCTION_SET)' != 'thumb2'"/>
-    <SubDirectories Include="gcc-thumb2"    Condition="'$(COMPILER_TOOL)'=='GCC' and '$(INSTRUCTION_SET)' == 'thumb2'"/>
+    <SubDirectories Include="gcc"    Condition="'$(COMPILER_TOOL)'=='GCC' and '$(INSTRUCTION_SET)' != 'thumb2' and '$(INSTRUCTION_SET)' != 'thumb2fp'"/>
+    <SubDirectories Include="gcc-thumb2"    Condition="'$(COMPILER_TOOL)'=='GCC' and '$(INSTRUCTION_SET)'=='thumb2' "/>
+    <SubDirectories Include="gcc-thumb2"    Condition="'$(COMPILER_TOOL)'=='GCC' and '$(INSTRUCTION_SET)'=='thumb2fp'"/>
   </ItemGroup>
 
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
