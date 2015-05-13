@@ -408,7 +408,8 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
     
     TINYCLR_HEADER();
     
-    static char fullServiceName[AJ_MAX_SERVICE_NAME_SIZE];
+    CLR_RT_HeapBlock  hbFullName;
+    LPSTR             fullName     = NULL;
     CLR_RT_HeapBlock  hbSessionId;
     CLR_UINT32        sessionId = 0;    
     CLR_RT_HeapBlock* managedOpts = NULL;
@@ -442,31 +443,35 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
         opts.isMultipoint =  managedOpts[ Managed_AJ_SessionOpts::FIELD__isMultipoint ].NumericByRef().u4;
     }
 
-    //
-    // TODO: Consider usign full name
-    //
-    //LPCSTR fullName = stack.ArgN(9).RecoverString();
+    hbFullName.LoadFromReference( stack.ArgN(9) );
+    fullName = (LPSTR)hbFullName.RecoverString();
 
-    status = AJ_StartClientByName( bus, 
-                                        daemonName,
-                                        timeout,
-                                        fConnected,
-                                        clientName,
-                                        port,
-                                        &sessionId,
-                                        managedOpts == NULL ? NULL : &opts,
-                                        fullServiceName );
+    status = AJ_StartClientByName(  bus, 
+                                    daemonName,
+                                    timeout,
+                                    fConnected,
+                                    clientName,
+                                    port,
+                                    &sessionId,
+                                    managedOpts == NULL ? NULL : &opts,
+                                    fullName );
 
     if( status == AJ_OK )
     {     
         hbSessionId.SetInteger( sessionId );
         TINYCLR_CHECK_HRESULT( hbSessionId.StoreToReference( stack.Arg7( ), 0 ) );   
+        
+        if(fullName)
+        {
+            TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_String::CreateInstance( hbFullName, fullName ));
+        }
+        else
+        {
+            hbFullName.SetObjectReference( NULL );
+        }
+        
+        TINYCLR_CHECK_HRESULT( hbFullName.StoreToReference( stack.ArgN( 9 ), 0 ) );
     }
-
-    //    
-    // TODO: Consider usign full name
-    //
-    //TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, fullServiceName, 8 ) );
 
     stack.SetResult_I4( (CLR_INT32)status );
     
