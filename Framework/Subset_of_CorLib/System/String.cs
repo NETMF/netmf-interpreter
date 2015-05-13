@@ -7,6 +7,42 @@ namespace System
     using System.Threading;
     using System.Collections;
     using System.Runtime.CompilerServices;
+
+    internal class StringEnumerator : IEnumerator
+    {
+        internal StringEnumerator(string str)
+        {
+            Str = str;
+        }
+
+        public object Current
+        {
+            get
+            {
+                if (Pos < 0)
+                    return default(char);
+
+                return Str[Pos];
+            }
+        }
+
+        public bool MoveNext()
+        {
+            if( Pos < Str.Length )
+                Pos++;
+
+            return Pos < Str.Length;
+        }
+
+        public void Reset()
+        {
+            Pos = -1;
+        }
+
+        private int Pos = -1;
+        private readonly string Str;
+    }
+
     /**
      * <p>The <code>String</code> class represents a static string of characters.  Many of
      * the <code>String</code> methods perform some type of transformation on the current
@@ -24,7 +60,7 @@ namespace System
      * @version
      */
     [Serializable]
-    public sealed class String : IComparable
+    public sealed class String : IComparable, IEnumerable
     {
         public static readonly String Empty = "";
         public override bool Equals(object obj)
@@ -64,6 +100,14 @@ namespace System
         {
             [MethodImplAttribute(MethodImplOptions.InternalCall)]
             get;
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            // NOTE: using hand generated enumerator
+            // instead of compiler generated one as the
+            // compiler wil create one using IEnumerator<T>
+            return new StringEnumerator(this);
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -262,6 +306,7 @@ namespace System
             // We don't support "interning" of strings. So simply return the string.
             return str;
         }
+
 
     }
 }

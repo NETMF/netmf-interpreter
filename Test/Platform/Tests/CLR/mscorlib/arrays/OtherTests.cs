@@ -32,7 +32,6 @@ namespace Microsoft.SPOT.Platform.Tests
 
 
         //Test Case Calls 
-        //Test Case Calls 
         [TestMethod]
         public MFTestResults Othersystemarrays_conversion_01_Test()
         {
@@ -207,7 +206,43 @@ namespace Microsoft.SPOT.Platform.Tests
                 return MFTestResults.Fail;
             }
         }
-        
+        [TestMethod]
+        public MFTestResults ArrayOfStructs_Ldelem_Stelem_Test()
+        {
+            Log.Comment("Array Struct (LDELEM/STELEM)");
+            Log.Comment("Verify array of structs support for .NET Compiler Platform (a.k.a. 'Roslyn') code generation using LDELEM/STELEM instructions work for VS2015");
+            // prior to NETMF v4.4 the LDELEM and STELEM instructions were unsupported
+            // However, the Roslyn compiler generates code for arrays of value types
+            // that may use those instructions. Therefore support for them was added 
+            // in V4.4. This test ensures that the following code still functions on
+            // the new compiler and runtime.
+            var array = new CustomValueType[1]; 
+            var b = array[ 0 ];   // generates a LDELEM instruction with Roslyn and a ldelema, ldobj in earlier compilers
+            if (b.Value != 0)
+            {
+                Log.Comment("Failed default initialization of value type in array");
+                return MFTestResults.Fail;
+            }
+
+            array[0] = new CustomValueType(1); // generates a STELEM instruction with Roslyn and a ldelema, stobj in earlier compilers
+            if( array[0].Value != 1 )
+            {
+                Log.Comment("Failed to properly set struct value in array");
+                return MFTestResults.Fail;
+            }
+            return MFTestResults.Pass;
+        }
+
+        internal struct CustomValueType
+        {
+            public CustomValueType(int value)
+            {
+                Value = value;
+            }
+
+            internal readonly int Value;
+        }
+
         class MyClass : IComparable
         {
             int m_int;
@@ -302,21 +337,21 @@ namespace Microsoft.SPOT.Platform.Tests
                     array[i] = value;
             }
             public static int Main_old()
-    {
-        string[] strings = new string[100];
-        Fill(strings, 0, 100, "Undefined");
-        Fill(strings, 0,  10, null);
+            {
+                string[] strings = new string[100];
+                Fill(strings, 0, 100, "Undefined");
+                Fill(strings, 0, 10, null);
 
-        try
-        {
-            Fill(strings, 90, 10, 0);
-        }
-        catch (System.Exception)
-        {
-            return 0;
-        }
-        return 1;
-    }
+                try
+                {
+                    Fill(strings, 90, 10, 0);
+                }
+                catch (System.Exception)
+                {
+                    return 0;
+                }
+                return 1;
+            }
             public static bool testMethod()
             {
                 return (Main_old() == 0);
@@ -330,21 +365,21 @@ namespace Microsoft.SPOT.Platform.Tests
         class Other_TestClass_covariance_exception_02
         {
             public static int Main_old()
-    {
-        string[] stringArr = new string[10];
-        object[] objectArr = stringArr;
-        objectArr[0] = "hello";
+            {
+                string[] stringArr = new string[10];
+                object[] objectArr = stringArr;
+                objectArr[0] = "hello";
 
-        try
-        {
-            objectArr[1] = new Queue();
-        }
-        catch (System.Exception)
-        {
-            return 0;
-        }
-        return 1;
-    }
+                try
+                {
+                    objectArr[1] = new Queue();
+                }
+                catch (System.Exception)
+                {
+                    return 0;
+                }
+                return 1;
+            }
             public static bool testMethod()
             {
                 return (Main_old() == 0);
@@ -357,18 +392,18 @@ namespace Microsoft.SPOT.Platform.Tests
         class Other_TestClass_covariance_explicit_01
         {
             public static int Main_old()
-    {
-        Other_TestClass_covariance_explicit_01_Imp[] mc = new Other_TestClass_covariance_explicit_01_Imp[10];
-        for (int x=0; x < 10; x++)
-        {
-            mc[x] = new Other_TestClass_covariance_explicit_01_Imp();
-            mc[x].x = x;
-        }
-        object[] o = new Other_TestClass_covariance_explicit_01_Imp[10];
-        mc = (Other_TestClass_covariance_explicit_01_Imp[])o;
+            {
+                Other_TestClass_covariance_explicit_01_Imp[] mc = new Other_TestClass_covariance_explicit_01_Imp[10];
+                for (int x = 0; x < 10; x++)
+                {
+                    mc[x] = new Other_TestClass_covariance_explicit_01_Imp();
+                    mc[x].x = x;
+                }
+                object[] o = new Other_TestClass_covariance_explicit_01_Imp[10];
+                mc = (Other_TestClass_covariance_explicit_01_Imp[])o;
 
-        return 0;
-    }
+                return 0;
+            }
             public static bool testMethod()
             {
                 return (Main_old() == 0);

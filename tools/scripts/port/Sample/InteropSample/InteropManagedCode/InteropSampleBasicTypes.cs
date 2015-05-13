@@ -6,7 +6,8 @@ using System.Runtime.CompilerServices;
 using Microsoft.SPOT.Hardware;
 using System;
 
-
+// error CS0414: The field '<identifier>' is assigned but its value is never used
+#pragma warning disable 0414
 
 namespace Microsoft.SPOT.Interop
 {

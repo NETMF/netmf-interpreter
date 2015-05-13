@@ -659,11 +659,11 @@ namespace Microsoft.SPOT.Platform.Tests
                     Log.Comment(r.Message);
                     retval -= 1;
                 }
-                catch
-                {
-                    Log.Comment("FAIL -- Should not enter catch () block.");
-                    retval += 1;
-                }
+                //catch // this generates CS1058 with Roslyn
+                //{
+                //    Log.Comment("FAIL -- Should not enter catch () block.");
+                //    retval += 1;
+                //}
                 return retval;
             }
             public static bool testMethod()
@@ -786,12 +786,12 @@ namespace Microsoft.SPOT.Platform.Tests
                 catch (Exception)
                 {
                     s = 20;
-                    throw;		// rethrow float
+                    throw; // rethrow float
                 }
-                catch
-                {
-                    s = 99;
-                }
+                //catch // This generates CS1579 with Roslyn
+                //{
+                //    s = 99;
+                //}
                 return s;
             }
             public int f00()
