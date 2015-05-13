@@ -63,9 +63,10 @@
   
   <PropertyGroup>
     <!-- We need to convert the RVDS CPU type to its GCC equivalent if needed-->
-    <ARM_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'arm926EJ-S'">arm926ej-s</ARM_TYPE_FLAGS>
-    <ARM_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'ARM7TDMI'">arm7tdmi</ARM_TYPE_FLAGS>
-    <ARM_TYPE_FLAGS Condition="'$(ARM_TYPE_FLAGS)'==''">$(DEVICE_TYPE)</ARM_TYPE_FLAGS>
+    <ARM_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'arm926EJ-S'">-mcpu=arm926ej-s</ARM_TYPE_FLAGS>
+    <ARM_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'ARM7TDMI'">-mcpu=arm7tdmi</ARM_TYPE_FLAGS>
+    <ARM_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'cortex-m4'">-mcpu=cortex-m4</ARM_TYPE_FLAGS>
+    <ARM_TYPE_FLAGS Condition="'$(ARM_TYPE_FLAGS)'==''">-mcpu=$(DEVICE_TYPE)</ARM_TYPE_FLAGS>
 
     <POS_DEPENDENT></POS_DEPENDENT>
     <POS_INDEPENDENT>-fpic</POS_INDEPENDENT>
@@ -78,11 +79,12 @@
     <CC_FLAGS>$(CC_FLAGS)-xc </CC_FLAGS>
     <CPP_FLAGS>$(CPP_FLAGS)-xc++ -Wno-invalid-offsetof -fcheck-new </CPP_FLAGS>
 
+    <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'"></FLOATING_POINT_FLAG>
     <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'"> -mfloat-abi=soft </FLOATING_POINT_FLAG>
-    <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'"> </FLOATING_POINT_FLAG>
+    <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true' and '$(DEVICE_TYPE)' == 'cortex-m4'">-mfloat-abi=hard -mfpu=fpv4-sp-d16</FLOATING_POINT_FLAG>
 
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(COMPILER_TOOL)'!='GCCOP'">$(AS_CC_CPP_COMMON_FLAGS) $(FLOATING_POINT_FLAG) </AS_CC_CPP_COMMON_FLAGS>
-    <AS_CC_CPP_COMMON_FLAGS>$(AS_CC_CPP_COMMON_FLAGS) -mcpu=$(ARM_TYPE_FLAGS)</AS_CC_CPP_COMMON_FLAGS>
+    <AS_CC_CPP_COMMON_FLAGS>$(AS_CC_CPP_COMMON_FLAGS) $(ARM_TYPE_FLAGS)</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(ENDIANNESS)'=='le'">$(AS_CC_CPP_COMMON_FLAGS) -mlittle-endian</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(ENDIANNESS)'=='be'">$(AS_CC_CPP_COMMON_FLAGS) -mbig-endian</AS_CC_CPP_COMMON_FLAGS>
   </PropertyGroup>
@@ -150,8 +152,8 @@
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='arm'"     >$(CC_CPP_COMMON_FLAGS) -DCOMPILE_ARM </CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(COMPILER_TOOL)'=='GCCOP'"   >$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB </CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(COMPILER_TOOL)'!='GCCOP'"   >$(CC_CPP_COMMON_FLAGS) -mthumb-interwork -DCOMPILE_THUMB </CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2'"  >$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB2 </CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB2 </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2'"  >$(CC_CPP_COMMON_FLAGS) -mthumb -DCOMPILE_THUMB2 </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">$(CC_CPP_COMMON_FLAGS) -mthumb -DCOMPILE_THUMB2 </CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(ARMBUILD_ONLY)'!='true' "   >$(CC_CPP_COMMON_FLAGS) -mthumb </CC_CPP_COMMON_FLAGS>    
 
     <CC_CPP_COMMON_FLAGS Condition="'$(FLAVOR)'=='Instrumented' and '$(NATIVE_PROFILE_CLR)'!=''">$(CC_CPP_COMMON_FLAGS) -DNATIVE_PROFILE_CLR=$(NATIVE_PROFILE_CLR)</CC_CPP_COMMON_FLAGS>
@@ -244,9 +246,14 @@
     <!-- adding the extra lib if the CLR is compiled in RVDS, whenever we have libs from RVDS, we need this -->
     <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(ENDIANNESS)'=='be'">$(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\h_t.b $(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\c_t.b</ExtraLibs>
     <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(ENDIANNESS)'=='le'">$(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\h_t.l $(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\c_t.l</ExtraLibs>
+     <!--GNU Tools ARM Embedded-->
+    <GNU_LIB_DIR     Condition="'$(DEVICE_TYPE)' == 'cortex-m4'">$(GNU_TOOLS)\$(GNU_TARGET)\lib\armv7e-m\fpu</GNU_LIB_DIR>
+    <GNU_LIBGCC_DIR  Condition="'$(DEVICE_TYPE)' == 'cortex-m4'">$(GNU_TOOLS)\lib\gcc\$(GNU_TARGET)\$(GNU_VERSION)\armv7e-m\fpu</GNU_LIBGCC_DIR>
+    <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='thumb2' and '$(ENDIANNESS)'=='le'">$(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\h_t.l $(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\c_t.l</ExtraLibs>
 
     <LIBGCC >libgcc.a</LIBGCC>
     <LIBCGCC>libc.a</LIBCGCC>
+    <LIBCGCC  Condition="'$(DEVICE_TYPE)' == 'cortex-m4' and '$(COMPILER_TOOL_VERSION_NUM)'&gt;'4.6'">libc_s.a</LIBCGCC>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCCOP'" >
