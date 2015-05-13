@@ -207,7 +207,7 @@
     <LINK_FLAGS Condition="'$(ENDIANNESS)'=='be'">$(LINK_FLAGS) -EB</LINK_FLAGS>
     <LINK_FLAGS Condition="'$(ENDIANNESS)'=='le'">$(LINK_FLAGS) -EL</LINK_FLAGS>
   </PropertyGroup>
-
+   
   <PropertyGroup>
     <EXEName>$(BIN_DIR)\$(AssemblyName)</EXEName>
 
@@ -230,7 +230,7 @@
     <LIBCGCC>libc_nano.a</LIBCGCC>
     <LIBCGCC  Condition="'$(DEVICE_TYPE)' == 'cortex-m4'">libc_nano.a</LIBCGCC>
   </PropertyGroup>
-  
+
   <!-- item group  -->
 
   <ItemGroup>
