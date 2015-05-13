@@ -580,10 +580,12 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalSignal___M
 
     managedMsg  = stack.Arg2().Dereference();           FAULT_ON_NULL(managedMsg);    
     msgId       = stack.Arg3().NumericByRef().u4;
-    destination = stack.Arg4().RecoverString();         FAULT_ON_NULL(destination);    
+    destination = stack.Arg4().RecoverString();
     sessionId   = stack.Arg5().NumericByRef().u4;
     flags       = stack.Arg6().NumericByRef().u1;
     ttl         = stack.Arg7().NumericByRef().u4;    
+
+	CopyFromManagedMsg(managedMsg, &msg);
 
     status = AJ_MarshalSignal(bus, &msg, msgId, destination, sessionId, flags, ttl);
 
