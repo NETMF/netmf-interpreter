@@ -9,6 +9,7 @@
   <PropertyGroup>
     <AssemblyName>GlobalLock_hal</AssemblyName>
     <OutputType Condition="'$(INSTRUCTION_SET)'=='thumb2'">Library</OutputType>
+    <OutputType Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
