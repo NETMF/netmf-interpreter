@@ -111,7 +111,7 @@ struct Library_spot_io_native_Microsoft_SPOT_IO_RemovableMedia
 {
     static const int FIELD_STATIC__Insert   = 4;
     static const int FIELD_STATIC__Eject    = 5;
-    static const int FIELD_STATIC___volumes = 6;	
+    static const int FIELD_STATIC___volumes = 6;
     static const int FIELD_STATIC___events  = 7;
 
     TINYCLR_NATIVE_DECLARE(MountRemovableVolumes___STATIC__VOID);

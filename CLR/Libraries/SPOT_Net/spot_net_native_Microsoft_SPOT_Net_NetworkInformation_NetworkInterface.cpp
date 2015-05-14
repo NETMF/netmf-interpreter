@@ -110,7 +110,7 @@ HRESULT Library_spot_net_native_Microsoft_SPOT_Net_NetworkInformation_NetworkInt
 
             UINT32 dataFlag = WIRELESS_FLAG_DATA__value(wirelessConfig.wirelessFlags);
             if (dataFlag & WIRELESS_FLAG_DATA_ENCRYPTED)
-            {
+            {
                 ASSERT(FALSE);  // TODO: ADD SUPPORT FOR ENCRYPTION
                 //key = RetrieveWirelessEncryptionKey();
             }

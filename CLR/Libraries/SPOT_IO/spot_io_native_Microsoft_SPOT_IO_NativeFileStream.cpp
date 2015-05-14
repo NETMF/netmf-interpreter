@@ -114,7 +114,7 @@ HRESULT Library_spot_io_native_Microsoft_SPOT_IO_NativeFileStream::ReadWriteHelp
         //
         if(stack.m_customState == 1)
         {
-	        stack.PushValueI4( 0 );
+            stack.PushValueI4( 0 );
             
             switch(fs->GetBufferingStrategy())
             {
@@ -130,9 +130,9 @@ HRESULT Library_spot_io_native_Microsoft_SPOT_IO_NativeFileStream::ReadWriteHelp
                 break;
             }
 
-	        stack.m_customState = 2;
+            stack.m_customState = 2;
         }
-    	
+
         bytesProcessed = stack.m_evalStack[ 1 ].NumericByRef().s4;
 
         buffer += bytesProcessed;

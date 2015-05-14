@@ -2868,7 +2868,7 @@ struct CLR_RT_ExecutionEngine
     {   EXECUTION_COUNTER_MAXIMUM    = 0x70000000, // Threshold value when we increase all execution counters to avoid overflow
         EXECUTION_COUNTER_ADJUSTMENT = 0x60000000  // The update ( increase ) value for all executioin counters after threshold is reached.
     };
-	////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if defined(TINYCLR_ENABLE_SOURCELEVELDEBUGGING)
     static const int                    c_MaxBreakpointsActive               = 5;
@@ -2982,7 +2982,7 @@ struct CLR_RT_ExecutionEngine
     
     CLR_INT64                           m_currentMachineTime;
     CLR_INT64                           m_currentLocalTime;
-	CLR_INT64                           m_startTime;  
+    CLR_INT64                           m_startTime;  
     CLR_INT32                           m_lastTimeZoneOffset;
     CLR_INT64                           m_currentNextActivityTime;
     bool                                m_timerCache;

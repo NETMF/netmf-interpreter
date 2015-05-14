@@ -20,22 +20,22 @@ pointer  = 32BIT
 datatype = 8BIT
 typedef-idx = 32BIT
 method-idx  = 32BIT
-	TinyCLR Method_Idx value for identifying a specific function
+    TinyCLR Method_Idx value for identifying a specific function
 
 stream-packet = sequence-id length stream-payload
-	A chunk of data sent out over the WireProtocol.
+    A chunk of data sent out over the WireProtocol.
 
 sequence-id = short
-	Number used to order the packets
+    Number used to order the packets
 
 length = short
-	Number in bits in stream-payload
+    Number in bits in stream-payload
 
 stream-payload = *profiler-packet
-	Payload is a sequence of profiler packets.
+    Payload is a sequence of profiler packets.
 
 profiling-stream = *stream-payload
-	The reconstructed stream of data to be processed.
+    The reconstructed stream of data to be processed.
 
 profiler-packet = timestamp-packet / memory-layout-packet heapdump-start-packet / heapdump-root-packet /
                   heapdump-object-packet / heapdump-stop-packet
@@ -43,22 +43,22 @@ profiler-packet = timestamp-packet / memory-layout-packet heapdump-start-packet 
 timestamp-header = "0000001"
 timestamp-time = long
 timestamp-packet = timestamp-header timestamp-time
-	Marks time intervals to allow object lifetime estimates and histograms
+    Marks time intervals to allow object lifetime estimates and histograms
 
 memory-layout-packet = memory-layout-header memory-layout-heap-address memory-layout-heap-length
 memory-layout-header = "00000010"
 memory-layout-heap-address = pointer
 memory-layout-heap-length = int
-	Contains heap layout information useful for showing memory usage statistics.
+    Contains heap layout information useful for showing memory usage statistics.
 
 heapdump = heapdump-start-packet *heapdump-root-packet *heapdump-object-packet heapdump-stop-packet
-	Heapdumps always occur in this form. All roots are listed before all objects, and both roots and objects fall between
+    Heapdumps always occur in this form. All roots are listed before all objects, and both roots and objects fall between
     a pair of 'start' and 'stop' packets. Heap dumps may be split up across stream-payload boundaries, but they may not be
     nested, and packets may not be sent in any other order.
 
 heapdump-start-header = "00000011"
 heapdump-start-packet = heapdump-start-header
-	Marks the beginning of a heap dump. Multiple <heapdump-start-packets> can exist in the same profiling-stream
+    Marks the beginning of a heap dump. Multiple <heapdump-start-packets> can exist in the same profiling-stream
     if and only if there is a heapdump-stop-packet between every pair of heapdump-start-packets.
 
 heapdump-root-packet = heapdump-root-header ( heapdump-root-stack / heapdump-root-other )
@@ -77,7 +77,7 @@ heapdump-object-packet = heapdump-object-header  heapdump-object-type heapdump-o
 heapdump-object-header = heapdump-object-address heapdump-object-size
 heapdump-object-address = pointer
 heapdump-object-size = short
-	Size is the number of HeapBlock chunks used, not the number of bytes used.
+    Size is the number of HeapBlock chunks used, not the number of bytes used.
 
 heapdump-object-type = heapdump-object-classvaluetype / heapdump-object-array / heapdump-object-other
 
@@ -89,11 +89,11 @@ heapdump-object-array = heapdump-object-array-header heapdump-object-array-datat
 heapdump-object-array-header = "00010011"
 heapdump-object-array-typedef = typedef-idx
 heapdump-object-array-levels = short
-	Rank of the array
+    Rank of the array
 
 heapdump-object-special-cases = heapdump-object-classvaluetype-header / heapdump-object-array-header
 heapdump-object-other = datatype
-	datatype must not be one of <heapdump-object-special-cases>; If it is, the appropriate special case should be used instead.
+    datatype must not be one of <heapdump-object-special-cases>; If it is, the appropriate special case should be used instead.
 
 heapdump-object-references = *heapdump-object-reference heapdump-object-end-of-references
 heapdump-object-reference = "1" pointer
@@ -105,7 +105,7 @@ heapdump-stop-packet = heapdump-stop-header heapdump-stop-blocks-used
 
 heapdump-stop-header = "00000110"
 heapdump-stop-blocks-used = int
-	Reports how many heap-blocks were used by objects, including objects that might have been filtered out from reporting.
+    Reports how many heap-blocks were used by objects, including objects that might have been filtered out from reporting.
 
  */
 

@@ -11,7 +11,7 @@ CLR_RT_DblLinkedList CLR_RT_HeapBlock_EndPoint::m_endPoints;
 
 void CLR_RT_HeapBlock_EndPoint::HandlerMethod_Initialize()
 {
-	CLR_RT_HeapBlock_EndPoint::m_endPoints.DblLinkedList_Initialize();
+    CLR_RT_HeapBlock_EndPoint::m_endPoints.DblLinkedList_Initialize();
 }
 
 void CLR_RT_HeapBlock_EndPoint::HandlerMethod_RecoverFromGC()
@@ -31,7 +31,7 @@ CLR_RT_HeapBlock_EndPoint* CLR_RT_HeapBlock_EndPoint::FindEndPoint( const CLR_RT
 {
     TINYCLR_FOREACH_NODE(CLR_RT_HeapBlock_EndPoint,endPoint,CLR_RT_HeapBlock_EndPoint::m_endPoints)
     {
-		if((endPoint->m_addr.m_type == port.m_type) && (endPoint->m_addr.m_id == port.m_id)) return endPoint; //eliminate the need for another func. call; member variables are public
+        if((endPoint->m_addr.m_type == port.m_type) && (endPoint->m_addr.m_id == port.m_id)) return endPoint; //eliminate the need for another func. call; member variables are public
     }
     TINYCLR_FOREACH_NODE_END();
 

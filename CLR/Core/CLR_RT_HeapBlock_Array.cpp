@@ -213,25 +213,25 @@ HRESULT CLR_RT_HeapBlock_Array::IndexOf( CLR_RT_HeapBlock_Array* array, CLR_RT_H
                         TINYCLR_SET_AND_LEAVE(S_OK);
                     }
 #else
-					CLR_UINT64 refNum;
+                    CLR_UINT64 refNum;
 
                     switch(sizeElem)
-					{
-					case 1:
-						refNum = matchPtr->NumericByRef().u1;
-						break;
-					case 2:
-						refNum = matchPtr->NumericByRef().u2;
-						break;
-					case 4:
-						refNum = matchPtr->NumericByRef().u4;
-						break;
-					case 8:
-						refNum = matchPtr->NumericByRef().u8;
-						break;
-					}
-					if(memcmp( data, &refNum, sizeElem ) == 0)
-					{
+                    {
+                    case 1:
+                        refNum = matchPtr->NumericByRef().u1;
+                        break;
+                    case 2:
+                        refNum = matchPtr->NumericByRef().u2;
+                        break;
+                    case 4:
+                        refNum = matchPtr->NumericByRef().u4;
+                        break;
+                    case 8:
+                        refNum = matchPtr->NumericByRef().u8;
+                        break;
+                    }
+                    if(memcmp( data, &refNum, sizeElem ) == 0)
+                    {
                         index = pos;
                         TINYCLR_SET_AND_LEAVE(S_OK);
                     }
