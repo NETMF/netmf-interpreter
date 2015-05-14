@@ -380,6 +380,10 @@
     <DriverLibs Include="diagnostics_pal.$(LIB_EXT)" />
   </ItemGroup>
   <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\OSTask\dotNetMF.proj" />
+    <DriverLibs Include="ostask_pal.$(LIB_EXT)" />
+  </ItemGroup>
+  <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT\SPOT_Messaging\dotNetMF.proj" />
     <PlatformIndependentLibs Include="SPOT_Messaging.$(LIB_EXT)" />
   </ItemGroup>

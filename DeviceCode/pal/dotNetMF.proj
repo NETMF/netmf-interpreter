@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <SubDirectories Include="SimpleHeap"/>
+    <SubDirectories Include="OSTask"/>
   </ItemGroup>
  
   <ItemGroup Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'"> 

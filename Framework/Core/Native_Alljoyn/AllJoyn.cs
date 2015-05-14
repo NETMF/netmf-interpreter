@@ -401,7 +401,7 @@ namespace Microsoft.SPOT.AllJoyn
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status StartService(UInt32 bus,
                                             string daemonName,
-                                            UInt32 timeout,
+                                            Int32  timeout,
                                             sbyte connected,
                                             UInt16 port,
                                             string name,
