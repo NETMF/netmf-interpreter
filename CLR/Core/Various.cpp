@@ -9,10 +9,10 @@
 void CLR_RT_GetVersion( UINT16* pMajor, UINT16* pMinor, UINT16* pBuild, UINT16* pRevision )
 {
     NATIVE_PROFILE_CLR_CORE();
-	if (pMajor) *pMajor = VERSION_MAJOR;
-	if (pMinor) *pMinor = VERSION_MINOR;
-	if (pBuild) *pBuild = VERSION_BUILD;
-	if (pRevision) *pRevision = VERSION_REVISION;
+    if (pMajor) *pMajor = VERSION_MAJOR;
+    if (pMinor) *pMinor = VERSION_MINOR;
+    if (pBuild) *pBuild = VERSION_BUILD;
+    if (pRevision) *pRevision = VERSION_REVISION;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

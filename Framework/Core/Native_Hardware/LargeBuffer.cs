@@ -62,7 +62,7 @@ namespace Microsoft.SPOT.Hardware
         {
             if(ev is GenericEvent)
             {
-                if(OnLargeBufferRequest != null)               
+                if(OnLargeBufferRequest != null)
                 {
                     ushort id = (ushort)((GenericEvent)ev).EventData;
                     

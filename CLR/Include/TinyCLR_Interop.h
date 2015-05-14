@@ -50,21 +50,21 @@ extern HRESULT TINYCLR_DEBUG_PROCESS_EXCEPTION( HRESULT hr, LPCSTR szFunc, LPCST
 
 
 //    Correspondence between CLR C# and C++ native types:
-//    CLR Type	        C/C++ type	    C/C++ Ref Type
+//    CLR Type          C/C++ type	    C/C++ Ref Type
 
-//    System.Byte	    UINT8 	        UINT8&
-//    System.UInt16	    UINT16	        UINT16&
-//    System.UInt32	    UINT32	        UINT32&
-//    System.UInt64	    UINT64	        UINT64&
-//    System.Char	    CHAR 	        CHAR &
-//    System.SByte	    INT8 	        INT8 &
-//    System.Int16	    INT16	        INT16&
-//    System.Int32	    INT32	        INT32&
-//    System.Int64	    INT64	        INT64&
-//    System.Single	    float	        float&
-//    System.Double	    double	        double&
-//    System.String	    const CHAR *	CHAR *
-//    System.Byte[]	    UINT8 *	        Same as C/C++ type
+//    System.Byte       UINT8           UINT8&
+//    System.UInt16     UINT16          UINT16&
+//    System.UInt32     UINT32          UINT32&
+//    System.UInt64     UINT64          UINT64&
+//    System.Char       CHAR            CHAR &
+//    System.SByte      INT8            INT8 &
+//    System.Int16      INT16           INT16&
+//    System.Int32      INT32           INT32&
+//    System.Int64      INT64           INT64&
+//    System.Single     float           float&
+//    System.Double     double          double&
+//    System.String     const CHAR *    CHAR *
+//    System.Byte[]     UINT8 *         Same as C/C++ type
 
 // Forward declaration for managed stack frame.
 // This is internal CLR type, reference to managed stack frame is exposed to marshaling code.

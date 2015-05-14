@@ -403,7 +403,7 @@ HRESULT Library_corlib_native_System_Threading_Thread::get_CurrentThread___STATI
     CLR_RT_HeapBlock* pRes;
 
 #if defined(TINYCLR_ENABLE_SOURCELEVELDEBUGGING)
-	//If we are a thread spawned by the debugger to perform evaluations,
+    //If we are a thread spawned by the debugger to perform evaluations,
     //return the thread object that correspond to thread that has focus in debugger.
     thread = thread->m_realThread;
 #endif //#if defined(TINYCLR_ENABLE_SOURCELEVELDEBUGGING)
@@ -540,7 +540,7 @@ HRESULT Library_corlib_native_System_Threading_Thread::Join( CLR_RT_StackFrame& 
 
     TINYCLR_CHECK_HRESULT(GetThread( stack, th, true, false ));
 
-	//Don't let programs join from system threads like interrupts or finalizers
+    //Don't let programs join from system threads like interrupts or finalizers
     if ( stack.m_owningThread->m_flags & CLR_RT_Thread::TH_F_System )
     {
         TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_OPERATION);
