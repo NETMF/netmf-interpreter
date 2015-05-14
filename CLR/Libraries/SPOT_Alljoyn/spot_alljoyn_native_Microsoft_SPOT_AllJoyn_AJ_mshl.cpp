@@ -408,6 +408,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
     
     TINYCLR_HEADER();
     
+    char              fullServiceName[AJ_MAX_SERVICE_NAME_SIZE] = "";
     CLR_RT_HeapBlock  hbFullName;
     LPSTR             fullName     = NULL;
     CLR_RT_HeapBlock  hbSessionId;
@@ -454,7 +455,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
                                     port,
                                     &sessionId,
                                     managedOpts == NULL ? NULL : &opts,
-                                    fullName );
+                                    fullName == NULL ? NULL : fullServiceName ); // should never be null
 
     if( status == AJ_OK )
     {     
@@ -463,7 +464,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
         
         if(fullName)
         {
-            TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_String::CreateInstance( hbFullName, fullName ));
+            TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_String::CreateInstance( hbFullName, fullServiceName ));
         }
         else
         {
