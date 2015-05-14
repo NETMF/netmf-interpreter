@@ -14,6 +14,7 @@
 #define EVENT_POWERLEVEL  6
 #define EVENT_TIMESERVICE 7
 #define EVENT_LARGEBUFFER 8
+#define EVENT_GPIO        9
 
 void PostManagedEvent(UINT8 category, UINT8 subCategory, UINT16 data1, UINT32 data2);
 
