@@ -348,6 +348,10 @@ namespace Microsoft.SPOT.AllJoyn
                     status = AboutIconHandleGetURL(msg, reply);
                     break;
                     
+                //case AJ_METHOD_KEY_AUTHENTICATION:
+                //    status = AJ_PeerHandleKeyAuthentication(msg, &reply);
+                //    break;    
+                    
                 default:
                     return BusHandleBusMessageInner(msg);
             }
@@ -537,6 +541,6 @@ namespace Microsoft.SPOT.AllJoyn
         public static extern UInt32 PrxPropertyId(UInt32 p, UInt32 i, UInt32 m);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void CreateBus(ref UInt32 bus);        
+        public extern void CreateBus(ref UInt32 bus);     
     }
 }
