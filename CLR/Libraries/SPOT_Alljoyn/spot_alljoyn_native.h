@@ -11,7 +11,6 @@
 #define _SPOT_ALLJOYN_NATIVE_H_
 
 #include <TinyCLR_Interop.h>
-
 struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
 {
     static const int FIELD__AboutIconMime = 1;
@@ -64,6 +63,8 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(MarshalDefaultProps___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(GetArgPtr___U4__I4);
     TINYCLR_NATIVE_DECLARE(GetArgString___STRING__I4);
+    TINYCLR_NATIVE_DECLARE(UsePeerAuthentication___VOID__BOOLEAN);
+    TINYCLR_NATIVE_DECLARE(SetPassphrase___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(GetLocalGUID___STATIC__MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1);
     TINYCLR_NATIVE_DECLARE(RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN__BOOLEAN);
     TINYCLR_NATIVE_DECLARE(PrintXML___STATIC__VOID__STRING__STRING__U1__I4);

@@ -455,7 +455,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
                                     port,
                                     &sessionId,
                                     managedOpts == NULL ? NULL : &opts,
-                                    fullName == NULL ? NULL : fullServiceName ); // should never be null
+                                    fullName == NULL ? NULL : fullServiceName ); // should never be null since ref param
 
     if( status == AJ_OK )
     {     
@@ -476,6 +476,51 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
 
     stack.SetResult_I4( (CLR_INT32)status );
     
+    TINYCLR_NOCLEANUP();
+}
+
+static uint32_t PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
+{
+	//if (pinLength > bufLen) {
+	//	pinLength = bufLen;
+	//}
+	/* Always terminated with a '\0' for following AJ_Printf(). */
+	//pinStr[pinLength] = '\0';
+	//memcpy(buffer, pinStr, pinLength);
+	//AJ_AlwaysPrintf(("Need password of '%s' length %u.\n", pinStr, pinLength));
+
+	//return pinLength;
+    
+    return 0;
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentication___VOID__BOOLEAN( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+    bool usePeerAuth  = stack.Arg1().NumericByRef().s1 != 0;    
+    
+    if (usePeerAuth)
+    {
+        AJ_BusSetPasswordCallback( &BusInstance, PasswordCallback );
+    }
+
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPassphrase___VOID__STRING( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    /*{
+        CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
+
+        FAULT_ON_NULL(pMngObj);
+
+        LPCSTR param0;
+        TINYCLR_CHECK_HRESULT( Interop_Marshal_LPCSTR( stack, 1, param0 ) );
+
+        AJ::SetPassphrase( pMngObj,  param0, hr );
+        TINYCLR_CHECK_HRESULT( hr );
+    }*/
     TINYCLR_NOCLEANUP();
 }
 
