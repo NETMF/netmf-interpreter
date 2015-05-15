@@ -7,6 +7,7 @@
 
 #include <tinyhal_types.h>
 #include <AsyncProcCalls_decl.h>
+#include <OSTask_decl.h>
 #include <StateDebounce_decl.h>
 #include <Backlight_decl.h>
 #include <BatteryCharger_decl.h>
