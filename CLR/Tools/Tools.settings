@@ -248,6 +248,10 @@
     <DriverLibs Include="ccgost_openssl.$(LIB_EXT)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\OSTask\dotNetMF.proj" />
+    <DriverLibs Include="ostask_pal.$(LIB_EXT)" />
+  </ItemGroup>
 
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 
