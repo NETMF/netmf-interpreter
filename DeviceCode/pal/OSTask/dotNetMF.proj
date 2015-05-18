@@ -39,7 +39,9 @@
     <SubDirectories Include="stubs" />
   </ItemGroup>
   <ItemGroup>
+<!--
     <FastCompileCPPFile Include="OSTask_fastcompile.cpp" />
+-->
     <Compile Condition="'$(PLATFORM_FAMILY)'!='x86'" Include="OSTask.cpp" />
     <Compile Condition="'$(PLATFORM_FAMILY)'=='x86'" Include="OSTask_Win32.cpp" />
     <IncludePaths Include="DeviceCode\include" />

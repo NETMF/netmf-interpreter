@@ -6,6 +6,9 @@
 
     <RequiredProjects        Include="$(SPOCLIENT)\CLR\Core\dotnetmf.proj" />
     <PlatformIndependentLibs Include="Core.$(LIB_EXT)"/>
+
+    <RequiredProjects        Include="$(SPOCLIENT)\DeviceCode\pal\OStask\dotNetMF.proj"/>
+    <DriverLibs              Include="ostask_pal.$(LIB_EXT)"/>
   </ItemGroup>
 
   <ItemGroup> <!-- Libs needed by MetadataProcessor for manipulating assemblies -->
