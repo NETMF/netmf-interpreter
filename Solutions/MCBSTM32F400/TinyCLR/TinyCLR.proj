@@ -212,6 +212,10 @@
         <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\OSTask\dotNetMF.proj" />
+        <DriverLibs Include="ostask_pal.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
         <PlatformIndependentLibs Include="Hardware.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\CLR\core\Hardware\dotNetMF.proj" />
     </ItemGroup>
