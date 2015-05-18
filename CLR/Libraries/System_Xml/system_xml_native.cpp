@@ -85,7 +85,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_System_Xml =
 {
     "System.Xml", 
-    0xA46E1384,
+    0x804A89D4,
     method_lookup
 };
 
