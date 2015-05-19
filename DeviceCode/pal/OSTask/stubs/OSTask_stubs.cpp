@@ -21,6 +21,11 @@ BOOL OSTASK_Post( OSTASK* task )
     return FALSE;
 }
 
+BOOL OSTASK_Cancel( OSTASK* task )
+{
+    return FALSE;    
+}
+
 void OSTASK_SignalCompleted( OSTASK* task )
 {
 }
