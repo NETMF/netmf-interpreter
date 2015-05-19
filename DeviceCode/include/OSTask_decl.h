@@ -16,7 +16,7 @@ typedef HAL_CALLBACK     OSTASK_CALLBACK;
 
 //--//
 
-struct OSTASK 
+struct OSTASK : public HAL_DblLinkedNode<OSTASK>
 {
 
 private:
@@ -26,6 +26,9 @@ private:
 public:
     void Initialize( OSTASK_CALLBACK_FPN EntryPoint, void* Argument = NULL )
     {
+        // initialize dbl linked list pointers
+        ((HAL_DblLinkedNode<OSTASK>*)this)->Initialize(); 
+        
         Completed = FALSE;
         Callback.Initialize( EntryPoint, Argument);
     }
@@ -48,6 +51,7 @@ public:
 BOOL OSTASK_Initialize     ( HAL_CALLBACK_FPN completed ); 
 void OSTASK_Uninitialize   (                            ); 
 BOOL OSTASK_Post           ( OSTASK* task               ); 
+BOOL OSTASK_Cancel         ( OSTASK* task               ); 
 void OSTASK_SignalCompleted( OSTASK* task               ); 
 
 //--//

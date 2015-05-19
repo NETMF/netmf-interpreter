@@ -40,7 +40,6 @@ void OSTASK_Uninitialize()
 BOOL OSTASK_Post( OSTASK* task )
 {
     NATIVE_PROFILE_PAL_ASYNC_PROC_CALL();
-
     
     if(g_ostask_initialized == FALSE)
     {
@@ -54,6 +53,23 @@ BOOL OSTASK_Post( OSTASK* task )
         // 
         
     }
+    
+    return TRUE;    
+}
+
+BOOL OSTASK_Cancel( OSTASK* task )
+{
+    NATIVE_PROFILE_PAL_ASYNC_PROC_CALL();
+    
+    if(g_ostask_initialized == FALSE)
+    {
+        return FALSE;
+    }
+    
+    //
+    // Inform the executing thread this task is cancelled...
+    // 
+    // ... 
     
     return TRUE;    
 }
