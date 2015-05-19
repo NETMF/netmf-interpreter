@@ -15,7 +15,9 @@ void LargeBuffer_PostEvent( UINT16 marshalId )
 
 void LargeBufferTest_Completion(void* arg)
 {
-    LargeBuffer_PostEvent( (UINT16)arg );
+    // Double cast to silence compiler warning about shortening pointer type
+    // Ideally this would have used uintptr_t but that wasn't widely supported at the time the API was defined
+    LargeBuffer_PostEvent( (UINT16)(UINT32)arg );
 }
 
 static UINT8 s_Data[800*600*2];

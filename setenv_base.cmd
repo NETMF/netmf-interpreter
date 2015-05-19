@@ -81,25 +81,29 @@ rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 rem set tool-chains variables 
 
 IF /I NOT "%COMPILER_TOOL%" == "VS" (
-    IF NOT "%VS120COMNTOOLS%" == "" ( 
-        CALL "%VS120COMNTOOLS%vsvars32.bat"
-    ) ELSE (
-        IF NOT "%VS110COMNTOOLS%" == "" (
-            CALL "%VS110COMNTOOLS%vsvars32.bat"
+    IF NOT "%VS140COMNTOOS%" == "" (
+        CALL "%VS140COMNTOOS%"vsvars32.bat
+    ) ELSE (    
+        IF NOT "%VS120COMNTOOLS%" == "" ( 
+            CALL "%VS120COMNTOOLS%vsvars32.bat"
         ) ELSE (
-            IF NOT "%VS100COMNTOOLS%" == "" (
-            CALL "%VS100COMNTOOLS%vsvars32.bat"
+            IF NOT "%VS110COMNTOOLS%" == "" (
+                CALL "%VS110COMNTOOLS%vsvars32.bat"
             ) ELSE (
-                IF NOT "%VS90COMNTOOLS%" == "" (
-                    CALL "%VS90COMNTOOLS%vsvars32.bat"    
-                ) ELSE ( 
-                    @ECHO WARNING: Could not find vsvars32.bat.
-                    @ECHO WARNING: VISUAL C++ DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
-                    GOTO :EOF
+                IF NOT "%VS100COMNTOOLS%" == "" (
+                CALL "%VS100COMNTOOLS%vsvars32.bat"
+                ) ELSE (
+                    IF NOT "%VS90COMNTOOLS%" == "" (
+                        CALL "%VS90COMNTOOLS%vsvars32.bat"    
+                    ) ELSE ( 
+                        @ECHO WARNING: Could not find vsvars32.bat.
+                        @ECHO WARNING: VISUAL C++ DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
+                        GOTO :EOF
+                    )
                 )
             )
         )
-    )	
+    )
 )
 
 set TINYCLR_USE_MSBUILD=1   
@@ -374,6 +378,12 @@ IF "%COMPILER_TOOL_VERSION_NUM%"=="11" (
 IF "%COMPILER_TOOL_VERSION_NUM%"=="12" (
   IF "" == "%VS120COMNTOOLS%" GOTO BAD_VS_ARG
   CALL "%VS120COMNTOOLS%vsvars32.bat"
+  GOTO :EOF
+)
+
+IF "%COMPILER_TOOL_VERSION_NUM%"=="14" (
+  IF "" == "%VS140COMNTOOLS%" GOTO BAD_VS_ARG
+  CALL "%VS140COMNTOOLS%vsvars32.bat"
   GOTO :EOF
 )
 

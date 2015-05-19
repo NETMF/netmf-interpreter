@@ -9,6 +9,10 @@
     <CommonAssemblyInfoItemName>Compile</CommonAssemblyInfoItemName>
     <CommonAssemblyInfoLanguage>CSharp</CommonAssemblyInfoLanguage>
 
+    <!-- override Roslyn compiler(s) as it doesn't support runtimes without generics-->
+    <CscToolExe>csc.exe</CscToolExe>
+    <CscToolPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework', 'InstallRoot', null, RegistryView.Registry32))v4.0.30319</CscToolPath>
+      
     <TargetFrameworkIdentifier Condition=" '$(TargetFrameworkIdentifier)' == '' ">.NETMicroFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.4</TargetFrameworkVersion>
     <AssemblyFoldersSuffix Condition=" '$(AssemblyFoldersSuffix)' == '' ">AssemblyFoldersEx</AssemblyFoldersSuffix>
@@ -44,6 +48,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <Import Condition="'$(TargetFrameworkVersion)'!='v4.4'" Project="$(SPOCLIENT)\framework\IDE\Targets\$(TargetFrameworkVersion)\Device.Targets" />
   <Import Condition="'$(TargetFrameworkVersion)'=='v4.4'" Project="Microsoft.SPOT.Build.Targets" />
+  <Target Name="ResolveCodeAnalysisRuleSet">
+      <!-- Disable this as the older compiler doesn't support rulesets in the compiler -->
+  </Target>
 
   <PropertyGroup>
     <ImportToSDK>false</ImportToSDK>
