@@ -6,6 +6,9 @@
     <AssemblyFoldersSuffix Condition=" '$(AssemblyFoldersSuffix)' == '' ">AssemblyFoldersEx</AssemblyFoldersSuffix>
     <GenerateManifests>true</GenerateManifests>
     <TargetCompactFramework>true</TargetCompactFramework>
+    <!-- override Roslyn compiler(s) as it doesn't support runtimes without generics-->
+    <VbcToolExe>vbc.exe</VbcToolExe>
+    <VbcToolPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework', 'InstallRoot', null, RegistryView.Registry32))v4.0.30319</VbcToolPath>
   </PropertyGroup>
   
   <ItemGroup>
