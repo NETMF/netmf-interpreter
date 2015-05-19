@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+#include <windows.h>
 #include "spot_alljoyn.h"
 
 
@@ -11,8 +11,15 @@ extern AJ_Status MarshalObjectDescriptions(AJ_Message* msg);
 
 //--//
 
+const int ARG_POOL_SIZE = 10;
+const int MAX_PWD_LENGTH = 16;
+
+//--//
+
 static AJ_BusAttachment BusInstance;
-static AJ_Arg           ArgPool[10];
+static AJ_Arg           ArgPool[ARG_POOL_SIZE];
+static bool             ArgInUse[ARG_POOL_SIZE] = {0};
+static char             PwdText[MAX_PWD_LENGTH] = "";
 
 //--//
 //--//
@@ -225,7 +232,8 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetIdleTimeouts__
 struct DiscoveryContext
 {
     AJ_BusAttachment* _bus; 
-    char              _daemonName[ AJ_MAX_SERVICE_NAME_SIZE ]; 
+    char              _daemonName[ AJ_MAX_SERVICE_NAME_SIZE ];
+    char *            _pDaemonName;
     CLR_INT32         _timeout;
     bool              _fConnected;
     CLR_UINT16        _port;
@@ -236,11 +244,16 @@ struct DiscoveryContext
     void Initialize( AJ_BusAttachment* bus, LPCSTR daemonName, CLR_INT32 timeout, bool fConnected, CLR_UINT16 port, LPCSTR serviceName, CLR_UINT32 flags )
     {
         _bus = bus; 
-        hal_strcpy_s( _daemonName, hal_strlen_s(daemonName), daemonName ); 
+        _pDaemonName = NULL;
+        if ( daemonName )
+        {
+            hal_strcpy_s( _daemonName, sizeof(_daemonName), daemonName );
+            _pDaemonName = _daemonName;
+        }
         _timeout = timeout;
         _fConnected = fConnected;
         _port = port;
-        hal_strcpy_s( _serviceName, hal_strlen_s(serviceName), serviceName ); 
+        hal_strcpy_s( _serviceName, sizeof(_serviceName), serviceName ); 
         _flags = flags;
         _status = AJ_OK;
         
@@ -402,7 +415,12 @@ void StartServiceCallback( void* context )
 {
     DiscoveryContext* dc = (DiscoveryContext*)context;
 
-    dc->_status = CustomStartService( dc->_bus, dc->_daemonName, dc->_timeout, dc->_fConnected, dc->_port, dc->_serviceName, dc->_flags, NULL); 
+    dc->_status = CustomStartService( dc->_bus, dc->_pDaemonName, dc->_timeout, dc->_fConnected, dc->_port, dc->_serviceName, dc->_flags, NULL); 
+}
+
+DWORD WINAPI ThreadProc(LPVOID lpParameter)
+{
+    return 1;
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__I4__I1__U2__STRING__U4( CLR_RT_StackFrame& stack )
@@ -430,7 +448,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     serviceName = stack.Arg6().RecoverString();
     flags       = stack.Arg7().NumericByRef().u4;
 
-    if( hal_strlen_s( daemonName ) > AJ_MAX_SERVICE_NAME_SIZE )
+    if( daemonName && hal_strlen_s( daemonName ) > AJ_MAX_SERVICE_NAME_SIZE )
     {
         TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
     }
@@ -441,7 +459,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
 
     {
         CLR_RT_HeapBlock hbTimeout;
-        hbTimeout.SetInteger( timeout );        
+        hbTimeout.SetInteger( timeout );
         TINYCLR_CHECK_HRESULT(stack.SetupTimeout( hbTimeout, timeoutTicks ));
     }
     
@@ -450,7 +468,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     //
     if(stack.m_customState == 1)
     {   
-        task    = (OSTASK*)private_malloc( sizeof(OSTASK) );        
+        task    = (OSTASK*)private_malloc( sizeof(OSTASK) );
         context = (DiscoveryContext*)private_malloc( sizeof(DiscoveryContext) ); 
         
         context->Initialize( bus, daemonName, timeout, fConnected, port, serviceName, flags ); 
@@ -580,19 +598,24 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
     TINYCLR_NOCLEANUP();
 }
 
-static uint32_t PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
-{
-	//if (pinLength > bufLen) {
-	//	pinLength = bufLen;
-	//}
-	/* Always terminated with a '\0' for following AJ_Printf(). */
-	//pinStr[pinLength] = '\0';
-	//memcpy(buffer, pinStr, pinLength);
-	//AJ_AlwaysPrintf(("Need password of '%s' length %u.\n", pinStr, pinLength));
-
-	//return pinLength;
+static CLR_UINT32 PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
+{    
+    int pwdLen = hal_strlen_s( PwdText );
     
-    return 0;
+    if ( pwdLen > bufLen )
+    {
+        pwdLen = bufLen;
+    }
+ 
+	// Always terminated with a '\0' for following AJ_Printf().
+
+	PwdText[ pwdLen ] = '\0';
+	for (int i=0; i<pwdLen; i ++)
+    {
+            buffer[ i ] = PwdText[ i ];
+    }
+
+    return pwdLen;
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentication___VOID__BOOLEAN( CLR_RT_StackFrame& stack )
@@ -610,18 +633,12 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentica
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPassphrase___VOID__STRING( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    /*{
-        CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
-
-        FAULT_ON_NULL(pMngObj);
-
-        LPCSTR param0;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_LPCSTR( stack, 1, param0 ) );
-
-        AJ::SetPassphrase( pMngObj,  param0, hr );
-        TINYCLR_CHECK_HRESULT( hr );
-    }*/
+    TINYCLR_HEADER();
+    hr = S_OK;
+    
+    LPCSTR pwdText = stack.Arg1().RecoverString();     
+    hal_strcpy_s( PwdText, sizeof(PwdText), pwdText );
+        
     TINYCLR_NOCLEANUP();
 }
 
