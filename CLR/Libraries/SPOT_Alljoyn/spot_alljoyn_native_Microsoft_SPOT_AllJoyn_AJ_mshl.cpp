@@ -462,6 +462,9 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         stack.PushValueI4( (CLR_UINT32)context );
         stack.PushValueI4( (CLR_UINT32)task    );
 
+        //
+        // post to the underlying sub-system
+        //
         OSTASK_Post( task ); 
         
         stack.m_customState = 2;
@@ -489,15 +492,17 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         //
         task    = (OSTASK*          )stack.m_evalStack[ 1 ].NumericByRef().u4;
         context = (DiscoveryContext*)stack.m_evalStack[ 2 ].NumericByRef().u4;
+
+        //
+        // inform the underlying sub-system that processing is over
+        //
+        OSTASK_Cancel( task );
         
         stack.PopValue(); // task
         stack.PopValue(); // context
         stack.PopValue(); // Timeout
 
         stack.SetResult_I4( fRes ? (CLR_INT32)context->_status : AJ_ERR_TIMEOUT );        
-
-        private_free( task    );
-        private_free( context );
     }
 
     TINYCLR_CLEANUP_END();
