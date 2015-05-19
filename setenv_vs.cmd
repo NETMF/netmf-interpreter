@@ -1,7 +1,7 @@
 @echo off
 
 IF NOT "" == "%1" SET VS_VER=%1
-IF "" == "%VS_VER%" SET VS_VER=11
+IF "" == "%VS_VER%" SET VS_VER=14
 
 %~dp0\setenv_base.cmd VS %VS_VER% %2 %3 %4 %5
 
