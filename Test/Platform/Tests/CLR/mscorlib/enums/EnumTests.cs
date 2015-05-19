@@ -2364,16 +2364,18 @@ namespace Microsoft.SPOT.Platform.Tests
             public enum e1 { one = 1, two = 2, three = 3 };
             public static int Main_old()
             {
-                int retval = 7;
-                if (e1.three >= e1.two)
-                    retval -= 1;
-                if (e1.three >= e1.three)
-                    retval -= 2;
-                if (e1.three == e1.three)
-                    retval -= 4;
-                if (0 == retval) Log.Comment("PASS");
-                else Log.Comment("FAIL");
-                return retval;
+                // check ordering of values with >= operator
+                if (e1.one >= e1.two
+                 || e1.one >= e1.three
+                 || e1.two >= e1.three
+                  )
+                {
+                    Log.Comment("FAIL");
+                    return -1;
+                }
+
+                Log.Comment("PASS");
+                return 0;
             }
             public static bool testMethod()
             {
@@ -2385,16 +2387,18 @@ namespace Microsoft.SPOT.Platform.Tests
             public enum e1 { one = 1, two = 2, three = 3 };
             public static int Main_old()
             {
-                int retval = 7;
-                if (e1.two <= e1.three)
-                    retval -= 1;
-                if (e1.two != e1.three)
-                    retval -= 2;
-                if (e1.three <= e1.three)
-                    retval -= 4;
-                if (0 == retval) Log.Comment("PASS");
-                else Log.Comment("FAIL");
-                return retval;
+                 // check ordering of values with <= operator
+                if( e1.three <= e1.two
+                 || e1.three <= e1.one
+                 || e1.two <= e1.one
+                  )
+                {
+                    Log.Comment("FAIL");
+                    return -1;
+                }
+
+                Log.Comment("PASS");
+                return 0;
             }
             public static bool testMethod()
             {

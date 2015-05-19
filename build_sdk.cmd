@@ -28,7 +28,7 @@ IF "%WixMsiBuildNumberOverride%"=="" set WixMsiBuildNumberOverride=%BUILD_VERSIO
 set COMMON_BUILD_ROOT=%BUILD_SHARE%
 if NOT "%BUILD_BRANCH%"=="" set COMMON_BUILD_ROOT=%COMMON_BUILD_ROOT%\%BUILD_BRANCH%
 
-call setenv_vs.cmd 12
+call setenv_vs.cmd 14
 
 SET PORT_BUILD=
 
