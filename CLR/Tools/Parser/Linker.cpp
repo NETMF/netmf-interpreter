@@ -1857,6 +1857,7 @@ HRESULT WatchAssemblyBuilder::Linker::ProcessMethodDef_ByteCode( MetaData::TypeD
                     eh.filterStart     = (CLR_OFFSET)(leb.m_FilterOffset);
                     break;
 
+                case COR_ILEXCEPTION_CLAUSE_FAULT:
                 case COR_ILEXCEPTION_CLAUSE_NONE:
                     if(IsNilToken(leb.m_ClassToken))
                     {
