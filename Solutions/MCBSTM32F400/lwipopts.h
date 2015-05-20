@@ -52,18 +52,18 @@
 #define LWIP_NETIF_LOOPBACK             1
 #define LWIP_HAVE_LOOPIF                1
 
-#define LWIP_NETIF_LINK_CALLBACK		1
-#define LWIP_NETIF_STATUS_CALLBACK		1
+#define LWIP_NETIF_LINK_CALLBACK        1
+#define LWIP_NETIF_STATUS_CALLBACK      1
 
 #define LWIP_SO_RCVBUF                  1
 
 #ifdef DEBUG
-#define DHCP_CREATE_RAND_XID        0
+#define DHCP_CREATE_RAND_XID            0
 #endif
 
 // Keepalive values, compliant with RFC 1122. Don't change this unless you know what you're doing
-#define TCP_KEEPIDLE_DEFAULT        10000UL // Default KEEPALIVE timer in milliseconds
-#define TCP_KEEPINTVL_DEFAULT       2000UL  // Default Time between KEEPALIVE probes in milliseconds
-#define TCP_KEEPCNT_DEFAULT         9U      // Default Counter for KEEPALIVE probes
+#define TCP_KEEPIDLE_DEFAULT            10000UL // Default KEEPALIVE timer in milliseconds
+#define TCP_KEEPINTVL_DEFAULT           2000UL  // Default Time between KEEPALIVE probes in milliseconds
+#define TCP_KEEPCNT_DEFAULT             9U      // Default Counter for KEEPALIVE probes
 
 #endif /* __LWIPOPTS_H__ */
