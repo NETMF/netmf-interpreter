@@ -84,25 +84,9 @@ IF /I NOT "%COMPILER_TOOL%" == "VS" (
     IF NOT "%VS140COMNTOOS%" == "" (
         CALL "%VS140COMNTOOS%"vsvars32.bat
     ) ELSE (    
-        IF NOT "%VS120COMNTOOLS%" == "" ( 
-            CALL "%VS120COMNTOOLS%vsvars32.bat"
-        ) ELSE (
-            IF NOT "%VS110COMNTOOLS%" == "" (
-                CALL "%VS110COMNTOOLS%vsvars32.bat"
-            ) ELSE (
-                IF NOT "%VS100COMNTOOLS%" == "" (
-                CALL "%VS100COMNTOOLS%vsvars32.bat"
-                ) ELSE (
-                    IF NOT "%VS90COMNTOOLS%" == "" (
-                        CALL "%VS90COMNTOOLS%vsvars32.bat"    
-                    ) ELSE ( 
-                        @ECHO WARNING: Could not find vsvars32.bat.
-                        @ECHO WARNING: VISUAL C++ DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
-                        GOTO :EOF
-                    )
-                )
-            )
-        )
+        @ECHO WARNING: Could not find vsvars32.bat.
+        @ECHO WARNING: VISUAL STUDIO 2015 DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
+        GOTO :EOF
     )
 )
 
@@ -345,41 +329,11 @@ GOTO :EOF
 
 rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 :SET_VS_VARS
-set VSSDK11INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs11\
-if NOT EXIST "%VSSDK11INSTALLDIR%" set VSSDK11INSTALLDIR=%VSSDK110Install%
-
-set VSSDK12INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs12\
-if NOT EXIST "%VSSDK12INSTALLDIR%" set VSSDK12INSTALLDIR=%VSSDK120Install%
-
 set VSSDK14INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs14\
 if NOT EXIST "%VSSDK14INSTALLDIR%" set VSSDK14INSTALLDIR=%VSSDK140Install%
 
 set NO_ADS_WRAPPER=1
 set DOTNETMF_COMPILER=%COMPILER_TOOL_VERSION%
-
-IF "%COMPILER_TOOL_VERSION_NUM%"=="9" (
-  IF "" == "%VS90COMNTOOLS%" GOTO BAD_VS_ARG
-  CALL "%VS90COMNTOOLS%vsvars32.bat"
-  GOTO :EOF
-)
-
-IF "%COMPILER_TOOL_VERSION_NUM%"=="10" (
-  IF "" == "%VS100COMNTOOLS%" GOTO BAD_VS_ARG
-  CALL "%VS100COMNTOOLS%vsvars32.bat"
-  GOTO :EOF
-)
-
-IF "%COMPILER_TOOL_VERSION_NUM%"=="11" (
-  IF "" == "%VS110COMNTOOLS%" GOTO BAD_VS_ARG
-  CALL "%VS110COMNTOOLS%vsvars32.bat"
-  GOTO :EOF
-)
-
-IF "%COMPILER_TOOL_VERSION_NUM%"=="12" (
-  IF "" == "%VS120COMNTOOLS%" GOTO BAD_VS_ARG
-  CALL "%VS120COMNTOOLS%vsvars32.bat"
-  GOTO :EOF
-)
 
 IF "%COMPILER_TOOL_VERSION_NUM%"=="14" (
   IF "" == "%VS140COMNTOOLS%" GOTO BAD_VS_ARG
