@@ -4,6 +4,8 @@
 #ifndef __LWIPOPTS_H__
 #define __LWIPOPTS_H__
 
+#include <limits.h>
+
 #if DEBUG || _DEBUG
 #define LWIP_DEBUG 0
 #define LWIP_DBG_TYPES_ON ( LWIP_DBG_TRACE | LWIP_DBG_STATE )
@@ -52,6 +54,8 @@
 
 #define LWIP_NETIF_LINK_CALLBACK		1
 #define LWIP_NETIF_STATUS_CALLBACK		1
+
+#define LWIP_SO_RCVBUF                  1
 
 #ifdef DEBUG
 #define DHCP_CREATE_RAND_XID        0
