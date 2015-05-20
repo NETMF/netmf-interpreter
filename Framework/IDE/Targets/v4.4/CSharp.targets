@@ -7,7 +7,15 @@
     <AssemblyFoldersSuffix Condition=" '$(AssemblyFoldersSuffix)' == '' ">AssemblyFoldersEx</AssemblyFoldersSuffix>
     <GenerateManifests>true</GenerateManifests>
     <DefineConstants>$(DefineConstants),MF_FRAMEWORK_VERSION_V$(PRODVER_MAJOR)_$(PRODVER_MINOR)</DefineConstants>
+    <!-- override Roslyn compiler(s) as it doesn't support runtimes without generics-->
+    <CscToolExe>Csc.exe</CscToolExe>
+    <CscToolPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework', 'InstallRoot', null, RegistryView.Registry32))v4.0.30319</CscToolPath>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <InProject>false</InProject>
+    </Reference>
+  </ItemGroup>
 
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import  Project="Device.targets"/>

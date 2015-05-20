@@ -44,6 +44,9 @@
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Touch.dll" />
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Touch.pdb" />
 
+    <WiXComponentFiles Include="$(_curdir)\Microsoft.VisualBasic.dll" />
+    <WiXComponentFiles Include="$(_curdir)\Microsoft.VisualBasic.pdb" />
+
     <WiXComponentFiles Include="$(_curdir)\mscorlib.dll" />
     <WiXComponentFiles Include="$(_curdir)\mscorlib.pdb" />
 

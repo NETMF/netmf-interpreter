@@ -19,18 +19,6 @@
                 <Directory Id="VsFrameworkAssemblyBase" Name="v$(var.ProdVerMajorMinor)">
                   <Directory Id="VsFrameworkAssemblyRedist" Name="RedistList"/>
                 </Directory>
-                <Directory Id="VsFrameworkAssemblyBase_v4_2" Name="v4.2">
-                  <Directory Id="VsFrameworkAssemblyRedist_V4_2" Name="RedistList"/>
-                </Directory>
-                <Directory Id="VsFrameworkAssemblyBase_v4_1" Name="v4.1">
-                  <Directory Id="VsFrameworkAssemblyRedist_V4_1" Name="RedistList"/>
-                </Directory>
-                <Directory Id="VsFrameworkAssemblyBase_v4_0" Name="v4.0">
-                  <Directory Id="VsFrameworkAssemblyRedist_V4_0" Name="RedistList"/>
-                </Directory>
-                <Directory Id="VsFrameworkAssemblyBase_v3_0" Name="v3.0">
-                  <Directory Id="VsFrameworkAssemblyRedist_V3_0" Name="RedistList"/>
-                </Directory>
               </Directory>
             </Directory>
           </Directory>

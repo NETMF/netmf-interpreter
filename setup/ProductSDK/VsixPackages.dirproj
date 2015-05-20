@@ -18,7 +18,6 @@
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Targets" />  
 
   <ItemGroup>
-    <Project Condition="Exists('$(VSSDK11INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs11\netmfvs2012.csproj" />
     <Project Condition="Exists('$(VSSDK12INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs12\netmfvs2013.csproj" />
     <Project Condition="Exists('$(VSSDK14INSTALLDIR)')" Include="$(SPOCLIENT)\Framework\CorDebug\vs14\netmfvs14.csproj" />
   </ItemGroup>
@@ -26,11 +25,6 @@
   <Target Name="SignVsixContents">
     <ItemGroup>
       <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.dll" >
-        <FileType>dll</FileType>
-      </FoundFileOfType>
-    </ItemGroup>
-    <ItemGroup Condition="Exists('$(VSSDK11INSTALLDIR)')" >
-      <FoundFileOfType Include="$(BUILD_TREE_DLL)\Microsoft.SPOT.Debugger.CorDebug.dll" >
         <FileType>dll</FileType>
       </FoundFileOfType>
     </ItemGroup>
