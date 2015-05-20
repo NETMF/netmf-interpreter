@@ -96,7 +96,7 @@ BOOL OSTASK_Post( OSTASK* task )
     if(task->GetEntryPoint() != NULL)
     {
         //
-        // Add task to list
+        // Add task to list 
         //
         g_ostask_list.LinkAtBack( task );
         
@@ -141,16 +141,43 @@ BOOL OSTASK_Cancel( OSTASK* task )
     }
     
     //
-    // Tell the executing thread the task is cancelled, if needed
-    // 
-    // ...
-
-    //
-    // Remove task from list, it may have been removed already
-    //
-    if( task->IsLinked() ) 
+    // Find the task and release memory if it was cancelled
+    // if not, then mark the task as cancelled (unlink) and let 
+    // the task complete before releasing memory
+    OSTASK* current = (OSTASK*)g_ostask_list.FirstValidNode();
+    OSTASK* next    = NULL;
+    
+    while(current)
     {
-        task->Unlink();
+        next = current->Next();
+
+        if(!(next && next->Next()))
+        {    
+            next = NULL;
+        }
+        
+        if(current == task) 
+        {
+            if(task->IsLinked())
+            {
+                // the task is in the list, which means that it may be executing
+                // remove the task from the list, but defer releasing memory
+                task->Unlink();
+            }
+            else
+            {
+                // this task was already cancelled, so it is safe to release memory 
+                if( task->GetArgument() ) 
+                {
+                    private_free( task->GetArgument() ); 
+                }
+                private_free( task );    
+            }
+
+            break;
+        }
+
+        current = next;
     }
     
     LeaveCriticalSection( &g_ostask_lock );
@@ -177,25 +204,31 @@ void OSTASK_SignalCompleted( OSTASK* task )
     // Cancelled tasks are not linked...
     // 
     if(task->IsLinked()) 
-    {
+    {        
         task->SetCompleted();
+        
+        task->Unlink();
 
         if(g_ostask_completed != NULL) 
         {
             g_ostask_completed( task );
         }  
-
-        task->Unlink();
+        
+        //
+        // Let the creator of the task to release memory
+        //
+        // ...
     }
-
-    // 
-    // release memory
-    // 
-    if( task->GetArgument() ) 
+    else
     {
-        private_free( task->GetArgument() ); 
+        // this task was already cancelled, so it is safe to release memory 
+        if( task->GetArgument() ) 
+        {
+            private_free( task->GetArgument() ); 
+        }
+        private_free( task );    
+        
     }
-    private_free( task );
     
     LeaveCriticalSection( &g_ostask_lock );
 }

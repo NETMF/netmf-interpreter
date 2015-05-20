@@ -417,10 +417,11 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     CLR_UINT16        port;
     LPCSTR            serviceName = NULL;
     CLR_UINT32        flags;
-    bool              fRes;
+    bool              fSignaled;
     OSTASK*           task        = NULL;
     DiscoveryContext* context     = NULL;
-
+    AJ_Status         status      = AJ_OK;
+ 
     TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus) );
                       
     daemonName  = stack.Arg2().RecoverString( );
@@ -429,7 +430,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     port        = stack.Arg5().NumericByRef().s2;
     serviceName = stack.Arg6().RecoverString();
     flags       = stack.Arg7().NumericByRef().u4;
-
+ 
     if( hal_strlen_s( daemonName ) > AJ_MAX_SERVICE_NAME_SIZE )
     {
         TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
@@ -438,7 +439,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     {
         TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
     }
-
+ 
     {
         CLR_RT_HeapBlock hbTimeout;
         hbTimeout.SetInteger( timeout );        
@@ -455,57 +456,78 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         
         context->Initialize( bus, daemonName, timeout, fConnected, port, serviceName, flags ); 
         task   ->Initialize( StartServiceCallback,  context ); 
-
+ 
         //
-        // we will keep track of task and context in our managed stack
+        // we will keep track of task in our managed stack, context is attached to task
         //
-        stack.PushValueI4( (CLR_UINT32)context );
-        stack.PushValueI4( (CLR_UINT32)task    );
-
+        stack.PushValueAndClear(); 
+        stack.m_evalStack[ 1 ].NumericByRef().u4 = (CLR_UINT32)task;
+        
+        stack.m_customState = 2;
+        
         //
         // post to the underlying sub-system
         //
         OSTASK_Post( task ); 
-        
-        stack.m_customState = 2;
     }
 
+    //
+    // recover task and context instances
+    //
+    task    = (OSTASK*          )stack.m_evalStack[ 1 ].NumericByRef().u4;
+    context = (DiscoveryContext*)task->GetArgument();
+ 
     //
     // wait for completion, fRes will tell us about timeout being expired
     //
-    fRes = true;
-    while(fRes && task->HasCompleted() == FALSE)
+    fSignaled = true;
+    while(task->HasCompleted() == FALSE)
     {
-        TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fRes ));
+        TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled ));
+
+        // 
+        // assert that we did returned with a timeout
+        // 
+        _ASSERTE( (fSignaled == true)); 
+
+        // 
+        // Task may not be completed for this thread, so should check again 
+        // and eventually wait again
+        //
     }
 
-    TINYCLR_CLEANUP();
-    
-    if(hr != CLR_E_THREAD_WAITING)
+    //
+    // We either completed succesfully or with timeout 
+    // 
+    if(fSignaled == false)
     {
-        //
-        // we are done, cleanup
-        // 
+        status = AJ_ERR_TIMEOUT;
         
         //
-        // Get results
-        //
-        task    = (OSTASK*          )stack.m_evalStack[ 1 ].NumericByRef().u4;
-        context = (DiscoveryContext*)stack.m_evalStack[ 2 ].NumericByRef().u4;
-
-        //
-        // inform the underlying sub-system that processing is over
+        // timeout happened, inform the underlying sub-system that processing is over 
         //
         OSTASK_Cancel( task );
-        
-        stack.PopValue(); // task
-        stack.PopValue(); // context
-        stack.PopValue(); // Timeout
-
-        stack.SetResult_I4( fRes ? (CLR_INT32)context->_status : AJ_ERR_TIMEOUT );        
     }
+    else
+    {
+        status = context->_status;
 
-    TINYCLR_CLEANUP_END();
+        _ASSERTE( task->HasCompleted() ); 
+        
+        // this task is now fully executed, so it is safe to release memory 
+        if( task->GetArgument() ) 
+        {
+            private_free( task->GetArgument() ); 
+        }
+        private_free( task );    
+    }
+    
+    stack.PopValue(); // task   
+    stack.PopValue(); // Timeout
+
+    stack.SetResult_I4( status );        
+
+    TINYCLR_NOCLEANUP();
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
