@@ -163,13 +163,6 @@
     <MF_GenerateStubsFeatureProj Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).featureproj" Condition="'$(MF_GenerateStubs)'=='true'" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Reference Include="mscorlib">
-      <InProject>false</InProject>
-    </Reference>
-  </ItemGroup>
-
   <!--
         Override frameworks.targets version
         Get the path to the target .NET framework SDK directory.
