@@ -420,8 +420,14 @@ void StartServiceCallback( void* context )
 
 DWORD WINAPI ThreadProc(LPVOID lpParameter)
 {
+    DiscoveryContext* dc = (DiscoveryContext*)lpParameter;
+
+    dc->_status = CustomStartService( dc->_bus, dc->_pDaemonName, dc->_timeout, dc->_fConnected, dc->_port, dc->_serviceName, dc->_flags, NULL); 
     return 1;
 }
+
+OSTASK * g_task = NULL;
+DiscoveryContext * g_context = NULL;
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__I4__I1__U2__STRING__U4( CLR_RT_StackFrame& stack )
 {
@@ -436,8 +442,8 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     LPCSTR            serviceName = NULL;
     CLR_UINT32        flags;
     bool              fRes;
-    OSTASK*           task        = NULL;
-    DiscoveryContext* context     = NULL;
+    //OSTASK*           task        = NULL;
+    //DiscoveryContext* context     = NULL;
 
     TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus) );
                       
@@ -459,7 +465,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
 
     {
         CLR_RT_HeapBlock hbTimeout;
-        hbTimeout.SetInteger( timeout );
+        hbTimeout.SetInteger( timeout );        
         TINYCLR_CHECK_HRESULT(stack.SetupTimeout( hbTimeout, timeoutTicks ));
     }
     
@@ -468,31 +474,35 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     //
     if(stack.m_customState == 1)
     {   
-        task    = (OSTASK*)private_malloc( sizeof(OSTASK) );
-        context = (DiscoveryContext*)private_malloc( sizeof(DiscoveryContext) ); 
+        g_task    = (OSTASK*)private_malloc( sizeof(OSTASK) );        
+        g_context = (DiscoveryContext*)private_malloc( sizeof(DiscoveryContext) ); 
         
-        context->Initialize( bus, daemonName, timeout, fConnected, port, serviceName, flags ); 
-        task   ->Initialize( StartServiceCallback,  context ); 
+        g_context->Initialize( bus, daemonName, timeout, fConnected, port, serviceName, flags ); 
+        g_task   ->Initialize( StartServiceCallback,  g_context ); 
 
         //
         // we will keep track of task and context in our managed stack
         //
-        stack.PushValueI4( (CLR_UINT32)context );
-        stack.PushValueI4( (CLR_UINT32)task    );
-
+        //CLR_RT_HeapBlock& top = stack.PushValueAndClear();
+        //top.SetInteger((CLR_UINT32) task);
+        //stack.m_evalStack[ 1 ].NumericByRef().u4 = (CLR_UINT32)task;
+        
         //
         // post to the underlying sub-system
         //
-        OSTASK_Post( task ); 
+        OSTASK_Post( g_task ); 
         
         stack.m_customState = 2;
     }
 
+    //task    = (OSTASK*          )stack.m_evalStack[ 2 ].NumericByRef().u4;
+    //context = (DiscoveryContext*)stack.m_evalStack[ 1 ].NumericByRef().u4;
+        
     //
     // wait for completion, fRes will tell us about timeout being expired
     //
     fRes = true;
-    while(fRes && task->HasCompleted() == FALSE)
+    while(fRes && g_task->HasCompleted() == FALSE)
     {
         TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fRes ));
     }
@@ -508,19 +518,18 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         //
         // Get results
         //
-        task    = (OSTASK*          )stack.m_evalStack[ 1 ].NumericByRef().u4;
-        context = (DiscoveryContext*)stack.m_evalStack[ 2 ].NumericByRef().u4;
+        //task    = (OSTASK*          )stack.m_evalStack[ 2 ].NumericByRef().u4;
+        //context = (DiscoveryContext*)stack.m_evalStack[ 1 ].NumericByRef().u4;
 
         //
         // inform the underlying sub-system that processing is over
         //
-        OSTASK_Cancel( task );
+        //OSTASK_Cancel( g_task );
         
-        stack.PopValue(); // task
-        stack.PopValue(); // context
+        //stack.PopValue(); // task
         stack.PopValue(); // Timeout
 
-        stack.SetResult_I4( fRes ? (CLR_INT32)context->_status : AJ_ERR_TIMEOUT );        
+        stack.SetResult_I4( fRes ? (CLR_INT32)g_context->_status : AJ_ERR_TIMEOUT );        
     }
 
     TINYCLR_CLEANUP_END();
