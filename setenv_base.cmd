@@ -44,6 +44,7 @@ pushd %SPOCLIENT%\..
 SET SPOROOT=%CD%
 popd
 
+@REM - Load the user aliases if alias.txt exists
 if EXIST alias.txt DOSKEY /macrofile=alias.txt
 
 set NetMfTargetsBaseDir=%SPOCLIENT%\Framework\IDE\Targets\
@@ -63,13 +64,12 @@ goto :restore_path_from_old
 set DOTNETMF_OLD_PATH=%PATH%
 goto :after_path_saved_or_restored
 
-
 :restore_path_from_old
 set PATH=%DOTNETMF_OLD_PATH%
 
 :after_path_saved_or_restored
 
-set PATH=%SPOROOT%\tools\NUnit;%SPOROOT%\tools\SDPack;%SPOROOT%\bin;%PATH%
+set PATH=%SPOROOT%\bin;%PATH%
 set PATH=%SPOROOT%\tools\x86\perl\bin;%SPOROOT%\tools\x86\bin;%CLRROOT%\tools\bin;%PATH%;%CLRROOT%\tools\scripts
 set PATH=%CLRROOT%\BuildOutput\Public\%FLAVOR_WIN%\Test\Server\dll;%PATH%
 
@@ -77,12 +77,9 @@ cd %CURRENTCD%
 
 set CURRENTCD=
 
-rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-rem set tool-chains variables 
-
 IF /I NOT "%COMPILER_TOOL%" == "VS" (
-    IF NOT "%VS140COMNTOOS%" == "" (
-        CALL "%VS140COMNTOOS%"vsvars32.bat
+    IF NOT "%VS140COMNTOOLS%" == "" (
+        CALL "%VS140COMNTOOLS%"vsvars32.bat
     ) ELSE (    
         @ECHO WARNING: Could not find vsvars32.bat.
         @ECHO WARNING: VISUAL STUDIO 2015 DOES NOT APPEAR TO BE INSTALLED ON THIS MACHINE
@@ -93,141 +90,16 @@ IF /I NOT "%COMPILER_TOOL%" == "VS" (
 set TINYCLR_USE_MSBUILD=1   
 
 Title MF %FLAVOR_WIN% (%COMPILER_TOOL% %COMPILER_TOOL_VERSION_NUM%)
+rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+rem set tool-chain specific environment variables 
 
 IF /I "%COMPILER_TOOL%"=="VS"       GOTO :SET_VS_VARS 
-
-IF /I "%COMPILER_TOOL%"=="ADI"      GOTO :SET_BLACKFIN_VARS
 IF /I "%COMPILER_TOOL%"=="GCC"      GOTO :SET_GCC_VARS 
-IF /I "%COMPILER_TOOL%"=="GCCOP"    GOTO :SET_GCC_VARS 
 IF /I "%COMPILER_TOOL%"=="MDK"      GOTO :SET_MDK_VARS
-
-IF /I "%COMPILER_TOOL%"=="SHC"      GOTO :SET_SHC_VARS 
-
-IF /I "%COMPILER_TOOL%"=="ADS"      GOTO :SET_RVDS_VARS
-IF /I "%COMPILER_TOOL%"=="RVDS"     GOTO :SET_RVDS_VARS
-
 
 IF "%COMPILER_TOOL%"=="" GOTO :ERROR
 
 GOTO :EOF
-
-rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-:SET_RVDS_VARS
-REM dotnetmf team internal setting
-set DOTNETMF_COMPILER=%COMPILER_TOOL_VERSION%
-SET RVDS_EXT=_v%COMPILER_TOOL_VERSION_NUM:.=_%
-SET RVCT_EXT=%COMPILER_TOOL_VERSION_NUM:.=%
-
-IF /I "%COMPILER_TOOL_VERSION_NUM%"=="1.2" (
-   SET RVDS_EXT=
-   SET DOTNETMF_COMPILER=ADS1.2
-
-   IF NOT "%ARMROOT%" == "%SPOCLIENT%\tools\ads" (
-      IF NOT "" == "%ARMHOME%" GOTO :SET_RVDS_V12_VARS
-   )
-)
-
-setlocal EnableDelayedExpansion 
-IF /I NOT "%COMPILER_TOOL_VERSION_NUM%"=="4.1" (
-   SET TMPBIN=!RVCT%RVCT_EXT%BIN!
-   SET TMPINC=!RVCT%RVCT_EXT%INC!
-   SET TMPLIB=!RVCT%RVCT_EXT%LIB!
-) ELSE (
-   SET TMPBIN=%ARMCC41BIN%
-   SET TMPINC=%ARMCC41INC%
-   SET TMPLIB=%ARMCC41LIB%
-)
-endlocal && SET TMPBIN=%TMPBIN%&& SET TMPINC=%TMPINC%&& SET TMPLIB=%TMPLIB%
-
-IF NOT EXIST "%SPOCLIENT%\tools\ads%RVDS_EXT%\BIN\ARMAR.exe" (
-IF /I NOT "%ARMROOT%" == "%SPOCLIENT%\tools\ads%RVDS_EXT%" ( 
-IF NOT "" == "%TMPBIN%" (
-IF EXIST "%TMPBIN%\armar.exe" (
-
-   @echo Using Installed RVDS vars
-
-   SET NO_ADS_WRAPPER=1
-   SET ARMHOME=%ARMROOT%
-   SET ARMBIN=%TMPBIN%
-   SET ARMLIB=%TMPLIB% 
-   SET ARMINC=%TMPINC%
-   SET ADS_TOOLS=%ARMROOT%
-   SET ADS_TOOLS_BIN=%TMPBIN%
-   SET RVDS_INSTALLED=TRUE
-
-   SET TMPBIN=
-   SET TMPINC=
-   SET TMPLIB=
-   GOTO :EOF
-))))
-
-@echo setting source depot RVDS vars
-
-SET TMPBIN=
-SET TMPINC=
-SET TMPLIB=
-
-set PATH=%CLRROOT%\tools\ads%RVDS_EXT%\bin;%PATH%
-set ARMROOT=%SPOCLIENT%\tools\ads%RVDS_EXT%
-set ARMHOME=%ARMROOT%
-set ARMLMD_LICENSE_FILE=%ARMROOT%\licenses\license.dat
-set ADS_TOOLS=%ARMROOT%
-set ARMCONF=%ARMROOT%\BIN
-set ARMINC=%ARMROOT%\INCLUDE
-set ARMDLL=%ARMROOT%\BIN
-set ARMLIB=%ARMROOT%\LIB
-set ARMBIN=%ARMROOT%\BIN
-set ADS_TOOLS_BIN=%ADS_TOOLS%\BIN
-
-IF NOT "%RVCT_EXT%"=="" (
-  set RVCT%RVCT_EXT%BIN=%ARMBIN%
-  set RVCT%RVCT_EXT%INC=%ARMINC%
-  set RVCT%RVCT_EXT%LIB=%ARMLIB%
-)
-
-GOTO :EOF
-
-
-rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-:SET_RVDS_V12_VARS
-@echo setting vars for RVDS 1.2 compiler
-SET COMPILER_TOOL=RVDS
-set DOTNETMF_COMPILER=ADS%COMPILER_TOOL_VERSION_NUM%
-
-set ARMROOT=%ARMHOME%
-set ADS_TOOLS_BIN=%ARMDLL%
-GOTO :EOF
-
-
-rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-:SET_BLACKFIN_VARS
-@ECHO Setting ADI env var and path
-
-set NO_ADS_WRAPPER=1
-set DOTNETMF_COMPILER=ADI%COMPILER_TOOL_VERSION_NUM%
-
-
-IF NOT "%ARG%"     == "" GOTO :DSP_INSTALLED
-IF NOT "%ADI_DSP%" == "" GOTO :DSP_INSTALLED
-
-  set ADI_DSP=%CLRROOT%\tools\adi\
-  set ANALOGD_LECENSE_FILE=%ADI_DSP%\license.dat
-
-  echo adding   HKLM\Software\Analog Devices\VisualDSP++ %COMPILER_TOOL_VERSION_NUM%\Install Path=%ADI_DSP%
-  call reg add "HKLM\Software\Analog Devices" /f 
-  call reg add "HKLM\Software\Analog Devices\VisualDSP++ %COMPILER_TOOL_VERSION_NUM%" /f 
-  call reg add "HKLM\Software\Analog Devices\VisualDSP++ %COMPILER_TOOL_VERSION_NUM%" /f /v "Install Path" /t REG_SZ /d %ADI_DSP%
-  echo adding   HKLM\Software\Analog Devices\VisualDSP++ %COMPILER_TOOL_VERSION_NUM%\License Path=%ADI_DSP%
-  call reg add "HKLM\Software\Analog Devices\VisualDSP++ %COMPILER_TOOL_VERSION_NUM%" /f /v "License Path" /t REG_SZ /d %ADI_DSP%
-
-:DSP_INSTALLED
-
-  IF "%ADI_DSP%"=="" set ADI_DSP=%ARG3%
-
-set PATH=%ADI_DSP%;%PATH%
-
-GOTO :EOF
-
 
 rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 :SET_GCC_VARS
@@ -257,22 +129,6 @@ set GNU_TARGET=arm-none-eabi
 GOTO :BAD_GCC_ARG
 ))
 
-
-IF /I "%COMPILER_TOOL%"=="GCCOP" (
-IF EXIST "%ARG3%\include\elips_bs" (
-
-set ARMINC=%ARG3%\include\elips_bs
-set ARMLIB=%ARG3%\lib
-set GNU_TOOLS=%ARG3%
-set GNU_TOOLS_BIN=%ARG3%\bin
-set GNU_TARGET=arm-elf
-set COMPILER_PATH=%ARG3%
-
-) ELSE (
-@ECHO Could not find %ARG3%\include\elips_bs
-GOTO :BAD_GCC_ARG
-))
-
 GOTO :EOF
 
 :BAD_GCC_ARG
@@ -291,7 +147,8 @@ rem use a default for MDK
 set NO_ADS_WRAPPER=1
 set DOTNETMF_COMPILER=%COMPILER_TOOL_VERSION%
 
-IF "%ARG3%"=="" set ARG3=%SystemDrive%\Keil\ARM
+IF "%ARG3%"=="" set ARG3=%SystemDrive%\Keil_v5\ARM
+IF NOT EXIST "%ARG3%" set ARG3=%SystemDrive%\Keil\ARM
 IF NOT EXIST "%ARG3%" GOTO :BAD_MDK_ARG
 
 SET MDK_TOOL_PATH=%ARG3%
@@ -329,9 +186,6 @@ GOTO :EOF
 
 rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 :SET_VS_VARS
-set VSSDK12INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs12\
-if NOT EXIST "%VSSDK12INSTALLDIR%" set VSSDK12INSTALLDIR=%VSSDK120Install%
-
 set VSSDK14INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs14\
 if NOT EXIST "%VSSDK14INSTALLDIR%" set VSSDK14INSTALLDIR=%VSSDK140Install%
 
@@ -351,41 +205,3 @@ IF "%COMPILER_TOOL_VERSION_NUM%"=="14" (
 @ECHO.
 
 GOTO :EOF
-
-rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-:SET_SHC_VARS
-
-SET COMPILER_TOOL=SHC
-set NO_ADS_WRAPPER=1
-set DOTNETMF_COMPILER=%COMPILER_TOOL_VERSION%
-SET SHC_VER_PATH=%COMPILER_TOOL_VERSION_NUM:.=_%
-
-IF "%ARG3%"=="" (
-  SET SHC_TOOL_PATH=%SPOCLIENT%\tools\SH\%SHC_VER_PATH%
-) ELSE (
-  SET SHC_TOOL_PATH=%ARG3:"=%
-)
-
-IF NOT EXIST "%SHC_TOOL_PATH%\BIN\SHCPP.exe" SET SHC_TOOL_PATH=%SHC_TOOL_ROOT%%SHC_VER_PATH%
-
-IF NOT EXIST "%SHC_TOOL_PATH%\BIN\SHCPP.exe" GOTO :BAD_SHC_ARG
-
-set PATH=%SHC_TOOL_PATH%\bin;%PATH%
-set SHC_LIB=%SHC_TOOL_PATH%\bin
-set SHC_INC=%SHC_TOOL_PATH%\include
-set SHC_TMP=%SHC_TOOL_PATH%\CTemp
-set SHC_TOOLS_BIN=%SHC_TOOL_PATH%\bin
-
-GOTO :EOF
-
-:BAD_SHC_ARG
-SET SHC_TOOL_PATH=
-
-@ECHO.
-@ECHO Error - Invalid argument.  Usage: setenv.cmd SHC_TOOL_PATH
-@ECHO         Example:  setenv.cmd c:\sh\9_2_0
-@ECHO.
-
-GOTO :EOF
-
-rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
