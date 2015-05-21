@@ -79,7 +79,6 @@
       />
   </Target>
     <Target Name="CheckForPrerequisites">
-        <Warning Condition="!Exists('$(VSSDK11INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2012 SDK not found VSIX package will not be generated" />
         <Warning Condition="!Exists('$(VSSDK12INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2013 SDK not found VSIX package will not be generated" />
         <Warning Condition="!Exists('$(VSSDK14INSTALLDIR)')" Code="NETMF" Text="Visual Studio 2015 SDK not found VSIX package will not be generated" />
     </Target>

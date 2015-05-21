@@ -24,7 +24,7 @@
     <FLAVOR_WIN Condition="'$(FLAVOR_WIN)'=='' AND '$(Configuration)'!='Debug'" >Release</FLAVOR_WIN>
     <FLAVOR_MEMORY Condition="'$(FLAVOR_MEMORY)'==''">FLASH</FLAVOR_MEMORY>
     <CLRLIB Condition="'$(CLRLIB)'==''">$(SPOCLIENT)\Tools\Libraries</CLRLIB>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)'==''" >12.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)'==''" >14.0</VisualStudioVersion>
     <!-- use registry to get VC install directory (this is what the VCVARS32.bat does for a VS command prompt) -->
     <VcInstallDir Condition="'$(VcInstallDir)'==''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\SxS\VC7', '$(VisualStudioVersion)', null, RegistryView.Registry32))</VcInstallDir>
   </PropertyGroup>
