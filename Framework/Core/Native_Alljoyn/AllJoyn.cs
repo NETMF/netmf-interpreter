@@ -348,10 +348,6 @@ namespace Microsoft.SPOT.AllJoyn
                     status = AboutIconHandleGetURL(msg, reply);
                     break;
                     
-                //case AJ_METHOD_KEY_AUTHENTICATION:
-                //    status = AJ_PeerHandleKeyAuthentication(msg, &reply);
-                //    break;    
-                    
                 default:
                     return BusHandleBusMessageInner(msg);
             }
@@ -385,9 +381,6 @@ namespace Microsoft.SPOT.AllJoyn
         public extern void Initialize();                
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void SendNotification(string text);
-        
-        [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern void PrintXML(string localPath, string localInterfaceDescription, byte localFlags, IntPtr localContext);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -405,7 +398,7 @@ namespace Microsoft.SPOT.AllJoyn
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status StartService(UInt32 bus,
                                             string daemonName,
-                                            Int32  timeout,
+                                            UInt32 timeout,
                                             sbyte connected,
                                             UInt16 port,
                                             string name,

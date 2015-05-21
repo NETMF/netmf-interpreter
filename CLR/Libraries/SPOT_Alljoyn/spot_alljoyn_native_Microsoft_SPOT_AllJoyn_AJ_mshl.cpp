@@ -426,10 +426,7 @@ DWORD WINAPI ThreadProc(LPVOID lpParameter)
     return 1;
 }
 
-OSTASK * g_task = NULL;
-DiscoveryContext * g_context = NULL;
-
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__I4__I1__U2__STRING__U4( CLR_RT_StackFrame& stack )
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
     
@@ -441,10 +438,11 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     CLR_UINT16        port;
     LPCSTR            serviceName = NULL;
     CLR_UINT32        flags;
-    bool              fRes;
-    //OSTASK*           task        = NULL;
-    //DiscoveryContext* context     = NULL;
-
+    bool              fSignaled;
+    OSTASK*           task        = NULL;
+    DiscoveryContext* context     = NULL;
+    AJ_Status         status      = AJ_OK;
+ 
     TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus) );
                       
     daemonName  = stack.Arg2().RecoverString( );
@@ -462,7 +460,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     {
         TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
     }
-
+ 
     {
         CLR_RT_HeapBlock hbTimeout;
         hbTimeout.SetInteger( timeout );        
@@ -474,65 +472,86 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     //
     if(stack.m_customState == 1)
     {   
-        g_task    = (OSTASK*)private_malloc( sizeof(OSTASK) );        
-        g_context = (DiscoveryContext*)private_malloc( sizeof(DiscoveryContext) ); 
+        task    = (OSTASK*)private_malloc( sizeof(OSTASK) );        
+        context = (DiscoveryContext*)private_malloc( sizeof(DiscoveryContext) ); 
         
-        g_context->Initialize( bus, daemonName, timeout, fConnected, port, serviceName, flags ); 
-        g_task   ->Initialize( StartServiceCallback,  g_context ); 
-
+        context->Initialize( bus, daemonName, timeout, fConnected, port, serviceName, flags ); 
+        task   ->Initialize( StartServiceCallback,  context ); 
+ 
         //
-        // we will keep track of task and context in our managed stack
+        // we will keep track of task in our managed stack, context is attached to task
         //
-        //CLR_RT_HeapBlock& top = stack.PushValueAndClear();
-        //top.SetInteger((CLR_UINT32) task);
-        //stack.m_evalStack[ 1 ].NumericByRef().u4 = (CLR_UINT32)task;
+        stack.PushValueAndClear(); 
+        stack.m_evalStack[ 1 ].NumericByRef().u4 = (CLR_UINT32)task;
+        
+        stack.m_customState = 2;
         
         //
         // post to the underlying sub-system
         //
-        OSTASK_Post( g_task ); 
-        
-        stack.m_customState = 2;
+        OSTASK_Post( task ); 
     }
 
     //task    = (OSTASK*          )stack.m_evalStack[ 2 ].NumericByRef().u4;
     //context = (DiscoveryContext*)stack.m_evalStack[ 1 ].NumericByRef().u4;
         
     //
+    // recover task and context instances
+    //
+    task    = (OSTASK*          )stack.m_evalStack[ 1 ].NumericByRef().u4;
+    context = (DiscoveryContext*)task->GetArgument();
+ 
+    //
     // wait for completion, fRes will tell us about timeout being expired
     //
-    fRes = true;
-    while(fRes && g_task->HasCompleted() == FALSE)
+    fSignaled = true;
+    while(task->HasCompleted() == FALSE)
     {
-        TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fRes ));
-    }
+        TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled ));
 
-    TINYCLR_CLEANUP();
-    
-    if(hr != CLR_E_THREAD_WAITING)
-    {
-        //
-        // we are done, cleanup
         // 
-        
-        //
-        // Get results
-        //
-        //task    = (OSTASK*          )stack.m_evalStack[ 2 ].NumericByRef().u4;
-        //context = (DiscoveryContext*)stack.m_evalStack[ 1 ].NumericByRef().u4;
+        // assert that we did returned with a timeout
+        // 
+        _ASSERTE( (fSignaled == true)); 
 
+        // 
+        // Task may not be completed for this thread, so should check again 
+        // and eventually wait again
         //
-        // inform the underlying sub-system that processing is over
-        //
-        //OSTASK_Cancel( g_task );
-        
-        //stack.PopValue(); // task
-        stack.PopValue(); // Timeout
-
-        stack.SetResult_I4( fRes ? (CLR_INT32)g_context->_status : AJ_ERR_TIMEOUT );        
     }
 
-    TINYCLR_CLEANUP_END();
+    //
+    // We either completed succesfully or with timeout 
+    // 
+    if(fSignaled == false)
+    {
+        status = AJ_ERR_TIMEOUT;
+        
+        //
+        // timeout happened, inform the underlying sub-system that processing is over 
+        //
+        OSTASK_Cancel( task );
+    }
+    else
+    {
+        status = context->_status;
+
+        _ASSERTE( task->HasCompleted() ); 
+        
+        // this task is now fully executed, so it is safe to release memory 
+        if( task->GetArgument() ) 
+        {
+            private_free( task->GetArgument() ); 
+        }
+        private_free( task );    
+    }
+    
+    stack.PopValue(); // task   
+    stack.PopValue(); // Timeout
+
+    stack.SetResult_I4( status );        
+
+    TINYCLR_NOCLEANUP();
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
@@ -626,8 +645,9 @@ static CLR_UINT32 PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
 	PwdText[ pwdLen ] = '\0';
 	for (int i=0; i<pwdLen; i ++)
     {
-            buffer[ i ] = PwdText[ i ];
+        buffer[ i ] = PwdText[ i ];
     }
+
 
     return pwdLen;
 }
@@ -635,11 +655,16 @@ static CLR_UINT32 PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentication___VOID__BOOLEAN( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
+    
     bool usePeerAuth  = stack.Arg1().NumericByRef().s1 != 0;    
     
     if (usePeerAuth)
     {
         AJ_BusSetPasswordCallback( &BusInstance, PasswordCallback );
+    }
+    else
+    {
+        AJ_BusSetPasswordCallback( &BusInstance, NULL );
     }
 
     TINYCLR_NOCLEANUP();
@@ -648,9 +673,14 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentica
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPassphrase___VOID__STRING( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
-    hr = S_OK;
     
     LPCSTR pwdText = stack.Arg1().RecoverString();     
+    
+    if ( hal_strlen_s(pwdText) >= MAX_PWD_LENGTH )
+    {
+        TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
+    }
+    
     hal_strcpy_s( PwdText, sizeof(PwdText), pwdText );
         
     TINYCLR_NOCLEANUP();
@@ -1459,30 +1489,6 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusReplyAcceptSes
     stack.SetResult_I4( (CLR_INT32)status );
     
     TINYCLR_NOCLEANUP();
-}
-
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SendNotification___VOID__STRING( CLR_RT_StackFrame& stack )
-{
-    TINYCLR_HEADER();
-
-    //
-    // TODO: fix or remove 
-    //
-    
-    //CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
-    //
-    //      FAULT_ON_NULL(pMngObj);
-
-    //    CLR_RT_HeapBlock_String * text = stack.Arg1().DereferenceString();
-
-
-    //  textToSend[0].key   = lang1;
-    // textToSend[0].value = text->StringText();
-    // SendNotification(&BusInstance);
-
-    //  TINYCLR_CHECK_HRESULT( hr );
-    
-    TINYCLR_NOCLEANUP_NOLABEL();
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusHandleBusMessageInner___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage( CLR_RT_StackFrame& stack )
