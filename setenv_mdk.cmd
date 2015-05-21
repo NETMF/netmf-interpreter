@@ -11,6 +11,6 @@ GOTO :EOF
 @echo.
 @echo ERROR: Invalid version argument.
 @echo USAGE: setenv_mdk.cmd MDK_VERSION [MDK_TOOL_PATH]
-@echo        where MDK_VERSION is (3.80a, 4.12, 4.13, ...)
-@echo        where MDK_TOOL_PATH is the path to the ARM directory of the MDK install (c:\Keil\Arm)
+@echo        where MDK_VERSION is the version of the compiler contained in the MDK/RVDS (e.g for MDK 5.14 ARMCC is 5.05)
+@echo        where MDK_TOOL_PATH is the path to the ARM directory of the MDK install (i.e. c:\Keil_v5\Arm)
 @echo.
