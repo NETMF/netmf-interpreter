@@ -9,8 +9,8 @@ if "%1" == "-?" goto :ShowUsage
 if /i "%1" == "/h" goto :ShowUsage
 if /i "%1" == "-h" goto :ShowUsage
 
-if /i "%VSSDK120Install%"=="" goto :MissingVSSDK
-if NOT EXIST "%VSSDK120Install%" goto :MissingVSSDK
+if /i "%VSSDK140Install%"=="" goto :MissingVSSDK
+if NOT EXIST "%VSSDK140Install%" goto :MissingVSSDK
 
 SET BUILD_VERSION=%1
 if "%BUILD_VERSION%"=="" set BUILD_VERSION=0
@@ -60,5 +60,5 @@ GOTO :EOF
 goto :EOF
 
 :MissingVSSDK
-@ECHO ERROR: Visual Studio 2013 SDK (VSSDK) was not detected, this SDK is required to build the .NET Micro Framework SDK source code
+@ECHO ERROR: Visual Studio 2015 SDK (VSSDK) was not detected, this SDK is required to build the .NET Micro Framework SDK source code
 goto :EOF
