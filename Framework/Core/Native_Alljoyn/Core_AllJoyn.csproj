@@ -26,6 +26,7 @@
   <ItemGroup>
     <Compile Include="AllJoyn.cs" />    
     <Compile Include="AboutService.cs" />
+    <Compile Include="KeyAuthentication.cs" />
   </ItemGroup>
   
   <ItemGroup>

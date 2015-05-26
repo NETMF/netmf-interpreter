@@ -643,6 +643,11 @@ HRESULT CLR_RT_ExecutionEngine::CreateEntryPointArgs( CLR_RT_HeapBlock& argsBlk,
 
 #endif
 
+void SignalOSTaskCompleted( void* )
+{
+    g_CLR_RT_ExecutionEngine.SignalEvents( CLR_RT_ExecutionEngine::c_Event_OSTask );
+}
+    
 HRESULT CLR_RT_ExecutionEngine::Execute( LPWSTR entryPointArgs, int maxContextSwitch )
 {            
     NATIVE_PROFILE_CLR_CORE();
@@ -651,7 +656,11 @@ HRESULT CLR_RT_ExecutionEngine::Execute( LPWSTR entryPointArgs, int maxContextSw
     CLR_RT_HeapBlock ref;
     CLR_RT_Thread*   thMain = NULL;
 
-        
+    //
+    // For external tasks, we will use one local handler
+    //
+    OSTASK_Initialize( SignalOSTaskCompleted );
+
     if(TINYCLR_INDEX_IS_INVALID(g_CLR_RT_TypeSystem.m_entryPoint))
     {
 #if !defined(BUILD_RTM) || defined(PLATFORM_WINDOWS)

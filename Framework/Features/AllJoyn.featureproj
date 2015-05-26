@@ -7,6 +7,7 @@
     <Groups />
     <ALLJOYN_FEATUREPROJ>True</ALLJOYN_FEATUREPROJ>
   </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\Framework\Features\OSTask.libcatproj" />
   <ItemGroup>
     <!--<DriverLibs Include="SPOT_Alljoyn.$(LIB_EXT)" />-->
     <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\Native_Alljoyn\Core_Alljoyn.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />

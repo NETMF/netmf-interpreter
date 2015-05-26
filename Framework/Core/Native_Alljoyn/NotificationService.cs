@@ -46,7 +46,7 @@ namespace Microsoft.SPOT.AllJoyn.Services
         };
         
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern AJ_Status Initialize_NotificationService();
+        public extern AJ_Status Initialize_NotificationService( string text );
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status SendNotifySignal(UInt32 bus, AJNS_Notification not, UInt32 ttl, string message, ref UInt32 serialNumber);

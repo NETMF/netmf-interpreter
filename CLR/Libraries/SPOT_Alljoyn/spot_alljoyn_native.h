@@ -19,15 +19,15 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     static const int FIELD__AboutIconURL = 4;
     static const int FIELD__doAnnounce = 5;
     static const int FIELD__AboutPropGetterCB = 6;
+    static const int FIELD__m_PwdText = 7;
 
     TINYCLR_NATIVE_DECLARE(GetUniqueName___STRING__U4);
-    TINYCLR_NATIVE_DECLARE(Initialize___U4);
-    TINYCLR_NATIVE_DECLARE(SendNotification___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(Initialize___VOID);
     TINYCLR_NATIVE_DECLARE(SetBusLinkTimeout___MicrosoftSPOTAllJoynAJStatus__U4__U4);
     TINYCLR_NATIVE_DECLARE(NotifyLinkActive___VOID);
     TINYCLR_NATIVE_DECLARE(BusLinkStateProc___MicrosoftSPOTAllJoynAJStatus__U4);
     TINYCLR_NATIVE_DECLARE(SetIdleTimeouts___MicrosoftSPOTAllJoynAJStatus__U4__U4__U4);
-    TINYCLR_NATIVE_DECLARE(StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4__I4);
+    TINYCLR_NATIVE_DECLARE(StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4);
     TINYCLR_NATIVE_DECLARE(StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING);
     TINYCLR_NATIVE_DECLARE(AlwaysPrintf___VOID__STRING);
     TINYCLR_NATIVE_DECLARE(AboutIconHandleGetContent___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage__SZARRAY_U1);
@@ -63,6 +63,9 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(MarshalDefaultProps___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage);
     TINYCLR_NATIVE_DECLARE(GetArgPtr___U4__I4);
     TINYCLR_NATIVE_DECLARE(GetArgString___STRING__I4);
+    TINYCLR_NATIVE_DECLARE(UsePeerAuthentication___VOID__BOOLEAN);
+    TINYCLR_NATIVE_DECLARE(SetPassphrase___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(AuthenticatePeer___MicrosoftSPOTAllJoynAJStatus__U4__STRING);
     TINYCLR_NATIVE_DECLARE(GetLocalGUID___STATIC__MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1);
     TINYCLR_NATIVE_DECLARE(RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN__BOOLEAN);
     TINYCLR_NATIVE_DECLARE(PrintXML___STATIC__VOID__STRING__STRING__U1__I4);

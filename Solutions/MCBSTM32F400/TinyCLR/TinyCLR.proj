@@ -76,6 +76,7 @@
 <<<<<<< HEAD
 
     <Import Project="$(SPOCLIENT)\Framework\Features\AllJoyn.featureproj" />
+    <Import Project="$(SPOCLIENT)\Framework\Features\AllJoyn_Services.featureproj" />
 
 =======
     <Import Condition="'$(WINDOWS_DEVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Windows_Devices.featureproj" />
@@ -214,6 +215,10 @@
     <ItemGroup>
         <PlatformIndependentLibs Include="Core.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\OSTask\dotNetMF.proj" />
+        <DriverLibs Include="ostask_pal.$(LIB_EXT)" />
     </ItemGroup>
     <ItemGroup>
         <PlatformIndependentLibs Include="Hardware.$(LIB_EXT)" />

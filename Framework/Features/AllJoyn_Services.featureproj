@@ -13,6 +13,6 @@
     <PlatformIndependentLibs Include="SPOT_Alljoyn_Services.$(LIB_EXT)" />
     <InteropFeature Include="Microsoft_SPOT_Alljoyn_Services" />
     <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Alljoyn.Services.pe" />
-    <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_AllJoyn\dotnetmf.proj" />
+    <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_AllJoyn_Services\dotnetmf.proj" />
   </ItemGroup>
 </Project>

@@ -22,29 +22,17 @@ namespace Microsoft
         {
             struct AJ
             {
-                // Helper Functions to access fields of managed object
-                /*static LPCSTR& Get_AboutIconMime( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AboutIconMime ); }
-
-                static UINT32& Get_AboutIconSize( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UINT32( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AboutIconSize ); }
-
-                static UNSUPPORTED_TYPE& Get_AboutIconContent( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UNSUPPORTED_TYPE( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AboutIconContent ); }
-
-                static LPCSTR& Get_AboutIconURL( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AboutIconURL ); }
-
-                static INT8& Get_doAnnounce( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_INT8( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__doAnnounce ); }
-
-                static UNSUPPORTED_TYPE& Get_AboutPropGetterCB( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UNSUPPORTED_TYPE( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__AboutPropGetterCB ); }
-                */
                 
+                //static LPCSTR& Get_m_PwdText( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__m_PwdText ); }
+
                 // Declaration of stubs. These functions are implemented by Interop code developers
                 static LPCSTR GetUniqueName( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
-                static UINT32 Initialize( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
-                static void SendNotification( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static void Initialize( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
                 static INT32 SetBusLinkTimeout( CLR_RT_HeapBlock* pMngObj, UINT32 param0, UINT32 param1, HRESULT &hr );
                 static void NotifyLinkActive( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
                 static INT32 BusLinkStateProc( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
                 static INT32 SetIdleTimeouts( CLR_RT_HeapBlock* pMngObj, UINT32 param0, UINT32 param1, UINT32 param2, HRESULT &hr );
-                static INT32 StartService( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, UINT32 param2, INT8 param3, UINT16 param4, LPCSTR param5, UINT32 param6, INT32 param7, HRESULT &hr );
+                static INT32 StartService( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, UINT32 param2, INT8 param3, UINT16 param4, LPCSTR param5, UINT32 param6, HRESULT &hr );
                 static INT32 StartClientByName( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, UINT32 param2, UINT8 param3, LPCSTR param4, UINT16 param5, UINT32 * param6, UNSUPPORTED_TYPE param7, UNSUPPORTED_TYPE param8, HRESULT &hr );
                 static void AlwaysPrintf( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
                 static INT32 AboutIconHandleGetContent( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, UNSUPPORTED_TYPE param2, HRESULT &hr );
@@ -66,8 +54,8 @@ namespace Microsoft
                 static LPCSTR UnmarshalPropertyArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, HRESULT &hr );
                 static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, HRESULT &hr );
                 static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, HRESULT &hr );
-                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, LPCSTR param4, HRESULT &hr );
-                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, LPCSTR param3, HRESULT &hr );
+                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, LPCSTR param3, LPCSTR param4, HRESULT &hr );
+                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, HRESULT &hr );
                 static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, HRESULT &hr );
                 static INT32 MarshalContainer( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, UINT32 param2, HRESULT &hr );
                 static INT32 MarshalCloseContainer( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, HRESULT &hr );
@@ -80,6 +68,9 @@ namespace Microsoft
                 static INT32 MarshalDefaultProps( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, HRESULT &hr );
                 static UINT32 GetArgPtr( CLR_RT_HeapBlock* pMngObj, INT32 param0, HRESULT &hr );
                 static LPCSTR GetArgString( CLR_RT_HeapBlock* pMngObj, INT32 param0, HRESULT &hr );
+                static void UsePeerAuthentication( CLR_RT_HeapBlock* pMngObj, INT8 param0, HRESULT &hr );
+                static void SetPassphrase( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static INT32 AuthenticatePeer( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, HRESULT &hr );
                 static INT32 GetLocalGUID( CLR_RT_TypedArray_UINT8 param0, HRESULT &hr );
                 static void RegisterObjects( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, INT8 param4, INT8 param5, HRESULT &hr );
                 static void PrintXML( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, HRESULT &hr );
