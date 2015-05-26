@@ -491,9 +491,6 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         //
         OSTASK_Post( task ); 
     }
-
-    //task    = (OSTASK*          )stack.m_evalStack[ 2 ].NumericByRef().u4;
-    //context = (DiscoveryContext*)stack.m_evalStack[ 1 ].NumericByRef().u4;
         
     //
     // recover task and context instances
@@ -648,8 +645,12 @@ static CLR_UINT32 PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
         buffer[ i ] = PwdText[ i ];
     }
 
-
     return pwdLen;
+}
+
+void AuthCallback(const void* context, AJ_Status status)
+{
+    *((AJ_Status*)context) = status;
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentication___VOID__BOOLEAN( CLR_RT_StackFrame& stack )
@@ -670,11 +671,30 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentica
     TINYCLR_NOCLEANUP();
 }
 
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AuthenticatePeer___MicrosoftSPOTAllJoynAJStatus__U4__STRING( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_BusAttachment * bus;
+        LPCSTR fullServiceName = NULL;         
+        AJ_Status authStatus = AJ_ERR_NULL;
+        
+        TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
+        fullServiceName = stack.Arg2().RecoverString();    
+            
+        authStatus = AJ_BusAuthenticatePeer(bus, fullServiceName, AuthCallback, &authStatus);
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, authStatus );
+
+    }
+    TINYCLR_NOCLEANUP();
+}
+
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPassphrase___VOID__STRING( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
     
-    LPCSTR pwdText = stack.Arg1().RecoverString();     
+    LPCSTR pwdText = stack.Arg1().RecoverString();
     
     if ( hal_strlen_s(pwdText) >= MAX_PWD_LENGTH )
     {

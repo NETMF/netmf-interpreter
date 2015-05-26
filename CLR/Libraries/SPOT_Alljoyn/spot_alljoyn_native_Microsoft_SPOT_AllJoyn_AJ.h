@@ -22,10 +22,12 @@ namespace Microsoft
         {
             struct AJ
             {
+                
+                //static LPCSTR& Get_m_PwdText( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__m_PwdText ); }
+
                 // Declaration of stubs. These functions are implemented by Interop code developers
                 static LPCSTR GetUniqueName( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
                 static void Initialize( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
-                static void SendNotification( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
                 static INT32 SetBusLinkTimeout( CLR_RT_HeapBlock* pMngObj, UINT32 param0, UINT32 param1, HRESULT &hr );
                 static void NotifyLinkActive( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
                 static INT32 BusLinkStateProc( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
@@ -50,9 +52,9 @@ namespace Microsoft
                 static LPCSTR UnmarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, HRESULT &hr );
                 static INT32 UnmarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, UINT32 * param3, HRESULT &hr );
                 static LPCSTR UnmarshalPropertyArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, HRESULT &hr );
+                static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, HRESULT &hr );
                 static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, HRESULT &hr );
-                static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPSTR param1, LPCSTR param2, HRESULT &hr );
-                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, LPCSTR param4, HRESULT &hr );
+                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, LPCSTR param3, LPCSTR param4, HRESULT &hr );
                 static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, HRESULT &hr );
                 static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, HRESULT &hr );
                 static INT32 MarshalContainer( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, UINT32 param2, HRESULT &hr );
@@ -68,6 +70,7 @@ namespace Microsoft
                 static LPCSTR GetArgString( CLR_RT_HeapBlock* pMngObj, INT32 param0, HRESULT &hr );
                 static void UsePeerAuthentication( CLR_RT_HeapBlock* pMngObj, INT8 param0, HRESULT &hr );
                 static void SetPassphrase( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static INT32 AuthenticatePeer( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, HRESULT &hr );
                 static INT32 GetLocalGUID( CLR_RT_TypedArray_UINT8 param0, HRESULT &hr );
                 static void RegisterObjects( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, INT8 param4, INT8 param5, HRESULT &hr );
                 static void PrintXML( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, HRESULT &hr );

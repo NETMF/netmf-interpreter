@@ -68,8 +68,10 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalDefaultProps___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetArgPtr___U4__I4,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetArgString___STRING__I4,
+    NULL,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentication___VOID__BOOLEAN,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPassphrase___VOID__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AuthenticatePeer___MicrosoftSPOTAllJoynAJStatus__U4__STRING,
     NULL,
     NULL,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetLocalGUID___STATIC__MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1,
@@ -103,7 +105,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_Microsoft_SPOT_Alljoyn =
 {
     "Microsoft.SPOT.Alljoyn", 
-    0xEF51703E,
+    0x59E90098,
     method_lookup
 };
 
