@@ -25,7 +25,7 @@ GOTO :EOF
 SET COMPILER_TOOL=%1
 SET COMPILER_TOOL_VERSION_NUM=%2
 SET COMPILER_TOOL_VERSION=%1%2
-SET ARG3=%~3
+SET "ARG3=%~3"
 
 SET TFSCONFIG=MFConfig.xml
 
@@ -106,7 +106,10 @@ rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @echo setting vars for GCC compiler %COMPILER_TOOL_VERSION%
 
 rem use a default for GCC
-IF "%ARG3%"=="" SET ARG3=%SystemDrive%\gnu\gcc
+IF "%ARG3%"=="" (
+    SET "ARG3=%SystemDrive%\gnu\gcc"
+    IF NOT EXIST "%ARG3%" set "ARG3=%ProgramFiles(x86)%\GNU Tools ARM Embedded\4.9 2015q1"
+)
 IF NOT EXIST "%ARG3%" GOTO :BAD_GCC_ARG
 
 set ARMROOT=
@@ -119,13 +122,13 @@ set DOTNETMF_COMPILER=%COMPILER_TOOL_VERSION%
 
 IF /I "%COMPILER_TOOL%"=="GCC" (
 IF EXIST "%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%" (
-set ARMINC=%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%\include
-set ARMLIB=%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%
-set GNU_TOOLS=%ARG3%
-set GNU_TOOLS_BIN=%ARG3%\bin
+set "ARMINC=%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%\include"
+set "ARMLIB=%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%"
+set "GNU_TOOLS=%ARG3%"
+set "GNU_TOOLS_BIN=%ARG3%\bin"
 set GNU_TARGET=arm-none-eabi
 ) ELSE (
-@ECHO Could not find %ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%
+@ECHO Could not find "%ARG3%\lib\gcc\arm-none-eabi\%GNU_VERSION%"
 GOTO :BAD_GCC_ARG
 ))
 
