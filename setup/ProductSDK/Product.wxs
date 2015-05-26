@@ -139,7 +139,6 @@
                 <FeatureRef Id="Debugger" />
                 <FeatureRef Id="Tools" />
                 <FeatureRef Id="CoreEmulator" />
-                <FeatureRef Id="DPWS" />
 
                 <ComponentRef Id="Component_InstallRoot" />
 

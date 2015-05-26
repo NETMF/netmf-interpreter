@@ -133,7 +133,6 @@ void lwip_network_uptime_completion( void *arg )
 
 void InitContinuations( struct netif *pNetIf )
 {
-    //InterruptTaskContinuation.InitializeCallback( (HAL_CALLBACK_FPN)lwip_interrupt_continuation_callback, (void*)pNetIf );
 
     LwipUpTimeCompletion.InitializeForUserMode( ( HAL_CALLBACK_FPN )lwip_network_uptime_completion, ( void* )pNetIf );
     LwipUpTimeCompletion.EnqueueDelta64( 2000000 );
@@ -142,7 +141,6 @@ void InitContinuations( struct netif *pNetIf )
 void DeInitContinuations( )
 {
     LwipUpTimeCompletion.Abort( );
-    //InterruptTaskContinuation.Abort();
 }
 
 void EthernetPrepareZero( )

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
@@ -8,8 +9,6 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
-  <!-- Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/ -->
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
     <SchemaVersion>2.0</SchemaVersion>
@@ -27,9 +26,11 @@
     <InstrumentForCoverage>true</InstrumentForCoverage>
     <PlatformTarget>x86</PlatformTarget>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <NetMFBuildVsSdkVersion>14</NetMFBuildVsSdkVersion>
+    <OutDir>$(BUILD_TREE_SERVER)\DLL\</OutDir>
   </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <CreateVsixContainer>False</CreateVsixContainer>
     <DeployExtension>False</DeployExtension>
@@ -39,20 +40,20 @@
     <DeployExtension>False</DeployExtension>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.AppDesigner, Version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral" >
-        <SpecificVersion>true</SpecificVersion>
+    <Reference Include="Microsoft.VisualStudio.AppDesigner, Version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral">
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Editors,version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral" >
-        <SpecificVersion>true</SpecificVersion>
+    <Reference Include="Microsoft.VisualStudio.Editors,version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral">
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Utilities, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" >
-        <SpecificVersion>true</SpecificVersion>
+    <Reference Include="Microsoft.VisualStudio.Utilities, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.ManagedInterfaces" />
     <Reference Include="Microsoft.VisualStudio.Shell.14.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0"  >
-        <SpecificVersion>true</SpecificVersion>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0">
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,11 +61,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral" >
-        <SpecificVersion>true</SpecificVersion>
+    <Reference Include="Microsoft.Build.Framework, Version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral">
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.Build.Engine, Version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral" >
-        <SpecificVersion>true</SpecificVersion>
+    <Reference Include="Microsoft.Build.Engine, Version=14.0.0.0,publicKeyToken=b03f5f7f11d50a3a,culture=neutral">
+      <SpecificVersion>true</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.Build.Tasks.v4.0" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
@@ -192,5 +193,5 @@
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
-  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

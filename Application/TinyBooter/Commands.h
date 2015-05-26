@@ -78,9 +78,9 @@ struct Loader_Engine
         UINT32 m_dataAddress;
         UINT32 m_dataLength;
         UINT32 m_sectorType;
-		BlockStorageDevice *m_pDevice ;		
-		
-    public:                
+        BlockStorageDevice *m_pDevice ;
+
+    public:
         bool CheckDirty          (                                 );
         void Reset               (                                 );
         void EraseMemoryAndReset (                                 );

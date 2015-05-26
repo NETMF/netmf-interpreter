@@ -1025,13 +1025,12 @@ const CLR_RT_OpcodeLookup c_CLR_RT_OpcodeLookup[] =
     },
     {
         OPDEF(CEE_LDELEM,                     "ldelem",           PopRef+PopI,        Push1,       InlineType,         IObjModel,   1,  0xFF,    0xA3,    NEXT)
-
-        OPDEF_EX(LO_Unsupported, DATATYPE_FIRST_INVALID, 0, CLR_RT_OpcodeLookup::COND_BRANCH_THROW)
+        OPDEF_EX(LO_LoadElement, DATATYPE_FIRST_INVALID, 0, CLR_RT_OpcodeLookup::COND_BRANCH_NEVER | CLR_RT_OpcodeLookup::ATTRIB_HAS_TOKEN)
     },
     {
         OPDEF(CEE_STELEM,                     "stelem",           PopRef+PopI+Pop1,   Push0,       InlineType,         IObjModel,   1,  0xFF,    0xA4,    NEXT)
 
-        OPDEF_EX(LO_Unsupported, DATATYPE_FIRST_INVALID, 0, CLR_RT_OpcodeLookup::COND_BRANCH_THROW)
+        OPDEF_EX(LO_StoreElement, DATATYPE_FIRST_INVALID, 0, CLR_RT_OpcodeLookup::COND_BRANCH_NEVER | CLR_RT_OpcodeLookup::ATTRIB_HAS_TOKEN)
     },
     {
         OPDEF(CEE_UNBOX_ANY,                  "unbox.any",        PopRef,             Push1,       InlineType,         IObjModel,   1,  0xFF,    0xA5,    NEXT)

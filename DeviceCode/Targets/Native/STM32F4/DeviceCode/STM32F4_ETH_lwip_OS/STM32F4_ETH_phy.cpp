@@ -30,7 +30,7 @@
 #include "STM32F4_ETH_phy.h"
 #include "STM32F4_ETH_driver.h"
 
-#define ADVERTISE_10BASET_ONLY 1
+//#define ADVERTISE_10BASET_ONLY 1
 
 //--------------------------------------------------------------------------------------------
 // Constant defines
@@ -39,8 +39,6 @@
 #define INVALID_PHY_ADDRESS             0xFF
 
 
-#define DEBUG_TRACE                     1
-
 
 static uint32_t g_phyAddress =INVALID_PHY_ADDRESS;
 static uint32_t g_foundPhyAddress =FALSE;
@@ -48,7 +46,6 @@ static uint32_t g_foundPhyAddress =FALSE;
 static void findPhyAddr()
 {
     uint32_t phyAddress = 0;
-    uint32_t retryMax = 1000;    // At least 1, should not be 0
     uint16_t value;
     uint32_t rc = 0xFF;
     uint32_t cnt = 31;          // 5 bit address
@@ -87,6 +84,7 @@ static BOOL writeRegister( const uint32_t miiAddress, const uint16_t miiData)
     if (g_phyAddress == INVALID_PHY_ADDRESS) 
         findPhyAddr();
     
+
     return eth_writePhyRegister(g_phyAddress, miiAddress, miiData);
 
 }
@@ -109,7 +107,9 @@ BOOL eth_phyReset()
     
     do 
     {
-        readRegister(PHY_CONTROL_REGISTER, &status);
+        if( !readRegister(PHY_CONTROL_REGISTER, &status) )
+            return FALSE;
+        
         nWait++;
     } 
     while ( (status & (PHY_CR_RESET | PHY_CR_PWRDN)) && (nWait <PHY_RESET_DELAY));
@@ -132,12 +132,11 @@ BOOL eth_isPhyLinkValid(BOOL isCallBlocking)
     uint32_t nWait = 0U;
     uint16_t status = 0U;
     BOOL    result = FALSE;
-
     // Read status register until a valid link is detected or a timeout is elapsed
     do 
     {
-        readRegister(PHY_STATUS_REGISTER, &status);
-        readRegister(PHY_STATUS_REGISTER, &status);
+        if( !readRegister(PHY_STATUS_REGISTER, &status) )
+            return FALSE;
 
         if (status & PHY_SR_LINK)
         { 
@@ -145,8 +144,7 @@ BOOL eth_isPhyLinkValid(BOOL isCallBlocking)
             break;  // when link is up exit
         }
         nWait++;
-    } 
-    while ( isCallBlocking && (nWait < PHY_LINK_TIMEOUT) );
+    }while ( isCallBlocking && (nWait < PHY_LINK_TIMEOUT) ); 
     
     return result;
 }
@@ -161,35 +159,43 @@ BOOL eth_isPhyLinkValid(BOOL isCallBlocking)
  */
 EthMode eth_enableAutoNegotiation()
 {
-     uint32_t nWait = 0U;
-     uint16_t status = 0U;
-
-#if STM32F4_ETH_PHY_MII
-    uint16_t diagnostic = 0U;
-#endif
-
-#if ADVERTISE_10BASET_ONLY
-    // For now, hard code to 10MB as auto negotiate to 100MB doesn't seem to work... (packets received OK, but unable to transmit valid packets)
-    // most devices don't use 100MB at this point so this is OK for basic testing we are doing - for a full 
-    // production port this will need to be resolved...
-    if (!readRegister(PHY_RMII_ANEG_ADVERT_REGISTER, &status))
-        return ETHMODE_FAIL;
+    uint32_t nWait = 0;
+    uint16_t status = 0;
+    uint16_t phyId = 0;
     
-    status &= ~PHY_RMII_ANEG_ADVERT_SPEED_MASK;
-    status |= PHY_RMII_ANEG_ADVERT_10BASE_T | PHY_RMII_ANEG_ADVERT_10BASE_TF ;
-    if (!writeRegister(PHY_RMII_ANEG_ADVERT_REGISTER, status))
-        return ETHMODE_FAIL;
+#if STM32F4_ETH_PHY_MII
+    uint16_t diagnostic = 0;
 #endif
+    // accomodate both ST802RTIX and KSZ8081 PHY chip
+    // which have mostly identical register sets.
+    if( !readRegister(PHY_IDENTIFIER_REGISTER_1, &phyId) )
+        return ETHMODE_FAIL;
+
+    if( phyId == PHY_ST802RT1X_OUI_ID1 )
+    {
+        // For now, hard code to 10MB as auto negotiate to 100MB doesn't seem to work...
+        // (packets received OK, but unable to transmit valid packets)
+        // most devices don't use 100MB at this point so this is OK for basic testing
+        // we are doing - for a full production port this will need to be resolved...
+        // NOTE: rev 1.2 boards use a different PHY where 100MB works
+        if (!readRegister(PHY_RMII_ANEG_ADVERT_REGISTER, &status))
+            return ETHMODE_FAIL;
+
+        status &= ~PHY_RMII_ANEG_ADVERT_SPEED_MASK;
+        status |= PHY_RMII_ANEG_ADVERT_10BASE_T | PHY_RMII_ANEG_ADVERT_10BASE_TF;
+        if (!writeRegister(PHY_RMII_ANEG_ADVERT_REGISTER, status))
+            return ETHMODE_FAIL;
+    }
 
     if (!readRegister(PHY_CONTROL_REGISTER, &status))
         return ETHMODE_FAIL;
+
 #if (DEBUG_TRACE)    
-    debug_printf("PHY CR status 0x%x \r\n",status);
+    debug_printf("PHY CR status 0x%x \n",status);
 #endif 
 
     // Start Auto Negotiation    
     status = (status & ~(PHY_CR_ANEGEN | PHY_CR_ANEG_RESTART)) | PHY_CR_ANEGEN | PHY_CR_ANEG_RESTART;
-
     if (!writeRegister(PHY_CONTROL_REGISTER, status))
         return ETHMODE_FAIL;
 
@@ -197,22 +203,23 @@ EthMode eth_enableAutoNegotiation()
     // Wait for completion
     do
     {
-        uint16_t val;
-        val = readRegister(PHY_STATUS_REGISTER, &status);
-        val = readRegister(PHY_STATUS_REGISTER, &status);
-        nWait ++;
+        if( !readRegister(PHY_STATUS_REGISTER, &status) )
+            status = 0;
+
+        nWait++;
     }
     while ( (!(status & PHY_SR_ANEGC) ) && (nWait < PHY_AUTO_NEGOTIATION_TIMEOUT) );
     
     // Check auto negotiation completed
     if ((status & PHY_SR_ANEGC) != PHY_SR_ANEGC)
     {
-        debug_printf("autogen FAIL!!! Status %x\r\n", status);    
+        debug_printf("autonegotiate failed. Status: %x\n", status);    
         return ETHMODE_FAIL;
 
-     }
+    }
+    
 #if (DEBUG_TRACE)
-    debug_printf("Autogen Complete!!! SR %x\r\n", status);
+    debug_printf("Autonegotiate Complete SR:%x\n", status);
 #endif
 
 #if STM32F4_ETH_PHY_MII
@@ -225,35 +232,32 @@ EthMode eth_enableAutoNegotiation()
     return ETHMODE_FAIL;
 #else
 
-    readRegister(PHY_IDENTIFIER_REGISTER_1, &status);
-
-    // the following is bit hacking to accomodating both ST802RTIX and KSZ8081 PHY chip
     // determine the negotiated speed of PHY chip. 
-    if (status == PHY_ST802RT1X_OUI_ID1)
+    if( PHY_ST802RT1X_OUI_ID1 == phyId )
     {
         readRegister(PHY_RMII_RXCFG_IIS_REGISTER, &status);
-        // the bit definition of EthMode is same as the ST8021,just shift it the LSB is fine.
-        return (EthMode)((status & PHY_RMII_RXCFG_IIS_MODEMASK)>>8);
+        return (EthMode)(status & PHY_RMII_RXCFG_IIS_MODEMASK);
     }
-    else if (status == PHY_KENDIN_OUI_ID1)
+    else if( PHY_KENDIN_OUI_ID1 == phyId )
     {
         uint16_t speedStatus = 0U;
 
         readRegister(PHY_CTRL1_REG, &speedStatus);
 
-        // conversion of the speed conversion
+        // convert speed settings to common form
         speedStatus =  speedStatus & PHY_CTRL1_MASK;
         status = 0;
-#define         PHY_KSZ_100TB               0x2
-#define         PHY_KSZ_FULLDUPLEX          0x4
         if (speedStatus & PHY_KSZ_100TB)
-                status |= ETHMODE_100MPS_BIT;
+            status |= ETHMODE_100MPS_BIT;
+        
         if (speedStatus & PHY_KSZ_FULLDUPLEX) 
-                status |= ETHMODE_FULLDPX_BIT;
-        return (EthMode)(status );
+            status |= ETHMODE_FULLDPX_BIT;
+        
+        return (EthMode)status;
     }
 #endif
-    
+
+    return ETHMODE_FAIL;
 }
 
 //--------------------------------------------------------------------------------------------
@@ -304,25 +308,19 @@ BOOL eth_powerUpPhy(BOOL isPowerUp)
  */
 BOOL eth_isPhyResponding(void)
 {
-    volatile uint32_t nWait = 0U;
-    uint16_t status = 0U;
-    BOOL     result = FALSE;
-
     // Read identifier register until OUI can be read or a timeout is elapsed
-    do 
+    for( uint32_t nWait = 0U; nWait < PHY_RESPONSE_TIMEOUT; ++nWait )   
     {
-        readRegister(PHY_IDENTIFIER_REGISTER_1, &status);
-        if ((status == PHY_ST802RT1X_OUI_ID1) || (status == PHY_KENDIN_OUI_ID1) )
-        {
-            result = TRUE;
-            break;
-        }
-        nWait++;
-    } 
-    while ( nWait < PHY_RESPONSE_TIMEOUT);
-    
-    // Check the link
-    return result;
+        uint16_t status = 0U;
+
+        if( !readRegister( PHY_IDENTIFIER_REGISTER_1, &status ) )
+            return FALSE;
+        
+        if( ( status == PHY_ST802RT1X_OUI ) || ( status == PHY_KENDIN_OUI ) )
+            return TRUE;
+    }
+
+    return FALSE;
 }
 
 //--------------------------------------------------------------------------------------------

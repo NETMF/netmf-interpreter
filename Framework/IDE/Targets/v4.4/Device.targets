@@ -1,7 +1,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 
   <Import Project="Tasks.settings" />
-
+    
+  <Target Name="ResolveCodeAnalysisRuleSet">
+      <!-- Disable this as the older compiler doesn't support rulesets in the compiler -->
+  </Target>
+    
   <!-- Overrides of *DependsOn properties from Microsoft.Common.v3.5.Targets -->
   <!-- We override these completely rather than merely append our MF-specific targets so that we can
         1) preserve the semantics of the pre- and post-target hooks,
@@ -157,13 +161,6 @@
     <MF_GeneratedStubFile Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).h" />
     <MF_GeneratedStubFile Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).cpp" />
     <MF_GenerateStubsFeatureProj Include="$(MF_GenerateStubsDirectory)$(MF_GenerateStubsRootName).featureproj" Condition="'$(MF_GenerateStubs)'=='true'" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Reference Include="mscorlib">
-      <InProject>false</InProject>
-    </Reference>
   </ItemGroup>
 
   <!--

@@ -17,6 +17,9 @@
     <CommonAssemblyInfoItemName>Compile</CommonAssemblyInfoItemName>
     <CommonAssemblyInfoLanguage>VisualBasic</CommonAssemblyInfoLanguage>
 
+    <!-- override Roslyn compiler(s) as it doesn't support runtimes without generics-->
+    <VbcToolExe>vbc.exe</VbcToolExe>
+    <VbcToolPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework', 'InstallRoot', null, RegistryView.Registry32))v4.0.30319</VbcToolPath>
     <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v3.0'">$(DefineConstants),MF_FRAMEWORK_VERSION_V3_0</DefineConstants>
     <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.0'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_0</DefineConstants>
     <DefineConstants Condition="'$(TargetFrameworkVersion)'=='v4.1'">$(DefineConstants),MF_FRAMEWORK_VERSION_V4_1</DefineConstants>
@@ -41,7 +44,9 @@
     <Import Include="System" />
     <Import Include="Microsoft.VisualBasic" />
   </ItemGroup>
-
+  <Target Name="ResolveCodeAnalysisRuleSet">
+      <!-- Disable this as the older compiler doesn't support rulesets in the compiler -->
+  </Target>
   <PropertyGroup>
     <ImportToSDK>false</ImportToSDK>
   </PropertyGroup>

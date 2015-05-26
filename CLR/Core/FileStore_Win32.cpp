@@ -118,8 +118,8 @@ void CLR_RT_FileStore::ExtractTokens( const CLR_RT_Buffer& buf, CLR_RT_StringVec
     LPCWSTR      src;
     size_t       len;
 
-	if (buf.size() == 0) { return; }
-	else if(buf.size() >= 2 && buf[ 0 ] == 0xFF && buf[ 1 ] == 0xFE)
+    if (buf.size() == 0) { return; }
+    else if(buf.size() >= 2 && buf[ 0 ] == 0xFF && buf[ 1 ] == 0xFE)
     {
         len = (buf.size() - 2) / sizeof(WCHAR);
 

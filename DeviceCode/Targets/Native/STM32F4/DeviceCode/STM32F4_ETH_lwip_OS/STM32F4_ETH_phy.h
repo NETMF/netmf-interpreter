@@ -76,10 +76,6 @@ extern "C" {
 
 #define PHY_AUTO_NEGOTIATION_TIMEOUT        0x00100000U     // Auto negotiation timeout
 
-// Different PHY manufacturer
-
-////// For ST802RT1X ONLY 
-
 #define PHY_ST802RT1X_OUI               0x80E1U         // ST802RT1x PHY unique identifier
 #define PHY_ST802RT1X_OUI_ID1           0x0203U         // the value directly read out from ID1
 
@@ -93,18 +89,6 @@ extern "C" {
 #define PHY_LINK_TIMEOUT                0x0004FFFFU     // PHY link timeout
 #define PHY_RESET_DELAY                 0x000FFFFFU     // PHY reset delay
 #define PHY_RESPONSE_TIMEOUT            0x0004FFFFU     // PHY response timeout
-
-//////
-
-#define PHY_TERIDIAN_OUI                0x000EU         // Teridian unique identifier
-
-/*
-#if STM32F4_ETH_PHY_RMII
-#define PHY_OUI PHY_ST802RT1X_OUI
-#else
-#define PHY_TERIRIAN_OUI
-#endif
-*/
 // for KSZ8081RNB
 #define PHY_KENDIN_OUI                  0x10A1U
 #define PHY_KENDIN_OUI_ID1              0x0022U
@@ -138,6 +122,22 @@ enum EthMode
     ETHMODE_10MBPS_FDPX  = 0x0005,
     ETHMODE_100MBPS_HDPX = 0x0002,
     ETHMODE_100MBPS_FDPX = 0x0006,
+=======
+#define PHY_CTRL1_MASK                  0x07
+#define PHY_CTRL1_REG                   0x1E
+
+#define PHY_KSZ_100TB 0x2
+#define PHY_KSZ_FULLDUPLEX 0x4
+#define ETHMODE_100MPS_BIT 0x0200
+#define ETHMODE_FULLDPX_BIT 0x0100
+enum EthMode
+{
+    ETHMODE_FAIL = 0xFFFF,
+    ETHMODE_10MBPS_HDPX  = 0,
+    ETHMODE_10MBPS_FDPX  = ETHMODE_FULLDPX_BIT,
+    ETHMODE_100MBPS_HDPX = ETHMODE_100MPS_BIT,
+    ETHMODE_100MBPS_FDPX = ETHMODE_100MPS_BIT | ETHMODE_FULLDPX_BIT,
+>>>>>>> upstream/dev
 };
 #endif
 

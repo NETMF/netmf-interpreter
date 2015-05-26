@@ -38,7 +38,6 @@
       <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Mac" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy.CC2420" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy" />
-
     </Feature>
 
   </Fragment>

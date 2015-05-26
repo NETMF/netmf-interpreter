@@ -698,7 +698,7 @@ void ClrStartup( CLR_SETTINGS params )
                 s_ClrSettings.Cleanup();
 
                 HAL_Uninitialize();
-							
+
                 SmartPtr_IRQ::ForceDisabled();
 
                 //re-init the hal for the reboot (initially it is called in bootentry)

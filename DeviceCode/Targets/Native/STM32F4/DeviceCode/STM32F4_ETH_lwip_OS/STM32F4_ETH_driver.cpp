@@ -50,8 +50,6 @@ static void initMACFCR();
 static void initMACIMR();
 static void initDMABMR();
 static void initDMAOMR();
-static BOOL readPhyRegister(const uint32_t miiAddress, uint16_t *const miiData);
-static BOOL writePhyRegister(const uint32_t miiAddress, const uint16_t miiData);
 
 //--------------------------------------------------------------------------------------------
 // Functions definitions
@@ -715,25 +713,28 @@ BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_
 {
     uint32_t nWait = 0U; 
     uint32_t value = 0;
-    // Wait for PHY availability
+ // Wait for PHY availability
     while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
             (nWait < MII_BUSY_TIMEOUT) )
     {
         nWait++;
     }
+
     if (nWait == MII_BUSY_TIMEOUT)
     {
         return FALSE;
     }
    
-    value = ETH->MACMIIAR & ETH_MACMIIAR_CR;
-    ETH->MACMIIAR  = value | (phyAddress << MACMIIAR_PA_POSITION) | (miiAddress << MACMIIAR_MR_POSITION) | ETH_MACMIIAR_MB;
+    value = ETH->MACMIIAR & ETH_MACMIIAR_CR; // Clear all bits except the clock rate
+    ETH->MACMIIAR  = value
+                   | (phyAddress << MACMIIAR_PA_POSITION)
+                   | (miiAddress << MACMIIAR_MR_POSITION)
+                   | ETH_MACMIIAR_MB;
    
     // Wait for completion
-    nWait = 0U;
-    while ( nWait < MII_BUSY_TIMEOUT ) 
+    for( nWait = 0; nWait < MII_BUSY_TIMEOUT; ++nWait )
     {
-        if ( !(ETH->MACMIIAR & ETH_MACMIIAR_MB) )
+        if( !(ETH->MACMIIAR & ETH_MACMIIAR_MB) )
         {
             // Data Ready , Read data
             *pMiiData = ETH->MACMIIDR;
@@ -767,6 +768,7 @@ BOOL eth_writePhyRegister(uint32_t phyAddress, const uint32_t miiAddress, const 
     {
         nWait++;
     }
+
     if (nWait == MII_BUSY_TIMEOUT)
     {
         return FALSE;
@@ -792,3 +794,4 @@ BOOL eth_writePhyRegister(uint32_t phyAddress, const uint32_t miiAddress, const 
 
 //--------------------------------------------------------------------------------------------
 
+s

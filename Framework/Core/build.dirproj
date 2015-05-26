@@ -61,10 +61,10 @@
         <Project Include="System\Xml.csproj" >
             <InProject>false</InProject>
         </Project>
-        <Project Include="Xml\System.Xml.csproj">
+        <Project Include="Windows\Devices\Devices.csproj" >
             <InProject>false</InProject>
         </Project>
-        <Project Include="Dpws\build.dirproj" >
+        <Project Include="Xml\System.Xml.csproj">
             <InProject>false</InProject>
         </Project>
         <Project Include="Native_Update\Core_Update.csproj" >

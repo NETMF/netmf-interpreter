@@ -18,7 +18,7 @@ HRESULT CLR_PRF_Profiler::CreateInstance()
     g_CLR_PRF_Profiler.m_lastTimestamp = (CLR_UINT32)((CLR_UINT64)(Time_GetMachineTime() + ((1ull << CLR_PRF_CMDS::Bits::TimestampShift) - 1))
         >> CLR_PRF_CMDS::Bits::TimestampShift);
     g_CLR_PRF_Profiler.m_currentAssembly = 0;
-	g_CLR_PRF_Profiler.m_currentThreadPID = 0;
+    g_CLR_PRF_Profiler.m_currentThreadPID = 0;
     TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_MemoryStream::CreateInstance(g_CLR_PRF_Profiler.m_stream, NULL, 0));
     
     TINYCLR_NOCLEANUP();
@@ -563,7 +563,7 @@ HRESULT CLR_PRF_Profiler::RecordFunctionCall(CLR_RT_Thread* th, CLR_RT_MethodDef
             TINYCLR_CHECK_HRESULT(RecordContextSwitch( th ));
         }
         else
-        {			        
+        {
             Timestamp();
         }
 
@@ -603,7 +603,7 @@ HRESULT CLR_PRF_Profiler::RecordFunctionReturn(CLR_RT_Thread* th, CLR_PROF_Count
             TINYCLR_CHECK_HRESULT(RecordContextSwitch( th ));
         }
         else
-        {			        
+        {
             Timestamp();
         }
 

@@ -13,7 +13,9 @@
     <ProjectGuid>E0D29432-F26B-44E7-A0FB-6FA21DF258E1</ProjectGuid>
     <Subsystem>CONSOLE</Subsystem>
     <!--LNK4199: /DELAYLOAD:dllname ignored; no imports found from dllname -->
-    <LinkIgnore>4199</LinkIgnore>   
+    <LinkIgnore>4199</LinkIgnore>
+    <!-- warning C4091: 'typedef ': ignored on left of '<identifier>' when no variable is declared -->
+    <ExtraFlags>/wd4091</ExtraFlags>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BuildHelper.cpp" />

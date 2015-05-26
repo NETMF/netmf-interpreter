@@ -733,11 +733,12 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::TileImage___VOID__I4
 
     if (bitmap != bitmapSrc)
     {
-	int xDst = pArgs[0].NumericByRef().s4;
-	int yDst = pArgs[1].NumericByRef().s4;
-	int widthDst = pArgs[3].NumericByRef().s4;
-	int heightDst = pArgs[4].NumericByRef().s4;
-	unsigned short opacity = pArgs[5].NumericByRef().u2;
+        int xDst = pArgs[0].NumericByRef().s4;
+        int yDst = pArgs[1].NumericByRef().s4;
+        int widthDst = pArgs[3].NumericByRef().s4;
+        int heightDst = pArgs[4].NumericByRef().s4;
+        unsigned short opacity = pArgs[5].NumericByRef().u2;
+
         int widthSrc  = bitmapSrc->m_bm.m_width;
         int heightSrc = bitmapSrc->m_bm.m_height;
         int x, y, w, h;
@@ -766,7 +767,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::TileImage___VOID__I4
                 dst.right  = dst.left + w - 1;
                 dst.bottom = dst.top + h - 1;
 
-     	        bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
             }
         }
     } 
@@ -793,20 +794,22 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
 
     if (bitmap != bitmapSrc)
     {
-	int xDst = pArgs[0].NumericByRef().s4;
-	int yDst = pArgs[1].NumericByRef().s4;
-	int widthDst = pArgs[2].NumericByRef().s4;
-	int heightDst = pArgs[3].NumericByRef().s4;
-	int leftBorder = pArgs[5].NumericByRef().s4;
-	int topBorder = pArgs[6].NumericByRef().s4;
-	int rightBorder = pArgs[7].NumericByRef().s4;
-	int bottomBorder = pArgs[8].NumericByRef().s4;
-	unsigned short opacity = pArgs[9].NumericByRef().u2;
+    int xDst = pArgs[0].NumericByRef().s4;
+    int yDst = pArgs[1].NumericByRef().s4;
+    int widthDst = pArgs[2].NumericByRef().s4;
+
+    int heightDst = pArgs[3].NumericByRef().s4;
+    int leftBorder = pArgs[5].NumericByRef().s4;
+    int topBorder = pArgs[6].NumericByRef().s4;
+    int rightBorder = pArgs[7].NumericByRef().s4;
+    int bottomBorder = pArgs[8].NumericByRef().s4;
+    unsigned short opacity = pArgs[9].NumericByRef().u2;
+
         int widthSrc  = bitmapSrc->m_bm.m_width;
         int heightSrc = bitmapSrc->m_bm.m_height;
  
         if (widthDst >= leftBorder && heightDst >= topBorder)
-	{
+    {
             int centerWidthSrc = widthSrc - (leftBorder + rightBorder);
             int centerHeightSrc = heightSrc - (topBorder + bottomBorder);
             int centerWidthDst = widthDst - (leftBorder + rightBorder);
@@ -824,7 +827,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = 0;
                     src.right  = src.left + leftBorder - 1;
                     src.bottom = src.top + topBorder - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst, yDst, leftBorder, topBorder, bitmap, 0, 0, leftBorder, topBorder, opacity);
             
             //top-right
@@ -838,7 +841,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = 0;
                     src.right  = src.left + rightBorder - 1;
                     src.bottom = src.top + topBorder - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst + widthDst - rightBorder, yDst, rightBorder, topBorder, bitmap,
                     //                     widthSrc - rightBorder, 0, rightBorder, topBorder, opacity);
             }
@@ -853,7 +856,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = heightSrc - bottomBorder;
                     src.right  = src.left + leftBorder - 1;
                     src.bottom = src.top + bottomBorder - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst, yDst + heightDst - bottomBorder, leftBorder, bottomBorder, bitmap,
                     //                     0, heightSrc - bottomBorder, leftBorder, bottomBorder, opacity);
             }
@@ -868,7 +871,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = heightSrc - bottomBorder;
                     src.right  = src.left + rightBorder - 1;
                     src.bottom = src.top + bottomBorder - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst + widthDst - rightBorder, yDst + heightDst - bottomBorder, rightBorder, bottomBorder, bitmap,
                     //                     widthSrc - rightBorder, heightSrc - bottomBorder, rightBorder, bottomBorder, opacity);
             }
@@ -883,7 +886,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = topBorder;
                     src.right  = src.left + leftBorder - 1;
                     src.bottom = src.top + centerHeightSrc - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst, yDst + topBorder, leftBorder, centerHeightDst, bitmap,
                     //                     0, topBorder, leftBorder, centerHeightSrc, opacity);
             }
@@ -898,7 +901,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = 0;
                     src.right  = src.left + centerWidthSrc - 1;
                     src.bottom = src.top + topBorder - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst + leftBorder, yDst, centerWidthDst, topBorder, bitmap,
                     //                     leftBorder, 0, centerWidthSrc, topBorder, opacity);
             }
@@ -915,7 +918,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = topBorder;
                     src.right  = src.left + rightBorder - 1;
                     src.bottom = src.top + centerHeightSrc - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst + widthDst - rightBorder, yDst + topBorder, rightBorder, centerHeightDst, bitmap,
                     //                     widthSrc - rightBorder, topBorder, rightBorder,  centerHeightSrc, opacity);
             }
@@ -930,7 +933,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = heightSrc - bottomBorder;
                     src.right  = src.left + centerWidthSrc - 1;
                     src.bottom = src.top + bottomBorder - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst + leftBorder, yDst + heightDst - bottomBorder, centerWidthDst, bottomBorder, bitmap,
                     //                 leftBorder, heightSrc - bottomBorder, centerWidthSrc, bottomBorder, opacity);
             }
@@ -945,7 +948,7 @@ HRESULT Library_spot_graphics_native_Microsoft_SPOT_Bitmap::Scale9Image___VOID__
                     src.top    = topBorder;
                     src.right  = src.left + centerWidthSrc - 1;
                     src.bottom = src.top + centerHeightSrc - 1;
-     	            bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
+                    bitmap->DrawImage( dst, *bitmapSrc, src, opacity );
                     //bmpDest.StretchImage(xDst + leftBorder, yDst + topBorder, centerWidthDst, centerHeightDst, bitmap,
                     //                     leftBorder, topBorder, centerWidthSrc, centerHeightSrc, opacity);
             }

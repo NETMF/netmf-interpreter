@@ -3078,10 +3078,10 @@ void CLR_RT_ExecutionEngine::StopOnBreakpoint( CLR_DBG_Commands::Debugging_Execu
                 CLR_Messaging::SwapEndianPattern( data, sizeof(UINT32), 8 ); //all other fields
 
                 CLR_EE_DBG_EVENT_SEND(CLR_DBG_Commands::c_Debugging_Execution_BreakpointHit,sizeof(s_breakpoint),&s_breakpoint,WP_Flags::c_NonCritical);
-#else	
+#else
                 CLR_EE_DBG_EVENT_SEND(CLR_DBG_Commands::c_Debugging_Execution_BreakpointHit,sizeof(CLR_DBG_Commands::Debugging_Execution_BreakpointDef),&m_breakpointsActive[ 0 ],WP_Flags::c_NonCritical);
 #endif
-            }            
+            }
         }
         else
         {

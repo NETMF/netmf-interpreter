@@ -1,10 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arrays", "arrays.csproj", "{5311E955-CFD7-4237-9528-C619B65CA8D0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFTestRunner", "..\..\..\..\Tools\MFTestRunner\MFTestRunner.csproj", "{AE891729-659A-4DC8-9722-5274CE4630C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,12 +20,6 @@ Global
 		{5311E955-CFD7-4237-9528-C619B65CA8D0}.RTM|Any CPU.ActiveCfg = Debug|Any CPU
 		{5311E955-CFD7-4237-9528-C619B65CA8D0}.RTM|Any CPU.Build.0 = Debug|Any CPU
 		{5311E955-CFD7-4237-9528-C619B65CA8D0}.RTM|Any CPU.Deploy.0 = Debug|Any CPU
-		{AE891729-659A-4DC8-9722-5274CE4630C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE891729-659A-4DC8-9722-5274CE4630C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE891729-659A-4DC8-9722-5274CE4630C2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE891729-659A-4DC8-9722-5274CE4630C2}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{AE891729-659A-4DC8-9722-5274CE4630C2}.RTM|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE891729-659A-4DC8-9722-5274CE4630C2}.RTM|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

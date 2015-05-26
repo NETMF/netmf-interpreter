@@ -8,18 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <WiXComponentFiles Include="$(_curdir)\MFDpwsClient.dll" />
-    <WiXComponentFiles Include="$(_curdir)\MFDpwsClient.pdb" />
-
-    <WiXComponentFiles Include="$(_curdir)\MFDpwsDevice.dll" />
-    <WiXComponentFiles Include="$(_curdir)\MFDpwsDevice.pdb" />
-
-    <WiXComponentFiles Include="$(_curdir)\MFDpwsExtensions.dll" />
-    <WiXComponentFiles Include="$(_curdir)\MFDpwsExtensions.pdb" />
-
-    <WiXComponentFiles Include="$(_curdir)\MFWsStack.dll" />
-    <WiXComponentFiles Include="$(_curdir)\MFWsStack.pdb" />
-
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Graphics.dll" />
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Graphics.pdb" />
 
@@ -55,6 +43,9 @@
 
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Touch.dll" />
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Touch.pdb" />
+
+    <WiXComponentFiles Include="$(_curdir)\Microsoft.VisualBasic.dll" />
+    <WiXComponentFiles Include="$(_curdir)\Microsoft.VisualBasic.pdb" />
 
     <WiXComponentFiles Include="$(_curdir)\mscorlib.dll" />
     <WiXComponentFiles Include="$(_curdir)\mscorlib.pdb" />

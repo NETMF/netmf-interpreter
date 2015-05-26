@@ -42,7 +42,7 @@
     <latencyprof Condition="'$(latencyprof)'==''"   >false</latencyprof>
     <FLAVOR Condition="'$(FLAVOR)'==''"             >Release</FLAVOR>
     <MEMORY Condition="'$(MEMORY)'==''"             >FLASH</MEMORY>
-    <ENABLE_FASTCOMPILE Condition="'$(ENABLE_FASTCOMPILE)'==''"   >true</ENABLE_FASTCOMPILE>
+    <ENABLE_FASTCOMPILE Condition="'$(ENABLE_FASTCOMPILE)'==''">false</ENABLE_FASTCOMPILE>
     <FourByteCrytoLib>false</FourByteCrytoLib>
     <CLEAN_INDEPENDENT_ONLY Condition="'$(CLEAN_INDEPENDENT_ONLY)'==''"></CLEAN_INDEPENDENT_ONLY>
     <Configuration Condition="'$(Configuration)'=='' And '$(FLAVOR)'=='Debug'"       >$(FLAVOR)</Configuration>
@@ -53,7 +53,7 @@
 
   <!-- set up platform dependant properties, also setup the TARGETPLATFORM as capitals for set up PLATFORM_ARM_XXX flag -->
 
-  <!--  platform dependent properties are included here, based on teh path right above -->
+  <!--  platform dependent properties are included here, based on the path right above -->
   <!--  the settigns file is required to be have a specifc name ! -->
   <Import Project="$(MFSettingsFile)"                                       Condition=" EXISTS('$(MFSettingsFile)')"/>
 <!-- -->

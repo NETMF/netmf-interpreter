@@ -84,20 +84,6 @@
     </UI>
 
     <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_DpwsCodeGenTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\DpwsTestFixtures.msm"/>
-    </DirectoryRef>
-    
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_DpwsTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\DpwsTests.msm"/>
-    </DirectoryRef>
-
-    <DirectoryRef Id="SamplesDir">
       <Merge Id="Merge_GraphicsTests"
              DiskId="1"
              Language="1033"
@@ -200,8 +186,6 @@
       <ComponentRef Id='Component_Device' />
       <ComponentRef Id='Component_Desktop' />
       <ComponentRef Id='Component_Microsoft.SPOT.Emulator.Sample.TestEmulator' />
-      <ComponentRef Id='Component_MFDesktopTestRunner' />
-      <ComponentRef Id='Component_MFDpwsTCGen' />
       <ComponentRef Id='Component_RunTests' />
       <ComponentRef Id='Component_AssembliesReg' />
       <ComponentRef Id='Component_ToolsReg' />
@@ -215,14 +199,6 @@
       <ComponentRef Id='Component_CommonAssemblies' />
 
       <FeatureRef Id="EndianFeatures" />
-
-     <Feature Id="Feature_DpwsTests" 
-               Title=".NET Micro Framework Dpws Tests" 
-               Description="DPWS Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_DpwsTests"/>
-      </Feature>
 
      <Feature Id="Feature_GraphicsTests" 
                Title=".NET Micro Framework Graphics Tests" 
@@ -318,16 +294,6 @@
                Level="1">
           <MergeRef Id="Merge_MFDeployTests"/>
       </Feature>      
-      
-      <Feature Id="Feature_DpwsTestFixtures" 
-               Title=".NET Micro Framework Dpws Test Fixtures" 
-               Description="Test Fixtures for predefined web service definitions (.wsdl)" 
-               Display="hidden" 
-               Level="110">
-        <Condition Level="1">DPWS = "true"</Condition>
-          <MergeRef Id="Merge_DpwsCodeGenTests"/>
-      </Feature>
-
     </Feature>
     
     <DirectoryRef Id='TESTSDIR'>
@@ -434,7 +400,6 @@
     <DirectoryRef Id="AssembliesDir">
       <Component Id="Component_CommonAssemblies" Guid="3e9f00a4-0c4e-46db-a196-5712db65885A">
         <File Id="File_MFTestRunner" Name="Microsoft.SPOT.Platform.Test.MFTestRunner.dll"   Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Test.MFTestRunner.dll" DiskId="1"/>
-        <File Id="File_MFDpwsUtil"   Name="MFDpwsTestFixtureUtilities.dll"                  Source="$(var.BuildTreeClientTest)\dll\MFDpwsTestFixtureUtilities.dll" DiskId="1"/>
         <File Id="File_MFUtil"       Name="Microsoft.SPOT.Platform.Test.MFUtility.dll"      Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Test.MFUtility.dll" DiskId="1"/>
         <File Id="File_IOTestHelper" Name="Microsoft.SPOT.Platform.Tests.IOTestsHelper.dll" Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Tests.IOTestsHelper.dll" DiskId="1"/>
       </Component>

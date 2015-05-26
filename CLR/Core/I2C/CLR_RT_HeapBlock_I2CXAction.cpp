@@ -11,7 +11,7 @@ CLR_RT_DblLinkedList CLR_RT_HeapBlock_I2CXAction::m_i2cPorts; //FIX ME -change l
 void CLR_RT_HeapBlock_I2CXAction::HandlerMethod_Initialize()
 {
     NATIVE_PROFILE_CLR_I2C();
-	CLR_RT_HeapBlock_I2CXAction::m_i2cPorts.DblLinkedList_Initialize();
+    CLR_RT_HeapBlock_I2CXAction::m_i2cPorts.DblLinkedList_Initialize();
 }
 
 void CLR_RT_HeapBlock_I2CXAction::HandlerMethod_RecoverFromGC()
@@ -27,7 +27,7 @@ void CLR_RT_HeapBlock_I2CXAction::HandlerMethod_RecoverFromGC()
 void CLR_RT_HeapBlock_I2CXAction::HandlerMethod_CleanUp()
 {
     NATIVE_PROFILE_CLR_I2C();
-	 CLR_RT_HeapBlock_I2CXAction* i2cPort;
+     CLR_RT_HeapBlock_I2CXAction* i2cPort;
 
         while(NULL != (i2cPort = (CLR_RT_HeapBlock_I2CXAction*)CLR_RT_HeapBlock_I2CXAction::m_i2cPorts.FirstValidNode()))
         {

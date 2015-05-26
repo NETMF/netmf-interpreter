@@ -241,7 +241,7 @@
     <value>Found device port '{0}' with ID '{1}' for transport '{2}'</value>
   </data>
   <data name="Iteration" xml:space="preserve">
-    <value>Iteration {0}</value>
+    <value>Attempting to connect to device '{0}:{1}' Iteration {2}</value>
   </data>
   <data name="LookingUpDevice" xml:space="preserve">
     <value>Looking for a device on transport '{0}'</value>
