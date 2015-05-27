@@ -50,13 +50,13 @@
 
     <!-- DAT region goes into external NOR Flash -->
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Data_Size"               Value="0x00020000"/><!-- 128KB -->
+    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
     <!-- Deployment fills the rest of external NOR flash... -->
 
     <!-- Internal FLASH -->
     <!-- TinyBooter sits at power on Reset vector-->
     <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
-    <Set Name="BooterCode_Size"         Value="0x00010000"/><!-- 64KB -->
+    <Set Name="BooterCode_Size"         Value="0x0000C000"/><!-- 48KB -->
         
     <If Name="TARGETLOCATION" Value="FLASH">
         <!-- Internal FLASH -->
