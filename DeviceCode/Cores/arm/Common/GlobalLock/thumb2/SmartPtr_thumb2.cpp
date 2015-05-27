@@ -1,10 +1,22 @@
 #include <tinyhal.h>
 
-//--//
+#define __CMSIS_GENERIC              /* disable NVIC and Systick functions */
 
-#define DISABLED_MASK 0x1
+#if defined (CORTEX_M7)
+    #include "core_cm7.h"
+#elif defined (CORTEX_M4)
+    #include "core_cm4.h"
+#elif defined (CORTEX_M3)
+    #include "core_cm3.h"
+#elif defined (CORTEX_M0)
+    #include "core_cm0.h"
+#elif defined (CORTEX_M0PLUS)
+    #include "core_cm0plus.h"
+#else
+    #error "Processor not specified or unsupported."
+#endif
 
-//--//
+const uint32_t DISABLED_MASK = 0x1;
 
 SmartPtr_IRQ::SmartPtr_IRQ(void* context)
 {
@@ -38,10 +50,7 @@ void SmartPtr_IRQ::Release()
 
     if ((Cp & DISABLED_MASK) == 0)
     {
-        register UINT32 Cs __asm("primask");
-
-        m_state = Cs;
-
+        m_state = __get_PRIMASK();
         __enable_irq();
     }
 }
@@ -52,9 +61,7 @@ void SmartPtr_IRQ::Probe()
 
     if ((Cp & DISABLED_MASK) == 0)
     {
-        register UINT32 Cs __asm("primask");
-
-        UINT32 s = Cs;
+        register UINT32 state = __get_PRIMASK();
 
         __enable_irq();
 
@@ -62,13 +69,13 @@ void SmartPtr_IRQ::Probe()
         __NOP();
 
         // restore irq state
-        Cs = s;
+        __set_PRIMASK( state );
     }
 }
 
 BOOL SmartPtr_IRQ::GetState(void* context)
 {
-    register UINT32 Cp __asm("primask");
+    register UINT32 Cp = __get_PRIMASK();
     return (0 == (Cp & DISABLED_MASK));
 }
 
@@ -86,9 +93,7 @@ BOOL SmartPtr_IRQ::ForceEnabled(void* context)
 
 void SmartPtr_IRQ::Disable()
 {
-    register UINT32 Cp __asm("primask");
-
-    m_state = Cp;
+    m_state = __get_PRIMASK();
 
     __disable_irq();
 }
