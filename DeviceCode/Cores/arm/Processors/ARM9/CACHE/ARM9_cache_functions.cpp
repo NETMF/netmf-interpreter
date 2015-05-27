@@ -24,28 +24,28 @@ void CPU_EnableCaches_asm();
 void CPU_DisableCaches_asm();
 }
 
-void __section(SectionForBootstrapOperations) CPU_ARM9_FlushCaches(int segCnt, int indexCnt)
+void __section("SectionForBootstrapOperations") CPU_ARM9_FlushCaches(int segCnt, int indexCnt)
 {
 	CPU_ARM9_FlushCaches_asm(segCnt, indexCnt);
 }
 
-void __section(SectionForBootstrapOperations) CPU_DrainWriteBuffers()
+void __section("SectionForBootstrapOperations") CPU_DrainWriteBuffers()
 {
 	CPU_DrainWriteBuffers_asm();
 }
 
-void __section(SectionForBootstrapOperations) CPU_InvalidateCaches()
+void __section("SectionForBootstrapOperations") CPU_InvalidateCaches()
 {
 	CPU_InvalidateCaches_asm();
 }
 
-void __section(SectionForBootstrapOperations) CPU_EnableCaches()
+void __section("SectionForBootstrapOperations") CPU_EnableCaches()
 {
     CPU_InvalidateCaches_asm();
 	CPU_EnableCaches_asm();
 }
 
-void __section(SectionForBootstrapOperations) CPU_DisableCaches()
+void __section("SectionForBootstrapOperations") CPU_DisableCaches()
 {
 	CPU_DisableCaches_asm();
 

@@ -117,7 +117,7 @@ void HAL_AddSoftRebootHandler(ON_SOFT_REBOOT_HANDLER handler)
 
 #pragma arm section code = "SectionForBootstrapOperations"
 
-static void __section(SectionForBootstrapOperations) Prepare_Copy( volatile UINT32* src, volatile UINT32* dst, UINT32 len )
+static void __section("SectionForBootstrapOperations") Prepare_Copy( volatile UINT32* src, volatile UINT32* dst, UINT32 len )
 {
     if(dst != src)
     {
@@ -144,7 +144,7 @@ static void __section(SectionForBootstrapOperations) Prepare_Copy( volatile UINT
     }
 }
 
-static void __section(SectionForBootstrapOperations) Prepare_Zero( volatile UINT32* dst, UINT32 len )
+static void __section("SectionForBootstrapOperations") Prepare_Zero( volatile UINT32* dst, UINT32 len )
 {
     INT32 extraLen = len & 0x00000003;
     len            = len & 0xFFFFFFFC;
@@ -168,7 +168,7 @@ static void __section(SectionForBootstrapOperations) Prepare_Zero( volatile UINT
     }
 }
 
-void __section(SectionForBootstrapOperations) PrepareImageRegions()
+void __section("SectionForBootstrapOperations") PrepareImageRegions()
 {
     //
     // Copy RAM RO regions into proper location.

@@ -38,9 +38,13 @@
         <DriverLibs Include="Crypto.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
     </ItemGroup>
-    <ItemGroup>
-        <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\CortexM3\GlobalLock\dotNetMF.proj" />
+    <ItemGroup Condition="'$(COMPILER_TOOL)'=='GCC'">
+        <DriverLibs Include="GlobalLock_hal.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Common\GlobalLock\gcc-thumb2\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(COMPILER_TOOL)'=='MDK'">
+        <DriverLibs Include="GlobalLock_hal.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Common\GlobalLock\thumb2\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="MCBSTM32F400_tinyhal_loader.$(LIB_EXT)" />

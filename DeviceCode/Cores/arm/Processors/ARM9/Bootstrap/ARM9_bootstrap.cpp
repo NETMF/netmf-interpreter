@@ -30,7 +30,7 @@
     nop \
 
 
-void __section(SectionForBootstrapOperations) CPU_ARM9_BootstrapCode()
+void __section("SectionForBootstrapOperations") CPU_ARM9_BootstrapCode()
 {
     UINT32 reg;
 
