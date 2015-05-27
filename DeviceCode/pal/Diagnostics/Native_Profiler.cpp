@@ -17,18 +17,18 @@
 #include <Native_Profiler.h>
 
 #pragma arm section rwdata = "SectionForProfilerBufferBegin"
-UINT32 ProfilerBufferBegin __section(SectionForProfilerBufferBegin);
+UINT32 ProfilerBufferBegin __section("SectionForProfilerBufferBegin");
 #pragma arm section rwdata
 
 #pragma arm section rwdata = "SectionForProfilerBufferEnd"
-UINT32 ProfilerBufferEnd   __section(SectionForProfilerBufferEnd);
+UINT32 ProfilerBufferEnd   __section("SectionForProfilerBufferEnd");
 #pragma arm section rwdata
 
 #pragma arm section code = "SectionForFlashOperations"
 
 struct native_profiler_data s_native_profiler = {0, 0, 0, 0, 0, 0, 0, 0};
 
-__section(SectionForFlashOperations) Native_Profiler::Native_Profiler()
+__section("SectionForFlashOperations") Native_Profiler::Native_Profiler()
 {
     if(s_native_profiler.isOn)
     {
@@ -59,7 +59,7 @@ __section(SectionForFlashOperations) Native_Profiler::Native_Profiler()
 }
 
 
-__section(SectionForFlashOperations) Native_Profiler::~Native_Profiler()
+__section("SectionForFlashOperations") Native_Profiler::~Native_Profiler()
 {
     if(s_native_profiler.isOn)
     {
@@ -89,7 +89,7 @@ __section(SectionForFlashOperations) Native_Profiler::~Native_Profiler()
 }
 
 
-void __section(SectionForFlashOperations) Native_Profiler_Init()
+void __section("SectionForFlashOperations") Native_Profiler_Init()
 {
     s_native_profiler.ticksPerMicrosecond = CPU_TicksPerSecond() / 1000000;
     unsigned int availableSpace   = &ProfilerBufferEnd - &ProfilerBufferBegin;
@@ -130,7 +130,7 @@ void __section(SectionForFlashOperations) Native_Profiler_Init()
 }
 
 
-void __section(SectionForFlashOperations)  Native_Profiler_Dump()
+void __section("SectionForFlashOperations")  Native_Profiler_Dump()
 {
     lcd_printf("Buffer is full. Dumping...\r\n");
     UINT64 time1, time2;
@@ -166,7 +166,7 @@ void __section(SectionForFlashOperations)  Native_Profiler_Dump()
 }
 
 
-void __section(SectionForFlashOperations)  Native_Profiler_WriteToCOM(void *buffer, UINT32 size)
+void __section("SectionForFlashOperations")  Native_Profiler_WriteToCOM(void *buffer, UINT32 size)
 {
     UINT64 time1, time2;
     time1 = Native_Profiler_TimeInMicroseconds();
@@ -198,13 +198,13 @@ void __section(SectionForFlashOperations)  Native_Profiler_WriteToCOM(void *buff
 }
 
 
-UINT64 __section(SectionForFlashOperations) Native_Profiler_TimeInMicroseconds()
+UINT64 __section("SectionForFlashOperations") Native_Profiler_TimeInMicroseconds()
 {
     return Time_CurrentTicks() / s_native_profiler.ticksPerMicrosecond;
 }
 
 
-void __section(SectionForFlashOperations) Native_Profiler_Start()
+void __section("SectionForFlashOperations") Native_Profiler_Start()
 {
     if(s_native_profiler.lock == FALSE)
     {
@@ -213,7 +213,7 @@ void __section(SectionForFlashOperations) Native_Profiler_Start()
 }
 
 
-void __section(SectionForFlashOperations) Native_Profiler_Stop()
+void __section("SectionForFlashOperations") Native_Profiler_Stop()
 {
     if(s_native_profiler.isOn && s_native_profiler.writtenData && s_native_profiler.lock == FALSE)
     {
@@ -233,13 +233,13 @@ void __section(SectionForFlashOperations) Native_Profiler_Stop()
 }
 
 
-void __section(SectionForFlashOperations) Native_Profiler_Lock()
+void __section("SectionForFlashOperations") Native_Profiler_Lock()
 {
     s_native_profiler.lock = TRUE;
 }
 
 
-void __section(SectionForFlashOperations) Native_Profiler_Unlock()
+void __section("SectionForFlashOperations") Native_Profiler_Unlock()
 {
     s_native_profiler.lock = FALSE;
 }
