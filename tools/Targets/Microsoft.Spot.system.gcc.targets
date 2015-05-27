@@ -225,7 +225,7 @@
     <GNU_LIB_DIR     Condition="'$(INSTRUCTION_SET)'=='thumb2' or '$(INSTRUCTION_SET)'=='thumb2fp'">$(GNU_TOOLS)\$(GNU_TARGET)\lib\armv7e-m\fpu</GNU_LIB_DIR>
     <GNU_LIBGCC_DIR  Condition="'$(INSTRUCTION_SET)'=='thumb2' or '$(INSTRUCTION_SET)'=='thumb2fp'">$(GNU_TOOLS)\lib\gcc\$(GNU_TARGET)\$(GNU_VERSION)\armv7e-m\fpu</GNU_LIBGCC_DIR>
 
-    <!--GNU Tools ARM Embedded-->
+     <!--GNU Tools ARM Embedded-->
     <LIBGCC >libgcc.a</LIBGCC>
     <LIBCGCC>libc_nano.a</LIBCGCC>
     <LIBCGCC  Condition="'$(DEVICE_TYPE)' == 'cortex-m4'">libc_nano.a</LIBCGCC>
