@@ -93,36 +93,6 @@ extern "C" {
 #define PHY_KENDIN_OUI                  0x10A1U
 #define PHY_KENDIN_OUI_ID1              0x0022U
 
-
-#define PHY_CTRL1_MASK                  0x07
-#define PHY_CTRL1_REG                   0x1E
-
-//#define PHY_OUI                         PHY_OUI_KENDIN
-
-
-
-#define ETHMODE_100MPS_BIT          0x02
-#define ETHMODE_FULLDPX_BIT         0x01
-
-enum EthMode
-{
-    ETHMODE_FAIL = 0xFFFF,
-    ETHMODE_10MBPS_HDPX  = 0,
-    ETHMODE_10MBPS_FDPX  = ETHMODE_FULLDPX_BIT,
-    ETHMODE_100MBPS_HDPX = ETHMODE_100MPS_BIT,
-    ETHMODE_100MBPS_FDPX = ETHMODE_100MPS_BIT | ETHMODE_FULLDPX_BIT,
-};
-
-
-#if 0
-enum EthMode
-{
-    ETHMODE_FAIL = 0xFFFF,
-    ETHMODE_10MBPS_HDPX  = 0x0001,
-    ETHMODE_10MBPS_FDPX  = 0x0005,
-    ETHMODE_100MBPS_HDPX = 0x0002,
-    ETHMODE_100MBPS_FDPX = 0x0006,
-=======
 #define PHY_CTRL1_MASK                  0x07
 #define PHY_CTRL1_REG                   0x1E
 
@@ -137,9 +107,8 @@ enum EthMode
     ETHMODE_10MBPS_FDPX  = ETHMODE_FULLDPX_BIT,
     ETHMODE_100MBPS_HDPX = ETHMODE_100MPS_BIT,
     ETHMODE_100MBPS_FDPX = ETHMODE_100MPS_BIT | ETHMODE_FULLDPX_BIT,
->>>>>>> upstream/dev
 };
-#endif
+
 
 //--------------------------------------------------------------------------------------------
 // Typedefs and enums

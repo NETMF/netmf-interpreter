@@ -39,7 +39,6 @@
 #define INVALID_PHY_ADDRESS             0xFF
 
 
-
 static uint32_t g_phyAddress =INVALID_PHY_ADDRESS;
 static uint32_t g_foundPhyAddress =FALSE;
 
@@ -84,7 +83,6 @@ static BOOL writeRegister( const uint32_t miiAddress, const uint16_t miiData)
     if (g_phyAddress == INVALID_PHY_ADDRESS) 
         findPhyAddr();
     
-
     return eth_writePhyRegister(g_phyAddress, miiAddress, miiData);
 
 }
@@ -198,8 +196,7 @@ EthMode eth_enableAutoNegotiation()
     status = (status & ~(PHY_CR_ANEGEN | PHY_CR_ANEG_RESTART)) | PHY_CR_ANEGEN | PHY_CR_ANEG_RESTART;
     if (!writeRegister(PHY_CONTROL_REGISTER, status))
         return ETHMODE_FAIL;
-
-
+    
     // Wait for completion
     do
     {

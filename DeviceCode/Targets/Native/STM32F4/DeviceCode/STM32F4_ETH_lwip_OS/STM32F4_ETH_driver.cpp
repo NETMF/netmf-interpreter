@@ -713,7 +713,8 @@ BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_
 {
     uint32_t nWait = 0U; 
     uint32_t value = 0;
- // Wait for PHY availability
+    
+    // Wait for PHY availability
     while ( ((ETH->MACMIIAR & ETH_MACMIIAR_MB) == ETH_MACMIIAR_MB) &&
             (nWait < MII_BUSY_TIMEOUT) )
     {
@@ -740,7 +741,6 @@ BOOL eth_readPhyRegister(uint32_t phyAddress, const uint32_t miiAddress, uint16_
             *pMiiData = ETH->MACMIIDR;
             return TRUE;
         }
-        nWait++;
     }
     
     return FALSE;
@@ -794,4 +794,3 @@ BOOL eth_writePhyRegister(uint32_t phyAddress, const uint32_t miiAddress, const 
 
 //--------------------------------------------------------------------------------------------
 
-s

@@ -2,7 +2,6 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <windows.h>
 #include "spot_alljoyn.h"
 
 
@@ -416,14 +415,6 @@ void StartServiceCallback( void* context )
     DiscoveryContext* dc = (DiscoveryContext*)context;
 
     dc->_status = CustomStartService( dc->_bus, dc->_pDaemonName, dc->_timeout, dc->_fConnected, dc->_port, dc->_serviceName, dc->_flags, NULL); 
-}
-
-DWORD WINAPI ThreadProc(LPVOID lpParameter)
-{
-    DiscoveryContext* dc = (DiscoveryContext*)lpParameter;
-
-    dc->_status = CustomStartService( dc->_bus, dc->_pDaemonName, dc->_timeout, dc->_fConnected, dc->_port, dc->_serviceName, dc->_flags, NULL); 
-    return 1;
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4( CLR_RT_StackFrame& stack )

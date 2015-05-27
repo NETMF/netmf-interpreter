@@ -15,14 +15,9 @@
 #undef  DEBUG_TRACE
 #define DEBUG_TRACE (TRACE_ALWAYS)
 
-<<<<<<< HEAD
-const size_t ConfigLengthCookie = offsetof( ConfigurationSector, FirstConfigBlock );
-=======
 #ifndef HAL_REDUCESIZE
 const size_t ConfigLengthCookie = offsetof( ConfigurationSector, FirstConfigBlock );
 #endif
->>>>>>> upstream/dev
-
 BOOL HAL_CONFIG_BLOCK::IsGoodBlock() const
 {
     if(Signature != c_Version_V2)
