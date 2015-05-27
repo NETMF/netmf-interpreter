@@ -77,7 +77,13 @@
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"      >$(CC_CPP_TARGETTYPE_FLAGS) -g1 -O3</CC_CPP_TARGETTYPE_FLAGS>
 
     <CC_FLAGS>$(CC_FLAGS)-xc </CC_FLAGS>
-    <CPP_FLAGS>$(CPP_FLAGS)-xc++ -Wno-invalid-offsetof -fcheck-new </CPP_FLAGS>
+    <!--
+    Disabling all warnings for GCC - it's just too noisy to be useful.
+    Even worse is that some of the most useless can't even be disabled.
+    See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=45977
+    and, http://stackoverflow.com/questions/4268589/warning-in-extern-declaration
+    -->
+    <CPP_FLAGS>$(CPP_FLAGS)-xc++ -w -fcheck-new</CPP_FLAGS>
 
     <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'"></FLOATING_POINT_FLAG>
     <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'"> -mfloat-abi=soft </FLOATING_POINT_FLAG>
