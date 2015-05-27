@@ -18,6 +18,7 @@
     </PropertyGroup>
     <ItemGroup>
         <CC_CPP_Defines Include="__CORTEX_M4F" />
+        <CC_CPP_Defines Include="CORTEX_M4" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">

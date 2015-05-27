@@ -277,11 +277,13 @@ BOOL USB_Driver::Initialize( int Controller )
 int USB_Driver::Configure( int Controller, const USB_DYNAMIC_CONFIGURATION* Config )
 {
     NATIVE_PROFILE_PAL_COM();
+    if( Controller > 9 )
+        return USB_CONFIG_ERR_NO_CONTROLLER;
 
     int err;
     size_t Length = 0;
     USB_DESCRIPTOR_HEADER *configHeader; 
-    char configName[5] = { 'U', 'S', 'B', '1' + Controller, 0 }; 
+    char configName[5] = { 'U', 'S', 'B', '1' + (char)Controller, 0 }; 
     USB_CONTROLLER_STATE* State = CPU_USB_GetState( Controller );
     
     // Check if controller exists
