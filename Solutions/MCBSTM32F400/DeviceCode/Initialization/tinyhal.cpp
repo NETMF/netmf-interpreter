@@ -73,7 +73,7 @@ extern UINT32 Image$$ER_LWIP_OS$$ZI$$Length;
 
 #pragma arm section code = "SectionForBootstrapOperations"
 
-static void __section(SectionForBootstrapOperations) Prepare_Copy( UINT32* src, UINT32* dst, UINT32 len )
+static void __section("SectionForBootstrapOperations") Prepare_Copy( UINT32* src, UINT32* dst, UINT32 len )
 {
     if(dst != src)
     {
@@ -100,7 +100,7 @@ static void __section(SectionForBootstrapOperations) Prepare_Copy( UINT32* src, 
     }
 }
 
-static void __section(SectionForBootstrapOperations) Prepare_Zero( UINT32* dst, UINT32 len )
+static void __section("SectionForBootstrapOperations") Prepare_Zero( UINT32* dst, UINT32 len )
 {
     INT32 extraLen = len & 0x00000003;
     len            = len & 0xFFFFFFFC;
@@ -125,7 +125,7 @@ static void __section(SectionForBootstrapOperations) Prepare_Zero( UINT32* dst, 
 }
 
 #if !defined(PLATFORM_ARM_OS_PORT)
-void __section(SectionForBootstrapOperations) PrepareImageRegions()
+void __section("SectionForBootstrapOperations") PrepareImageRegions()
 {
     //
     // Copy RAM RO regions into proper location.
@@ -653,7 +653,7 @@ extern "C" void SystemInit()
 
 extern "C" void HARD_Breakpoint()
 {
-    __breakpoint( 0 );
+    __BKPT( 0 );
 }
 
 #if !defined(BUILD_RTM)

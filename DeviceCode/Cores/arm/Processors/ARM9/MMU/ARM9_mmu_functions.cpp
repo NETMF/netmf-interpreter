@@ -16,12 +16,12 @@
 
 #pragma arm section code = "SectionForBootstrapOperations"
 
-UINT32* __section(SectionForBootstrapOperations) ARM9_MMU::GetL1Entry( UINT32* base, UINT32 address )
+UINT32* __section("SectionForBootstrapOperations") ARM9_MMU::GetL1Entry( UINT32* base, UINT32 address )
 {
     return &base[address >> 20];
 }
 
-void __section(SectionForBootstrapOperations) ARM9_MMU::InitializeL1(UINT32* baseOfTTBs)
+void __section("SectionForBootstrapOperations") ARM9_MMU::InitializeL1(UINT32* baseOfTTBs)
 {
     UINT32* dst = baseOfTTBs;
     UINT32* end = (UINT32*)((UINT32)baseOfTTBs + ARM9_MMU::c_TTB_size);
@@ -32,7 +32,7 @@ void __section(SectionForBootstrapOperations) ARM9_MMU::InitializeL1(UINT32* bas
     } while(dst < end);
 }
 
-UINT32 __section(SectionForBootstrapOperations) ARM9_MMU::GenerateL1_Section( UINT32 address, UINT32 AP, UINT32 domain, BOOL Cachable, BOOL Buffered, BOOL Xtended )
+UINT32 __section("SectionForBootstrapOperations") ARM9_MMU::GenerateL1_Section( UINT32 address, UINT32 AP, UINT32 domain, BOOL Cachable, BOOL Buffered, BOOL Xtended )
 {
     UINT32 ret;
 
@@ -47,7 +47,7 @@ UINT32 __section(SectionForBootstrapOperations) ARM9_MMU::GenerateL1_Section( UI
     return ret;
 }
 
-void __section(SectionForBootstrapOperations) ARM9_MMU::GenerateL1_Sections( UINT32* baseOfTTBs, UINT32 mappedAddress, UINT32 physAddress, INT32 size, UINT32 AP, UINT32 domain, BOOL Cachable, BOOL Buffered, BOOL Xtended )
+void __section("SectionForBootstrapOperations") ARM9_MMU::GenerateL1_Sections( UINT32* baseOfTTBs, UINT32 mappedAddress, UINT32 physAddress, INT32 size, UINT32 AP, UINT32 domain, BOOL Cachable, BOOL Buffered, BOOL Xtended )
 {
     UINT32* dst = ARM9_MMU::GetL1Entry( baseOfTTBs, mappedAddress );
 
@@ -70,23 +70,23 @@ void	CPU_DisableMMU_asm();
 BOOL	CPU_IsMMUEnabled_asm();
 }
 
-void __section(SectionForBootstrapOperations) CPU_InvalidateTLBs()
+void __section("SectionForBootstrapOperations") CPU_InvalidateTLBs()
 {
 	CPU_InvalidateTLBs_asm();
 }
 
-void __section(SectionForBootstrapOperations) CPU_EnableMMU( void* TTB )
+void __section("SectionForBootstrapOperations") CPU_EnableMMU( void* TTB )
 {
 	CPU_EnableMMU_asm(TTB);
 	CPU_InvalidateTLBs_asm();
 }
 
-void __section(SectionForBootstrapOperations) CPU_DisableMMU()
+void __section("SectionForBootstrapOperations") CPU_DisableMMU()
 {
 	CPU_DisableMMU_asm();
 }
 
-BOOL __section(SectionForBootstrapOperations) CPU_IsMMUEnabled()
+BOOL __section("SectionForBootstrapOperations") CPU_IsMMUEnabled()
 {
     return CPU_IsMMUEnabled_asm();
 }

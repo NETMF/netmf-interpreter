@@ -14,7 +14,7 @@
 #endif
 
 //--//
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::ChipInitialize( void* context )
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::ChipInitialize( void* context )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -57,19 +57,19 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::ChipInitialize( v
 }
 
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::ChipUnInitialize( void* context )
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::ChipUnInitialize( void* context )
 {
     return TRUE;
 }
 
 
-const BlockDeviceInfo* __section(SectionForFlashOperations) AM29DL_16_BS_Driver::GetDeviceInfo( void* context )
+const BlockDeviceInfo* __section("SectionForFlashOperations") AM29DL_16_BS_Driver::GetDeviceInfo( void* context )
 {
     return ((MEMORY_MAPPED_NOR_BLOCK_CONFIG*)context)->BlockConfig.BlockDeviceInformation;
 }
 
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::ChipReadOnly(void* context, BOOL On, UINT32 ProtectionKey )
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::ChipReadOnly(void* context, BOOL On, UINT32 ProtectionKey )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
     
@@ -90,7 +90,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::ChipReadOnly(void
     return TRUE;
 }
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::ReadProductID(void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::ReadProductID(void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
     
@@ -104,7 +104,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::ReadProductID(voi
 }
 
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::IsBlockErased( void* context, ByteAddress address, UINT32 blockLength )
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::IsBlockErased( void* context, ByteAddress address, UINT32 blockLength )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -125,7 +125,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::IsBlockErased( vo
     return TRUE;
 }
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::EraseBlock( void* context, ByteAddress address )
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::EraseBlock( void* context, ByteAddress address )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -155,7 +155,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::EraseBlock( void*
 }
 
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Read(void* context, ByteAddress address, UINT32 numBytes, BYTE * pSectorBuff)
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Read(void* context, ByteAddress address, UINT32 numBytes, BYTE * pSectorBuff)
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -185,7 +185,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Read(void* contex
     return TRUE;
 }
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Write(void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite)
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Write(void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite)
 {
 
     NATIVE_PROFILE_PAL_FLASH();
@@ -289,7 +289,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Write(void* conte
     
 }
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Memset(void* context, ByteAddress address, UINT8 data, UINT32 numBytes)
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Memset(void* context, ByteAddress address, UINT8 data, UINT32 numBytes)
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -301,7 +301,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Memset(void* cont
 }
 
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::WriteX(void* context, ByteAddress address, UINT32 numBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite, BOOL fIncrementDataPtr)
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::WriteX(void* context, ByteAddress address, UINT32 numBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite, BOOL fIncrementDataPtr)
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -358,25 +358,25 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::WriteX(void* cont
     return result;
 }
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::GetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::GetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
 {
     return TRUE;
 }
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::SetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::SetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
 {
     return TRUE;
 }
 
 
-void  __section(SectionForFlashOperations) AM29DL_16_BS_Driver::SetPowerState(void* context, UINT32 State )
+void  __section("SectionForFlashOperations") AM29DL_16_BS_Driver::SetPowerState(void* context, UINT32 State )
 {
     // our flash driver is always ON
     return ;
 }
 
 
-UINT32 __section(SectionForFlashOperations) AM29DL_16_BS_Driver::MaxSectorWrite_uSec( void* context )
+UINT32 __section("SectionForFlashOperations") AM29DL_16_BS_Driver::MaxSectorWrite_uSec( void* context )
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -386,7 +386,7 @@ UINT32 __section(SectionForFlashOperations) AM29DL_16_BS_Driver::MaxSectorWrite_
 }
 
 
-UINT32 __section(SectionForFlashOperations) AM29DL_16_BS_Driver::MaxBlockErase_uSec( void* context )
+UINT32 __section("SectionForFlashOperations") AM29DL_16_BS_Driver::MaxBlockErase_uSec( void* context )
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -401,7 +401,7 @@ UINT32 __section(SectionForFlashOperations) AM29DL_16_BS_Driver::MaxBlockErase_u
 #pragma arm section code = "SectionForFlashOperations"
 #endif
 
-void __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Action_ReadID( void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
+void __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Action_ReadID( void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
     
@@ -433,13 +433,13 @@ void __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Action_ReadID( vo
     ///////////////////////////////////
 }
 
-void __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Action_Unprotect( void* context, volatile CHIP_WORD* BaseAddress )
+void __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Action_Unprotect( void* context, volatile CHIP_WORD* BaseAddress )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 }
 
 
-BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Action_EraseSector( void* context, volatile CHIP_WORD* SectorStart )
+BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Action_EraseSector( void* context, volatile CHIP_WORD* SectorStart )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -502,7 +502,7 @@ BOOL __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Action_EraseSecto
     return success;        
 }
 
-void __section(SectionForFlashOperations) AM29DL_16_BS_Driver::Action_WriteWord( void* context, volatile CHIP_WORD* Address, CHIP_WORD Data )
+void __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Action_WriteWord( void* context, volatile CHIP_WORD* Address, CHIP_WORD Data )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
