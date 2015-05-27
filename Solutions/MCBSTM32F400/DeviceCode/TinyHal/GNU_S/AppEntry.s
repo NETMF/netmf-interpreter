@@ -97,64 +97,60 @@ Reset_Handler:
     @@ reload the stack pointer as there's no returning to the loader
     ;*************************************************************************
 
-    AREA SectionForStackBottom,       DATA
+    .section SectionForStackBottom
 StackBottom:
        .word 0
 
-    AREA SectionForStackTop,          DATA
-__initial_sp 
+    .section SectionForStackTop
+__initial_sp:
 StackTop:
       .word 0
 
-    AREA SectionForHeapBegin,         DATA
+    .section SectionForHeapBegin
 HeapBegin:
      .word 0
 
-    AREA SectionForHeapEnd,           DATA
+    .section SectionForHeapEnd
 HeapEnd:
     .word 0
 
-    AREA SectionForCustomHeapBegin,   DATA
-CustomHeapBegin
+    .section SectionForCustomHeapBegin
+CustomHeapBegin:
     .word 0
 
-    AREA SectionForCustomHeapEnd,     DATA
-CustomHeapEnd
+    .section SectionForCustomHeapEnd
+CustomHeapEnd:
     .word 0
 
-    AREA ||i.EntryPoint||, CODE, READONLY
+EntryPoint:
 
-    ENTRY
+@ The first word has a dual role:
+@ - It is the entry point of the application loaded or discovered by
+@   the bootloader and therfore must be valid executable code
+@ - it contains a signature word used to identify application blocks
+@   in TinyBooter (see: Tinybooter_ProgramWordCheck() for more details )
+@ * The additional entries in this table are completely ignored and
+@   remain for backwards compatibility. Since the boot loader is hard
+@   coded to look for the signature, half of which is an actual relative
+@   branch instruction, removing the unused entries would require all
+@   bootloaders to be updated as well. [sic.]
+@   [ NOTE:
+@     In the next major release where we can afford to break backwards
+@     compatibility this will almost certainly change, as the whole
+@     init/startup for NETMF is overly complex. The various tools used
+@     for building the CLR have all come around to supporting simpler
+@     init sequences we should leverage directly
+@   ]
+@ The actual word used is 0x2000E00C
 
-EntryPoint
-
-; The first word has a dual role:
-; - It is the entry point of the application loaded or discovered by
-;   the bootloader and therfore must be valid executable code
-; - it contains a signature word used to identify application blocks
-;   in TinyBooter (see: Tinybooter_ProgramWordCheck() for more details )
-; * The additional entries in this table are completely ignored and
-;   remain for backwards compatibility. Since the boot loader is hard
-;   coded to look for the signature, half of which is an actual relative
-;   branch instruction, removing the unused entries would require all
-;   bootloaders to be updated as well. [sic.]
-;   [ NOTE:
-;     In the next major release where we can afford to break backwards
-;     compatibility this will almost certainly change, as the whole
-;     init/startup for NETMF is overly complex. The various tools used
-;     for building the CLR have all come around to supporting simpler
-;     init sequences we should leverage directly
-;   ]
-; The actual word used is 0x2000E00C
-
-    b       Reset_Handler ; 0xE00C
-    .hword     0x2000        ; Booter signature is 0x2000E00C
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
+    b       Reset_Handler @ 0xE00C
+    .hword     0x2000        @ Booter signature is 0x2000E00C
+    .word     0 @ [ UNUSED ]
+    .word     0 @ [ UNUSED ]
+    .word     0 @ [ UNUSED ]
+    .word     0 @ [ UNUSED ]
+    .word     0 @ [ UNUSED ]
+    .word     0 @ [ UNUSED ]
 
 Reset_Handler:
     ;; reload the stack pointer as there's no returning to the loader
