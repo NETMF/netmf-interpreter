@@ -18,7 +18,7 @@
 
 extern void STM32F4_GPIO_Pin_Config( GPIO_PIN pin, UINT32 mode, GPIO_RESISTOR resistor, UINT32 alternate );    // Workaround, since CPU_GPIO_DisablePin() does not correctly initialize pin speeds
 
-void __section(SectionForBootstrapOperations) InitNorFlash()
+void __section("SectionForBootstrapOperations") InitNorFlash()
 {
     uint32_t nor_fsmc_bcr1 = 0x00000000;
     uint32_t nor_fsmc_btr1 = 0x00000000;    
@@ -46,7 +46,7 @@ void __section(SectionForBootstrapOperations) InitNorFlash()
     FSMC_Bank1->BTCR[0] |= FSMC_BCR1_MBKEN;
 }
 
-void __section(SectionForBootstrapOperations) InitSram()
+void __section("SectionForBootstrapOperations") InitSram()
 {
     uint32_t sram_fsmc_bcr1 = 0x00000000;
     uint32_t sram_fsmc_btr1 = 0x00000000;
@@ -70,7 +70,7 @@ void __section(SectionForBootstrapOperations) InitSram()
     FSMC_Bank1->BTCR[4] |= FSMC_BCR1_MBKEN;
 }
 
-void __section(SectionForBootstrapOperations) BootstrapCode_GPIO()
+void __section("SectionForBootstrapOperations") BootstrapCode_GPIO()
 {
     /* GPIO pins connected to NOR Flash and SRAM on the MCBSTM32F400 board */
     const uint8_t PortD_PinList[] = {0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13, 14, 15};

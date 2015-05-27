@@ -20,7 +20,7 @@ inline int __signbitd(double x)
 #define isgreater(param0,param1) (param0 > param1)
 #define isless(param0,param1)    (param0 < param1)
 
-#elif __GNUC__
+#elif __GNUC__ && !defined( isgreater ) // newer versions include this macro already in math.h
 
 #define isgreater(param0,param1) (param0 > param1)
 #define isless(param0,param1)    (param0 < param1)

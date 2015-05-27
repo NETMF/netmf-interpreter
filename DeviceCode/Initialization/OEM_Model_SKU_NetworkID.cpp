@@ -47,7 +47,7 @@ OEM_MODEL_SKU OEM_Model_SKU;
 
 #pragma arm section rodata = "SectionForConfig"
 
-const ConfigurationSector __section(SectionForConfig) g_ConfigurationSector =
+const ConfigurationSector __section("SectionForConfig") g_ConfigurationSector =
 {
     // ConfigurationLength
     offsetof(ConfigurationSector, FirstConfigBlock),

@@ -16,7 +16,7 @@
 
 //--//
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::ChipInitialize( void* context )
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::ChipInitialize( void* context )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
     
@@ -97,21 +97,21 @@ BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::ChipInitialize( v
     return TRUE;
 }
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::ChipUnInitialize( void* context )
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::ChipUnInitialize( void* context )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
     return TRUE;
 }
 
-const BlockDeviceInfo* __section(SectionForFlashOperations)SST39WF_16_BS_Driver::GetDeviceInfo( void* context )
+const BlockDeviceInfo* __section("SectionForFlashOperations")SST39WF_16_BS_Driver::GetDeviceInfo( void* context )
 {
     MEMORY_MAPPED_NOR_BLOCK_CONFIG* config = (MEMORY_MAPPED_NOR_BLOCK_CONFIG*)context;
     
     return config->BlockConfig.BlockDeviceInformation;
 }
 
-BOOL  __section(SectionForFlashOperations)SST39WF_16_BS_Driver::ChipReadOnly( void* context, BOOL On, UINT32 ProtectionKey )
+BOOL  __section("SectionForFlashOperations")SST39WF_16_BS_Driver::ChipReadOnly( void* context, BOOL On, UINT32 ProtectionKey )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -136,7 +136,7 @@ BOOL  __section(SectionForFlashOperations)SST39WF_16_BS_Driver::ChipReadOnly( vo
 
 
 
-BOOL  __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Read( void* context, ByteAddress StartSector, UINT32 NumBytes, BYTE * pSectorBuff)
+BOOL  __section("SectionForFlashOperations")SST39WF_16_BS_Driver::Read( void* context, ByteAddress StartSector, UINT32 NumBytes, BYTE * pSectorBuff)
 {
     // XIP device does not need to read into a buffer
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
@@ -159,7 +159,7 @@ BOOL  __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Read( void* cont
 
 
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::WriteX(void* context, ByteAddress StartSector, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite, BOOL fIncrementDataPtr)
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::WriteX(void* context, ByteAddress StartSector, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite, BOOL fIncrementDataPtr)
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -213,7 +213,7 @@ BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::WriteX(void* cont
 
 
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Write(void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite)
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::Write(void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite)
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -309,7 +309,7 @@ BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Write(void* conte
 
 
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Memset(void* context, ByteAddress Address, UINT8 Data, UINT32 NumBytes)
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::Memset(void* context, ByteAddress Address, UINT8 Data, UINT32 NumBytes)
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -327,18 +327,18 @@ BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Memset(void* cont
 }
 
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::GetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::GetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
 {
     return FALSE;
 }
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::SetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::SetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
 {
     return FALSE;
 }
 
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::IsBlockErased( void* context, ByteAddress BlockStart, UINT32 BlockLength )
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::IsBlockErased( void* context, ByteAddress BlockStart, UINT32 BlockLength )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
     BlockStart = CPU_GetUncachableAddress(BlockStart);
@@ -359,7 +359,7 @@ BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::IsBlockErased( vo
 }
 
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::EraseBlock( void* context, ByteAddress Sector )
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::EraseBlock( void* context, ByteAddress Sector )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -382,7 +382,7 @@ BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::EraseBlock( void*
     return TRUE;
 }
 
-void  __section(SectionForFlashOperations)SST39WF_16_BS_Driver::SetPowerState( void* context, BOOL State )
+void  __section("SectionForFlashOperations")SST39WF_16_BS_Driver::SetPowerState( void* context, BOOL State )
 {
     // the SST39WF goes to Low Power mode automatically after each successful read
     return ;
@@ -390,7 +390,7 @@ void  __section(SectionForFlashOperations)SST39WF_16_BS_Driver::SetPowerState( v
 //--//
 // Public functions
 
-BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::ReadProductID( void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
+BOOL __section("SectionForFlashOperations")SST39WF_16_BS_Driver::ReadProductID( void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
 {
     NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -413,7 +413,7 @@ BOOL __section(SectionForFlashOperations)SST39WF_16_BS_Driver::ReadProductID( vo
 
 #pragma arm section code = "SectionForFlashOperations"
 
-UINT32 __section(SectionForFlashOperations)SST39WF_16_BS_Driver::MaxSectorWrite_uSec( void* context )
+UINT32 __section("SectionForFlashOperations")SST39WF_16_BS_Driver::MaxSectorWrite_uSec( void* context )
 {
     NATIVE_PROFILE_PAL_FLASH();
 
@@ -423,7 +423,7 @@ UINT32 __section(SectionForFlashOperations)SST39WF_16_BS_Driver::MaxSectorWrite_
 }
 
 
-UINT32 __section(SectionForFlashOperations)SST39WF_16_BS_Driver::MaxBlockErase_uSec( void* context )
+UINT32 __section("SectionForFlashOperations")SST39WF_16_BS_Driver::MaxBlockErase_uSec( void* context )
 {
     NATIVE_PROFILE_PAL_FLASH();
     
@@ -433,7 +433,7 @@ UINT32 __section(SectionForFlashOperations)SST39WF_16_BS_Driver::MaxBlockErase_u
     
 }
 
-void __section(SectionForFlashOperations) SST39WF_16_BS_Driver::Action_ReadID( volatile CHIP_WORD* SectorCheck, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
+void __section("SectionForFlashOperations") SST39WF_16_BS_Driver::Action_ReadID( volatile CHIP_WORD* SectorCheck, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
 {
 	NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 
@@ -466,7 +466,7 @@ void __section(SectionForFlashOperations) SST39WF_16_BS_Driver::Action_ReadID( v
 
 }
 
-void __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Action_EraseBlock( void* context, volatile CHIP_WORD * Block)
+void __section("SectionForFlashOperations")SST39WF_16_BS_Driver::Action_EraseBlock( void* context, volatile CHIP_WORD * Block)
 {
 	NATIVE_PROFILE_HAL_DRIVERS_FLASH();
     
@@ -501,7 +501,7 @@ void __section(SectionForFlashOperations)SST39WF_16_BS_Driver::Action_EraseBlock
     FLASH_END_PROGRAMMING_FAST( "SST39WF_16 EraseBlock", Block );
 }
 
-void __section(SectionForFlashOperations) SST39WF_16_BS_Driver::Action_WriteWord(void * context, volatile CHIP_WORD * Sector, CHIP_WORD Data )
+void __section("SectionForFlashOperations") SST39WF_16_BS_Driver::Action_WriteWord(void * context, volatile CHIP_WORD * Sector, CHIP_WORD Data )
 {
 	NATIVE_PROFILE_HAL_DRIVERS_FLASH();
 	MEMORY_MAPPED_NOR_BLOCK_CONFIG* config = (MEMORY_MAPPED_NOR_BLOCK_CONFIG*)context;

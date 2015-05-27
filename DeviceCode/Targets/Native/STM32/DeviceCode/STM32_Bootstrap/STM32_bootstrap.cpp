@@ -110,7 +110,7 @@ void BootstrapCode_GPIO();
 
 extern "C"
 {
-void __section(SectionForBootstrapOperations) STM32_BootstrapCode()
+void __section("SectionForBootstrapOperations") STM32_BootstrapCode()
 {
     // assure interupts off
     __disable_irq();
@@ -155,7 +155,7 @@ void __section(SectionForBootstrapOperations) STM32_BootstrapCode()
 }
 
 
-void __section(SectionForBootstrapOperations) BootstrapCode()
+void __section("SectionForBootstrapOperations") BootstrapCode()
 {
     STM32_BootstrapCode();
     
@@ -164,7 +164,7 @@ void __section(SectionForBootstrapOperations) BootstrapCode()
     PrepareImageRegions();
 }
 
-void __section(SectionForBootstrapOperations) BootstrapCodeMinimal()
+void __section("SectionForBootstrapOperations") BootstrapCodeMinimal()
 {
     STM32_BootstrapCode();
     
