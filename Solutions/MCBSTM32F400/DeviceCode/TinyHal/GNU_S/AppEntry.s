@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @
 @  Licensed under the Apache License, Version 2.0 (the "License")@
-=======
-@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@
-@  Licensed under the Apache License, Version 2.0 (the "License");
->>>>>>> source mods to build with GCC
 @  you may not use this file except in compliance with the License.
 @  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 @
@@ -15,22 +9,14 @@
 @
 @  CORTEX-M3 Standard Entry Code 
 @
-<<<<<<< HEAD
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-=======
-@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
->>>>>>> source mods to build with GCC
 @
 @ This version of the "first entry" support is used when the application is 
 @ loaded or otherwise started from a bootloader. (e.g. this application isn't 
 @ a boot loader). More specifically this version is used whenever the application
 @ does NOT run from the power on reset vector because some other code is already
 @ there.
-<<<<<<< HEAD
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-=======
-@;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
->>>>>>> source mods to build with GCC
 @
     .syntax unified
     .arch armv7-m
@@ -50,8 +36,7 @@
     .extern  __main
 
 
-<<<<<<< HEAD
-    @*************************************************************************
+    ;*************************************************************************
 
     .section SectionForStackBottom
 StackBottom:
@@ -110,71 +95,6 @@ EntryPoint:
 
 Reset_Handler:
     @@ reload the stack pointer as there's no returning to the loader
-=======
-    ;*************************************************************************
-
-    AREA SectionForStackBottom,       DATA
-StackBottom:
-       .word 0
-
-    AREA SectionForStackTop,          DATA
-__initial_sp 
-StackTop:
-      .word 0
-
-    AREA SectionForHeapBegin,         DATA
-HeapBegin:
-     .word 0
-
-    AREA SectionForHeapEnd,           DATA
-HeapEnd:
-    .word 0
-
-    AREA SectionForCustomHeapBegin,   DATA
-CustomHeapBegin
-    .word 0
-
-    AREA SectionForCustomHeapEnd,     DATA
-CustomHeapEnd
-    .word 0
-
-    AREA ||i.EntryPoint||, CODE, READONLY
-
-    ENTRY
-
-EntryPoint
-
-; The first word has a dual role:
-; - It is the entry point of the application loaded or discovered by
-;   the bootloader and therfore must be valid executable code
-; - it contains a signature word used to identify application blocks
-;   in TinyBooter (see: Tinybooter_ProgramWordCheck() for more details )
-; * The additional entries in this table are completely ignored and
-;   remain for backwards compatibility. Since the boot loader is hard
-;   coded to look for the signature, half of which is an actual relative
-;   branch instruction, removing the unused entries would require all
-;   bootloaders to be updated as well. [sic.]
-;   [ NOTE:
-;     In the next major release where we can afford to break backwards
-;     compatibility this will almost certainly change, as the whole
-;     init/startup for NETMF is overly complex. The various tools used
-;     for building the CLR have all come around to supporting simpler
-;     init sequences we should leverage directly
-;   ]
-; The actual word used is 0x2000E00C
-
-    b       Reset_Handler ; 0xE00C
-    .hword     0x2000        ; Booter signature is 0x2000E00C
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-    .word     0 ; [ UNUSED ]
-
-Reset_Handler:
-    ;; reload the stack pointer as there's no returning to the loader
->>>>>>> source mods to build with GCC
     ldr     sp, =__initial_sp
 
 /*  Firstly it copies data from read only memory to RAM. There are two schemes
@@ -307,12 +227,5 @@ Reset_Handler:
     .size    Reset_Handler, . - Reset_Handler
 
     .balign   4
-<<<<<<< HEAD
-
-.end    
-=======
     
-    ALIGN
-
-    END
->>>>>>> source mods to build with GCC
+.end    
