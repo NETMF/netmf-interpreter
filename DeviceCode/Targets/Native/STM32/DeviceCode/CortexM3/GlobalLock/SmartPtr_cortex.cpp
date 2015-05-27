@@ -13,10 +13,11 @@
 
 #include <tinyhal.h>
 
-#ifndef __GNUC__
+#ifndef _CC_ARM_
+#error This version of SmartPtr support requires the ARMCC compiler
+#endif
 
 #pragma arm section code = "SectionForFlashOperations"
-
 
 /*
  *  Usage:
@@ -201,6 +202,3 @@ __asm void SmartPtr_IRQ::Restore()
 
 
 #pragma arm section code 
-
-
-#endif //#ifndef __GNUC__
