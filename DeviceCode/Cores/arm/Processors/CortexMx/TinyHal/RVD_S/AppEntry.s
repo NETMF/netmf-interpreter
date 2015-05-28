@@ -93,11 +93,7 @@ Reset_Handler
     ;; reload the stack pointer as there's no returning to the loader
     ldr     sp, =__initial_sp
     
-    IF HAL_REDUCESIZE = "1"
-        b   BootEntryLoader
-    ELSE
-        b   BootEntry
-    ENDIF
+    b   BootEntry
     
     ALIGN
 
