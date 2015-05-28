@@ -76,7 +76,8 @@
     <HFiles Include="..\stm32f2xx.h" />
     <HFiles Include="..\stm32f4xx.h" />
     <Compile Include="STM32F4_bootstrap.cpp" />
+    <Compile Include="$(AS_SUBDIR)\VectorTable.s" />
+    <Compile Include="$(AS_SUBDIR)\DefaultHandlers.s" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>
