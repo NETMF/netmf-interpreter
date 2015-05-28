@@ -10,10 +10,10 @@ enum GpioPinDriveMode
     GpioPinDriveMode_Output,
     GpioPinDriveMode_InputPullUp,
     GpioPinDriveMode_InputPullDown,
-    GpioPinDriveMode_OutputStrongLow,
-    GpioPinDriveMode_OutputStrongLowPullUp,
-    GpioPinDriveMode_OutputStrongHigh,
-    GpioPinDriveMode_OutputStrongHighPullDown,
+    GpioPinDriveMode_OutputOpenDrain,
+    GpioPinDriveMode_OutputOpenDrainPullUp,
+    GpioPinDriveMode_OutputOpenSource,
+    GpioPinDriveMode_OutputOpenSourcePullDown,
 };
 
 enum GpioPinValue
@@ -27,11 +27,11 @@ static GPIO_RESISTOR GetResisterMode(GpioPinDriveMode driveMode)
     switch (driveMode)
     {
     case GpioPinDriveMode_InputPullUp:
-    case GpioPinDriveMode_OutputStrongLowPullUp:
+    case GpioPinDriveMode_OutputOpenDrainPullUp:
         return RESISTOR_PULLUP;
 
     case GpioPinDriveMode_InputPullDown:
-    case GpioPinDriveMode_OutputStrongHighPullDown:
+    case GpioPinDriveMode_OutputOpenSourcePullDown:
         return RESISTOR_PULLDOWN;
     }
 

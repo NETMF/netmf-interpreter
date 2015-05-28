@@ -13,9 +13,6 @@
 #include <TinyCLR_Interop.h>
 struct Library_windows_devices_native_Windows_Devices_Enumeration_DeviceInformation
 {
-    static const int FIELD_STATIC__s_I2cPrefix = 0;
-    static const int FIELD_STATIC__s_SpiPrefix = 1;
-
     static const int FIELD__m_id = 1;
     static const int FIELD__m_isDefault = 2;
 
@@ -26,7 +23,7 @@ struct Library_windows_devices_native_Windows_Devices_Enumeration_DeviceInformat
 
 struct Library_windows_devices_native_Windows_Devices_Gpio_GpioController
 {
-    static const int FIELD_STATIC__s_instance = 2;
+    static const int FIELD_STATIC__s_instance = 0;
 
     TINYCLR_NATIVE_DECLARE(get_PinCount___I4);
 
@@ -36,7 +33,7 @@ struct Library_windows_devices_native_Windows_Devices_Gpio_GpioController
 
 struct Library_windows_devices_native_Windows_Devices_Gpio_GpioPin
 {
-    static const int FIELD_STATIC__s_eventListener = 3;
+    static const int FIELD_STATIC__s_eventListener = 1;
 
     static const int FIELD__m_syncLock = 1;
     static const int FIELD__m_disposed = 2;
@@ -98,9 +95,10 @@ struct Library_windows_devices_native_Windows_Devices_I2c_I2cConnectionSettings
 
 struct Library_windows_devices_native_Windows_Devices_I2c_I2cDevice
 {
-    static const int FIELD_STATIC__s_deviceLock = 4;
-    static const int FIELD_STATIC__s_deviceRefs = 5;
-    static const int FIELD_STATIC__s_device = 6;
+    static const int FIELD_STATIC__s_deviceLock = 2;
+    static const int FIELD_STATIC__s_deviceRefs = 3;
+    static const int FIELD_STATIC__s_device = 4;
+    static const int FIELD_STATIC__s_I2cPrefix = 5;
 
     static const int FIELD__m_deviceId = 1;
     static const int FIELD__m_settings = 2;
@@ -118,6 +116,49 @@ struct Library_windows_devices_native_Windows_Devices_I2c_I2cTransferResult
     static const int FIELD__Status = 1;
     static const int FIELD__BytesTransferred = 2;
 
+
+    //--//
+
+};
+
+struct Library_windows_devices_native_Windows_Devices_Spi_SpiBusInfo
+{
+    TINYCLR_NATIVE_DECLARE(get_ChipSelectLineCount___I4);
+
+    //--//
+
+};
+
+struct Library_windows_devices_native_Windows_Devices_Spi_SpiConnectionSettings
+{
+    static const int FIELD__m_chipSelectionLine = 1;
+    static const int FIELD__m_dataBitLength = 2;
+    static const int FIELD__m_clockFrequency = 3;
+    static const int FIELD__m_mode = 4;
+    static const int FIELD__m_sharingMode = 5;
+
+
+    //--//
+
+};
+
+struct Library_windows_devices_native_Windows_Devices_Spi_SpiDevice
+{
+    static const int FIELD_STATIC__s_SpiPrefix = 6;
+    static const int FIELD_STATIC__s_busInfo = 7;
+
+    static const int FIELD__m_deviceId = 1;
+    static const int FIELD__m_settings = 2;
+    static const int FIELD__m_syncLock = 3;
+    static const int FIELD__m_disposed = 4;
+    static const int FIELD__m_mskPin = 5;
+    static const int FIELD__m_misoPin = 6;
+    static const int FIELD__m_mosiPin = 7;
+    static const int FIELD__m_spiBus = 8;
+
+    TINYCLR_NATIVE_DECLARE(InitNative___VOID);
+    TINYCLR_NATIVE_DECLARE(DisposeNative___VOID);
+    TINYCLR_NATIVE_DECLARE(TransferInternal___VOID__SZARRAY_U1__SZARRAY_U1__BOOLEAN);
 
     //--//
 

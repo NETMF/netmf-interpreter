@@ -59,3 +59,31 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::SetDriveMod
     TINYCLR_SET_AND_LEAVE(CLR_E_NOT_SUPPORTED);
     TINYCLR_NOCLEANUP();
 }
+
+HRESULT Library_windows_devices_native_Windows_Devices_Spi_SpiBusInfo::get_ChipSelectLineCount___I4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+    TINYCLR_SET_AND_LEAVE(CLR_E_NOT_SUPPORTED);
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_windows_devices_native_Windows_Devices_Spi_SpiDevice::InitNative___VOID( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+    TINYCLR_SET_AND_LEAVE(CLR_E_NOT_SUPPORTED);
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_windows_devices_native_Windows_Devices_Spi_SpiDevice::DisposeNative___VOID( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+    TINYCLR_SET_AND_LEAVE(CLR_E_NOT_SUPPORTED);
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_windows_devices_native_Windows_Devices_Spi_SpiDevice::TransferInternal___VOID__SZARRAY_U1__SZARRAY_U1__BOOLEAN( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+    TINYCLR_SET_AND_LEAVE(CLR_E_NOT_SUPPORTED);
+    TINYCLR_NOCLEANUP();
+}
