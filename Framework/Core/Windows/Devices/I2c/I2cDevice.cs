@@ -32,6 +32,7 @@ namespace Windows.Devices.I2c
         private static object s_deviceLock = new object();
         private static int s_deviceRefs = 0;
         private static I2CDevice s_device = null;
+        private static string s_I2cPrefix = "I2C";
 
         private readonly string m_deviceId;
         private readonly I2cConnectionSettings m_settings;
@@ -114,7 +115,7 @@ namespace Windows.Devices.I2c
         ///     DeviceInformation.FindAllAsync method to get DeviceInformation objects for those bus controllers.</returns>
         public static string GetDeviceSelector()
         {
-            return Enumeration.DeviceInformation.s_I2cPrefix;
+            return s_I2cPrefix;
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace Windows.Devices.I2c
                 throw new ArgumentOutOfRangeException();
             }
 
-            if (deviceId != "I2C0")
+            if (deviceId != (s_I2cPrefix + "1"))
             {
                 throw new InvalidOperationException();
             }
@@ -277,6 +278,13 @@ namespace Windows.Devices.I2c
                     m_disposed = true;
                 }
             }
+        }
+
+        internal static string[] GetValidBusNames()
+        {
+            return new string[] {
+                s_I2cPrefix + "1",
+            };
         }
 
         /// <summary>

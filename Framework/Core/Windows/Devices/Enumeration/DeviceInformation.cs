@@ -1,15 +1,10 @@
 using System;
+using System.Collections;
 
 namespace Windows.Devices.Enumeration
 {
     public sealed class DeviceInformation
     {
-        // We don't support full AQS in the Micro Framework. Instead, we use a pre-set list of
-        // hard-coded strings. These strings should be considered opaque, so developers should use
-        // the GetDeviceSelector helpers to ensure future compatibility.
-        internal static string s_I2cPrefix = "I2C";
-        internal static string s_SpiPrefix = "SPI";
-
         private string m_id;
         private bool m_isDefault;
 
@@ -70,52 +65,36 @@ namespace Windows.Devices.Enumeration
         /// <returns>List of available DeviceInformation objects matching the given criteria..</returns>
         public static DeviceInformation[] FindAll(string aqsFilter)
         {
-            if (aqsFilter.Equals(string.Empty))
-            {
-                var i2cDevices = FindAllI2c();
-                var spiDevices = FindAllSpi();
+            // We don't support full AQS in the Micro Framework. Instead, we use a pre-set list of
+            // hard-coded strings. These strings should be considered opaque, so developers should use
+            // the GetDeviceSelector helpers to ensure future compatibility.
+            ArrayList foundDevices = new ArrayList();
 
-                var allDevices = new DeviceInformation[i2cDevices.Length + spiDevices.Length];
-                i2cDevices.CopyTo(allDevices, 0);
-                spiDevices.CopyTo(allDevices, i2cDevices.Length);
-                return allDevices;
-            }
-            else if (aqsFilter.Equals(s_I2cPrefix))
+            // Find all I2C buses which contain the given prefix.
+            var i2cBusNames = I2c.I2cDevice.GetValidBusNames();
+            for (int i = 0; i < i2cBusNames.Length; ++i)
             {
-                return FindAllI2c();
-            }
-            else if (aqsFilter.Equals(s_SpiPrefix))
-            {
-                return FindAllSpi();
+                if (i2cBusNames[i].IndexOf(aqsFilter) == 0)
+                {
+                    // TODO: Issue #102: Determine whether this bus exists.
+                    foundDevices.Add(new DeviceInformation(i2cBusNames[i], i == 0));
+                }
             }
 
-            // Custom filter; just pass it through as the ID.
-            // TODO: Issue #102: Validate that this bus exists.
-            var devices = new DeviceInformation[1];
-            devices[0] = new DeviceInformation(aqsFilter, false);
-            return devices;
-        }
+            // Find all SPI buses which contain the given prefix.
+            var spiBusNames = Spi.SpiDevice.GetValidBusNames();
+            for (int i = 0; i < spiBusNames.Length; ++i)
+            {
+                if (spiBusNames[i].IndexOf(aqsFilter) == 0)
+                {
+                    // TODO: Issue #102: Determine whether this bus exists.
+                    foundDevices.Add(new DeviceInformation(spiBusNames[i], i == 0));
+                }
+            }
 
-        /// <summary>
-        /// Find all currently available I2C buses.
-        /// </summary>
-        /// <returns>List of DeviceInformation objects describing I2C objects.</returns>
-        private static DeviceInformation[] FindAllI2c()
-        {
-            // TODO: Issue #102: Determine whether this bus exists.
-            var devices = new DeviceInformation[1];
-            devices[0] = new DeviceInformation("I2C0", true);
-            return devices;
-        }
-
-        /// <summary>
-        /// Find all currently available SPI buses.
-        /// </summary>
-        /// <returns>List of DeviceInformation objects describing SPI objects.</returns>
-        private static DeviceInformation[] FindAllSpi()
-        {
-            // FUTURE: Find all valid SPI buses.
-            return new DeviceInformation[0];
+            var allDevices = new DeviceInformation[foundDevices.Count];
+            foundDevices.CopyTo(allDevices);
+            return allDevices;
         }
     }
 }
