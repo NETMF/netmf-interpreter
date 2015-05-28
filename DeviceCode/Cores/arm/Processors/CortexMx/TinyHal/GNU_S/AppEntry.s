@@ -98,13 +98,7 @@ Reset_Handler:
     @@ reload the stack pointer as there's no returning to the loader
     ldr     sp, =__initial_sp
     bl  BootstrapCode
-    
-    #if HAL_REDUCESIZE = "1"
-        b   BootEntryLoader
-    #else
-        b   BootEntry
-    #endif
-
+    b   BootEntry
 
     .pool
     .size    Reset_Handler, . - Reset_Handler

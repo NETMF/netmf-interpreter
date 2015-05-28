@@ -41,16 +41,17 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-<ItemGroup>
-    <Compile Include="$(AS_SUBDIR)\AppEntry.s" />
-    <Compile Include="$(AS_SUBDIR)\IDelayLoop.s" />
-    <Compile Include="$(AS_SUBDIR)\Interlocked.s" />
-</ItemGroup>
+  <ItemGroup>
+      <Compile Include="Aborts.cpp" />
+      <Compile Include="$(AS_SUBDIR)\AppEntry.s" />
+      <Compile Include="$(AS_SUBDIR)\IDelayLoop.s" />
+      <Compile Include="$(AS_SUBDIR)\Interlocked.s" />
+  </ItemGroup>
 
   <ItemGroup>
     <HFiles Include="$(SPOCLIENT)\DeviceCode\Initialization\MasterConfig.h" />
     <Compile Include="Aborts.cpp" />
-    <LIB_FIRSTENTRY_OBJ Include="$(OBJ_DIR)\FirstEntry.$(OBJ_EXT)" />
+    <LIB_FIRSTENTRY_OBJ Include="$(OBJ_DIR)\AppEntry.$(OBJ_EXT)" />
   </ItemGroup>
 
   <ItemGroup>
