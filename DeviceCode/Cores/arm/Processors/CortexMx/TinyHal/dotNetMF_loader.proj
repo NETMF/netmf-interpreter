@@ -43,7 +43,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="$(AS_SUBDIR)\AppEntry.s" />
+    <Compile Include="Aborts.cpp" />
+    <Compile Include="$(AS_SUBDIR)\FirstEntry.s" />
     <Compile Include="$(AS_SUBDIR)\IDelayLoop.s" />
     <Compile Include="$(AS_SUBDIR)\Interlocked.s" />
   </ItemGroup>

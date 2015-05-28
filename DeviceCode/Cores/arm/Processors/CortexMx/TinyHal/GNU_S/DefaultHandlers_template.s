@@ -140,6 +140,9 @@ Default_Handler:
     .global  FAULT_SubHandler
     .extern  FAULT_Handler             @ void FAULT_Handler(UINT32*, UINT32)
 
+    .global  HARD_Breakpoint
+    .extern  HARD_Breakpoint_Handler   @ HARD_Breakpoint_Handler(UINT32*)
+
 @ This serves as an adapter from the Cortex-M exception signature
 @ to map back to the original CLR API designed around the older ARM
 @ mode exception architecture.
@@ -167,4 +170,21 @@ FAULT_SubHandler:
             mrs      r1,IPSR               @ exception number
             b        FAULT_Handler
         @ never expect to return
+
+    .section    i.HARD_Breakpoint, "ax", %progbits
+    HARD_Breakpoint:
+    @ on entry, were are being called from C/C++ in Thread mode
+        add      sp,sp,#-4            @ space for PSR
+        push     {r14}                @ store original PC
+        push     {r0-r12,r14}         @ store R0 - R12, LR
+        mov      r0,sp
+        mrs      r1,XPSR
+        str      r1,[r0,#60]          @ store PSR
+    @ R0+00: R0-R12
+    @ R0+52: LR
+    @ R0+56: PC
+    @ R0+60: PSR
+        b        HARD_Breakpoint_Handler
+    @ never expect to return
+
 .end

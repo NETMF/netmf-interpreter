@@ -88,12 +88,7 @@ EntryPoint:
 
 Reset_Handler:
     bl  BootstrapCode
-    
-    IF HAL_REDUCESIZE = "1"
-        b   BootEntryLoader
-    ELSE
-        b   BootEntry
-    ENDIF
+    b   BootEntry
 
     .pool
     .size    Reset_Handler, . - Reset_Handler
