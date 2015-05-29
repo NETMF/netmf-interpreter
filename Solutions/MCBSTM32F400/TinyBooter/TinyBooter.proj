@@ -39,8 +39,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="GlobalLock_hal.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Common\GlobalLock\thumb2\dotNetMF.proj" />
+        <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="MCBSTM32F400_tinyhal_loader.$(LIB_EXT)" />

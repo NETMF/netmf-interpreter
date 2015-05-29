@@ -23,7 +23,7 @@
     .global HeapEnd
     .global CustomHeapBegin
     .global CustomHeapEnd
-
+    .global PowerOnReset
     .extern  PreStackInit
 
 
@@ -32,31 +32,28 @@
 
     @*************************************************************************
 
-    .section SectionForStackBottom, "a", %progbits
+    .section SectionForStackBottom, "w", %nobits
 StackBottom:
     .word 0
 
-    .section SectionForStackTop, "a", %progbits
+    .section SectionForStackTop, "w", %nobits
 __initial_sp:
 StackTop:
     .word 0
     
-    .section SectionForHeapBegin, "a", %progbits
+    .section SectionForHeapBegin, "w", %nobits
 HeapBegin:
     .word 0
 
-    .section SectionForHeapEnd, "a", %progbits
+    .section SectionForHeapEnd, "w", %nobits
 HeapEnd:
     .word 0
 
-    .section SectionForCustomHeapBegin, "a", %progbits
-ARM_Vectors:
-    .space   84*4   @ exception vector table (max 84 entries)
-
+    .section SectionForCustomHeapBegin, "w", %nobits
 CustomHeapBegin:
     .word 0
 
-    .section SectionForCustomHeapEnd, "a", %progbits
+    .section SectionForCustomHeapEnd, "w", %nobits
 CustomHeapEnd:
     .word 0
 
@@ -67,10 +64,9 @@ CustomHeapEnd:
     @ architecture profiles. Therefore, all such 
     @ devices MUST have some amount of SRAM available
     @ for booting
-    .section i.EntryPoint, "ax", %progbits
-    .thumb_func
 
-EntryPoint:
+    .section SectionForPowerOnReset, "x", %progbits
+PowerOnReset:
     .word    __initial_sp
     .word     Reset_Handler @ Reset
     .word     Fault_Handler @ NMI
@@ -86,6 +82,9 @@ EntryPoint:
     .global   Reset_Handler
     .type    Reset_Handler, %function
 
+    .section i.EntryPoint, "ax", %progbits
+    .thumb_func
+EntryPoint:
 Reset_Handler:
     bl  BootstrapCode
     b   BootEntry
