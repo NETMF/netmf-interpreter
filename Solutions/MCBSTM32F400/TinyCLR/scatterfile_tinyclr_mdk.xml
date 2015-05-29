@@ -31,7 +31,7 @@
     <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
     <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
 
-    <!-- Solution specific usage settings -->
+    <!-- Solution/Project specific usage settings -->
     <!-- Internal CCM (D-Bus) -->
     <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
     <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
@@ -62,26 +62,26 @@
         <!-- Internal FLASH -->
         
         <!-- Native Code section -->
-        <Set Name="Code_BaseAddress"         Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
-        <Set Name="Code_Size"                Value="%IFLASH_Size%-%BooterCode_Size%"/>
+        <Set Name="Code_BaseAddress"    Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
+        <Set Name="Code_Size"           Value="%IFLASH_Size%-%BooterCode_Size%"/>
 
         <!-- =========================================================== -->
         <If Name="TARGETTYPE" Value="Release">
             <!-- ALL of external RAM is enabled for the CLR HEAP -->
-            <Set Name="Heap_Size"           Value="%EXTRAM_Size%"/>
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="%EXTRAM_Size%"/>
+            <Set Name="CustomHeap_Size" Value="0"/>
         
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
         <If Name="TARGETTYPE" Value="Debug">
             <!-- Use only 1MB of external RAM for Debug builds.
                  Can't use all of external RAM as the address pins overlap
                  with the SWD pins used for ETM tracing in Debug builds.
             -->
-            <Set Name="Heap_Size"           Value="0x00100000"/><!--1MB-->
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="0x00100000"/><!--1MB-->
+            <Set Name="CustomHeap_Size" Value="0"/>
             
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
     </If>
 
@@ -120,14 +120,10 @@
              and the HAL soft reboot code handles re-initializing the data in this region.
         -->
         <ExecRegion Name="ER_LWIP_OS" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
-          <FileMapping Name="*sockets_hal_*_LWIP_os.lib" Options="(+RW-DATA +ZI)" />
-          <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(+RW-DATA +ZI)" />
+            <FileMapping Name="*sockets_hal_*_LWIP_os.lib" Options="(+RW-DATA +ZI)" />
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(+RW-DATA +ZI)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_ETHERNET" Base="+0" Options="ABSOLUTE" Size="0x1E00">
-          <FileMapping Name="STM32F4_ETH_rx_desc.obj" Options="(+ZI)" />
-          <FileMapping Name="STM32F4_ETH_tx_desc.obj" Options="(+ZI)" />
-        </ExecRegion>
 
         <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
@@ -138,7 +134,6 @@
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
-
 
         <!-- ========= EXTERNAL RAM ============================================= -->
         <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE UNINIT" Size="">
@@ -152,13 +147,13 @@
         </ExecRegion>
 
         <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="+0" Options="ABSOLUTE UNINIT" Size="">
-          <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
+            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
         <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="+%CustomHeap_Size%" Options="ABSOLUTE UNINIT" Size="">
-          <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
+            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
         <!-- ========= Internal CCM ============================================ -->
@@ -183,22 +178,16 @@
         </ExecRegion>
     </LoadRegion>
 
-    <!-- If this variable is defined, create a separate section for the tinyclr.dat file -->
+    <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Options="ABSOLUTE" Size="%Data_Size%">
+        <ExecRegion Name="ER_DAT" Base="%Data_BaseAddress%" Options="FIXED" Size="%Data_Size%">
+            <FileMapping Name="tinyclr_dat.obj" Options="(+RO)" />
+        </ExecRegion>
+    </LoadRegion>
 
-    <IfDefined Name="Data_BaseAddress">
-        <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Options="ABSOLUTE" Size="%Data_Size%">
-            <ExecRegion Name="ER_DAT" Base="%Data_BaseAddress%" Options="FIXED" Size="%Data_Size%">
-                <FileMapping Name="tinyclr_dat.obj" Options="(+RO)" />
-            </ExecRegion>
-        </LoadRegion>
-    </IfDefined>
-
-    <IfDefined Name="Config_BaseAddress">
-        <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
-            <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
-                <FileMapping Name="*" Options="(SectionForConfig)" />
-            </ExecRegion>
-        </LoadRegion>
-    </IfDefined>
+    <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
+        <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
+            <FileMapping Name="*" Options="(SectionForConfig)" />
+        </ExecRegion>
+    </LoadRegion>
 </ScatterFile>
 

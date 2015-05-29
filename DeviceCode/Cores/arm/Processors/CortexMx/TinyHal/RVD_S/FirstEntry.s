@@ -50,6 +50,7 @@ CustomHeapBegin   DCD 0
     AREA SectionForCustomHeapEnd,     DATA
 CustomHeapEnd     DCD 0
 
+    AREA ||SectionForPowerOnReset||, CODE, READONLY
     ; Power On Reset vector table for the device
     ; This is placed at physical address 0 by the
     ; linker. THe first entry is the initial stack
@@ -57,10 +58,7 @@ CustomHeapEnd     DCD 0
     ; architecture profiles. Therefore, all such 
     ; devices MUST have some amount of SRAM available
     ; for booting
-    AREA ||i.EntryPoint||, CODE, READONLY
-    ENTRY
-EntryPoint
-
+PowerOnReset
     DCD     __initial_sp
     DCD     Reset_Handler ; Reset
     DCD     Fault_Handler ; NMI
@@ -68,6 +66,10 @@ EntryPoint
     DCD     Fault_Handler ; MMU Fault
     DCD     Fault_Handler ; Bus Fault
     DCD     Fault_Handler ; Usage Fault
+
+    AREA ||i.EntryPoint||, CODE, READONLY
+    ENTRY
+EntryPoint
 
 Reset_Handler
     bl      BootstrapCode
