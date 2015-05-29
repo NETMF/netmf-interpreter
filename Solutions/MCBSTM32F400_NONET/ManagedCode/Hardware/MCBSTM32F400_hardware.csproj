@@ -1,0 +1,24 @@
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Hardware.MCBSTM32F400_NONET</AssemblyName>
+	<AssemblyDescription>Microsoft.SPOT.Hardware.MCBSTM32F400_NONET</AssemblyDescription>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.Hardware</RootNamespace>
+    <ProjectTypeGuids>{81596C1B-DE24-4F00-A915-9F5CD7829F92};{9C1E9829-42DC-4033-B0BE-A4AE5B1A1FDE}</ProjectTypeGuids>
+    <ProductVersion>1.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{53CE912A-AD83-4254-9DAD-D5F104E35B2F}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Targets" />
+  <ItemGroup>
+    <Compile Include="CPU.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SPOT.Native">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Native.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SPOT.Hardware">
+      <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

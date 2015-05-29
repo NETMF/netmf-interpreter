@@ -38,28 +38,28 @@
 
     @*************************************************************************
 
-    .section SectionForStackBottom
+    .section SectionForStackBottom, "w", %nobits
 StackBottom:
        .word 0
 
-    .section SectionForStackTop
+    .section SectionForStackTop, "w", %nobits
 __initial_sp:
 StackTop:
       .word 0
 
-    .section SectionForHeapBegin
+    .section SectionForHeapBegin, "w", %nobits
 HeapBegin:
      .word 0
 
-    .section SectionForHeapEnd
+    .section SectionForHeapEnd, "w", %nobits
 HeapEnd:
     .word 0
 
-    .section SectionForCustomHeapBegin
+    .section SectionForCustomHeapBegin, "w", %nobits
 CustomHeapBegin:
     .word 0
 
-    .section SectionForCustomHeapEnd
+    .section SectionForCustomHeapEnd, "w", %nobits
 CustomHeapEnd:
     .word 0
 

@@ -2,15 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
     <PropertyGroup>
         <AssemblyName>Tinybooter</AssemblyName>
-        <ProjectGuid>{acda6427-693f-42e6-8163-0632a8af9434}</ProjectGuid>
+        <ProjectGuid>{DD50EAEE-94AF-4229-AB2D-A5BFF987D15E}</ProjectGuid>
         <Description />
         <Documentation />
-        <Directory>Solutions\MCBSTM32F400\TinyBooter</Directory>
+        <Directory>Solutions\MCBSTM32F400_NONET\TinyBooter</Directory>
         <IsClrProject>False</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\TinyBooter\TinyBooter.proj</ProjectPath>
-        <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
+        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\TinyBooter\TinyBooter.proj</ProjectPath>
+        <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\MCBSTM32F400_NONET.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>true</reducesize>
     </PropertyGroup>
@@ -43,8 +43,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="MCBSTM32F400_tinyhal_loader.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\TinyHal\dotNetMF_loader.proj" />
+        <DriverLibs Include="TinyHal_loader_Cortex.$(LIB_EXT)"/>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\dotnetmf_loader.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
@@ -99,8 +99,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\Processor\stubs_watchdog\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="MCBSTM32F400_initialization_hal_loader.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Initialization\dotNetMF_loader.proj" />
+        <DriverLibs Include="system_initialization_hal_loader.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Initialization\dotNetMF_loader.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="Watchdog_pal_stubs.$(LIB_EXT)" />
@@ -248,27 +248,27 @@
     </ItemGroup>
 	<ItemGroup>
         <DriverLibs Include="M29W640FB_Flash.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
     </ItemGroup>
 	<ItemGroup>
-        <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
+        <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400_NONET.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj" />
+        <DriverLibs Include="STM32F4_blconfig_MCBSTM32F400_NONET.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="BlockStorage_AddDevices_MCBSTM32F400.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\addDevices\dotNetMF.proj" />
+        <DriverLibs Include="BlockStorage_AddDevices_MCBSTM32F400_NONET.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Blockstorage\addDevices\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="IO_Init_MCBSTM32F400.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Init\dotnetmf.proj" />
+        <DriverLibs Include="IO_Init_MCBSTM32F400_NONET.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Init\dotnetmf.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="usb_pal_config_MCBSTM32F400.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\USB\dotnetmf.proj" />
+        <DriverLibs Include="usb_pal_config_MCBSTM32F400_NONET.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\USB\dotnetmf.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="native_double_pal.$(LIB_EXT)" />
