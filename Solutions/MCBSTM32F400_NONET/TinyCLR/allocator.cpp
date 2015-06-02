@@ -7,13 +7,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void RuntimeFault( const char* szText )
-{
-    lcd_printf("\014ERROR:\r\n%s\r\n", szText );
-    debug_printf( "ERROR: %s\r\n", szText );
-
-    HARD_BREAKPOINT();
-}
 
 void *operator new( size_t n )
 {

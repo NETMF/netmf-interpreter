@@ -29,8 +29,7 @@
     EXPORT __initial_sp
     EXPORT Reset_Handler
 
-    IMPORT  SystemInit
-    IMPORT  __main
+    IMPORT  BootEntry
 
     PRESERVE8
 
