@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @
 @  Licensed under the Apache License, Version 2.0 (the "License")@
@@ -13,6 +14,11 @@
 @
 @  Licensed under the Apache License, Version 2.0 (the "License")@
 >>>>>>> more code changes to support building with GCC
+=======
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@
+@  Licensed under the Apache License, Version 2.0 (the "License")@
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
 @  you may not use this file except in compliance with the License.
 @  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 @
@@ -23,6 +29,7 @@
 @
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 =======
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -30,6 +37,9 @@
 =======
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 >>>>>>> more code changes to support building with GCC
+=======
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
 @
 @ This version of the "first entry" support is used when the application is 
 @ loaded or otherwise started from a bootloader. (e.g. this application isn't 
@@ -38,6 +48,7 @@
 @ there.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 =======
 @;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -45,6 +56,9 @@
 =======
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 >>>>>>> more code changes to support building with GCC
+=======
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
 @
     .syntax unified
     .arch armv7-m
@@ -66,6 +80,9 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
     @*************************************************************************
 
     .section SectionForStackBottom
@@ -125,6 +142,7 @@ EntryPoint:
 
 Reset_Handler:
     @@ reload the stack pointer as there's no returning to the loader
+<<<<<<< HEAD
 =======
     ;*************************************************************************
 =======
@@ -193,6 +211,8 @@ Reset_Handler:
 =======
     @@ reload the stack pointer as there's no returning to the loader
 >>>>>>> more code changes to support building with GCC
+=======
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
     ldr     sp, =__initial_sp
 
 /*  Firstly it copies data from read only memory to RAM. There are two schemes
@@ -327,6 +347,7 @@ Reset_Handler:
     .balign   4
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 .end    
 =======
@@ -339,3 +360,7 @@ Reset_Handler:
 
 .end    
 >>>>>>> more code changes to support building with GCC
+=======
+
+.end    
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f

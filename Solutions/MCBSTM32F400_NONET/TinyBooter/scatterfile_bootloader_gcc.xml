@@ -53,10 +53,17 @@
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
     <Set Name="Data_Size"               Value="0x00020000"/><!-- 128KB -->
 
+<<<<<<< HEAD
     <!-- [Deployment fills the rest of external NOR flash...] -->
 
     <!-- Internal FLASH -->
     <!-- TinyBooter sits at power on Reset vector -->
+=======
+    <!-- [Deployment fills the rest of external NOR flash..]. -->
+
+    <!-- Internal FLASH -->
+    <!-- TinyBooter sits at power on Reset vector-->
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
     <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
     <Set Name="BooterCode_Size"         Value="0x00010000"/><!-- 64KB -->
 
@@ -108,8 +115,13 @@
         <ExecRegion Name="ER_%TARGETLOCATION%" Options="&gt;LR_%TARGETLOCATION%">
             <FileMapping Name="KEEP" Options="(*(SectionForPowerOnReset))" />
             <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+<<<<<<< HEAD
             <FileMapping Name="*" Options="(SectionForFlashOperations)"/>
             <FileMapping Name="*" Options="(.text*)" />
+=======
+            <FileMapping Name="*" Options="(.text*)" />
+            <FileMapping Name="*" Options="(i.*)" />
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
             <FileMapping Name="*" Options="(.rodata*)" />
             <FileMapping Name="*" Options="(rodata)" />
             <FileMapping Name="*" Options="(.constdata*)" />
@@ -119,7 +131,11 @@
         </ExecRegion>
 
         <!-- ========= INTERNAL RAM ============================================= -->
+<<<<<<< HEAD
         <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
+=======
+        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM">
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
             <FileMapping Name="*" Options="(VectorTable)"/>
             <FileMapping Name="*" Options="(rwdata)" />
             <FileMapping Name="*" Options="(.data*)" />
@@ -130,20 +146,29 @@
              No need to place Flash programming code in RAM -->
         </ExecRegion>
 
+<<<<<<< HEAD
         <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
             <FileMapping Name="*" Options="(.bss*)" />
             <FileMapping Name="PROVIDE(__exidx_start = .);" />
             <FileMapping Name="PROVIDE(__exidx_end = .);" />
+=======
+        <ExecRegion Name=".bss" Align="0x10" Options="&gt;IRAM">
+            <FileMapping Name="*" Options="(.bss*)" />
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
             <FileMapping Name="*" Options="(.zidata*)" />
             <FileMapping Name="*" Options="(COMMON)" />
         </ExecRegion>
 
+<<<<<<< HEAD
         <ExecRegion Name="/DISCARD/">
             <FileMapping Name="*" Options="(.ARM.exidx*)" />
             <FileMapping Name="*" Options="(.ARM.extab*)" />
         </ExecRegion>
 
         <!--========= EXTERNAL RAM =============================================--> 
+=======
+         <!--========= EXTERNAL RAM =============================================--> 
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
         <ExecRegion Name="ER_HEAP_BEGIN" Options="&gt;EXTRAM">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
         </ExecRegion>

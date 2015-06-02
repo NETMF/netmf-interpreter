@@ -47,7 +47,11 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>..\..\..\BuildOutput\THUMB2FP\GCC4.9\le\FLASH\debug\MCBSTM32F400_NONET\bin\</OutputDirectory>
+<<<<<<< HEAD
           <OutputName>TinyBooter.elf</OutputName>
+=======
+          <OutputName>TinyBooter</OutputName>
+>>>>>>> 7933c6a80546805403fbdf39e6ba97d1699f202f
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
