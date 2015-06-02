@@ -19,24 +19,26 @@ struct EmuSerialPortEvent
     PFNUsartEvent UsartErrorEventCallback;
 };
 
+const UINT32 INVALID_PORT_INDEX = (UINT32)-1;
+
 static struct EmuSerialPortEvent s_EmuUsartState[16] =
 {
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
-    { -1, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
+    { INVALID_PORT_INDEX, NULL, NULL, NULL, NULL },
 };
 
 static bool s_HandlerInitialized = false;
