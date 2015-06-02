@@ -1,0 +1,57 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>TinyHal_loader_Cortex</AssemblyName>
+    <ProjectGuid>{004F0043-0024-0097-95A3-64C26394C72A}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>Cortex-Mx HAL library (for boot loaders)</Description>
+    <Level>HAL</Level>
+    <LibraryFile>TinyHal_loader_Cortex.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\dotNetMF_loader.proj</ProjectPath>
+    <ManifestFile>TinyHal_loader_Cortex.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>System</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TinyHal_HAL_Cortex" Guid="{00EC00D8-0033-0051-8B5A-918BF68043EF}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-04-30</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\reducesize</Directory>
+    <reducesize>true</reducesize>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\PreStackInit_HAL.libcatproj" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Aborts.cpp" />
+    <Compile Include="$(AS_SUBDIR)\FirstEntry.s" />
+    <Compile Include="$(AS_SUBDIR)\IDelayLoop.s" />
+    <Compile Include="$(AS_SUBDIR)\Interlocked.s" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(OS_PLATFORM)'!='true'">
+    <LIB_FIRSTENTRY_OBJ Include="$(OBJ_DIR)\FirstEntry.$(OBJ_EXT)"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

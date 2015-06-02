@@ -16,7 +16,7 @@
 
 #if defined(PLATFORM_ARM_OS_PORT)
 #include <cmsis_os.h>
-#include <cstdint>
+#include <stdint.h>
 #endif
 
 #undef  TRACE_ALWAYS
@@ -653,7 +653,7 @@ extern "C" void SystemInit()
 
 extern "C" void HARD_Breakpoint()
 {
-    __breakpoint( 0 );
+    __BKPT( 0 );
 }
 
 #if !defined(BUILD_RTM)

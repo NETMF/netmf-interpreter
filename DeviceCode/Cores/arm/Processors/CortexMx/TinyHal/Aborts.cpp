@@ -27,13 +27,13 @@ void monitor_debug_printf( const char* format, ... )
     int len = hal_vsnprintf( buffer, sizeof(buffer)-1, format, arg_ptr );
 
     // flush existing characters
-    USART_Flush( ConvertCOM_ComPort(USART_DEFAULT_PORT) );
+    USART_Flush( ConvertCOM_ComPort(DEBUG_TEXT_PORT) );
 
     // write string
-    USART_Write( ConvertCOM_ComPort(USART_DEFAULT_PORT), buffer, len );
+    USART_Write( ConvertCOM_ComPort(DEBUG_TEXT_PORT), buffer, len );
 
     // flush new characters
-    USART_Flush( ConvertCOM_ComPort(USART_DEFAULT_PORT) );
+    USART_Flush( ConvertCOM_ComPort(DEBUG_TEXT_PORT) );
 
     va_end( arg_ptr );
 }
@@ -44,18 +44,18 @@ void FAULT_HandlerDisplay( UINT32 *registers, UINT32 exception )
 
     USART_Initialize( ConvertCOM_ComPort(USART_DEFAULT_PORT), USART_DEFAULT_BAUDRATE, USART_PARITY_NONE, 8, USART_STOP_BITS_ONE, USART_FLOW_NONE );
 
-    if (exception) {
+    if( exception )
         monitor_debug_printf("EXCEPTION 0x%02x:\r\n", exception);
-    } else {
+    else
         monitor_debug_printf("ERROR:\r\n");
-    }
+
     monitor_debug_printf("  cpsr=0x%08x\r\n", registers[15]);
     monitor_debug_printf("  pc  =0x%08x\r\n", registers[14]);
     monitor_debug_printf("  lr  =0x%08x\r\n", registers[13]);
     monitor_debug_printf("  sp  =0x%08x\r\n", registers + 16);
-    for(i = 0; i <= 12; i++) {
+    
+    for(i = 0; i <= 12; i++)
         monitor_debug_printf("  r%02d =0x%08x\r\n", i, registers[i]);
-    }
 }
 
 #endif  // !defined(BUILD_RTM)
