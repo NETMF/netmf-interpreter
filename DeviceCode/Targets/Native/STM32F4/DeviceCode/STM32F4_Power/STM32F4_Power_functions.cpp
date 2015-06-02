@@ -120,9 +120,7 @@ BOOL CPU_IsSoftRebootSupported ()
 
 void HAL_AssertEx()
 {
-    __BKPT();
+    __BKPT(0);
     while(true) { /*nop*/ }
 }
-
-//--//
 
