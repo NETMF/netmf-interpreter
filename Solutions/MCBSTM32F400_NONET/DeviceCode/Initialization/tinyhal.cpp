@@ -426,7 +426,7 @@ void LwipRegionInit()
 
         // Hack: refer to work item #2374
         src = reinterpret_cast<UINT32*>(reinterpret_cast<UINT32>(src) - ArmLinkerLoadRegionOffsetHack );
-			  
+
         Prepare_Copy( src, dst, len );
     }
 
@@ -611,7 +611,7 @@ void BootEntry()
  
     // HAL initialization completed.  Interrupts are enabled.  Jump to the Application routine
     ApplicationEntryPoint();
-	
+
     debug_printf("main exited!!???.  Halting CPU\r\n");
 
 #if defined(BUILD_RTM)
