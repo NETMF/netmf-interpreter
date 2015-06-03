@@ -11,7 +11,6 @@ namespace Windows.Devices.Spi
         private readonly string m_deviceId;
         private readonly SpiConnectionSettings m_settings;
 
-        private object m_syncLock = new object();
         private bool m_disposed = false;
         private int m_mskPin = -1;
         private int m_misoPin = -1;
@@ -65,15 +64,12 @@ namespace Windows.Devices.Spi
         {
             get
             {
-                lock (m_syncLock)
+                if (m_disposed)
                 {
-                    if (m_disposed)
-                    {
-                        throw new ObjectDisposedException();
-                    }
-
-                    return m_deviceId.Substring(0);
+                    throw new ObjectDisposedException();
                 }
+
+                return m_deviceId.Substring(0);
             }
         }
 
@@ -85,16 +81,13 @@ namespace Windows.Devices.Spi
         {
             get
             {
-                lock (m_syncLock)
+                if (m_disposed)
                 {
-                    if (m_disposed)
-                    {
-                        throw new ObjectDisposedException();
-                    }
-
-                    // We must return a copy so the caller can't accidentally mutate our internal settings.
-                    return new SpiConnectionSettings(m_settings);
+                    throw new ObjectDisposedException();
                 }
+
+                // We must return a copy so the caller can't accidentally mutate our internal settings.
+                return new SpiConnectionSettings(m_settings);
             }
         }
 
@@ -237,14 +230,11 @@ namespace Windows.Devices.Spi
         /// </summary>
         public void Dispose()
         {
-            lock (m_syncLock)
+            if (!m_disposed)
             {
-                if (!m_disposed)
-                {
-                    Dispose(true);
-                    GC.SuppressFinalize(this);
-                    m_disposed = true;
-                }
+                Dispose(true);
+                GC.SuppressFinalize(this);
+                m_disposed = true;
             }
         }
 
@@ -275,10 +265,7 @@ namespace Windows.Devices.Spi
         {
             if (disposing)
             {
-                lock (m_syncLock)
-                {
-                    DisposeNative();
-                }
+                DisposeNative();
             }
         }
     }

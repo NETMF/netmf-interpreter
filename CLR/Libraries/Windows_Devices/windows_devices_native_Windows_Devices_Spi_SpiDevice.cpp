@@ -9,10 +9,10 @@ typedef Library_windows_devices_native_Windows_Devices_Spi_SpiConnectionSettings
 // NOTE: Must match enum in SpiEnums.cs
 enum SpiMode
 {
-        SpiMode_Mode0 = 0,
-        SpiMode_Mode1,
-        SpiMode_Mode2,
-        SpiMode_Mode3,
+    SpiMode_Mode0 = 0,
+    SpiMode_Mode1,
+    SpiMode_Mode2,
+    SpiMode_Mode3,
 };
 
 HRESULT Library_windows_devices_native_Windows_Devices_Spi_SpiDevice::InitNative___VOID( CLR_RT_StackFrame& stack )
@@ -228,8 +228,19 @@ HRESULT Library_windows_devices_native_Windows_Devices_Spi_SpiDevice::TransferIn
         CPU_SPI_Initialize();
 
         // If full duplex, read start offset should be 0, otherwise start at the end of the "write" operation.
-        BOOL readStartOffset = stack.Arg3().NumericByRef().u1 ? 0 : writeLength;
-        if (!CPU_SPI_nWrite8_nRead8( config, writeData, writeLength, readData, readLength, readStartOffset ))
+        int readStartOffset = stack.Arg3().NumericByRef().u1 ? 0 : writeLength;
+        BOOL result = FALSE;
+
+        if (config.MD_16bits)
+        {
+            result = CPU_SPI_nWrite16_nRead16( config, (CLR_UINT16*)writeData, writeLength / 2, (CLR_UINT16*)readData, readLength / 2, readStartOffset / 2 );
+        }
+        else
+        {
+            result = CPU_SPI_nWrite8_nRead8( config, writeData, writeLength, readData, readLength, readStartOffset );
+        }
+
+        if (!result)
         {
             TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_OPERATION);
         }

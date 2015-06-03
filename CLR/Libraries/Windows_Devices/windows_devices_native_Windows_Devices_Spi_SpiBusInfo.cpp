@@ -10,7 +10,7 @@ HRESULT Library_windows_devices_native_Windows_Devices_Spi_SpiBusInfo::get_ChipS
 
     CLR_RT_HeapBlock* pThis = stack.This(); FAULT_ON_NULL(pThis);
 
-    SetResult_INT32( stack, static_cast<INT32>(CPU_SPI_PortsCount()) );
+	stack.SetResult_I4( static_cast<INT32>(CPU_SPI_PortsCount()) );
 
     TINYCLR_NOCLEANUP();
 }
