@@ -1,6 +1,6 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
-    <FeatureName>HTTP</FeatureName>
+    <FeatureName>HTTP (Emulator)</FeatureName>
   </PropertyGroup>
   <Import Condition="'$(NETWORK_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network.featureproj" />
   <ItemGroup>

@@ -32,9 +32,6 @@
   <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
   <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
   <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\SPOT_Net_Security_CLR.libcatproj</ProjectPath>
-  <FeatureAssociations Name="SSL (Open)" Guid="{36FAF407-32E1-4B19-9C9F-5333D5A2A780}" ProjectPath="$(SPOCLIENT)\Framework\Features\SSL_Open.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
-    <ComponentType>Feature</ComponentType>
-  </FeatureAssociations>
   <FeatureAssociations Name="SSL (Open) [for LWIP_OS]" Guid="{51BF9A3A-692F-4521-99BA-EF48EA358A9E}" ProjectPath="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <ComponentType>Feature</ComponentType>
   </FeatureAssociations>
