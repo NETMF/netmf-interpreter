@@ -118,12 +118,9 @@ BOOL CPU_IsSoftRebootSupported ()
     return TRUE;
 }
 
-__asm void HAL_AssertEx()
+void HAL_AssertEx()
 {
-    BKPT     #0
-L1  B        L1
-    BX       lr
+    __BKPT(0);
+    while(true) { /*nop*/ }
 }
-
-//--//
 

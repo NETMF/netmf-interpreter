@@ -40,7 +40,7 @@
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32\DeviceCode\CortexM3\GlobalLock\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="MCBSTM32F400_tinyhal_loader.$(LIB_EXT)" />
