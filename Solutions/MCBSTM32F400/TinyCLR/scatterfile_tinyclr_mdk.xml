@@ -6,7 +6,6 @@
     <Set Name="Valid" Value="false"/>
 
     <!-- ################################################################################ -->
-
     <!-- Memory Region base and size values for physical hardware to help clarify the mapping
          by making Symbolic names available instead of a bunch of numbers. These values are
          fixed in hardware and therefore, don't change.
@@ -86,7 +85,6 @@
     </If>
 
     <!-- ################################################################################ -->
-
     <If Name="Valid" Value="false">
         <Error Message="Configuration not recognized"/>
     </If>
@@ -123,7 +121,6 @@
             <FileMapping Name="*sockets_hal_*_LWIP_os.lib" Options="(+RW-DATA +ZI)" />
             <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(+RW-DATA +ZI)" />
         </ExecRegion>
-
 
         <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
