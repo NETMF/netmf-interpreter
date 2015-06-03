@@ -10,13 +10,6 @@ namespace Windows.Devices.Spi
     public sealed class SpiBusInfo
     {
         /// <summary>
-        /// Initializes a new instance of SpiBusInfo.
-        /// </summary>
-        internal SpiBusInfo()
-        {
-        }
-
-        /// <summary>
         /// Gets the number of chip select lines available on the bus.
         /// </summary>
         /// <value>Number of chip select lines.</value>
@@ -34,6 +27,7 @@ namespace Windows.Devices.Spi
         {
             get
             {
+                // TODO: Issue #143: Implement this in HAL.
                 throw new NotImplementedException();
             }
         }
@@ -46,6 +40,7 @@ namespace Windows.Devices.Spi
         {
             get
             {
+                // TODO: Issue #143: Implement this in HAL.
                 throw new NotImplementedException();
             }
         }
