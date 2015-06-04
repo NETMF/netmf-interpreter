@@ -5,6 +5,12 @@
 #include <tinyclr_application.h>
 #include <tinyhal.h>
 
+extern void HAL_CPU_Sleep(SLEEP_LEVEL level, UINT64 wakeEvents);
+void CPU_Sleep(SLEEP_LEVEL level, UINT64 wakeEvents)
+{
+    HAL_CPU_Sleep(level, wakeEvents);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 void ApplicationEntryPoint()
 {

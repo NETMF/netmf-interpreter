@@ -651,11 +651,6 @@ extern "C" void SystemInit()
 
 #endif //PLATFORM_ARM_OS_PORT
 
-extern "C" void HARD_Breakpoint()
-{
-    __BKPT( 0 );
-}
-
 #if !defined(BUILD_RTM)
 
 void debug_printf( const char* format, ... )

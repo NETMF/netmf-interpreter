@@ -118,20 +118,9 @@ BOOL CPU_IsSoftRebootSupported ()
     return TRUE;
 }
 
-#ifdef __GNUC__
 void HAL_AssertEx()
 {
-	asm("BKPT #0");
-	asm("L1: B.N L1");
+    __BKPT(0);
+    while(true) { /*nop*/ }
 }
-#else
-__asm void HAL_AssertEx()
-{
-    BKPT     #0
-L1  B        L1
-    BX       lr
-}
-#endif
-
-//--//
 

@@ -24,10 +24,6 @@ static SREC_Handler g_SREC;
 
 HAL_DECLARE_CUSTOM_HEAP( SimpleHeap_Allocate, SimpleHeap_Release, SimpleHeap_ReAllocate );
 
-void HARD_Breakpoint()
-{
-}
-
 #pragma arm section zidata = "s_SystemStates"
 static INT32 s_SystemStates[SYSTEM_STATE_TOTAL_STATES];
 #pragma arm section zidata

@@ -126,6 +126,11 @@
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
 
+        <ExecRegion Name="ER_ETHERNET" Base="+0" Options="ABSOLUTE" Size="0x1E00">
+            <FileMapping Name="STM32F4_ETH_rx_desc.obj" Options="(+ZI)" />
+            <FileMapping Name="STM32F4_ETH_tx_desc.obj" Options="(+ZI)" />
+        </ExecRegion>
+
         <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
             <!-- Flash programming from Flash is safe on STM32 -->
             <!-- No need to place Flash programming code in RAM -->
