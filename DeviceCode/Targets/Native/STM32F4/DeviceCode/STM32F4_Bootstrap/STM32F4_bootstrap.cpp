@@ -209,7 +209,7 @@ void BootstrapCode_GPIO();
 extern "C"
 {
 
-void __attribute__((section("SectionForBootstrapOperations"))) STM32F4_BootstrapCode()
+void __section("SectionForBootstrapOperations") STM32F4_BootstrapCode()
 {
 #ifdef STM32F4XX
     // enable FPU coprocessors (CP10, CP11)

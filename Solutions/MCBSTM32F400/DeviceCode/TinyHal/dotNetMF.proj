@@ -53,9 +53,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="$(AS_SUBDIR)\AppEntry.s" />
-        <Compile Include="$(AS_SUBDIR)\VectorTable.s" />
         <Compile Include="$(AS_SUBDIR)\IDelayLoop.s" />
-        <Compile Include="$(AS_SUBDIR)\DefaultHandlers.s" />
         <Compile Include="$(AS_SUBDIR)\Interlocked.s" />
     </ItemGroup>
     <ItemGroup>
