@@ -39,9 +39,6 @@
     <Compile Include="Spi\SpiEnums.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System">
-      <HintPath>$(BUILD_TREE_DLL)\System.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.SPOT.Hardware">
       <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
     </Reference>
