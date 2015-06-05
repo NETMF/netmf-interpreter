@@ -20,6 +20,7 @@
 @
     .syntax unified
     .arch armv7-m
+    .thumb
     
     .global  EntryPoint
 
@@ -32,8 +33,7 @@
     .global __initial_sp
     .global Reset_Handler
 
-    .extern  SystemInit
-    .extern  __main
+    .extern BootEntry
 
 
     @*************************************************************************
@@ -64,6 +64,9 @@ CustomHeapEnd:
     .word 0
 
 .section i.EntryPoint, "ax", %progbits
+
+   @ENTRY
+
 EntryPoint:
 
 @ The first word has a dual role:
@@ -97,7 +100,6 @@ EntryPoint:
 Reset_Handler:
     @@ reload the stack pointer as there's no returning to the loader
     ldr     sp, =__initial_sp
-    bl  BootstrapCode
     b   BootEntry
 
     .pool

@@ -22,6 +22,7 @@
 
     .syntax unified
     .arch armv7-m
+    .thumb
 
     @ Initial Stack pointer for power on reset
     .extern __initial_sp

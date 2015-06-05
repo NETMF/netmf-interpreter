@@ -53,7 +53,7 @@ CustomHeapEnd     DCD 0
     AREA ||SectionForPowerOnReset||, CODE, READONLY
     ; Power On Reset vector table for the device
     ; This is placed at physical address 0 by the
-    ; linker. THe first entry is the initial stack
+    ; linker. The first entry is the initial stack
     ; pointer as defined for the ARMv6-M and ARMv7-M
     ; architecture profiles. Therefore, all such 
     ; devices MUST have some amount of SRAM available

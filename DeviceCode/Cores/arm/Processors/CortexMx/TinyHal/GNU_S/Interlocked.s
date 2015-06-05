@@ -14,9 +14,11 @@
 @//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     .syntax unified
     .arch armv7-m
+    .thumb
 
 @extern "C" INT32 InterlockedIncrement( volatile INT32* lpAddend )@
     .section i.InterlockedIncrement, "ax", %progbits
+    .thumb_func
 InterlockedIncrement:
         .global InterlockedIncrement
         .weak InterlockedIncrement
@@ -31,6 +33,7 @@ ILIncLoop:
 
 @extern "C" INT32 InterlockedDecrement( volatile INT32* lpAddend )@
     .section i.InterlockedDecrement, "ax", %progbits
+    .thumb_func
 InterlockedDecrement:
         .global InterlockedDecrement
         .weak InterlockedDecrement
@@ -45,6 +48,7 @@ IlDecLoop:
 
 @extern "C" INT32 InterlockedAnd( volatile INT32* Destination, INT32 Flag )@
     .section i.InterlockedAnd, "ax", %progbits
+    .thumb_func
 InterlockedAnd:
         .global InterlockedAnd
         .weak InterlockedAnd
@@ -60,6 +64,7 @@ L1.6:
 
 @extern "C" INT32 InterlockedCompareExchange( INT32* Destination, INT32 Exchange, INT32 Comperand )@
     .section i.InterlockedCompareExchange, "ax", %progbits
+    .thumb_func
 InterlockedCompareExchange:
         .global InterlockedCompareExchange
         .weak InterlockedCompareExchange
@@ -81,6 +86,7 @@ L2.3:
 
 @extern "C" INT32 InterlockedExchange( volatile INT32* Target, INT32 Value )@
     .section i.InterlockedExchange, "ax", %progbits
+    .thumb_func
 InterlockedExchange:
         .global InterlockedExchange
         .weak InterlockedExchange
@@ -94,6 +100,7 @@ L3.4:
 
 @extern "C" INT32 InterlockedExchangeAdd( volatile INT32* Addend, INT32 Value )@
     .section i.InterlockedExchangeAdd, "ax", %progbits
+    .thumb_func
 InterlockedExchangeAdd:
         .global InterlockedExchangeAdd
         .weak InterlockedExchangeAdd
@@ -109,6 +116,7 @@ L4.6:
 
 @extern "C" INT32 InterlockedOr( volatile INT32* Destination, INT32 Flag )@
     .section i.InterlockedOr, "ax", %progbits
+    .thumb_func
 InterlockedOr:
         .global InterlockedOr
         .weak InterlockedOr
