@@ -275,25 +275,17 @@
 
     <MakeDir Directories="$(EXEName).bin" Condition="'$(MultipleOutputSections)'=='true' and !Exists('$(EXEName).bin')" />
     <MakeDir Directories="$(EXEName).hex" Condition="'$(MultipleOutputSections)'=='true' and !Exists('$(EXEName).hex')" />
-    <MakeDir Directories="$(EXEName).ihex" Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true' and !Exists('$(EXEName).ihex')" />
 
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -O binary @(EXEOutput) $(EXEName).bin"                      Condition="'$(MultipleOutputSections)'!='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -O binary @(EXEOutput) $(EXEName).bin\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT                                                                                     -O binary @(EXEOutput) $(EXEName).bin\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG                                                                                  -O binary @(EXEOutput) $(EXEName).bin\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -O binary @(EXEOutput) $(EXEName).bin"                      Condition="'$(MultipleOutputSections)'!='true'" />
+    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O binary @(EXEOutput) $(EXEName).bin\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -j ER_DAT              -O binary @(EXEOutput) $(EXEName).bin\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
+    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O binary @(EXEOutput) $(EXEName).bin\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
 
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex"                      Condition="'$(MultipleOutputSections)'!='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O ihex --gap-fill 0                 @(EXEOutput) $(EXEName).ihex"                     Condition="'$(MultipleOutputSections)'!='true' and '$(IntelHexFormat)'=='true'" />
+    <Exec Command="$(FROMELF) -S -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex"                  Condition="'$(MultipleOutputSections)'!='true'" />
 
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT                                                                                                -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG                                                                                             -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_IFLASH                                                                                             -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_IFLASH"            Condition="'$(MultipleOutputSections)'=='true'" />
-
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC  -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O ihex --gap-fill 0 @(EXEOutput) $(EXEName).ihex\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT                                                                                                 -O ihex              @(EXEOutput) $(EXEName).ihex\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true' and ('$(FLAVOR)'!='RTM')" />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG                                                                                              -O ihex              @(EXEOutput) $(EXEName).ihex\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_IFLASH                                                                                              -O ihex              @(EXEOutput) $(EXEName).ihex\ER_IFLASH"            Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true'" />
+    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -j ER_DAT              -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
+    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
 
     <Exec Command="$(NM) $(EXEName).axf >> $(EXEName).dump"/>
     <Exec Command="$(CREATESYMDEF) $(EXEName).dump $(EXEName).symdefs" Condition="EXISTS('$(CREATESYMDEF)')" />
@@ -334,8 +326,6 @@
     <Message Text="file selected @(SigFilesInHexDir)"/>
     <Message Text="file selected @(SigFiles)"/>
     <Message Text="file selected @(AllSigFiles)"/>
-
-
   </Target>
 
   <Target Name="CompressBin" Inputs="@(CompressBinFile);@(CompressBinFile->'%(RootDir)%(Directory)%(FileName).symdefs')" Outputs="@(CompressBinOutput);@(CompressBinComp)" >
@@ -376,9 +366,9 @@
   <Target Name="BuildScatterfile" Condition="'$(DEPEND)'!='ACTIVE'" Inputs="@(EXEScatterFileDefinition);@(ScatterFileReferences)" Outputs="@(EXEScatterFile)">
     <Message Text="..."/>    
     <ProcessScatterFile
-    	Properties="@(BuildScatterFileProperties)"
-		  DefinitionFile="@(EXEScatterfileDefinition)"
-		  OutputFile="@(EXEScatterFile)"
+        Properties="@(BuildScatterFileProperties)"
+          DefinitionFile="@(EXEScatterfileDefinition)"
+          OutputFile="@(EXEScatterFile)"
      />
   </Target>
 
