@@ -13,6 +13,7 @@
 
     .syntax unified
     .arch armv7-m
+    .thumb
 
     .global  EntryPoint
     .global  __initial_sp
@@ -83,7 +84,6 @@ PowerOnReset:
     .type    Reset_Handler, %function
 
     .section i.EntryPoint, "ax", %progbits
-    .thumb_func
 EntryPoint:
 Reset_Handler:
     bl  BootstrapCode
@@ -94,8 +94,8 @@ Reset_Handler:
 
     .balign   4
 
-Fault_Handler:
     .thumb_func
+Fault_Handler:
     b       Fault_Handler
 
     .end

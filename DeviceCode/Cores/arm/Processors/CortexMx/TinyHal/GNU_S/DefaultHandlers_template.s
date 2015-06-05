@@ -22,6 +22,7 @@
 
     .syntax unified
     .arch armv7-m
+    .thumb
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                
 @ Dummy Exception Handlers (infinite loops which can be overloaded since they are exported with weak linkage )

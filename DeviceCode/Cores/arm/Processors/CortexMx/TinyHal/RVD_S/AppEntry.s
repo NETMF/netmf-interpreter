@@ -11,7 +11,7 @@
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
-; This version of the "first entry" support is used when the application is 
+; This version of the "boot entry" support is used when the application is 
 ; loaded or otherwise started from a bootloader. (e.g. this application isn't 
 ; a boot loader). More specifically this version is used whenever the application
 ; does NOT run from the power on reset vector because some other code is already
