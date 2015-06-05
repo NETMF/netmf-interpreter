@@ -57,8 +57,12 @@ namespace Microsoft.SPOT.Platform.Tests
             char[] car2 = new char[] { (char)0, (char)65};
             string s = new string(car2);
             testResult &= (s == "\0A");
-                
             Log.Comment("This was previously bug 20620");
+
+            Log.Comment("new char[0]");
+            str = new string(new char[0]);
+            testResult &= (str == string.Empty);
+
             return (testResult ? MFTestResults.Pass : MFTestResults.Fail);
         }
         [TestMethod]
