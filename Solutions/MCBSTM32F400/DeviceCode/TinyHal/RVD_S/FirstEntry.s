@@ -50,10 +50,15 @@ CustomHeapBegin   DCD 0
     AREA SectionForCustomHeapEnd,     DATA
 CustomHeapEnd     DCD 0
 
-
-    AREA ||i.EntryPoint||, CODE, READONLY
-    ENTRY
-
+    AREA ||SectionForPowerOnReset||, CODE, READONLY
+    ; Power On Reset vector table for the device
+    ; This is placed at physical address 0 by the
+    ; linker. THe first entry is the initial stack
+    ; pointer as defined for the ARMv6-M and ARMv7-M
+    ; architecture profiles. Therefore, all such 
+    ; devices MUST have some amount of SRAM available
+    ; for booting
+PowerOnReset
     DCD     __initial_sp
     DCD     Reset_Handler ; Reset
     DCD     Fault_Handler ; NMI
@@ -62,7 +67,10 @@ CustomHeapEnd     DCD 0
     DCD     Fault_Handler ; Bus Fault
     DCD     Fault_Handler ; Usage Fault
 
+    AREA ||i.EntryPoint||, CODE, READONLY
+    ENTRY
 EntryPoint
+
 Reset_Handler
     bl      BootstrapCode
     b       BootEntry

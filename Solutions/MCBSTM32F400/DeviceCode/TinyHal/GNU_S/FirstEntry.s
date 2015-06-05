@@ -13,6 +13,7 @@
 
     .syntax unified
     .arch armv7-m
+    .thumb
 
     .global  EntryPoint
     .global  __initial_sp
@@ -23,7 +24,7 @@
     .global HeapEnd
     .global CustomHeapBegin
     .global CustomHeapEnd
-
+    .global PowerOnReset
     .extern  PreStackInit
 
 
@@ -32,38 +33,41 @@
 
     @*************************************************************************
 
-    .section SectionForStackBottom, "a", %progbits
+    .section SectionForStackBottom, "w", %nobits
 StackBottom:
     .word 0
 
-    .section SectionForStackTop, "a", %progbits
+    .section SectionForStackTop, "w", %nobits
 __initial_sp:
 StackTop:
     .word 0
     
-    .section SectionForHeapBegin, "a", %progbits
+    .section SectionForHeapBegin, "w", %nobits
 HeapBegin:
     .word 0
 
-    .section SectionForHeapEnd, "a", %progbits
+    .section SectionForHeapEnd, "w", %nobits
 HeapEnd:
     .word 0
 
-    .section SectionForCustomHeapBegin, "a", %progbits
-ARM_Vectors:
-    .space   84*4   @ exception vector table (max 84 entries)
-
+    .section SectionForCustomHeapBegin, "w", %nobits
 CustomHeapBegin:
     .word 0
 
-    .section SectionForCustomHeapEnd, "a", %progbits
+    .section SectionForCustomHeapEnd, "w", %nobits
 CustomHeapEnd:
     .word 0
 
-    .section i.EntryPoint, "ax", %progbits
-    .thumb_func
+    @ Power On Reset vector table for the device
+    @ This is placed at physical address 0 by the
+    @ linker. THe first entry is the initial stack
+    @ pointer as defined for the ARMv6-M and ARMv7-M
+    @ architecture profiles. Therefore, all such 
+    @ devices MUST have some amount of SRAM available
+    @ for booting
 
-EntryPoint:
+    .section SectionForPowerOnReset, "x", %progbits
+PowerOnReset:
     .word    __initial_sp
     .word     Reset_Handler @ Reset
     .word     Fault_Handler @ NMI
@@ -79,6 +83,8 @@ EntryPoint:
     .global   Reset_Handler
     .type    Reset_Handler, %function
 
+    .section i.EntryPoint, "ax", %progbits
+EntryPoint:
 Reset_Handler:
     bl  BootstrapCode
     b   BootEntry
@@ -88,8 +94,8 @@ Reset_Handler:
 
     .balign   4
 
-Fault_Handler:
     .thumb_func
+Fault_Handler:
     b       Fault_Handler
 
     .end
