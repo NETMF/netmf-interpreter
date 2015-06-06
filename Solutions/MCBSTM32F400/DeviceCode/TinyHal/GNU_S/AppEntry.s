@@ -36,7 +36,6 @@
     .extern  SystemInit
     .extern  __main
 
-
     @*************************************************************************
 
     .section SectionForStackBottom, "w", %nobits
@@ -87,7 +86,7 @@ EntryPoint:
 @ The actual word used is 0x2000E00C
 
     b       Reset_Handler @ 0xE00C
-    .hword    0x2000        @ Booter signature is 0x2000E00C
+    .hword    0x2000      @ Booter signature is 0x2000E00C
     .word     0 @ [ UNUSED ]
     .word     0 @ [ UNUSED ]
     .word     0 @ [ UNUSED ]
@@ -157,8 +156,11 @@ EntryPoint:
 Reset_Handler:
     ;; reload the stack pointer as there's no returning to the loader
     ldr     sp, =__initial_sp
-    bl  BootstrapCode
-    b   BootEntry
+    LDR     R0, =SystemInit
+    BLX     R0
+    LDR     R0, =__main
+    BX      R0
+    
 
     .pool
     .size    Reset_Handler, . - Reset_Handler
