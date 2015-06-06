@@ -15,7 +15,7 @@
     EXPORT  TinyClr_Dat_End
 
 TinyClr_Dat_Start  DATA
-    INCBIN tinyclr.dat
+    INCBIN tinyclr_nonet.dat
 TinyClr_Dat_End
 
     END

@@ -380,14 +380,14 @@
 
     </Target>
 
-    <Target Name="CompressImage" Inputs="@(CompressImageFlash);@(CompressImageDat);@(CompressImageCfg);@(CompressImageSymdef)" Outputs="$(BIN_DIR)\TinyCLR.nmf')" Condition="'$(MEMORY)'!='RAM'" >
+    <Target Name="CompressImage" Inputs="@(CompressImageFlash);@(CompressImageDat);@(CompressImageCfg);@(CompressImageSymdef)" Outputs="$(BIN_DIR)\$(EXEName).nmf')" Condition="'$(MEMORY)'!='RAM'" >
         <Message Text="Compressing @(CompressImages)"/>
         <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageFlashSym) -compress @(CompressImageFlash) @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf')"/>
         <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageDatSym) -compress @(CompressImageDat) @(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf')" Condition="EXISTS('@(CompressImageDat)')"/>
         <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageCfgSym) -compress @(CompressImageCfg) @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf')"/>
 
-        <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\TinyCLR.nmf" Condition="EXISTS('@(CompressImageDat)')"/>
-        <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\TinyCLR.nmf" Condition="!EXISTS('@(CompressImageDat)')"/>
+        <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\$(AssemblyName).nmf" Condition="EXISTS('@(CompressImageDat)')"/>
+        <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\$(AssemblyName).nmf" Condition="!EXISTS('@(CompressImageDat)')"/>
     </Target>
 
     <PropertyGroup>
@@ -410,6 +410,8 @@
         <Message Text="  platform          imxs|mote2|etc.    target platform to compile"/>
         <Message Text="  memory            flash|ram          target memory device for the binaries"/>
         <Message Text="  flavor            debug|release|rtm  target build flavor"/>
+        <Message Text=" "/>
+        <Message Text="Targets used by the MF Build System:" Importance="high"/>
         <Message Text="  build             Invoke the build target, which builds the platform specified." />
         <Message Text="                    This is the default target if no target is specified on the"/>
         <Message Text="                    command line."/>

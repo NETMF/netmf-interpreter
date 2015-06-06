@@ -9,7 +9,7 @@
     .global  TinyClr_Dat_End
 
 TinyClr_Dat_Start:
-    .incbin "tinyclr.dat"
+    .incbin "tinyclr_nonet.dat"
 TinyClr_Dat_End:
 
     .end
