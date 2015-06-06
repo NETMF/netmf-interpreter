@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
     <PropertyGroup>
-        <AssemblyName>tinyclr</AssemblyName>
+        <AssemblyName>tinyclr_nonet</AssemblyName>
         <ProjectGuid>{0291002E-77F6-4333-994F-D917BEEA8467}</ProjectGuid>
         <Description />
         <Documentation />
-        <Directory>Solutions\MCBSTM32F400_NONET\TinyCLR</Directory>
+        <Directory>Solutions\MCBSTM32F400\TinyCLR_NONET</Directory>
         <IsClrProject>True</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\TinyCLR\TinyCLR.proj</ProjectPath>
-        <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\MCBSTM32F400_NONET.settings</MFSettingsFile>
+        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\TinyCLR_NONET\TinyCLR_NONET.proj</ProjectPath>
+        <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>false</reducesize>
     </PropertyGroup>
@@ -92,14 +92,6 @@
         <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <PlatformIndependentLibs Include="Stream.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\Stream\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <PlatformIndependentLibs Include="SPOT_IO.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_IO\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
         <PlatformIndependentLibs Include="SPOT_Hardware.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\dotNetMF.proj" />
     </ItemGroup>
@@ -148,10 +140,6 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\Processor\stubs_watchdog\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="MCBSTM32F400_NONET_initialization_hal.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Initialization\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
         <DriverLibs Include="system_initialization_hal.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Initialization\dotNetMF.proj" />
     </ItemGroup>
@@ -174,10 +162,6 @@
     <ItemGroup>
         <DriverLibs Include="Buttons_pal.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Buttons\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <DriverLibs Include="DebuggerPort_SSL_Config_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Config\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="config_pal.$(LIB_EXT)" />
@@ -336,10 +320,6 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\USB\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="sockets_pal_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\stubs\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
         <DriverLibs Include="i2c_pal.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\I2C\dotNetMF.proj" />
     </ItemGroup>
@@ -412,32 +392,36 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_perfcounter\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
+        <DriverLibs Include="sockets_pal_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\stubs\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="ssl_pal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets\Ssl\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="M29W640FB_Flash.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
-    </ItemGroup>
-	<ItemGroup>
-        <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400_NONET.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="STM32F4_blconfig_MCBSTM32F400_NONET.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj" />
+        <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="BlockStorage_AddDevices_MCBSTM32F400_NONET.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Blockstorage\addDevices\dotNetMF.proj" />
+        <DriverLibs Include="STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="IO_Init_MCBSTM32F400_NONET.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\Init\dotnetmf.proj" />
+        <DriverLibs Include="BlockStorage_AddDevices_MCBSTM32F400.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\addDevices\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="usb_pal_config_MCBSTM32F400_NONET.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400_NONET\DeviceCode\USB\dotnetmf.proj" />
+        <DriverLibs Include="IO_Init_MCBSTM32F400.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Init\dotnetmf.proj" />
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="usb_pal_config_MCBSTM32F400.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\USB\dotnetmf.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="native_double_pal.$(LIB_EXT)" />

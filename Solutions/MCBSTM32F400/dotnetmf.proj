@@ -8,6 +8,7 @@
       <!--RequiredProjects Include="MicroBooter\MicroBooter.proj" /-->
     <RequiredProjects Include="TinyBooter\TinyBooter.proj" />
     <RequiredProjects Include="TinyCLR\TinyCLR.proj" />
+    <RequiredProjects Include="TinyCLR_NONET\TinyCLR_NONET.proj" />
   </ItemGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />

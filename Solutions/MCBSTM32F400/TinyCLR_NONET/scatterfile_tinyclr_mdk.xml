@@ -6,7 +6,6 @@
     <Set Name="Valid" Value="false"/>
 
     <!-- ################################################################################ -->
-
     <!-- Memory Region base and size values for physical hardware to help clarify the mapping
          by making Symbolic names available instead of a bunch of numbers. These values are
          fixed in hardware and therefore, don't change.
@@ -50,7 +49,7 @@
 
     <!-- DAT region goes into external NOR Flash -->
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Data_Size"               Value="0x00020000"/><!-- 128KB -->
+    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
     <!-- Deployment fills the rest of external NOR flash... -->
 
     <!-- Internal FLASH -->
@@ -86,7 +85,6 @@
     </If>
 
     <!-- ################################################################################ -->
-
     <If Name="Valid" Value="false">
         <Error Message="Configuration not recognized"/>
     </If>
@@ -111,25 +109,20 @@
             (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
             Since this starts the SRAM block, it's aligned just fine for any size table.
         -->
+        <!-- NOTE: Using uncompressed sections as this project uses the NETMF startup code that
+             doesn't know about compressed init regions. Eventually this should be unified so that
+             the normal embedded (Microlib/nanolib) runtime startup is used for all tool chains
+             instead of doing it in the NETMF code base.
+        -->
         <ExecRegion Name="ER_VECTORS" Base="%IRAM_BaseAddress%" Options="ABSOLUTE NOCOMPRESS" Size="">
             <FileMapping Name="*" Options="(VectorTable +FIRST)" />
         </ExecRegion>
-        
-        <!-- To enable re-initialization of the LWIP stack, which has no built-in support
-             for re-init, all RW and ZI data for the stack is placed into an isolated region
-             and the HAL soft reboot code handles re-initializing the data in this region.
-        -->
-        <ExecRegion Name="ER_LWIP_OS" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
-            <FileMapping Name="*sockets_hal_*_LWIP_os.lib" Options="(+RW-DATA +ZI)" />
-            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(+RW-DATA +ZI)" />
-        </ExecRegion>
 
-
-        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
             <!-- Flash programming from Flash is safe on STM32 -->
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->

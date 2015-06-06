@@ -43,8 +43,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="MCBSTM32F400_tinyhal_loader.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\TinyHal\dotNetMF_loader.proj" />
+        <DriverLibs Include="TinyHal_loader_Cortex.$(LIB_EXT)"/>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\dotnetmf_loader.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
@@ -99,8 +99,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\Processor\stubs_watchdog\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="MCBSTM32F400_initialization_hal_loader.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Initialization\dotNetMF_loader.proj" />
+        <DriverLibs Include="system_initialization_hal_loader.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Initialization\dotNetMF_loader.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="Watchdog_pal_stubs.$(LIB_EXT)" />
@@ -246,11 +246,11 @@
         <DriverLibs Include="STM32F4_DA.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_DA\dotNetMF.proj" />
     </ItemGroup>
-	<ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="M29W640FB_Flash.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
     </ItemGroup>
-	<ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
     </ItemGroup>
