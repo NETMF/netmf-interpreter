@@ -68,6 +68,13 @@ static TxDesc_t s_txDescriptor[N_TX_DESC];      // TX descriptors
 static TxDesc_t *s_pTxDesc;                     // Pointer on the current TX descriptor
 static uint8_t s_txBuffer[N_TX_DESC][TX_BUFFER_LENGTH];
 
+void ZeroTxDesc()
+{
+    s_pTxDesc = NULL;
+    memset(s_txDescriptor, 0, sizeof(s_txDescriptor));
+    memset(s_txBuffer, 0, sizeof(s_txBuffer));
+}
+
 //--------------------------------------------------------------------------------------------
 // Functions definitions
 //--------------------------------------------------------------------------------------------

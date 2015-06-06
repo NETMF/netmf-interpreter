@@ -29,9 +29,8 @@ static BOOL         LinkStatus = FALSE;
 static int          nAttempts = 0;
 static BOOL         isPhyPoweringUp = FALSE;
 
-/* these define the region to zero initialize */
-extern UINT32 Image$$ER_ETHERNET$$ZI$$Base;
-extern UINT32 Image$$ER_ETHERNET$$ZI$$Length;
+extern void ZeroRxDesc();
+extern void ZeroTxDesc();
 
 extern NETWORK_CONFIG g_NetworkConfig;
 
@@ -58,9 +57,12 @@ void lwip_interrupt_continuation( void )
     STM32F4_ETH_LWIP_recv( &g_STM32F4_ETH_NetIF );
 }
 
-// MCBSTM32F400 is wired up in such a way that there is no link status 
-// interrupt available in hadware. Thus this continuation is used to 
-// poll the PHY to determine the current state at regular intervals.
+// completion used when system is wired up in such a way that there is
+// no link status interrupt available in hardware. Thus this continuation
+// is used to poll the PHY to determine the current state at regular
+// intervals.
+//
+// NOTE: 
 // This is not a recommended design for hardware as it requires waking
 // the system from sleep for polling, thus wasting power on battery
 // operated systems.
@@ -145,12 +147,8 @@ void DeInitContinuations( )
 
 void EthernetPrepareZero( )
 {
-    /* The ethernet section (TX/RX descriptors and their buffers) is in a separate memory zone
-       which is not zero initialized. It must be done manually */
-    void* base = ( void* )&Image$$ER_ETHERNET$$ZI$$Base;
-    UINT32  length = ( UINT32 )&Image$$ER_ETHERNET$$ZI$$Length;
-
-    memset( base, 0x00, length );
+    ZeroRxDesc();
+    ZeroTxDesc();
 }
 
 void EthernetWakeUp( )
@@ -210,8 +208,6 @@ int STM32F4_ETH_LWIP_Driver::Open( int index )
     /* Return LWIP's net interface number */
     return g_STM32F4_ETH_NetIF.num;
 }
-
-// -- //
 
 BOOL STM32F4_ETH_LWIP_Driver::Close( void )
 {
