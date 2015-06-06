@@ -95,14 +95,24 @@
 
         <!-- ========= INTERNAL FLASH ============================================ -->
         <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
-            <FileMapping Name="FirstEntry.obj"   Options="(+RO, +FIRST)" />
+            <FileMapping Name="*" Options="(SectionForPowerOnReset, +FIRST)" />
             <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
             <FileMapping Name="*" Options="(+RO-CODE)" />
             <FileMapping Name="*" Options="(+RO-DATA)" />
         </ExecRegion>
 
         <!-- ========= INTERNAL RAM ============================================= -->
+        <!-- Writeable Vector table -->
+        <!-- NOTE:
+             Despite what you might hope for, this CANNOT go into the CCM area as the NVIC does not
+             have access to that space (it sees the AHB layer and below, rather than the core's D-Bus)
+        -->
+        <!-- Alignment for the vector table is important to allow the NVIC to decode the proper locations
+            (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
+            Since this starts the SRAM block, it's aligned just fine for any size table.
+        -->
         <ExecRegion Name="ER_RAM_RW" Base="%IRAM_BaseAddress%" Options="ABSOLUTE" Size="">
+            <FileMapping Name="*" Options="(VectorTable)"/> 
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
 

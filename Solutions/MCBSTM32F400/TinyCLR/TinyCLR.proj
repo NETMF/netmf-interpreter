@@ -13,6 +13,7 @@
         <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>false</reducesize>
+        <TCP_IP_STACK>LWIP_1_4_1_OS</TCP_IP_STACK>
     </PropertyGroup>
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
     <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Targets" />
@@ -497,7 +498,7 @@
         <DriverLibs Include="M29W640FB_Flash.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
     </ItemGroup>
-	<ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
     </ItemGroup>

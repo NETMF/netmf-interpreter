@@ -124,7 +124,7 @@ static void __section("SectionForBootstrapOperations") Prepare_Zero( UINT32* dst
     }
 }
 
-#if !defined(PLATFORM_ARM_OS_PORT)
+#if !defined(PLATFORM_ARM_OS_PORT) || defined(__GNUC__)
 void __section("SectionForBootstrapOperations") PrepareImageRegions()
 {
     //
@@ -327,7 +327,7 @@ void HAL_Initialize()
     // a soft reboot.
     __enable_irq();
 #endif
-	
+
     HAL_CONTINUATION::InitializeList();
     HAL_COMPLETION  ::InitializeList();
 
@@ -510,25 +510,28 @@ void HAL_Uninitialize()
 #endif
 }
 
-#if !defined(PLATFORM_ARM_OS_PORT)
 extern "C"
 {
+#if defined( __GNUC__ )
+    extern "C++" int main(void);
+    extern void __libc_init_array();
+    void __main()
+    {
+        // Copy writeable data and zero init BSS
+        PrepareImageRegions();
 
-void BootEntry()
-{
-#if (defined(GCCOP) && defined(COMPILE_THUMB))
+        // Call static constructors
+        __libc_init_array();
 
-// the IRQ_Handler routine generated from the compiler is incorrect, the return address LR has been decrement twice
-// it decrements LR at the first instruction of IRQ_handler and then before return, it decrements LR again.
-// temporary fix is at the ARM_Vector ( IRQ), make it jump to 2nd instruction of IRQ_handler to skip teh first subs LR, LR #4;
-//
-    volatile int *ptr;
-    ptr =(int*) 0x28;
-    *ptr = *ptr +4;
+        // Call the application's entry point.
+        main();
+    }
 #endif
 
-
-#if !defined(BUILD_RTM) && !defined(PLATFORM_ARM_OS_PORT)
+#if !defined(PLATFORM_ARM_OS_PORT)
+void BootEntry()
+{
+#if !defined(BUILD_RTM)
     {
         int  marker;
         int* ptr = &marker - 1; // This will point to the current top of the stack.
@@ -620,10 +623,10 @@ void BootEntry()
     CPU_Halt();
 #endif
 }
+#endif
 
 } // extern "C"
 
-#endif
 
 #if defined(PLATFORM_ARM_OS_PORT)
 extern "C" void STM32F4_BootstrapCode();
@@ -682,8 +685,6 @@ void lcd_printf( const char* format, ... )
 }
 
 #endif  // !defined(BUILD_RTM)
-
-//--//
 
 #if !defined(BUILD_RTM)
 

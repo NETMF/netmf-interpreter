@@ -112,7 +112,11 @@
         <ExecRegion Name="ER_VECTORS" Base="%IRAM_BaseAddress%" Options="ABSOLUTE NOCOMPRESS" Size="">
             <FileMapping Name="*" Options="(VectorTable +FIRST)" />
         </ExecRegion>
-        
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+        </ExecRegion>
+
         <!-- To enable re-initialization of the LWIP stack, which has no built-in support
              for re-init, all RW and ZI data for the stack is placed into an isolated region
              and the HAL soft reboot code handles re-initializing the data in this region.
@@ -120,15 +124,6 @@
         <ExecRegion Name="ER_LWIP_OS" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
             <FileMapping Name="*sockets_hal_*_LWIP_os.lib" Options="(+RW-DATA +ZI)" />
             <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(+RW-DATA +ZI)" />
-        </ExecRegion>
-
-        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
-            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
-        </ExecRegion>
-
-        <ExecRegion Name="ER_ETHERNET" Base="+0" Options="ABSOLUTE" Size="0x1E00">
-            <FileMapping Name="STM32F4_ETH_rx_desc.obj" Options="(+ZI)" />
-            <FileMapping Name="STM32F4_ETH_tx_desc.obj" Options="(+ZI)" />
         </ExecRegion>
 
         <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
