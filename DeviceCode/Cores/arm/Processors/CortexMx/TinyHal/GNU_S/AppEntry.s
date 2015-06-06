@@ -34,6 +34,7 @@
     .global Reset_Handler
 
     .extern BootEntry
+    .extern BootstrapCode
 
 
     @*************************************************************************
@@ -100,6 +101,7 @@ EntryPoint:
 Reset_Handler:
     @@ reload the stack pointer as there's no returning to the loader
     ldr     sp, =__initial_sp
+    bl  BootstrapCode
     b   BootEntry
 
     .pool
