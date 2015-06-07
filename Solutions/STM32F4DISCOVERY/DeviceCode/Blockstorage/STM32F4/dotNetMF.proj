@@ -1,0 +1,45 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>STM32F4_blconfig_STM32F4DISCOVERY</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{92AED3B3-6E69-445B-B9AE-1AFBD162DBED}</ProjectGuid>
+    <Description>Block storage configuration for STM32F4DISCOVERY</Description>
+    <Level>HAL</Level>
+    <LibraryFile>STM32F4_blconfig_STM32F4DISCOVERY.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj</ProjectPath>
+    <ManifestFile>STM32F4_blconfig_STM32F4DISCOVERY.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Solutions\STM32F4DISCOVERY</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorageConfig_HAL" Guid="{497F59BB-55D3-404e-B958-A6284806D184}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-08-12</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomSpecific>STM32F4DISCOVERY</CustomSpecific>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Solutions\STM32F4DISCOVERY\DeviceCode\BlockStorage\STM32F4</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="STM32F4_blconfig.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

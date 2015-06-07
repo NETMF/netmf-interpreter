@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Directory>Solutions\STM32F4DISCOVERY</Directory>
+    <MFSettingsFile>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\STM32F4DISCOVERY.settings</MFSettingsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--RequiredProjects Include="MicroBooter\MicroBooter.proj" /-->
+    <RequiredProjects Include="TinyBooter\TinyBooter.proj" />
+    <RequiredProjects Include="TinyCLR\TinyCLR.proj" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
