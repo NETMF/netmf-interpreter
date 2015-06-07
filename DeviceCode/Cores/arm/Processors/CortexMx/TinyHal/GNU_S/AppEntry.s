@@ -89,7 +89,7 @@ EntryPoint:
 @   ]
 @ The actual word used is 0x2000E00C
 
-    b       Reset_Handler @ 0xE00C
+    b.n       Reset_Handler @ 0xE00C - Force short (16-bit) encoding
     .hword    0x2000        @ Booter signature is 0x2000E00C
     .word     0 @ [ UNUSED ]
     .word     0 @ [ UNUSED ]
