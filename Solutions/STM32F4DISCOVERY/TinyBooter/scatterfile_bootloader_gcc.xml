@@ -45,7 +45,7 @@
     <!-- Internal SRAM -->
     <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
     <Set Name="Heap_BaseAddress"        Value="0x20008000"/>
-    <Set Name="Heap_Size"               Value="0x00017000"/><!-- 96K -->
+    <Set Name="Heap_Size"               Value="0x00017000"/><!-- 92K -->
 
     <Set Name="CustomHeap_Size"         Value="0x00001000"/><!--  4K -->
 
