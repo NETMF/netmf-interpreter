@@ -35,7 +35,7 @@
     <ItemGroup>
         <CompressImageSymdef Include="$(BIN_DIR)\TinyCLR.symdefs" />
         <CompressImageFlash Include="$(BIN_DIR)\TinyCLR.bin\ER_FLASH" />
-        <CompressImageDat Include="$(BIN_DIR)\TinyCLR.bin\ER_DAT" />
+        <!--<CompressImageDat Include="$(BIN_DIR)\TinyCLR.bin\ER_DAT" />-->
         <CompressImageCfg Include="$(BIN_DIR)\TinyCLR.bin\ER_CONFIG" />
     </ItemGroup>
     <ItemGroup>
