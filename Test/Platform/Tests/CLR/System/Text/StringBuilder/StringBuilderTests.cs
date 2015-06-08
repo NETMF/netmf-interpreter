@@ -129,8 +129,7 @@ namespace TextTests.StringBuilder
 
             bool result = false;
 
-            //result = stringBuilder.Clear().ToString() == string.Empty;
-            result = stringBuilder.Clear().ToString() == null;
+            result = stringBuilder.Clear().ToString() == string.Empty;
 
             if (!result)
             {
@@ -429,8 +428,7 @@ namespace TextTests.StringBuilder
 
             bool result = false;
 
-            //result = stringBuilder.ToString() == string.Empty;
-            result = stringBuilder.ToString() == null;
+            result = stringBuilder.ToString() == string.Empty;
 
             if (!result)
             {
