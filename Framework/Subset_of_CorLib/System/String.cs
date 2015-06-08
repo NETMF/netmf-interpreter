@@ -228,12 +228,10 @@ namespace System
 
             int length = args.Length;
             String[] sArgs = new String[length];
-            int totalLength = 0;
 
             for (int i = 0; i < length; i++)
             {
                 sArgs[i] = ((args[i] == null) ? (String.Empty) : (args[i].ToString()));
-                totalLength += sArgs[i].Length;
             }
 
             return String.Concat(sArgs);
