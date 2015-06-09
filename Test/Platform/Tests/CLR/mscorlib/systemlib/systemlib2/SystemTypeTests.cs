@@ -100,6 +100,14 @@ namespace Microsoft.SPOT.Platform.Tests
             tst = (-3210).ToString("g");
             bRet &= "-3210" == tst;
 
+            bRet &= "NaN" == ((float)0f / 0f).ToString();
+            bRet &= "Infinity" == ((float)1f / 0f).ToString();
+            bRet &= "-Infinity" == ((float)-1f / 0f).ToString();
+
+            bRet &= "NaN" == ((double)0f / 0f).ToString();
+            bRet &= "Infinity" == ((double)1f / 0f).ToString();
+            bRet &= "-Infinity" == ((double)-1f / 0f).ToString();
+
             if (bRet)
             {
                 return MFTestResults.Pass;

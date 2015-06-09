@@ -22,14 +22,34 @@ namespace System
 
         public override String ToString()
         {
-            return Number.Format(m_value, false, "G", NumberFormatInfo.CurrentInfo);
+            // Number.Format method is responsible for returning the correct string representation of the value; however, it does not work properly for special values.
+            // Fixing the issue in Number.Format requires a significant amount of modification in both native and managed code.
+            // In order to avoid that (at lease for now), we use the help of Double class to identify special values and use Number.Format for the others.
+            string str = ((Double)m_value).ToString();
+            switch (str)
+            {
+                case "Infinity":
+                case "-Infinity":
+                case "NaN":
+                    return str;
+                default:
+                    return Number.Format(m_value, false, "G", NumberFormatInfo.CurrentInfo);
+            }
         }
 
         public String ToString(String format)
         {
-            return Number.Format(m_value, false, format, NumberFormatInfo.CurrentInfo);
+            string str = ((Double)m_value).ToString();
+            switch (str)
+            {
+                case "Infinity":
+                case "-Infinity":
+                case "NaN":
+                    return str;
+                default:
+                    return Number.Format(m_value, false, format, NumberFormatInfo.CurrentInfo);
+            }
         }
-
     }
 }
 
