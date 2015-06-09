@@ -24,6 +24,10 @@
     </MMP_STUB_Load>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adc\AdcChannel.cs" />
+    <Compile Include="Adc\AdcController.cs" />
+    <Compile Include="Adc\AdcEnums.cs" />
+    <Compile Include="Adc\AdcProvider.cs" />
     <Compile Include="Enumeration\DeviceInformation.cs" />
     <Compile Include="Gpio\GpioController.cs" />
     <Compile Include="Gpio\GpioEnums.cs" />
