@@ -37,7 +37,7 @@ namespace Windows.Devices.Adc
             }
         }
 
-        int ReadValue()
+        public int ReadValue()
         {
             if (m_disposed)
             {
@@ -47,7 +47,7 @@ namespace Windows.Devices.Adc
             return m_provider.ReadValue(m_channelNumber);
         }
 
-        double ReadRatio()
+        public double ReadRatio()
         {
             if (m_disposed)
             {
