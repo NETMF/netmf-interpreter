@@ -6,7 +6,6 @@
     <Set Name="Valid" Value="false"/>
 
     <!-- ################################################################################ -->
-
     <!-- Memory Region base and size values for physical hardware to help clarify the mapping
          by making Symbolic names available instead of a bunch of numbers. These values are
          fixed in hardware and therefore, don't change.
@@ -31,7 +30,7 @@
     <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
     <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
 
-    <!-- Solution specific usage settings -->
+    <!-- Solution/Project specific usage settings -->
     <!-- Internal CCM (D-Bus) -->
     <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
     <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
@@ -51,7 +50,7 @@
 
     <!-- DAT region goes into external NOR Flash -->
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Data_Size"               Value="0x00020000"/><!-- 128KB -->
+    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
 
     <!-- [Deployment fills the rest of external NOR flash...] -->
 
@@ -64,31 +63,30 @@
         <!-- Internal FLASH -->
 
         <!-- Native Code section -->
-        <Set Name="Code_BaseAddress"         Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
-        <Set Name="Code_Size"                Value="%IFLASH_Size%-%BooterCode_Size%"/>
+        <Set Name="Code_BaseAddress"    Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
+        <Set Name="Code_Size"           Value="%IFLASH_Size%-%BooterCode_Size%"/>
 
         <!-- =========================================================== -->
         <If Name="TARGETTYPE" Value="Release">
             <!-- ALL of external RAM is enabled for the CLR HEAP -->
-            <Set Name="Heap_Size"           Value="%EXTRAM_Size%"/>
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="%EXTRAM_Size%"/>
+            <Set Name="CustomHeap_Size" Value="0"/>
 
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
         <If Name="TARGETTYPE" Value="Debug">
             <!-- Use only 1MB of external RAM for Debug builds.
                  Can't use all of external RAM as the address pins overlap
                  with the SWD pins used for ETM tracing in Debug builds.
             -->
-            <Set Name="Heap_Size"           Value="0x00100000"/><!--1MB-->
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="0x00100000"/><!--1MB-->
+            <Set Name="CustomHeap_Size" Value="0"/>
             
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
     </If>
 
     <!-- ################################################################################ -->
-
     <If Name="Valid" Value="false">
         <Error Message="Configuration not recognized"/>
     </If>
@@ -107,15 +105,26 @@
     <NamedGroup Name="SECTIONS">
         <!-- ========= INTERNAL FLASH ============================================ -->
         <ExecRegion Name="ER_%TARGETLOCATION%" Options="&gt;LR_%TARGETLOCATION%">
-            <FileMapping Name="*" Options="(i.EntryPoint)" />
-            <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
-            <FileMapping Name="*" Options="(.text*)" />
-            <FileMapping Name="*" Options="(i.*)" />
-            <FileMapping Name="*" Options="(.rodata*)" />
-            <FileMapping Name="*" Options="(rodata)" />
-            <FileMapping Name="*" Options="(.constdata*)" />
-            <FileMapping Name="*" Options="(.conststring*)" />
-            <FileMapping Name="*" Options="(.glue*)" />
+            <FileMapping Name="*(i.EntryPoint)"/>
+            <FileMapping Name="*(SectionForBootstrapOperations)"/>
+            <FileMapping Name="KEEP(*(.init))"/>
+            <FileMapping Name="KEEP(*(.fini))"/>
+            <FileMapping Name="*crtbegin.o(.ctors)"/>
+            <FileMapping Name="*(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)"/>
+            <FileMapping Name="*(SORT(.ctors.*))"/>
+            <FileMapping Name="*(.ctors)"/>
+            <FileMapping Name="*crtbegin.o(.dtors)"/>
+            <FileMapping Name="*crtbegin?.o(.dtors)"/>
+            <FileMapping Name="*(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)"/>
+            <FileMapping Name="*(SORT(.dtors.*))"/>
+            <FileMapping Name="*(.dtors)"/>
+            <FileMapping Name="*(.text*)"/>
+            <FileMapping Name="*(i.*)"/>
+            <FileMapping Name="*(.rodata*)"/>
+            <FileMapping Name="*(rodata)"/>
+            <FileMapping Name="*(.constdata*)"/>
+            <FileMapping Name="*(.conststring*)"/>
+            <FileMapping Name="*(.glue*)"/>
             <Include File="%SPOCLIENT%\Solutions\MCBSTM32F400\scatterfile_gcc_missing_symbols.xml"/>
         </ExecRegion>
 
@@ -132,25 +141,54 @@
         <ExecRegion Name="ER_VECTORS" Options="&gt;IRAM">
             <FileMapping Name="*" Options="(VectorTable)" />
         </ExecRegion>
-        
+
+        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
+            <FileMapping Name="*(rwdata)"/>
+            <FileMapping Name="*(.data*)"/>
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="PROVIDE(__preinit_array_start = . );"/>
+            <FileMapping Name="KEEP(*(.preinit_array))"/>
+            <FileMapping Name="PROVIDE(__preinit_array_end = . );"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="PROVIDE(__init_array_start = . );"/>
+            <FileMapping Name="KEEP(*(SORT(.init_array)))"/>
+            <FileMapping Name="KEEP(*(.init_array))"/>
+            <FileMapping Name="PROVIDE(__init_array_end = . );"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="PROVIDE(__fini_array_start = . );"/>
+            <FileMapping Name="KEEP(*(SORT(.fini_array)))"/>
+            <FileMapping Name="KEEP(*(.fini_array))"/>
+            <FileMapping Name="PROVIDE(__fini_array_end = . );"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="__data_end__ = .;"/>
+        </ExecRegion>
+
+        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
+            <FileMapping Name="*(.bss*)" />
+            <FileMapping Name="*(.zidata*)" />
+            <FileMapping Name="PROVIDE(__exidx_start = .);" />
+            <FileMapping Name="PROVIDE(__exidx_end = .);" />
+            <FileMapping Name="*(g_SSL_SeedData)" />
+            <FileMapping Name="*(COMMON)" />
+        </ExecRegion>
+
         <!-- To enable re-initialization of the LWIP stack, which has no built-in support
              for re-init, all RW and ZI data for the stack is placed into an isolated region
              and the HAL soft reboot code handles re-initializing the data in this region.
         -->
         <ExecRegion Name="ER_LWIP_OS_RW" Options="&gt;IRAM">
-          <FileMapping Name="*sockets_hal_*_LWIP_os.lib" Options="(rwdata)" />
-          <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(rwdata)" />
-        </ExecRegion>
-        
-        <ExecRegion Name="ER_LWIP_OS_ZI" Options="&gt;IRAM">
-            <FileMapping Name="*sockets_hal_*_LWIP_os.lib" Options="(.bss)" />
-            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(.bss)" />
+          <FileMapping Name="*sockets_hal_*_LWIP_os.lib(rwdata)" />
+          <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib(rwdata)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
-            <FileMapping Name="*" Options="(rwdata)" />
-            <FileMapping Name="*" Options="(.data*)" />
+        <ExecRegion Name="ER_LWIP_OS_ZI" Options="&gt;IRAM">
+            <FileMapping Name="*sockets_hal_*_LWIP_os.lib(.bss)" />
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib(.bss)" />
         </ExecRegion>
+
 
         <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM">
             <!-- Flash programming from Flash is safe on STM32 -->
@@ -158,45 +196,37 @@
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
-            <FileMapping Name="*" Options="(.bss*)" />
-            <FileMapping Name="*" Options="(.zidata*)" />
-            <FileMapping Name="PROVIDE(__exidx_start = .);" />
-            <FileMapping Name="PROVIDE(__exidx_end = .);" />
-            <FileMapping Name="*" Options="(g_SSL_SeedData)" />
-            <FileMapping Name="*" Options="(COMMON)" />
-        </ExecRegion>
 
         <ExecRegion Name="/DISCARD/">
-            <FileMapping Name="*" Options="(.ARM.exidx*)" />
-            <FileMapping Name="*" Options="(.ARM.extab*)" />
+            <FileMapping Name="*(.ARM.exidx*)" />
+            <FileMapping Name="*(.ARM.extab*)" />
         </ExecRegion>
 
         <!--========= EXTERNAL RAM =============================================--> 
         <ExecRegion Name="ER_HEAP_BEGIN" Options="&gt;EXTRAM">
-            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+            <FileMapping Name="*(SectionForHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for a heap -->
 
         <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+            <FileMapping Name="*(SectionForHeapEnd)" />
         </ExecRegion>
 
         <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
+            <FileMapping Name="*(SectionForCustomHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
         <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="ADDR(ER_CUSTOM_HEAP_BEGIN) + %CustomHeap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
+            <FileMapping Name="*(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
         <!-- ========= Internal CCM ============================================ -->
         <!-- Stack allocation pools for the OS, Sizes are set in RTX_Conf_CM.c along with other OS configuration -->
         <ExecRegion Name="ER_RT_STACK" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(rtx_stack)" />
+            <FileMapping Name="*(rtx_stack)" />
         </ExecRegion>
 
         <!-- The rest of the CCM is used as a general stack during startup. This can't overlap with the ER_RT_STACK
@@ -207,21 +237,21 @@
              puts the end outside of physical memory it will generate an imprecise abort.
         -->
         <ExecRegion Name="ER_STACK_BOTTOM" Align="8" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+            <FileMapping Name="*(SectionForStackBottom)" />
         </ExecRegion>
 
-        <!--8 for the two 32bit values in the SectionForStack* sections, This keeps the region
+        <!-- (-8) for the two 32bit values in the SectionForStack* sections, This keeps the region
              limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Size%-SIZEOF(ER_RT_STACK)-8" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackTop)" />
+        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - SIZEOF(ER_RT_STACK) - 8" Options="&gt;D_CCM">
+            <FileMapping Name="*(SectionForStackTop)" />
         </ExecRegion>
 
         <ExecRegion Name="ER_DAT" Options="&gt;LR_DAT">
-            <FileMapping Name="*" Options="(tinyclr_metadata)" />
+            <FileMapping Name="*(tinyclr_metadata)" />
         </ExecRegion>
         
         <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
-            <FileMapping Name="*" Options="(SectionForConfig)" />
+            <FileMapping Name="*(SectionForConfig)" />
         </ExecRegion>
     </NamedGroup>
 

@@ -42,7 +42,7 @@
     <!-- Configuration section is at base of external NOR flash
          This needs to be in the same block storage device as the
          deployment region to enable the MFDeploy to access it.
-         ( Due to device side library implementation limit )
+         ( Due to device side library implementation limitation )
     -->
     <Set Name="Config_BaseAddress"      Value="%NOR_BaseAddress%"/>
     <Set Name="Config_Size"             Value="0x00010000"/><!-- 64KB -->
@@ -50,16 +50,17 @@
     <!-- DAT region goes into external NOR Flash -->
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
     <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
-    <!-- Deployment fills the rest of external NOR flash... -->
+
+    <!-- [Deployment fills the rest of external NOR flash...] -->
 
     <!-- Internal FLASH -->
-    <!-- TinyBooter sits at power on Reset vector-->
+    <!-- TinyBooter sits at power on Reset vector -->
     <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
     <Set Name="BooterCode_Size"         Value="0x00010000"/><!-- 64KB -->
-        
+
     <If Name="TARGETLOCATION" Value="FLASH">
         <!-- Internal FLASH -->
-        
+
         <!-- Native Code section -->
         <Set Name="Code_BaseAddress"    Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
         <Set Name="Code_Size"           Value="%IFLASH_Size%-%BooterCode_Size%"/>
@@ -69,7 +70,7 @@
             <!-- ALL of external RAM is enabled for the CLR HEAP -->
             <Set Name="Heap_Size"       Value="%EXTRAM_Size%"/>
             <Set Name="CustomHeap_Size" Value="0"/>
-        
+
             <Set Name="Valid"           Value="true"/>
         </If>
         <If Name="TARGETTYPE" Value="Debug">

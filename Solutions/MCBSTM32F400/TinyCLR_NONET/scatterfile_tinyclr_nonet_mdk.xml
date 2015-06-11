@@ -6,7 +6,6 @@
     <Set Name="Valid" Value="false"/>
 
     <!-- ################################################################################ -->
-
     <!-- Memory Region base and size values for physical hardware to help clarify the mapping
          by making Symbolic names available instead of a bunch of numbers. These values are
          fixed in hardware and therefore, don't change.
@@ -31,11 +30,10 @@
     <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
     <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
 
-    <!-- Solution specific usage settings -->
+    <!-- Solution/Project specific usage settings -->
     <!-- Internal CCM (D-Bus) -->
     <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
     <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
-    <Set Name="Stack_Size"              Value="%CCM_Size%" />
 
     <!-- External SRAM -->
     <Set Name="Heap_BaseAddress"        Value="%EXTRAM_BaseAddress%"/>
@@ -51,7 +49,7 @@
 
     <!-- DAT region goes into external NOR Flash -->
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Data_Size"               Value="0x00020000"/><!-- 128KB -->
+    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
 
     <!-- [Deployment fills the rest of external NOR flash...] -->
 
@@ -64,60 +62,42 @@
         <!-- Internal FLASH -->
 
         <!-- Native Code section -->
-        <Set Name="Code_BaseAddress"         Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
-        <Set Name="Code_Size"                Value="%IFLASH_Size%-%BooterCode_Size%"/>
+        <Set Name="Code_BaseAddress"    Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
+        <Set Name="Code_Size"           Value="%IFLASH_Size%-%BooterCode_Size%"/>
 
         <!-- =========================================================== -->
         <If Name="TARGETTYPE" Value="Release">
             <!-- ALL of external RAM is enabled for the CLR HEAP -->
-            <Set Name="Heap_Size"           Value="%EXTRAM_Size%"/>
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="%EXTRAM_Size%"/>
+            <Set Name="CustomHeap_Size" Value="0"/>
 
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
         <If Name="TARGETTYPE" Value="Debug">
             <!-- Use only 1MB of external RAM for Debug builds.
                  Can't use all of external RAM as the address pins overlap
                  with the SWD pins used for ETM tracing in Debug builds.
             -->
-            <Set Name="Heap_Size"           Value="0x00100000"/><!--1MB-->
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="0x00100000"/><!--1MB-->
+            <Set Name="CustomHeap_Size" Value="0"/>
             
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
     </If>
 
     <!-- ################################################################################ -->
-
     <If Name="Valid" Value="false">
         <Error Message="Configuration not recognized"/>
     </If>
 
-    <EntryPoint Name="EntryPoint" />
-    
-    <NamedGroup Name="MEMORY">
-        <LoadRegion Name="D_CCM" Base="%CCM_BaseAddress%" Size="%CCM_Size%" />
-        <LoadRegion Name="IRAM" Base="%IRAM_BaseAddress%" Size="%IRAM_Size%" />
-        <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Size="%Code_Size%" />
-        <LoadRegion Name="EXTRAM" Base="%EXTRAM_BaseAddress%" Size="%EXTRAM_Size%" />
-        <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Size="%Config_Size%"/>
-        <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Size="%Data_Size%"/>
-    </NamedGroup>
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
 
-    <NamedGroup Name="SECTIONS">
         <!-- ========= INTERNAL FLASH ============================================ -->
-        <ExecRegion Name="ER_%TARGETLOCATION%" Options="&gt;LR_%TARGETLOCATION%">
-            <FileMapping Name="*" Options="(i.EntryPoint)" />
+        <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
+            <FileMapping Name="AppEntry.obj" Options="(+RO, +FIRST)" />
             <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
-            <FileMapping Name="*" Options="(SectionForFlashOperations)"/>
-            <FileMapping Name="*" Options="(.text*)" />
-            <FileMapping Name="*" Options="(i.*)" />
-            <FileMapping Name="*" Options="(.rodata*)" />
-            <FileMapping Name="*" Options="(rodata)" />
-            <FileMapping Name="*" Options="(.constdata*)" />
-            <FileMapping Name="*" Options="(.conststring*)" />
-            <FileMapping Name="*" Options="(.glue*)" />
-            <Include File="%SPOCLIENT%\Solutions\MCBSTM32F400\scatterfile_gcc_missing_symbols.xml"/>
+            <FileMapping Name="*" Options="(+RO-CODE)" />
+            <FileMapping Name="*" Options="(+RO-DATA)" />
         </ExecRegion>
 
         <!-- ========= INTERNAL RAM ============================================= -->
@@ -130,86 +110,78 @@
             (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
             Since this starts the SRAM block, it's aligned just fine for any size table.
         -->
-        <ExecRegion Name="ER_VECTORS" Options="&gt;IRAM">
-            <FileMapping Name="*" Options="(VectorTable)" />
+        <!-- NOTE: Using uncompressed sections as this project uses the NETMF startup code that
+             doesn't know about compressed init regions. Eventually this should be unified so that
+             the normal embedded (Microlib/nanolib) runtime startup is used for all tool chains
+             instead of doing it in the NETMF code base.
+        -->
+        <ExecRegion Name="ER_VECTORS" Base="%IRAM_BaseAddress%" Options="ABSOLUTE NOCOMPRESS" Size="">
+            <FileMapping Name="*" Options="(VectorTable +FIRST)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
-            <FileMapping Name="*" Options="(rwdata)" />
-            <FileMapping Name="*" Options="(.data*)" />
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM">
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
             <!-- Flash programming from Flash is safe on STM32 -->
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
-            <FileMapping Name="*" Options="(.bss*)" />
-            <FileMapping Name="*" Options="(.zidata*)" />
-            <FileMapping Name="PROVIDE(__exidx_start = .);" />
-            <FileMapping Name="PROVIDE(__exidx_end = .);" />
-            <FileMapping Name="*" Options="(COMMON)" />
-        </ExecRegion>
-
-        <ExecRegion Name="/DISCARD/">
-            <FileMapping Name="*" Options="(.ARM.exidx*)" />
-            <FileMapping Name="*" Options="(.ARM.extab*)" />
-        </ExecRegion>
-
-        <!--========= EXTERNAL RAM =============================================--> 
-        <ExecRegion Name="ER_HEAP_BEGIN" Options="&gt;EXTRAM">
+        <!-- ========= EXTERNAL RAM ============================================= -->
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for a heap -->
 
-        <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;EXTRAM" >
+        <ExecRegion Name="ER_HEAP_END" Base="+%Heap_Size%" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;EXTRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="+0" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="ADDR(ER_CUSTOM_HEAP_BEGIN) + %CustomHeap_Size%" Options="&gt;EXTRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="+%CustomHeap_Size%" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
         <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Options="&gt;D_CCM">
+        <!-- Stack allocation pools for the OS, Sizes are set in RTX_Conf_CM.c along with other OS configuration -->
+        <ExecRegion Name="ER_RT_STACK" Base="%Stack_Bottom%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(rtx_stack)" />
+        </ExecRegion>
+
+        <!-- The rest of the CCM is used as a general stack during startup. This can't overlap with the ER_RT_STACK
+             region as the kernel will zero that out during initialization, which would overwrite the stack of the
+             code running the initialization, causing an early FAULT. Size and alignment are critical here. The stack
+             must be aligned on an 8 byte boundary AND the size of this region must not extend it past the end of the
+             actual physical CCM space. The CRT startup code will initialize the region and, if the aligned size
+             puts the end outside of physical memory it will generate an imprecise abort.
+        -->
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="AlignExpr( +0, 8 )" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForStackBottom)" />
         </ExecRegion>
-
-        <!--8 for the two 32bit values in the SectionForStack* sections, This keeps the region
-             limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - 8" Options="&gt;D_CCM">
+        <ExecRegion Name="ER_STACK" Base="+0" Options="ABSOLUTE EMPTY" Size="(AlignExpr(%CCM_Size% - 8 - ImageLength(ER_RT_STACK), 8))" />
+        <ExecRegion Name="ER_STACK_TOP" Base="+0" Options="ABSOLUTE UNINIT" Size="">
             <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
         </ExecRegion>
+    </LoadRegion>
 
-        <ExecRegion Name="ER_DAT" Options="&gt;LR_DAT">
-            <FileMapping Name="*" Options="(tinyclr_metadata)" />
+    <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Options="ABSOLUTE" Size="%Data_Size%">
+        <ExecRegion Name="ER_DAT" Base="%Data_BaseAddress%" Options="FIXED" Size="%Data_Size%">
+            <FileMapping Name="tinyclr_dat.obj" Options="(+RO)" />
         </ExecRegion>
-        
-        <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
+    </LoadRegion>
+
+    <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
+        <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
             <FileMapping Name="*" Options="(SectionForConfig)" />
         </ExecRegion>
-    </NamedGroup>
-
-    <!-- The following variables are used to simulate the ones autogenerated by ARMCC -->
-    <GlobalVariable Name="Load$$ER_%TARGETLOCATION%$$Base"          Value="LOADADDR(ER_%TARGETLOCATION%)"/>
-    <GlobalVariable Name="Image$$ER_%TARGETLOCATION%$$Length"       Value="SIZEOF(ER_%TARGETLOCATION%)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Base"                   Value="ADDR(ER_RAM_RO)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Length"                 Value="SIZEOF(ER_RAM_RO)"/>
-    <GlobalVariable Name="Load$$ER_RAM_RO$$Base"                    Value="LOADADDR(ER_RAM_RO)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$Base"                   Value="ADDR(ER_RAM_RW)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$Length"                 Value="SIZEOF(ER_RAM_RW)"/>
-    <GlobalVariable Name="Load$$ER_RAM_RW$$Base"                    Value="LOADADDR(ER_RAM_RW)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Base"               Value="ADDR(.bss)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Length"             Value="SIZEOF(.bss)"/>
-    <GlobalVariable Name="__use_no_semihosting_swi"                 Value="0"/>
+    </LoadRegion>
 </ScatterFile>
 
