@@ -26,7 +26,7 @@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                
 @ Dummy Exception Handlers (infinite loops which can be overloaded since they are exported with weak linkage )
 
-    .section SectionForBootsrtapOperations, "ax", %progbits
+    .section SectionForBootstrapOperations, "ax", %progbits
 
     .align 1
     .thumb_func
