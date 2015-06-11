@@ -4,11 +4,5 @@
         <Project Include="ComponentObjectModel\ComponentObjectModel.csproj" >
             <InProject>false</InProject>
         </Project>
-        <Project Include="Wizard\WizardSupport.csproj" >
-            <InProject>false</InProject>
-        </Project>
-        <Project Include="SolutionWizard\SolutionWizard.csproj" >
-            <InProject>false</InProject>
-        </Project>
     </ItemGroup>
 </Project>

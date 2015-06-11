@@ -548,7 +548,7 @@ HRESULT Library_corlib_native_System_String::FromCharArray( CLR_RT_StackFrame& s
     CLR_UINT32              len;
 
     array = stack.Arg1().DereferenceArray(); if(!array) TINYCLR_SET_AND_LEAVE(S_OK);
-    len   = array->m_numOfElements         ; if(!len  ) TINYCLR_SET_AND_LEAVE(S_OK);
+    len   = array->m_numOfElements         ;
 
     if(length == -1) length = len - startIndex;
 

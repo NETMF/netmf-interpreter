@@ -84,22 +84,22 @@ namespace Windows.Devices.Gpio
         /// <summary>
         /// Not supported.
         /// </summary>
-        OutputStrongLow,
+        OutputOpenDrain,
 
         /// <summary>
         /// Not supported.
         /// </summary>
-        OutputStrongLowPullUp,
+        OutputOpenDrainPullUp,
 
         /// <summary>
         /// Not supported.
         /// </summary>
-        OutputStrongHigh,
+        OutputOpenSource,
 
         /// <summary>
         /// Not supported.
         /// </summary>
-        OutputStrongHighPullDown,
+        OutputOpenSourcePullDown,
     }
 
     /// <summary>

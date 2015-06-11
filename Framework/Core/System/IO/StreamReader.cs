@@ -93,7 +93,7 @@ namespace System.IO
             {
                 // Move any bytes read for this character to front of new buffer
                 int totRead;
-                for (totRead = 0; totRead < m_curBufLen - m_curBufPos - 1; ++totRead)
+                for (totRead = 0; totRead < m_curBufLen - m_curBufPos; ++totRead)
                 {
                     m_buffer[totRead] = m_buffer[m_curBufPos + totRead];
                 }
