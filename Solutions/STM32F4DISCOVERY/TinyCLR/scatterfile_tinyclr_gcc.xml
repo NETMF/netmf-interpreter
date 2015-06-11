@@ -107,15 +107,9 @@
             <FileMapping Name="*" Options="(VectorTable)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
+        <ExecRegion Name="ER_RAM_RW" Align="0x10" Base="ADDR(ER_VECTORS) + SIZEOF(ER_VECTORS)" Options="&gt;IRAM AT&gt;LR_FLASH ">
             <FileMapping Name="*" Options="(rwdata)" />
             <FileMapping Name="*" Options="(.data*)" />
-        </ExecRegion>
-
-        <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM">
-            <!-- Flash programming from Flash is safe on STM32 -->
-            <!-- No need to place Flash programming code in RAM -->
-            <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
         <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
@@ -126,9 +120,10 @@
             <FileMapping Name="*" Options="(COMMON)" />
         </ExecRegion>
 
-        <ExecRegion Name="/DISCARD/">
-            <FileMapping Name="*" Options="(.ARM.exidx*)" />
-            <FileMapping Name="*" Options="(.ARM.extab*)" />
+        <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH">
+            <!-- Flash programming from Flash is safe on STM32 -->
+            <!-- No need to place Flash programming code in RAM -->
+            <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
         <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="&gt;IRAM">
@@ -151,7 +146,12 @@
             <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
-        <!-- ========= Internal CCM ============================================ -->
+      <ExecRegion Name="/DISCARD/">
+        <FileMapping Name="*" Options="(.ARM.exidx*)" />
+        <FileMapping Name="*" Options="(.ARM.extab*)" />
+      </ExecRegion>
+
+      <!-- ========= Internal CCM ============================================ -->
         <ExecRegion Name="ER_STACK_BOTTOM" Options="&gt;D_CCM">
             <FileMapping Name="*" Options="(SectionForStackBottom)" />
         </ExecRegion>
