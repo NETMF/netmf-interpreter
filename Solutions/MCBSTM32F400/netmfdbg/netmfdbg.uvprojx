@@ -1726,8 +1726,13 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
+<<<<<<< HEAD
           <OutputDirectory>..\..\..\BuildOutput\THUMB2FP\MDK5.05\le\FLASH\debug\MCBSTM32F400\bin\</OutputDirectory>
           <OutputName>TinyClr</OutputName>
+=======
+          <OutputDirectory>..\..\..\BuildOutput\THUMB2FP\GCC4.9\le\FLASH\release\MCBSTM32F400\bin\</OutputDirectory>
+          <OutputName>TinyBooter</OutputName>
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -1764,8 +1769,11 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+<<<<<<< HEAD
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
+=======
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
@@ -1842,7 +1850,11 @@
             <CpuDllArguments></CpuDllArguments>
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
+<<<<<<< HEAD
             <InitializationFile>.\STM32F4xx_TP.ini</InitializationFile>
+=======
+            <InitializationFile></InitializationFile>
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
             <Driver>BIN\ULP2CM3.DLL</Driver>
           </TargetDlls>
         </DebugOption>
@@ -1852,12 +1864,21 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
+<<<<<<< HEAD
             <Capability>0</Capability>
             <DriverSelection>-1</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3></Flash3>
+=======
+            <Capability>1</Capability>
+            <DriverSelection>4096</DriverSelection>
+          </Flash1>
+          <bUseTDR>1</bUseTDR>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
+          <Flash3>"" ()</Flash3>
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -1895,7 +1916,11 @@
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M4"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
+<<<<<<< HEAD
             <mOS>1</mOS>
+=======
+            <mOS>0</mOS>
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
             <hadIROM>1</hadIROM>
@@ -1905,7 +1930,11 @@
             <RvdsVP>2</RvdsVP>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
+<<<<<<< HEAD
             <StupSel>0</StupSel>
+=======
+            <StupSel>1</StupSel>
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
             <useUlib>0</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
@@ -1976,8 +2005,13 @@
               </XRAM>
               <OCR_RVCT1>
                 <Type>1</Type>
+<<<<<<< HEAD
                 <StartAddress>0x0</StartAddress>
                 <Size>0x0</Size>
+=======
+                <StartAddress>0x60000000</StartAddress>
+                <Size>0x800000</Size>
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
               </OCR_RVCT1>
               <OCR_RVCT2>
                 <Type>1</Type>
@@ -2043,8 +2077,11 @@
             <uSurpInc>0</uSurpInc>
             <uC99>0</uC99>
             <useXO>0</useXO>
+<<<<<<< HEAD
             <v6Lang>0</v6Lang>
             <v6LangP>0</v6LangP>
+=======
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -2114,7 +2151,11 @@
         <TargetCommonOption>
           <Device>STM32F407IGHx</Device>
           <Vendor>STMicroelectronics</Vendor>
+<<<<<<< HEAD
           <PackID>Keil.STM32F4xx_DFP.2.4.0</PackID>
+=======
+          <PackID>Keil.STM32F4xx_DFP.2.2.0</PackID>
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
           <PackURL>http://www.keil.com/pack</PackURL>
           <Cpu>IROM(0x08000000,0x100000) IRAM(0x20000000,0x20000) IRAM2(0x10000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -2148,6 +2189,7 @@
           </TargetStatus>
           <OutputDirectory>..\..\..\BuildOutput\THUMB2FP\GCC4.9\le\FLASH\release\MCBSTM32F400\bin\</OutputDirectory>
           <OutputName>TinyBooter</OutputName>
+<<<<<<< HEAD
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -4248,6 +4290,8 @@
           </TargetStatus>
           <OutputDirectory>..\..\..\BuildOutput\THUMB2FP\GCC4.9\le\FLASH\release\MCBSTM32F400\bin\</OutputDirectory>
           <OutputName>TinyClr_nonet</OutputName>
+=======
+>>>>>>> 15e03d188b8860857725b10f368af39270f2f4aa
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>

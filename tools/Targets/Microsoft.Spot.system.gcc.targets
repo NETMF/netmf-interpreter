@@ -28,8 +28,8 @@
   </PropertyGroup>
 
   <!-- based on cpu type, setup compiler-->  
-
-    <PropertyGroup>
+  
+  <PropertyGroup>
     <!-- We need to convert the RVDS CPU type to its GCC equivalent if needed-->
     <ARCH_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'arm926EJ-S'">-mcpu=arm926ej-s -marm </ARCH_TYPE_FLAGS>
     <ARCH_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'ARM7TDMI'">-mcpu=arm7tdmi -marm </ARCH_TYPE_FLAGS>
@@ -121,7 +121,7 @@
     <CPP_FLAGS Condition="'$(FLAVOR)'=='Release'">$(CPP_FLAGS) -fno-default-inline</CPP_FLAGS>
     <CPP_FLAGS Condition="'$(GCC_VERNUM)'!='' and $(GCC_VERNUM)&gt;=40400">$(CPP_FLAGS) -Wno-psabi </CPP_FLAGS>
 
-    <CC_CPP_COMMON_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">$(CC_CPP_COMMON_FLAGS) -DTCPIP_LWIP_OS</CC_CPP_COMMON_FLAGS>
+	<CC_CPP_COMMON_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">$(CC_CPP_COMMON_FLAGS) -DTCPIP_LWIP_OS</CC_CPP_COMMON_FLAGS>
 
     <CC_CPP_COMMON_FLAGS Condition="'$(reducesize)'=='true'" >$(CC_CPP_COMMON_FLAGS) -DHAL_REDUCESIZE</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(timewarp)'=='true'"   >$(CC_CPP_COMMON_FLAGS) -DHAL_TIMEWARP</CC_CPP_COMMON_FLAGS>
@@ -196,14 +196,14 @@
     <ARFLAGS>$(ARFLAGS) -rcs</ARFLAGS>
     <LINK_FLAGS>$(LINK_FLAGS),-static,--gc-sections</LINK_FLAGS>
   </PropertyGroup>
-
+   
   <PropertyGroup>
     <EXEName>$(BIN_DIR)\$(AssemblyName)</EXEName>
 
     <TargetRule Condition="'$(OutputType)'=='Library'">ArmBuildLib</TargetRule>
     <TargetRule Condition="'$(OutputType)'=='Executable'">BuildAXF</TargetRule>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'" >
     <GNU_LIB_DIR   >$(GNU_TOOLS)\$(GNU_TARGET)\lib</GNU_LIB_DIR>
     <GNU_LIBGCC_DIR>$(GNU_LIB_DIR)\$(GCC_ARCH_DIR)</GNU_LIBGCC_DIR>
@@ -365,9 +365,9 @@
   <Target Name="BuildScatterfile" Condition="'$(DEPEND)'!='ACTIVE'" Inputs="@(EXEScatterFileDefinition);@(ScatterFileReferences)" Outputs="@(EXEScatterFile)">
     <Message Text="..."/>    
     <ProcessScatterFile
-        Properties="@(BuildScatterFileProperties)"
-          DefinitionFile="@(EXEScatterfileDefinition)"
-          OutputFile="@(EXEScatterFile)"
+    	Properties="@(BuildScatterFileProperties)"
+		  DefinitionFile="@(EXEScatterfileDefinition)"
+		  OutputFile="@(EXEScatterFile)"
      />
   </Target>
 
