@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+  <!-- libc thinks that it needs these routines, but they are never called -->
+  <Provide Name="_sbrk" />
+  <Provide Name="_write" />
+  <Provide Name="_close" />
+  <Provide Name="_fstat" />
+  <Provide Name="_lseek" />
+  <Provide Name="_read" />
+  <Provide Name="_exit" />
+  <Provide Name="_getpid" />
+  <Provide Name="_kill" />
+  <Provide Name="abort" />
+  <Provide Name="__errno" />
+  <Provide Name="_read" />
+  <Provide Name="isatty" />
+  <Provide Name="_isatty" />
+  <FileMapping Name="LONG(0xE12FFF1E);" />
+</ScatterFile>

@@ -1,0 +1,45 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>BlockStorage_AddDevices_STM32F4DISCOVERY</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{7BFA14C9-D40B-4EE7-BFFD-B1F749B922C8}</ProjectGuid>
+    <Description>Block storage add device driver for STM32F4DISCOVERY</Description>
+    <Level>HAL</Level>
+    <LibraryFile>BlockStorage_AddDevices_STM32F4DISCOVERY.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\Blockstorage\addDevices\dotNetMF.proj</ProjectPath>
+    <ManifestFile>BlockStorage_AddDevices_STM32F4DISCOVERY.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Solutions\STM32F4DISCOVERY</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorageAddDevices_HAL" Guid="{D1C1D946-18A1-4f12-807A-A182C4059D86}" ProjectPath="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2009-08-12</Date>
+        </VersionDependency>
+        <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomSpecific>STM32F4DISCOVERY</CustomSpecific>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Solutions\STM32F4DISCOVERY\DeviceCode\BlockStorage\AddDevices</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="Bl_AddDevices.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
