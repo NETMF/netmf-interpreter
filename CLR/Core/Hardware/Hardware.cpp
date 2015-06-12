@@ -192,6 +192,11 @@ void CLR_HW_Hardware::ProcessActivity()
         }
     }
 
+    if(events & SYSTEM_EVENT_FLAG_OSTASK)
+    {
+        eventsCLR |= CLR_RT_ExecutionEngine::c_Event_OSTask;
+    }    
+
     if(eventsCLR)
     {
         g_CLR_RT_ExecutionEngine.SignalEvents( eventsCLR );

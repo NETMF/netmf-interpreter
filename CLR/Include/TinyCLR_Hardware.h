@@ -67,7 +67,8 @@ struct CLR_HW_Hardware
                                                      SYSTEM_EVENT_FLAG_CHARGER_CHANGE    |
                                                      SYSTEM_EVENT_FLAG_DEBUGGER_ACTIVITY |
                                                      SYSTEM_EVENT_FLAG_MESSAGING_ACTIVITY|
-                                                     SYSTEM_EVENT_FLAG_IO                ;
+                                                     SYSTEM_EVENT_FLAG_IO                |
+                                                     SYSTEM_EVENT_FLAG_OSTASK;
 
     //--//
 

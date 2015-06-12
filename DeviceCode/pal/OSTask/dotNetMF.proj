@@ -44,6 +44,8 @@
 -->
     <Compile Condition="'$(PLATFORM_FAMILY)'!='x86'" Include="OSTask.cpp" />
     <Compile Condition="'$(PLATFORM_FAMILY)'=='x86'" Include="OSTask_Win32.cpp" />
+    <IncludePaths Condition="'$(PLATFORM_FAMILY)'!='x86'" Include="DeviceCode\Targets\OS\CMSIS_RTOS" />
+
     <IncludePaths Include="DeviceCode\include" />
   </ItemGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
