@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -196,7 +196,7 @@ AJ_Status AJ_SerialRX_Init(void)
     RxPacket = NULL;
     pendingRecv = 0;
     expectedSeq = 0;
-
+    dataReceived = 0;
     /*
      * The maximum frame size is the packet length plus the header length plus
      * two bytes for the packet boundary bytes.
@@ -208,9 +208,14 @@ AJ_Status AJ_SerialRX_Init(void)
      * window size, plus one for the current packet
      */
     for (i = 0; i < AJ_SerialLinkParams.maxWindowSize + 1; ++i) {
+        void* buf;
         prev = RxFreeList;
         RxFreeList = AJ_Malloc(sizeof(RX_PKT));
-        RxFreeList->buffer = AJ_Malloc(maxRxFrameSize);
+        buf = AJ_Malloc(maxRxFrameSize);
+        if (!RxFreeList || !buf) {
+            return AJ_ERR_RESOURCES;
+        }
+        RxFreeList->buffer = buf;
         RxFreeList->state = PACKET_NEW;
         RxFreeList->len = 0;
         RxFreeList->next = prev;
@@ -218,9 +223,14 @@ AJ_Status AJ_SerialRX_Init(void)
 
     bufferRxFreeList = NULL;
     for (i = 0; i < AJ_SerialLinkParams.maxWindowSize + 1; i++) {
+        void* buf;
         prevBuf = bufferRxFreeList;
         bufferRxFreeList = AJ_Malloc(sizeof(AJ_SlippedBuffer));
-        bufferRxFreeList->buffer = AJ_Malloc(SLIPPED_LEN(AJ_SerialLinkParams.packetSize));
+        buf = AJ_Malloc(SLIPPED_LEN(AJ_SerialLinkParams.packetSize));
+        if (!bufferRxFreeList || !buf) {
+            return AJ_ERR_RESOURCES;
+        }
+        bufferRxFreeList->buffer = buf;
         bufferRxFreeList->actualLen = 0;
         bufferRxFreeList->allocatedLen = SLIPPED_LEN(AJ_SerialLinkParams.packetSize);
         bufferRxFreeList->next = prevBuf;

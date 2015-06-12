@@ -6,7 +6,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -21,18 +21,18 @@
  *    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  ******************************************************************************/
 
-#define AJ_RELEASE_YEAR        14       /**< release year */
+#define AJ_RELEASE_YEAR        15       /**< release year */
 #define AJ_MAJOR_VERSION       AJ_RELEASE_YEAR /**< deprecated */
-#define AJ_RELEASE_MONTH       12       /**< release month */
+#define AJ_RELEASE_MONTH       4        /**< release month */
 #define AJ_MINOR_VERSION       AJ_RELEASE_MONTH /**< deprecated */
 #define AJ_FEATURE_VERSION     0        /**< feature version */
 #define AJ_RELEASE_VERSION     AJ_FEATURE_VERSION /**< deprecated */
 #define AJ_BUGFIX_VERSION      0        /**< bugfix version (0=first, 0x61==a, 0x62==b, etc.) */
-#define AJ_RELEASE_YEAR_STR    14       /**< release year string (two digits) */
-#define AJ_RELEASE_MONTH_STR   12       /**< release month string (two digits) */
+#define AJ_RELEASE_YEAR_STR    15       /**< release year string (two digits) */
+#define AJ_RELEASE_MONTH_STR   04       /**< release month string (two digits) */
 #define AJ_FEATURE_VERSION_STR 00       /**< feature version string (00, 01, 02, ...) */
 #define AJ_BUGFIX_VERSION_STR           /**< bugfix version string (blank, a, b, ...) */
-#define AJ_RELEASE_TAG         "v14.12"
+#define AJ_RELEASE_TAG         "v15.04"
 
 #define AJ_VERSION (((AJ_RELEASE_YEAR) << 24) | ((AJ_RELEASE_MONTH) << 16) | ((AJ_FEATURE_VERSION) << 8) | (AJ_BUGFIX_VERSION))  /**< macro to generate the version from major, minor, release, bugfix */
 

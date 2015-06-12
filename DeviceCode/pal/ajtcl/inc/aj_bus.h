@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -60,18 +60,20 @@ typedef uint32_t (*AJ_AuthPwdFunc)(uint8_t* buffer, uint32_t bufLen);
  */
 typedef AJ_Status (*AJ_AuthListenerFunc)(uint32_t authmechanism, uint32_t command, AJ_Credential* creds);
 
+#define AJ_MAX_NAME_SIZE 20  /**< Maximum length for a bus unique name */
+
 /**
  * Type for a bus attachment
  */
 typedef struct _AJ_BusAttachment {
-    uint16_t aboutPort;          /**< The port to use in announcements */
-    char uniqueName[16];         /**< The unique name returned by the hello message */
-    AJ_NetSocket sock;           /**< Abstracts a network socket */
-    uint32_t serial;             /**< Next outgoing message serial number */
-    AJ_AuthPwdFunc pwdCallback;  /**< Callback for obtaining passwords */
+    uint16_t aboutPort;                        /**< The port to use in announcements */
+    char uniqueName[AJ_MAX_NAME_SIZE + 1];     /**< The unique name returned by the hello message */
+    AJ_NetSocket sock;                         /**< Abstracts a network socket */
+    uint32_t serial;                           /**< Next outgoing message serial number */
+    AJ_AuthPwdFunc pwdCallback;                /**< Callback for obtaining passwords */
     AJ_AuthListenerFunc authListenerCallback;  /**< Callback for obtaining passwords */
-    uint32_t* suites;              /**< Supported cipher suites */
-    size_t numsuites;             /**< Number of supported cipher suites */
+    uint8_t isAuthenticated;                   /**< Has authentication already occured? */
+    uint32_t aboutSerial;                      /**< Serial number for About announcement */
 } AJ_BusAttachment;
 
 /**
@@ -100,19 +102,18 @@ const char* AJ_GetUniqueName(AJ_BusAttachment* bus);
 AJ_EXPORT
 AJ_Status AJ_BusRequestName(AJ_BusAttachment* bus, const char* name, uint32_t flags);
 
-#define AJ_TRANSPORT_NONE      0x0000    /**< no transports */
-#define AJ_TRANSPORT_ALL       0xFFFF    /**< ALL Possible transports including EXPERIMENTAL ones */
-#define AJ_TRANSPORT_LOCAL     0x0001    /**< Local (same device) transport */
-#define AJ_TRANSPORT_BLUETOOTH 0x0002    /**< Bluetooth transport */
-#define AJ_TRANSPORT_WLAN      0x0004    /**< Wireless local-area network transport */
-#define AJ_TRANSPORT_WWAN      0x0008    /**< Wireless wide-area network transport */
-#define AJ_TRANSPORT_LAN       0x0010    /**< Wired local-area network transport */
+#define AJ_TRANSPORT_NONE         0x0000    /**< no transports */
+#define AJ_TRANSPORT_LOCAL        0x0001    /**< Local (same device) transport */
+#define AJ_TRANSPORT_TCP          0x0004    /**< TCP/IP transport */
+#define AJ_TRANSPORT_UDP          0x0100    /**< UDP/IP transport */
+#define AJ_TRANSPORT_EXPERIMENTAL 0x8000    /**< Placeholder for an experimental transport */
+#define AJ_TRANSPORT_IP           (AJ_TRANSPORT_TCP | AJ_TRANSPORT_UDP) /**< Any IP-based transport */
+#define AJ_TRANSPORT_ANY          (AJ_TRANSPORT_LOCAL | AJ_TRANSPORT_IP) /**< ANY non-experimental transport */
 
-#define AJ_TRANSPORT_TCP       0x0004    /**< Transport using TCP (same thing as WLAN that implies TCP) */
-#define AJ_TRANSPORT_UDP       0x0100    /**< Transport using the AllJoyn Reliable Datagram Protocol (flavor of reliable UDP) */
-#define AJ_TRANSPORT_IP        (AJ_TRANSPORT_TCP | AJ_TRANSPORT_UDP) /**< Let the system decide which to use */
-
-#define AJ_TRANSPORT_ANY       (AJ_TRANSPORT_ALL)   /**< ANY non-EXPERIMENTAL transport */
+#define AJ_TRANSPORT_BLUETOOTH    (attempted_use_of_deprecated_definition = 0x0002)  /**< Bluetooth transport */
+#define AJ_TRANSPORT_WLAN         (attempted_use_of_deprecated_definition = 0x0004)  /**< Wireless local-area network transport */
+#define AJ_TRANSPORT_WWAN         (attempted_use_of_deprecated_definition = 0x0008)  /**< Wireless wide-area network transport */
+#define AJ_TRANSPORT_LAN          (attempted_use_of_deprecated_definition = 0x0010)  /**< Wired local-area network transport */
 
 /**
  * Make a method call to release a previously requested well known name.

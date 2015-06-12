@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -270,7 +270,7 @@ AJ_Status AJ_RegisterObjectListWithDescriptions(const AJ_Object* objList, uint8_
 /**
  * Register a local array of languages that will allow for a description to be supplied.
  *
- * @param languages The list of languages that are supported for descriptions.
+ * @param languages The NULL-terminated list of languages that are supported for descriptions.
  */
 AJ_EXPORT
 void AJ_RegisterDescriptionLanguages(const char* const* languages);

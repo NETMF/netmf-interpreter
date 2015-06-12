@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012, 2014 AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -160,7 +160,7 @@ AJ_Status AJ_B64ToRaw(const char* pem, size_t pemlen, uint8_t* raw, size_t rawle
     uint32_t b;
     int n = pemlen;
 
-    if (rawlen < 3 * (pemlen / 4) - 2) {
+    if (rawlen < 3 * (pemlen / 4)) {
         return AJ_ERR_RESOURCES;
     }
     if (0 != (pemlen % 4)) {

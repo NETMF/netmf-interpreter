@@ -19,7 +19,6 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     static const int FIELD__AboutIconURL = 4;
     static const int FIELD__doAnnounce = 5;
     static const int FIELD__AboutPropGetterCB = 6;
-    static const int FIELD__m_PwdText = 7;
 
     TINYCLR_NATIVE_DECLARE(GetUniqueName___STRING__U4);
     TINYCLR_NATIVE_DECLARE(Initialize___VOID);
@@ -65,7 +64,16 @@ struct Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ
     TINYCLR_NATIVE_DECLARE(GetArgString___STRING__I4);
     TINYCLR_NATIVE_DECLARE(UsePeerAuthentication___VOID__BOOLEAN);
     TINYCLR_NATIVE_DECLARE(SetPassphrase___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(SetPskHint___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(SetPskString___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(SetPemPrivString___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(SetPemX509String___VOID__STRING);
+    TINYCLR_NATIVE_DECLARE(SetKeyExpiration___VOID__U4);
     TINYCLR_NATIVE_DECLARE(AuthenticatePeer___MicrosoftSPOTAllJoynAJStatus__U4__STRING);
+    TINYCLR_NATIVE_DECLARE(GetAuthStatus___MicrosoftSPOTAllJoynAJStatus);
+    TINYCLR_NATIVE_DECLARE(SetAuthStatus___VOID__MicrosoftSPOTAllJoynAJStatus);
+    TINYCLR_NATIVE_DECLARE(EnableSecurity___MicrosoftSPOTAllJoynAJStatus__U4__SZARRAY_I4);
+    TINYCLR_NATIVE_DECLARE(ClearCredentials___MicrosoftSPOTAllJoynAJStatus);
     TINYCLR_NATIVE_DECLARE(GetLocalGUID___STATIC__MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1);
     TINYCLR_NATIVE_DECLARE(RegisterObjects___STATIC__VOID__STRING__STRING__U1__I4__BOOLEAN__BOOLEAN);
     TINYCLR_NATIVE_DECLARE(PrintXML___STATIC__VOID__STRING__STRING__U1__I4);

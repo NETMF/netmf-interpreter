@@ -5,7 +5,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -36,19 +36,27 @@ typedef struct _AJ_Service {
     uint16_t ipv4port;         /**< port number of ipv4 */
     uint16_t ipv6port;         /**< port number of ipv6 */
     uint32_t ipv4;             /**< ipv4 address */
+    uint16_t priority;         /**< priority */
+    uint32_t pv;               /**< protocol version */
     uint32_t ipv6[4];          /**< ipv6 address */
+
+    uint16_t ipv4portUdp;      /**< port number of ipv4 */
+    uint16_t ipv6portUdp;      /**< port number of ipv6 */
+    uint32_t ipv4Udp;          /**< ipv4 address */
+    uint32_t ipv6Udp[4];       /**< ipv6 address */
 } AJ_Service;
 
 /**
  * Discover a remote service
  *
- * @param prefix    The service name prefix
- * @param service   Information about the service that was found
- * @param timeout   How long to wait to discover the service
+ * @param prefix            The service name prefix
+ * @param service           Information about the service that was found
+ * @param timeout           How long to wait to discover the service
+ * @param selectionTimeout  How long to wait to receive router responses
  *
- * @return        Return AJ_Status
+ * @return                  Return AJ_Status
  */
-AJ_Status AJ_Discover(const char* prefix, AJ_Service* service, uint32_t timeout);
+AJ_Status AJ_Discover(const char* prefix, AJ_Service* service, uint32_t timeout, uint32_t selectionTimeout);
 
 #ifdef __cplusplus
 }

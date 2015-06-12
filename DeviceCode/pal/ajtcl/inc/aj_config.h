@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -39,6 +39,7 @@ extern "C" {
 #define AJ_CONNECT_LOCALHOST        0           //Enable to bypass discovery and connect locally
 #define AJ_MAX_TIMERS               4           //maximum number of timers              (aj_helper.c)
 #define AJ_ROUTING_NODE_BLACKLIST_SIZE 16       // maximum number of blacklisted routing nodes
+#define AJ_ROUTING_NODE_RESPONSELIST_SIZE 3     // maximum number of routing node responses to track
 
 /* Auth options */
 #define AJ_NONCE_LEN                28          //Length of the nonce.
@@ -47,7 +48,6 @@ extern "C" {
 #define AJ_MASTER_SECRET_LEN        48          //Length of the master secret - RFC 5246
 #define AJ_ADHOC_LEN                16          //AD-HOC maximal passcode length        (aj_auth.h)
 #define AJ_NAME_MAP_GUID_SIZE       4           //aj_guid.c
-#define AJ_MAX_NAME_SIZE            14          //aj_guid.c
 #define AJ_MAX_CREDS                40          //Max number of credentials that can store credentials (aj_creds.h)
 #define AJ_LOCAL_GUID_NV_ID         1
 #define AJ_CREDS_NV_ID_BEGIN (AJ_LOCAL_GUID_NV_ID + 1)
@@ -56,6 +56,7 @@ extern "C" {
 /* Timeouts */
 #define AJ_UNMARSHAL_TIMEOUT     (100 * 1000)      //unmarshal timeout                                (aj_helper.c + aj_msg.c)
 #define AJ_CONNECT_TIMEOUT       (60 * 1000)       //connection timeout                               (aj_helper.c)
+#define AJ_SELECTION_TIMEOUT     (5 * 1000)        //selection  timeout                               (aj_helper.c)
 #define AJ_CONNECT_PAUSE         (10 * 1000)       //how long to pause between failed connects        (aj_helper.c)
 #define AJ_DEFAULT_REPLY_TIMEOUT (1000 * 20)       //reply timeout                                    (aj_introspect.c)
 #define AJ_MIN_BUS_LINK_TIMEOUT  (40)              //min link timeout for the bus                     (aj_link_timeout.c)
@@ -65,6 +66,7 @@ extern "C" {
 #define AJ_MAX_AUTH_TIME         (5 * 60 * 1000ul) //max time for incomplete authentication           (aj_peer.c)
 #define AJ_AUTH_CALL_TIMEOUT     (2 * 60 * 1000ul) //long timeout for method calls w/ user input      (aj_peer.c)
 #define AJ_CALL_TIMEOUT          (1000ul * 5)      //default timout for method calls                  (aj_peer.c)
+#define AJ_UDP_CONNECT_TIMEOUT   5000              //UDP connection timeout                           (aj_connect.c)
 
 /* Message identification related */
 
@@ -102,5 +104,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
+/**
+ * @}
+ */
 #endif //AJ_CONFIG_H

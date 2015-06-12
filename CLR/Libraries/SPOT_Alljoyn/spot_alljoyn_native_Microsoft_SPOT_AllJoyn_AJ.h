@@ -22,9 +22,6 @@ namespace Microsoft
         {
             struct AJ
             {
-                
-                //static LPCSTR& Get_m_PwdText( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_LPCSTR( pMngObj, Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::FIELD__m_PwdText ); }
-
                 // Declaration of stubs. These functions are implemented by Interop code developers
                 static LPCSTR GetUniqueName( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
                 static void Initialize( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
@@ -70,7 +67,16 @@ namespace Microsoft
                 static LPCSTR GetArgString( CLR_RT_HeapBlock* pMngObj, INT32 param0, HRESULT &hr );
                 static void UsePeerAuthentication( CLR_RT_HeapBlock* pMngObj, INT8 param0, HRESULT &hr );
                 static void SetPassphrase( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static void SetPskHint( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static void SetPskString( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static void SetPemPrivString( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static void SetPemX509String( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
+                static void SetKeyExpiration( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
                 static INT32 AuthenticatePeer( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, HRESULT &hr );
+                static INT32 GetAuthStatus( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
+                static void SetAuthStatus( CLR_RT_HeapBlock* pMngObj, INT32 param0, HRESULT &hr );
+                static INT32 EnableSecurity( CLR_RT_HeapBlock* pMngObj, UINT32 param0, CLR_RT_TypedArray_INT32 param1, HRESULT &hr );
+                static INT32 ClearCredentials( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
                 static INT32 GetLocalGUID( CLR_RT_TypedArray_UINT8 param0, HRESULT &hr );
                 static void RegisterObjects( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, INT8 param4, INT8 param5, HRESULT &hr );
                 static void PrintXML( LPCSTR param0, LPCSTR param1, UINT8 param2, INT32 param3, HRESULT &hr );

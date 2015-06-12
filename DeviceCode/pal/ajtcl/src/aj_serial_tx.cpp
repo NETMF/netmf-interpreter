@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -160,25 +160,35 @@ AJ_Status AJ_SerialTX_Init()
     resendPrimed = FALSE;
     pendingAcks = 0;
     currentTxAck = 0;
+    dataSent = 1;
 
     /*
      * Data packets: To maximize throughput we need as many packets as the
      * window size.
      */
     for (i = 0; i < AJ_SerialLinkParams.maxWindowSize; ++i) {
+        void* payload;
         prev = txFreeList;
         txFreeList = AJ_Malloc(sizeof(TxPkt));
-        txFreeList->payload = AJ_Malloc(AJ_SerialLinkParams.packetSize);
+        payload = AJ_Malloc(AJ_SerialLinkParams.packetSize);
+        if (!txFreeList || !payload) {
+            return AJ_ERR_RESOURCES;
+        }
+        txFreeList->payload = payload;
         txFreeList->next = prev;
     }
 
     AJ_SlippedBuffer volatile* prevBuf = NULL;
     bufferTxFreeList = NULL;
     for (i = 0; i < AJ_SerialLinkParams.maxWindowSize; i++) {
+        void* buf;
         prevBuf = bufferTxFreeList;
         bufferTxFreeList = AJ_Malloc(sizeof(AJ_SlippedBuffer));
-
-        bufferTxFreeList->buffer = AJ_Malloc(SLIPPED_LEN(AJ_SerialLinkParams.packetSize)); //TODO: calculate slipped length based on packet size
+        buf = AJ_Malloc(SLIPPED_LEN(AJ_SerialLinkParams.packetSize)); //TODO: calculate slipped length based on packet size
+        if (!bufferTxFreeList || !buf) {
+            return AJ_ERR_RESOURCES;
+        }
+        bufferTxFreeList->buffer = buf;
         bufferTxFreeList->actualLen = 0;
         bufferTxFreeList->allocatedLen = SLIPPED_LEN(AJ_SerialLinkParams.packetSize);
         bufferTxFreeList->next = prevBuf;
@@ -222,6 +232,7 @@ void AJ_SerialTX_Shutdown(void)
     // delete the unreliable packet in a moment
     if (txUnreliable == txQueue) {
         txQueue = txUnreliable->next;
+        txUnreliable->next = NULL;
     }
 
     DeleteTxPacket(txQueue);

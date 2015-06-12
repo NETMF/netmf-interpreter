@@ -69,9 +69,23 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetArgPtr___U4__I4,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetArgString___STRING__I4,
     NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentication___VOID__BOOLEAN,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPassphrase___VOID__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPskHint___VOID__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPskString___VOID__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPemPrivString___VOID__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPemX509String___VOID__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetKeyExpiration___VOID__U4,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AuthenticatePeer___MicrosoftSPOTAllJoynAJStatus__U4__STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetAuthStatus___MicrosoftSPOTAllJoynAJStatus,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetAuthStatus___VOID__MicrosoftSPOTAllJoynAJStatus,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::EnableSecurity___MicrosoftSPOTAllJoynAJStatus__U4__SZARRAY_I4,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClearCredentials___MicrosoftSPOTAllJoynAJStatus,
     NULL,
     NULL,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetLocalGUID___STATIC__MicrosoftSPOTAllJoynAJStatus__SZARRAY_U1,
@@ -105,7 +119,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_Microsoft_SPOT_Alljoyn =
 {
     "Microsoft.SPOT.Alljoyn", 
-    0x59E90098,
+    0xF68436D2,
     method_lookup
 };
 

@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2012-2014 AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -199,28 +199,6 @@ AJ_Status AJ_PeerHandleKeyAuthenticationReply(AJ_Message* msg);
  * Clear the authentication handshake context
  */
 void AJ_ClearAuthContext();
-
-/* the key exchange is in the 16 MSB */
-#define AUTH_KEYX_ANONYMOUS     0x00010000
-#define AUTH_KEYX_EXTERNAL      0x00020000
-#define AUTH_KEYX_PIN           0x00040000
-#define AUTH_KEYX_SRP           0x00080000
-#define AUTH_KEYX_SRP_LOGON     0x00100000
-#define AUTH_KEYX_RSA           0x00200000
-#define AUTH_KEYX_ECDHE         0x00400000
-
-/*the key authentication suite is in the 16 LSB */
-
-#define AUTH_SUITE_ANONYMOUS    AUTH_KEYX_ANONYMOUS
-#define AUTH_SUITE_EXTERNAL     AUTH_KEYX_EXTERNAL
-#define AUTH_SUITE_PIN_KEYX     AUTH_KEYX_PIN
-#define AUTH_SUITE_SRP_KEYX     AUTH_KEYX_SRP
-#define AUTH_SUITE_SRP_LOGON    AUTH_KEYX_SRP_LOGON
-#define AUTH_SUITE_RSA_KEYX     AUTH_KEYX_RSA
-
-#define AUTH_SUITE_ECDHE_NULL   (AUTH_KEYX_ECDHE | 0x0001)
-#define AUTH_SUITE_ECDHE_PSK    (AUTH_KEYX_ECDHE | 0x0002)
-#define AUTH_SUITE_ECDHE_ECDSA  (AUTH_KEYX_ECDHE | 0x0004)
 
 #ifdef __cplusplus
 }

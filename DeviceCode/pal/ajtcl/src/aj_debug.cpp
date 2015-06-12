@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -36,7 +36,7 @@ void _AJ_DumpBytes(const char* tag, const uint8_t* data, uint32_t len)
     char ascii[AJ_DUMP_BYTE_SIZE + 1];
 
     if (tag) {
-        AJ_AlwaysPrintf(("%s:\n", tag));
+        AJ_AlwaysPrintf(("%s: (%u)\n", tag, len));
     }
     ascii[AJ_DUMP_BYTE_SIZE] = '\0';
     for (i = 0; i < len; i += AJ_DUMP_BYTE_SIZE) {
@@ -140,12 +140,6 @@ uint8_t dbgALL = 0;
 
 #define AJ_CASE(_status) case _status: return # _status
 
-
-#if defined(__arm)
-
-int hal_snprintf( char* buffer, size_t len, const char* format, ... );
-#endif
-
 const char* AJ_StatusText(AJ_Status status)
 {
 #ifdef NDEBUG
@@ -154,8 +148,6 @@ const char* AJ_StatusText(AJ_Status status)
 
 #ifdef _WIN32
     _snprintf(code, sizeof(code), "%03u", status);
-#elif defined(__arm)
-    hal_snprintf(code, sizeof(code), "%03u", status);
 #else
     snprintf(code, sizeof(code), "%03u", status);
 #endif
@@ -205,6 +197,16 @@ const char* AJ_StatusText(AJ_Status status)
         AJ_CASE(AJ_ERR_OLD_VERSION);
         AJ_CASE(AJ_ERR_NVRAM_READ);
         AJ_CASE(AJ_ERR_NVRAM_WRITE);
+
+        AJ_CASE(AJ_ERR_WOULD_BLOCK);
+        AJ_CASE(AJ_ERR_ARDP_DISCONNECTED);
+        AJ_CASE(AJ_ERR_ARDP_DISCONNECTING);
+        AJ_CASE(AJ_ERR_ARDP_REMOTE_CONNECTION_RESET);
+        AJ_CASE(AJ_ERR_ARDP_PROBE_TIMEOUT);
+        AJ_CASE(AJ_ERR_ARDP_BACKPRESSURE);
+        AJ_CASE(AJ_ERR_ARDP_SEND_EXPIRED);
+        AJ_CASE(AJ_ERR_ARDP_RECV_EXPIRED);
+        AJ_CASE(AJ_ERR_ARDP_VERSION_NOT_SUPPORTED);
 
     default:
         return "<unknown>";

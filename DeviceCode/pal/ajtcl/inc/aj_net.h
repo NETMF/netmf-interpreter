@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -30,8 +30,14 @@
 extern "C" {
 #endif
 
-#define AJ_ADDR_IPV4  0x04      /**< ip4 address */
-#define AJ_ADDR_IPV6  0x60      /**< ip6 address */
+#define AJ_ADDR_UDP4  0x01      /**< UDP ip4 address */
+#define AJ_ADDR_UDP6  0x02      /**< UDP ip6 address */
+
+#define AJ_ADDR_TCP4  0x04      /**< TCP ip4 address */
+#define AJ_ADDR_TCP6  0x08      /**< TCP ip6 address */
+
+struct _AJ_Service;
+struct _AJ_BusAttachment;
 
 /**
  * Abstracts a network socket
@@ -42,11 +48,11 @@ typedef struct _AJ_NetSocket {
 } AJ_NetSocket;
 
 /**
- * Connect to bus at an IPV4 or IPV6 address
+ * Connect to bus at an IPV4 or IPV6 address, either UDP or TCP
  *
  * @return        Return AJ_Status
  */
-AJ_Status AJ_Net_Connect(AJ_NetSocket* netSock, uint16_t port, uint8_t addrType, const uint32_t* addr);
+AJ_Status AJ_Net_Connect(struct _AJ_BusAttachment* bus, const struct _AJ_Service* service);
 
 /**
  * Disconnect from the bus

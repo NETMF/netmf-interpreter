@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -35,6 +35,7 @@
 #include "aj_peer.h"
 #include "aj_config.h"
 #include "aj_about.h"
+#include "aj_authentication.h"
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
@@ -578,38 +579,11 @@ AJ_Status AJ_BusHandleBusMessage(AJ_Message* msg)
     return status;
 }
 
-static uint8_t IsSuiteAvailable(AJ_BusAttachment* bus, uint32_t suite)
-{
-    size_t i;
-    if (!bus->suites) {
-        return 0;
-    }
-    for (i = 0; i < bus->numsuites; i++) {
-        if (suite == bus->suites[i]) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-static AJ_Status AddSuite(AJ_BusAttachment* bus, uint32_t suite) {
-    if (!IsSuiteAvailable(bus, suite)) {
-        bus->suites = (uint32_t*) AJ_Realloc(bus->suites, (bus->numsuites + 1) * sizeof (uint32_t));
-        if (!bus->suites) {
-            return AJ_ERR_RESOURCES;
-        }
-        bus->suites[bus->numsuites] = suite;
-        bus->numsuites++;
-    }
-    return AJ_OK;
-}
-
 void AJ_BusSetPasswordCallback(AJ_BusAttachment* bus, AJ_AuthPwdFunc pwdCallback)
 {
 #ifndef NO_SECURITY
     AJ_InfoPrintf(("AJ_BusSetPasswordCallback(bus=0x%p, pwdCallback=0x%p)\n", bus, pwdCallback));
     bus->pwdCallback = pwdCallback;
-    AddSuite(bus, AUTH_SUITE_ECDHE_PSK);
 #endif
 }
 
@@ -736,16 +710,12 @@ AJ_Status AJ_BusPropGetAll(AJ_Message* msg, AJ_BusPropGetCallback callback, void
 
 AJ_Status AJ_BusEnableSecurity(AJ_BusAttachment* bus, const uint32_t* suites, size_t numsuites)
 {
-    AJ_Status status;
     size_t i;
 
     AJ_InfoPrintf(("AJ_BusEnableSecurity(bus=0x%p, suites=0x%p)\n", bus, suites));
 
     for (i = 0; i < numsuites; i++) {
-        status = AddSuite(bus, suites[i]);
-        if (AJ_OK != status) {
-            return status;
-        }
+        AJ_EnableSuite(suites[i]);
     }
 
     return AJ_OK;

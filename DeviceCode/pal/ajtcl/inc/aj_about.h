@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -67,6 +67,15 @@ AJ_Status AJ_AboutInit(AJ_BusAttachment* bus, uint16_t boundPort);
  * @param bus   The bus attachment context.
  */
 AJ_Status AJ_AboutAnnounce(AJ_BusAttachment* bus);
+
+/**
+ * Cancel an about announcement
+ *
+ * @param bus   The bus attachment context
+ *
+ * @return      AJ_OK if canceled successfully
+ */
+AJ_Status AJ_AboutUnannounce(AJ_BusAttachment* bus);
 
 /**
  * Set a device icon to be returned by About

@@ -30,6 +30,7 @@
     <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
     <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
     <IncludePaths Include="DeviceCode\pal\ajtcl\inc"/>
+    <IncludePaths Include="DeviceCode\pal\ajtcl\external\sha2"/>
     <IncludePaths Include="DeviceCode\pal\base_tcl\services_common\inc;" />
     <IncludePaths Include="DeviceCode\pal\base_tcl\sample_apps\AppsCommon\inc" />
     <IncludePaths Include="DeviceCode\pal\base_tcl\notification\inc" />

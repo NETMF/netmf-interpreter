@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -198,7 +198,8 @@ struct _AJ_Message {
     uint16_t bodyBytes;        /**< Running count of the number body bytes written */
     AJ_BusAttachment* bus;     /**< Bus attachment for this message */
     struct _AJ_Arg* outer;     /**< Container arg current being marshaled */
-
+    uint32_t timeout;          /**< Remaining time to wait for all bytes of this message */
+    uint32_t authVersion;      /**< Authentication version used */
 };
 
 /**
@@ -423,6 +424,20 @@ AJ_Status AJ_MarshalReplyMsg(const AJ_Message* methodCall, AJ_Message* reply);
  */
 AJ_EXPORT
 AJ_Status AJ_MarshalErrorMsg(const AJ_Message* methodCall, AJ_Message* reply, const char* error);
+
+/**
+ * Initialize and marshal a message that is a error response to a method call.
+ *
+ * @param methodCall  The method call message that was received
+ * @param reply       The reply to be initialized
+ * @param error       The error name to use in the response.
+ * @param info        A text string that provides additional information about the error. Can be
+ *                    NULL in which case this is equivalent to calling AJ_MarshalErrorMsg().
+ *
+ * @return   Return AJ_Status
+ */
+AJ_EXPORT
+AJ_Status AJ_MarshalErrorMsgWithInfo(const AJ_Message* methodCall, AJ_Message* reply, const char* error, const char* info);
 
 /**
  * Initialize and marshal a message that is a error response to a method call. This is a wrapper

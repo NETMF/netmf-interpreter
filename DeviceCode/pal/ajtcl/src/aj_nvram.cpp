@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -290,13 +290,10 @@ size_t AJ_NVRAM_Write(const void* ptr, uint16_t size, AJ_NV_DATASET* handle)
 
 const void* AJ_NVRAM_Peek(AJ_NV_DATASET* handle)
 {
-    NV_EntryHeader* header;
-
     if (!handle || handle->mode == AJ_NV_DATASET_MODE_WRITE) {
         AJ_ErrPrintf(("AJ_NVRAM_Peek(): AJ_ERR_ACCESS\n"));
         return NULL;
     }
-    header = (NV_EntryHeader*)handle->inode;
     return (const void*)(handle->inode + sizeof(NV_EntryHeader) +  handle->curPos);
 }
 

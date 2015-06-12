@@ -8,7 +8,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -116,12 +116,13 @@ const AJ_GUID* AJ_GUID_Find(const char* name);
  * @param uniqueName The unique name for a remote peer
  * @param key        The 16 byte session key to add
  * @param role       Indicates which peer initiated the session key
+ * @param authVersion   Indicates the authentication version associated with this key
  *
  * @return  Return AJ_Status
  *          - AJ_OK if the key was added
  *          - AJ_ERR_NO_MATCH if there is no entry to the peer
  */
-AJ_Status AJ_SetSessionKey(const char* uniqueName, const uint8_t* key, uint8_t role);
+AJ_Status AJ_SetSessionKey(const char* uniqueName, const uint8_t* key, uint8_t role, uint32_t authVersion);
 
 /**
  * Sets a group key for an entry in the GUID map
@@ -141,12 +142,13 @@ AJ_Status AJ_SetGroupKey(const char* uniqueName, const uint8_t* key);
  * @param name  The unique or well-known name for a remote peer
  * @param key   Buffer to receive the 16 byte session key
  * @param role  Indicates which peer initiated the session key
+ * @param authVersion   Indicates the authentication version associated with this key
  *
  * @return  Return AJ_Status
  *          - AJ_OK if the key was obtained
  *          - AJ_ERR_NO_MATCH if there is no entry to the peer
  */
-AJ_Status AJ_GetSessionKey(const char* name, uint8_t* key, uint8_t* role);
+AJ_Status AJ_GetSessionKey(const char* name, uint8_t* key, uint8_t* role, uint32_t* authVersion);
 
 /**
  * Gets a group key for an entry from the GUID map

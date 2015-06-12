@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -62,6 +62,15 @@ typedef bigval_t ecc_privatekey;
 typedef affine_point_t ecc_publickey;
 typedef affine_point_t ecc_secret;
 typedef ECDSA_sig_t ecc_signature;
+
+/**
+ * ECC type sizes
+ */
+#define KEY_ECC_SZ (8 * sizeof (uint32_t))
+#define KEY_ECC_PRV_SZ KEY_ECC_SZ
+#define KEY_ECC_PUB_SZ (2 * KEY_ECC_SZ)
+#define KEY_ECC_SEC_SZ (2 * KEY_ECC_SZ)
+#define KEY_ECC_SIG_SZ (2 * KEY_ECC_SZ)
 
 /**
  * Generates the Ephemeral Diffie-Hellman key pair.
@@ -138,8 +147,26 @@ AJ_Status AJ_DSAVerifyDigest(const uint8_t* digest, const ecc_signature* sig, co
  */
 AJ_Status AJ_DSAVerify(const uint8_t* buf, uint16_t len, const ecc_signature* sig, const ecc_publickey* pubKey);
 
+/**
+ * Encode Bigval to big-endian byte array
+ * @param src    The input bigval
+ * @param tgt    The output buffer
+ * @param tgtlen The output buffer length
+ */
+void AJ_BigvalEncode(const bigval_t* src, uint8_t* tgt, size_t tgtlen);
+
+/**
+ * Decode Bigval from big-endian byte array
+ * @param src    The input buffer
+ * @param tgt    The output bigval
+ * @param srclen The input buffer length
+ */
+void AJ_BigvalDecode(const uint8_t* src, bigval_t* tgt, size_t srclen);
+
 #ifdef __cplusplus
 }
 #endif
-
+/**
+ * @}
+ */
 #endif

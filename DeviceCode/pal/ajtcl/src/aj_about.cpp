@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2013 - 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -139,7 +139,7 @@ AJ_Status MarshalObjectDescriptions(AJ_Message* msg)
         goto ErrorExit;
     }
     /*
-     * Announce object that a flagged for announcement and not hidden
+     * Announce objects that are flagged for announcement and not hidden
      */
     for (obj = AJ_InitObjectIterator(&iter, AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED, AJ_OBJ_FLAG_HIDDEN); obj != NULL; obj = AJ_NextObject(&iter)) {
         size_t i;
@@ -226,7 +226,7 @@ AJ_Status AJ_AboutAnnounce(AJ_BusAttachment* bus)
 
     AJ_InfoPrintf(("AJ_AboutAnnounce - announcing port=%d\n", bus->aboutPort));
 
-    status = AJ_MarshalSignal(bus, &announcement, AJ_SIGNAL_ABOUT_ANNOUNCE, NULL, 0, ALLJOYN_FLAG_SESSIONLESS, 0);
+    status = AJ_MarshalSignal(bus, &announcement, AJ_SIGNAL_ABOUT_ANNOUNCE, NULL, 0, AJ_FLAG_SESSIONLESS, 0);
     if (status != AJ_OK) {
         goto ErrorExit;
     }
@@ -250,10 +250,24 @@ AJ_Status AJ_AboutAnnounce(AJ_BusAttachment* bus)
     if (status != AJ_OK) {
         goto ErrorExit;
     }
+    bus->aboutSerial = announcement.hdr->serialNum;
     return AJ_DeliverMsg(&announcement);
 
 ErrorExit:
     return status;
+}
+
+AJ_Status AJ_AboutUnannounce(AJ_BusAttachment* bus)
+{
+    AJ_Status status;
+    if (bus->aboutSerial != 0) {
+        status = AJ_BusCancelSessionless(bus, bus->aboutSerial);
+        bus->aboutSerial = 0;
+        return status;
+    } else {
+        AJ_ErrPrintf(("AJ_AboutUnannounce(): No about announcement to cancel\n"));
+        return AJ_ERR_DISALLOWED;
+    }
 }
 
 AJ_Status AJ_AboutHandleGetObjectDescription(AJ_Message* msg, AJ_Message* reply)

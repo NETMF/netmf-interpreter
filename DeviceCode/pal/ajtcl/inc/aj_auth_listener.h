@@ -7,7 +7,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -34,17 +34,18 @@ extern "C" {
 /*
  * Command for auth listener callback
  */
-#define AJ_CRED_PRV_KEY    0x0001 /**< Request for a private key */
-#define AJ_CRED_PUB_KEY    0x0002 /**< Request for a public key */
-#define AJ_CRED_CERT_CHAIN 0x0003 /**< Request for a certificate chain */
-#define AJ_CRED_CERT_TRUST 0x0004 /**< Query if a certificate issuer is trusted */
-#define AJ_CRED_CERT_ROOT  0x0005 /**< Notification of a root certificate */
+#define AJ_CRED_PRV_KEY    0x0001 /**< private key */
+#define AJ_CRED_PUB_KEY    0x0002 /**< public key */
+#define AJ_CRED_CERT_CHAIN 0x0003 /**< certificate chain */
+
+#define AJ_CRED_REQUEST    0
+#define AJ_CRED_RESPONSE   1
 
 /*
  * Type for a Credential entry for the auth listener callback
  */
 typedef struct _AJ_Credential {
-    uint32_t mask;       /**< command (see above list) */
+    uint8_t direction;   /**< request or response */
     uint32_t expiration; /**< auth listener to set key expiration value */
     uint8_t* data;       /**< data to or from the auth listener */
     size_t len;          /**< length of data */
@@ -53,5 +54,7 @@ typedef struct _AJ_Credential {
 #ifdef __cplusplus
 }
 #endif
-
+/**
+ * @}
+ */
 #endif

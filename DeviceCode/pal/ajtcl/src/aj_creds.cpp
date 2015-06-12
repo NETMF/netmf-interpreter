@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012, 2014 AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -30,6 +30,7 @@
 #include "aj_nvram.h"
 #include "aj_debug.h"
 #include "aj_config.h"
+#include "aj_util.h"
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
@@ -45,14 +46,17 @@ static AJ_Status FreeCredentialContent(AJ_PeerCred* cred)
         return AJ_OK;
     }
     if ((cred->idLen > 0) && cred->id) {
+        AJ_MemZeroSecure(cred->id, cred->idLen);
         AJ_Free(cred->id);
         cred->idLen = 0;
     }
     if ((cred->associationLen > 0) && cred->association) {
+        AJ_MemZeroSecure(cred->association, cred->associationLen);
         AJ_Free(cred->association);
         cred->associationLen = 0;
     }
     if ((cred->dataLen > 0) && cred->data) {
+        AJ_MemZeroSecure(cred->data, cred->dataLen);
         AJ_Free(cred->data);
         cred->dataLen = 0;
     }
@@ -410,6 +414,10 @@ static AJ_Status AJ_DeleteOldestCredential(uint16_t* deleteSlot)
         AJ_NVRAM_Close(handle);
         if (status != AJ_OK) {
             AJ_ErrPrintf(("AJ_DeleteOldestCredential(): AJ_ERR_FAILURE on read failure \n"));
+            FreeCredentialContent(&cred);
+            if (localCredId) {
+                AJ_Free(localCredId);
+            }
             return status;
         }
 
@@ -419,6 +427,9 @@ static AJ_Status AJ_DeleteOldestCredential(uint16_t* deleteSlot)
             oldestslot = slot;
         }
         FreeCredentialContent(&cred);
+        if (localCredId) {
+            AJ_Free(localCredId);
+        }
     }
 
     if (oldestslot) {

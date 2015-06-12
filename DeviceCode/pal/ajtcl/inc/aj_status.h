@@ -6,7 +6,7 @@
  * @{
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -68,10 +68,19 @@ typedef enum {
     AJ_ERR_OLD_VERSION  = 39, /**< Router you connected to is old and unsupported */
     AJ_ERR_NVRAM_READ   = 40, /**< Error while reading from NVRAM */
     AJ_ERR_NVRAM_WRITE  = 41, /**< Error while writing to NVRAM */
+    AJ_ERR_WOULD_BLOCK  = 42, /**< Last operation would block */
+    AJ_ERR_ARDP_DISCONNECTED            = 43, /**< Local ARDP disconnect */
+    AJ_ERR_ARDP_DISCONNECTING           = 44, /**< ARDP waiting for Send queue to drain before complete disconnect */
+    AJ_ERR_ARDP_REMOTE_CONNECTION_RESET = 45, /**< Remote ARDP disconnect */
+    AJ_ERR_ARDP_PROBE_TIMEOUT           = 46, /**< ARDP connection timeout */
+    AJ_ERR_ARDP_BACKPRESSURE            = 47, /**< The Send queue is full */
+    AJ_ERR_ARDP_SEND_EXPIRED            = 48, /**< The outgoing message has expired */
+    AJ_ERR_ARDP_RECV_EXPIRED            = 49, /**< The incoming message has expired */
+    AJ_ERR_ARDP_VERSION_NOT_SUPPORTED   = 50, /**< Error to indicate ARDP protocol mismatch */
     /*
      * REMINDER: Update AJ_StatusText in aj_debug.c if adding a new status code.
      */
-    AJ_STATUS_LAST      = 41  /**< The last error status code */
+    AJ_STATUS_LAST      = 51  /**< The last error status code */
 
 } AJ_Status;
 

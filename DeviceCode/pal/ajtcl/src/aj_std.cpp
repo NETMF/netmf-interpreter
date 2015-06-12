@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014 AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -130,6 +130,7 @@ static const char* const BusIface[] = {
     "!SessionLostWithReason >u >u",
     "?Ping <s <u >u",
     "?SetIdleTimeouts <u <u >u >u >u",
+    "?SimpleHello <s <u >s >s >u",
     NULL
 };
 
@@ -219,11 +220,11 @@ static const AJ_InterfaceDescription AboutIconIfaces[] = {
 };
 
 const AJ_Object AJ_StandardObjects[] = {
-    { DBusObjectPath,      DBusIfaces,      0,                     NULL },
-    { BusObjectPath,       BusIfaces,       0,                     NULL },
+    { DBusObjectPath,      DBusIfaces,      AJ_OBJ_FLAG_IS_PROXY,  NULL },
+    { BusObjectPath,       BusIfaces,       AJ_OBJ_FLAG_IS_PROXY,  NULL },
     { PeerObjectPath,      PeerIfaces,      0,                     NULL },
     { "?",                 CommonIfaces,    0,                     NULL },
-    { DaemonObjectPath,    DaemonIfaces,    0,                     NULL },
+    { DaemonObjectPath,    DaemonIfaces,    AJ_OBJ_FLAG_IS_PROXY,  NULL },
     { AboutObjectPath,     AboutIfaces,     AJ_OBJ_FLAG_ANNOUNCED, NULL },
     { AboutIconObjectPath, AboutIconIfaces, AJ_OBJ_FLAG_ANNOUNCED, NULL },
     { NULL,                NULL,            0,                     NULL }

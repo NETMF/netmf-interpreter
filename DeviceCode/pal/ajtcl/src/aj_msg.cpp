@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -40,6 +40,11 @@
 #include "aj_bus.h"
 #include "aj_debug.h"
 #include "aj_config.h"
+
+#ifdef AJ_ARDP
+#include "aj_ardp.h"
+#endif
+
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
  * (usually in debugger).
@@ -52,9 +57,54 @@ uint8_t dbgMSG = 0;
 #define AJ_DICT_ENTRY_CLOSE      '}'
 
 /*
+ * The size of the previous MAC for encrypted messages
+ */
+#define PREVIOUS_MAC_LENGTH 8
+
+/*
  * The size of the MAC for encrypted messages
  */
-#define MAC_LENGTH 8
+#define MAC_LENGTH 16
+
+/*
+ * The size of the maximum MAC for encrypted messages
+ */
+#define MAX_MAC_LENGTH 16
+
+/*
+ * The minimum version with a full MAC length
+ */
+#define MIN_AUTH_FULL_MAC_LENGTH 0x0003
+
+/*
+ * The size of the previous nonce for encrypted messages
+ */
+#define PREVIOUS_NONCE_LENGTH 5
+
+/*
+ * The size of the MAC for encrypted messages
+ */
+#define NONCE_LENGTH 13
+
+/*
+ * The size of the maximum nonce for encrypted messages
+ */
+#define MAX_NONCE_LENGTH 13
+
+/*
+ * The minimum version with a full MAC length
+ */
+#define MIN_AUTH_FULL_NONCE_LENGTH 0x0003
+
+/*
+ * The minimum version with an extra nonce
+ */
+#define MIN_AUTH_EXTRA_NONCE 0x0003
+
+/*
+ * The fallback version
+ */
+#define MIN_AUTH_FALLBACK_VERSION 0x0002
 
 /*
  * gcc defines __va_copy() other compilers allow direct assignent of a va_list
@@ -272,7 +322,35 @@ static uint32_t MessageLen(AJ_Message* msg)
     return sizeof(AJ_MsgHeader) + ((msg->hdr->headerLen + 7) & 0xFFFFFFF8) + msg->hdr->bodyLen;
 }
 
-static void InitNonce(AJ_Message* msg, uint8_t role, uint8_t* nonce)
+static uint32_t MessageRequiresLongerCryptoValues(AJ_Message* msg, uint32_t versionCheck)
+{
+    return ((versionCheck <= (msg->authVersion >> 16)) &&              // version
+            !((msg->hdr->msgType == AJ_MSG_SIGNAL) && !msg->destination));  // rollback for multicast/broadcast
+}
+
+static uint32_t GetMACLength(AJ_Message* msg)
+{
+    uint32_t macLen = MAC_LENGTH;
+
+    if (!MessageRequiresLongerCryptoValues(msg, MIN_AUTH_FULL_MAC_LENGTH)) {
+        macLen = PREVIOUS_MAC_LENGTH;
+    }
+
+    return macLen;
+}
+
+static uint32_t GetNonceLength(AJ_Message* msg)
+{
+    uint32_t nonceLen = NONCE_LENGTH;
+
+    if (!MessageRequiresLongerCryptoValues(msg, MIN_AUTH_FULL_NONCE_LENGTH)) {
+        nonceLen = PREVIOUS_NONCE_LENGTH;
+    }
+
+    return nonceLen;
+}
+
+static AJ_Status InitNonce(AJ_Message* msg, uint8_t role, uint8_t* nonce, uint32_t nonceLen, uint8_t* extraNonce, uint32_t extraNonceLen)
 {
     uint32_t serial = msg->hdr->serialNum;
     nonce[0] = role;
@@ -280,6 +358,22 @@ static void InitNonce(AJ_Message* msg, uint8_t role, uint8_t* nonce)
     nonce[2] = (uint8_t)(serial >> 16);
     nonce[3] = (uint8_t)(serial >> 8);
     nonce[4] = (uint8_t)(serial);
+    if (nonceLen < (PREVIOUS_NONCE_LENGTH + extraNonceLen)) {
+        return AJ_ERR_SECURITY;
+    }
+    if (0 < extraNonceLen) {
+        memcpy(&nonce[PREVIOUS_NONCE_LENGTH], extraNonce, extraNonceLen);
+
+        AJ_InfoPrintf(("Nonce %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\n",
+                       nonce[0], nonce[1], nonce[2], nonce[3],
+                       nonce[4], nonce[5], nonce[6], nonce[7],
+                       nonce[8], nonce[9], nonce[10], nonce[11],
+                       nonce[12]));
+    } else {
+        AJ_InfoPrintf(("Nonce %02x%02x%02x%02x%02x\n",
+                       nonce[0], nonce[1], nonce[2], nonce[3], nonce[4]));
+    }
+    return AJ_OK;
 }
 
 static AJ_Status DecryptMessage(AJ_Message* msg)
@@ -287,18 +381,23 @@ static AJ_Status DecryptMessage(AJ_Message* msg)
     AJ_IOBuffer* ioBuf = &msg->bus->sock.rx;
     AJ_Status status;
     uint8_t key[16];
-    uint8_t nonce[5];
+    uint8_t nonce[MAX_NONCE_LENGTH];
     uint8_t role = AJ_ROLE_KEY_UNDEFINED;
     uint32_t mlen = MessageLen(msg);
     uint32_t hLen = mlen - msg->hdr->bodyLen;
+    uint32_t macLen;
+    uint32_t nonceLen;
+    uint32_t extraNonceLen;
+    uint32_t cryptoValsLen;
 
     /*
      * Use the group key for multicast and broadcast signals the session key otherwise.
      */
     if ((msg->hdr->msgType == AJ_MSG_SIGNAL) && !msg->destination) {
         status = AJ_GetGroupKey(msg->sender, key);
+        msg->authVersion = MIN_AUTH_FALLBACK_VERSION;
     } else {
-        status = AJ_GetSessionKey(msg->sender, key, &role);
+        status = AJ_GetSessionKey(msg->sender, key, &role, &msg->authVersion);
         /*
          * We use the oppsite role when decrypting.
          */
@@ -308,11 +407,17 @@ static AJ_Status DecryptMessage(AJ_Message* msg)
         AJ_ErrPrintf(("DecryptMessage(): AJ_ERR_SECURITY\n"));
         status = AJ_ERR_SECURITY;
     } else {
-        InitNonce(msg, role, nonce);
+        macLen = GetMACLength(msg);
+        nonceLen = GetNonceLength(msg);
+        extraNonceLen = nonceLen - PREVIOUS_NONCE_LENGTH;
+        cryptoValsLen = macLen + extraNonceLen;
+        AJ_InfoPrintf(("DecryptMessage(): \n"));
+        InitNonce(msg, role, nonce, sizeof(nonce), ioBuf->bufStart + mlen - extraNonceLen, extraNonceLen);
         EndianSwap(msg, AJ_ARG_INT32, &msg->hdr->bodyLen, 3);
-        status = AJ_Decrypt_CCM(key, ioBuf->bufStart, mlen - MAC_LENGTH, hLen, MAC_LENGTH, nonce, sizeof(nonce));
+        status = AJ_Decrypt_CCM(key, ioBuf->bufStart, mlen - cryptoValsLen, hLen, macLen, nonce, nonceLen);
         EndianSwap(msg, AJ_ARG_INT32, &msg->hdr->bodyLen, 3);
     }
+    AJ_MemZeroSecure(key, 16);
     return status;
 }
 
@@ -321,36 +426,53 @@ static AJ_Status EncryptMessage(AJ_Message* msg)
     AJ_IOBuffer* ioBuf = &msg->bus->sock.tx;
     AJ_Status status;
     uint8_t key[16];
-    uint8_t nonce[5];
+    uint8_t nonce[MAX_NONCE_LENGTH];
     uint8_t role = AJ_ROLE_KEY_UNDEFINED;
     uint32_t mlen = MessageLen(msg);
     uint32_t hlen = mlen - msg->hdr->bodyLen;
+    uint32_t macLen;
+    uint32_t nonceLen;
+    uint32_t extraNonceLen;
+    uint32_t cryptoValsLen;
 
-    /*
-     * Check there is room to append the MAC
-     */
-    if (AJ_IO_BUF_SPACE(ioBuf) < MAC_LENGTH) {
-        AJ_ErrPrintf(("EncryptMessage(): AJ_ERR_RESOURCES\n"));
-        return AJ_ERR_RESOURCES;
-    }
-    msg->hdr->bodyLen += MAC_LENGTH;
-    ioBuf->writePtr += MAC_LENGTH;
     /*
      * Use the group key for multicast and broadcast signals the session key otherwise.
      */
     if ((msg->hdr->msgType == AJ_MSG_SIGNAL) && !msg->destination) {
         status = AJ_GetGroupKey(NULL, key);
+        msg->authVersion = MIN_AUTH_FALLBACK_VERSION;
     } else {
-        status = AJ_GetSessionKey(msg->destination, key, &role);
+        status = AJ_GetSessionKey(msg->destination, key, &role, &msg->authVersion);
     }
+    macLen = GetMACLength(msg);
+    nonceLen = GetNonceLength(msg);
+    extraNonceLen = nonceLen - PREVIOUS_NONCE_LENGTH;
+    cryptoValsLen = macLen + extraNonceLen;
+
+    /*
+     * Check there is room to append the MAC and Nonce
+     */
+    if (AJ_IO_BUF_SPACE(ioBuf) < cryptoValsLen) {
+        AJ_ErrPrintf(("EncryptMessage(): AJ_ERR_RESOURCES\n"));
+        return AJ_ERR_RESOURCES;
+    }
+    msg->hdr->bodyLen += cryptoValsLen;
+    ioBuf->writePtr += cryptoValsLen;
+
+
     if (status != AJ_OK) {
         AJ_ErrPrintf(("EncryptMesssage(): peer %s not authenticated", msg->destination));
         AJ_ErrPrintf(("EncryptMessage(): AJ_ERR_SECURITY\n"));
         status = AJ_ERR_SECURITY;
     } else {
-        InitNonce(msg, role, nonce);
-        status = AJ_Encrypt_CCM(key, ioBuf->bufStart, mlen, hlen, MAC_LENGTH, nonce, sizeof(nonce));
+        if (MessageRequiresLongerCryptoValues(msg, MIN_AUTH_FULL_NONCE_LENGTH)) {
+            AJ_RandBytes(ioBuf->bufStart + mlen + macLen, extraNonceLen);
+        }
+        AJ_InfoPrintf(("EncryptMessage(): "));
+        InitNonce(msg, role, nonce, sizeof(nonce), ioBuf->bufStart + mlen + macLen, extraNonceLen);
+        status = AJ_Encrypt_CCM(key, ioBuf->bufStart, mlen, hlen, macLen, nonce, nonceLen);
     }
+    AJ_MemZeroSecure(key, 16);
     return status;
 }
 
@@ -395,19 +517,14 @@ AJ_Status AJ_DeliverMsg(AJ_Message* msg)
 }
 
 /*
- * Timeout after we have started to unmarshal a message.  The entire message is
- * not guaranteed to be in the TCP buffer so an extended timeout can be required
- * to load a message that spans underlying TCP packets.
- */
-#define UNMARSHAL_TIMEOUT 15000ul
-
-/*
  * Make sure we have the required number of bytes in the I/O buffer
  */
-static AJ_Status LoadBytes(AJ_IOBuffer* ioBuf, uint16_t numBytes, uint8_t pad)
+static AJ_Status LoadBytes(AJ_IOBuffer* ioBuf, uint16_t numBytes, uint8_t pad, uint32_t* timeout)
 {
     AJ_Status status = AJ_OK;
+    AJ_Time msgTimer;
 
+    AJ_InitTimer(&msgTimer);
     numBytes += pad;
     /*
      * Needs to be enough headroom in the buffer to satisfy the read
@@ -416,9 +533,13 @@ static AJ_Status LoadBytes(AJ_IOBuffer* ioBuf, uint16_t numBytes, uint8_t pad)
         AJ_ErrPrintf(("LoadBytes(): AJ_ERR_RESOURCES\n"));
         return AJ_ERR_RESOURCES;
     }
+
+    AJ_InfoPrintf(("LoadBytes(): Start loop numBytes=%u, ioBufBytes=%u\n", numBytes, AJ_IO_BUF_AVAIL(ioBuf)));
     while (AJ_IO_BUF_AVAIL(ioBuf) < numBytes) {
         //#pragma calls = AJ_Net_Recv
-        status = ioBuf->recv(ioBuf, numBytes - AJ_IO_BUF_AVAIL(ioBuf), UNMARSHAL_TIMEOUT);
+        AJ_InfoPrintf(("LoadBytes(): numBytes=%u, ioBufBytes=%u\n", numBytes, AJ_IO_BUF_AVAIL(ioBuf)));
+        status = ioBuf->recv(ioBuf, numBytes - AJ_IO_BUF_AVAIL(ioBuf), *timeout);
+
         if (status != AJ_OK) {
             /*
              * Ignore interrupted recv calls for now we can't handle resumption
@@ -430,6 +551,14 @@ static AJ_Status LoadBytes(AJ_IOBuffer* ioBuf, uint16_t numBytes, uint8_t pad)
              * Timeouts after we have started to unmarshal a message are a bad sign.
              */
             if (status == AJ_ERR_TIMEOUT) {
+                /*
+                 * Work around recv implementations that return too soon.
+                 */
+                uint32_t elapsed = AJ_GetElapsedTime(&msgTimer, FALSE);
+                if (*timeout > elapsed) {
+                    *timeout -= elapsed;
+                    continue;
+                }
                 AJ_ErrPrintf(("LoadBytes(): AJ_ERR_READ\n"));
                 status = AJ_ERR_READ;
             }
@@ -517,7 +646,7 @@ AJ_Status AJ_CloseMsg(AJ_Message* msg)
                 AJ_IO_BUF_RESET(ioBuf);
                 sz = min(msg->bodyBytes, ioBuf->bufSize);
             }
-            status = LoadBytes(ioBuf, sz, 0);
+            status = LoadBytes(ioBuf, sz, 0, &msg->timeout);
             if (status != AJ_OK) {
                 break;
             }
@@ -577,7 +706,7 @@ static AJ_Status Unmarshal(AJ_Message* msg, const char** sig, AJ_Arg* arg);
 static AJ_Status UnmarshalStruct(AJ_Message* msg, const char** sig, AJ_Arg* arg, uint8_t pad)
 {
     AJ_IOBuffer* ioBuf = &msg->bus->sock.rx;
-    AJ_Status status = LoadBytes(ioBuf, 0, pad);
+    AJ_Status status = LoadBytes(ioBuf, 0, pad, &msg->timeout);
     arg->val.v_data = ioBuf->readPtr;
     arg->sigPtr = *sig;
     /*
@@ -612,7 +741,7 @@ static AJ_Status UnmarshalArray(AJ_Message* msg, const char** sig, AJ_Arg* arg, 
     /*
      * Get the byte count for the array
      */
-    status = LoadBytes(ioBuf, 4, pad);
+    status = LoadBytes(ioBuf, 4, pad, &msg->timeout);
     if (status != AJ_OK) {
         return status;
     }
@@ -624,7 +753,7 @@ static AJ_Status UnmarshalArray(AJ_Message* msg, const char** sig, AJ_Arg* arg, 
      * the array element types align on an 8 byte boundary.
      */
     pad = PadForType(typeId, ioBuf);
-    status = LoadBytes(ioBuf, numBytes, pad);
+    status = LoadBytes(ioBuf, numBytes, pad, &msg->timeout);
     if (status != AJ_OK) {
         return status;
     }
@@ -676,7 +805,7 @@ static AJ_Status Unmarshal(AJ_Message* msg, const char** sig, AJ_Arg* arg)
 
     if (IsScalarType(typeId)) {
         sz = SizeOfType(typeId);
-        status = LoadBytes(ioBuf, sz, pad);
+        status = LoadBytes(ioBuf, sz, pad, &msg->timeout);
         if (status != AJ_OK) {
             return status;
         }
@@ -697,7 +826,7 @@ static AJ_Status Unmarshal(AJ_Message* msg, const char** sig, AJ_Arg* arg)
          * Read the string length. Note the length doesn't include the terminating NUL
          * so an empty string in encoded as two zero bytes.
          */
-        status = LoadBytes(ioBuf, lenSize, pad);
+        status = LoadBytes(ioBuf, lenSize, pad, &msg->timeout);
         if (status != AJ_OK) {
             return status;
         }
@@ -708,7 +837,7 @@ static AJ_Status Unmarshal(AJ_Message* msg, const char** sig, AJ_Arg* arg)
             sz = (uint32_t)(*ioBuf->readPtr);
         }
         ioBuf->readPtr += lenSize;
-        status = LoadBytes(ioBuf, sz + 1, 0);
+        status = LoadBytes(ioBuf, sz + 1, 0, &msg->timeout);
         if (status != AJ_OK) {
             return status;
         }
@@ -902,19 +1031,23 @@ AJ_Status AJ_UnmarshalMsg(AJ_BusAttachment* bus, AJ_Message* msg, uint32_t timeo
     uint32_t hdrPad;
     AJ_Time msgTimer;
 
+    AJ_InfoPrintf(("AJ_UnmarshalMsg()\n"));
+
     AJ_InitTimer(&msgTimer);
     /*
-     * Clear message then set the bus
+     * Clear message then set the bus and overall timeout
      */
     memset(msg, 0, sizeof(AJ_Message));
     msg->msgId = AJ_INVALID_MSG_ID;
     msg->bus = bus;
+    msg->timeout = timeout;
     /*
-     * Check that the read pointer is within the bounds of the recv buffer
+     * Check that the read and write pointers are within the bounds of the recv buffer
      */
-    if ((ioBuf->readPtr < ioBuf->bufStart) || (ioBuf->readPtr > (ioBuf->bufStart + ioBuf->bufSize))) {
-        AJ_ErrPrintf(("AJ_UnmarshalMsg(): Read pointer out of bounds: AJ_ERR_IO_BUFFER\n"));
-        return AJ_ERR_READ; //Read pointer is out of bounds, this is unrecoverable
+    if ((ioBuf->readPtr < ioBuf->bufStart) || (ioBuf->readPtr > (ioBuf->bufStart + ioBuf->bufSize)) ||
+        (ioBuf->writePtr < ioBuf->readPtr) || (ioBuf->writePtr > (ioBuf->bufStart + ioBuf->bufSize))) {
+        AJ_ErrPrintf(("AJ_UnmarshalMsg(): recv buffer pointer out of bounds: AJ_ERR_IO_BUFFER\n"));
+        return AJ_ERR_READ; //Buffer pointer is out of bounds, this is unrecoverable
     }
     /*
      * Move any unconsumed data to the start of the I/O buffer
@@ -923,17 +1056,20 @@ AJ_Status AJ_UnmarshalMsg(AJ_BusAttachment* bus, AJ_Message* msg, uint32_t timeo
     /*
      * Load the message header
      */
+    AJ_InfoPrintf(("AJ_UnmarshalMsg(): start loop ioBufBytes=%u\n", AJ_IO_BUF_AVAIL(ioBuf)));
     while (AJ_IO_BUF_AVAIL(ioBuf) < sizeof(AJ_MsgHeader)) {
         //#pragma calls = AJ_Net_Recv
-        status = ioBuf->recv(ioBuf, sizeof(AJ_MsgHeader) - AJ_IO_BUF_AVAIL(ioBuf), timeout);
+        AJ_InfoPrintf(("AJ_UnmarshalMsg(): ioBufBytes=%u\n", AJ_IO_BUF_AVAIL(ioBuf)));
+        status = ioBuf->recv(ioBuf, sizeof(AJ_MsgHeader) - AJ_IO_BUF_AVAIL(ioBuf), msg->timeout);
+
         if (status != AJ_OK) {
             if (status == AJ_ERR_TIMEOUT) {
                 /*
-                 * Work around recv imlpementations that return too soon.
+                 * Work around recv implementations that return too soon.
                  */
                 uint32_t elapsed = AJ_GetElapsedTime(&msgTimer, FALSE);
-                if (timeout > elapsed) {
-                    timeout -= elapsed;
+                if (msg->timeout > elapsed) {
+                    msg->timeout -= elapsed;
                     continue;
                 }
             }
@@ -971,21 +1107,21 @@ AJ_Status AJ_UnmarshalMsg(AJ_BusAttachment* bus, AJ_Message* msg, uint32_t timeo
     EndianSwap(msg, AJ_ARG_INT32, &msg->hdr->bodyLen, 3);
     msg->bodyBytes = msg->hdr->bodyLen;
     /*
-     * Make sure the header isn't going to overrun the buffer
+     * The header is null-padded to an 8-byte boundary
+     */
+    hdrPad = (8 - msg->hdr->headerLen) & 7;
+    /*
+     * Make sure the header (plus pad) isn't going to overrun the buffer
      * and that the total header length doesn't overflow.
      */
-    if (msg->hdr->headerLen > (ioBuf->bufSize - sizeof(AJ_MsgHeader))) {
+    if ((msg->hdr->headerLen + hdrPad) > (ioBuf->bufSize - sizeof(AJ_MsgHeader))) {
         AJ_ErrPrintf(("AJ_UnmarshalMsg(): Header was too large: AJ_ERR_HDR_CORRUPT\n"));
         return AJ_ERR_READ; //Unrecoverable state, return read error
     }
     /*
-     * The header is null padded to an 8 bytes boundary
-     */
-    hdrPad = (8 - msg->hdr->headerLen) & 7;
-    /*
      * Load the header
      */
-    status = LoadBytes(ioBuf, msg->hdr->headerLen + hdrPad, 0);
+    status = LoadBytes(ioBuf, msg->hdr->headerLen + hdrPad, 0, &msg->timeout);
     if (status != AJ_OK) {
         return status;
     }
@@ -1023,7 +1159,7 @@ AJ_Status AJ_UnmarshalMsg(AJ_BusAttachment* bus, AJ_Message* msg, uint32_t timeo
         /*
          * Custom unmarshal the header field - signature is "(yv)" so starts off with STRUCT aligment.
          */
-        status = LoadBytes(ioBuf, 4, PadForType(AJ_ARG_STRUCT, ioBuf));
+        status = LoadBytes(ioBuf, 4, PadForType(AJ_ARG_STRUCT, ioBuf), &msg->timeout);
         if (status != AJ_OK) {
             break;
         }
@@ -1132,7 +1268,7 @@ AJ_Status AJ_UnmarshalMsg(AJ_BusAttachment* bus, AJ_Message* msg, uint32_t timeo
          * If the message is encrypted load the entire message body and decrypt it.
          */
         if (msg->hdr->flags & AJ_FLAG_ENCRYPTED) {
-            status = LoadBytes(ioBuf, msg->hdr->bodyLen, 0);
+            status = LoadBytes(ioBuf, msg->hdr->bodyLen, 0, &msg->timeout);
             if (status == AJ_OK) {
                 status = DecryptMessage(msg);
             }
@@ -1203,7 +1339,7 @@ AJ_Status AJ_SkipArg(AJ_Message* msg)
             /*
              * Just consume the array bytes
              */
-            status = LoadBytes(ioBuf, skippy.len, 0);
+            status = LoadBytes(ioBuf, skippy.len, 0, &msg->timeout);
             if (status == AJ_OK) {
                 ioBuf->readPtr += skippy.len;
                 msg->bodyBytes -= skippy.len;
@@ -1283,8 +1419,16 @@ AJ_Status AJ_UnmarshalArg(AJ_Message* msg, AJ_Arg* arg)
             container->sigPtr = sig;
         }
     } else {
-        status = Unmarshal(msg, &sig, arg);
-        msg->sigOffset = (uint8_t)(sig - msg->signature);
+        /*
+         * The signature representing the message body does not match the number of body bytes
+         */
+        if (!msg->bodyBytes) {
+            AJ_ErrPrintf(("AJ_UnmarshalArg(): Message body length is incorrect, status = AJ_ERR_UNMARSHAL\n"));
+            status = AJ_ERR_UNMARSHAL;
+        } else {
+            status = Unmarshal(msg, &sig, arg);
+            msg->sigOffset = (uint8_t)(sig - msg->signature);
+        }
     }
     consumed = (ioBuf->readPtr - argStart);
     if (consumed > msg->bodyBytes) {
@@ -1457,7 +1601,7 @@ AJ_Status AJ_UnmarshalRaw(AJ_Message* msg, const void** data, size_t len, size_t
             AJ_ErrPrintf(("AJ_UnmarshalRaw(): AJ_ERR_UNMARSHAL\n"));
             return AJ_ERR_UNMARSHAL;
         }
-        LoadBytes(ioBuf, 0, pad);
+        LoadBytes(ioBuf, 0, pad, &msg->timeout);
         msg->bodyBytes -= pad;
         /*
          * Standard signature matching is now meaningless
@@ -1486,7 +1630,7 @@ AJ_Status AJ_UnmarshalRaw(AJ_Message* msg, const void** data, size_t len, size_t
      * If we try to load more than the available space we will get an error
      */
     len = min(len, AJ_IO_BUF_SPACE(ioBuf));
-    status = LoadBytes(ioBuf, (uint16_t)len, 0);
+    status = LoadBytes(ioBuf, (uint16_t)len, 0, &msg->timeout);
     if (status == AJ_OK) {
         sz = AJ_IO_BUF_AVAIL(ioBuf);
         if (sz < len) {
@@ -1694,6 +1838,10 @@ static AJ_Status MarshalMsg(AJ_Message* msg, uint8_t msgType, uint32_t msgId, ui
     uint8_t fieldId;
     uint8_t secure = FALSE;
 
+#ifdef AJ_ARDP
+    status = AJ_ARDP_StartMsgSend(msg->ttl);
+#endif
+
     /*
      * Use the msgId to lookup information in the object and interface descriptions to
      * initialize the message header fields.
@@ -1723,9 +1871,11 @@ static AJ_Status MarshalMsg(AJ_Message* msg, uint8_t msgType, uint32_t msgId, ui
      */
     msg->hdr->flags ^= AJ_FLAG_AUTO_START;
     /*
-     * Serial number cannot be zero (wire-spec wierdness)
+     * Serial number cannot be zero (wire-spec weirdness)
      */
-    do { msg->hdr->serialNum = msg->bus->serial++; } while (msg->bus->serial == 1);
+    do {
+        msg->hdr->serialNum = msg->bus->serial++;
+    } while (msg->bus->serial == 1);
     /*
      * Marshal the header fields
      */
@@ -1910,7 +2060,7 @@ AJ_Arg* AJ_InitArg(AJ_Arg* arg, uint8_t typeId, uint8_t flags, const void* val, 
 
 static AJ_Status VMarshalArgs(AJ_Message* msg, const char** sig, va_list* argpp)
 {
-    AJ_Status status = AJ_OK;
+    AJ_Status status = AJ_ERR_UNEXPECTED;
     AJ_Arg arg;
     AJ_Arg container;
     va_list argp;
@@ -1923,7 +2073,6 @@ static AJ_Status VMarshalArgs(AJ_Message* msg, const char** sig, va_list* argpp)
         uint16_t u16;
         uint32_t u32;
         uint64_t u64;
-        const char* inSig = *sig;
         uint8_t typeId = (uint8_t)*((*sig)++);
         void* val;
 
@@ -1939,26 +2088,12 @@ static AJ_Status VMarshalArgs(AJ_Message* msg, const char** sig, va_list* argpp)
                  * where the inner call advanced in the signature.
                  */
                 if (status == AJ_OK) {
-                    uint8_t lastNestedTypeId;
-                    AJ_ASSERT(inSig < *sig);
-                    /*
-                     * Since we advanced *sig in the while loop the previous pointer is guaranteed to exist
-                     */
-                    lastNestedTypeId = (uint8_t)*((*sig) - 1);
-
-                    if ((lastNestedTypeId == AJ_STRUCT_CLOSE) || (lastNestedTypeId == AJ_DICT_ENTRY_CLOSE)) {
-                        status = AJ_MarshalCloseContainer(msg, &container);
-                        if (status != AJ_OK) {
-                            break;
-                        }
-                    } else {
-                        status = AJ_ERR_MARSHAL;
-                        break;
-                    }
-                    continue;
-                } else {
+                    status = AJ_MarshalCloseContainer(msg, &container);
+                }
+                if (status != AJ_OK) {
                     break;
                 }
+                continue;
             }
             if ((typeId == AJ_ARG_ARRAY) && IsBasicType(**sig)) {
                 const void* aval = va_arg(argp, const void*);
@@ -2183,6 +2318,7 @@ AJ_Status AJ_MarshalMethodCall(AJ_BusAttachment* bus, AJ_Message* msg, uint32_t 
     msg->bus = bus;
     msg->destination = destination;
     msg->sessionId = sessionId;
+    msg->ttl = timeout;
     status = MarshalMsg(msg, AJ_MSG_METHOD_CALL, msgId, flags);
     if (status == AJ_OK) {
         status = AJ_AllocReplyContext(msg, timeout);
@@ -2208,11 +2344,14 @@ AJ_Status AJ_MarshalReplyMsg(const AJ_Message* methodCall, AJ_Message* reply)
     reply->destination = methodCall->sender;
     reply->sessionId = methodCall->sessionId;
     reply->replySerial = methodCall->hdr->serialNum;
+    reply->ttl = 0;
     return MarshalMsg(reply, AJ_MSG_METHOD_RET, methodCall->msgId, methodCall->hdr->flags & AJ_FLAG_ENCRYPTED);
 }
 
-AJ_Status AJ_MarshalErrorMsg(const AJ_Message* methodCall, AJ_Message* reply, const char* error)
+AJ_Status AJ_MarshalErrorMsgWithInfo(const AJ_Message* methodCall, AJ_Message* reply, const char* error, const char* info)
 {
+    AJ_Status status;
+
     AJ_ASSERT(methodCall->hdr->msgType == AJ_MSG_METHOD_CALL);
     memset(reply, 0, sizeof(AJ_Message));
     reply->bus = methodCall->bus;
@@ -2220,7 +2359,20 @@ AJ_Status AJ_MarshalErrorMsg(const AJ_Message* methodCall, AJ_Message* reply, co
     reply->sessionId = methodCall->sessionId;
     reply->replySerial = methodCall->hdr->serialNum;
     reply->error = error;
-    return MarshalMsg(reply, AJ_MSG_ERROR, methodCall->msgId, methodCall->hdr->flags & AJ_FLAG_ENCRYPTED);
+    reply->ttl = 0;
+    if (info) {
+        reply->signature = "s";
+    }
+    status = MarshalMsg(reply, AJ_MSG_ERROR, methodCall->msgId, methodCall->hdr->flags & AJ_FLAG_ENCRYPTED);
+    if ((status == AJ_OK) && info) {
+        status = AJ_MarshalArgs(reply, "s", info);
+    }
+    return status;
+}
+
+AJ_Status AJ_MarshalErrorMsg(const AJ_Message* methodCall, AJ_Message* reply, const char* error)
+{
+    return AJ_MarshalErrorMsgWithInfo(methodCall, reply, error, NULL);
 }
 
 
@@ -2243,7 +2395,7 @@ AJ_Status AJ_MarshalStatusMsg(const AJ_Message* methodCall, AJ_Message* reply, A
         break;
 
     default:
-        status = AJ_MarshalErrorMsg(methodCall, reply, AJ_ErrRejected);
+        status = AJ_MarshalErrorMsgWithInfo(methodCall, reply, AJ_ErrRejected, AJ_StatusText(status));
         break;
     }
     return status;
