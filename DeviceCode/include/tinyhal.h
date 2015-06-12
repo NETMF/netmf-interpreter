@@ -648,8 +648,7 @@ void ApplicationEntryPoint();
 #define SYSTEM_EVENT_FLAG_OEM_RESERVED_1            0x00020000
 #define SYSTEM_EVENT_FLAG_OEM_RESERVED_2            0x00040000
 #define SYSTEM_EVENT_FLAG_IO                        0x00080000
-#define SYSTEM_EVENT_FLAG_UNUSED_0x00100000         0x00100000
-
+#define SYSTEM_EVENT_FLAG_OSTASK                    0x00100000
 
 #if defined(PLATFORM_SH7619_NATIVE) || defined(PLATFORM_SH7619_EVB)
 #define SYSTEM_EVENT_FLAG_ETHER                     0x00100000

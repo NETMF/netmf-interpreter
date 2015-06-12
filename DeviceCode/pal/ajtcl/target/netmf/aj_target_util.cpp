@@ -65,6 +65,12 @@ uint32_t AJ_GetElapsedTime(AJ_Time* timer, uint8_t cumulative)
 
     time = (INT64) timer->seconds * 1000 + timer->milliseconds;
 
+    UINT16 sec ;
+    UINT32 millisec;
+    sec = now /1000;
+    millisec = now %1000;
+    now = sec *1000 + millisec;
+
     elapsed = now - time;
 
     if (!cumulative) {

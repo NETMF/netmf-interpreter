@@ -6,6 +6,7 @@
 #define _DRIVERS_OSTASK_DECL_H_ 1
 
 //--//
+#include "Tinyhal.h"
 
 #include "ASyncProcCalls_decl.h"
 
@@ -16,19 +17,18 @@ typedef HAL_CALLBACK     OSTASK_CALLBACK;
 
 //--//
 
-struct OSTASK : public HAL_DblLinkedNode<OSTASK>
+struct OSTASK 
 {
 
 private:
     OSTASK_CALLBACK Callback;
     BOOL            Completed;
+    void *          threadHandle;
 
 public:
     void Initialize( OSTASK_CALLBACK_FPN EntryPoint, void* Argument = NULL )
     {
-        // initialize dbl linked list pointers
-        ((HAL_DblLinkedNode<OSTASK>*)this)->Initialize(); 
-        
+       
         Completed = FALSE;
         Callback.Initialize( EntryPoint, Argument);
     }

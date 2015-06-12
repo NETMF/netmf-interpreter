@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "tinyhal.h"
+#include "ostask_decl.h"
 
 /***************************************************************************/
 
@@ -26,7 +27,7 @@ DWORD ThreadProc(LPVOID lpdwThreadParam )
 
 static HAL_CALLBACK_FPN          g_ostask_completed   = NULL;
 static BOOL                      g_ostask_initialized = FALSE;
-static HAL_DblLinkedList<OSTASK> g_ostask_list; 
+static HANDLE                    g_Hthread;
 CRITICAL_SECTION                 g_ostask_lock; 
 
 //--//
@@ -37,12 +38,7 @@ BOOL OSTASK_Initialize( HAL_CALLBACK_FPN completed )
     // If one is using a thread pool, it would be initialized here... 
     //
     // 
-
-    //
-    // initialize the global task list
-    //
-    g_ostask_list.Initialize();
-    
+  
     InitializeCriticalSection( &g_ostask_lock );
 
     g_ostask_completed   = completed;
@@ -60,21 +56,6 @@ void OSTASK_Uninitialize()
     //
     // ...
 
-    // 
-    // Empty the list of tasks
-    // 
-    OSTASK* ptr = NULL;
-    while(TRUE)
-    {
-        // this will unlink from the list, so no notification for completed will be posted
-        ptr = (OSTASK*)g_ostask_list.ExtractFirstNode();
-        
-        if(!ptr)
-        {
-            break;
-        }
-    }
-    
     g_ostask_initialized = FALSE;
 
     LeaveCriticalSection( &g_ostask_lock );
@@ -95,10 +76,6 @@ BOOL OSTASK_Post( OSTASK* task )
     
     if(task->GetEntryPoint() != NULL)
     {
-        //
-        // Add task to list 
-        //
-        g_ostask_list.LinkAtBack( task );
         
         //
         // Create the executing thread
@@ -106,16 +83,13 @@ BOOL OSTASK_Post( OSTASK* task )
 
         DWORD dwThreadId = 0;
         
-        HANDLE h = CreateThread(   NULL,                                   // Choose default security
+        g_Hthread = CreateThread(   NULL,                        // Choose default security
                         0,                                      // Default stack size
                         (LPTHREAD_START_ROUTINE)&ThreadProc,    // Routine to execute                                                        
                         (LPVOID) task,                          // Thread parameter
                         0,                                      // Immediately run the thread
                         &dwThreadId                             // Thread Id 
                     );
-
-        CloseHandle( h );
-
         LeaveCriticalSection( &g_ostask_lock );
 
         return TRUE;
@@ -126,7 +100,9 @@ BOOL OSTASK_Post( OSTASK* task )
     return FALSE;    
 }
 
-
+// OSTASK_Cancel is called when the Task is run away that it is 
+// completely lost or loop forever in something that it is timeout
+// from itself, so we need to forcefully to kill the thread ungracefully
 BOOL OSTASK_Cancel( OSTASK* task )
 {
     NATIVE_PROFILE_PAL_ASYNC_PROC_CALL();
@@ -140,46 +116,8 @@ BOOL OSTASK_Cancel( OSTASK* task )
         return FALSE;
     }
     
-    //
-    // Find the task and release memory if it was cancelled
-    // if not, then mark the task as cancelled (unlink) and let 
-    // the task complete before releasing memory
-    OSTASK* current = (OSTASK*)g_ostask_list.FirstValidNode();
-    OSTASK* next    = NULL;
-    
-    while(current)
-    {
-        next = current->Next();
-
-        if(!(next && next->Next()))
-        {    
-            next = NULL;
-        }
-        
-        if(current == task) 
-        {
-            if(task->IsLinked())
-            {
-                // the task is in the list, which means that it may be executing
-                // remove the task from the list, but defer releasing memory
-                task->Unlink();
-            }
-            else
-            {
-                // this task was already cancelled, so it is safe to release memory 
-                if( task->GetArgument() ) 
-                {
-                    private_free( task->GetArgument() ); 
-                }
-                private_free( task );    
-            }
-
-            break;
-        }
-
-        current = next;
-    }
-    
+    TerminateThread(  g_Hthread, 0);
+    CloseHandle( g_Hthread );
     LeaveCriticalSection( &g_ostask_lock );
 
     return TRUE;    
@@ -200,35 +138,16 @@ void OSTASK_SignalCompleted( OSTASK* task )
         return;
     }
 
-    //
-    // Cancelled tasks are not linked...
-    // 
-    if(task->IsLinked()) 
-    {        
-        task->SetCompleted();
-        
-        task->Unlink();
-
-        if(g_ostask_completed != NULL) 
-        {
-            g_ostask_completed( task );
-        }  
-        
-        //
-        // Let the creator of the task to release memory
-        //
-        // ...
-    }
-    else
+    task->SetCompleted();
+    if(g_ostask_completed != NULL) 
     {
-        // this task was already cancelled, so it is safe to release memory 
-        if( task->GetArgument() ) 
-        {
-            private_free( task->GetArgument() ); 
-        }
-        private_free( task );    
-        
-    }
+        g_ostask_completed( task );
+    }  
+    Events_Set(SYSTEM_EVENT_FLAG_OSTASK);
+    //
+    // Let the creator of the task to release memory
+    //
+    // ...
     
     LeaveCriticalSection( &g_ostask_lock );
 }

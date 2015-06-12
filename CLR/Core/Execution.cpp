@@ -643,11 +643,7 @@ HRESULT CLR_RT_ExecutionEngine::CreateEntryPointArgs( CLR_RT_HeapBlock& argsBlk,
 
 #endif
 
-void SignalOSTaskCompleted( void* )
-{
-    g_CLR_RT_ExecutionEngine.SignalEvents( CLR_RT_ExecutionEngine::c_Event_OSTask );
-}
-    
+
 HRESULT CLR_RT_ExecutionEngine::Execute( LPWSTR entryPointArgs, int maxContextSwitch )
 {            
     NATIVE_PROFILE_CLR_CORE();
@@ -659,7 +655,7 @@ HRESULT CLR_RT_ExecutionEngine::Execute( LPWSTR entryPointArgs, int maxContextSw
     //
     // For external tasks, we will use one local handler
     //
-    OSTASK_Initialize( SignalOSTaskCompleted );
+    OSTASK_Initialize( NULL );
 
     if(TINYCLR_INDEX_IS_INVALID(g_CLR_RT_TypeSystem.m_entryPoint))
     {
@@ -1219,7 +1215,7 @@ HRESULT CLR_RT_ExecutionEngine::ScheduleThreads( int maxContextSwitch )
             }
         }
 
-        
+
 
         
         // If th->Next() is NULL, then there are no Ready to run threads in the system.

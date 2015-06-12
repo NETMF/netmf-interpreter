@@ -26,7 +26,7 @@
 
 #include "spot_alljoyn_native.h"
 
-#define AJ_InfoPrintf(_msg)
+//#define AJ_InfoPrintf(_msg)
 #define NUM_TEXTS   1
 
 #endif // _TINYCLR_SPOT_ALLJOYN_H_

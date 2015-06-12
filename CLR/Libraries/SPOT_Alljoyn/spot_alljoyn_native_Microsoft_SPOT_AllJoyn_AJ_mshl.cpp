@@ -1,12 +1,23 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#define AJ_MODULE SPOT_CLR_AJ
+
+#if defined(PLATFORM_ARM)
+#undef  NDEBUG
+#define AJ_DEBUG_RESTRICT AJ_DEBUG_INFO
+#define AJ_PRINTF   1
+#endif
 
 #include "spot_alljoyn.h"
 
 
 extern AJ_Status MarshalDefaultProps(AJ_Message* msg);
 extern AJ_Status MarshalObjectDescriptions(AJ_Message* msg);
+
+#ifndef NDEBUG
+uint8_t dbgSPOT_CLR_AJ = 0;
+#endif
 
 //--//
 
@@ -273,7 +284,7 @@ AJ_Status CustomStartService(   AJ_BusAttachment*     bus,
     AJ_Status status          = AJ_OK;
 
     AJ_InfoPrintf(("AJ_StartService(bus=0x%p, daemonName=\"%s\", timeout=%d., connected=%d., port=%d., name=\"%s\", flags=0x%x, opts=0x%p)\n",
-                   bus, daemonName, timeout, connected, port, name, flags, opts));
+                   bus, daemonName, timeout, fConnected, port, name, flags, opts));
 
     AJ_InitTimer(&timer);
 
@@ -284,6 +295,7 @@ AJ_Status CustomStartService(   AJ_BusAttachment*     bus,
     {
         if( AJ_GetElapsedTime( &timer, TRUE ) > timeout ) 
         {
+            AJ_InfoPrintf(("AJ_StartService():Timeout disconnect \r\n"));
             return AJ_ERR_TIMEOUT;
         }
 
@@ -293,7 +305,7 @@ AJ_Status CustomStartService(   AJ_BusAttachment*     bus,
         if(!fConnected) 
         {
             AJ_InfoPrintf(("AJ_StartService(): AJ_FindBusAndConnect()\n"));
-            
+           
             status = AJ_FindBusAndConnect( bus, daemonName, AJ_CONNECT_TIMEOUT );
             
             if(status != AJ_OK) 
@@ -406,7 +418,7 @@ AJ_Status CustomStartService(   AJ_BusAttachment*     bus,
         
         AJ_Disconnect(bus);
     }
-        
+
     return status;
 }
 
@@ -414,9 +426,10 @@ void StartServiceCallback( void* context )
 {
     DiscoveryContext* dc = (DiscoveryContext*)context;
 
-    dc->_status = CustomStartService( dc->_bus, dc->_pDaemonName, dc->_timeout, dc->_fConnected, dc->_port, dc->_serviceName, dc->_flags, NULL); 
+    dc->_status = AJ_StartService( dc->_bus, dc->_pDaemonName, dc->_timeout, dc->_fConnected, dc->_port, dc->_serviceName, dc->_flags, NULL); 
 }
 
+static BOOL g_ajDiscoverStarted= FALSE;
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__I1__U2__STRING__U4( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER();
@@ -454,7 +467,13 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
  
     {
         CLR_RT_HeapBlock hbTimeout;
-        hbTimeout.SetInteger( timeout );        
+
+        // has to set it longer than the AJ_CONNECT_TIMEOUT, otherwise it will timeout much quicker than the discovery time.
+        // adding extra 300ms for extra factor.Extra 300 for overhead
+        if (timeout < (AJ_CONNECT_TIMEOUT+300))
+            timeout = (AJ_CONNECT_TIMEOUT+ 300);
+           
+        hbTimeout.SetInteger( timeout);        
         TINYCLR_CHECK_HRESULT(stack.SetupTimeout( hbTimeout, timeoutTicks ));
     }
     
@@ -463,6 +482,13 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     //
     if(stack.m_customState == 1)
     {   
+        // there is StartService already started and not yet finished.
+        // StartService/StartClient should be singleton 
+        if (g_ajDiscoverStarted) 
+        {
+            TINYCLR_SET_AND_LEAVE( CLR_E_BUSY );
+        }
+
         task    = (OSTASK*)private_malloc( sizeof(OSTASK) );        
         context = (DiscoveryContext*)private_malloc( sizeof(DiscoveryContext) ); 
         
@@ -474,13 +500,18 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         //
         stack.PushValueAndClear(); 
         stack.m_evalStack[ 1 ].NumericByRef().u4 = (CLR_UINT32)task;
-        
         stack.m_customState = 2;
         
         //
         // post to the underlying sub-system
         //
-        OSTASK_Post( task ); 
+        // for cleaning the taskevent that may be set at previously.
+        g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled );
+        if (OSTASK_Post( task ) == FALSE)
+             TINYCLR_SET_AND_LEAVE( CLR_E_FAIL );
+        
+        // when Task posted , set g_ajDiscoverStarted to TRUE;
+        g_ajDiscoverStarted = TRUE; 
     }
         
     //
@@ -493,51 +524,56 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     // wait for completion, fRes will tell us about timeout being expired
     //
     fSignaled = true;
+
     while(task->HasCompleted() == FALSE)
     {
         TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled ));
 
-        // 
-        // assert that we did returned with a timeout
-        // 
-        _ASSERTE( (fSignaled == true)); 
-
-        // 
-        // Task may not be completed for this thread, so should check again 
-        // and eventually wait again
-        //
-    }
+        // if timeout without c_Event_Otask, then the StartService was looped forever in unknown cause, 
+        // has to kill the thread.
+        if(fSignaled == false)
+        {
+            break;
+        }
+   }
 
     //
-    // We either completed succesfully or with timeout 
+    // We either completed(with or without successfully established the conneciton) or timeout
     // 
-    if(fSignaled == false)
+ 
+    if ((fSignaled == false) && (!task->HasCompleted()))
     {
+        // this is undesiable timeout that task thread is not time out and non-completed. 
+        // we have to force a timeout, which may ends to an unrecoverable AJ-startService.
         status = AJ_ERR_TIMEOUT;
         
         //
-        // timeout happened, inform the underlying sub-system that processing is over 
+        // timeout of waitEvent happened but not task completed, ie. the timeout of findBusandAttachement wasn't happened,
+        // something goes very wrong.
         //
+        // Should signal the task to kill itself, rather then kill it here.
         OSTASK_Cancel( task );
     }
-    else
+    else 
     {
         status = context->_status;
-
         _ASSERTE( task->HasCompleted() ); 
         
-        // this task is now fully executed, so it is safe to release memory 
-        if( task->GetArgument() ) 
-        {
-            private_free( task->GetArgument() ); 
-        }
-        private_free( task );    
     }
+
+    // this task is now fully executed or foreced terminated, free it then.
+    if( task->GetArgument() ) 
+    {
+        private_free( task->GetArgument() ); 
+    }
+    private_free( task );    
     
     stack.PopValue(); // task   
     stack.PopValue(); // Timeout
-
     stack.SetResult_I4( status );        
+
+    //it is done.
+    g_ajDiscoverStarted = FALSE; 
 
     TINYCLR_NOCLEANUP();
 }
