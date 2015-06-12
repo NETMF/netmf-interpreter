@@ -12,6 +12,9 @@ extern AJ_Status MarshalObjectDescriptions(AJ_Message* msg);
 
 const int ARG_POOL_SIZE = 10;
 const int MAX_PWD_LENGTH = 16;
+const int MAX_HINT_LENGTH = 255;
+const int MAX_CERT_LENGTH = 1024;
+const int MAX_NUM_SECURITY_SUITES = 3;
 
 //--//
 
@@ -19,8 +22,20 @@ static AJ_BusAttachment BusInstance;
 static AJ_Arg           ArgPool[ARG_POOL_SIZE];
 static bool             ArgInUse[ARG_POOL_SIZE] = {0};
 static char             PwdText[MAX_PWD_LENGTH] = "";
+static char             PskHint[MAX_HINT_LENGTH] = "";
+static char             PskChar[MAX_CERT_LENGTH] = "";
+static char             PskCert[MAX_CERT_LENGTH] = "";
+static char             PemPrv[MAX_CERT_LENGTH] = "";
+static char             PemX509[MAX_CERT_LENGTH] = "";
 
 //--//
+
+static CLR_UINT32 KeyExpiration = 0;
+static ecc_privatekey Prv;
+static X509CertificateChain* Chain = NULL;
+static int SecuritySuites[MAX_NUM_SECURITY_SUITES] = {0};
+static int NumSecuritySuites = 0;
+
 //--//
 //--//
 
@@ -452,6 +467,8 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
     }
  
+    //status = CustomStartService( bus, daemonName, timeout, fConnected, port, serviceName, flags, NULL); 
+    
     {
         CLR_RT_HeapBlock hbTimeout;
         hbTimeout.SetInteger( timeout );        
@@ -500,7 +517,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
         // 
         // assert that we did returned with a timeout
         // 
-        _ASSERTE( (fSignaled == true)); 
+        //_ASSERTE( (fSignaled == true)); 
 
         // 
         // Task may not be completed for this thread, so should check again 
@@ -536,7 +553,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     
     stack.PopValue(); // task   
     stack.PopValue(); // Timeout
-
+    
     stack.SetResult_I4( status );        
 
     TINYCLR_NOCLEANUP();
@@ -619,6 +636,91 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
     TINYCLR_NOCLEANUP();
 }
 
+static AJ_Status AuthListenerCallback(CLR_UINT32 authmechanism, CLR_UINT32 command, AJ_Credential * cred)
+{
+    AJ_Status status = AJ_ERR_INVALID;
+    X509CertificateChain* node;
+
+    AJ_AlwaysPrintf(("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command));
+
+    switch (authmechanism) {
+    case AUTH_SUITE_ECDHE_NULL:
+        cred->expiration = KeyExpiration;
+        status = AJ_OK;
+        break;
+    //------------------------------
+        
+    case AUTH_SUITE_ECDHE_PSK:
+        switch (command) {
+        case AJ_CRED_PUB_KEY:
+            cred->data = (uint8_t*) PskHint;
+            cred->len = strlen(PskHint);
+            cred->expiration = KeyExpiration;
+            status = AJ_OK;
+            break;
+
+        case AJ_CRED_PRV_KEY:
+            cred->data = (uint8_t*) PskChar;
+            cred->len = strlen(PskChar);
+            cred->expiration = KeyExpiration;
+            status = AJ_OK;
+            break;
+        }
+        break;
+    //------------------------------
+    
+    case AUTH_SUITE_ECDHE_ECDSA:
+        switch (command) {
+        case AJ_CRED_PRV_KEY:
+            cred->len = sizeof (ecc_privatekey);
+            status = AJ_DecodePrivateKeyPEM(&Prv, PemPrv);
+            if (AJ_OK != status) {
+                return status;
+            }
+            cred->data = (uint8_t*) &Prv;
+            cred->expiration = KeyExpiration;
+            break;
+
+        case AJ_CRED_CERT_CHAIN:
+            switch (cred->direction) {
+            case AJ_CRED_REQUEST:
+                // Free previous certificate chain
+                while (Chain) {
+                    node = Chain;
+                    Chain = Chain->next;
+                    AJ_Free(node->certificate.der.data);
+                    AJ_Free(node);
+                }
+                Chain = AJ_X509DecodeCertificateChainPEM(PemX509);
+                if (NULL == Chain) {
+                    return AJ_ERR_INVALID;
+                }
+                cred->data = (uint8_t*) Chain;
+                cred->expiration = KeyExpiration;
+                status = AJ_OK;
+                break;
+
+            case AJ_CRED_RESPONSE:
+                node = (X509CertificateChain*) cred->data;
+                while (node) {
+                    AJ_DumpBytes("CERTIFICATE", node->certificate.der.data, node->certificate.der.size);
+                    node = node->next;
+                }
+                status = AJ_OK;
+                break;
+            }
+            break;
+        }
+        break;
+    //------------------------------
+    
+    default:
+        break;
+    //------------------------------
+    }
+    return status;
+}
+
 static CLR_UINT32 PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
 {    
     int pwdLen = hal_strlen_s( PwdText );
@@ -662,24 +764,170 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentica
     TINYCLR_NOCLEANUP();
 }
 
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::EnableSecurity___MicrosoftSPOTAllJoynAJStatus__U4__SZARRAY_I4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {        
+        
+        AJ_BusAttachment* bus                       = NULL;    
+        CLR_RT_HeapBlock_Array * securitySuites     = NULL;
+        
+        TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );        
+        securitySuites = stack.Arg2().DereferenceArray() ;  FAULT_ON_NULL(securitySuites);   
+        
+        NumSecuritySuites = 0;
+        for(int i=0; i<MAX_NUM_SECURITY_SUITES; i ++)
+        {
+            SecuritySuites[i] = 0;
+        }
+        
+        NumSecuritySuites = securitySuites->m_numOfElements;
+        for(int i=0; i<securitySuites->m_numOfElements; i ++)
+        {
+            SecuritySuites[i] = * (CLR_UINT32 *) securitySuites->GetElement(i);
+        }
+        
+        AJ_Status status = AJ_BusEnableSecurity(bus, (const CLR_UINT32 *)SecuritySuites, NumSecuritySuites);
+        
+        AJ_BusSetAuthListenerCallback(bus, AuthListenerCallback);
+        
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, status );
+        
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClearCredentials___MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        INT32 retVal = AJ_ClearCredentials( );
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, retVal );
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+AJ_Status AuthPeerStatus = AJ_ERR_NULL;
+
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AuthenticatePeer___MicrosoftSPOTAllJoynAJStatus__U4__STRING( CLR_RT_StackFrame& stack )
 {
     TINYCLR_HEADER(); hr = S_OK;
     {
         AJ_BusAttachment * bus;
         LPCSTR fullServiceName = NULL;         
-        AJ_Status authStatus = AJ_ERR_NULL;
         
         TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
         fullServiceName = stack.Arg2().RecoverString();    
             
-        authStatus = AJ_BusAuthenticatePeer(bus, fullServiceName, AuthCallback, &authStatus);
+        AJ_Status status = AJ_BusAuthenticatePeer(bus, fullServiceName, AuthCallback, &AuthPeerStatus);
         TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, authStatus );
-
+        SetResult_INT32( stack, status );
     }
     TINYCLR_NOCLEANUP();
 }
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetAuthStatus___MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {        
+        TINYCLR_CHECK_HRESULT( hr );
+        SetResult_INT32( stack, AuthPeerStatus );
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetAuthStatus___VOID__MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER(); hr = S_OK;
+    {
+        AJ_Status authStatus = (AJ_Status)stack.Arg1().NumericByRef().u4;            
+        AuthPeerStatus = authStatus;
+    }
+    TINYCLR_NOCLEANUP();
+}
+
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPskHint___VOID__STRING( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+
+    LPCSTR pskHintText = stack.Arg1().RecoverString();
+    FAULT_ON_NULL(pskHintText);
+    
+    if ( hal_strlen_s(pskHintText) >= MAX_HINT_LENGTH )
+    {
+        TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
+    }
+    
+    hal_strcpy_s( PskHint, sizeof(PskHint), pskHintText );
+        
+    TINYCLR_NOCLEANUP();  
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPskString___VOID__STRING( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+
+    LPCSTR pskText = stack.Arg1().RecoverString();
+    FAULT_ON_NULL(pskText);
+    
+    if ( hal_strlen_s(pskText) >= MAX_CERT_LENGTH )
+    {
+        TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
+    }
+    
+    hal_strcpy_s( PskChar, sizeof(PskChar), pskText );
+        
+    TINYCLR_NOCLEANUP();  
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPemPrivString___VOID__STRING( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+
+    LPCSTR pemPrvText = stack.Arg1().RecoverString();
+    FAULT_ON_NULL(pemPrvText);
+    
+    if ( hal_strlen_s(pemPrvText) >= MAX_CERT_LENGTH )
+    {
+        TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
+    }
+    
+    hal_strcpy_s( PemPrv, sizeof(PemPrv), pemPrvText );
+        
+    TINYCLR_NOCLEANUP();          
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPemX509String___VOID__STRING( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+
+    LPCSTR x509Text = stack.Arg1().RecoverString();
+    FAULT_ON_NULL(x509Text);
+    
+    if ( hal_strlen_s(x509Text) >= MAX_CERT_LENGTH )
+    {
+        TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
+    }
+    
+    hal_strcpy_s( PemX509, sizeof(PemX509), x509Text );
+        
+    TINYCLR_NOCLEANUP();           
+}
+
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetKeyExpiration___VOID__U4( CLR_RT_StackFrame& stack )
+{
+    TINYCLR_HEADER();
+    
+    KeyExpiration  = stack.Arg1().NumericByRef().u4;    
+
+    TINYCLR_NOCLEANUP();
+}
+
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetPassphrase___VOID__STRING( CLR_RT_StackFrame& stack )
 {
@@ -1161,6 +1409,8 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::RegisterObjects__
     
     DeserializeInterfaceString( ifaces, theInterface );
     
+    debug_printf("%s\n",theInterface);
+    
     if (fLocal == true)
     {
         if (fUseProperties == true)
@@ -1187,7 +1437,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::RegisterObjects__
             };
             
             static const AJ_Object appLocalObjects[] = {
-                { path, localInterfaces, AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED  },  // make them announceable
+                { path, localInterfaces /*, AJ_OBJ_FLAG_ANNOUNCED | AJ_OBJ_FLAG_DESCRIBED */  },  // make them announceable
                 { NULL }
             };
             
