@@ -14,6 +14,11 @@
 #include <aj_helper.h>
 #include <aj_debug.h>
 #include <aj_link_timeout.h>
+#include <aj_crypto_ecc.h>
+#include <aj_cert.h>
+#include <aj_creds.h>
+#include <aj_peer.h>
+#include <aj_authentication.h>
 
 #include <alljoyn/services_common/ServicesCommon.h>
 #include <alljoyn/notification/NotificationCommon.h>
