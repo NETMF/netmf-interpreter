@@ -48,6 +48,7 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::get_Debounc
 {
     TINYCLR_HEADER();
 
+    GPIO_PIN pin;
     CLR_INT64 value;
     CLR_RT_HeapBlock* pThis = stack.This(); FAULT_ON_NULL(pThis);
 
@@ -56,7 +57,8 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::get_Debounc
         TINYCLR_SET_AND_LEAVE(CLR_E_OBJECT_DISPOSED);
     }
 
-    value = (CLR_INT64)::CPU_GPIO_GetDebounce() * TIME_CONVERSION__TO_MILLISECONDS;
+    pin = (GPIO_PIN)( pThis[ FIELD__m_pinNumber ].NumericByRefConst().u4 );
+    value = (CLR_INT64)::CPU_GPIO_GetPinDebounce( pin ) * TIME_CONVERSION__TO_MILLISECONDS;
     stack.SetResult_I8( value );
     stack.TopValue().ChangeDataType( DATATYPE_TIMESPAN );
 
@@ -67,6 +69,7 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::set_Debounc
 {
     TINYCLR_HEADER();
 
+    GPIO_PIN pin;
     CLR_INT64 value;
     CLR_RT_HeapBlock* pThis = stack.This(); FAULT_ON_NULL(pThis);
 
@@ -76,12 +79,11 @@ HRESULT Library_windows_devices_native_Windows_Devices_Gpio_GpioPin::set_Debounc
     }
 
     value = (CLR_INT64_TEMP_CAST) stack.Arg1().NumericByRef().s8 / TIME_CONVERSION__TO_MILLISECONDS;
-
-    // TODO: Issue #101 Set debounce individually per pin once the HAL has that capability.
-    //if (!::CPU_GPIO_SetDebounce( value ))
-    //{
-    //    TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_PARAMETER);
-    //}
+    pin = (GPIO_PIN)( pThis[ FIELD__m_pinNumber ].NumericByRefConst().u4 );
+    if (!::CPU_GPIO_SetPinDebounce( pin, value ))
+    {
+        TINYCLR_SET_AND_LEAVE(CLR_E_INVALID_PARAMETER);
+    }
     TINYCLR_SET_AND_LEAVE(stack.NotImplementedStub());
 
     TINYCLR_NOCLEANUP();

@@ -494,3 +494,14 @@ UINT8 CPU_GPIO_GetSupportedInterruptModes( GPIO_PIN pin )
     return ( 1 << GPIO_INT_EDGE_LOW ) | ( 1 << GPIO_INT_EDGE_HIGH ) | ( 1 << GPIO_INT_EDGE_BOTH )
         | ( 1 << GPIO_INT_LEVEL_LOW ) | ( 1 << GPIO_INT_LEVEL_HIGH );
 }
+
+UINT32 CPU_GPIO_GetPinDebounce( GPIO_PIN Pin )
+{
+    return 0;
+}
+
+BOOL CPU_GPIO_SetPinDebounce( GPIO_PIN Pin, INT64 debounceTimeMilliseconds )
+{
+    return FALSE;
+}
+

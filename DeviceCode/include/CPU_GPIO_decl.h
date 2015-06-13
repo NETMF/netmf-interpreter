@@ -73,7 +73,7 @@ UINT8  CPU_GPIO_GetSupportedResistorModes(GPIO_PIN pin );
 UINT8  CPU_GPIO_GetSupportedInterruptModes(GPIO_PIN pin );
 
 UINT32 CPU_GPIO_GetPinDebounce( GPIO_PIN Pin );
-BOOL   CPU_GPIO_SePinDebounce( GPIO_PIN Pin, INT64 debounceTimeMilliseconds );
+BOOL   CPU_GPIO_SetPinDebounce( GPIO_PIN Pin, INT64 debounceTimeMilliseconds );
 
 #endif // _DRIVERS_GPIO_DECL_H_
 
