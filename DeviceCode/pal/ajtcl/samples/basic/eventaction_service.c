@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -20,6 +20,8 @@
 
 #include <stdio.h>
 #include <aj_debug.h>
+#include <aj_guid.h>
+#include <aj_creds.h>
 #include "alljoyn.h"
 
 #define CONNECT_ATTEMPTS   10
@@ -67,11 +69,10 @@ static const char* const someSessionlessSignalDesc[] = { "An example sessionless
 #define SAMPLE_SOMESIGNAL_ARG_DESC          AJ_DESCRIPTION_ID(SAMPLE_OBJECT_ID, 1, 3, 1)
 #define SAMPLE_SOMESESSIONLESSSIGNAL_DESC   AJ_DESCRIPTION_ID(SAMPLE_OBJECT_ID, 1, 4, 0)
 
-static const char* const languages[] = { "en", "es" };
+static const char* const languages[] = { "en", "es", NULL };
 
 static const char* MyTranslator(uint32_t descId, const char* lang) {
     uint8_t langIndex;
-    const char* const* tempLanguages;
 
     /* Compute the location of lang in our languages array */
     langIndex = 0;
@@ -119,6 +120,93 @@ static const char* MyTranslator(uint32_t descId, const char* lang) {
     return NULL;
 }
 
+static AJ_Status MyAboutPropGetter(AJ_Message* reply, const char* language)
+{
+    AJ_Status status = AJ_OK;
+    AJ_Arg array;
+    AJ_GUID guid;
+    char guidStr[16 * 2 + 1];
+    uint8_t appId[16];
+    guidStr[16 * 2] = '\0';
+
+    if ((language != NULL) && (0 != strcmp(language, languages[0])) && (0 != strcmp(language, languages[1])) && (0 != strcmp(language, ""))) {
+        /* the language supplied was not supported */
+        return AJ_ERR_NO_MATCH;
+    }
+
+    status = AJ_GetLocalGUID(&guid);
+    if (status != AJ_OK) {
+        return status;
+    }
+    AJ_GUID_ToString(&guid, guidStr, sizeof(guidStr));
+    status = AJ_HexToRaw(guidStr, 0, appId, 16);
+    if (status != AJ_OK) {
+        return status;
+    }
+
+    status = AJ_MarshalContainer(reply, &array, AJ_ARG_ARRAY);
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "AppId", "ay", appId, 16);
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "AppName", "s", "eventaction_service");
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "DeviceId", "s", guidStr);
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "DeviceName", "s", "Tester");
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "Manufacturer", "s", "QCE");
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "ModelNumber", "s", "1.0");
+    }
+    //SupportedLanguages
+    if (status == AJ_OK) {
+        AJ_Arg dict;
+        AJ_Arg languageListArray;
+        status = AJ_MarshalContainer(reply, &dict, AJ_ARG_DICT_ENTRY);
+        if (status == AJ_OK) {
+            status = AJ_MarshalArgs(reply, "s", "SupportedLanguages");
+        }
+        if (status == AJ_OK) {
+            status = AJ_MarshalVariant(reply, "as");
+        }
+        if (status == AJ_OK) {
+            status = AJ_MarshalContainer(reply, &languageListArray, AJ_ARG_ARRAY);
+        }
+        if (status == AJ_OK) {
+            status = AJ_MarshalArgs(reply, "s", languages[0]);
+        }
+        if (status == AJ_OK) {
+            status = AJ_MarshalArgs(reply, "s", languages[1]);
+        }
+        if (status == AJ_OK) {
+            status = AJ_MarshalCloseContainer(reply, &languageListArray);
+        }
+        if (status == AJ_OK) {
+            status = AJ_MarshalCloseContainer(reply, &dict);
+        }
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "Description", "s", "eventaction_service test app");
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "DefaultLanguage", "s", languages[0]);
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "SoftwareVersion", "s", AJ_GetVersion());
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalArgs(reply, "{sv}", "AJSoftwareVersion", "s", AJ_GetVersion());
+    }
+    if (status == AJ_OK) {
+        status = AJ_MarshalCloseContainer(reply, &array);
+    }
+    return status;
+}
 
 /**
  * A NULL terminated collection of all interfaces.
@@ -133,7 +221,7 @@ static const AJ_InterfaceDescription sampleInterfaces[] = {
  * The second is the collection of all interfaces at that path.
  */
 static const AJ_Object AppObjects[] = {
-    { ServicePath, sampleInterfaces, 0, NULL },
+    { ServicePath, sampleInterfaces, AJ_OBJ_FLAG_DESCRIBED, NULL },
     { NULL }
 };
 
@@ -196,6 +284,7 @@ int AJ_Main(void)
     AJ_RegisterDescriptionLanguages(languages);
 
     AJ_RegisterObjectListWithDescriptions(AppObjects, 1, MyTranslator);
+    AJ_AboutRegisterPropStoreGetter(MyAboutPropGetter);
 
     /* This is for debug purposes and is optional. */
     AJ_AlwaysPrintf(("XML with no Descriptions\n"));
@@ -240,7 +329,7 @@ int AJ_Main(void)
                     char* joiner;
                     AJ_UnmarshalArgs(&msg, "qus", &port, &sessionId, &joiner);
                     status = AJ_BusReplyAcceptSession(&msg, TRUE);
-                    AJ_InfoPrintf(("Accepted session session_id=%u joiner=%s\n", sessionId, joiner));
+                    AJ_AlwaysPrintf(("Accepted session session_id=%u joiner=%s\n", sessionId, joiner));
                 }
                 break;
 
@@ -249,13 +338,11 @@ int AJ_Main(void)
                 break;
 
             case AJ_SIGNAL_SESSION_LOST_WITH_REASON:
-                /* Session was lost so return error to force a disconnect. */
                 {
                     uint32_t id, reason;
                     AJ_UnmarshalArgs(&msg, "uu", &id, &reason);
-                    AJ_AlwaysPrintf(("Session lost. ID = %u, reason = %u", id, reason));
+                    AJ_AlwaysPrintf(("Session lost. ID = %u, reason = %u\n", id, reason));
                 }
-                status = AJ_ERR_SESSION_LOST;
                 break;
 
             default:
@@ -268,7 +355,7 @@ int AJ_Main(void)
         /* Messages MUST be discarded to free resources. */
         AJ_CloseMsg(&msg);
 
-        if (status == AJ_ERR_SESSION_LOST) {
+        if (status == AJ_ERR_READ) {
             AJ_AlwaysPrintf(("AllJoyn disconnect.\n"));
             AJ_Disconnect(&bus);
             connected = FALSE;

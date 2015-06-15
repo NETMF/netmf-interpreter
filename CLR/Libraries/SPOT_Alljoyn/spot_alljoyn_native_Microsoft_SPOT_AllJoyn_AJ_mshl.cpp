@@ -479,9 +479,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     {
         TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
     }
- 
-    //status = CustomStartService( bus, daemonName, timeout, fConnected, port, serviceName, flags, NULL); 
-    
+     
     {
         CLR_RT_HeapBlock hbTimeout;
 

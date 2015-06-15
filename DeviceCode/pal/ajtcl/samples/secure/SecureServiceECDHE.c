@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -28,6 +28,7 @@
 #include "aj_peer.h"
 #include "aj_creds.h"
 #include "aj_auth_listener.h"
+#include "aj_authentication.h"
 #include "aj_util.h"
 
 uint8_t dbgSECURE_SERVICE = 1;
@@ -117,53 +118,37 @@ static AJ_Status AppHandlePing(AJ_Message* msg)
     return status;
 }
 
-//static const char psk_b64[] = "EBESExQVFhcYGRobHB0eHw==";
-//static uint8_t psk[16];
-static const char psk_hint[] = "bob";
-static const char psk_char[] = "123456";
-static const char ecc_pub_b64[] = "C/KGAyLE5jyVqHEipZBhPb7Ahj/MBdNLtpDvT9OJ0LYAAAAAn8QabXetJcPD7OWmEB6uXGXh+ftJOLlCTJhAHjTJsDkAAAAAAAAAAA==";
-static const char ecc_prv_b64[] = "wxieVOfgCMgys3m+V82eV/B/p0WlIMu8fizZiqMQnYsAAAAA";
-static const char owner_cert1_b64[] = "\
-AAAAAUQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAL8oYDIsTmPJWocSKlkGE9\
-vsCGP8wF00u2kO9P04nQtgAAAACfxBptd60lw8Ps5aYQHq5cZeH5+0k4uUJMmEAe\
-NMmwOQAAAAAAAAAAAAAAAAAAAAAAAAAA/////wBOnWRZjvJdd9adaDleMIDQJOJC\
-OuSepUTdfamDakEy/s6dN/ePP+iDV96kBT0XkQfNKiyfGbPf+ux6a2mx48/rAAAA\
-AGfrER3HqAGYic+k8B/iIWUyJy414G+4+tTklxFAatmmAAAAAA==";
-static const char owner_cert2_b64[] = "\
-AAAAAkQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAL8oYDIsTmPJWocSKlkGE9\
-vsCGP8wF00u2kO9P04nQtgAAAACfxBptd60lw8Ps5aYQHq5cZeH5+0k4uUJMmEAe\
-NMmwOQAAAAAAAAAAAAAAAAAAAAAAAAAA/////wD5/PM2YlgaDcbxM2GD2BntTp1k\
-WY7yXXfWnWg5XjCA0CTiQjrknqVE3X2pg2pBMv7ZCwVue216z7QXomTSt4nPyFum\
-tj2XcycgTidW60XeVAAAAADCAWDa119gVqq2GOiteOKBaM7huRPUOl+ytTMQQpCj\
-WAAAAAA=";
-static ecc_publickey ecc_pub;
-static ecc_privatekey ecc_prv;
-static AJ_Certificate root_cert;
-
-static const char* issuers[] = {
-    "RCf5ihem02VFXvIa8EVJ1CJcJns3el0IH+H51s07rc0AAAAAn6KJifUPH1oRmPLoyBHGCg7/NT8kW67GD8kQjZh/U/AAAAAAAAAAAA==",
-    "nUsoaWelVW1XhJrVNQuzEYlH0LndSrkAfd/GrEmM11gAAAAAChtt28EprD14ejHuj181s3m6y5nDxeRI9KaKmKRgI8kAAAAAAAAAAA=="
+// Copied from alljoyn/alljoyn_core/test/bbservice.cc
+static const char pem_prv[] = {
+    "-----BEGIN EC PRIVATE KEY-----"
+    "MDECAQEEIICSqj3zTadctmGnwyC/SXLioO39pB1MlCbNEX04hjeioAoGCCqGSM49"
+    "AwEH"
+    "-----END EC PRIVATE KEY-----"
 };
 
-static AJ_Status IsTrustedIssuer(const char* issuer)
-{
-    size_t i;
-    for (i = 0; i < 2; i++) {
-        if (0 == strncmp(issuer, issuers[i], strlen(issuers[i]))) {
-            return AJ_OK;
-        }
-    }
-    return AJ_ERR_SECURITY;
-}
+static const char pem_x509[] = {
+    "-----BEGIN CERTIFICATE-----"
+    "MIIBWjCCAQGgAwIBAgIHMTAxMDEwMTAKBggqhkjOPQQDAjArMSkwJwYDVQQDDCAw"
+    "ZTE5YWZhNzlhMjliMjMwNDcyMGJkNGY2ZDVlMWIxOTAeFw0xNTAyMjYyMTU1MjVa"
+    "Fw0xNjAyMjYyMTU1MjVaMCsxKTAnBgNVBAMMIDZhYWM5MjQwNDNjYjc5NmQ2ZGIy"
+    "NmRlYmRkMGM5OWJkMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEP/HbYga30Afm"
+    "0fB6g7KaB5Vr5CDyEkgmlif/PTsgwM2KKCMiAfcfto0+L1N0kvyAUgff6sLtTHU3"
+    "IdHzyBmKP6MQMA4wDAYDVR0TBAUwAwEB/zAKBggqhkjOPQQDAgNHADBEAiAZmNVA"
+    "m/H5EtJl/O9x0P4zt/UdrqiPg+gA+wm0yRY6KgIgetWANAE2otcrsj3ARZTY/aTI"
+    "0GOQizWlQm8mpKaQ3uE="
+    "-----END CERTIFICATE-----"
+};
 
+static const char psk_hint[] = "<anonymous>";
+static const char psk_char[] = "faaa0af3dd3f1e0379da046a3ab6ca44";
+static X509CertificateChain* chain = NULL;
+static ecc_privatekey prv;
 static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, AJ_Credential*cred)
 {
     AJ_Status status = AJ_ERR_INVALID;
-    uint8_t b8[sizeof (AJ_Certificate)];
-    char b64[400];
-    AJ_Printf("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command);
+    X509CertificateChain* node;
+
+    AJ_AlwaysPrintf(("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command));
 
     switch (authmechanism) {
     case AUTH_SUITE_ECDHE_NULL:
@@ -174,18 +159,13 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
     case AUTH_SUITE_ECDHE_PSK:
         switch (command) {
         case AJ_CRED_PUB_KEY:
-            break; // Don't use username - use anon
-            cred->mask = AJ_CRED_PUB_KEY;
             cred->data = (uint8_t*) psk_hint;
             cred->len = strlen(psk_hint);
+            cred->expiration = keyexpiration;
             status = AJ_OK;
             break;
 
         case AJ_CRED_PRV_KEY:
-            if (AJ_CRED_PUB_KEY == cred->mask) {
-                AJ_Printf("Request Credentials for PSK ID: %s\n", cred->data);
-            }
-            cred->mask = AJ_CRED_PRV_KEY;
             cred->data = (uint8_t*) psk_char;
             cred->len = strlen(psk_char);
             cred->expiration = keyexpiration;
@@ -196,50 +176,44 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
 
     case AUTH_SUITE_ECDHE_ECDSA:
         switch (command) {
-        case AJ_CRED_PUB_KEY:
-            status = AJ_B64ToRaw(ecc_pub_b64, strlen(ecc_pub_b64), b8, sizeof (b8));
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePublicKey(&ecc_pub, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PUB_KEY;
-            cred->data = (uint8_t*) &ecc_pub;
-            cred->len = sizeof (ecc_pub);
-            cred->expiration = keyexpiration;
-            break;
-
         case AJ_CRED_PRV_KEY:
-            status = AJ_B64ToRaw(ecc_prv_b64, strlen(ecc_prv_b64), b8, sizeof (b8));
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePrivateKey(&ecc_prv, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PRV_KEY;
-            cred->data = (uint8_t*) &ecc_prv;
-            cred->len = sizeof (ecc_prv);
+            cred->len = sizeof (ecc_privatekey);
+            status = AJ_DecodePrivateKeyPEM(&prv, pem_prv);
+            if (AJ_OK != status) {
+                return status;
+            }
+            cred->data = (uint8_t*) &prv;
             cred->expiration = keyexpiration;
             break;
 
         case AJ_CRED_CERT_CHAIN:
-            status = AJ_B64ToRaw(owner_cert1_b64, strlen(owner_cert1_b64), b8, sizeof (b8));
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodeCertificate(&root_cert, b8, sizeof (b8));
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_CERT_CHAIN;
-            cred->data = (uint8_t*) &root_cert;
-            cred->len = sizeof (root_cert);
-            break;
+            switch (cred->direction) {
+            case AJ_CRED_REQUEST:
+                // Free previous certificate chain
+                while (chain) {
+                    node = chain;
+                    chain = chain->next;
+                    AJ_Free(node->certificate.der.data);
+                    AJ_Free(node);
+                }
+                chain = AJ_X509DecodeCertificateChainPEM(pem_x509);
+                if (NULL == chain) {
+                    return AJ_ERR_INVALID;
+                }
+                cred->data = (uint8_t*) chain;
+                cred->expiration = keyexpiration;
+                status = AJ_OK;
+                break;
 
-        case AJ_CRED_CERT_TRUST:
-            status = AJ_RawToB64(cred->data, cred->len, b64, sizeof (b64));
-            AJ_ASSERT(AJ_OK == status);
-            status = IsTrustedIssuer(b64);
-            AJ_Printf("TRUST: %s %d\n", b64, status);
-            break;
-
-        case AJ_CRED_CERT_ROOT:
-            status = AJ_RawToB64(cred->data, cred->len, b64, sizeof (b64));
-            AJ_ASSERT(AJ_OK == status);
-            AJ_Printf("ROOT: %s\n", b64);
-            status = AJ_OK;
+            case AJ_CRED_RESPONSE:
+                node = (X509CertificateChain*) cred->data;
+                while (node) {
+                    AJ_DumpBytes("CERTIFICATE", node->certificate.der.data, node->certificate.der.size);
+                    node = node->next;
+                }
+                status = AJ_OK;
+                break;
+            }
             break;
         }
         break;
@@ -264,6 +238,7 @@ int AJ_Main(int argc, char** argv)
     AJ_BusAttachment bus;
     uint8_t connected = FALSE;
     uint32_t sessionId = 0;
+    X509CertificateChain* node;
 
     /* One time initialization before calling any other AllJoyn APIs. */
     AJ_Initialize();
@@ -349,6 +324,14 @@ int AJ_Main(int argc, char** argv)
     }
 
     AJ_Printf("Secure service exiting with status 0x%04x.\n", status);
+
+    // Clean up certificate chain
+    while (chain) {
+        node = chain;
+        chain = chain->next;
+        AJ_Free(node->certificate.der.data);
+        AJ_Free(node);
+    }
 
     return status;
 }

@@ -2,7 +2,7 @@
  * @file Constants related to the QCA4004 wifi module
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -161,10 +161,13 @@ typedef enum  _WSL_WMI_EVENTID {
     WSL_WMI_DISCONNECT_EVENTID      = 0x1003,
     WSL_BSS_INFO_EVENTID            = 0x1004,
     WSL_CMDERROR_EVENTID            = 0x1005,
+    WSL_REGDOMAIN_EVENTID           = 0x1006,
+    WSL_UNKNOWN1_EVENTID            = 0x1008,
     WSL_WMI_SCAN_COMPLETE_EVENTID   = 0x100A,
     WSL_WMI_APLIST_EVENTID          = 0x1017,
     WSL_WMI_PEER_NODE_EVENTID       = 0x101B,
     WSL_WMI_WLAN_VERSION_EVENTID    = 0x101E,
+    WSL_UNKNOWN2_EVENTID            = 0x103b,
     WSL_WMI_SOCKET_RESPONSE_EVENTID = 0x9016,
 } WSL_WMI_EVENTID;
 

@@ -2,7 +2,7 @@
  * @file WMI layer implementation
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -31,6 +31,8 @@
 #include "aj_malloc.h"
 #include "aj_debug.h"
 #include "aj_wsl_unmarshal.h"
+#include <stdlib.h>
+#include <stdio.h>
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
  * (usually in debugger).
@@ -55,6 +57,10 @@ extern wsl_socket_context AJ_WSL_SOCKET_CONTEXT[AJ_WSL_SOCKET_MAX];
 uint32_t AJ_WSL_SOCKET_HANDLE_INVALID = UINT32_MAX;
 
 struct AJ_TaskHandle* AJ_WSL_MBoxListenHandle;
+
+#ifndef NDEBUG
+const char* WSL_WorkItemText(uint32_t status);
+#endif
 /*
  * Maps command ID's and signatures
  * Use the enum "wsl_wmi_command_list" to index
@@ -171,6 +177,10 @@ void* AJ_WSL_Malloc(size_t size)
     if (!mem) {
         mem = AJ_Malloc(size);
     }
+    if (!mem) {
+        AJ_ErrPrintf(("AJ_WSL_Malloc(): Malloc failed\n"));
+        AJ_Reboot();
+    }
     AJ_LeaveCriticalRegion();
     return mem;
 }
@@ -218,7 +228,7 @@ void AJ_WSL_ModuleInit(void)
 AJ_Status AJ_WSL_DriverStart(void)
 {
     AJ_CreateTask(AJ_WSL_MBoxListenAndProcessTask, (const signed char*)"AJWSLMBoxListen", 1000, NULL, 2, &AJ_WSL_MBoxListenHandle);
-    while (!AJ_WSL_IsDriverStarted()) ;
+    while (!AJ_WSL_IsDriverStarted());
     return AJ_OK;
 }
 
@@ -289,7 +299,6 @@ void AJ_WSL_WMI_ProcessWMIEvent(AJ_BufNode* pNodeHTCBody)
         }
 
     case WSL_BSS_INFO_EVENTID: {
-            AJ_InfoPrintf(("BSS_INFO event\n"));
             extern void AJ_WSL_BSSINFO_Recv(AJ_BufNode* node);
             AJ_WSL_BSSINFO_Recv(pNodeHTCBody);
             break;
@@ -305,14 +314,12 @@ void AJ_WSL_WMI_ProcessWMIEvent(AJ_BufNode* pNodeHTCBody)
         }
 
     case WSL_WMI_SCAN_COMPLETE_EVENTID: {
-            AJ_InfoPrintf(("WMI_SCAN_COMPLETE  event\n"));
             //  now signal the waiting code that the scan has completed
             // we can do this by posting an item to the global socket context recv queue
             // the client will pull off a scan complete event and then continue.
 
             wsl_work_item* scanCompleteResponse;
             wsl_work_item** pItem;
-            AJ_Status status;
 
             scanCompleteResponse = (wsl_work_item*)AJ_WSL_Malloc(sizeof(wsl_work_item));
             memset(scanCompleteResponse, 0, sizeof(wsl_work_item));
@@ -354,13 +361,11 @@ void AJ_WSL_WMI_ProcessWMIEvent(AJ_BufNode* pNodeHTCBody)
         }
 
     case WSL_WMI_CONNECT_EVENTID: {
-            AJ_InfoPrintf(("WMI_SCAN_CONNECT  event\n"));
             //  now signal the waiting code that the scan has completed
             // we can do this by posting an item to the global socket context recv queue
             // the client will pull off a scan complete event and then continue.
             wsl_work_item* connectResponse;
             wsl_work_item** pItem;
-            AJ_Status status;
 
             connectResponse = (wsl_work_item*)AJ_WSL_Malloc(sizeof(wsl_work_item));
             memset(connectResponse, 0, sizeof(wsl_work_item));
@@ -406,8 +411,6 @@ void AJ_WSL_WMI_ProcessWMIEvent(AJ_BufNode* pNodeHTCBody)
             }
 
             if (socketIndex != INVALID_SOCKET) {
-                wsl_work_item* sockResponse;
-                wsl_work_item** pItem;
                 AJ_Status status = AJ_OK;
 
                 //push a work item into the Read queue
@@ -446,15 +449,21 @@ void AJ_WSL_WMI_ProcessWMIEvent(AJ_BufNode* pNodeHTCBody)
                     (AJ_WSL_WifiConnectCallback)(16 /*RSNA_AUTH_SUCCESS*/);
                 }
             }
-
-            AJ_InfoPrintf(("WMI_PEER_NODE  event: reason %x\n", reason));
             break;
         }
 
+    // There are several WMI events that aren't parsed.
+    case WSL_REGDOMAIN_EVENTID:
+    case WSL_UNKNOWN2_EVENTID:
+    case WSL_UNKNOWN1_EVENTID:
+        break;
+
     default: {
-            AJ_InfoPrintf(("UNKNOWN WMI EVENT %x\n",  eventID));
+            AJ_InfoPrintf(("Unknown WMI Event %x\n", eventID));
+            return;
         }
     }
+    AJ_InfoPrintf(("Processed WMI Event: %s\n", WSL_WorkItemText(eventID)));
 }
 
 void AJ_WSL_WMI_ProcessSocketDataResponse(AJ_BufNode* pNodeHTCBody)
@@ -465,7 +474,6 @@ void AJ_WSL_WMI_ProcessSocketDataResponse(AJ_BufNode* pNodeHTCBody)
     uint32_t _handle, srcAddr;
     uint16_t ipv6addr[8];
     uint16_t bufferOffset = 0;
-    AJ_Status status;
     wsl_work_item** ppWork;
     wsl_work_item* sockResp;
 //    AJ_DumpBytes("WMI_SOCKET_RESPONSE B", pNodeHTCBody->buffer, pNodeHTCBody->length);
@@ -507,7 +515,7 @@ void AJ_WSL_WMI_ProcessSocketDataResponse(AJ_BufNode* pNodeHTCBody)
 
 AJ_Status AJ_WSL_WMI_QueueWorkItem(uint32_t socket, uint8_t command, uint8_t endpoint, AJ_BufList* list)
 {
-    AJ_InfoPrintf(("AJ_WSL_WMI_QueueWorkItem()\n"));
+    AJ_InfoPrintf(("AJ_WSL_WMI_QueueWorkItem(): %s\n", WSL_WorkItemText(command)));
     wsl_work_item** ppWork;
     wsl_work_item* sockWork;
     sockWork = (wsl_work_item*)AJ_WSL_Malloc(sizeof(wsl_work_item));
@@ -542,10 +550,10 @@ AJ_Status AJ_WSL_WMI_WaitForWorkItem(uint32_t socket, uint8_t command, wsl_work_
             status = AJ_QueuePull(AJ_WSL_SOCKET_CONTEXT[socket].workRxQueue, item, timeout);
         }
         if ((status == AJ_OK) && ((*item)->itemType == command)) {
-            //AJ_InfoPrintf(("AJ_WSL_WMI_WaitForWorkItem(): Received work item\n"));
+            AJ_InfoPrintf(("AJ_WSL_WMI_WaitForWorkItem(): Received work item %s\n", WSL_WorkItemText(command)));
             return AJ_OK;
         } else if ((status == AJ_OK) && ((*item)->itemType == WSL_NET_DISCONNECT)) {
-            AJ_InfoPrintf(("Disconnect received\n"));
+            AJ_InfoPrintf(("Got disconnect while waiting for %s\n", WSL_WorkItemText(command)));
             // Clean up the network queues
             int i;
             for (i = 0; i < AJ_WSL_SOCKET_MAX; i++) {
@@ -570,6 +578,7 @@ AJ_Status AJ_WSL_WMI_WaitForWorkItem(uint32_t socket, uint8_t command, wsl_work_
         } else if ((status == AJ_OK) && ((*item)->itemType == WSL_NET_DATA_RX)) {
             // If we got data we want to save it and not throw it away, its still not what we
             // wanted so we can free the work item as it wont be needed at a higher level
+            AJ_InfoPrintf(("Got data while waiting for %s\n", WSL_WorkItemText(command)));
             if ((*item)->node->length) {
                 AJ_BufNode* new_node = AJ_BufNodeCreateAndTakeOwnership((*item)->node);
                 AJ_BufListPushTail(AJ_WSL_SOCKET_CONTEXT[socket].stashedRxList, new_node);
@@ -577,7 +586,7 @@ AJ_Status AJ_WSL_WMI_WaitForWorkItem(uint32_t socket, uint8_t command, wsl_work_
                 return AJ_ERR_NULL;
             }
         } else {
-            AJ_WarnPrintf(("AJ_WSL_WMI_WaitForWorkItem(): Received incorrect work item %x, wanted %x\n", (*item)->itemType, command));
+            AJ_WarnPrintf(("AJ_WSL_WMI_WaitForWorkItem(): Received incorrect work item %s, wanted %s\n", WSL_WorkItemText((*item)->itemType), WSL_WorkItemText(command)));
             // Wrong work item, but return NULL because we can free the item internally
             AJ_WSL_WMI_FreeWorkItem((*item));
             return AJ_ERR_NULL;
@@ -594,3 +603,142 @@ void AJ_WSL_WMI_FreeWorkItem(wsl_work_item* item)
         AJ_WSL_Free(item);
     }
 }
+
+#ifndef NDEBUG
+#define AJ_CASE_NETWORK(_status) case AJ_WSL_WORKITEM(AJ_WSL_WORKITEM_NETWORK, _status): return # _status
+#define AJ_CASE_SOCKET(_status) case AJ_WSL_WORKITEM(AJ_WSL_WORKITEM_SOCKET, _status): return # _status
+#define AJ_CASE_GENERIC(_status) case _status: return # _status
+
+const char* WSL_WorkItemText(uint32_t status)
+{
+    static char buf[4];
+    switch (status) {
+        // Network cases
+        AJ_CASE_NETWORK(WSL_CONNECT);
+        AJ_CASE_NETWORK(WSL_START_SCAN);
+        AJ_CASE_NETWORK(WSL_SET_SCAN_PARAMS);
+        AJ_CASE_NETWORK(WSL_SET_BSS_FILTER);
+        AJ_CASE_NETWORK(WSL_SET_PROBED_SSID);
+        AJ_CASE_NETWORK(WSL_ALLOW_AGGR);
+        AJ_CASE_NETWORK(WSL_SET_POWER_MODE);
+        AJ_CASE_NETWORK(WSL_SET_PASSPHRASE);
+        AJ_CASE_NETWORK(WSL_STORECALL_CONFIGURE);
+        AJ_CASE_NETWORK(WSL_SOCKET);
+        AJ_CASE_NETWORK(WSL_SET_SOFT_AP);
+        AJ_CASE_NETWORK(WSL_SEND);
+        AJ_CASE_NETWORK(WSL_SENDTO);
+        AJ_CASE_NETWORK(WSL_DISCONNECT);
+        AJ_CASE_NETWORK(WSL_SET_HIDDEN_AP);
+        AJ_CASE_NETWORK(WSL_SENDTO6);
+        AJ_CASE_NETWORK(WSL_BIND6);
+        AJ_CASE_NETWORK(WSL_ADD_CIPHER_KEY);
+        AJ_CASE_NETWORK(WMI_SET_PMK);
+        // Socket cases
+        AJ_CASE_SOCKET(WSL_SOCK_OPEN);
+        AJ_CASE_SOCKET(WSL_SOCK_CLOSE);
+        AJ_CASE_SOCKET(WSL_SOCK_CONNECT);
+        AJ_CASE_SOCKET(WSL_SOCK_BIND);
+        AJ_CASE_SOCKET(WSL_SOCK_SELECT);
+        AJ_CASE_SOCKET(WSL_SOCK_SETSOCKOPT);
+        AJ_CASE_SOCKET(WSL_SOCK_GETSOCKOPT);
+        AJ_CASE_SOCKET(WSL_SOCK_IPCONFIG);
+        AJ_CASE_SOCKET(WSL_SOCK_IP6CONFIG);
+        AJ_CASE_SOCKET(WSL_SOCK_PING);
+        AJ_CASE_SOCKET(WSL_SOCK_STACK_INIT);
+        AJ_CASE_SOCKET(WSL_SOCK_STACK_MISC);
+        AJ_CASE_SOCKET(WSL_NET_DATA_TX);
+        AJ_CASE_SOCKET(WSL_SOCK_IP_HOST_NAME);
+        AJ_CASE_SOCKET(WSL_SOCK_IP6CONFIG_ROUTER_PREFIX);
+        // Events
+        AJ_CASE_GENERIC(WSL_WMI_READY_EVENTID);
+        AJ_CASE_GENERIC(WSL_WMI_CONNECT_EVENTID);
+        AJ_CASE_GENERIC(WSL_WMI_DISCONNECT_EVENTID);
+        AJ_CASE_GENERIC(WSL_BSS_INFO_EVENTID);
+        AJ_CASE_GENERIC(WSL_CMDERROR_EVENTID);
+        AJ_CASE_GENERIC(WSL_WMI_SCAN_COMPLETE_EVENTID);
+        AJ_CASE_GENERIC(WSL_WMI_APLIST_EVENTID);
+        AJ_CASE_GENERIC(WSL_WMI_PEER_NODE_EVENTID);
+        AJ_CASE_GENERIC(WSL_WMI_WLAN_VERSION_EVENTID);
+        AJ_CASE_GENERIC(WSL_WMI_SOCKET_RESPONSE_EVENTID);
+
+    default:
+        snprintf(buf, sizeof(buf), "%lu", (uint32_t)status);
+        return buf;
+    }
+}
+
+/*
+ * Print relevant information about the drivers current state. This should
+ * only be called upon a crash as it will corrupt the current state information
+ * after it has been called.
+ */
+void AJ_WSL_PrintDriverTraceback(void)
+{
+    int i;
+    dbgWSL_WMI = 5;
+    AJ_AlwaysPrintf(("Driver state: "));
+    if (AJ_WSL_HTC_Global.started) {
+        AJ_AlwaysPrintf(("Started\n"));
+    } else {
+        AJ_AlwaysPrintf(("Not Started\n"));
+    }
+    for (i = 0; i < 4; i++) {
+        AJ_AlwaysPrintf(("Endpoint %d credits: %d\n", i, AJ_WSL_HTC_Global.endpoints[i].txCredits));
+    }
+    for (i = 0; i < AJ_WSL_SOCKET_MAX; i++) {
+        uint32_t stashSz = 0;
+        AJ_BufNode* stashNode = AJ_WSL_SOCKET_CONTEXT[i].stashedRxList->head;
+        int j = 0;
+        wsl_work_item* item;
+        AJ_AlwaysPrintf(("------ SOCKET CONTEXT %d -----\n", i));
+        AJ_AlwaysPrintf(("\tSocket Handle: 0x%x\n", AJ_WSL_SOCKET_CONTEXT[i].targetHandle));
+        if (AJ_WSL_SOCKET_CONTEXT[i].domain == WSL_AF_INET) {
+            AJ_AlwaysPrintf(("Domain: AF_INET\n"));
+        } else {
+            AJ_AlwaysPrintf(("Domain: AF_INET6\n"));
+        }
+        if (AJ_WSL_SOCKET_CONTEXT[i].type == WSL_SOCK_STREAM) {
+            AJ_AlwaysPrintf(("Type: SOCK_STREAM\n"));
+        } else {
+            AJ_AlwaysPrintf(("Type: SOCK_DGRAM\n"));
+        }
+        if (AJ_WSL_SOCKET_CONTEXT[i].valid) {
+            while (stashNode != NULL) {
+                stashSz += stashNode->length;
+                stashNode = stashNode->next;
+            }
+            AJ_AlwaysPrintf(("\tStash size = %u\n", stashSz));
+            AJ_AlwaysPrintf(("\tworkRxQueue:\n"));
+            while (AJ_QueuePull(AJ_WSL_SOCKET_CONTEXT[i].workRxQueue, &item, 0) == AJ_OK) {
+                AJ_AlwaysPrintf(("\t\tQueue Index %i:", j));
+                AJ_AlwaysPrintf(("\tItem Type: %s\n", WSL_WorkItemText(item->itemType)));
+                j++;
+            }
+            if (j == 0) {
+                AJ_AlwaysPrintf(("\tworkRxQueue empty\n"));
+            }
+            j = 0;
+            AJ_AlwaysPrintf(("\tworkTxQueue:\n"));
+            while (AJ_QueuePull(AJ_WSL_SOCKET_CONTEXT[i].workTxQueue, &item, 0) == AJ_OK) {
+                AJ_AlwaysPrintf(("\t\tQueue Index %i:", j));
+                AJ_AlwaysPrintf(("\tItem Type: %s\n", WSL_WorkItemText(item->itemType)));
+                j++;
+            }
+            if (j == 0) {
+                AJ_AlwaysPrintf(("\tworkTxQueue empty\n"));
+            }
+        } else {
+            AJ_AlwaysPrintf(("Socket context %d: Not valid or not open\n", i));
+        }
+        AJ_AlwaysPrintf(("\n"));
+    }
+}
+
+void HardFault_Handler(void)
+{
+    AJ_AlwaysPrintf(("HARD FAULT OCCURED, PRINTING DRIVER TRACEBACK\n"));
+    AJ_WSL_PrintDriverTraceback();
+    while (1);
+}
+
+#endif

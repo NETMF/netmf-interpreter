@@ -2,7 +2,7 @@
  * @file  Marhal/Unmarshal Tester
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -141,7 +141,6 @@ int AJ_Main()
     AJ_Arg array1;
     AJ_Arg array2;
     AJ_Arg struct1;
-    AJ_Arg struct2;
     size_t sz;
     uint32_t test;
     uint32_t i;
@@ -150,15 +149,19 @@ int AJ_Main()
     uint32_t key;
     uint32_t len;
     uint32_t u;
-    uint32_t v;
     int32_t n;
-    int32_t m;
     uint16_t q;
-    uint16_t r;
     uint8_t y;
     char* str;
     char* sig;
     void* raw;
+
+#ifdef EXPANDED_FORM
+    AJ_Arg struct2;
+    int32_t m;
+    uint16_t r;
+    uint32_t v;
+#endif
 
     const size_t lengthOfShortGUID = 16;
 

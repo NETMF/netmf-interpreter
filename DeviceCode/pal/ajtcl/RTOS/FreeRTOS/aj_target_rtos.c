@@ -2,7 +2,7 @@
  * @file RTOS specific implementation
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -78,8 +78,10 @@ struct AJ_TaskHandle {
 
 struct AJ_Queue* AJ_QueueCreate(const char* name) {
     struct AJ_Queue* p = (struct AJ_Queue*)AJ_Malloc(sizeof(struct AJ_Queue));
-    p->q = xQueueCreate(QUEUE_SIZE, ITEM_SIZE);
-    vQueueAddToRegistry(p->q, (signed char*)name);
+    if (p) {
+        p->q = xQueueCreate(QUEUE_SIZE, ITEM_SIZE);
+        vQueueAddToRegistry(p->q, (signed char*)name);
+    }
     return p;
 }
 void AJ_QueueDelete(struct AJ_Queue* q)
@@ -160,8 +162,10 @@ uint32_t AJ_MsToTicks(uint32_t ms)
  */
 struct AJ_Mutex* AJ_MutexCreate(void) {
     struct AJ_Mutex* mutex = (struct AJ_Mutex*)AJ_Malloc(sizeof(struct AJ_Mutex));
-    mutex->m = xSemaphoreCreateBinary();
-    xSemaphoreGive(mutex->m);
+    if (mutex) {
+        mutex->m = xSemaphoreCreateBinary();
+        xSemaphoreGive(mutex->m);
+    }
     return mutex;
 }
 /**
@@ -214,8 +218,12 @@ AJ_Status AJ_CreateTask(void (*task)(void*),
     int status;
     if (handle) {
         struct AJ_TaskHandle* th = (struct AJ_TaskHandle*)AJ_Malloc(sizeof(struct AJ_TaskHandle));
-        status = xTaskCreate(task, name, stackDepth, parameters, priority, &th->t);
-        *handle = th;
+        if (th) {
+            status = xTaskCreate(task, name, stackDepth, parameters, priority, &th->t);
+            *handle = th;
+        } else {
+            return AJ_ERR_RESOURCES;
+        }
     } else {
         status = xTaskCreate(task, name, stackDepth, parameters, priority, NULL);
     }
@@ -350,6 +358,11 @@ int8_t AJ_CompareTime(AJ_Time timerA, AJ_Time timerB)
     }
 }
 
+uint64_t AJ_DecodeTime(char* der, char* fmt)
+{
+    return 0;
+}
+
 void* AJ_Malloc(size_t sz)
 {
     return pvPortMalloc(sz);
@@ -362,6 +375,12 @@ void AJ_Free(void* mem)
     }
 }
 
+void AJ_MemZeroSecure(void* s, size_t n)
+{
+    volatile unsigned char* p = s;
+    while (n--) *p++ = '\0';
+    return;
+}
 
 void* AJ_Realloc(void* ptr, size_t size)
 {

@@ -3,7 +3,7 @@
  */
 
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -30,11 +30,10 @@
 #include <aj_peer.h>
 #include <aj_creds.h>
 #include <aj_auth_listener.h>
-#include <aj_keyexchange.h>
-#include <aj_keyauthentication.h>
+#include <aj_authentication.h>
 #include "aj_config.h"
 
-uint8_t dbgCLIENTLITE = 0;
+uint8_t dbgCLIENTLITE = 1;
 
 /*
  * Default key expiration
@@ -206,7 +205,16 @@ static void AppDoWork(AJ_BusAttachment* bus, uint32_t sessionId, const char* ser
     }
 }
 
+/*
+ * The tests were changed at some point to make the PWD longer.
+ * If doing backcompatibility testing with previous versions (14.08 or before),
+ * define LITE_TEST_BACKCOMPAT to use the old version of the password.
+ */
+#ifndef LITE_TEST_BACKCOMPAT
+static const char PWD[] = "faaa0af3dd3f1e0379da046a3ab6ca44";
+#else
 static const char PWD[] = "123456";
+#endif
 
 #if defined(SECURE_INTERFACE) || defined(SECURE_OBJECT)
 static uint32_t PasswordCallback(uint8_t* buffer, uint32_t bufLen)
@@ -215,56 +223,66 @@ static uint32_t PasswordCallback(uint8_t* buffer, uint32_t bufLen)
     return sizeof(PWD) - 1;
 }
 
-//static const char psk_b64[] = "EBESExQVFhcYGRobHB0eHw==";
-//static uint8_t psk[16];
-static const char psk_hint[] = "bob";
-static const char psk_char[] = "123456";
-static const char owner_pub_b64[] = "RCf5ihem02VFXvIa8EVJ1CJcJns3el0IH+H51s07rc0AAAAAn6KJifUPH1oRmPLoyBHGCg7/NT8kW67GD8kQjZh/U/AAAAAAAAAAAA==";
-static const char ecc_pub_b64[] = "JmZC779f7YjYPa3rU0xdifnW0qyiCmmUXcN1XExC334AAAAA1j95MCfIAFa6Fpa5vJ+2tUMfYVmhny04itEwJPnfDqAAAAAAAAAAAA==";
-static const char ecc_prv_b64[] = "koWEteat13YRYrv/olCqEmMg7YufcTsjSQNbIL1ue+wAAAAA";
-static const char owner_cert1_b64[] = "\
-AAAAAUQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAmZkLvv1/tiNg9retTTF2J\
-+dbSrKIKaZRdw3VcTELffgAAAADWP3kwJ8gAVroWlrm8n7a1Qx9hWaGfLTiK0TAk\
-+d8OoAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wBOnWRZjvJdd9adaDleMIDQJOJC\
-OuSepUTdfamDakEy/rQbXYuqvmUj1ZiGGpPYBfh7aNkFE4rng9TixhKXJ15XAAAA\
-AN6X04g62BUVvnCbFuBiw2r783HQeBdGUdUrsnVoHUKkAAAAAA==";
-static const char owner_cert2_b64[] = "\
-AAAAAkQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAmZkLvv1/tiNg9retTTF2J\
-+dbSrKIKaZRdw3VcTELffgAAAADWP3kwJ8gAVroWlrm8n7a1Qx9hWaGfLTiK0TAk\
-+d8OoAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wD5/PM2YlgaDcbxM2GD2BntTp1k\
-WY7yXXfWnWg5XjCA0CTiQjrknqVE3X2pg2pBMv4X9K7ntr5Z4AQzJnz9DaHh0clG\
-WYk3iayjtM2IUTldlgAAAAALQdeFHaHyScnOSPXzaHV/tLCTPKogvpv4gWOfQAsy\
-2AAAAAA=";
-static ecc_publickey ecc_pub;
-static ecc_privatekey ecc_prv;
-static AJ_Certificate root_cert;
-
-static const char* issuers[] = {
-    "RCf5ihem02VFXvIa8EVJ1CJcJns3el0IH+H51s07rc0AAAAAn6KJifUPH1oRmPLoyBHGCg7/NT8kW67GD8kQjZh/U/AAAAAAAAAAAA==",
-    "9RB2ExIO4VZqEwb+sWYVsozToGMgDZJzH0Yf4Q0sCC0AAAAAhuEeeMDIXKzoOg3aQqVdUKC0ekWIRizM5hcjzxAO8LUAAAAAAAAAAA=="
+// Copied from alljoyn/alljoyn_core/test/bbclient.cc
+static const char pem_prv[] = {
+    "-----BEGIN EC PRIVATE KEY-----"
+    "MHcCAQEEIAqN6AtyOAPxY5k7eFNXAwzkbsGMl4uqvPrYkIj0LNZBoAoGCCqGSM49"
+    "AwEHoUQDQgAEvnRd4fX9opwgXX4Em2UiCMsBbfaqhB1U5PJCDZacz9HumDEzYdrS"
+    "MymSxR34lL0GJVgEECvBTvpaHP2bpTIl6g=="
+    "-----END EC PRIVATE KEY-----"
 };
 
-static AJ_Status IsTrustedIssuer(const char* issuer)
-{
-    size_t i;
-    for (i = 0; i < ArraySize(issuers); i++) {
-        if (0 == strncmp(issuer, issuers[i], strlen(issuers[i]))) {
-            return AJ_OK;
-        }
-    }
-    return AJ_ERR_SECURITY;
-}
+/*
+ * Order of certificates is important.
+ * Child first, then parent.
+ */
+static const char pem_x509[] = {
+    "-----BEGIN CERTIFICATE-----"
+    "MIIBtDCCAVmgAwIBAgIJAMlyFqk69v+OMAoGCCqGSM49BAMCMFYxKTAnBgNVBAsM"
+    "IDdhNDhhYTI2YmM0MzQyZjZhNjYyMDBmNzdhODlkZDAyMSkwJwYDVQQDDCA3YTQ4"
+    "YWEyNmJjNDM0MmY2YTY2MjAwZjc3YTg5ZGQwMjAeFw0xNTAyMjYyMTUxMjVaFw0x"
+    "NjAyMjYyMTUxMjVaMFYxKTAnBgNVBAsMIDZkODVjMjkyMjYxM2IzNmUyZWVlZjUy"
+    "NzgwNDJjYzU2MSkwJwYDVQQDDCA2ZDg1YzI5MjI2MTNiMzZlMmVlZWY1Mjc4MDQy"
+    "Y2M1NjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABL50XeH1/aKcIF1+BJtlIgjL"
+    "AW32qoQdVOTyQg2WnM/R7pgxM2Ha0jMpksUd+JS9BiVYBBArwU76Whz9m6UyJeqj"
+    "EDAOMAwGA1UdEwQFMAMBAf8wCgYIKoZIzj0EAwIDSQAwRgIhAKfmglMgl67L5ALF"
+    "Z63haubkItTMACY1k4ROC2q7cnVmAiEArvAmcVInOq/U5C1y2XrvJQnAdwSl/Ogr"
+    "IizUeK0oI5c="
+    "-----END CERTIFICATE-----"
+    ""
+    "-----BEGIN CERTIFICATE-----"
+    "MIIBszCCAVmgAwIBAgIJAILNujb37gH2MAoGCCqGSM49BAMCMFYxKTAnBgNVBAsM"
+    "IDdhNDhhYTI2YmM0MzQyZjZhNjYyMDBmNzdhODlkZDAyMSkwJwYDVQQDDCA3YTQ4"
+    "YWEyNmJjNDM0MmY2YTY2MjAwZjc3YTg5ZGQwMjAeFw0xNTAyMjYyMTUxMjNaFw0x"
+    "NjAyMjYyMTUxMjNaMFYxKTAnBgNVBAsMIDdhNDhhYTI2YmM0MzQyZjZhNjYyMDBm"
+    "NzdhODlkZDAyMSkwJwYDVQQDDCA3YTQ4YWEyNmJjNDM0MmY2YTY2MjAwZjc3YTg5"
+    "ZGQwMjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABGEkAUATvOE4uYmt/10vkTcU"
+    "SA0C+YqHQ+fjzRASOHWIXBvpPiKgHcINtNFQsyX92L2tMT2Kn53zu+3S6UAwy6yj"
+    "EDAOMAwGA1UdEwQFMAMBAf8wCgYIKoZIzj0EAwIDSAAwRQIgKit5yeq1uxTvdFmW"
+    "LDeoxerqC1VqBrmyEvbp4oJfamsCIQDvMTmulW/Br/gY7GOP9H/4/BIEoR7UeAYS"
+    "4xLyu+7OEA=="
+    "-----END CERTIFICATE-----"
+};
 
-static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, AJ_Credential* cred)
+static const char psk_hint[] = "<anonymous>";
+/*
+ * The tests were changed at some point to make the psk longer.
+ * If doing backcompatibility testing with previous versions (14.08 or before),
+ * define LITE_TEST_BACKCOMPAT to use the old version of the password.
+ */
+#ifndef LITE_TEST_BACKCOMPAT
+static const char psk_char[] = "faaa0af3dd3f1e0379da046a3ab6ca44";
+#else
+static const char psk_char[] = "123456";
+#endif
+
+static X509CertificateChain* chain = NULL;
+static ecc_privatekey prv;
+static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, AJ_Credential*cred)
 {
     AJ_Status status = AJ_ERR_INVALID;
+    X509CertificateChain* node;
 
-    uint8_t* b8;
-    size_t b8len;
-    char* b64;
-    size_t b64len;
     AJ_AlwaysPrintf(("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command));
 
     switch (authmechanism) {
@@ -276,18 +294,13 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
     case AUTH_SUITE_ECDHE_PSK:
         switch (command) {
         case AJ_CRED_PUB_KEY:
-            break; // Don't use username - use anon
-            cred->mask = AJ_CRED_PUB_KEY;
             cred->data = (uint8_t*) psk_hint;
             cred->len = strlen(psk_hint);
+            cred->expiration = keyexpiration;
             status = AJ_OK;
             break;
 
         case AJ_CRED_PRV_KEY:
-            if (AJ_CRED_PUB_KEY == cred->mask) {
-                AJ_AlwaysPrintf(("Request Credentials for PSK ID: %s\n", cred->data));
-            }
-            cred->mask = AJ_CRED_PRV_KEY;
             cred->data = (uint8_t*) psk_char;
             cred->len = strlen(psk_char);
             cred->expiration = keyexpiration;
@@ -298,71 +311,44 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
 
     case AUTH_SUITE_ECDHE_ECDSA:
         switch (command) {
-        case AJ_CRED_PUB_KEY:
-            b8len = 3 * strlen(ecc_pub_b64) / 4;
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(ecc_pub_b64, strlen(ecc_pub_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePublicKey(&ecc_pub, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PUB_KEY;
-            cred->data = (uint8_t*) &ecc_pub;
-            cred->len = sizeof (ecc_pub);
-            cred->expiration = keyexpiration;
-            AJ_Free(b8);
-            break;
-
         case AJ_CRED_PRV_KEY:
-            b8len = 3 * strlen(ecc_prv_b64) / 4;
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(ecc_prv_b64, strlen(ecc_prv_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePrivateKey(&ecc_prv, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PRV_KEY;
-            cred->data = (uint8_t*) &ecc_prv;
-            cred->len = sizeof (ecc_prv);
+            cred->len = sizeof (ecc_privatekey);
+            status = AJ_DecodePrivateKeyPEM(&prv, pem_prv);
+            if (AJ_OK != status) {
+                return status;
+            }
+            cred->data = (uint8_t*) &prv;
             cred->expiration = keyexpiration;
-            AJ_Free(b8);
             break;
 
         case AJ_CRED_CERT_CHAIN:
-            b8len = sizeof (AJ_Certificate);
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(owner_cert1_b64, strlen(owner_cert1_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodeCertificate(&root_cert, b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_CERT_CHAIN;
-            cred->data = (uint8_t*) &root_cert;
-            cred->len = sizeof (root_cert);
-            AJ_Free(b8);
-            break;
+            switch (cred->direction) {
+            case AJ_CRED_REQUEST:
+                // Free previous certificate chain
+                while (chain) {
+                    node = chain;
+                    chain = chain->next;
+                    AJ_Free(node->certificate.der.data);
+                    AJ_Free(node);
+                }
+                chain = AJ_X509DecodeCertificateChainPEM(pem_x509);
+                if (NULL == chain) {
+                    return AJ_ERR_INVALID;
+                }
+                cred->data = (uint8_t*) chain;
+                cred->expiration = keyexpiration;
+                status = AJ_OK;
+                break;
 
-        case AJ_CRED_CERT_TRUST:
-            b64len = 4 * ((cred->len + 2) / 3) + 1;
-            b64 = (char*) AJ_Malloc(b64len);
-            AJ_ASSERT(b64);
-            status = AJ_RawToB64(cred->data, cred->len, b64, b64len);
-            AJ_ASSERT(AJ_OK == status);
-            status = IsTrustedIssuer(b64);
-            AJ_AlwaysPrintf(("TRUST: %s %d\n", b64, status));
-            AJ_Free(b64);
-
-            break;
-
-        case AJ_CRED_CERT_ROOT:
-            b64len = 4 * ((cred->len + 2) / 3) + 1;
-            b64 = (char*) AJ_Malloc(b64len);
-            AJ_ASSERT(b64);
-            status = AJ_RawToB64(cred->data, cred->len, b64, b64len);
-            AJ_ASSERT(AJ_OK == status);
-            AJ_AlwaysPrintf(("ROOT: %s\n", b64));
-            status = AJ_OK;
-            AJ_Free(b64);
+            case AJ_CRED_RESPONSE:
+                node = (X509CertificateChain*) cred->data;
+                while (node) {
+                    AJ_DumpBytes("CERTIFICATE", node->certificate.der.data, node->certificate.der.size);
+                    node = node->next;
+                }
+                status = AJ_OK;
+                break;
+            }
             break;
         }
         break;
@@ -461,6 +447,7 @@ int AJ_Main()
     size_t numsuites = 0;
     uint8_t clearkeys = FALSE;
     uint8_t enablepwd = FALSE;
+    X509CertificateChain* node;
 #endif
 
 #ifdef MAIN_ALLOWS_ARGS
@@ -660,10 +647,18 @@ int AJ_Main()
             AJ_AlwaysPrintf(("AllJoyn disconnect\n"));
             AJ_AlwaysPrintf(("Disconnected from Daemon:%s\n", AJ_GetUniqueName(&bus)));
             AJ_Disconnect(&bus);
-            return status;
+            break;
         }
     }
     AJ_AlwaysPrintf(("clientlite EXIT %d\n", status));
+
+    // Clean up certificate chain
+    while (chain) {
+        node = chain;
+        chain = chain->next;
+        AJ_Free(node->certificate.der.data);
+        AJ_Free(node);
+    }
 
     return status;
 }

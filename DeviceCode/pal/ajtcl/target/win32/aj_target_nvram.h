@@ -5,7 +5,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -72,5 +72,12 @@ AJ_Status _AJ_LoadNVFromFile();
  * Write NVRAM data to a file for persistent storage
  */
 AJ_Status _AJ_StoreNVToFile();
+
+/**
+ * Set the file name for persistent storage
+ *
+ * @param path  The file path to set, ignored if NULL
+ */
+void AJ_SetNVRAM_FilePath(const char* path);
 
 #endif

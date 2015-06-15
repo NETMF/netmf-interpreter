@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -35,8 +35,7 @@
 #include <aj_creds.h>
 #include <aj_peer.h>
 #include <aj_auth_listener.h>
-#include <aj_keyexchange.h>
-#include <aj_keyauthentication.h>
+#include <aj_authentication.h>
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
@@ -112,6 +111,7 @@ static AJ_Object AppObjects[] = {
 #define APP_TIME_PING       AJ_APP_MESSAGE_ID(0, 1, 2)
 #define APP_MY_SIGNAL       AJ_APP_MESSAGE_ID(0, 1, 3)
 
+
 /*
  * Property identifiers for the properies this application implements
  */
@@ -128,7 +128,10 @@ static void AppDoWork()
     AJ_InfoPrintf(("do work\n"));
 }
 
+
 static const char PWD[] = "123456";
+
+#if defined(SECURE_INTERFACE) || defined(SECURE_OBJECT)
 
 static uint32_t PasswordCallback(uint8_t* buffer, uint32_t bufLen)
 {
@@ -136,56 +139,45 @@ static uint32_t PasswordCallback(uint8_t* buffer, uint32_t bufLen)
     return sizeof(PWD) - 1;
 }
 
-#if defined(SECURE_INTERFACE) || defined(SECURE_OBJECT)
-//static const char psk_b64[] = "EBESExQVFhcYGRobHB0eHw==";
-//static uint8_t psk[16];
-static const char psk_hint[] = "bob";
-static const char psk_char[] = "123456";
-static const char ecc_pub_b64[] = "C/KGAyLE5jyVqHEipZBhPb7Ahj/MBdNLtpDvT9OJ0LYAAAAAn8QabXetJcPD7OWmEB6uXGXh+ftJOLlCTJhAHjTJsDkAAAAAAAAAAA==";
-static const char ecc_prv_b64[] = "wxieVOfgCMgys3m+V82eV/B/p0WlIMu8fizZiqMQnYsAAAAA";
-static const char owner_cert1_b64[] = "\
-AAAAAUQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAL8oYDIsTmPJWocSKlkGE9\
-vsCGP8wF00u2kO9P04nQtgAAAACfxBptd60lw8Ps5aYQHq5cZeH5+0k4uUJMmEAe\
-NMmwOQAAAAAAAAAAAAAAAAAAAAAAAAAA/////wBOnWRZjvJdd9adaDleMIDQJOJC\
-OuSepUTdfamDakEy/s6dN/ePP+iDV96kBT0XkQfNKiyfGbPf+ux6a2mx48/rAAAA\
-AGfrER3HqAGYic+k8B/iIWUyJy414G+4+tTklxFAatmmAAAAAA==";
-static const char owner_cert2_b64[] = "\
-AAAAAkQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAL8oYDIsTmPJWocSKlkGE9\
-vsCGP8wF00u2kO9P04nQtgAAAACfxBptd60lw8Ps5aYQHq5cZeH5+0k4uUJMmEAe\
-NMmwOQAAAAAAAAAAAAAAAAAAAAAAAAAA/////wD5/PM2YlgaDcbxM2GD2BntTp1k\
-WY7yXXfWnWg5XjCA0CTiQjrknqVE3X2pg2pBMv7ZCwVue216z7QXomTSt4nPyFum\
-tj2XcycgTidW60XeVAAAAADCAWDa119gVqq2GOiteOKBaM7huRPUOl+ytTMQQpCj\
-WAAAAAA=";
-static ecc_publickey ecc_pub;
-static ecc_privatekey ecc_prv;
-static AJ_Certificate root_cert;
-
-static const char* issuers[] = {
-    "RCf5ihem02VFXvIa8EVJ1CJcJns3el0IH+H51s07rc0AAAAAn6KJifUPH1oRmPLoyBHGCg7/NT8kW67GD8kQjZh/U/AAAAAAAAAAAA==",
-    "nUsoaWelVW1XhJrVNQuzEYlH0LndSrkAfd/GrEmM11gAAAAAChtt28EprD14ejHuj181s3m6y5nDxeRI9KaKmKRgI8kAAAAAAAAAAA=="
+// Copied from alljoyn/alljoyn_core/test/bbservice.cc
+static const char pem_prv[] = {
+    "-----BEGIN EC PRIVATE KEY-----"
+    "MDECAQEEIICSqj3zTadctmGnwyC/SXLioO39pB1MlCbNEX04hjeioAoGCCqGSM49"
+    "AwEH"
+    "-----END EC PRIVATE KEY-----"
 };
 
-static AJ_Status IsTrustedIssuer(const char* issuer)
-{
-    size_t i;
-    for (i = 0; i < ArraySize(issuers); i++) {
-        if (0 == strncmp(issuer, issuers[i], strlen(issuers[i]))) {
-            return AJ_OK;
-        }
-    }
-    return AJ_ERR_SECURITY;
-}
+static const char pem_x509[] = {
+    "-----BEGIN CERTIFICATE-----"
+    "MIIBWjCCAQGgAwIBAgIHMTAxMDEwMTAKBggqhkjOPQQDAjArMSkwJwYDVQQDDCAw"
+    "ZTE5YWZhNzlhMjliMjMwNDcyMGJkNGY2ZDVlMWIxOTAeFw0xNTAyMjYyMTU1MjVa"
+    "Fw0xNjAyMjYyMTU1MjVaMCsxKTAnBgNVBAMMIDZhYWM5MjQwNDNjYjc5NmQ2ZGIy"
+    "NmRlYmRkMGM5OWJkMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEP/HbYga30Afm"
+    "0fB6g7KaB5Vr5CDyEkgmlif/PTsgwM2KKCMiAfcfto0+L1N0kvyAUgff6sLtTHU3"
+    "IdHzyBmKP6MQMA4wDAYDVR0TBAUwAwEB/zAKBggqhkjOPQQDAgNHADBEAiAZmNVA"
+    "m/H5EtJl/O9x0P4zt/UdrqiPg+gA+wm0yRY6KgIgetWANAE2otcrsj3ARZTY/aTI"
+    "0GOQizWlQm8mpKaQ3uE="
+    "-----END CERTIFICATE-----"
+};
 
+static const char psk_hint[] = "<anonymous>";
+/*
+ * The tests were changed at some point to make the psk longer.
+ * If doing backcompatibility testing with previous versions (14.08 or before),
+ * define LITE_TEST_BACKCOMPAT to use the old version of the password.
+ */
+#ifndef LITE_TEST_BACKCOMPAT
+static const char psk_char[] = "faaa0af3dd3f1e0379da046a3ab6ca44";
+#else
+static const char psk_char[] = "123456";
+#endif
+static X509CertificateChain* chain = NULL;
+static ecc_privatekey prv;
 static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, AJ_Credential*cred)
 {
     AJ_Status status = AJ_ERR_INVALID;
+    X509CertificateChain* node;
 
-    uint8_t* b8;
-    size_t b8len;
-    char* b64;
-    size_t b64len;
     AJ_AlwaysPrintf(("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command));
 
     switch (authmechanism) {
@@ -197,18 +189,13 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
     case AUTH_SUITE_ECDHE_PSK:
         switch (command) {
         case AJ_CRED_PUB_KEY:
-            break; // Don't use username - use anon
-            cred->mask = AJ_CRED_PUB_KEY;
             cred->data = (uint8_t*) psk_hint;
             cred->len = strlen(psk_hint);
+            cred->expiration = keyexpiration;
             status = AJ_OK;
             break;
 
         case AJ_CRED_PRV_KEY:
-            if (AJ_CRED_PUB_KEY == cred->mask) {
-                AJ_AlwaysPrintf(("Request Credentials for PSK ID: %s\n", cred->data));
-            }
-            cred->mask = AJ_CRED_PRV_KEY;
             cred->data = (uint8_t*) psk_char;
             cred->len = strlen(psk_char);
             cred->expiration = keyexpiration;
@@ -219,70 +206,44 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
 
     case AUTH_SUITE_ECDHE_ECDSA:
         switch (command) {
-        case AJ_CRED_PUB_KEY:
-            b8len = 3 * strlen(ecc_pub_b64) / 4;
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(ecc_pub_b64, strlen(ecc_pub_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePublicKey(&ecc_pub, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PUB_KEY;
-            cred->data = (uint8_t*) &ecc_pub;
-            cred->len = sizeof (ecc_pub);
-            cred->expiration = keyexpiration;
-            AJ_Free(b8);
-            break;
-
         case AJ_CRED_PRV_KEY:
-            b8len = 3 * strlen(ecc_prv_b64) / 4;
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(ecc_prv_b64, strlen(ecc_prv_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePrivateKey(&ecc_prv, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PRV_KEY;
-            cred->data = (uint8_t*) &ecc_prv;
-            cred->len = sizeof (ecc_prv);
+            cred->len = sizeof (ecc_privatekey);
+            status = AJ_DecodePrivateKeyPEM(&prv, pem_prv);
+            if (AJ_OK != status) {
+                return status;
+            }
+            cred->data = (uint8_t*) &prv;
             cred->expiration = keyexpiration;
-            AJ_Free(b8);
             break;
 
         case AJ_CRED_CERT_CHAIN:
-            b8len = sizeof (AJ_Certificate);
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(owner_cert1_b64, strlen(owner_cert1_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodeCertificate(&root_cert, b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_CERT_CHAIN;
-            cred->data = (uint8_t*) &root_cert;
-            cred->len = sizeof (root_cert);
-            AJ_Free(b8);
-            break;
+            switch (cred->direction) {
+            case AJ_CRED_REQUEST:
+                // Free previous certificate chain
+                while (chain) {
+                    node = chain;
+                    chain = chain->next;
+                    AJ_Free(node->certificate.der.data);
+                    AJ_Free(node);
+                }
+                chain = AJ_X509DecodeCertificateChainPEM(pem_x509);
+                if (NULL == chain) {
+                    return AJ_ERR_INVALID;
+                }
+                cred->data = (uint8_t*) chain;
+                cred->expiration = keyexpiration;
+                status = AJ_OK;
+                break;
 
-        case AJ_CRED_CERT_TRUST:
-            b64len = 4 * ((cred->len + 2) / 3) + 1;
-            b64 = (char*) AJ_Malloc(b64len);
-            AJ_ASSERT(b64);
-            status = AJ_RawToB64(cred->data, cred->len, b64, b64len);
-            AJ_ASSERT(AJ_OK == status);
-            status = IsTrustedIssuer(b64);
-            AJ_AlwaysPrintf(("TRUST: %s %d\n", b64, status));
-            AJ_Free(b64);
-            break;
-
-        case AJ_CRED_CERT_ROOT:
-            b64len = 4 * ((cred->len + 2) / 3) + 1;
-            b64 = (char*) AJ_Malloc(b64len);
-            AJ_ASSERT(b64);
-            status = AJ_RawToB64(cred->data, cred->len, b64, b64len);
-            AJ_ASSERT(AJ_OK == status);
-            AJ_AlwaysPrintf(("ROOT: %s\n", b64));
-            status = AJ_OK;
-            AJ_Free(b64);
+            case AJ_CRED_RESPONSE:
+                node = (X509CertificateChain*) cred->data;
+                while (node) {
+                    AJ_DumpBytes("CERTIFICATE", node->certificate.der.data, node->certificate.der.size);
+                    node = node->next;
+                }
+                status = AJ_OK;
+                break;
+            }
             break;
         }
         break;
@@ -333,7 +294,6 @@ static AJ_Status PropSetHandler(AJ_Message* replyMsg, uint32_t propId, void* con
     }
 }
 
-#ifdef ANNOUNCE_BASED_DISCOVERY
 #define UUID_LENGTH 16
 #define APP_ID_SIGNATURE "ay"
 
@@ -357,50 +317,86 @@ static AJ_Status MarshalAppId(AJ_Message* msg, const char* appId)
 
 static AJ_Status AboutPropGetter(AJ_Message* reply, const char* language)
 {
-    AJ_Status status;
+    AJ_Status status = AJ_OK;
     AJ_Arg array;
     AJ_GUID theAJ_GUID;
     char machineIdValue[UUID_LENGTH * 2 + 1];
     machineIdValue[UUID_LENGTH * 2] = '\0';
 
-    status = AJ_MarshalContainer(reply, &array, AJ_ARG_ARRAY);
-    if (status == AJ_OK) {
-        status = AJ_GetLocalGUID(&theAJ_GUID);
-        if (status == AJ_OK) {
-            AJ_GUID_ToString(&theAJ_GUID, machineIdValue, UUID_LENGTH * 2 + 1);
-        }
-        if (status == AJ_OK) {
-            status = MarshalAppId(reply, &machineIdValue[0]);
-        }
-        if (status == AJ_OK) {
-            status = AJ_MarshalArgs(reply, "{sv}", "AppName", "s", "svclite");
-        }
-        if (status == AJ_OK) {
-            status = AJ_MarshalArgs(reply, "{sv}", "DeviceId", "s", machineIdValue);
-        }
-        if (status == AJ_OK) {
-            status = AJ_MarshalArgs(reply, "{sv}", "DeviceName", "s", "Tester");
-        }
-        if (status == AJ_OK) {
-            status = AJ_MarshalArgs(reply, "{sv}", "Manufacturer", "s", "QCE");
-        }
-        if (status == AJ_OK) {
-            status = AJ_MarshalArgs(reply, "{sv}", "ModelNumber", "s", "1.0");
-        }
-        if (status == AJ_OK) {
-            status = AJ_MarshalArgs(reply, "{sv}", "DefaultLanguage", "s", "en");
-        }
-        if (status == AJ_OK) {
-            status = AJ_MarshalArgs(reply, "{sv}", "AJSoftwareVersion", "s", AJ_GetVersion());
-        }
-    }
-    if (status == AJ_OK) {
-        status = AJ_MarshalCloseContainer(reply, &array);
+    if ((language != NULL) && (0 != strcmp(language, "en")) && (0 != strcmp(language, ""))) {
+        /* the language supplied was not supported */
+        status = AJ_ERR_NO_MATCH;
     }
 
+    if (status == AJ_OK) {
+        status = AJ_MarshalContainer(reply, &array, AJ_ARG_ARRAY);
+        if (status == AJ_OK) {
+            status = AJ_GetLocalGUID(&theAJ_GUID);
+            if (status == AJ_OK) {
+                AJ_GUID_ToString(&theAJ_GUID, machineIdValue, UUID_LENGTH * 2 + 1);
+            }
+            if (status == AJ_OK) {
+                status = MarshalAppId(reply, &machineIdValue[0]);
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "AppName", "s", "svclite");
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "DeviceId", "s", machineIdValue);
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "DeviceName", "s", "Tester");
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "Manufacturer", "s", "QCE");
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "ModelNumber", "s", "1.0");
+            }
+            //SupportedLanguages
+            if (status == AJ_OK) {
+                AJ_Arg dict;
+                AJ_Arg languageListArray;
+                status = AJ_MarshalContainer(reply, &dict, AJ_ARG_DICT_ENTRY);
+                if (status == AJ_OK) {
+                    status = AJ_MarshalArgs(reply, "s", "SupportedLanguages");
+                }
+                if (status == AJ_OK) {
+                    status = AJ_MarshalVariant(reply, "as");
+                }
+                if (status == AJ_OK) {
+                    status = AJ_MarshalContainer(reply, &languageListArray, AJ_ARG_ARRAY);
+                }
+                if (status == AJ_OK) {
+                    status = AJ_MarshalArgs(reply, "s", "en");
+                }
+                if (status == AJ_OK) {
+                    status = AJ_MarshalCloseContainer(reply, &languageListArray);
+                }
+                if (status == AJ_OK) {
+                    status = AJ_MarshalCloseContainer(reply, &dict);
+                }
+
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "Description", "s", "svclite test app");
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "DefaultLanguage", "s", "en");
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "SoftwareVersion", "s", AJ_GetVersion());
+            }
+            if (status == AJ_OK) {
+                status = AJ_MarshalArgs(reply, "{sv}", "AJSoftwareVersion", "s", AJ_GetVersion());
+            }
+        }
+        if (status == AJ_OK) {
+            status = AJ_MarshalCloseContainer(reply, &array);
+        }
+    }
     return status;
 }
-#endif
 
 uint32_t MyBusAuthPwdCB(uint8_t* buf, uint32_t bufLen)
 {
@@ -421,6 +417,7 @@ int AJ_Main()
     AJ_BusAttachment bus;
     uint8_t connected = FALSE;
     uint32_t sessionId = 0;
+    X509CertificateChain* node;
 
     /*
      * One time initialization before calling any other AllJoyn APIs
@@ -429,9 +426,7 @@ int AJ_Main()
 
     AJ_PrintXML(AppObjects);
     AJ_RegisterObjects(AppObjects, NULL);
-#ifdef ANNOUNCE_BASED_DISCOVERY
     AJ_AboutRegisterPropStoreGetter(AboutPropGetter);
-#endif
 
     SetBusAuthPwdCallback(MyBusAuthPwdCB);
     while (TRUE) {
@@ -565,8 +560,10 @@ int AJ_Main()
 
                 if (ReflectSignal) {
                     AJ_Message out;
-                    AJ_MarshalSignal(&bus, &out, APP_MY_SIGNAL, msg.destination, msg.sessionId, 0, 0);
-                    AJ_MarshalArgs(&out, "a{ys}", 0, NULL);
+                    AJ_Arg arg;
+                    AJ_MarshalSignal(&bus, &out, APP_MY_SIGNAL, msg.sender, msg.sessionId, 0, 0);
+                    AJ_MarshalContainer(&out, &arg, AJ_ARG_ARRAY);
+                    AJ_MarshalCloseContainer(&out, &arg);
                     AJ_DeliverMsg(&out);
                     AJ_CloseMsg(&out);
                 }
@@ -600,6 +597,16 @@ int AJ_Main()
         }
     }
     AJ_WarnPrintf(("svclite EXIT %d\n", status));
+
+#if defined(SECURE_INTERFACE) || defined(SECURE_OBJECT)
+    // Clean up certificate chain
+    while (chain) {
+        node = chain;
+        chain = chain->next;
+        AJ_Free(node->certificate.der.data);
+        AJ_Free(node);
+    }
+#endif
 
     return status;
 }

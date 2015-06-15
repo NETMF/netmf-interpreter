@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -18,6 +18,7 @@
  ******************************************************************************/
 #define AJ_MODULE TARGET_UTIL
 
+#include "aj_target.h"
 #include <time.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -27,7 +28,6 @@
 #include <stdarg.h>
 #include <arpa/inet.h>
 #include <aj_debug.h>
-#include "aj_target.h"
 #include "aj_util.h"
 
 uint8_t dbgTARGET_UTIL = 0;
@@ -131,6 +131,15 @@ int8_t AJ_CompareTime(AJ_Time timerA, AJ_Time timerB)
     }
 }
 
+uint64_t AJ_DecodeTime(char* der, char* fmt)
+{
+    struct tm tm;
+    if (!strptime(der, fmt, &tm)) {
+        return 0;
+    }
+    return (uint64_t) timegm(&tm);
+}
+
 void* AJ_Malloc(size_t sz)
 {
     return malloc(sz);
@@ -145,6 +154,13 @@ void AJ_Free(void* mem)
     if (mem) {
         free(mem);
     }
+}
+
+void AJ_MemZeroSecure(void* s, size_t n)
+{
+    volatile unsigned char* p = s;
+    while (n--) *p++ = '\0';
+    return;
 }
 
 /*

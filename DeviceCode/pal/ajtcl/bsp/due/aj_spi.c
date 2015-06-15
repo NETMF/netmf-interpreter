@@ -2,7 +2,7 @@
  * @file SPI functionality
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -265,7 +265,7 @@ void AJ_WSL_SPI_DMATransfer(void* buffer, uint32_t size, uint8_t direction)
         /* Enable the channel to start DMA */
         dmac_channel_enable(DMAC, AJ_DMA_RX_CHANNEL);
         /* Wait for the transfer to complete */
-        while (!AJ_WSL_DMA_send_done) ;
+        while (!AJ_WSL_DMA_send_done);
     } else {
         /* We are transferring in the RX direction */
         /* Set up the destination address */
@@ -284,7 +284,7 @@ void AJ_WSL_SPI_DMATransfer(void* buffer, uint32_t size, uint8_t direction)
 
         dmac_channel_single_buf_transfer_init(DMAC, AJ_DMA_TX_CHANNEL, (dma_transfer_descriptor_t*) &transfer);
         dmac_channel_enable(DMAC, AJ_DMA_TX_CHANNEL);
-        while (!AJ_WSL_DMA_send_done) ;
+        while (!AJ_WSL_DMA_send_done);
     }
     /* reset the DMA completed indicator */
     AJ_WSL_DMA_send_done = 0;

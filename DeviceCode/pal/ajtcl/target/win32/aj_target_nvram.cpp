@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -40,6 +40,17 @@ uint8_t* AJ_NVRAM_BASE_ADDRESS;
 
 extern void AJ_NVRAM_Layout_Print();
 
+#define NV_FILE "ajtcl.nvram"
+
+const char* nvFile = NV_FILE;
+
+void AJ_SetNVRAM_FilePath(const char* path)
+{
+    if (path) {
+        nvFile = path;
+    }
+}
+
 void AJ_NVRAM_Init()
 {
     AJ_NVRAM_BASE_ADDRESS = AJ_EMULATED_NVRAM;
@@ -71,9 +82,9 @@ void _AJ_NVRAM_Clear()
 
 static AJ_Status _AJ_LoadNVFromFile()
 {
-    FILE* f = fopen("ajlite.nvram", "rb");
+    FILE* f = fopen(nvFile, "rb");
     if (f == NULL) {
-        AJ_AlwaysPrintf(("Error: LoadNVFromFile() failed\n"));
+        AJ_AlwaysPrintf(("Error: AJ_LoadNVFromFile(\"%s\") failed\n", nvFile));
         return AJ_ERR_FAILURE;
     }
 
@@ -85,9 +96,9 @@ static AJ_Status _AJ_LoadNVFromFile()
 
 AJ_Status _AJ_StoreNVToFile()
 {
-    FILE* f = fopen("ajlite.nvram", "wb");
+    FILE* f = fopen(nvFile, "wb");
     if (!f) {
-        AJ_AlwaysPrintf(("Error: StoreNVToFile() failed\n"));
+        AJ_AlwaysPrintf(("Error: AJ_StoreNVToFile(\"%s\") failed\n", nvFile));
         return AJ_ERR_FAILURE;
     }
 

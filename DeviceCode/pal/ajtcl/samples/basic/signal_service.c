@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012, 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -198,7 +198,6 @@ int AJ_Main(void)
 
             case BASIC_SIGNAL_SERVICE_SET_NAME:
                 status = AJ_BusPropSet(&msg, SetName, NULL);
-
                 if (AJ_OK == status) {
                     status = SendSignal();
                     AJ_InfoPrintf(("SendSignal reports status 0x%04x.\n", status));
@@ -211,7 +210,6 @@ int AJ_Main(void)
                     AJ_UnmarshalArgs(&msg, "uu", &id, &reason);
                     AJ_AlwaysPrintf(("Session lost. ID = %u, reason = %u", id, reason));
                 }
-                status = AJ_ERR_SESSION_LOST;
                 break;
 
             default:
@@ -224,7 +222,7 @@ int AJ_Main(void)
         /* Messages MUST be discarded to free resources. */
         AJ_CloseMsg(&msg);
 
-        if ((status == AJ_ERR_SESSION_LOST || status == AJ_ERR_READ)) {
+        if (status == AJ_ERR_READ) {
             AJ_AlwaysPrintf(("AllJoyn disconnect.\n"));
             AJ_Disconnect(&busAttachment);
             connected = FALSE;

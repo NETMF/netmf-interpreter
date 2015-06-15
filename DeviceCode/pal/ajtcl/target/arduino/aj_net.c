@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -179,17 +179,22 @@ AJ_Status AJ_Net_Recv(AJ_IOBuffer* buf, uint32_t len, uint32_t timeout)
 static uint8_t rxData[1454];
 static uint8_t txData[1024];
 
-AJ_Status AJ_Net_Connect(AJ_NetSocket* netSock, uint16_t port, uint8_t addrType, const uint32_t* addr)
+AJ_Status AJ_Net_Connect(AJ_BusAttachment* bus, const AJ_Service* service)
 {
     int ret;
+    IPAddress ip(service->ipv4);
 
-    IPAddress ip(*addr);
+    if (!(service->addrTypes & AJ_ADDR_TCP4)) {
+        AJ_ErrPrintf(("AJ_Net_Connect(): only IPV4 TCP supported\n", ret));
+        return AJ_ERR_CONNECT;
+    }
 
-    AJ_InfoPrintf(("AJ_Net_Connect(nexSock=0x%p, port=%d., addrType=%d., addr=0x%p)\n", netSock, port, addrType, addr));
+
+    AJ_InfoPrintf(("AJ_Net_Connect(netSock=0x%p, addrType=%d.)\n", netSock, addrType));
 
     AJ_InfoPrintf(("AJ_Net_Connect(): Connect to 0x%x:%u.\n", addr, port));;
 
-    ret = g_client.connect(ip, port);
+    ret = g_client.connect(ip, service->ipv4port);
 
 #ifdef NOTDEF
     Serial.print("Connecting to: ");
@@ -202,10 +207,10 @@ AJ_Status AJ_Net_Connect(AJ_NetSocket* netSock, uint16_t port, uint8_t addrType,
         AJ_ErrPrintf(("AJ_Net_Connect(): connect() failed: %d: status=AJ_ERR_CONNECT\n", ret));
         return AJ_ERR_CONNECT;
     } else {
-        AJ_IOBufInit(&netSock->rx, rxData, sizeof(rxData), AJ_IO_BUF_RX, (void*)&g_client);
-        netSock->rx.recv = AJ_Net_Recv;
-        AJ_IOBufInit(&netSock->tx, txData, sizeof(txData), AJ_IO_BUF_TX, (void*)&g_client);
-        netSock->tx.send = AJ_Net_Send;
+        AJ_IOBufInit(&bus->sock.rx, rxData, sizeof(rxData), AJ_IO_BUF_RX, (void*)&g_client);
+        bus->sock.rx.recv = AJ_Net_Recv;
+        AJ_IOBufInit(&bus->sock.tx, txData, sizeof(txData), AJ_IO_BUF_TX, (void*)&g_client);
+        bus->sock.tx.send = AJ_Net_Send;
         AJ_ErrPrintf(("AJ_Net_Connect(): connect() success: status=AJ_OK\n"));
         return AJ_OK;
     }

@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -22,14 +22,17 @@
 #include "aj_target.h"
 #include "aj_crypto.h"
 
+/*
+ * Context for AES-128 CTR DRBG
+ */
+static CTR_DRBG_CTX drbgctx;
+
 int analogPin = 3;
-static uint8_t seed[16];
-static uint8_t key[16];
 /*
  * The host has various ADC's. We are going to accumulate entropy by repeatedly
  * reading the ADC and accumulating the least significant bit or each reading.
  */
-int GatherBits(uint8_t* buffer, uint32_t len)
+uint32_t AJ_PlatformEntropy(uint8_t* data, uint32_t size)
 {
     int i;
     uint32_t val;
@@ -37,31 +40,30 @@ int GatherBits(uint8_t* buffer, uint32_t len)
     /*
      * Start accumulating entropy one bit at a time
      */
-    for (i = 0; i < (8 * len); ++i) {
+    for (i = 0; i < (8 * size); ++i) {
         val = analogRead(analogPin);
-        buffer[i / 8] ^= ((val & 1) << (i & 7));
+        data[i / 8] ^= ((val & 1) << (i & 7));
     }
-    return val;
+    return size;
 }
 
-void AJ_RandBytes(uint8_t* rand, uint32_t len)
+void AJ_RandBytes(uint8_t* rand, uint32_t size)
 {
-    ///*
-    // * On the first call we need to accumulate entropy
-    // * for the seed and the key.
-    // */
-    if (seed[0] == 0) {
-        GatherBits(seed, sizeof(seed));
-        GatherBits(key, sizeof(key));
+    AJ_Status status = AJ_ERR_SECURITY;
+    uint8_t seed[SEEDLEN];
+
+    if (rand && size) {
+        status = AES_CTR_DRBG_Generate(&drbgctx, rand, size);
+        if (AJ_OK != status) {
+            // Reseed required
+            AJ_PlatformEntropy(seed, sizeof (seed));
+            AES_CTR_DRBG_Reseed(&drbgctx, seed, sizeof (seed));
+            status = AES_CTR_DRBG_Generate(&drbgctx, rand, size);
+        }
+    } else {
+        // This is the first call to initialize
+        size = AJ_PlatformEntropy(seed, sizeof (seed));
+        drbgctx.df = (SEEDLEN == size) ? 0 : 1;
+        AES_CTR_DRBG_Instantiate(&drbgctx, seed, sizeof (seed), drbgctx.df);
     }
-    AJ_AES_Enable(key);
-    /*
-     * This follows the NIST guidelines for using AES as a PRF
-     */
-    while (len) {
-        *rand = random(256);
-        len -= 1;
-        rand += 1;
-    }
-    AJ_AES_Disable();
 }

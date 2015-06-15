@@ -3,7 +3,7 @@
  */
 
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -77,7 +77,7 @@ static const AJ_Object AppObjects[] = {
  *
  * See also .\inc\aj_introspect.h
  */
-#define NAMECHANGE_SIGNAL AJ_APP_MESSAGE_ID(0, 0, 0)
+#define NAMECHANGE_SIGNAL AJ_PRX_MESSAGE_ID(0, 0, 0)
 
 #define CONNECT_TIMEOUT    (1000 * 60)
 #define UNMARSHAL_TIMEOUT  (1000 * 5)
@@ -128,6 +128,7 @@ int AJ_Main(void)
             if (status == AJ_OK) {
                 AJ_InfoPrintf(("StartClient returned %d, sessionId=%u.\n", status, sessionId));
                 connected = TRUE;
+                status = AJ_BusAddSignalRule(&bus, "nameChanged", InterfaceName, AJ_BUS_SIGNAL_ALLOW);
             } else {
                 AJ_InfoPrintf(("StartClient returned 0x%04x.\n", status));
                 break;
@@ -262,6 +263,10 @@ int AJ_Main(void)
 
         case AJ_ERR_SESSION_LOST:
             AJ_ErrPrintf(("The session was lost\n"));
+            break;
+
+        default:
+            AJ_ErrPrintf(("AJ_UnmarshalMsg() returned '%s'.\n", AJ_StatusText(status)));
             break;
         }
 

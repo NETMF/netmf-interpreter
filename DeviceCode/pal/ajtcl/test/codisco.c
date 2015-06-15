@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -41,35 +41,65 @@ static const uint8_t RANDOM_PAUSE = TRUE;
 /*
  * Counters
  * The total number of connection attempts is the sum of
- * failed attempts and successful attempts.
+ * various pieces, viz. timed out, network error, unexpected error and success.
+ * i.   timed out attempts - AJ_ERR_TIMEOUT timeout is returned
+ * ii.  network error attempts - AJ_ERR_READ or AJ_ERR_WRITE or
+ *                               AJ_ERR_CONNECT or AJ_ERR_LINK_DEAD is returned
+ * iii. unexpected error attempts - Any other AJ_ERR_* returned
+ * iv.  success attempts - AJ_OK is returned
  */
-static uint32_t num_total_attempts      = 0;
-static uint16_t num_failed_attempts     = 0;
-static uint16_t num_successful_attempts = 0;
+static uint32_t num_total_attempts            = 0;
+static uint16_t num_network_error_attempts    = 0;
+static uint16_t num_unexpected_error_attempts = 0;
+static uint16_t num_timedout_attempts         = 0;
+static uint16_t num_successful_attempts       = 0;
 
 void AJ_Main(void)
 {
     AJ_Status status = AJ_OK;
     AJ_BusAttachment bus;
 
-
     uint16_t timeout = 0;
 
     AJ_Initialize();
 
+    AJ_Printf("\nAllJoyn Release: %s\n\n", AJ_GetVersion());
+
+    /*
+     * Set the minimum protocol version of 'acceptable' router node to 14.02
+     * to exercise LegacyNS code as well.
+     * The protocol version for 14.02 is 9, as specified at:
+     * https://git.allseenalliance.org/cgit/core/alljoyn.git/tree/alljoyn_core/inc/alljoyn/AllJoynStd.h?id=v14.02#n33
+     */
+
+    AJ_SetMinProtoVersion(9);
+
+    /*
+     * Set the selection timeout to a different value from the default.
+     */
+    AJ_SetSelectionTimeout(2000);
+
     /* Connect and disconnect forever */
     while (TRUE) {
-        AJ_Printf("Attempting to connect to a routing node...\n");
+        AJ_Printf("Attempting to connect to a routing node with prefix: %s ...\n", routingNodeName);
 
-        status = AJ_Connect(&bus, routingNodeName, CONNECT_TIMEOUT);
+        status = AJ_FindBusAndConnect(&bus, routingNodeName, CONNECT_TIMEOUT);
         num_total_attempts++;
 
-        if (AJ_OK != status) {
-            num_failed_attempts++;
-            AJ_Printf("Failed to connect to routing node: %s (code: %u)\n", AJ_StatusText(status), status);
-        } else {
+        if (AJ_ERR_READ == status || AJ_ERR_WRITE == status ||
+            AJ_ERR_CONNECT == status || AJ_ERR_LINK_DEAD == status) {
+            num_network_error_attempts++;
+            AJ_Printf("Network failure while connecting to routing node: %s (code: %u)\n", AJ_StatusText(status), status);
+        } else if (AJ_ERR_TIMEOUT == status) {
+            num_timedout_attempts++;
+            AJ_Printf("Timedout while connecting to routing node\n");
+        } else if (AJ_OK == status) {
             num_successful_attempts++;
-            AJ_Printf("Connected to routing node: %s\n", AJ_GetUniqueName(&bus));
+            AJ_Printf("Connected to routing node (protocol version = %u). Got unique name - %s\n", AJ_GetRoutingProtoVersion(), AJ_GetUniqueName(&bus));
+        } else {
+            /* Unexpected failures */
+            num_unexpected_error_attempts++;
+            AJ_Printf("!!!Unexpected!!! failure when connecting to routing node: %s (code: %u)\n", AJ_StatusText(status), status);
         }
 
         Print_Connection_Summary();
@@ -93,11 +123,15 @@ void AJ_Main(void)
 
 static void Print_Connection_Summary(void) {
     AJ_Printf("\n\t--Connection counters--\n"
-              "\tNumber of successful attempts = %u\n"
-              "\tNumber of failed attempts     = %u\n"
-              "\tTotal Number of attempts      = %u\n"
+              "\tNumber of successful attempts        = %u\n"
+              "\tNumber of timedout attempts          = %u\n"
+              "\tNumber of network error attempts     = %u\n"
+              "\tNumber of unexpected error attempts  = %u\n"
+              "\tTotal Number of attempts             = %u\n"
               "\t-----------------------\n\n",
-              num_successful_attempts, num_failed_attempts, num_total_attempts);
+              num_successful_attempts, num_timedout_attempts,
+              num_network_error_attempts, num_unexpected_error_attempts,
+              num_total_attempts);
 }
 
 #ifdef AJ_MAIN

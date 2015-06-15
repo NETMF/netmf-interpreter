@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -37,6 +37,7 @@ uint32_t g_sessionId = 0ul;
 AJ_Status authStatus = AJ_ERR_NULL;
 uint32_t sendTTL = 0;
 
+static const char InterfaceName[] = "org.alljoyn.bus.test.sessions";
 static const char ServiceName[] = "org.alljoyn.bus.test.sessions";
 static const uint16_t ServicePort = 25;
 static uint32_t authenticate = TRUE;
@@ -55,7 +56,7 @@ static const char* commands[] = {
 };
 
 static const char* const testInterface[] = {
-    "org.alljoyn.bus.test.sessions",
+    InterfaceName,
     "!Chat >s",
     NULL
 };
@@ -138,6 +139,7 @@ void Do_Connect()
             continue;
         }
         connected = TRUE;
+        AJ_BusAddSignalRule(&bus, "Chat", InterfaceName, AJ_BUS_SIGNAL_ALLOW);
         AJ_InfoPrintf(("AllJoyn service connected to bus\n"));
         AJ_InfoPrintf(("Connected to Daemon:%s\n", AJ_GetUniqueName(&bus)));
     }
@@ -324,6 +326,7 @@ int AJ_Main()
                 }
 
                 status = AJ_StartService(&bus, NULL, CONNECT_TIMEOUT, TRUE, port, name, AJ_NAME_REQ_DO_NOT_QUEUE, &opts);
+                AJ_BusAddSignalRule(&bus, "Chat", InterfaceName, AJ_BUS_SIGNAL_ALLOW);
             } else if (0 == strcmp("find", command)) {
                 char* namePrefix = aj_strtok(NULL, " \r\n");
                 if (!namePrefix) {
@@ -536,7 +539,7 @@ int AJ_Main()
                     AJ_AlwaysPrintf(("Usage: schat <msg>\n"));
                     continue;
                 }
-                status = AppSendChatSignal(&bus, 0, chatMsg, ALLJOYN_FLAG_SESSIONLESS, sendTTL);
+                status = AppSendChatSignal(&bus, 0, chatMsg, AJ_FLAG_SESSIONLESS, sendTTL);
             } else if (0 == strcmp("chat", command)) {
                 char* sessionIdString = aj_strtok(NULL, " \r\n");
                 char*chatMsg;
@@ -637,6 +640,7 @@ int AJ_Main()
                         status = AJ_UnmarshalArgs(&msg, "uu", &replyCode, &g_sessionId);
                         if (replyCode == AJ_JOINSESSION_REPLY_SUCCESS) {
                             AJ_InfoPrintf(("Joined session session_id=%u\n", g_sessionId));
+                            AJ_BusAddSignalRule(&bus, "Chat", InterfaceName, AJ_BUS_SIGNAL_ALLOW);
                         } else {
                             AJ_InfoPrintf(("Joined session failed\n"));
                         }

@@ -2,7 +2,7 @@
  * @file Alljoyn network function implementations
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -243,7 +243,7 @@ AJ_Status AJ_Net_Recv(AJ_IOBuffer* buf, uint32_t len, uint32_t timeout)
 static uint8_t rxData[1024];
 static uint8_t txData[1500];
 
-AJ_Status AJ_Net_Connect(AJ_NetSocket* netSock, uint16_t port, uint8_t addrType, const uint32_t* addr)
+AJ_Status AJ_Net_Connect(AJ_BusAttachment* bus, const AJ_Service* service)
 {
     int ret;
 
@@ -254,21 +254,24 @@ AJ_Status AJ_Net_Connect(AJ_NetSocket* netSock, uint16_t port, uint8_t addrType,
         AJ_ErrPrintf(("AJ_Net_Connect(): socket() failed.  status=AJ_ERR_CONNECT\n"));
         return AJ_ERR_CONNECT;
     }
-    if (addrType == AJ_ADDR_IPV4) {
-
+    if (service->addrTypes & AJ_ADDR_TCP4) {
+        // only supported protocol for now!
     } else {
+        AJ_WSL_NET_socket_close(tcpSock);
+        return AJ_ERR_CONNECT;
         //TODO: IPv6 connect. Alljoyn never uses IPv6 TCP but maybe in the future
     }
-    ret = AJ_WSL_NET_socket_connect(tcpSock, BE32_TO_CPU(*addr), port, WSL_AF_INET);
+    ret = AJ_WSL_NET_socket_connect(tcpSock, BE32_TO_CPU(service->ipv4), service->ipv4port, WSL_AF_INET);
     if (ret < 0) {
+        AJ_WSL_NET_socket_close(tcpSock);
         //AJ_ErrPrintf(("AJ_Net_Connect(): connect() failed. errno=\"%s\", status=AJ_ERR_CONNECT\n", strerror(errno)));
         return AJ_ERR_CONNECT;
     } else {
         netContext.tcpSock = tcpSock;
-        AJ_IOBufInit(&netSock->rx, rxData, sizeof(rxData), AJ_IO_BUF_RX, &netContext);
-        netSock->rx.recv = AJ_Net_Recv;
-        AJ_IOBufInit(&netSock->tx, txData, sizeof(txData), AJ_IO_BUF_TX, &netContext);
-        netSock->tx.send = AJ_Net_Send;
+        AJ_IOBufInit(&bus->sock.rx, rxData, sizeof(rxData), AJ_IO_BUF_RX, &netContext);
+        bus->sock.rx.recv = AJ_Net_Recv;
+        AJ_IOBufInit(&bus->sock.tx, txData, sizeof(txData), AJ_IO_BUF_TX, &netContext);
+        bus->sock.tx.send = AJ_Net_Send;
         AJ_InfoPrintf(("AJ_Net_Connect(): status=AJ_OK\n"));
         return AJ_OK;
     }

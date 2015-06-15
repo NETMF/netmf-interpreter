@@ -1,67 +1,63 @@
-AllJoyn Thin Core Library: Version 14.12 Release Notes
+AllJoyn Thin Core Library: Version 15.04 Release Notes
 ======================================================
 
-Platform Support
-----------------
+Fully Validated Platforms
+-------------------------
 1) Linux Ubuntu 14.04 LTS (64 bit)
 2) Windows 7 (64 bit)
-3) Windows 8/8.1 (64 bit)
 
-
-Features added in Version 14.12
+Features added in Version 15.04
 -------------------------------
-* Major stabilization and scalability fixes
-* Blacklisting feature for TC RN discovery: blacklist RNs that the TC
-  cannot connect to (ASACORE-830)
-* Configuration of the heartbeat from the routing node to the TC (ASACORE-151)
-* Support for discovering RN using mDNS/NGNS (ASACORE-777)
-* Logging messages print out wall clock time on Linux (ASACORE-737)
-* EXPERIMENTAL: Add an implementation for About Client with Announce
-  processing and handler registration (ASACORE-953)
+* Allow the setting of the UNMARSHAL_TIMEOUT (ASACORE-695). This gives
+  applications explicit control over how long unmarshalling waits for new input
+  before giving up.
+* AJTCL Router Selection (ASACORE-803). TC applications now use the rank
+  advertised by the router to select the most desirable router.
+* Support for X.509 ECDSA digital certificates, which replace the X.509 RSA
+  certificates. (ASACORE-1561)
+* AJTCL adds information string to reply messages (ASACORE-1824). This feature
+  duplicates the standard library API functionality that allows information to
+  be added to a reply message.
+* Add support for specifying NVRAM file location on Windows (ASACORE-1835).
+* EXPERIMENTAL: UDP Transport for TC <-> RN connections. Thin Client to Routing
+  Node version of a UDP-based transport (ASACORE-1404).
 
-
-Issues Addressed in Version 14.12
+Issues Addressed in Version 15.04
 ---------------------------------
-ASACORE-46   AJ Thin Client applications that use AJ_StartClient() do not
-             know the full bus name of the service that was joined for
-             sending method calls.
-ASACORE-905  Remove dependency on NameOwnerChanged signals from TCL (this
-             superseded ASACORE-730
+ASACORE-1247  Thin Core Library basic samples fail under Windows
+ASACORE-1853  NGNS query responses for openly advertised names are sent as
+              multicast
 
-Details can be found at:
-https://jira.allseenalliance.org/issues/?jql=project%3D%22Core%20SW%22%20and%20fixVersion%20%3D%20%2214.12%22%20and%20status%20in%20%28Resolved%2C%20closed%29%20and%20resolution%20in%20%28Fixed%2C%20done%29%20and%20type%20not%20in%20%28task%2C%20%22New%20Feature%22%29%20and%20component%20in%20%28%22Thin%20Core%20Library%22%2C%20%22About%20TC%22%29%20order%20by%20priority%20DESC%2C%20id%20ASC
+For a complete list of fixed issues:
+https://jira.allseenalliance.org/issues/?jql=project%3D%22Core%20SW%22%20and%20fixVersion%20%3D%20%2215.04%22%20and%20resolution%20in%20%28Fixed%2C%20done%29%20and%20type%20not%20in%20%28task%2C%20%22New%20Feature%22%29%20and%20component%20%3D%20%22Thin%20Core%20Library%22%20order%20by%20priority%20DESC%2C%20id%20ASC
 
 
 Known Issues in Version 14.12
 -----------------------------
-ASACORE-703   Thin clients occasionally having problems rediscovering
-              routing node 
-ASACORE-952   Crash on aj_msg.c method UnmarshalArray(...)
-ASACORE-1247  Thin Core Library basic samples fail under Windows
-
-For a complete list of open issues:
-https://jira.allseenalliance.org/issues/?jql=project%3D%22Core%20SW%22%20and%20%20resolution%20%3D%20Unresolved%20and%20type%20not%20in%20%28task%2C%20%22New%20Feature%22%29%20and%20component%20in%20%28%22Thin%20Core%20Library%22%2C%20%22About%20TC%22%29%20order%20by%20priority%20DESC%2C%20id%20ASC
+No significant issues to call out. For a complete list of open issues:
+https://jira.allseenalliance.org/issues/?jql=project%3D%22Core%20SW%22%20and%20%20resolution%20%3D%20Unresolved%20and%20type%20not%20in%20%28task%2C%20%22New%20Feature%22%29%20and%20component%20%3D%20%22Thin%20Core%20Library%22%20order%20by%20priority%20DESC%2C%20id%20ASC
 
 
 Compatibility
 -------------
-Starting in Version 14.12
+Starting in Version 15.04
 * The APIs for About in the core/about_tcl repo are (still) DEPRECATED
-* Thin Library protocol version changed from 10 to 11
-* Removed deprecated functions AJ_Net_Up and AJ_Net_Down from
-  ajtcl/RTOS/aj_net.c 
-* By default the minProtoVersion is set to 10, which means TC applications
-  will only search for 14.06 or newer routing nodes
+* Thin Library protocol version changed from 11 to 12.  Applications that
+  require router features of version 12 should set the minimum protocol version
+  to 12.
+* Support for SPKI certificates for ECDHE_ECDSA was removed; the impact of this
+  change is expected to be minimal as it is not believed to have been used.
 
-For details of previous releases please see the release notes
-14.06a: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?id=v14.06a
-14.06: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?id=v14.06
+For details of previous releases/release families please see the release notes:
+14.12: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?h=RB14.12
+14.06: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?h=RB14.06
 14.02: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?id=v14.02
 
 Change history
 --------------
-14.12 - Bug fixes, major improvements to address scalability, new features
-        listed above.
+15.04 -  Bug fixes, new features listed above.
+14.12 -  Bug fixes, major improvements to address scalability, new features
+         listed above.
 14.06a - Critical bug fixes: ASACORE-800, ASACORE-805, ASACORE-908,
          ASACORE-912, ASACORE-924 and ASACORE-943.
 14.06  - Bug fixes, scalability and stability support, several features

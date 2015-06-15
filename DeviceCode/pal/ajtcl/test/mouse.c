@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012,2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -108,7 +108,7 @@ static void AppDoWork(AJ_BusAttachment* bus)
     ADC_IntClear(ADC0, ADC_IF_SINGLE);
     ADC_Start(ADC0, adcStartSingle);
     /* Wait for completion */
-    while (!(ADC_IntGet(ADC0) & ADC_IF_SINGLE)) ;
+    while (!(ADC_IntGet(ADC0) & ADC_IF_SINGLE));
     x = ADC_DataSingleGet(ADC0);
 
     /* According to Maui HW design */
@@ -117,7 +117,7 @@ static void AppDoWork(AJ_BusAttachment* bus)
     ADC_IntClear(ADC0, ADC_IF_SINGLE);
     ADC_Start(ADC0, adcStartSingle);
     /* Wait for completion */
-    while (!(ADC_IntGet(ADC0) & ADC_IF_SINGLE)) ;
+    while (!(ADC_IntGet(ADC0) & ADC_IF_SINGLE));
     y = ADC_DataSingleGet(ADC0);
 
     // send the message

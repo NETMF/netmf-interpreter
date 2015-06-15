@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -24,7 +24,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <aj_debug.h>
+#include <string.h>
+#include "aj_debug.h"
 #include "aj_target.h"
 #include "aj_util.h"
 
@@ -134,6 +135,12 @@ uint8_t AJ_StopReadFromStdIn()
     return FALSE;
 }
 
+uint64_t AJ_DecodeTime(char* der, char* fmt)
+{
+    //TODO
+    return 0;
+}
+
 void* AJ_Malloc(size_t sz)
 {
     return malloc(sz);
@@ -146,6 +153,11 @@ void* AJ_Realloc(void* ptr, size_t size)
 void AJ_Free(void* p)
 {
     free(p);
+}
+
+void AJ_MemZeroSecure(void* s, size_t n)
+{
+    SecureZeroMemory(s, n);
 }
 
 #ifndef NDEBUG
@@ -210,4 +222,35 @@ AJ_Status AJ_InetToString(uint32_t addr, char* buf, size_t buflen)
         status = AJ_ERR_RESOURCES;
     }
     return status;
+}
+
+void AJ_TimeAddOffset(AJ_Time* timerA, uint32_t msec)
+{
+    uint32_t msecNew;
+    if (msec == -1) {
+        timerA->seconds = -1;
+        timerA->milliseconds = -1;
+    } else {
+        msecNew = (timerA->milliseconds + msec);
+        timerA->seconds = timerA->seconds + (msecNew / 1000);
+        timerA->milliseconds = msecNew % 1000;
+    }
+}
+
+
+int8_t AJ_CompareTime(AJ_Time timerA, AJ_Time timerB)
+{
+    if (timerA.seconds == timerB.seconds) {
+        if (timerA.milliseconds == timerB.milliseconds) {
+            return 0;
+        } else if (timerA.milliseconds > timerB.milliseconds) {
+            return 1;
+        } else {
+            return -1;
+        }
+    } else if (timerA.seconds > timerB.seconds) {
+        return 1;
+    } else {
+        return -1;
+    }
 }

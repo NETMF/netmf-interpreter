@@ -2,7 +2,7 @@
  * @file Network functionality implementation
  */
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -246,30 +246,31 @@ void AJ_WSL_NET_scan_stop(void)
 
 AJ_Status AJ_WSL_NET_SetPassphrase(const char* SSID, const char* passphrase, uint32_t passLen)
 {
-    AJ_Status status;
+    AJ_Status status = AJ_OK;
     AJ_BufList* passphraseList;
     passphraseList = AJ_BufListCreate();
     uint8_t* hexPassphrase = NULL;
+
     if (passLen == 64) {
         hexPassphrase = (uint8_t*)AJ_WSL_Malloc(32);
         status = AJ_HexToRaw(passphrase, 64, hexPassphrase, 32);
         if (status == AJ_OK) {
             WSL_MarshalPacket(passphraseList, WMI_SET_PMK, 0, hexPassphrase, 32);
-        } else {
-            AJ_WSL_Free(hexPassphrase);
-            // Passphrase was not valid HEX data
-            return AJ_ERR_INVALID;
         }
     } else {
         WSL_MarshalPacket(passphraseList, WSL_SET_PASSPHRASE, 0, SSID, passphrase, strlen(SSID), passLen);
     }
-    WMI_MarshalHeader(passphraseList, 1, 1);
-    AJ_InfoPrintf(("AJ_WSL_NET_SetPassphrase(): SET_PASSPHRASE\n"));
-    AJ_WSL_WMI_PadPayload(passphraseList);
-    //AJ_BufListPrintDumpContinuous(passphraseList);
-
-    status = AJ_WSL_WMI_QueueWorkItem(0, AJ_WSL_WORKITEM(AJ_WSL_WORKITEM_NETWORK, WSL_SET_PASSPHRASE), AJ_WSL_HTC_DATA_ENDPOINT1, passphraseList);
-    AJ_WSL_Free(hexPassphrase);
+    if (status == AJ_OK) {
+        WMI_MarshalHeader(passphraseList, 1, 1);
+        AJ_InfoPrintf(("AJ_WSL_NET_SetPassphrase(): SET_PASSPHRASE\n"));
+        AJ_WSL_WMI_PadPayload(passphraseList);
+        //AJ_BufListPrintDumpContinuous(passphraseList);
+        status = AJ_WSL_WMI_QueueWorkItem(0, AJ_WSL_WORKITEM(AJ_WSL_WORKITEM_NETWORK, WSL_SET_PASSPHRASE), AJ_WSL_HTC_DATA_ENDPOINT1, passphraseList);
+    }
+    if (hexPassphrase != NULL) {
+        AJ_MemZeroSecure(hexPassphrase, 32);
+        AJ_WSL_Free(hexPassphrase);
+    }
     return status;
 }
 
@@ -305,7 +306,7 @@ AJ_Status AJ_WSL_NET_SetPowerMode(uint8_t mode)
 
 void AJ_WSL_NET_StackInit(void)
 {
-    AJ_InfoPrintf(("AJ_WSL_NET_connect(): STACK_INIT\n"));
+    AJ_InfoPrintf(("AJ_WSL_NET_StackInit(): STACK_INIT\n"));
     AJ_BufList* stack_init;
     stack_init = AJ_BufListCreate();
 

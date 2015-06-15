@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -46,9 +46,9 @@ static uint8_t write_buf;
 aj_spi_status AJ_SPI_WRITE(uint8_t* spi_device, uint8_t byte, uint8_t pcs, uint8_t cont)
 {
     SPI_SSOutputCmd(SPI1, ENABLE);
-    while (!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE)) ;
+    while (!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE));
     SPI_I2S_SendData(SPI1, byte);
-    while (!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE)) ;
+    while (!SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE));
     read_buf = SPI_I2S_ReceiveData(SPI1) & 0xFF;
 
     if (cont == 1) {
@@ -96,8 +96,8 @@ AJ_Status AJ_WSL_SPI_DMATransfer(uint8_t* buffer, uint16_t len, uint8_t directio
         DMA_Cmd(DMA2_Stream3, ENABLE);
 
         // Wait for DMA to finish
-        while (DMA_GetCmdStatus(DMA2_Stream3) == ENABLE) ;
-        while (!DMA_GetFlagStatus(DMA2_Stream3, DMA_FLAG_TCIF3)) ;
+        while (DMA_GetCmdStatus(DMA2_Stream3) == ENABLE);
+        while (!DMA_GetFlagStatus(DMA2_Stream3, DMA_FLAG_TCIF3));
 
     } else {
         uint8_t zero = 0;
@@ -126,8 +126,8 @@ AJ_Status AJ_WSL_SPI_DMATransfer(uint8_t* buffer, uint16_t len, uint8_t directio
         DMA_Cmd(DMA2_Stream3, ENABLE);
 
         // Wait for DMA to finish
-        while (DMA_GetCmdStatus(DMA2_Stream3) == ENABLE) ;
-        while (!DMA_GetFlagStatus(DMA2_Stream3, DMA_FLAG_TCIF3)) ;
+        while (DMA_GetCmdStatus(DMA2_Stream3) == ENABLE);
+        while (!DMA_GetFlagStatus(DMA2_Stream3, DMA_FLAG_TCIF3));
         DMA_ClearFlag(DMA2_Stream3, DMA_FLAG_TCIF3);
         DMA_ClearFlag(DMA2_Stream0, DMA_FLAG_TCIF0);
 

@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -27,7 +27,6 @@
 #include "aj_crypto.h"
 #include "aj_debug.h"
 #include <openssl/aes.h>
-#include <openssl/bn.h>
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
@@ -36,6 +35,11 @@
 #ifndef NDEBUG
 uint8_t dbgTARGET_CRYPTO = 0;
 #endif
+
+/*
+ * Context for AES-128 CTR DRBG
+ */
+static CTR_DRBG_CTX drbgctx;
 
 static AES_KEY keyState;
 
@@ -79,11 +83,34 @@ void AJ_AES_ECB_128_ENCRYPT(const uint8_t* key, const uint8_t* in, uint8_t* out)
     AES_encrypt(in, out, &keyState);
 }
 
-void AJ_RandBytes(uint8_t* rand, uint32_t len)
+uint32_t AJ_PlatformEntropy(uint8_t* data, uint32_t size)
 {
-    BIGNUM* bn = BN_new();
-    BN_rand(bn, len * 8, -1, 0);
-    BN_bn2bin(bn, rand);
-    BN_free(bn);
+    FILE* f = fopen("/dev/urandom", "r");
+    if (NULL == f) {
+        return 0;
+    }
+    size = fread(data, sizeof (uint8_t), size, f);
+    fclose(f);
+    return size;
 }
 
+void AJ_RandBytes(uint8_t* rand, uint32_t size)
+{
+    AJ_Status status = AJ_ERR_SECURITY;
+    uint8_t seed[SEEDLEN];
+
+    if (rand && size) {
+        status = AES_CTR_DRBG_Generate(&drbgctx, rand, size);
+        if (AJ_OK != status) {
+            // Reseed required
+            AJ_PlatformEntropy(seed, sizeof (seed));
+            AES_CTR_DRBG_Reseed(&drbgctx, seed, sizeof (seed));
+            status = AES_CTR_DRBG_Generate(&drbgctx, rand, size);
+        }
+    } else {
+        // This is the first call to initialize
+        size = AJ_PlatformEntropy(seed, sizeof (seed));
+        drbgctx.df = (SEEDLEN == size) ? 0 : 1;
+        AES_CTR_DRBG_Instantiate(&drbgctx, seed, sizeof (seed), drbgctx.df);
+    }
+}

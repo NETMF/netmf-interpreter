@@ -3,7 +3,7 @@
  */
 
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -33,6 +33,7 @@
 #include "aj_bus.h"
 #include "aj_disco.h"
 #include "aj_wifi_ctrl.h"
+#include "aj_guid.h"
 
 #ifndef NDEBUG
 AJ_EXPORT uint8_t dbgNETBUSSAMPLE = 0;
@@ -66,13 +67,11 @@ static uint32_t MyBusAuthPwdCB(uint8_t* buf, uint32_t bufLen)
 
 static const char serviceName[] = "org.alljoyn.BusNode";
 
-#define AJ_CONNECT_TIMEOUT 5000
-
 static AJ_Status ConnectToBus(AJ_BusAttachment* bus)
 {
     AJ_Status status;
     AJ_Service service;
-    uint32_t timeout = AJ_CONNECT_TIMEOUT;
+    uint32_t timeout = 5000;
 
 #ifdef AJ_SERIAL_CONNECTION
     AJ_Time start, now;
@@ -103,12 +102,12 @@ static AJ_Status ConnectToBus(AJ_BusAttachment* bus)
 #if HOST_IS_BIG_ENDIAN
     service.ipv4 = 0x7f000001; // 127.0.0.1
 #endif
-    service.addrTypes = AJ_ADDR_IPV4;
+    service.addrTypes = AJ_ADDR_TCP4;
 #elif defined ARDUINO
     service.ipv4port = 9955;
     service.ipv4 = 0x6501A8C0; // 192.168.1.101
-    service.addrTypes = AJ_ADDR_IPV4;
-    status = AJ_Discover(serviceName, &service, timeout);
+    service.addrTypes = AJ_ADDR_TCP4;
+    status = AJ_Discover(serviceName, &service, timeout, AJ_SELECTION_TIMEOUT);
     if (status != AJ_OK) {
         AJ_InfoPrintf(("AJ_Connect(): AJ_Discover status=%s\n", AJ_StatusText(status)));
         goto ExitConnect;
@@ -121,7 +120,7 @@ static AJ_Status ConnectToBus(AJ_BusAttachment* bus)
         AJ_InfoPrintf(("AJ_Connect(): AJ_Serial_Up status=%s\n", AJ_StatusText(status)));
     }
 #else
-    status = AJ_Discover(serviceName, &service, timeout);
+    status = AJ_Discover(serviceName, &service, timeout, AJ_SELECTION_TIMEOUT);
     if (status != AJ_OK) {
         AJ_InfoPrintf(("AJ_Connect(): AJ_Discover status=%s\n", AJ_StatusText(status)));
         goto ExitConnect;
@@ -132,7 +131,7 @@ static AJ_Status ConnectToBus(AJ_BusAttachment* bus)
      * Now that we have discovered a routing node, we can connect to it.  This is done with AJ_Net_Connect.
      */
 
-    status = AJ_Net_Connect(&bus->sock, service.ipv4port, service.addrTypes & AJ_ADDR_IPV4, &service.ipv4);
+    status = AJ_Net_Connect(bus, &service);
     if (status != AJ_OK) {
         // or retry discovery to find another node that will accept our connection
         AJ_InfoPrintf(("AJ_Connect(): AJ_Net_Connect status=%s\n", AJ_StatusText(status)));
@@ -179,10 +178,13 @@ int AJ_Main(void)
 #ifdef AJ_CONFIGURE_WIFI_UPON_START
 # error This sample cannot be built with AJ_CONFIGURE_WIFI_UPON_START defined
 #endif
+// dhcp_attempts applies to systems in need of network connections
+#if !(defined(ARDUINO) || defined(__linux) || defined(_WIN32) || defined(__MACH__))
+    int32_t dhcp_attempts = 5;
+#endif
 
     AJ_Status status = AJ_OK;
     AJ_BusAttachment bus;
-    int32_t dhcp_attempts = 5;
 
     /*
      * One time initialization before calling any other AllJoyn APIs

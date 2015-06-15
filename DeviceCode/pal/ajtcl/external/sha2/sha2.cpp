@@ -32,7 +32,7 @@
  */
 
 /******************************************************************************
- * Copyright (c) 2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -48,13 +48,8 @@
  ******************************************************************************/
 
 #include <string.h>	/* memcpy()/memset() or bcopy()/bzero() */
-#ifdef NDEBUG
 #include <assert.h>	/* assert() */
-#else
-#define assert(x)
-#endif
 #include "sha2.h"
-
 
 /*
  * ASSERT NOTE:

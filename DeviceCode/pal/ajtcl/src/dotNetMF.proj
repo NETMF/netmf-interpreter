@@ -56,8 +56,7 @@
     <Compile Include="aj_helper.cpp" />
     <Compile Include="aj_init.cpp" />
     <Compile Include="aj_introspect.cpp" />
-    <Compile Include="aj_keyauthentication.cpp" />
-    <Compile Include="aj_keyexchange.cpp" />
+    <Compile Include="aj_authentication.cpp" />
     <Compile Include="aj_link_timeout.cpp" />
     <Compile Include="aj_msg.cpp" />
     <Compile Include="aj_nvram.cpp" />

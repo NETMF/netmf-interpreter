@@ -2,7 +2,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -42,6 +42,10 @@
 #include "aj_util.h"
 #include "aj_connect.h"
 #include "aj_debug.h"
+
+#ifdef AJ_ARDP
+#include "aj_ardp.h"
+#endif
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
@@ -107,6 +111,24 @@ static WSAEVENT interruptEvent = WSA_INVALID_EVENT;
 static WSAEVENT recvEvent = WSA_INVALID_EVENT;
 static WSAEVENT sendEvent = WSA_INVALID_EVENT;
 
+/**
+ * Target-specific contexts for network I/O
+ */
+typedef struct {
+    SOCKET tcpSock;
+    SOCKET udpSock;
+} NetContext;
+
+static NetContext netContext = { INVALID_SOCKET, INVALID_SOCKET };
+
+#ifdef AJ_ARDP
+/**
+ * Need to predeclare a few things for ARDP
+ */
+static AJ_Status AJ_Net_ARDP_Connect(AJ_BusAttachment* bus, const AJ_Service* service);
+
+#endif // AJ_ARDP
+
 /*
  * This function is called to cancel a pending select.
  */
@@ -127,6 +149,7 @@ static AJ_Status AJ_Net_Send(AJ_IOBuffer* buf)
     assert(buf->direction == AJ_IO_BUF_TX);
 
     if (tx > 0) {
+        NetContext* ctx = (NetContext*) buf->context;
         WSAOVERLAPPED ov;
         DWORD flags = 0;
         WSABUF wsbuf;
@@ -136,8 +159,8 @@ static AJ_Status AJ_Net_Send(AJ_IOBuffer* buf)
         wsbuf.len = tx;
         wsbuf.buf = (CHAR*)buf->readPtr;
 
-        ret = WSASend((SOCKET)buf->context, &wsbuf, 1, NULL, flags, &ov, NULL);
-        if (!WSAGetOverlappedResult((SOCKET)buf->context, &ov, &tx, TRUE, &flags)) {
+        ret = WSASend(ctx->tcpSock, &wsbuf, 1, NULL, flags, &ov, NULL);
+        if (!WSAGetOverlappedResult(ctx->tcpSock, &ov, &tx, TRUE, &flags)) {
             AJ_ErrPrintf(("AJ_Net_Send(): send() failed. WSAGetLastError()=0x%x, status=AJ_ERR_WRITE\n", WSAGetLastError()));
             return AJ_ERR_WRITE;
         }
@@ -160,6 +183,7 @@ static AJ_Status AJ_Net_Recv(AJ_IOBuffer* buf, uint32_t len, uint32_t timeout)
     DWORD rx = AJ_IO_BUF_SPACE(buf);
     DWORD flags = 0;
     DWORD ret = SOCKET_ERROR;
+    NetContext* ctx = (NetContext*) buf->context;
 
     AJ_InfoPrintf(("AJ_Net_Recv(buf=0x%p, len=%d, timeout=%d)\n", buf, len, timeout));
 
@@ -178,7 +202,7 @@ static AJ_Status AJ_Net_Recv(AJ_IOBuffer* buf, uint32_t len, uint32_t timeout)
         wsbuf.buf = (CHAR*)buf->writePtr;
         memset(&wsaOverlapped, 0, sizeof(WSAOVERLAPPED));
         wsaOverlapped.hEvent = recvEvent;
-        ret = WSARecv((SOCKET)buf->context, &wsbuf, 1, NULL, &flags, &wsaOverlapped, NULL);
+        ret = WSARecv(ctx->tcpSock, &wsbuf, 1, NULL, &flags, &wsaOverlapped, NULL);
         if ((ret == SOCKET_ERROR) && (WSAGetLastError() != WSA_IO_PENDING)) {
             AJ_ErrPrintf(("WSARecv(): failed WSAGetLastError()=%d\n", WSAGetLastError()));
             return AJ_ERR_READ;
@@ -195,7 +219,7 @@ static AJ_Status AJ_Net_Recv(AJ_IOBuffer* buf, uint32_t len, uint32_t timeout)
     events[1] = interruptEvent;
     ret = WSAWaitForMultipleEvents(2, events, FALSE, timeout, TRUE);
     if (ret == WSA_WAIT_EVENT_0) {
-        if (WSAGetOverlappedResult((SOCKET)buf->context, &wsaOverlapped, &rx, TRUE, &flags)) {
+        if (WSAGetOverlappedResult(ctx->tcpSock, &wsaOverlapped, &rx, TRUE, &flags)) {
             status = AJ_OK;
         }
     } else if (ret == WSA_WAIT_TIMEOUT) {
@@ -224,55 +248,70 @@ static AJ_Status AJ_Net_Recv(AJ_IOBuffer* buf, uint32_t len, uint32_t timeout)
 static uint8_t rxData[2048];
 static uint8_t txData[2048];
 
-AJ_Status AJ_Net_Connect(AJ_NetSocket* netSock, uint16_t port, uint8_t addrType, const uint32_t* addr)
+AJ_Status AJ_Net_Connect(AJ_BusAttachment* bus, const AJ_Service* service)
 {
     DWORD ret;
     SOCKADDR_STORAGE addrBuf;
     socklen_t addrSize;
     SOCKET sock;
-    int af;
-
-    AJ_InfoPrintf(("AJ_Net_Connect(nexSock=0x%p, port=%d., addrType=%d., addr=0x%p)\n", netSock, port, addrType, addr));
 
     /* Initialize Winsock, if not done already */
     WinsockCheck();
 
+#ifdef AJ_ARDP
+    if (service->addrTypes & (AJ_ADDR_UDP4 | AJ_ADDR_UDP6)) {
+        return AJ_Net_ARDP_Connect(bus, service);
+    }
+#endif
+
+    AJ_InfoPrintf(("AJ_Net_Connect(bus=0x%p, addrType=%d.)\n", bus, service->addrTypes));
+
     memset(&addrBuf, 0, sizeof(addrBuf));
 
-    if (addrType == AJ_ADDR_IPV4) {
-        af = AF_INET;
+    if (service->addrTypes & AJ_ADDR_TCP4) {
+        struct sockaddr_in* sa = (struct sockaddr_in*)&addrBuf;
+
+        sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
+        if (sock == INVALID_SOCKET) {
+            AJ_ErrPrintf(("AJ_Net_Connect(): invalid socket.  status=AJ_ERR_CONNECT\n"));
+            return AJ_ERR_CONNECT;
+        }
+
+        sa->sin_family = AF_INET;
+        sa->sin_port = htons(service->ipv4port);
+        sa->sin_addr.s_addr = service->ipv4;
+        addrSize = sizeof(*sa);
+        AJ_InfoPrintf(("AJ_Net_Connect(): Connect to \"%s:%u\"\n", inet_ntoa(sa->sin_addr), service->ipv4port));;
+    } else if (service->addrTypes & AJ_ADDR_TCP6) {
+        struct sockaddr_in6* sa = (struct sockaddr_in6*)&addrBuf;
+
+        sock = WSASocket(AF_INET6, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
+        if (sock == INVALID_SOCKET) {
+            AJ_ErrPrintf(("AJ_Net_Connect(): invalid socket.  status=AJ_ERR_CONNECT\n"));
+            return AJ_ERR_CONNECT;
+        }
+
+        sa->sin6_family = AF_INET6;
+        sa->sin6_port = htons(service->ipv6port);
+        memcpy(sa->sin6_addr.s6_addr, service->ipv6, sizeof(sa->sin6_addr.s6_addr));
+        addrSize = sizeof(*sa);
     } else {
-        af = AF_INET6;
-    }
-    sock = WSASocket(af, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
-    if (sock == INVALID_SOCKET) {
-        AJ_ErrPrintf(("AJ_Net_Connect(): invalid socket.  status=AJ_ERR_CONNECT\n"));
+        AJ_ErrPrintf(("AJ_Net_Connect: only TCPv6 and TCPv4 are supported\n"));
         return AJ_ERR_CONNECT;
     }
-    if (addrType == AJ_ADDR_IPV4) {
-        struct sockaddr_in* sa = (struct sockaddr_in*)&addrBuf;
-        sa->sin_family = AF_INET;
-        sa->sin_port = htons(port);
-        sa->sin_addr.s_addr = *addr;
-        addrSize = sizeof(*sa);
-        AJ_InfoPrintf(("AJ_Net_Connect(): Connect to \"%s:%u\"\n", inet_ntoa(sa->sin_addr), port));;
-    } else {
-        struct sockaddr_in6* sa = (struct sockaddr_in6*)&addrBuf;
-        sa->sin6_family = AF_INET6;
-        sa->sin6_port = htons(port);
-        memcpy(sa->sin6_addr.s6_addr, addr, sizeof(sa->sin6_addr.s6_addr));
-        addrSize = sizeof(*sa);
-    }
+
     ret = connect(sock, (struct sockaddr*)&addrBuf, addrSize);
     if (ret == SOCKET_ERROR) {
         AJ_ErrPrintf(("AJ_Net_Connect(): connect() failed. WSAGetLastError()=0x%x, status=AJ_ERR_CONNECT\n", WSAGetLastError()));
         closesocket(sock);
         return AJ_ERR_CONNECT;
     } else {
-        AJ_IOBufInit(&netSock->rx, rxData, sizeof(rxData), AJ_IO_BUF_RX, (void*)sock);
-        netSock->rx.recv = AJ_Net_Recv;
-        AJ_IOBufInit(&netSock->tx, txData, sizeof(txData), AJ_IO_BUF_TX, (void*)sock);
-        netSock->tx.send = AJ_Net_Send;
+        AJ_IOBufInit(&bus->sock.rx, rxData, sizeof(rxData), AJ_IO_BUF_RX, &netContext);
+        bus->sock.rx.recv = AJ_Net_Recv;
+        AJ_IOBufInit(&bus->sock.tx, txData, sizeof(txData), AJ_IO_BUF_TX, &netContext);
+        bus->sock.tx.send = AJ_Net_Send;
+
+        netContext.tcpSock = sock;
         AJ_InfoPrintf(("AJ_Net_Connect(): status=AJ_OK\n"));
         sendEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
         recvEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -284,18 +323,25 @@ AJ_Status AJ_Net_Connect(AJ_NetSocket* netSock, uint16_t port, uint8_t addrType,
 
 void AJ_Net_Disconnect(AJ_NetSocket* netSock)
 {
-    SOCKET sock = (SOCKET)netSock->rx.context;
-
     AJ_InfoPrintf(("AJ_Net_Disconnect(nexSock=0x%p)\n", netSock));
 
-    if (sock) {
-        shutdown(sock, 0);
-        closesocket(sock);
-        memset(netSock, 0, sizeof(AJ_NetSocket));
-        WSACloseEvent(recvEvent);
-        WSACloseEvent(sendEvent);
-        WSACloseEvent(interruptEvent);
+    if (netContext.tcpSock != INVALID_SOCKET) {
+        shutdown(netContext.tcpSock, 0);
+        closesocket(netContext.tcpSock);
+        netContext.tcpSock = INVALID_SOCKET;
+    } else if (netContext.udpSock != INVALID_SOCKET) {
+#ifdef AJ_ARDP
+        AJ_ARDP_Disconnect(FALSE);
+#endif
+        shutdown(netContext.udpSock, 0);
+        closesocket(netContext.udpSock);
+        netContext.udpSock = INVALID_SOCKET;
     }
+
+    memset(netSock, 0, sizeof(AJ_NetSocket));
+    WSACloseEvent(recvEvent);
+    WSACloseEvent(sendEvent);
+    WSACloseEvent(interruptEvent);
 }
 
 typedef struct {
@@ -759,9 +805,10 @@ static void Mcast4Up(const char* group, uint16_t port, uint8_t mdns, uint16_t re
         new_sock.sock = socket(AF_INET, SOCK_DGRAM, 0);
         if (new_sock.sock == INVALID_SOCKET) {
             AJ_ErrPrintf(("Mcast4Up(): socket() failed. WSAGetLastError()=0x%x\n", WSAGetLastError()));
+            continue;
         }
 
-        ret = setsockopt(new_sock.sock, SOL_SOCKET, SO_REUSEADDR, (const char*) &reuse, sizeof(reuse));
+        ret = setsockopt(new_sock.sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&reuse, sizeof(reuse));
 
         if (ret != 0) {
             AJ_ErrPrintf(("MCast4Up(): setsockopt(SO_REUSEADDR) failed. errno=\"%s\", status=AJ_ERR_READ\n", strerror(errno)));
@@ -827,7 +874,7 @@ static void Mcast4Up(const char* group, uint16_t port, uint8_t mdns, uint16_t re
 
         if (new_sock.sock != INVALID_SOCKET) {
             NumMcastSocks++;
-            McastSocks = (mcast_info_t*) realloc(McastSocks, NumMcastSocks * sizeof(mcast_info_t));
+            McastSocks = (mcast_info_t*)realloc(McastSocks, NumMcastSocks * sizeof(mcast_info_t));
             memcpy(&McastSocks[NumMcastSocks - 1], &new_sock, sizeof(mcast_info_t));
         }
     }
@@ -869,7 +916,7 @@ static SOCKET MDnsRecvUp()
     new_sock.v4_bcast.s_addr = 0;
     new_sock.v4_addr.s_addr = 0;
     NumMcastSocks++;
-    McastSocks = (mcast_info_t*) realloc(McastSocks, NumMcastSocks * sizeof(mcast_info_t));
+    McastSocks = (mcast_info_t*)realloc(McastSocks, NumMcastSocks * sizeof(mcast_info_t));
     memcpy(&McastSocks[NumMcastSocks - 1], &new_sock, sizeof(mcast_info_t));
     return tmp_sock;
 }
@@ -953,3 +1000,174 @@ void AJ_Net_MCastDown(AJ_MCastSocket* mcastSock)
     McastSocks = NULL;
     memset(mcastSock, 0, sizeof(AJ_MCastSocket));
 }
+
+
+
+#ifdef AJ_ARDP
+
+static AJ_Status AJ_ARDP_UDP_Send(void* context, uint8_t* buf, size_t len, size_t* sent)
+{
+    AJ_Status status = AJ_OK;
+    DWORD ret;
+    NetContext* ctx = (NetContext*) context;
+    WSAOVERLAPPED ov;
+    DWORD flags = 0;
+    WSABUF wsbuf;
+
+    memset(&ov, 0, sizeof(ov));
+    ov.hEvent = sendEvent;
+    wsbuf.len = len;
+    wsbuf.buf = buf;
+
+    AJ_InfoPrintf(("AJ_ARDP_UDP_Send(buf=0x%p, len=%lu)\n", buf, len));
+
+    ret = WSASend(ctx->udpSock, &wsbuf, 1, NULL, flags, &ov, NULL);
+    if (ret == SOCKET_ERROR) {
+        AJ_ErrPrintf(("AJ_ARDP_UDP_Send(): WSASend() failed. WSAGetLastError()=0x%x, status=AJ_ERR_WRITE\n", WSAGetLastError()));
+        *sent = 0;
+        return AJ_ERR_WRITE;
+    }
+
+    if (!WSAGetOverlappedResult(ctx->udpSock, &ov, sent, TRUE, &flags)) {
+        AJ_ErrPrintf(("AJ_ARDP_UDP_Send(): WSAGetOverlappedResult() failed. WSAGetLastError()=0x%x, status=AJ_ERR_WRITE\n", WSAGetLastError()));
+        return AJ_ERR_WRITE;
+    }
+
+    return status;
+}
+
+static AJ_Status AJ_ARDP_UDP_Recv(void* context, uint8_t** data, uint32_t* recved, uint32_t timeout)
+{
+    NetContext* ctx = (NetContext*) context;
+    DWORD ret = SOCKET_ERROR;
+    WSAEVENT events[2];
+    DWORD flags = 0;
+    static uint8_t buffer[UDP_SEGBMAX];
+
+    *data = NULL;
+
+    if (wsaOverlapped.hEvent == INVALID_HANDLE_VALUE) {
+        wsbuf.len = sizeof(buffer);
+        wsbuf.buf = buffer;
+        memset(&wsaOverlapped, 0, sizeof(WSAOVERLAPPED));
+        wsaOverlapped.hEvent = recvEvent;
+        ret = WSARecvFrom(ctx->udpSock, &wsbuf, 1, NULL, &flags, NULL, NULL, &wsaOverlapped, NULL);
+        if ((ret == SOCKET_ERROR) && (WSAGetLastError() != WSA_IO_PENDING)) {
+            AJ_ErrPrintf(("WSARecvFrom(): failed WSAGetLastError()=%d\n", WSAGetLastError()));
+            return AJ_ERR_READ;
+        }
+    }
+
+    events[0] = wsaOverlapped.hEvent;
+    events[1] = interruptEvent;
+
+    ret = WSAWaitForMultipleEvents(2, events, FALSE, timeout, TRUE);
+    switch (ret) {
+    case WSA_WAIT_EVENT_0:
+        flags = 0;
+        if (WSAGetOverlappedResult(ctx->udpSock, &wsaOverlapped, recved, TRUE, &flags)) {
+            WSAResetEvent(wsaOverlapped.hEvent);
+            wsaOverlapped.hEvent = INVALID_HANDLE_VALUE;
+            *data = buffer;
+            return AJ_OK;
+        } else {
+            AJ_ErrPrintf(("AJ_ARDP_UDP_Recv(): WSAGetOverlappedResult error; WSAGetLastError()=%d\n", WSAGetLastError()));
+            return AJ_ERR_READ;
+        }
+        break;
+
+    case WSA_WAIT_EVENT_0 + 1:
+        WSAResetEvent(interruptEvent);
+        return AJ_ERR_INTERRUPTED;
+
+    case WSA_WAIT_TIMEOUT:
+        return AJ_ERR_TIMEOUT;
+        break;
+
+    default:
+        AJ_ErrPrintf(("AJ_ARDP_UDP_Recv(): WSAWaitForMultipleEvents error; WSAGetLastError()=%d\n", WSAGetLastError()));
+        return AJ_ERR_READ;
+    }
+}
+
+static AJ_Status AJ_Net_ARDP_Connect(AJ_BusAttachment* bus, const AJ_Service* service)
+{
+    SOCKET udpSock = INVALID_SOCKET;
+    AJ_Status status;
+    SOCKADDR_STORAGE addrBuf;
+    socklen_t addrSize;
+    DWORD ret;
+
+    AJ_ARDP_InitFunctions(AJ_ARDP_UDP_Recv, AJ_ARDP_UDP_Send);
+
+    // otherwise backpressure is guaranteed!
+    assert(sizeof(txData) <= UDP_SEGMAX * (UDP_SEGBMAX - ARDP_HEADER_SIZE - UDP_HEADER_SIZE));
+
+    memset(&addrBuf, 0, sizeof(addrBuf));
+
+    if (service->addrTypes & AJ_ADDR_UDP4) {
+        struct sockaddr_in* sa = (struct sockaddr_in*) &addrBuf;
+        udpSock = WSASocket(AF_INET, SOCK_DGRAM, IPPROTO_UDP, NULL, 0, WSA_FLAG_OVERLAPPED);
+        if (udpSock == INVALID_SOCKET) {
+            AJ_ErrPrintf(("AJ_Net_ARDP_Connect(): socket() failed.  status=AJ_ERR_CONNECT\n"));
+            goto ConnectError;
+        }
+
+        sa->sin_family = AF_INET;
+        sa->sin_port = htons(service->ipv4portUdp);
+        sa->sin_addr.s_addr = service->ipv4Udp;
+        addrSize = sizeof(struct sockaddr_in);
+        AJ_InfoPrintf(("AJ_Net_ARDP_Connect(): Connect to \"%s:%u\"\n", inet_ntoa(sa->sin_addr), service->ipv4portUdp));;
+    } else if (service->addrTypes & AJ_ADDR_UDP6) {
+        struct sockaddr_in6* sa = (struct sockaddr_in6*) &addrBuf;
+        udpSock = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, NULL, 0, WSA_FLAG_OVERLAPPED);
+        if (udpSock == INVALID_SOCKET) {
+            AJ_ErrPrintf(("AJ_Net_ARDP_Connect(): socket() failed.  status=AJ_ERR_CONNECT\n"));
+            goto ConnectError;
+        }
+
+        sa->sin6_family = AF_INET6;
+        sa->sin6_port = htons(service->ipv6portUdp);
+        memcpy(sa->sin6_addr.s6_addr, service->ipv6Udp, sizeof(sa->sin6_addr.s6_addr));
+        addrSize = sizeof(struct sockaddr_in6);
+    } else {
+        AJ_ErrPrintf(("AJ_Net_ARDP_Connect(): Invalid addrTypes %u, status=AJ_ERR_CONNECT\n", service->addrTypes));
+        return AJ_ERR_CONNECT;
+    }
+
+
+    ret = connect(udpSock, (struct sockaddr*) &addrBuf, addrSize);
+    // must do this before calling AJ_MarshalMethodCall!
+    if (ret == SOCKET_ERROR) {
+        AJ_ErrPrintf(("AJ_Net_Connect(): connect() failed. WSAGetLastError()=0x%x, status=AJ_ERR_CONNECT\n", WSAGetLastError()));
+        goto ConnectError;
+    } else {
+        netContext.udpSock = udpSock;
+        AJ_IOBufInit(&bus->sock.rx, rxData, sizeof(rxData), AJ_IO_BUF_RX, &netContext);
+        bus->sock.rx.recv = AJ_ARDP_Recv;
+        AJ_IOBufInit(&bus->sock.tx, txData, sizeof(txData), AJ_IO_BUF_TX, &netContext);
+        bus->sock.tx.send = AJ_ARDP_Send;
+
+        sendEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+        recvEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+        interruptEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+        wsaOverlapped.hEvent = INVALID_HANDLE_VALUE;
+    }
+
+    status = AJ_ARDP_UDP_Connect(bus, &netContext, service, &bus->sock);
+    if (status != AJ_OK) {
+        goto ConnectError;
+    }
+
+    return AJ_OK;
+
+ConnectError:
+
+    if (udpSock != INVALID_SOCKET) {
+        closesocket(udpSock);
+    }
+
+    return AJ_ERR_CONNECT;
+}
+
+#endif // AJ_ARDP
