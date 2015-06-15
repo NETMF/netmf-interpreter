@@ -35,6 +35,7 @@ struct STM32F4_Int_State
     BYTE expected; // expected pin state
     GPIO_INTERRUPT_SERVICE_ROUTINE ISR; // interrupt handler
     void* param;   // interrupt handler parameter
+    UINT32 debounceTicks;
 };
 
 static STM32F4_Int_State g_int_state[ STM32F4_Gpio_MaxInt ]; // interrupt state
@@ -69,7 +70,7 @@ void STM32F4_GPIO_ISR( int num )  // 0 <= num <= 15
 {
     INTERRUPT_START
 
-        STM32F4_Int_State* state = &g_int_state[ num ];
+    STM32F4_Int_State* state = &g_int_state[ num ];
     state->completion.Abort( );
     UINT32 bit = 1 << num;
     UINT32 actual;
@@ -78,11 +79,14 @@ void STM32F4_GPIO_ISR( int num )  // 0 <= num <= 15
         EXTI->PR = bit;   // reset pending bit
         actual = CPU_GPIO_GetPinState( state->pin ); // get actual pin state
     } while( EXTI->PR & bit ); // repeat if pending again
+
     if( state->ISR )
     {
         if( state->debounce )
-        { // debounce enabled
-            state->completion.EnqueueTicks( HAL_Time_CurrentTicks( ) + g_debounceTicks );
+        {   // debounce enabled
+            // for back compat treat state.debounceTicks == 0 as indication to use global debounce setting
+            UINT32 debounceDeltaTicks = state->debounceTicks == 0 ? g_debounceTicks : state->debounceTicks;
+            state->completion.EnqueueTicks( HAL_Time_CurrentTicks( ) + debounceDeltaTicks );
         }
         else
         {
@@ -382,7 +386,8 @@ BOOL CPU_GPIO_EnableInputPin( GPIO_PIN pin
 BOOL CPU_GPIO_EnableInputPin2( GPIO_PIN pin
                              , BOOL GlitchFilterEnable
                              , GPIO_INTERRUPT_SERVICE_ROUTINE ISR
-                             , void* ISR_Param, GPIO_INT_EDGE edge
+                             , void* ISR_Param
+                             , GPIO_INT_EDGE edge
                              , GPIO_RESISTOR resistor
                              )
 {
@@ -495,13 +500,25 @@ UINT8 CPU_GPIO_GetSupportedInterruptModes( GPIO_PIN pin )
         | ( 1 << GPIO_INT_LEVEL_LOW ) | ( 1 << GPIO_INT_LEVEL_HIGH );
 }
 
-UINT32 CPU_GPIO_GetPinDebounce( GPIO_PIN Pin )
+UINT32 CPU_GPIO_GetPinDebounce( GPIO_PIN pin )
 {
-    return 0;
+    NATIVE_PROFILE_HAL_PROCESSOR_GPIO( );
+    UINT32 num = pin & 0x0F;
+    STM32F4_Int_State& state = g_int_state[ num ];
+
+    return state.debounceTicks / ( SLOW_CLOCKS_PER_SECOND / 1000 ); // ticks -> ms
 }
 
-BOOL CPU_GPIO_SetPinDebounce( GPIO_PIN Pin, INT64 debounceTimeMilliseconds )
+BOOL CPU_GPIO_SetPinDebounce( GPIO_PIN pin, INT64 debounceTimeMilliseconds )
 {
+    NATIVE_PROFILE_HAL_PROCESSOR_GPIO( );
+    UINT32 num = pin & 0x0F;
+    STM32F4_Int_State& state = g_int_state[ num ];
+
+    if( debounceTimeMilliseconds > 0 && debounceTimeMilliseconds < 10000 )
+    {
+        state.debounceTicks = CPU_MillisecondsToTicks( ( UINT32 )debounceTimeMilliseconds );
+        return TRUE;
+    }
     return FALSE;
 }
-
