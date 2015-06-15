@@ -33,6 +33,10 @@
     <Compile Include="I2c\I2cConnectionSettings.cs" />
     <Compile Include="I2c\I2cDevice.cs" />
     <Compile Include="I2c\I2cEnums.cs" />
+    <Compile Include="Spi\SpiBusInfo.cs" />
+    <Compile Include="Spi\SpiConnectionSettings.cs" />
+    <Compile Include="Spi\SpiDevice.cs" />
+    <Compile Include="Spi\SpiEnums.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SPOT.Hardware">

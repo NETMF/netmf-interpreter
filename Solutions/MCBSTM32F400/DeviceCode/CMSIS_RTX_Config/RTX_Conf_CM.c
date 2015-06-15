@@ -36,18 +36,6 @@
 #include "cmsis_os.h"
 #include "lwip/opt.h"
 
-// [MSOPENTECH_CHANGE]
-// These macros are applied as attributes to the declaration of
-// the buffer arrays that hold the system and user stacks in
-// "RTX_CM_lib.h", which is included below. This allows placing
-// the stacks independently of other kernel data as they would
-// otherwise get thrown into the mix with all of the rest of the
-// kernel data from this compilation unit, thus prventing placment
-// of the stack in faster memory regions such as CCM data space.
-#define ATTRIB_SYSTEM_STACK __attribute__((section ("rtx_stack")))
-#define ATTRIB_USER_STACK ATTRIB_SYSTEM_STACK
-//[ END MSOPENTECH_CHANGE ]
-
 /*----------------------------------------------------------------------------
  *      RTX User configuration part BEGIN
  *---------------------------------------------------------------------------*/

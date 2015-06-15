@@ -371,7 +371,7 @@ namespace System
                     {
                         int len = result.Length;
 
-                        if(value is sbyte)
+                        if(value is sbyte || value is byte)
                         {
                             if (len > 2)
                             {

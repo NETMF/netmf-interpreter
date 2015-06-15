@@ -501,7 +501,13 @@ namespace Microsoft.SPOT.Tasks.ScatterFile
 
                     seen[var] = true;
 
+                    var varName = var;
                     var = Resolve( seen, GetVariable( var ) );
+
+                    if(var == null)
+                    {
+                        throw Document.ParseException( "'{0}' is not defined", varName );
+                    }
 
                     seen.Remove( var );
                 }
