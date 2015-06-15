@@ -1,4 +1,4 @@
-# Copyright (c) 2013, AllSeen Alliance. All rights reserved.
+# Copyright AllSeen Alliance. All rights reserved.
 #
 #    Permission to use, copy, modify, and/or distribute this software for any
 #    purpose with or without fee is hereby granted, provided that the above
@@ -33,6 +33,7 @@ if env['TARG'] == 'win32' or env['TARG'] == 'linux' or env['TARG'] == 'linux-uar
     env.Program('base64', ['base64.c'] + env['aj_obj'])
     env.Program('codisco', ['codisco.c'] + env['aj_obj'])
     env.Program('sigtest', ['sigtest.c'] + env['aj_obj'])
+    env.Program('ctrdrbg', ['ctrdrbg.c'] + env['aj_obj'])
 
     if env['TARG'] == 'linux-uart':
         env.Program('timertest', ['timertest.c'] + env['aj_obj'])

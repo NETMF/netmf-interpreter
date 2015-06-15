@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (c) 2011 - 2013 AllSeen Alliance. All rights reserved.
+# Copyright AllSeen Alliance. All rights reserved.
 #
 #    Permission to use, copy, modify, and/or distribute this software for any
 #    purpose with or without fee is hereby granted, provided that the above
@@ -17,7 +17,7 @@
 
 # This is a copy of the standard client's whitespace.py
 # The original is located in 'alljoyn/build_core/tools/bin'
-# Changes to this file must be done here (ajtcl) and in build_core 
+# Changes to this file must be done here (ajtcl) and in build_core
 
 import sys, os, fnmatch, re, filecmp, difflib, textwrap
 import hashlib, pickle, time
@@ -25,12 +25,13 @@ from subprocess import Popen, STDOUT, PIPE
 
 def main(argv=None):
     start_time = time.clock()
-    dir_ignore = ["stlport", "build", ".git", ".repo", "alljoyn_objc", "external"]
-    file_ignore_patterns = ['\.#.*', 'alljoyn_java\.h', 'Status\.h', 'Status_CPP0x\.h', 'Internal\.h']
+    dir_ignore = ["stlport", "build", ".git", ".repo", "alljoyn_objc", "ios", "external" ]
+    file_ignore_patterns = ['\.#.*', 'alljoyn_java\.h', 'Status\.h', 'Internal\.h']
     file_patterns = ['*.c', '*.h', '*.cpp', '*.cc']
     valid_commands = ["check", "detail", "fix", "off"]
     uncrustify_config = None
-    version_min = 0.57
+    supported_uncrustify_versions = ["0.57", "0.61"]
+    recommended_uncrustify_version = "0.61"
     unc_suffix = ".uncrustify"
     wscfg = None
     xit=0
@@ -38,6 +39,59 @@ def main(argv=None):
     whitespace_db = {}
     whitespace_db_updated = False
     run_ws_check = True
+    uncfile = None
+
+    '''Verify uncrustify install and version'''
+    version = get_uncrustify_version()
+    if not version in supported_uncrustify_versions:
+        print ("******************************************************************************")
+        print ("*         NOTICE         **         NOTICE         **         NOTICE         *")
+        print ("******************************************************************************")
+        print ("You are using uncrustify v" + version + ".")
+        print ("You must be using one of the following versions of uncrustify v" + (", v".join(supported_uncrustify_versions)) + "." )
+        print ("Please use the recommended version of uncrustify v" + recommended_uncrustify_version + ".");
+        print "(Or, run SCons with 'WS=off' to bypass the whitespace check)"
+        print ("******************************************************************************")
+        sys.exit(2)
+
+    if version != recommended_uncrustify_version:
+        print ("******************************************************************************")
+        print ("*         NOTICE         **         NOTICE         **         NOTICE         *")
+        print ("******************************************************************************")
+        print ("You are using uncrustify v" + version + ".")
+        print ("Using an older version of uncrustify may result in inaccurate white space scans.")
+        print ("Please use the recommended version of uncrustify v" + recommended_uncrustify_version + ".");
+        print ("******************************************************************************")
+
+    # if an legacy version of uncrustify does not correctly work for a specific file
+    # and we can not find another way around the issues we can selectively ignore
+    # files only for the legacy version of uncrustify.
+    if version == "0.57":
+        # v0.57 does not process statments like while(1); correctly it always
+        # wants to add a space between the while and the ';' character. While
+        # statments of this type are common in ajtcl code.
+        file_ignore_patterns.append("aj_wsl_wmi\.c")
+        file_ignore_patterns.append("aj_spi\.c")
+        file_ignore_patterns.append("FreeRTOSConfig\.h")
+        file_ignore_patterns.append("aj_target_mbed\.cpp")
+        file_ignore_patterns.append("syscalls\.c")
+        file_ignore_patterns.append("aj_target_platform\.c")
+        file_ignore_patterns.append("uartfuzztest\.c")
+        file_ignore_patterns.append("mouse\.c")
+        file_ignore_patterns.append("main\.c")
+        file_ignore_patterns.append("aj_target_rtos\.cpp")
+        # v0.57 (alljoyn-js files) note this whitespace script is shared between
+        # ajtcl and alljoyn-js for that reason some alljoyn-js files are added
+        # to this ignore list.
+        file_ignore_patterns.append("io_adc\.c")
+        file_ignore_patterns.append("io_spi\.c")
+        file_ignore_patterns.append("io_uart\.c")
+        file_ignore_patterns.append("io_i2c\.c")
+        # v0.57 of has a problem with multi-line strings and lines that start with
+        # the '<<' stream operator most of these issues only exist in unit-test code
+        file_ignore_patterns.append("BusAttachmentTest\.cc")
+        # v0.57 (alljoyn-js file) incorrect handling of the '*' character.
+        file_ignore_patterns.append("ajs_pyconsole\.cc")
 
     # try an load the whitespace.db file.  The file is dictionary of key:value pairs
     # where the key is the name of a file that has been checked by the WS checker
@@ -91,14 +145,6 @@ def main(argv=None):
         print_help()
         sys.exit(2)
 
-    '''Verify uncrustify install and version'''
-    version = uncrustify_version()
-    if version < version_min:
-        print ("You are using uncrustify v" + str(version) +
-            ". You must be using uncrustify v" + str(version_min) +
-            " or later.")
-        sys.exit(2)
-
     print "whitespace %s %s" % (wscmd,uncrustify_config)
     print "cwd=%s" % (os.getcwd())
     if wscmd == 'off':
@@ -107,6 +153,7 @@ def main(argv=None):
     '''Get a list of source files and apply uncrustify to them'''
     for srcfile in locate(file_patterns, file_ignore_patterns, dir_ignore):
         f = open(srcfile, 'rb')
+        uncfile = None
         filesize = os.path.getsize(srcfile)
         sha_digest = None
         try:
@@ -135,8 +182,16 @@ def main(argv=None):
             uncfile = srcfile + unc_suffix
 
             '''Run uncrustify and generate uncrustify output file'''
-            Popen(["uncrustify", "-q", "-c",
-                uncrustify_config, srcfile], stdout=PIPE).communicate()[0]
+            p = Popen( [ "uncrustify", "-c", uncrustify_config, srcfile, ],
+                stdout=PIPE, stderr=STDOUT )
+            output = p.communicate()[0]
+            if p.returncode:
+                print "error exit, uncrustify -c %s %s" % ( uncrustify_config, srcfile )
+                print output
+                print "whitespace check is not complete"
+                del whitespace_db[srcfile]
+                xit=2
+                break
 
             '''check command'''
             if wscmd == valid_commands[0]:
@@ -182,9 +237,16 @@ def main(argv=None):
 
                 '''run uncrustify again and overwrite the non-compliant file with
                 the uncrustify output'''
-                Popen(["uncrustify", "-q", "-c",
-                        uncrustify_config, "--no-backup",
-                        srcfile], stdout=PIPE).communicate()[0]
+                p = Popen( [ "uncrustify", "-c", uncrustify_config, "--no-backup", srcfile, ],
+                    stdout=PIPE, stderr=STDOUT )
+                output = p.communicate()[0]
+                if p.returncode:
+                    print "error exit, uncrustify -c %s --no-backup %s" % ( uncrustify_config, srcfile )
+                    print output
+                    print "whitespace check is not complete"
+                    del whitespace_db[srcfile]
+                    xit=2
+                    break
 
             '''remove the uncrustify output file'''
             if os.path.exists(uncfile):
@@ -192,6 +254,14 @@ def main(argv=None):
                     os.remove(uncfile)
                 except OSError:
                     print "Unable to remove uncrustify output file: " + uncfile
+
+    # end srcfile loop
+
+    if uncfile and os.path.exists(uncfile):
+        try:
+            os.remove(uncfile)
+        except OSError:
+            print "Unable to remove uncrustify output file: " + uncfile
 
     # write the whitespace_db to a file so it is avalible next time the whitespace
     # checker is run.
@@ -208,7 +278,7 @@ def main(argv=None):
     return xit
 
 '''Return the uncrustify version number'''
-def uncrustify_version( ):
+def get_uncrustify_version( ):
     version = None
 
     try:
@@ -220,14 +290,14 @@ def uncrustify_version( ):
          so bail after printing helpful message'''
         print ("It appears that \'uncrustify\' is not installed or is not " +
             "on your PATH. Please check your system and try again.")
+        print "(Or, run SCons with 'WS=off' to bypass the whitespace check)"
         sys.exit(2)
 
     else:
-        '''if no error, then extract version from output string and convert
-        to floating point'''
+        '''extract version from output string'''
         p = re.compile('^uncrustify (\d.\d{2})')
         m = re.search(p, output)
-        version = float(m.group(1))
+        version = m.group(1)
 
     return version
 
@@ -239,7 +309,7 @@ def print_help( ):
 
         Apply uncrustify to C++ source files (.c, .h, .cc, .cpp),
         recursively, from the present working directory.  Skips
-        'stlport', 'build', '.git', and '.repo' directories.
+        'stlport', 'build', 'alljoyn_objc', 'ios', 'external', '.git', and '.repo' directories.
 
         Note:  present working directory is presumed to be within,
         or the parent of, one of the AllJoyn archives.
@@ -311,15 +381,15 @@ def locate(file_patterns, file_ignore_patterns, dir_ignore_patterns, root=os.cur
         '''Remove unwanted files'''
         files_dict = {}
         for filename in files:
-            files_dict[filename] = True             
+            files_dict[filename] = True
         for filename in files:
             for fip in file_ignore_patterns:
                 if re.search(fip, filename) != None:
                     del files_dict[filename]
-        '''Collect the filtered list'''       
+        '''Collect the filtered list'''
         filtered_files = []
         for filename in files_dict.keys():
-            filtered_files.append(filename)        
+            filtered_files.append(filename)
         '''Filter the remainder using our wanted file pattern list'''
         for pattern in file_patterns:
             for filename in fnmatch.filter(filtered_files, pattern):

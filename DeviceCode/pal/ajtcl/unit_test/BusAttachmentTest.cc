@@ -1,7 +1,7 @@
 /******************************************************************************
  *
  *
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -47,8 +47,9 @@ class BusAttachmentTest : public testing::Test {
         status = AJ_Connect(&testBus, NULL, connectTimeout);
         // No point in continuing with any further tests, if we
         // cannot connect to the daemon. So ASSERT.
-        ASSERT_EQ(AJ_OK, status) << "Unable to connect to the daemon. " <<
-        "The status returned is " << AJ_StatusText(status);
+        ASSERT_EQ(AJ_OK, status) << "Unable to connect to the daemon. "
+                                 << "The status returned is "
+                                 << AJ_StatusText(status);
 
         if (AJ_OK == status) {
             AJ_AlwaysPrintf(("Connected to the bus. The unique name is %s\n", AJ_GetUniqueName(&testBus)));
@@ -75,8 +76,9 @@ uint32_t RequestReleaseNameTestHelper(const uint32_t method, const char* name, c
         status = AJ_BusRequestName(&testBus, name, flags);
 
         EXPECT_EQ(AJ_OK, status) << "Call to AJ_BusRequestName was not successful "
-        "when invoked with name: " << name << " and flags 0x" << std::hex <<
-        flags << ". Got status " << AJ_StatusText(status);
+                                 << "when invoked with name: " << name
+                                 << " and flags 0x" << std::hex
+                                 << flags << ". Got status " << AJ_StatusText(status);
 
         break;
 
@@ -84,7 +86,8 @@ uint32_t RequestReleaseNameTestHelper(const uint32_t method, const char* name, c
         status = AJ_BusReleaseName(&testBus, name);
 
         EXPECT_EQ(AJ_OK, status) << "Call to AJ_BusReleaseName was not successful "
-        "when invoked with name: " << name << ". Got status " << AJ_StatusText(status);
+                                 << "when invoked with name: " << name
+                                 << ". Got status " << AJ_StatusText(status);
 
         break;
     }
@@ -106,8 +109,9 @@ uint32_t RequestReleaseNameTestHelper(const uint32_t method, const char* name, c
         AJ_Message msg;
 
         status = AJ_UnmarshalMsg(&testBus, &msg, unmarshalTimeout);
-        EXPECT_EQ(AJ_OK, status) << "Unable to unmarshal a message with in " <<
-        unmarshalTimeout << "ms. Got status " << AJ_StatusText(status);
+        EXPECT_EQ(AJ_OK, status) << "Unable to unmarshal a message with in "
+                                 << unmarshalTimeout << "ms. Got status "
+                                 << AJ_StatusText(status);
 
         if (AJ_OK != status) {
             // No point continuing the test if we are unable to unmarshal.
@@ -117,11 +121,11 @@ uint32_t RequestReleaseNameTestHelper(const uint32_t method, const char* name, c
         uint32_t disposition = 0;
         switch (msg.msgId) {
         case AJ_REPLY_ID(AJ_METHOD_REQUEST_NAME):
-            EXPECT_EQ(AJ_MSG_METHOD_RET, msg.hdr->msgType) <<
-            "The response to RequestName method call was not a method return.";
+            EXPECT_EQ(AJ_MSG_METHOD_RET, msg.hdr->msgType) << "The response to RequestName method "
+                                                           << "call was not a method return.";
             status = AJ_UnmarshalArgs(&msg, "u", &disposition);
             EXPECT_EQ(AJ_OK, status) << "Unable to unmarshal args from "
-            "RequestName reply msg.";
+                                     << "RequestName reply msg.";
 
             returnValue = disposition;
 
@@ -129,11 +133,11 @@ uint32_t RequestReleaseNameTestHelper(const uint32_t method, const char* name, c
             break;
 
         case AJ_REPLY_ID(AJ_METHOD_RELEASE_NAME):
-            EXPECT_EQ(AJ_MSG_METHOD_RET, msg.hdr->msgType) <<
-            "The response to ReleaseName method call was not a method return.";
+            EXPECT_EQ(AJ_MSG_METHOD_RET, msg.hdr->msgType) << "The response to ReleaseName method "
+                                                           << "call was not a method return.";
             status = AJ_UnmarshalArgs(&msg, "u", &disposition);
             EXPECT_EQ(AJ_OK, status) << "Unable to unmarshal args from "
-            "ReleaseName reply msg.";
+                                     << "ReleaseName reply msg.";
 
             returnValue = disposition;
 
@@ -145,12 +149,13 @@ uint32_t RequestReleaseNameTestHelper(const uint32_t method, const char* name, c
             // as a bus message.
             status = AJ_BusHandleBusMessage(&msg);
             EXPECT_EQ(AJ_OK, status) << "The bus message was not handled "
-            "correctly. Got status " << AJ_StatusText(status);
+                                     << "correctly. Got status "
+                                     << AJ_StatusText(status);
             break;
         }
         status = AJ_CloseMsg(&msg);
-        EXPECT_EQ(AJ_OK, status) << "Unable to close message. Got status " <<
-        AJ_StatusText(status);
+        EXPECT_EQ(AJ_OK, status) << "Unable to close message. Got status "
+                                 << AJ_StatusText(status);
     }
 
     return returnValue;
@@ -164,23 +169,24 @@ static const uint32_t DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER = 4;
 TEST_F(BusAttachmentTest, RequestName)
 {
     // Request names that are already taken
-    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_IN_QUEUE, RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, AJ_DBusDestination, AJ_NAME_REQ_REPLACE_EXISTING)) <<
-    "Did not get 'in queue' while requesting an already existing name: " <<
-    AJ_DBusDestination;
+    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_IN_QUEUE, RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, AJ_DBusDestination, AJ_NAME_REQ_REPLACE_EXISTING))
+        << "Did not get 'in queue' while requesting an already existing name: "
+        << AJ_DBusDestination;
 
-    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_EXISTS, RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, AJ_BusDestination, AJ_NAME_REQ_ALLOW_REPLACEMENT | AJ_NAME_REQ_DO_NOT_QUEUE)) <<
-    "Did not get 'name already exists' while requesting an already existing name: " <<
-    AJ_BusDestination;
+    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_EXISTS, RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, AJ_BusDestination, AJ_NAME_REQ_ALLOW_REPLACEMENT | AJ_NAME_REQ_DO_NOT_QUEUE))
+        << "Did not get 'name already exists' while requesting an already existing name: "
+        << AJ_BusDestination;
 
     // Request a new name that is not taken
     uint32_t disposition = RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, serviceName, 0x0);
-    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, disposition) <<
-    "Unable to request a well-known name: " << serviceName;
+    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, disposition)
+        << "Unable to request a well-known name: " << serviceName;
 
     if (DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER == disposition) {
         // Request the same name again
-        EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER, RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, serviceName, 0x0)) <<
-        "Did not get 'name already owner' while requesting an already requested name:" << serviceName;
+        EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER, RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, serviceName, 0x0))
+            << "Did not get 'name already owner' while requesting an already requested name:"
+            << serviceName;
     }
 
 }
@@ -193,23 +199,23 @@ TEST_F(BusAttachmentTest, ReleaseName)
 {
     // Release a non-existent name
     const char* nonExistentName = "org.freeedesktop.DBus";
-    EXPECT_EQ(DBUS_RELEASE_NAME_REPLY_NON_EXISTENT, RequestReleaseNameTestHelper(AJ_METHOD_RELEASE_NAME, nonExistentName, 0x0)) <<
-    "Did not get 'name non existent' when tried to release the name: " <<
-    nonExistentName;
+    EXPECT_EQ(DBUS_RELEASE_NAME_REPLY_NON_EXISTENT, RequestReleaseNameTestHelper(AJ_METHOD_RELEASE_NAME, nonExistentName, 0x0))
+        << "Did not get 'name non existent' when tried to release the name: "
+        << nonExistentName;
 
     // Release a name for which we are not an owner
-    EXPECT_EQ(DBUS_RELEASE_NAME_REPLY_NOT_OWNER, RequestReleaseNameTestHelper(AJ_METHOD_RELEASE_NAME, AJ_BusDestination, 0x0)) <<
-    "Did not get 'name not owner' when tried to release the name: " <<
-    AJ_BusDestination;
+    EXPECT_EQ(DBUS_RELEASE_NAME_REPLY_NOT_OWNER, RequestReleaseNameTestHelper(AJ_METHOD_RELEASE_NAME, AJ_BusDestination, 0x0))
+        << "Did not get 'name not owner' when tried to release the name: "
+        << AJ_BusDestination;
 
     // Request and Release a unique name
     uint32_t disposition = RequestReleaseNameTestHelper(AJ_METHOD_REQUEST_NAME, serviceName, 0x0);
-    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, disposition) <<
-    "Unable to request a well-known name: " << serviceName;
+    EXPECT_EQ(DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, disposition)
+        << "Unable to request a well-known name: " << serviceName;
 
     if (DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER == disposition) {
         // release the name
-        EXPECT_EQ(DBUS_RELEASE_NAME_REPLY_RELEASED, RequestReleaseNameTestHelper(AJ_METHOD_RELEASE_NAME, serviceName, 0x0)) <<
-        "Unable to release the well-known name: " << serviceName;
+        EXPECT_EQ(DBUS_RELEASE_NAME_REPLY_RELEASED, RequestReleaseNameTestHelper(AJ_METHOD_RELEASE_NAME, serviceName, 0x0))
+            << "Unable to release the well-known name: " << serviceName;
     }
 }

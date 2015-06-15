@@ -3,7 +3,7 @@
  */
 
 /******************************************************************************
- * Copyright (c) 2013-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -20,19 +20,25 @@
 
 #include <gtest/gtest.h>
 
+#define AJ_MODULE SECURITYTEST
+
 extern "C" {
-#include "aj_debug.h"
+
 #include "alljoyn.h"
 #include "aj_cert.h"
 #include "aj_peer.h"
 #include "aj_creds.h"
 #include "aj_auth_listener.h"
-#include "aj_keyexchange.h"
-#include "aj_keyauthentication.h"
+#include "aj_authentication.h"
 #include "aj_config.h"
 #include "aj_crypto.h"
+#include "aj_debug.h"
 
 }
+
+#ifndef NDEBUG
+uint8_t dbgSECURITYTEST = 0;
+#endif
 
 #define CONNECT_TIMEOUT    (1000ul * 200)
 #define UNMARSHAL_TIMEOUT  (1000 * 5)
@@ -70,72 +76,6 @@ static const char PWD[] = "123456";
 static AJ_BusAttachment testBus;
 static const char ServiceName[] = "org.alljoyn.svclite";
 
-
-
-static const char psk_hint[] = "bob";
-static const char psk_char[] = "123456";
-
-/*
- * The following public keys, private keys and certificates are generated from test 4,5,6 and 7.
- */
-static const char owner_pub_b64[] = "RCf5ihem02VFXvIa8EVJ1CJcJns3el0IH+H51s07rc0AAAAAn6KJifUPH1oRmPLoyBHGCg7/NT8kW67GD8kQjZh/U/AAAAAAAAAAAA==";
-static const char ecc_pub_b64[] = "JmZC779f7YjYPa3rU0xdifnW0qyiCmmUXcN1XExC334AAAAA1j95MCfIAFa6Fpa5vJ+2tUMfYVmhny04itEwJPnfDqAAAAAAAAAAAA==";
-static const char ecc_prv_b64[] = "koWEteat13YRYrv/olCqEmMg7YufcTsjSQNbIL1ue+wAAAAA";
-static const char owner_cert1_b64[] = "\
-AAAAAUQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAmZkLvv1/tiNg9retTTF2J\
-+dbSrKIKaZRdw3VcTELffgAAAADWP3kwJ8gAVroWlrm8n7a1Qx9hWaGfLTiK0TAk\
-+d8OoAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wBOnWRZjvJdd9adaDleMIDQJOJC\
-OuSepUTdfamDakEy/rQbXYuqvmUj1ZiGGpPYBfh7aNkFE4rng9TixhKXJ15XAAAA\
-AN6X04g62BUVvnCbFuBiw2r783HQeBdGUdUrsnVoHUKkAAAAAA==";
-static const char owner_cert2_b64[] = "\
-AAAAAkQn+YoXptNlRV7yGvBFSdQiXCZ7N3pdCB/h+dbNO63NAAAAAJ+iiYn1Dx9a\
-EZjy6MgRxgoO/zU/JFuuxg/JEI2Yf1PwAAAAAAAAAAAmZkLvv1/tiNg9retTTF2J\
-+dbSrKIKaZRdw3VcTELffgAAAADWP3kwJ8gAVroWlrm8n7a1Qx9hWaGfLTiK0TAk\
-+d8OoAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wD5/PM2YlgaDcbxM2GD2BntTp1k\
-WY7yXXfWnWg5XjCA0CTiQjrknqVE3X2pg2pBMv4X9K7ntr5Z4AQzJnz9DaHh0clG\
-WYk3iayjtM2IUTldlgAAAAALQdeFHaHyScnOSPXzaHV/tLCTPKogvpv4gWOfQAsy\
-2AAAAAA=";
-
-static ecc_publickey ecc_pub;
-static ecc_privatekey ecc_prv;
-static AJ_Certificate root_cert;
-static size_t num = 2;
-static size_t i;
-static uint8_t* b8;
-static char* pem;
-static size_t pemlen;
-static ecc_privatekey root_prvkey;
-static ecc_publickey root_pubkey;
-static uint8_t* manifest;
-static size_t manifestlen;
-static uint8_t digest[SHA256_DIGEST_LENGTH];
-static ecc_privatekey peer_prvkey;
-static ecc_publickey peer_pubkey;
-static AJ_Certificate* cert;
-static AJ_GUID guild;
-
-/*
- * These are trusted peers namely svclite.c and bbservice.cc
- */
-static const char* issuers[] = {
-    "RCf5ihem02VFXvIa8EVJ1CJcJns3el0IH+H51s07rc0AAAAAn6KJifUPH1oRmPLoyBHGCg7/NT8kW67GD8kQjZh/U/AAAAAAAAAAAA==",
-    "9RB2ExIO4VZqEwb+sWYVsozToGMgDZJzH0Yf4Q0sCC0AAAAAhuEeeMDIXKzoOg3aQqVdUKC0ekWIRizM5hcjzxAO8LUAAAAAAAAAAA==",
-};
-
-
-static AJ_Status IsTrustedIssuer(const char* issuer)
-{
-    size_t i;
-    for (i = 0; i < ArraySize(issuers); i++) {
-        if (0 == strncmp(issuer, issuers[i], strlen(issuers[i]))) {
-            return AJ_OK;
-        }
-    }
-    return AJ_ERR_SECURITY;
-}
-
-
 class SecurityTest : public testing::Test {
   public:
 
@@ -156,14 +96,64 @@ class SecurityTest : public testing::Test {
     AJ_Status authStatus;
 };
 
-static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, AJ_Credential* cred)
+// Copied from alljoyn/alljoyn_core/test/bbclient.cc
+static const char pem_prv[] = {
+    "-----BEGIN EC PRIVATE KEY-----"
+    "MHcCAQEEIAqN6AtyOAPxY5k7eFNXAwzkbsGMl4uqvPrYkIj0LNZBoAoGCCqGSM49"
+    "AwEHoUQDQgAEvnRd4fX9opwgXX4Em2UiCMsBbfaqhB1U5PJCDZacz9HumDEzYdrS"
+    "MymSxR34lL0GJVgEECvBTvpaHP2bpTIl6g=="
+    "-----END EC PRIVATE KEY-----"
+};
+
+/*
+ * Order of certificates is important.
+ */
+static const char pem_x509[] = {
+    "-----BEGIN CERTIFICATE-----"
+    "MIIBtDCCAVmgAwIBAgIJAMlyFqk69v+OMAoGCCqGSM49BAMCMFYxKTAnBgNVBAsM"
+    "IDdhNDhhYTI2YmM0MzQyZjZhNjYyMDBmNzdhODlkZDAyMSkwJwYDVQQDDCA3YTQ4"
+    "YWEyNmJjNDM0MmY2YTY2MjAwZjc3YTg5ZGQwMjAeFw0xNTAyMjYyMTUxMjVaFw0x"
+    "NjAyMjYyMTUxMjVaMFYxKTAnBgNVBAsMIDZkODVjMjkyMjYxM2IzNmUyZWVlZjUy"
+    "NzgwNDJjYzU2MSkwJwYDVQQDDCA2ZDg1YzI5MjI2MTNiMzZlMmVlZWY1Mjc4MDQy"
+    "Y2M1NjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABL50XeH1/aKcIF1+BJtlIgjL"
+    "AW32qoQdVOTyQg2WnM/R7pgxM2Ha0jMpksUd+JS9BiVYBBArwU76Whz9m6UyJeqj"
+    "EDAOMAwGA1UdEwQFMAMBAf8wCgYIKoZIzj0EAwIDSQAwRgIhAKfmglMgl67L5ALF"
+    "Z63haubkItTMACY1k4ROC2q7cnVmAiEArvAmcVInOq/U5C1y2XrvJQnAdwSl/Ogr"
+    "IizUeK0oI5c="
+    "-----END CERTIFICATE-----"
+    ""
+    "-----BEGIN CERTIFICATE-----"
+    "MIIBszCCAVmgAwIBAgIJAILNujb37gH2MAoGCCqGSM49BAMCMFYxKTAnBgNVBAsM"
+    "IDdhNDhhYTI2YmM0MzQyZjZhNjYyMDBmNzdhODlkZDAyMSkwJwYDVQQDDCA3YTQ4"
+    "YWEyNmJjNDM0MmY2YTY2MjAwZjc3YTg5ZGQwMjAeFw0xNTAyMjYyMTUxMjNaFw0x"
+    "NjAyMjYyMTUxMjNaMFYxKTAnBgNVBAsMIDdhNDhhYTI2YmM0MzQyZjZhNjYyMDBm"
+    "NzdhODlkZDAyMSkwJwYDVQQDDCA3YTQ4YWEyNmJjNDM0MmY2YTY2MjAwZjc3YTg5"
+    "ZGQwMjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABGEkAUATvOE4uYmt/10vkTcU"
+    "SA0C+YqHQ+fjzRASOHWIXBvpPiKgHcINtNFQsyX92L2tMT2Kn53zu+3S6UAwy6yj"
+    "EDAOMAwGA1UdEwQFMAMBAf8wCgYIKoZIzj0EAwIDSAAwRQIgKit5yeq1uxTvdFmW"
+    "LDeoxerqC1VqBrmyEvbp4oJfamsCIQDvMTmulW/Br/gY7GOP9H/4/BIEoR7UeAYS"
+    "4xLyu+7OEA=="
+    "-----END CERTIFICATE-----"
+};
+
+static const char psk_hint[] = "<anonymous>";
+/*
+ * The tests were changed at some point to make the psk longer.
+ * If doing backcompatibility testing with previous versions (14.08 or before),
+ * define LITE_TEST_BACKCOMPAT to use the old version of the password.
+ */
+#ifndef LITE_TEST_BACKCOMPAT
+static const char psk_char[] = "faaa0af3dd3f1e0379da046a3ab6ca44";
+#else
+static const char psk_char[] = "123456";
+#endif
+static X509CertificateChain* chain = NULL;
+static ecc_privatekey prv;
+static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, AJ_Credential*cred)
 {
     AJ_Status status = AJ_ERR_INVALID;
+    X509CertificateChain* node;
 
-    uint8_t* b8;
-    size_t b8len;
-    char* b64;
-    size_t b64len;
     AJ_AlwaysPrintf(("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command));
 
     switch (authmechanism) {
@@ -175,18 +165,13 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
     case AUTH_SUITE_ECDHE_PSK:
         switch (command) {
         case AJ_CRED_PUB_KEY:
-            break; // Don't use username - use anon
-            cred->mask = AJ_CRED_PUB_KEY;
             cred->data = (uint8_t*) psk_hint;
             cred->len = strlen(psk_hint);
+            cred->expiration = keyexpiration;
             status = AJ_OK;
             break;
 
         case AJ_CRED_PRV_KEY:
-            if (AJ_CRED_PUB_KEY == cred->mask) {
-                AJ_AlwaysPrintf(("Request Credentials for PSK ID: %s\n", cred->data));
-            }
-            cred->mask = AJ_CRED_PRV_KEY;
             cred->data = (uint8_t*) psk_char;
             cred->len = strlen(psk_char);
             cred->expiration = keyexpiration;
@@ -197,71 +182,44 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
 
     case AUTH_SUITE_ECDHE_ECDSA:
         switch (command) {
-        case AJ_CRED_PUB_KEY:
-            b8len = 3 * strlen(ecc_pub_b64) / 4;
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(ecc_pub_b64, strlen(ecc_pub_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePublicKey(&ecc_pub, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PUB_KEY;
-            cred->data = (uint8_t*) &ecc_pub;
-            cred->len = sizeof (ecc_pub);
-            cred->expiration = keyexpiration;
-            AJ_Free(b8);
-            break;
-
         case AJ_CRED_PRV_KEY:
-            b8len = 3 * strlen(ecc_prv_b64) / 4;
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(ecc_prv_b64, strlen(ecc_prv_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodePrivateKey(&ecc_prv, b8);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_PRV_KEY;
-            cred->data = (uint8_t*) &ecc_prv;
-            cred->len = sizeof (ecc_prv);
+            cred->len = sizeof (ecc_privatekey);
+            status = AJ_DecodePrivateKeyPEM(&prv, pem_prv);
+            if (AJ_OK != status) {
+                return status;
+            }
+            cred->data = (uint8_t*) &prv;
             cred->expiration = keyexpiration;
-            AJ_Free(b8);
             break;
 
         case AJ_CRED_CERT_CHAIN:
-            b8len = sizeof (AJ_Certificate);
-            b8 = (uint8_t*) AJ_Malloc(b8len);
-            AJ_ASSERT(b8);
-            status = AJ_B64ToRaw(owner_cert1_b64, strlen(owner_cert1_b64), b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            status = AJ_BigEndianDecodeCertificate(&root_cert, b8, b8len);
-            AJ_ASSERT(AJ_OK == status);
-            cred->mask = AJ_CRED_CERT_CHAIN;
-            cred->data = (uint8_t*) &root_cert;
-            cred->len = sizeof (root_cert);
-            AJ_Free(b8);
-            break;
+            switch (cred->direction) {
+            case AJ_CRED_REQUEST:
+                // Free previous certificate chain
+                while (chain) {
+                    node = chain;
+                    chain = chain->next;
+                    AJ_Free(node->certificate.der.data);
+                    AJ_Free(node);
+                }
+                chain = AJ_X509DecodeCertificateChainPEM(pem_x509);
+                if (NULL == chain) {
+                    return AJ_ERR_INVALID;
+                }
+                cred->data = (uint8_t*) chain;
+                cred->expiration = keyexpiration;
+                status = AJ_OK;
+                break;
 
-        case AJ_CRED_CERT_TRUST:
-            b64len = 4 * ((cred->len + 2) / 3) + 1;
-            b64 = (char*) AJ_Malloc(b64len);
-            AJ_ASSERT(b64);
-            status = AJ_RawToB64(cred->data, cred->len, b64, b64len);
-            AJ_ASSERT(AJ_OK == status);
-            status = IsTrustedIssuer(b64);
-            AJ_AlwaysPrintf(("TRUST: %s %d\n", b64, status));
-            AJ_Free(b64);
-
-            break;
-
-        case AJ_CRED_CERT_ROOT:
-            b64len = 4 * ((cred->len + 2) / 3) + 1;
-            b64 = (char*) AJ_Malloc(b64len);
-            AJ_ASSERT(b64);
-            status = AJ_RawToB64(cred->data, cred->len, b64, b64len);
-            AJ_ASSERT(AJ_OK == status);
-            AJ_AlwaysPrintf(("ROOT: %s\n", b64));
-            status = AJ_OK;
-            AJ_Free(b64);
+            case AJ_CRED_RESPONSE:
+                node = (X509CertificateChain*) cred->data;
+                while (node) {
+                    AJ_DumpBytes("CERTIFICATE", node->certificate.der.data, node->certificate.der.size);
+                    node = node->next;
+                }
+                status = AJ_OK;
+                break;
+            }
             break;
         }
         break;
@@ -271,7 +229,6 @@ static AJ_Status AuthListenerCallback(uint32_t authmechanism, uint32_t command, 
     }
     return status;
 }
-
 
 static const char PingString[] = "Ping String";
 
@@ -289,22 +246,6 @@ void MakeMethodCall(int*count, uint32_t ID) {
         ASSERT_EQ(AJ_OK, status) << "Cannot deliver msg" << AJ_StatusText(status);
     }
 
-}
-
-static void CreateManifest(uint8_t** manifest, size_t* len)
-{
-    *len = strlen(intfc);
-    *manifest = (uint8_t*) AJ_Malloc(*len);
-    AJ_ASSERT(*manifest);
-    memcpy(*manifest, (uint8_t*) intfc, *len);
-}
-
-static void ManifestDigest(uint8_t* manifest, size_t* len, uint8_t* digest)
-{
-    AJ_SHA256_Context sha;
-    AJ_SHA256_Init(&sha);
-    AJ_SHA256_Update(&sha, (const uint8_t*) manifest, *len);
-    AJ_SHA256_Final(&sha, digest);
 }
 
 /* Test for ECDHE_NULL  */
@@ -471,187 +412,3 @@ TEST_F(SecurityTest, Test3)
     AJ_Disconnect(&testBus);
 
 }
-
-/*  Test for generating owner public & private key pair  */
-TEST_F(SecurityTest, Test4)
-{
-
-    AJ_Status status = AJ_OK;
-    /*
-     * Create an owner key pair
-     */
-    AJ_GenerateDSAKeyPair(&root_pubkey, &root_prvkey);
-
-    b8 = (uint8_t*) AJ_Malloc(sizeof (ecc_publickey));
-    AJ_ASSERT(b8);
-    status = AJ_BigEndianEncodePublicKey(&root_pubkey, b8);
-    ASSERT_EQ(AJ_OK, status) << "AJ_BigEndianEncodePublicKey returned status. " << AJ_StatusText(status);
-    pemlen = 4 * ((sizeof (ecc_publickey) + 2) / 3) + 1;
-    pem = (char*) AJ_Malloc(pemlen);
-    status = AJ_RawToB64(b8, sizeof (ecc_publickey), pem, pemlen);
-    ASSERT_EQ(AJ_OK, status) << "AJ_RawToB64 returned status. " << AJ_StatusText(status);
-    AJ_Printf("Owner Public Key\n");
-    AJ_Printf("-----BEGIN PUBLIC KEY-----\n%s\n-----END PUBLIC KEY-----\n", pem);
-
-}
-
-
-/*  Test for generating peer public & private key pair  */
-TEST_F(SecurityTest, Test5)
-{
-
-    AJ_Status status = AJ_OK;
-
-    AJ_RandBytes((uint8_t*) &guild, sizeof (AJ_GUID));
-
-    for (i = 0; i < num; i++) {
-        AJ_GenerateDSAKeyPair(&peer_pubkey, &peer_prvkey);
-
-        b8 = (uint8_t*) AJ_Malloc(sizeof (ecc_publickey));
-        AJ_ASSERT(b8);
-        status = AJ_BigEndianEncodePublicKey(&peer_pubkey, b8);
-        ASSERT_EQ(AJ_OK, status) << "AJ_BigEndianEncodePublicKey returned status. " << AJ_StatusText(status);
-        pemlen = 4 * ((sizeof (ecc_publickey) + 2) / 3) + 1;
-        pem = (char*) AJ_Malloc(pemlen);
-        status = AJ_RawToB64(b8, sizeof (ecc_publickey), pem, pemlen);
-        ASSERT_EQ(AJ_OK, status) << "AJ_RawToB64 returned status. " << AJ_StatusText(status);
-        AJ_Printf("Peer Public Key\n");
-        AJ_Printf("-----BEGIN PUBLIC KEY-----\n%s\n-----END PUBLIC KEY-----\n", pem);
-        AJ_Free(b8);
-        AJ_Free(pem);
-
-        b8 = (uint8_t*) AJ_Malloc(sizeof (ecc_privatekey));
-        AJ_ASSERT(b8);
-        status = AJ_BigEndianEncodePrivateKey(&peer_prvkey, b8);
-        ASSERT_EQ(AJ_OK, status) << "AJ_BigEndianEncodePrivateKey returned status. " << AJ_StatusText(status);
-        pemlen = 4 * ((sizeof (ecc_privatekey) + 2) / 3) + 1;
-        pem = (char*) AJ_Malloc(pemlen);
-        status = AJ_RawToB64(b8, sizeof (ecc_privatekey), pem, pemlen);
-        ASSERT_EQ(AJ_OK, status) << "AJ_RawToB64 returned status. " << AJ_StatusText(status);
-        AJ_Printf("Peer Private Key\n");
-        AJ_Printf("-----BEGIN PRIVATE KEY-----\n%s\n-----END PRIVATE KEY-----\n", pem);
-        AJ_Free(b8);
-        AJ_Free(pem);
-
-    }
-
-}
-
-
-/*  Test for generating peer certificate  */
-
-TEST_F(SecurityTest, Test6)
-{
-
-    AJ_Status status = AJ_OK;
-
-    AJ_RandBytes((uint8_t*) &guild, sizeof (AJ_GUID));
-
-    for (i = 0; i < num; i++) {
-        cert = (AJ_Certificate*) AJ_Malloc(sizeof (AJ_Certificate));
-        AJ_ASSERT(cert);
-        status = AJ_CreateCertificate(cert, 0, &peer_pubkey, NULL, NULL, digest, 0);
-        ASSERT_EQ(AJ_OK, status) << "AJ_CreateCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_SignCertificate(cert, &peer_prvkey);
-        ASSERT_EQ(AJ_OK, status) << "AJ_SignCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_VerifyCertificate(cert);
-        ASSERT_EQ(AJ_OK, status) << "AJ_VerifyCertificate returned status. " << AJ_StatusText(status);
-
-
-        b8 = (uint8_t*) AJ_Malloc(sizeof (AJ_Certificate));
-        AJ_ASSERT(b8);
-        status = AJ_BigEndianEncodeCertificate(cert, b8, sizeof (AJ_Certificate));
-        ASSERT_EQ(AJ_OK, status) << "AJ_BigEndianEncodeCertificate returned status. " << AJ_StatusText(status);
-        pemlen = 4 * ((sizeof (AJ_Certificate) + 2) / 3) + 1;
-        pem = (char*) AJ_Malloc(pemlen);
-        status = AJ_RawToB64(b8, cert->size, pem, pemlen);
-        ASSERT_EQ(AJ_OK, status) << "AJ_RawToB64 returned status. " << AJ_StatusText(status);
-        AJ_Printf("Peer Certificate (Type 0)\n");
-        AJ_Printf("-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----\n", pem);
-    }
-}
-
-
-/*  Test for generating owner type 1 certificate  */
-
-TEST_F(SecurityTest, Test7)
-{
-
-    AJ_Status status = AJ_OK;
-
-    AJ_RandBytes((uint8_t*) &guild, sizeof (AJ_GUID));
-
-    for (i = 0; i < num; i++) {
-        cert = (AJ_Certificate*) AJ_Malloc(sizeof (AJ_Certificate));
-        AJ_ASSERT(cert);
-        status = AJ_CreateCertificate(cert, 1, &root_pubkey, &peer_pubkey, NULL, digest, 0);
-        ASSERT_EQ(AJ_OK, status) << "AJ_CreateCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_SignCertificate(cert, &root_prvkey);
-        ASSERT_EQ(AJ_OK, status) << "AJ_SignCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_VerifyCertificate(cert);
-        ASSERT_EQ(AJ_OK, status) << "AJ_VerifyCertificate returned status. " << AJ_StatusText(status);
-
-        status = AJ_BigEndianEncodeCertificate(cert, b8, sizeof (AJ_Certificate));
-        ASSERT_EQ(AJ_OK, status) << "AJ_BigEndianEncodeCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_RawToB64(b8, cert->size, pem, pemlen);
-        ASSERT_EQ(AJ_OK, status) << "AJ_RawToB64 returned status. " << AJ_StatusText(status);
-        AJ_Printf("Root Certificate (Type 1)\n");
-        AJ_Printf("-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----\n", pem);
-
-    }
-}
-
-/*  Test for generating owner type 2 certificate  */
-
-TEST_F(SecurityTest, Test8)
-{
-
-    AJ_Status status = AJ_OK;
-
-    AJ_RandBytes((uint8_t*) &guild, sizeof (AJ_GUID));
-
-    for (i = 0; i < num; i++) {
-        cert = (AJ_Certificate*) AJ_Malloc(sizeof (AJ_Certificate));
-        AJ_ASSERT(cert);
-        status = AJ_CreateCertificate(cert, 2, &root_pubkey, &peer_pubkey, &guild, digest, 0);
-        ASSERT_EQ(AJ_OK, status) << "AJ_CreateCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_SignCertificate(cert, &root_prvkey);
-        ASSERT_EQ(AJ_OK, status) << "AJ_SignCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_VerifyCertificate(cert);
-        ASSERT_EQ(AJ_OK, status) << "AJ_VerifyCertificate returned status. " << AJ_StatusText(status);
-
-
-        status = AJ_BigEndianEncodeCertificate(cert, b8, sizeof (AJ_Certificate));
-        ASSERT_EQ(AJ_OK, status) << "AJ_BigEndianEncodeCertificate returned status. " << AJ_StatusText(status);
-        status = AJ_RawToB64(b8, cert->size, pem, pemlen);
-        ASSERT_EQ(AJ_OK, status) << "AJ_RawToB64 returned status. " << AJ_StatusText(status);
-        AJ_Printf("Root Certificate (Type 2)\n");
-        AJ_Printf("-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----\n", pem);
-        AJ_Free(cert);
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
