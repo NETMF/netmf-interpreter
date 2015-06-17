@@ -83,9 +83,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_time\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <!-- FIXME: There is currently no stub. -->
-        <DriverLibs Include="STM32F4_SPI.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_spi\dotNetMF.proj" />
+        <DriverLibs Include="cpu_spi_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_SPI\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="STM32F4_USART.$(LIB_EXT)" />
@@ -244,9 +243,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_PWM\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <!-- FIXME: There is currently no stub. -->
-        <!--<DriverLibs Include="STM32F4_DA.$(LIB_EXT)" />-->
-        <!--<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_DA\dotNetMF.proj" />-->
+        <DriverLibs Include="cpu_DA_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_DA\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="STM32F4_blconfig_STM32F4DISCOVERY.$(LIB_EXT)" />
