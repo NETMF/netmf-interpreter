@@ -4,19 +4,29 @@ using System.Runtime.CompilerServices;
 
 namespace Windows.Devices.Spi
 {
+// warning CS0649: Field 'Windows.Devices.Spi.SpiBusInfo.xxx' is never assigned to, and will always have its default value 0
+//                 - These are all initialized in native code constructor.
+#pragma warning disable 0649
+
     /// <summary>
     /// Represents the information about a SPI bus.
     /// </summary>
     public sealed class SpiBusInfo
     {
+        private int MinClockFrequency_;
+        private int MaxClockFrequency_;
+        private int ChipSelectLineCount_;
+
+        [MethodImplAttribute( MethodImplOptions.InternalCall )]
+        extern internal SpiBusInfo( int busNum );
+
         /// <summary>
         /// Gets the number of chip select lines available on the bus.
         /// </summary>
         /// <value>Number of chip select lines.</value>
-        extern public int ChipSelectLineCount
+        public int ChipSelectLineCount
         {
-            [MethodImplAttribute(MethodImplOptions.InternalCall)]
-            get;
+            get { return ChipSelectLineCount_; }
         }
 
         /// <summary>
@@ -25,11 +35,7 @@ namespace Windows.Devices.Spi
         /// <value>The clock cycle in Hz.</value>
         public int MinClockFrequency
         {
-            get
-            {
-                // TODO: Issue #143: Implement this in HAL.
-                throw new NotImplementedException();
-            }
+            get { return MinClockFrequency_; }
         }
 
         /// <summary>
@@ -38,11 +44,7 @@ namespace Windows.Devices.Spi
         /// <value>The clock cycle in Hz.</value>
         public int MaxClockFrequency
         {
-            get
-            {
-                // TODO: Issue #143: Implement this in HAL.
-                throw new NotImplementedException();
-            }
+            get { return MaxClockFrequency_; }
         }
 
         /// <summary>
@@ -53,8 +55,8 @@ namespace Windows.Devices.Spi
         {
             get
             {
-                // We only support BYTE and USHORT.
-                return new int[] { 8, 16 };
+                // Currently only support BYTE and USHORT.
+                return new int[ ] { 8, 16 };
             }
         }
     }

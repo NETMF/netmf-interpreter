@@ -17,6 +17,7 @@
     <MMP_STUB_SKIP>false</MMP_STUB_SKIP>
     <MMP_STUB_GenerateSkeletonFile>$(BUILD_TREE_STUBS)\windows_devices_native</MMP_STUB_GenerateSkeletonFile>
     <MMP_STUB_GenerateSkeletonProject>Windows_Devices</MMP_STUB_GenerateSkeletonProject>
+    <MMP_STUB_LegacySkeletonInterop>TRUE</MMP_STUB_LegacySkeletonInterop>
   </PropertyGroup>
   <ItemGroup>
     <MMP_STUB_Load Include="$(BUILD_TREE_PE)\Windows.Devices.pe">
