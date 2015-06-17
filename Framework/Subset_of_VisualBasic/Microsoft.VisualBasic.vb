@@ -1011,15 +1011,15 @@ GetSpecialValue:
     End Class
     <Microsoft.VisualBasic.Embedded(), System.Diagnostics.DebuggerNonUserCode()> _
     Public Class Constants
-        Public Shared vbCrLf As String = Strings.ChrW(13) & Strings.ChrW(10)
-        Public Shared vbNewLine As String = Strings.ChrW(13) & Strings.ChrW(10)
-        Public Shared vbCr As String = Strings.ChrW(13)
-        Public Shared vbLf As String = Strings.ChrW(10)
-        Public Shared vbBack As String = Strings.ChrW(8)
-        Public Shared vbFormFeed As String = Strings.ChrW(12)
-        Public Shared vbTab As String = Strings.ChrW(9)
-        Public Shared vbVerticalTab As String = Strings.ChrW(11)
-        Public Shared vbNullChar As String = Strings.ChrW(0)
-        Public Shared vbNullString As String = Nothing
+        Public Const vbCrLf As String = Strings.ChrW(13) & Strings.ChrW(10)
+        Public Const vbNewLine As String = Strings.ChrW(13) & Strings.ChrW(10)
+        Public Const vbCr As String = Strings.ChrW(13)
+        Public Const vbLf As String = Strings.ChrW(10)
+        Public Const vbBack As String = Strings.ChrW(8)
+        Public Const vbFormFeed As String = Strings.ChrW(12)
+        Public Const vbTab As String = Strings.ChrW(9)
+        Public Const vbVerticalTab As String = Strings.ChrW(11)
+        Public Const vbNullChar As String = Strings.ChrW(0)
+        Public Const vbNullString As String = Nothing
     End Class
 End Namespace
