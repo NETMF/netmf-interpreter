@@ -250,12 +250,16 @@ namespace Windows.Devices.Spi
             for( int i = 0; i < spiBusNames.Length; ++i )
             {
                 if( spiBusNames[ i ] == deviceId )
+                {
                     retVal = i;
+                }
             }
 
             // If we didn't find the exact device name in our pre-built bus list, bail out.
             if( retVal == -1 )
+            {
                 throw new ArgumentException( );
+            }
 
             return retVal;
         }

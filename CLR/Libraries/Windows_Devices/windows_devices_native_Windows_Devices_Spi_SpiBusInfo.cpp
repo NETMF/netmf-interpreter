@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "Windows_Devices.h"
+#include "Windows_devices.h"
 
 // [MethodImplAttribute( MethodImplOptions.InternalCall )]
 // extern internal SpiBusInfo( int busNum );

@@ -61,7 +61,9 @@ BOOL CPU_SPI_nWrite16_nRead16( const SPI_CONFIGURATION& Configuration, UINT16* W
 {
     NATIVE_PROFILE_HAL_PROCESSOR_SPI();
     if(!CPU_SPI_Xaction_Start( Configuration ))
+    {
         return FALSE;
+    }
 
     SPI_XACTION_16 Transaction;
     Transaction.Read16          = Read16;
@@ -71,7 +73,9 @@ BOOL CPU_SPI_nWrite16_nRead16( const SPI_CONFIGURATION& Configuration, UINT16* W
     Transaction.WriteCount      = WriteCount;
     Transaction.SPI_mod         = Configuration.SPI_mod;
     if(!CPU_SPI_Xaction_nWrite16_nRead16( Transaction ))
+    {
         return FALSE;
+    }
 
     return CPU_SPI_Xaction_Stop( Configuration );
 }
@@ -80,7 +84,9 @@ BOOL CPU_SPI_nWrite8_nRead8( const SPI_CONFIGURATION& Configuration, UINT8* Writ
 {
     NATIVE_PROFILE_HAL_PROCESSOR_SPI();
     if(!CPU_SPI_Xaction_Start( Configuration ))
+    {
         return FALSE;
+    }
 
     SPI_XACTION_8 Transaction;
     Transaction.Read8           = Read8;
@@ -90,7 +96,9 @@ BOOL CPU_SPI_nWrite8_nRead8( const SPI_CONFIGURATION& Configuration, UINT8* Writ
     Transaction.WriteCount      = WriteCount;
     Transaction.SPI_mod         = Configuration.SPI_mod;
     if(!CPU_SPI_Xaction_nWrite8_nRead8( Transaction ))
+    {
         return FALSE;
+    }
 
     return CPU_SPI_Xaction_Stop( Configuration );
 }
@@ -133,13 +141,19 @@ BOOL CPU_SPI_Xaction_Start( const SPI_CONFIGURATION& Configuration )
     // set mode bits
     UINT32 cr1 = SPI_CR1_SSM | SPI_CR1_SSI | SPI_CR1_MSTR | SPI_CR1_SPE;
     if (Configuration.MD_16bits)
+    {
         cr1 |= SPI_CR1_DFF;
+    }
 
     if (Configuration.MSK_IDLE)
+    {
         cr1 |= SPI_CR1_CPOL | SPI_CR1_CPHA;
+    }
 
     if (!Configuration.MSK_SampleEdge)
+    {
         cr1 ^= SPI_CR1_CPHA; // toggle phase
+    }
     
     // set clock prescaler
     UINT32 clock = SYSTEM_APB2_CLOCK_HZ / 2000; // SPI1 on APB2
@@ -171,7 +185,9 @@ BOOL CPU_SPI_Xaction_Start( const SPI_CONFIGURATION& Configuration )
     CPU_SPI_GetPins(Configuration.SPI_mod, msk, miso, mosi);
     UINT32 alternate = 0x252; // AF5, speed = 2 (50MHz)
     if (Configuration.SPI_mod == 2 && mosi != 54)
+    {
         alternate = 0x262; // SPI3 on AF6
+    }
 
     CPU_GPIO_DisablePin( msk,  RESISTOR_DISABLED, 1, (GPIO_ALT_MODE)alternate);
     CPU_GPIO_DisablePin( miso, RESISTOR_DISABLED, 0, (GPIO_ALT_MODE)alternate);
@@ -199,10 +215,13 @@ BOOL CPU_SPI_Xaction_Stop( const SPI_CONFIGURATION& Configuration )
     {
         HAL_Time_Sleep_MicroSeconds_InterruptEnabled( Configuration.CS_Hold_uSecs );
     }
+
     CPU_GPIO_SetPinState( Configuration.DeviceCS, !Configuration.CS_Active );
     GPIO_RESISTOR res = RESISTOR_PULLDOWN;
     if (Configuration.MSK_IDLE)
+    {
         res = RESISTOR_PULLUP;
+    }
 
     GPIO_PIN msk, miso, mosi;
     CPU_SPI_GetPins(Configuration.SPI_mod, msk, miso, mosi);
@@ -268,7 +287,9 @@ BOOL CPU_SPI_Xaction_nWrite16_nRead16( SPI_XACTION_16& Transaction )
     while (++i < num)
     {
         if (i < outLen)
+        {
             out = outBuf[i]; // get new output data
+        }
 
         while (!(spi->SR & SPI_SR_RXNE))
         { /* wait for Rx buffer full */ }
@@ -317,14 +338,19 @@ BOOL CPU_SPI_Xaction_nWrite8_nRead8( SPI_XACTION_8& Transaction )
     while (++i < num)
     {
         if (i < outLen)
+        {
             out = outBuf[i]; // get new output data
+        }
 
         while (!(spi->SR & SPI_SR_RXNE))
         { /* wait for Rx buffer full */ }
 
         in = spi->DR; // read input
         spi->DR = out; // start output
-        if (ii >= 0) inBuf[ii] = (UINT8)in; // save input data
+        if (ii >= 0)
+        {
+            inBuf[ii] = (UINT8)in; // save input data
+        }
         ii++;
     }
     while (!(spi->SR & SPI_SR_RXNE))
@@ -332,7 +358,9 @@ BOOL CPU_SPI_Xaction_nWrite8_nRead8( SPI_XACTION_8& Transaction )
 
     in = spi->DR; // read last input
     if (ii >= 0)
+    {
         inBuf[ii] = (UINT8)in; // save last input
+    }
 
     return TRUE;
 }
@@ -348,7 +376,9 @@ void CPU_SPI_GetPins( UINT32 spi_mod, GPIO_PIN& msk, GPIO_PIN& miso, GPIO_PIN& m
     NATIVE_PROFILE_HAL_PROCESSOR_SPI();
     msk = miso = mosi = GPIO_PIN_NONE;
     if (spi_mod >= STM32F4_SPI_MODS)
+    {
         return;
+    }
 
     msk  = g_STM32F4_Spi_Sclk_Pins[spi_mod];
     miso = g_STM32F4_Spi_Miso_Pins[spi_mod];
