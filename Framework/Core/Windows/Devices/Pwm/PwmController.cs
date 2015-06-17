@@ -6,14 +6,10 @@ namespace Windows.Devices.Pwm
     public sealed class PwmController
     {
         private IPwmControllerProvider m_provider;
-        private double m_minFrequency;
-        private double m_maxFrequency;
 
         internal PwmController(IPwmControllerProvider provider)
         {
             m_provider = provider;
-            m_minFrequency = provider.MinFrequency;
-            m_maxFrequency = provider.MaxFrequency;
         }
 
         public int PinCount
@@ -28,7 +24,7 @@ namespace Windows.Devices.Pwm
         {
             get
             {
-                return m_minFrequency;
+                return m_provider.MinFrequency;
             }
         }
 
@@ -36,7 +32,7 @@ namespace Windows.Devices.Pwm
         {
             get
             {
-                return m_maxFrequency;
+                return m_provider.MaxFrequency;
             }
         }
 
@@ -65,7 +61,7 @@ namespace Windows.Devices.Pwm
 
         public double SetDesiredFrequency(double desiredFrequency)
         {
-            if ((desiredFrequency < m_minFrequency) || (desiredFrequency > m_maxFrequency))
+            if ((desiredFrequency < m_provider.MinFrequency) || (desiredFrequency > m_provider.MaxFrequency))
             {
                 throw new ArgumentOutOfRangeException();
             }
