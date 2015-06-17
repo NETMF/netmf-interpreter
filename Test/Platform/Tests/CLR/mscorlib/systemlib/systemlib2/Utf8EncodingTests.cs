@@ -76,5 +76,24 @@ namespace Microsoft.SPOT.Platform.Tests
 
             return result ? MFTestResults.Pass : MFTestResults.Fail;
         }
+
+        [TestMethod]
+        public MFTestResults Utf8EncodingTests_Test3()
+        {
+            // This tests involves a string with a special character
+
+            bool result = true;
+
+            string str = "AB\u010DAB";
+
+            byte[] data = new byte[4];
+            int count = UTF8Encoding.UTF8.GetBytes(str, 1, 3, data, 0);
+
+            result &= count == 4;
+
+            result &= (new string(UTF8Encoding.UTF8.GetChars(data)) == "B\u010DA");
+
+            return result ? MFTestResults.Pass : MFTestResults.Fail;
+        }
     }
 }
