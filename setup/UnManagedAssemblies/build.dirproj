@@ -6,6 +6,7 @@
         MetaDataProcessor.wixproj;
         TinyCLR.wixproj;
         TFConvert.wixproj;
+        BuildHelper.wixproj;
         " />
   </ItemGroup>
 
