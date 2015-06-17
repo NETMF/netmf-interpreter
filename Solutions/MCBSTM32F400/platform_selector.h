@@ -77,6 +77,7 @@
 #define RTSPROTECTRESISTOR              RESISTOR_DISABLED
 
 #define TOTAL_GPIO_PORT                 9 // PA - PI
+#define TOTAL_GPIO_PINS                 TOTAL_GPIO_PORT * 16
 #define INSTRUMENTATION_H_GPIO_PIN      GPIO_PIN_NONE
 
 #define TOTAL_USART_PORT                7 // ITM0 + 6 physical UARTS
