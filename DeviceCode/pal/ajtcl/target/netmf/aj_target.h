@@ -25,7 +25,7 @@
 #include <string.h>
 
 #undef  NDEBUG
-#define AJ_DEBUG_RESTRICT AJ_DEBUG_ALL
+//#define AJ_DEBUG_RESTRICT AJ_DEBUG_ALL
 
 // *** //
 // This is for using the UDP as the transport, however, the latest

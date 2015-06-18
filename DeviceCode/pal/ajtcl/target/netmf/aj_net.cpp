@@ -26,11 +26,10 @@
 // DEBUGGING ENABLE ////////
 // uncomment the following lines for debug messages
 #undef  NDEBUG
-#define AJ_DEBUG_RESTRICT AJ_DEBUG_WARN // AJ_DEBUG_INFO
+#define AJ_DEBUG_RESTRICT AJ_DEBUG_WARN 
 //#define AJ_DEBUG_RESTRICT AJ_DEBUG_INFO
 #define AJ_PRINTF   1
 ////////////////////////////////////
-
 
 #include <tinyhal.h>
 

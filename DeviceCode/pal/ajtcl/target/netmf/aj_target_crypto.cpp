@@ -115,8 +115,6 @@ void AJ_RandBytes(uint8_t* rand, uint32_t size)
     AJ_Status status = AJ_ERR_SECURITY;
     uint8_t seed[SEEDLEN];
 
-debug_printf(" rand Byte \r\n");
-
     if (rand && size) {
         status = AES_CTR_DRBG_Generate(&drbgctx, rand, size);
         if (AJ_OK != status) {
