@@ -21,6 +21,14 @@ enum PWM_CHANNEL
     PWM_CHANNEL_5    =  5,
     PWM_CHANNEL_6    =  6,
     PWM_CHANNEL_7    =  7,
+    PWM_CHANNEL_8    =  8,
+    PWM_CHANNEL_9    =  9,
+    PWM_CHANNEL_10   = 10,
+    PWM_CHANNEL_11   = 11,
+    PWM_CHANNEL_12   = 12,
+    PWM_CHANNEL_13   = 13,
+    PWM_CHANNEL_14   = 14,
+    PWM_CHANNEL_15   = 15,
 };
 
 enum PWM_SCALE_FACTOR
