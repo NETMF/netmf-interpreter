@@ -63,6 +63,10 @@ namespace Microsoft.SPOT.Platform.Tests
             str = new string(new char[0]);
             testResult &= (str == string.Empty);
 
+            Log.Comment("null");
+            str = new string(null);
+            testResult &= (str == string.Empty);
+
             return (testResult ? MFTestResults.Pass : MFTestResults.Fail);
         }
         [TestMethod]
