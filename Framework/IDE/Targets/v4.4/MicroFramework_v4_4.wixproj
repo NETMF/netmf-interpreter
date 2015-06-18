@@ -6,8 +6,12 @@
     <!--<DirectoryRef>AssembliesDir_V$(PRODVER_MAJOR)_$(PRODVER_MINOR)</DirectoryRef> -->
     <_curdir>$(BUILD_TREE_CLIENT)\dll</_curdir>
   </PropertyGroup>
-
+  
+  <!-- Reference assemblies -->
   <ItemGroup>
+    <WiXComponentFiles Include="$(_curdir)\Windows.Devices.dll" />
+    <WiXComponentFiles Include="$(_curdir)\Windows.Devices.pdb" />
+
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Graphics.dll" />
     <WiXComponentFiles Include="$(_curdir)\Microsoft.SPOT.Graphics.pdb" />
 
