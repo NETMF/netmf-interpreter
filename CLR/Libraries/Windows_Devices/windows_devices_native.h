@@ -11,7 +11,6 @@
 #define _WINDOWS_DEVICES_NATIVE_H_
 
 #include <TinyCLR_Interop.h>
-
 struct Library_windows_devices_native_Windows_Devices_Adc_AdcChannel
 {
     static const int FIELD__m_channelNumber = 1;
@@ -137,6 +136,30 @@ struct Library_windows_devices_native_Windows_Devices_I2c_I2cTransferResult
 {
     static const int FIELD__Status = 1;
     static const int FIELD__BytesTransferred = 2;
+
+
+    //--//
+
+};
+
+struct Library_windows_devices_native_Windows_Devices_Pwm_PwmController
+{
+    static const int FIELD__m_provider = 1;
+
+
+    //--//
+
+};
+
+struct Library_windows_devices_native_Windows_Devices_Pwm_PwmPin
+{
+    static const int FIELD__m_pinNumber = 1;
+    static const int FIELD__m_controller = 2;
+    static const int FIELD__m_provider = 3;
+    static const int FIELD__m_started = 4;
+    static const int FIELD__m_disposed = 5;
+    static const int FIELD__m_dutyCycle = 6;
+    static const int FIELD__m_polarity = 7;
 
 
     //--//
