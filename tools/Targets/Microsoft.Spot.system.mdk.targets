@@ -397,25 +397,25 @@
   <Target Name="BuildScatterfile" Condition="'$(DEPEND)'!='ACTIVE'" Inputs="@(EXEScatterFileDefinition);@(ScatterFileReferences)" Outputs="@(EXEScatterFile)">
     <Message Text="..."/>
     <ProcessScatterFile
-    	Properties="@(BuildScatterFileProperties)"
-		DefinitionFile="@(EXEScatterfileDefinition)"
-		OutputFile="@(EXEScatterFile)"
-    	/>
+        Properties="@(BuildScatterFileProperties)"
+        DefinitionFile="@(EXEScatterfileDefinition)"
+        OutputFile="@(EXEScatterFile)"
+        />
   </Target>
 
-  <Target Name="TinyClrDat" Inputs="$(BIN_DIR)\tinyclr.dat;$(AS_SUBDIR)\tinyclr_dat.s" Outputs="$(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)">
+  <Target Name="TinyClrDat" Inputs="$(BIN_DIR)\$(AssemblyName).dat;$(AS_SUBDIR)\$(AssemblyName)_dat.s" Outputs="$(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT)">
     <Message                               Text="***************************************************************************************************"/>
-    <Message Text="Target: TinyClrDat with outputs $(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)"/>
-    <Message Condition="'$(FORCEDAT)'!=''" Text="Building Tinyclr.dat from $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat"/>
-    <Message Condition="'$(FORCEDAT)'==''" Text="Building Tinyclr.dat from the features specified in the tinyclr.proj file"/>
-    <Exec Condition="'$(FORCEDAT)'!='' AND EXISTS('$(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat')" Command="copy /y $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat $(BIN_DIR)\tinyclr.dat" />
-    <Exec Command="$(ADS_WRAPPER) $(AS) -I$(BIN_DIR) $(AS_FLAGS) $(POS_DEPENDENT) $(SWTC)LIST $(OBJ_DIR)\tinyclr_dat.txt $(SWTC)xref -o $(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT) $(AS_SUBDIR)\tinyclr_dat.s"/>
+    <Message Text="Target: TinyClrDat with outputs $(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT)"/>
+    <Message Condition="'$(FORCEDAT)'!=''" Text="Building $(AssemblyName).dat from $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\$(AssemblyName)_$(FORCEDAT).dat"/>
+    <Message Condition="'$(FORCEDAT)'==''" Text="Building $(AssemblyName).dat from the features specified in the $(AssemblyName).proj file"/>
+    <Exec Condition="'$(FORCEDAT)'!='' AND EXISTS('$(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\$(AssemblyName)_$(FORCEDAT).dat')" Command="copy /y $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\$(AssemblyName)_$(FORCEDAT).dat $(BIN_DIR)\$(AssemblyName).dat" />
+    <Exec Command="$(ADS_WRAPPER) $(AS) -I$(BIN_DIR) $(AS_FLAGS) $(POS_DEPENDENT) $(SWTC)LIST $(OBJ_DIR)\$(AssemblyName)_dat.txt $(SWTC)xref -o $(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT) $(AS_SUBDIR)\$(AssemblyName)_dat.s"/>
     <Message                               Text="========== Database file content:"/>    
-    <Exec Command="$(PRG_MMP) -dump_dat $(BIN_DIR)\tinyclr.dat" />
+    <Exec Command="$(PRG_MMP) -dump_dat $(BIN_DIR)\$(AssemblyName).dat" />
     <Message                               Text="========== End of Database file content"/>    
     <Message                               Text="***************************************************************************************************"/>
-    <Exec Command="copy /BVY $(BIN_DIR)\tinyclr.dat $(BIN_DIR)\tinyclr.dat.fromlastbuildrun" />
-    <Exec Command="del  /Q /F $(BIN_DIR)\tinyclr.dat"/>
+    <Exec Command="copy /BVY $(BIN_DIR)\$(AssemblyName).dat $(BIN_DIR)\$(AssemblyName).dat.fromlastbuildrun" />
+    <Exec Command="del  /Q /F $(BIN_DIR)\$(AssemblyName).dat"/>
   </Target>
 
 </Project>
