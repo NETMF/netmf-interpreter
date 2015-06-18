@@ -4,7 +4,7 @@
  * @file
  */
 /******************************************************************************
- * Copyright (c) 2012-2014, AllSeen Alliance. All rights reserved.
+ * Copyright AllSeen Alliance. All rights reserved.
  *
  *    Permission to use, copy, modify, and/or distribute this software for any
  *    purpose with or without fee is hereby granted, provided that the above
@@ -24,9 +24,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #undef  NDEBUG
 #define AJ_DEBUG_RESTRICT AJ_DEBUG_ALL
+
+// *** //
+// This is for using the UDP as the transport, however, the latest
+// v15.04 AJ code, the UDP is very broken that there are so many syntax error
+// from target\linux to aj_ardp.c, there are still syntax error. 
+// wait for AJ to fix it first before proceed to test it.
+
+//#define AJ_ARDP
+#ifdef AJ_ARDP
+// including the tinyhal.h here will creat problem for other AJ files that using string functions...
+// to be resolved
+// #include <tinyhal.h>
+// #define htons(x)  SOCK_htons(x)
+// #define htonl(x)  SOCK_htonl(x)
+// #define ntohl(x)  SOCK_htonl(x)
+// #define ntohs(x)  SOCK_htons(x)
+#endif 
+// ***** //
 
 #ifndef TRUE
 #define TRUE (1)

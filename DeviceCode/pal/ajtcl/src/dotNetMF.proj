@@ -43,6 +43,8 @@
     <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
     <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
     <Compile Include="aj_about.cpp" />
+    <Compile Include="aj_ardp.cpp" />
+    <Compile Include="aj_authentication.cpp" />
     <Compile Include="aj_bufio.cpp" />
     <Compile Include="aj_bus.cpp" />
     <Compile Include="aj_cert.cpp" />
@@ -56,7 +58,6 @@
     <Compile Include="aj_helper.cpp" />
     <Compile Include="aj_init.cpp" />
     <Compile Include="aj_introspect.cpp" />
-    <Compile Include="aj_authentication.cpp" />
     <Compile Include="aj_link_timeout.cpp" />
     <Compile Include="aj_msg.cpp" />
     <Compile Include="aj_nvram.cpp" />

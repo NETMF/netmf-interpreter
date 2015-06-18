@@ -127,6 +127,14 @@ int8_t AJ_CompareTime(AJ_Time timerA, AJ_Time timerB)
     }
 }
 
+
+uint64_t AJ_DecodeTime(char* der, char* fmt)
+{
+//TODO
+    return 0;
+}
+
+
 // Use .NetMF LWIP socket memory allocator, there is no malloc...
 extern "C" {
     void *mem_malloc(size_t size);
@@ -158,6 +166,13 @@ void AJ_Free(void* mem)
     if (mem) {
         mem_free(mem);
     }
+}
+
+void AJ_MemZeroSecure(void* s, size_t n)
+{
+    volatile unsigned char* p = (unsigned char *)s;
+    while (n--) *p++ = '\0';
+    return;
 }
 
 /*

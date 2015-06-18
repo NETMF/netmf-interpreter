@@ -3,14 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #define AJ_MODULE SPOT_CLR_AJ
 
-#if defined(PLATFORM_ARM)
-#undef  NDEBUG
-#define AJ_DEBUG_RESTRICT AJ_DEBUG_INFO
-#define AJ_PRINTF   1
-#endif
-
 #include "spot_alljoyn.h"
-
 
 extern AJ_Status MarshalDefaultProps(AJ_Message* msg);
 extern AJ_Status MarshalObjectDescriptions(AJ_Message* msg);
@@ -675,7 +668,7 @@ static AJ_Status AuthListenerCallback(CLR_UINT32 authmechanism, CLR_UINT32 comma
     AJ_Status status = AJ_ERR_INVALID;
     X509CertificateChain* node;
 
-    AJ_AlwaysPrintf(("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command));
+    CLR_Debug::Printf("AuthListenerCallback authmechanism %d command %d\n", authmechanism, command);
 
     switch (authmechanism) {
     case AUTH_SUITE_ECDHE_NULL:
@@ -688,14 +681,14 @@ static AJ_Status AuthListenerCallback(CLR_UINT32 authmechanism, CLR_UINT32 comma
         switch (command) {
         case AJ_CRED_PUB_KEY:
             cred->data = (uint8_t*) PskHint;
-            cred->len = strlen(PskHint);
+            cred->len = hal_strlen_s(PskHint);
             cred->expiration = KeyExpiration;
             status = AJ_OK;
             break;
 
         case AJ_CRED_PRV_KEY:
             cred->data = (uint8_t*) PskChar;
-            cred->len = strlen(PskChar);
+            cred->len = hal_strlen_s(PskChar);
             cred->expiration = KeyExpiration;
             status = AJ_OK;
             break;
