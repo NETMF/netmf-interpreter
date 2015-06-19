@@ -118,19 +118,16 @@
 #define STM32F4_UART_CTS_PINS {(BYTE)GPIO_PIN_NONE, 51, 59} // GPIO_PIN_NONE, D3, D11
 #define STM32F4_UART_RTS_PINS {(BYTE)GPIO_PIN_NONE, 52, 60} // GPIO_PIN_NONE, D4, D12
 
-#define DRIVER_PAL_BUTTON_MAPPING         \
-        { 0, BUTTON_NONE }, /* Up */      \
-        { 0, BUTTON_NONE }, /* Down */    \
-        { 0, BUTTON_NONE }, /* Left */    \
-        { 0, BUTTON_NONE }, /* Right */   \
-        { 0, BUTTON_NONE }, /* Enter */   \
-        { PORT_PIN(GPIO_PORTA, 0), BUTTON_B5 }, // User
-
 // User LEDs
 #define LED3 PORT_PIN(GPIO_PORTD, 13) // PD.13 (orange)
 #define LED4 PORT_PIN(GPIO_PORTD, 12) // PD.12 (green)
 #define LED5 PORT_PIN(GPIO_PORTD, 14) // PD.14 (red)
 #define LED6 PORT_PIN(GPIO_PORTD, 15) // PD.15 (blue)
+
+// TinyBooter entry using GPIO
+#define TINYBOOTER_ENTRY_GPIO_PIN       PORT_PIN(GPIO_PORTA, 0) // 'User' button
+#define TINYBOOTER_ENTRY_GPIO_STATE     TRUE                    // Active high
+#define TINYBOOTER_ENTRY_GPIO_RESISTOR  RESISTOR_DISABLED       // No internal resistor, there is external pull-down (R39)
 
 //
 // constants
