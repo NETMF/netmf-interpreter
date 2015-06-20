@@ -875,7 +875,7 @@ namespace Microsoft.NetMicroFramework.Tools.MFDeployTool.Engine
                     newLastIndex++;        // Force a 4 byte boundary
                 }
 
-                byte[] temp = new byte[m_lastCfgIndex >= m_all_cfg_data.Length ? m_lastCfgIndex + data.Length : m_all_cfg_data.Length];
+                byte[] temp = new byte[m_lastCfgIndex + data.Length >= m_all_cfg_data.Length ? m_lastCfgIndex + data.Length : m_all_cfg_data.Length];
 
                 Array.Copy(m_all_cfg_data, 0, temp,              0, m_all_cfg_data.Length);
                 Array.Copy(          data, 0, temp, m_lastCfgIndex,           data.Length);
