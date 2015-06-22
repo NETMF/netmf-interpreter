@@ -278,158 +278,6 @@ struct DiscoveryContext
     }
 };
 
-AJ_Status CustomStartService(   AJ_BusAttachment*     bus,
-                                LPCSTR                daemonName,
-                                CLR_UINT32            timeout,
-                                bool                  fConnected,
-                                CLR_UINT16            port,
-                                LPCSTR                name,
-                                CLR_UINT32            flags,
-                                const AJ_SessionOpts* opts )
-{
-    AJ_Time   timer;
-    bool      fServiceStarted = false;
-    AJ_Status status          = AJ_OK;
-
-    AJ_InfoPrintf(("AJ_StartService(bus=0x%p, daemonName=\"%s\", timeout=%d., connected=%d., port=%d., name=\"%s\", flags=0x%x, opts=0x%p)\n",
-                   bus, daemonName, timeout, fConnected, port, name, flags, opts));
-
-    AJ_InitTimer(&timer);
-
-    //
-    // Connect to bus and establish session 
-    //
-    while(true) 
-    {
-        if( AJ_GetElapsedTime( &timer, TRUE ) > timeout ) 
-        {
-            AJ_InfoPrintf(("AJ_StartService():Timeout disconnect \r\n"));
-            return AJ_ERR_TIMEOUT;
-        }
-
-        //
-        // Ensure connection
-        //
-        if(!fConnected) 
-        {
-            AJ_InfoPrintf(("AJ_StartService(): AJ_FindBusAndConnect()\n"));
-           
-            status = AJ_FindBusAndConnect( bus, daemonName, AJ_CONNECT_TIMEOUT );
-            
-            if(status != AJ_OK) 
-            {
-                AJ_WarnPrintf(("AJ_StartService(): connect failed: sleeping for %d seconds\n", AJ_CONNECT_PAUSE / 1000));
-                
-                AJ_Sleep(AJ_CONNECT_PAUSE);
-                
-                continue;
-            }
-            
-            AJ_InfoPrintf(("AJ_StartService(): connected to bus\n"));
-        }
-        
-        //
-        // Bind a session 
-        //
-        AJ_InfoPrintf(("AJ_StartService(): AJ_BindSessionPort()\n"));
-        
-        status = AJ_BusBindSessionPort( bus, port, opts, 0 );
-        
-        if (status == AJ_OK) 
-        {
-            break;
-        }
-        
-        AJ_ErrPrintf(("AJ_StartService(): AJ_Disconnect(): status=%s.\n", AJ_StatusText(status)));
-        
-        AJ_Disconnect(bus);
-    }
-
-    //
-    //
-    // 
-    while( !fServiceStarted && ( status == AJ_OK ) ) 
-    {
-        AJ_Message msg;
-
-        status = AJ_UnmarshalMsg(bus, &msg, AJ_UNMARSHAL_TIMEOUT);
-        if (status == AJ_ERR_NO_MATCH) {
-            // Ignore unknown messages
-            status = AJ_OK;
-            continue;
-        }
-        if (status != AJ_OK) {
-            AJ_ErrPrintf(("AJ_StartService(): status=%s.\n", AJ_StatusText(status)));            
-            break;
-        }
-
-        switch (msg.msgId) 
-        {
-            case AJ_REPLY_ID(AJ_METHOD_BIND_SESSION_PORT):
-                if( msg.hdr->msgType == AJ_MSG_ERROR ) 
-                {
-                    AJ_ErrPrintf(("AJ_StartService(): AJ_METHOD_BIND_SESSION_PORT: %s\n", msg.error));
-                    status = AJ_ERR_FAILURE;
-                } 
-                else 
-                {
-                    AJ_InfoPrintf(("AJ_StartService(): AJ_BusRequestName()\n"));
-                    status = AJ_BusRequestName(bus, name, flags);
-                }
-                break;
-
-            case AJ_REPLY_ID(AJ_METHOD_REQUEST_NAME):
-                if( msg.hdr->msgType == AJ_MSG_ERROR ) 
-                {
-                    AJ_ErrPrintf(("AJ_StartService(): AJ_METHOD_REQUEST_NAME: %s\n", msg.error));
-                    status = AJ_ERR_FAILURE;
-                } 
-                else 
-                {
-                    AJ_InfoPrintf(("AJ_StartService(): AJ_BusAdvertiseName()\n"));
-                    status = AJ_BusAdvertiseName(bus, name, (opts != NULL) ? opts->transports : AJ_TRANSPORT_ANY, AJ_BUS_START_ADVERTISING, 0);
-                }
-                break;
-
-            case AJ_REPLY_ID(AJ_METHOD_ADVERTISE_NAME):
-                if( msg.hdr->msgType == AJ_MSG_ERROR ) 
-                {
-                    AJ_ErrPrintf(("AJ_StartService(): AJ_METHOD_ADVERTISE_NAME: %s\n", msg.error));
-                    status = AJ_ERR_FAILURE;
-                } 
-                else 
-                {
-                    fServiceStarted = true;
-                }
-                break;
-
-            default:
-                //
-                // Pass to the built-in bus message handlers
-                //
-                AJ_InfoPrintf(("AJ_StartService(): AJ_BusHandleBusMessage()\n"));
-                
-                status = AJ_BusHandleBusMessage(&msg);
-                break;
-        }
-        
-        AJ_CloseMsg(&msg);
-    }
-
-    if (status == AJ_OK) {
-        //
-        // Do not send About message here, let the managed app handle that
-        //
-        //status = AJ_AboutInit(bus, port);
-    } else {
-        AJ_WarnPrintf(("AJ_StartService(): AJ_Disconnect(): status=%s\n", AJ_StatusText(status)));
-        
-        AJ_Disconnect(bus);
-    }
-
-    return status;
-}
-
 void StartServiceCallback( void* context )
 {
     DiscoveryContext* dc = (DiscoveryContext*)context;
@@ -478,8 +326,8 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
 
         // has to set it longer than the AJ_CONNECT_TIMEOUT, otherwise it will timeout much quicker than the discovery time.
         // adding extra 300ms for extra factor.Extra 300 for overhead
-        if (timeout < (AJ_CONNECT_TIMEOUT+300))
-            timeout = (AJ_CONNECT_TIMEOUT+ 300);
+        if (timeout < (AJ_CONNECT_TIMEOUT + 300))
+            timeout = (AJ_CONNECT_TIMEOUT + 300);
            
         hbTimeout.SetInteger( timeout);        
         TINYCLR_CHECK_HRESULT(stack.SetupTimeout( hbTimeout, timeoutTicks ));
@@ -586,6 +434,72 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     TINYCLR_NOCLEANUP();
 }
 
+struct ConnectBusDiscoveryContext
+{
+    AJ_BusAttachment*   _bus; 
+    char                _daemonName[ AJ_MAX_SERVICE_NAME_SIZE ];
+    char *              _pDaemonName;
+    CLR_INT32           _timeout;
+    AJ_Status           _status;
+
+
+    void Initialize( AJ_BusAttachment* bus, LPCSTR daemonName, CLR_INT32 timeout ) 
+    {
+        _bus = bus; 
+        _pDaemonName = NULL;
+        if ( daemonName )
+        {
+            hal_strcpy_s( _daemonName, sizeof(_daemonName), daemonName );
+            _pDaemonName = _daemonName;
+        }
+        _timeout = timeout;
+
+        _status = AJ_OK;
+        
+    }
+    
+};
+AJ_Status AJ_StartClientConnectBus(AJ_BusAttachment* bus,
+                               const char* daemonName,
+                               uint32_t timeout )
+{
+    AJ_Status status = AJ_OK;
+    AJ_Time timer;
+    uint32_t elapsed = 0;
+    BOOL connected = FALSE;
+
+    AJ_InitTimer(&timer);
+    
+    while (!connected) {
+        status = AJ_FindBusAndConnect(bus, daemonName, AJ_CONNECT_TIMEOUT);
+        elapsed = AJ_GetElapsedTime(&timer, TRUE);
+        if (status != AJ_OK) {
+            elapsed += AJ_CONNECT_PAUSE;
+            if (elapsed > timeout) {
+                status =  AJ_ERR_TIMEOUT;
+                debug_printf(("AJ_StartClientConnectBus(): Client disconnecting from bus: status=%s.\n", AJ_StatusText(status)));
+                AJ_Disconnect(bus);
+                break;
+            }
+            //AJ_WarnPrintf(("AJ_StartClient(): Failed to connect to bus, sleeping for %d seconds\n", AJ_CONNECT_PAUSE / 1000));
+            AJ_Sleep(AJ_CONNECT_PAUSE);
+            continue;
+        }else{
+            debug_printf("AJ_StartClientConnectBus(): connected\n");
+            connected = TRUE;
+        }
+    }
+    return status;
+}
+void StartClientCallback( void* context )
+{
+    ConnectBusDiscoveryContext* dc = (ConnectBusDiscoveryContext*)context;
+    dc->_status = AJ_StartClientConnectBus( dc->_bus, dc->_pDaemonName, dc->_timeout );
+}
+
+
+
+#if 0
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
 {
     typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_SessionOpts Managed_AJ_SessionOpts;
@@ -662,6 +576,148 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
     
     TINYCLR_NOCLEANUP();
 }
+#else
+// this has to rename to StartClientConnectBus....
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
+{
+   
+    TINYCLR_HEADER();
+    
+    AJ_BusAttachment* bus         = NULL;    
+    AJ_Status         status      = AJ_OK;
+    LPCSTR            daemonName  = NULL;
+    CLR_UINT32        timeout; 
+    
+    CLR_INT64*        timeoutTicks;
+    bool              fSignaled;
+    OSTASK*           task        = NULL;
+    ConnectBusDiscoveryContext* context = NULL;
+
+    
+    TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
+    
+    daemonName  = stack.Arg2().RecoverString( );
+    timeout     = stack.Arg3().NumericByRef().u4;
+
+    if( daemonName && hal_strlen_s( daemonName ) > AJ_MAX_SERVICE_NAME_SIZE )
+    {
+        TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
+    }
+
+    {
+        CLR_RT_HeapBlock hbTimeout;
+
+        // has to set it longer than the AJ_CONNECT_TIMEOUT, otherwise it will timeout much quicker than the discovery time.
+        // adding extra 300ms for extra factor.Extra 300 for overhead
+        if (timeout < (AJ_CONNECT_TIMEOUT + 300))
+            timeout = (AJ_CONNECT_TIMEOUT + 300);
+           
+        hbTimeout.SetInteger( timeout );        
+        TINYCLR_CHECK_HRESULT(stack.SetupTimeout( hbTimeout, timeoutTicks ));
+    }
+     //
+     // Push "state" onto the eval stac in the form of a OSTASK
+     //
+     if(stack.m_customState == 1)
+     {   
+         // there is StartService already started and not yet finished.
+         // StartService/StartClient should be singleton 
+         if (g_ajDiscoverStarted) 
+         {
+             TINYCLR_SET_AND_LEAVE( CLR_E_BUSY );
+         }
+
+         task    = (OSTASK*)private_malloc( sizeof(OSTASK) );        
+         context = (ConnectBusDiscoveryContext*)private_malloc( sizeof(ConnectBusDiscoveryContext) ); 
+         
+         context->Initialize( bus, daemonName, timeout );
+         task   ->Initialize( StartClientCallback,  context ); 
+
+         //
+         // we will keep track of task in our managed stack, context is attached to task
+         //
+         stack.PushValueAndClear(); 
+         stack.m_evalStack[ 1 ].NumericByRef().u4 = (CLR_UINT32)task;
+         stack.m_customState = 2;
+         
+         //
+         // post to the underlying sub-system
+         //
+         // for cleaning the taskevent that may be set at previously.
+         g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled );
+         if (OSTASK_Post( task ) == FALSE)
+              TINYCLR_SET_AND_LEAVE( CLR_E_FAIL );
+         
+         // when Task posted , set g_ajDiscoverStarted to TRUE;
+         g_ajDiscoverStarted = TRUE; 
+     }
+         
+     //
+     // recover task and context instances
+     //
+     task    = (OSTASK*          )stack.m_evalStack[ 1 ].NumericByRef().u4;
+     context = (ConnectBusDiscoveryContext*)task->GetArgument();
+
+     //
+     // wait for completion, fRes will tell us about timeout being expired
+     //
+     fSignaled = true;
+
+     while(task->HasCompleted() == FALSE)
+     {
+         TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled ));
+
+         // if timeout without c_Event_Otask, then the StartService was looped forever in unknown cause, 
+         // has to kill the thread.
+         if(fSignaled == false)
+         {
+             break;
+         }
+     }
+
+     //
+     // We either completed(with or without successfully established the conneciton) or timeout
+     // 
+    if ((fSignaled == false) && (!task->HasCompleted()))
+    {
+         // this is undesiable timeout that task thread is not time out and non-completed. 
+         // we have to force a timeout, which may ends to an unrecoverable AJ-startService.
+         status = AJ_ERR_TIMEOUT;
+
+         //
+         // timeout of waitEvent happened but not task completed, ie. the timeout of findBusandAttachement wasn't happened,
+         // something goes very wrong.
+         //
+         // Should signal the task to kill itself, rather then kill it here.
+         OSTASK_Cancel( task );
+     }
+     else 
+     {
+         status = context->_status;
+         _ASSERTE( task->HasCompleted() ); 
+     }
+
+      
+     // this task is now fully executed or foreced terminated, free it then.
+     if( task->GetArgument() ) 
+     {
+         private_free( task->GetArgument() ); 
+     }
+     private_free( task );    
+     
+     stack.PopValue(); // task   
+     stack.PopValue(); // Timeout
+     stack.SetResult_I4( status ); 
+     
+     //it is done.
+     g_ajDiscoverStarted = FALSE; 
+     
+     TINYCLR_NOCLEANUP();
+
+//////////
+
+}
+#endif
 
 static AJ_Status AuthListenerCallback(CLR_UINT32 authmechanism, CLR_UINT32 command, AJ_Credential * cred)
 {
@@ -1436,7 +1492,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::RegisterObjects__
     
     DeserializeInterfaceString( ifaces, theInterface );
     
-    debug_printf("%s\n",theInterface);
+    //debug_printf("Register Object %s , iface %s\n",(char *)theInterface[0], ifaces);
     
     if (fLocal == true)
     {
