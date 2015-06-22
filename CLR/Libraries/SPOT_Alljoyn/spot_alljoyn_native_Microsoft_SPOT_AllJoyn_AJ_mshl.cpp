@@ -41,6 +41,8 @@ static int SecuritySuites[MAX_NUM_SECURITY_SUITES] = {0};
 static int NumSecuritySuites = 0;
 
 //--//
+
+
 //--//
 
 //
@@ -719,6 +721,105 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
 }
 #endif
 
+
+AJ_Status AJ_startClientFindService(AJ_BusAttachment* bus, const char* name, const char** interfaces,  uint32_t timeout )
+{
+    
+    AJ_Status status = AJ_OK;
+    AJ_Time timer;
+    char* rule;
+    size_t ruleLen = 0;
+    const char* base = "interface='org.alljoyn.About',sessionless='t'";
+    const char* impl = ",implements='";
+    const char** ifaces;
+
+    uint32_t elapsed = 0;
+
+    AJ_InitTimer(&timer);
+
+    do { 
+        if (name != NULL) {
+            /*
+             * Kick things off by finding the service names
+             */
+            status = AJ_BusFindAdvertisedName(bus, name, AJ_BUS_START_FINDING);
+            debug_printf("AJ_StartClient(): AJ_BusFindAdvertisedName()\n");
+        } else {
+            /*
+             * Kick things off by registering for the Announce signal.
+             * Optionally add the implements clause per given interface
+             */
+            if (ruleLen == 0)
+            {
+                ruleLen = hal_strlen_s(base) + 1;
+                if (interfaces != NULL) {
+                    ifaces = interfaces;
+                    while (*ifaces != NULL) {
+                        ruleLen += hal_strlen_s(impl) + hal_strlen_s(*ifaces) + 1;
+                        ifaces++;
+                    }
+                }
+                rule = (char*) AJ_Malloc(ruleLen);
+                if (rule == NULL) {
+                    status = AJ_ERR_RESOURCES;
+                    break;
+                }
+                hal_strcpy_s(rule, hal_strlen_s(base), base);
+                if (interfaces != NULL) {
+                    ifaces = interfaces;
+                    while (*ifaces != NULL) {
+                        strcat(rule, impl);
+                        if ((*ifaces)[0] == '$') {
+                            strcat(rule, &(*ifaces)[1]);
+                        } else {
+                            strcat(rule, *ifaces);
+                        }
+                        strcat(rule, "'");
+                        ifaces++;
+                    }
+                }
+            }
+            status = AJ_BusSetSignalRule(bus, rule, AJ_BUS_SIGNAL_ALLOW);
+            AJ_InfoPrintf(("AJ_StartClient(): Client SetSignalRule: %s\n", rule));
+            AJ_Free(rule);
+        }
+
+        if (status == AJ_OK) {
+            break;
+        }
+        
+        elapsed = AJ_GetElapsedTime(&timer, TRUE);
+    }while(elapsed < timeout) ;
+
+}
+
+
+// AJ_Status AJ_startClientFindService(AJ_BusAttachment* bus, ,  const char* name,  const char** interfaces,  uint32_t timeout )
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName00___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
+{
+
+    TINYCLR_HEADER();
+
+    AJ_BusAttachment* bus         = NULL;    
+    AJ_Status         status      = AJ_OK;
+    CLR_UINT32        timeout; 
+    LPCSTR            name  = NULL;
+
+    TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
+
+    name        = stack.Arg2().RecoverString();
+    timeout     = stack.Arg3().NumericByRef().u4;
+
+    status = AJ_startClientFindService(  bus, name, NULL, timeout);
+        
+    stack.SetResult_I4( (CLR_INT32)status );
+    TINYCLR_NOCLEANUP();
+
+}
+
+
+
+///---////
 static AJ_Status AuthListenerCallback(CLR_UINT32 authmechanism, CLR_UINT32 command, AJ_Credential * cred)
 {
     AJ_Status status = AJ_ERR_INVALID;
