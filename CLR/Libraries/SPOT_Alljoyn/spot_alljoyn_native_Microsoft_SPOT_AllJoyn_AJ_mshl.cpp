@@ -928,11 +928,7 @@ AJ_Status ClientConnectService( AJ_BusAttachment * bus,
                 debug_printf("FoundAdvertisedName(%s)\n", arg.val.v_string);
                 if (!found) {
                     if (fullName) {
-<<<<<<< HEAD
-                        hal_strncpy_s(fullName,AJ_MAX_SERVICE_NAME_SIZE, arg.val.v_string, arg.len);
-=======
                         hal_strcpy_s( fullName, AJ_MAX_SERVICE_NAME_SIZE, arg.val.v_string );
->>>>>>> 11a1eee9f7d0a1120f1261fe982e3d150647cfcf
                         fullName[arg.len] = '\0';
                     }
                     found = TRUE;
@@ -957,11 +953,7 @@ AJ_Status ClientConnectService( AJ_BusAttachment * bus,
                     found = TRUE;
                     AJ_UnmarshalArgs(&msg, "qq", &aboutVersion, &aboutPort);
                     if (serviceName != NULL) {
-<<<<<<< HEAD
-                        hal_strcpy_s(serviceName, AJ_MAX_NAME_SIZE, msg.sender);
-=======
                         hal_strcpy_s( serviceName, AJ_MAX_SERVICE_NAME_SIZE, msg.sender );
->>>>>>> 11a1eee9f7d0a1120f1261fe982e3d150647cfcf
                         serviceName[AJ_MAX_NAME_SIZE] = '\0';
                     }
 #endif
