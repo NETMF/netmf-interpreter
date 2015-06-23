@@ -19,7 +19,7 @@ BOOL DebuggerPort_Uninitialize( COM_HANDLE ComPortNum )
     return EmulatorNative::GetIComDriver()->Uninitialize( ComPortNum );
 }
 
-int DebuggerPort_Write( COM_HANDLE ComPortNum, const char* Data, size_t size )
+int DebuggerPort_Write( COM_HANDLE ComPortNum, const char* Data, size_t size, int maxRetries )
 {        
     return EmulatorNative::GetIComDriver()->Write( ComPortNum, (IntPtr)(char*)Data, (unsigned int)size );
 }

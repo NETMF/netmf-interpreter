@@ -618,7 +618,7 @@ void debug_printf( const char* format, ... )
     DebuggerPort_Flush( HalSystemConfig.DebugTextPort );
 
     // write string
-    DebuggerPort_Write( HalSystemConfig.DebugTextPort, buffer, len );
+    DebuggerPort_Write( HalSystemConfig.DebugTextPort, buffer, len, 0 );
 
     // flush new characters
     DebuggerPort_Flush( HalSystemConfig.DebugTextPort );

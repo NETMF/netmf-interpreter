@@ -24,7 +24,7 @@ void USB_debug_printf( const char*format, ... )
     DebuggerPort_Flush( USART_DEFAULT_PORT );
 
     // write string
-    DebuggerPort_Write( USART_DEFAULT_PORT, buffer, len );
+    DebuggerPort_Write( USART_DEFAULT_PORT, buffer, len, 0 );
 
     // flush new characters
     DebuggerPort_Flush( USART_DEFAULT_PORT );

@@ -208,7 +208,7 @@ void CLR_Debug::Emit( const char *text, int len )
             if(!CLR_EE_DBG_IS( Enabled ) || HalSystemConfig.DebugTextPort != HalSystemConfig.DebuggerPorts[ 0 ])
             {
 #if !defined(PLATFORM_WINDOWS) && !defined(PLATFORM_WINCE)
-                DebuggerPort_Write( HalSystemConfig.DebugTextPort, s_buffer, s_chars ); // skip null terminator
+                DebuggerPort_Write( HalSystemConfig.DebugTextPort, s_buffer, s_chars, 0 ); // skip null terminator and don't bother retrying
                 DebuggerPort_Flush( HalSystemConfig.DebugTextPort );                    // skip null terminator
 #endif
             }
