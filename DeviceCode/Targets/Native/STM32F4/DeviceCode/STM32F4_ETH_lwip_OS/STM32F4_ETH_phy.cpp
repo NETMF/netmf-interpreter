@@ -169,7 +169,7 @@ EthMode eth_enableAutoNegotiation()
     if( !readRegister(PHY_IDENTIFIER_REGISTER_1, &phyId) )
         return ETHMODE_FAIL;
 
-    if( phyId == PHY_ST802RT1X_OUI_ID1 )
+//    if( phyId == PHY_ST802RT1X_OUI_ID1 )
     {
         // For now, hard code to 10MB as auto negotiate to 100MB doesn't seem to work...
         // (packets received OK, but unable to transmit valid packets)

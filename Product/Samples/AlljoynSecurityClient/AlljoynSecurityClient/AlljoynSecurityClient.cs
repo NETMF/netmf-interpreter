@@ -143,6 +143,7 @@ namespace AlljoynSecurityClient
                 AJ_Message msg = new AJ_Message();
 
                 if (!connected) {
+                    /*
                     status = myAlljoyn.StartClientByName(  bus,
                                                             null,
                                                             CONNECT_TIMEOUT,
@@ -152,7 +153,32 @@ namespace AlljoynSecurityClient
                                                             ref sessionId,
                                                             null,
                                                             ref FullServiceName);
+                    */
+                    
 
+                    do {
+                        status = myAlljoyn.ClientConnectBus(bus,
+                                                            null,
+                                                            CONNECT_TIMEOUT);
+                    }while ( status != AJ_Status.AJ_OK);
+                    
+                   do {
+                        status = myAlljoyn.ClientFindService(bus,
+                                                            ServiceName,
+                                                            null,
+                                                            CONNECT_TIMEOUT);
+                    }while ( status != AJ_Status.AJ_OK);
+
+                   do {
+                       status = myAlljoyn.ClientConnectService(bus,
+                                                               CONNECT_TIMEOUT,
+                                                               ServiceName,
+                                                               ServicePort,
+                                                               ref sessionId,
+                                                               null,
+                                                               ref FullServiceName);
+                   } while (status != AJ_Status.AJ_OK);
+                    
                     if (status == AJ_Status.AJ_OK) {
                         connected = true;
                         authStatus = AJ_Status.AJ_ERR_NULL;
