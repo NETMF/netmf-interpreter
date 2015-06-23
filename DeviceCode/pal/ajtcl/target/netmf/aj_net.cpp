@@ -281,17 +281,14 @@ AJ_Status AJ_Net_Recv(AJ_IOBuffer* buf, uint32_t len, uint32_t timeout)
         return AJ_ERR_TIMEOUT;
     }
     rx = min(rx, len);
-    if (rx)  {
+    if (rx) {
         int ret = SOCK_recv(context->tcpSock, (char *)buf->writePtr, rx, 0);
-        if ((ret == -1) || (ret == 0)) 
-        {
+        if ((ret == -1) || (ret == 0)){
             AJ_ErrPrintf(("AJ_Net_Recv(): recv() failed. errno=\"%d\"\n", SOCK_getlasterror()));
             status = AJ_ERR_READ;
         } else {
 //            AJ_InfoPrintf(("AJ_Net_Recv(): recv'd %d from tcp\n", ret));
             buf->writePtr += ret;
-//            rx -=ret;
-             AJ_ErrPrintf(("AJ_Net_Recv(): rx %d, ret %d \n", rx, ret));
         }
     }
 

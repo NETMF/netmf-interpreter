@@ -22,14 +22,6 @@
  * prior to first inclusion of aj_debug.h
  */
 #define AJ_MODULE MSG
-/*
-#undef  NDEBUG
-#define AJ_DEBUG_RESTRICT AJ_DEBUG_INFO 
-//#define AJ_DEBUG_RESTRICT AJ_DEBUG_INFO
-#define AJ_PRINTF   1
-*/
-////////////////////////////////////
-
 
 #include <stdarg.h>
 
@@ -52,8 +44,6 @@
 #ifdef AJ_ARDP
 #include "aj_ardp.h"
 #endif
-
-//#undef strlen
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
