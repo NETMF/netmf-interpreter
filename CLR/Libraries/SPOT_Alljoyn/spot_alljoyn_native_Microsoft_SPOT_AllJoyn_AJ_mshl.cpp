@@ -466,61 +466,72 @@ AJ_Status ClientConnectBus(AJ_BusAttachment* bus, LPCSTR daemonName, CLR_UINT32 
 
 AJ_Status ClientFindService(AJ_BusAttachment* bus, LPCSTR name, const char ** interfaces, CLR_UINT32 timeout)
 {
-    AJ_Status       status = AJ_OK;
-    CLR_UINT32      elapsed = 0;    
-    size_t          ruleLen;
-    const char*     base = "interface='org.alljoyn.About',sessionless='t'";
-    const char*     impl = ",implements='";
-    const char**    ifaces;
-    char*           rule;
-    
-    if ((name != NULL) && (interfaces != NULL)) {
-        return AJ_ERR_INVALID;
-    }
-    
-    if (name != NULL) {
-        /*
-         * Kick things off by finding the service names
-         */
-        status = AJ_BusFindAdvertisedName(bus, name, AJ_BUS_START_FINDING);
-        AJ_InfoPrintf(("AJ_StartClient(): AJ_BusFindAdvertisedName()\n"));
-    } else {
-        /*
-         * Kick things off by registering for the Announce signal.
-         * Optionally add the implements clause per given interface
-         */
-        ruleLen = strlen(base) + 1;
-        if (interfaces != NULL) {
-            ifaces = interfaces;
-            while (*ifaces != NULL) {
-                ruleLen += strlen(impl) + strlen(*ifaces) + 1;
-                ifaces++;
-            }
-        }
-        rule = (char*) AJ_Malloc(ruleLen);
-        if (rule == NULL) {
-            status = AJ_ERR_RESOURCES;
-            return status;
-        }
-        strcpy(rule, base);
-        if (interfaces != NULL) {
-            ifaces = interfaces;
-            while (*ifaces != NULL) {
-                strcat(rule, impl);
-                if ((*ifaces)[0] == '$') {
-                    strcat(rule, &(*ifaces)[1]);
-                } else {
-                    strcat(rule, *ifaces);
+    AJ_Status status = AJ_OK;
+    AJ_Time timer;
+    char* rule;
+    size_t ruleLen = 0;
+    const char* base = "interface='org.alljoyn.About',sessionless='t'";
+    const char* impl = ",implements='";
+    const char** ifaces;
+
+    uint32_t elapsed = 0;
+
+    AJ_InitTimer(&timer);
+
+    do { 
+        if (name != NULL) {
+            /*
+             * Kick things off by finding the service names
+             */
+            status = AJ_BusFindAdvertisedName(bus, name, AJ_BUS_START_FINDING);
+            debug_printf("AJ_StartClient(): AJ_BusFindAdvertisedName()\n");
+        } else {
+            /*
+             * Kick things off by registering for the Announce signal.
+             * Optionally add the implements clause per given interface
+             */
+            if (ruleLen == 0)
+            {
+                ruleLen = hal_strlen_s(base) + 1;
+                if (interfaces != NULL) {
+                    ifaces = interfaces;
+                    while (*ifaces != NULL) {
+                        ruleLen += hal_strlen_s(impl) + hal_strlen_s(*ifaces) + 1;
+                        ifaces++;
+                    }
                 }
-                strcat(rule, "'");
-                ifaces++;
+                rule = (char*) AJ_Malloc(ruleLen);
+                if (rule == NULL) {
+                    status = AJ_ERR_RESOURCES;
+                    break;
+                }
+                hal_strcpy_s(rule, hal_strlen_s(base), base);
+                if (interfaces != NULL) {
+                    ifaces = interfaces;
+                    while (*ifaces != NULL) {
+                        strcat(rule, impl);
+                        if ((*ifaces)[0] == '$') {
+                            strcat(rule, &(*ifaces)[1]);
+                        } else {
+                            strcat(rule, *ifaces);
+                        }
+                        strcat(rule, "'");
+                        ifaces++;
+                    }
+                }
             }
+            status = AJ_BusSetSignalRule(bus, rule, AJ_BUS_SIGNAL_ALLOW);
+            AJ_InfoPrintf(("AJ_StartClient(): Client SetSignalRule: %s\n", rule));
+            AJ_Free(rule);
         }
-        status = AJ_BusSetSignalRule(bus, rule, AJ_BUS_SIGNAL_ALLOW);
-        AJ_InfoPrintf(("AJ_StartClient(): Client SetSignalRule: %s\n", rule));
-        AJ_Free(rule);
-    }
-    
+
+        if (status == AJ_OK) {
+            break;
+        }
+        
+        elapsed = AJ_GetElapsedTime(&timer, TRUE);
+    }while(elapsed < timeout) ;
+
     return status;
 }
 
@@ -1010,49 +1021,232 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientFindService
     TINYCLR_NOCLEANUP();
 }
 
+AJ_Status ClientConnectService( AJ_BusAttachment * bus, 
+                                CLR_UINT32 timeout,
+                                LPSTR serviceName,
+                                CLR_UINT16 port,
+                                CLR_UINT32 * sessionId,
+                                AJ_SessionOpts * opts,
+                                LPSTR fullName)
+{
+    bool clientStarted      = false;
+    bool found              = false;
+    AJ_Status status        = AJ_OK;
+           
+    *sessionId = 0;
+    if (serviceName != NULL) {
+        *serviceName = '\0';
+    }
+
+    while (!clientStarted && (status == AJ_OK)) {
+        AJ_Message msg;
+        status = AJ_UnmarshalMsg(bus, &msg, AJ_UNMARSHAL_TIMEOUT);
+        if ((status == AJ_ERR_TIMEOUT) && !found) {
+            /*
+             * Timeouts are expected until we find a name or service
+             */
+            if (timeout < AJ_UNMARSHAL_TIMEOUT) {
+                return status;
+            }
+            timeout -= AJ_UNMARSHAL_TIMEOUT;
+            status = AJ_OK;
+            continue;
+        }
+        if (status == AJ_ERR_NO_MATCH) {
+            // Ignore unknown messages
+            status = AJ_OK;
+            continue;
+        }
+        if (status != AJ_OK) {
+            AJ_ErrPrintf(("AJ_StartClient(): status=%s\n", AJ_StatusText(status)));
+            break;
+        }
+        switch (msg.msgId) {
+
+        case AJ_REPLY_ID(AJ_METHOD_FIND_NAME):
+        case AJ_REPLY_ID(AJ_METHOD_FIND_NAME_BY_TRANSPORT):
+            if (msg.hdr->msgType == AJ_MSG_ERROR) {
+                AJ_ErrPrintf(("AJ_StartClient(): AJ_METHOD_FIND_NAME: %s\n", msg.error));
+                status = AJ_ERR_FAILURE;
+            } else {
+                uint32_t disposition;
+                AJ_UnmarshalArgs(&msg, "u", &disposition);
+                if ((disposition != AJ_FIND_NAME_STARTED) && (disposition != AJ_FIND_NAME_ALREADY)) {
+                    AJ_ErrPrintf(("AJ_StartClient(): AJ_ERR_FAILURE\n"));
+                    status = AJ_ERR_FAILURE;
+                }
+            }
+            break;
+
+        case AJ_SIGNAL_FOUND_ADV_NAME:
+            {
+                AJ_Arg arg;
+                AJ_UnmarshalArg(&msg, &arg);
+                AJ_InfoPrintf(("FoundAdvertisedName(%s)\n", arg.val.v_string));
+                if (!found) {
+                    if (fullName) {
+                        strncpy(fullName, arg.val.v_string, arg.len);
+                        fullName[arg.len] = '\0';
+                    }
+                    found = TRUE;
+                    status = AJ_BusJoinSession(bus, arg.val.v_string, port, opts);
+                }
+            }
+            break;
+
+        case AJ_SIGNAL_ABOUT_ANNOUNCE:
+            {
+                uint16_t aboutVersion, aboutPort;
+#ifdef ANNOUNCE_BASED_DISCOVERY
+                status = AJ_AboutHandleAnnounce(&msg, &aboutVersion, &aboutPort, serviceName, &found);
+                if (interfaces != NULL) {
+                    found = TRUE;
+                }
+                if ((status == AJ_OK) && (found == TRUE)) {
+                    AJ_InfoPrintf(("AJ_StartClient(): AboutAnnounce from (%s) About Version: %d Port: %d\n", msg.sender, aboutVersion, aboutPort));
+#else
+                AJ_InfoPrintf(("AJ_StartClient(): AboutAnnounce from (%s)\n", msg.sender));
+                if (!found) {
+                    found = TRUE;
+                    AJ_UnmarshalArgs(&msg, "qq", &aboutVersion, &aboutPort);
+                    if (serviceName != NULL) {
+                        strncpy(serviceName, msg.sender, AJ_MAX_NAME_SIZE);
+                        serviceName[AJ_MAX_NAME_SIZE] = '\0';
+                    }
+#endif
+                    /*
+                     * Establish a session with the provided port.
+                     * If port value is 0 use the About port unmarshalled from the Announcement instead.
+                     */
+                    if (port == 0) {
+                        status = AJ_BusJoinSession(bus, msg.sender, aboutPort, opts);
+                    } else {
+                        status = AJ_BusJoinSession(bus, msg.sender, port, opts);
+                    }
+                    if (status != AJ_OK) {
+                        AJ_ErrPrintf(("AJ_StartClient(): BusJoinSession failed (%s)\n", AJ_StatusText(status)));
+                    }
+                }
+            }
+            break;
+
+        case AJ_REPLY_ID(AJ_METHOD_JOIN_SESSION):
+            {
+                uint32_t replyCode;
+
+                if (msg.hdr->msgType == AJ_MSG_ERROR) {
+                    AJ_ErrPrintf(("AJ_StartClient(): AJ_METHOD_JOIN_SESSION: %s\n", msg.error));
+                    status = AJ_ERR_FAILURE;
+                } else {
+                    status = AJ_UnmarshalArgs(&msg, "uu", &replyCode, sessionId);
+                    if (replyCode == AJ_JOINSESSION_REPLY_SUCCESS) {
+                        clientStarted = TRUE;
+                    } else {
+                        AJ_ErrPrintf(("AJ_StartClient(): AJ_METHOD_JOIN_SESSION reply (%d)\n", replyCode));
+                        status = AJ_ERR_FAILURE;
+                    }
+                }
+            }
+            break;
+
+        case AJ_SIGNAL_SESSION_LOST_WITH_REASON:
+            /*
+             * Force a disconnect
+             */
+            {
+                uint32_t id, reason;
+                AJ_UnmarshalArgs(&msg, "uu", &id, &reason);
+                AJ_InfoPrintf(("Session lost. ID = %u, reason = %u", id, reason));
+            }
+            AJ_ErrPrintf(("AJ_StartClient(): AJ_SIGNAL_SESSION_LOST_WITH_REASON: AJ_ERR_READ\n"));
+            status = AJ_ERR_READ;
+            break;
+
+        default:
+            /*
+             * Pass to the built-in bus message handlers
+             */
+            AJ_InfoPrintf(("AJ_StartClient(): AJ_BusHandleBusMessage()\n"));
+            status = AJ_BusHandleBusMessage(&msg);
+            break;
+        }
+        AJ_CloseMsg(&msg);
+    }
+    if (status != AJ_OK) {
+        AJ_WarnPrintf(("AJ_StartClient(): Client disconnecting from bus: status=%s\n", AJ_StatusText(status)));
+        AJ_Disconnect(bus);
+    }
+    return status;
+}
+
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
+    typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_SessionOpts Managed_AJ_SessionOpts;
+    
+    TINYCLR_HEADER();
+
+    char              fullServiceName[AJ_MAX_SERVICE_NAME_SIZE] = "";
+    CLR_RT_HeapBlock  hbFullName;
+    LPSTR             fullName     = NULL;
+    CLR_RT_HeapBlock  hbSessionId;
+    CLR_UINT32        sessionId = 0;    
+    CLR_RT_HeapBlock* managedOpts = NULL;
+    AJ_SessionOpts    opts = {0};
+    AJ_BusAttachment* bus         = NULL;    
+    AJ_Status         status      = AJ_OK;
+    CLR_UINT32        timeout; 
+    LPSTR             clientName  = NULL;
+    CLR_UINT16        port;
+    
+    TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
+    
+    timeout     = stack.Arg2( ).NumericByRef( ).u4;
+    clientName  = (LPSTR)stack.Arg3( ).RecoverString( ); // bad
+    port        = stack.Arg4( ).NumericByRef( ).s2;
+    
+    TINYCLR_CHECK_HRESULT( hbSessionId.LoadFromReference( stack.Arg5( ) ) );
+    sessionId = hbSessionId.NumericByRef( ).u4;    
+           
+    managedOpts = stack.Arg6().Dereference( );
+    
+    if( NULL != managedOpts )
     {
-        CLR_RT_HeapBlock* pMngObj = Interop_Marshal_RetrieveManagedObject( stack );
-
-        FAULT_ON_NULL(pMngObj);
-
-        UINT32 param0;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32( stack, 1, param0 ) );
-
-        LPCSTR param1;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_LPCSTR( stack, 2, param1 ) );
-
-        UINT32 param2;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32( stack, 3, param2 ) );
-
-        UINT8 param3;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT8( stack, 4, param3 ) );
-
-        LPCSTR param4;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_LPCSTR( stack, 5, param4 ) );
-
-        UINT16 param5;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT16( stack, 6, param5 ) );
-
-        UINT32 * param6;
-        UINT8 heapblock6[CLR_RT_HEAP_BLOCK_SIZE];
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock6, 7, param6 ) );
-
-        UNSUPPORTED_TYPE param7;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UNSUPPORTED_TYPE( stack, 8, param7 ) );
-
-        UNSUPPORTED_TYPE param8;
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UNSUPPORTED_TYPE( stack, 9, param8 ) );
-
-        //INT32 retVal = AJ::ClientConnectService( pMngObj,  param0, param1, param2, param3, param4, param5, param6, param7, param8, hr );
-        INT32 retVal = 0;
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, retVal );
-
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock6, 7 ) );
+        opts.traffic      =  managedOpts[ Managed_AJ_SessionOpts::FIELD__traffic      ].NumericByRef( ).u1;
+        opts.proximity    =  managedOpts[ Managed_AJ_SessionOpts::FIELD__proximity    ].NumericByRef( ).u1;
+        opts.transports   =  managedOpts[ Managed_AJ_SessionOpts::FIELD__transports   ].NumericByRef( ).u2;
+        opts.isMultipoint =  managedOpts[ Managed_AJ_SessionOpts::FIELD__isMultipoint ].NumericByRef( ).u4;
     }
+
+    hbFullName.LoadFromReference( stack.Arg7( ) );
+    fullName = (LPSTR)hbFullName.RecoverString( );
+
+    status = ClientConnectService( bus,
+                                   timeout,
+                                   clientName,
+                                   port,
+                                   &sessionId,
+                                   managedOpts == NULL ? NULL : &opts,
+                                   fullName == NULL ? NULL : fullServiceName );
+        
+    if( status == AJ_OK )
+    {     
+        hbSessionId.SetInteger( sessionId );
+        TINYCLR_CHECK_HRESULT( hbSessionId.StoreToReference( stack.Arg5( ), 0 ) );   
+        
+        if(fullName)
+        {
+            TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_String::CreateInstance( hbFullName, fullServiceName ));
+        }
+        else
+        {
+            hbFullName.SetObjectReference( NULL );
+        }
+        
+        TINYCLR_CHECK_HRESULT( hbFullName.StoreToReference( stack.Arg7( ), 0 ) );
+    }
+
+    stack.SetResult_I4( (CLR_INT32)status );
+    
     TINYCLR_NOCLEANUP();
 }
 
@@ -1134,7 +1328,6 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName
 }
 
 
-
 AJ_Status AJ_startClientFindService(AJ_BusAttachment* bus, const char* name, const char** interfaces,  uint32_t timeout )
 {
     
@@ -1204,33 +1397,8 @@ AJ_Status AJ_startClientFindService(AJ_BusAttachment* bus, const char* name, con
         elapsed = AJ_GetElapsedTime(&timer, TRUE);
     }while(elapsed < timeout) ;
 
+    return status;
 }
-
-
-// AJ_Status AJ_startClientFindService(AJ_BusAttachment* bus, ,  const char* name,  const char** interfaces,  uint32_t timeout )
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName00___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
-{
-
-    TINYCLR_HEADER();
-
-    AJ_BusAttachment* bus         = NULL;    
-    AJ_Status         status      = AJ_OK;
-    CLR_UINT32        timeout; 
-    LPCSTR            name  = NULL;
-
-    TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
-
-    name        = stack.Arg2().RecoverString();
-    timeout     = stack.Arg3().NumericByRef().u4;
-
-    status = AJ_startClientFindService(  bus, name, NULL, timeout);
-        
-    stack.SetResult_I4( (CLR_INT32)status );
-    TINYCLR_NOCLEANUP();
-
-}
-
-
 
 ///---////
 static AJ_Status AuthListenerCallback(CLR_UINT32 authmechanism, CLR_UINT32 command, AJ_Credential * cred)

@@ -414,16 +414,13 @@ namespace Microsoft.SPOT.AllJoyn
         
         public AJ_Status ClientFindService(UInt32 bus, string serviceName, string[] serviceInterfaces, UInt32 timeout)
         {
-            string ifaces = ConvertStringArrayToString(serviceInterfaces);
-            
+            string ifaces = ConvertStringArrayToString(serviceInterfaces);            
             return ClientFindServiceInner(bus, serviceName, ifaces, timeout);
         }
                                                       
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status ClientConnectService(   UInt32 bus,
-                                                        string daemonName,
                                                         UInt32 timeout,
-                                                        byte connected,
                                                         string name,
                                                         UInt16 port,
                                                         ref UInt32 sessionId,
