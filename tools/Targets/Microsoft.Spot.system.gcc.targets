@@ -212,6 +212,9 @@
     <!--Standard libraries -->
     <!-- NOTE: These are renamed by the "specs" provided to the command line-->
     <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lgcc -lc</GCCSTDLIBS>
+
+    <!-- Use newlib-nano (default) or newlib -->
+    <LINK_NANO_SPECS Condition="'$(NewlibNano)' != 'false'">-specs="$(GNU_LIBGCC_DIR)\nano.specs"</LINK_NANO_SPECS>
   </PropertyGroup>
 
   <!-- item group  -->
@@ -268,7 +271,7 @@
          (platform independent). Thus the linker looks in the current working directory and finds the specified library without
          needing to list the full path for each one. 
     -->
-    <Exec WorkingDirectory="$(LIB_DIR)" Command="$(LINK) $(ARCH_TYPE_FLAGS) $(FLOATING_POINT_FLAG) -L&quot;$(GNU_LIBGCC_DIR)&quot; -specs=$(MsBuildThisFileDirectory)startfile.specs -Wl$(LINK_FLAGS),-Map=$(EXEName).map -specs=&quot;$(GNU_LIBGCC_DIR)\nano.specs&quot; -T@(EXEScatterFile,' ') @(EXEInputs,' ') -Wl,-( @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') @(DriverLibs->'%(FileName)%(Extension)',' ') @(InputLibs,' ') -Wl,-) -Wl,-no-whole-archive -Wl,-( $(GCCSTDLIBS) -Wl,-) $(ExtraLibs) -o@(EXEOutput)" />
+    <Exec WorkingDirectory="$(LIB_DIR)" Command="$(LINK) $(ARCH_TYPE_FLAGS) $(FLOATING_POINT_FLAG) -L&quot;$(GNU_LIBGCC_DIR)&quot; -specs=$(MsBuildThisFileDirectory)startfile.specs -Wl$(LINK_FLAGS),-Map=$(EXEName).map $(LINK_NANO_SPECS) -T@(EXEScatterFile,' ') @(EXEInputs,' ') -Wl,-( @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') @(DriverLibs->'%(FileName)%(Extension)',' ') @(InputLibs,' ') -Wl,-) -Wl,-no-whole-archive -Wl,-( $(GCCSTDLIBS) -Wl,-) $(ExtraLibs) -o@(EXEOutput)" />
 
     <Exec Command="$(OBJDUMP) -d -EL @(EXEOutput) > $(EXEName).axfdump" />
 
