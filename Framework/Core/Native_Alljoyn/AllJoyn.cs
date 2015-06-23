@@ -405,6 +405,32 @@ namespace Microsoft.SPOT.AllJoyn
                                             UInt32 flags);
                                                       
         [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status ClientConnectBus(UInt32 bus, string daemonName, UInt32 timeout);
+                                           
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]        
+        private extern AJ_Status ClientFindServiceInner(UInt32 bus, string serviceName, string serviceInterfaces, UInt32 timeout);
+                                           
+        
+        public AJ_Status ClientFindService(UInt32 bus, string serviceName, string[] serviceInterfaces, UInt32 timeout)
+        {
+            string ifaces = ConvertStringArrayToString(serviceInterfaces);
+            
+            return ClientFindServiceInner(bus, serviceName, ifaces, timeout);
+        }
+                                                      
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern AJ_Status ClientConnectService(   UInt32 bus,
+                                                        string daemonName,
+                                                        UInt32 timeout,
+                                                        byte connected,
+                                                        string name,
+                                                        UInt16 port,
+                                                        ref UInt32 sessionId,
+                                                        AJ_SessionOpts opts,
+                                                        ref string fullName);
+                                                      
+        [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status StartClientByName(UInt32 bus,
                                                   string daemonName,
                                                   UInt32 timeout,
@@ -414,6 +440,8 @@ namespace Microsoft.SPOT.AllJoyn
                                                   ref UInt32 sessionId,
                                                   AJ_SessionOpts opts,
                                                   ref string fullName);
+                                                      
+                                                      
                                                       
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern void AlwaysPrintf(string msg);                
