@@ -1006,9 +1006,9 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientFindService
 
     TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
 
-    name        = stack.Arg1().RecoverString();
-    ifaces      = stack.Arg2().RecoverString();
-    timeout     = stack.Arg3().NumericByRef().u4;
+    name        = stack.Arg2( ).RecoverString( );
+    ifaces      = stack.Arg3( ).RecoverString( );
+    timeout     = stack.Arg4( ).NumericByRef( ).u4;
 
     if (ifaces != NULL)
     {
@@ -1179,7 +1179,7 @@ AJ_Status ClientConnectService( AJ_BusAttachment * bus,
     return status;
 }
 
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
+HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectService___MicrosoftSPOTAllJoynAJStatus__U4__U4__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
 {
     typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_SessionOpts Managed_AJ_SessionOpts;
     
@@ -1195,14 +1195,21 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectServ
     AJ_BusAttachment* bus         = NULL;    
     AJ_Status         status      = AJ_OK;
     CLR_UINT32        timeout; 
-    LPSTR             clientName  = NULL;
+    LPCSTR            clientName  = NULL;
     CLR_UINT16        port;
+    
+    char cliName[AJ_MAX_SERVICE_NAME_SIZE] = "";
     
     TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
     
     timeout     = stack.Arg2( ).NumericByRef( ).u4;
-    clientName  = (LPSTR)stack.Arg3( ).RecoverString( ); // bad
+    clientName  = stack.Arg3( ).RecoverString( ); // bad
     port        = stack.Arg4( ).NumericByRef( ).s2;
+    
+    if ( clientName != NULL)
+    {
+        hal_strcpy_s( cliName, sizeof(cliName), clientName );
+    }
     
     TINYCLR_CHECK_HRESULT( hbSessionId.LoadFromReference( stack.Arg5( ) ) );
     sessionId = hbSessionId.NumericByRef( ).u4;    
@@ -1222,7 +1229,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectServ
 
     status = ClientConnectService( bus,
                                    timeout,
-                                   clientName,
+                                   cliName,
                                    port,
                                    &sessionId,
                                    managedOpts == NULL ? NULL : &opts,

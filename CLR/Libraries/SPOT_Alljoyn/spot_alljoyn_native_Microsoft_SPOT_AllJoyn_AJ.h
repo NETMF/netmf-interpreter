@@ -22,6 +22,7 @@ namespace Microsoft
         {
             struct AJ
             {
+                
                 // Declaration of stubs. These functions are implemented by Interop code developers
                 static LPCSTR GetUniqueName( CLR_RT_HeapBlock* pMngObj, UINT32 param0, HRESULT &hr );
                 static void Initialize( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
@@ -32,7 +33,7 @@ namespace Microsoft
                 static INT32 StartService( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, UINT32 param2, INT8 param3, UINT16 param4, LPCSTR param5, UINT32 param6, HRESULT &hr );
                 static INT32 ClientConnectBus( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, UINT32 param2, HRESULT &hr );
                 static INT32 ClientFindServiceInner( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, LPCSTR param2, UINT32 param3, HRESULT &hr );
-                static INT32 ClientConnectService( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, UINT32 param2, UINT8 param3, LPCSTR param4, UINT16 param5, UINT32 * param6, UNSUPPORTED_TYPE param7, UNSUPPORTED_TYPE param8, HRESULT &hr );
+                static INT32 ClientConnectService( CLR_RT_HeapBlock* pMngObj, UINT32 param0, UINT32 param1, LPCSTR param2, UINT16 param3, UINT32 * param4, UNSUPPORTED_TYPE param5, UNSUPPORTED_TYPE param6, HRESULT &hr );
                 static INT32 StartClientByName( CLR_RT_HeapBlock* pMngObj, UINT32 param0, LPCSTR param1, UINT32 param2, UINT8 param3, LPCSTR param4, UINT16 param5, UINT32 * param6, UNSUPPORTED_TYPE param7, UNSUPPORTED_TYPE param8, HRESULT &hr );
                 static void AlwaysPrintf( CLR_RT_HeapBlock* pMngObj, LPCSTR param0, HRESULT &hr );
                 static INT32 AboutIconHandleGetContent( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, UNSUPPORTED_TYPE param2, HRESULT &hr );
@@ -48,13 +49,13 @@ namespace Microsoft
                 static LPCSTR UnmarshalVariant( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, HRESULT &hr );
                 static INT32 MarshalVariant( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, HRESULT &hr );
                 static INT32 UnmarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, UINT16 param3, UINT32 param4, HRESULT &hr );
-                static INT32 UnmarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, HRESULT &hr );
+                static INT32 UnmarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, HRESULT &hr );
                 static LPCSTR UnmarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, HRESULT &hr );
                 static INT32 UnmarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, UINT32 * param3, HRESULT &hr );
                 static LPCSTR UnmarshalPropertyArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, HRESULT &hr );
-                static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, HRESULT &hr );
                 static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, HRESULT &hr );
-                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, LPCSTR param4, HRESULT &hr );
+                static INT32 MarshalArg( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, HRESULT &hr );
+                static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, LPCSTR param1, LPCSTR param2, LPCSTR param3, LPCSTR param4, HRESULT &hr );
                 static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, HRESULT &hr );
                 static INT32 MarshalArgs( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, LPCSTR param2, LPCSTR param3, HRESULT &hr );
                 static INT32 MarshalContainer( CLR_RT_HeapBlock* pMngObj, UNSUPPORTED_TYPE param0, UNSUPPORTED_TYPE param1, UINT32 param2, HRESULT &hr );

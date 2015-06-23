@@ -414,7 +414,11 @@ namespace Microsoft.SPOT.AllJoyn
         
         public AJ_Status ClientFindService(UInt32 bus, string serviceName, string[] serviceInterfaces, UInt32 timeout)
         {
-            string ifaces = ConvertStringArrayToString(serviceInterfaces);            
+            string ifaces = null;
+            if (serviceInterfaces != null)
+            {
+                ifaces = ConvertStringArrayToString(serviceInterfaces);
+            }
             return ClientFindServiceInner(bus, serviceName, ifaces, timeout);
         }
                                                       

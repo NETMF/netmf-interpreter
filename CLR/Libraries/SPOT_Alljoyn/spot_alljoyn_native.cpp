@@ -30,7 +30,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectBus___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientFindServiceInner___MicrosoftSPOTAllJoynAJStatus__U4__STRING__STRING__U4,
     NULL,
-    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectService___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING,
+    Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectService___MicrosoftSPOTAllJoynAJStatus__U4__U4__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartClientByName___MicrosoftSPOTAllJoynAJStatus__U4__STRING__U4__U1__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AlwaysPrintf___VOID__STRING,
     Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AboutIconHandleGetContent___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage__SZARRAY_U1,
@@ -123,7 +123,7 @@ static const CLR_RT_MethodHandler method_lookup[] =
 const CLR_RT_NativeAssemblyData g_CLR_AssemblyNative_Microsoft_SPOT_Alljoyn =
 {
     "Microsoft.SPOT.Alljoyn", 
-    0x806A9233,
+    0xFFF75DEA,
     method_lookup
 };
 
