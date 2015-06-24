@@ -208,7 +208,8 @@ void BootstrapCode_GPIO();
 
 extern "C"
 {
-void __section(SectionForBootstrapOperations) STM32F4_BootstrapCode()
+
+void __section("SectionForBootstrapOperations") STM32F4_BootstrapCode()
 {
 #ifdef STM32F4XX
     // enable FPU coprocessors (CP10, CP11)
@@ -281,7 +282,7 @@ void __section(SectionForBootstrapOperations) STM32F4_BootstrapCode()
 
 }
 
-void __section(SectionForBootstrapOperations) BootstrapCode()
+__section("SectionForBootstrapOperations") void BootstrapCode()
 {
     STM32F4_BootstrapCode();
     
@@ -291,7 +292,7 @@ void __section(SectionForBootstrapOperations) BootstrapCode()
 
 }
 
-void __section(SectionForBootstrapOperations) BootstrapCodeMinimal()
+__section("SectionForBootstrapOperations") void BootstrapCodeMinimal()
 {
     STM32F4_BootstrapCode();
     

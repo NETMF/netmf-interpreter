@@ -69,6 +69,13 @@ static RxDesc_t s_rxDescriptor[N_RX_DESC];      // RX descriptors
 static RxDesc_t *s_pRxDesc;                     // Pointer on the current RX descriptor
 static uint8_t s_rxBuffer[N_RX_DESC][RX_BUFFER_LENGTH]; // RX buffers
 
+void ZeroRxDesc()
+{
+    s_pRxDesc = NULL;
+    memset(s_rxDescriptor, 0, sizeof(s_rxDescriptor));
+    memset(s_rxBuffer, 0, sizeof(s_rxBuffer));
+}
+
 //--------------------------------------------------------------------------------------------
 // Local functions declarations
 //--------------------------------------------------------------------------------------------

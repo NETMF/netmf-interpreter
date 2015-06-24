@@ -24,5 +24,5 @@
     </ItemGroup>
     <Import Project="$(SPOCLIENT)\devicecode\Targets\Native\STM32F4\STM32F4.settings" />
     <!-- This must be imported after the native build settings as it overrides the TARGETCODEBASE and Target type-->
-    <Import Project="$(SPOCLIENT)\devicecode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings" Condition="'$(reducesize)' == 'false'"/>
+    <Import Project="$(SPOCLIENT)\devicecode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings" Condition="'$(reducesize)' == 'false' AND '$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'"/>
 </Project>

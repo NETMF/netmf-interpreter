@@ -24,20 +24,20 @@
         <ExtraTargets>BuildSigFiles;CompressImage</ExtraTargets>
         <ExtraEXETargets>MetaDataProcessorDat;TinyClrDat</ExtraEXETargets>
         <ImageLocation Condition="'$(MEMORY)'=='FLASH'">\ER_FLASH</ImageLocation>
-        <LINK_FLAGS Condition="'$(COMPILER_TOOL)'!='GCC'">$(LINK_FLAGS) --verbose $(SWTC)keep *(.init_array)</LINK_FLAGS>
+        <LINK_FLAGS Condition="'$(COMPILER_TOOL)'!='GCC'">$(LINK_FLAGS) $(SWTC)keep *(.init_array)</LINK_FLAGS>
         <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
-        <MMP_DAT_CreateDatabaseFile>$(BIN_DIR)\tinyclr.dat</MMP_DAT_CreateDatabaseFile>
-        <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_tinyclr_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+        <MMP_DAT_CreateDatabaseFile>$(BIN_DIR)\$(AssemblyName).dat</MMP_DAT_CreateDatabaseFile>
+        <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_$(AssemblyName)_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
         <CompressImageFlashSym>EntryPoint</CompressImageFlashSym>
         <CompressImageDatSym>TinyClr_Dat_Start</CompressImageDatSym>
         <CompressImageCfgSym>g_ConfigurationSector</CompressImageCfgSym>
         <USE_SSL Condition="'$(FLAVOR)'=='Release'">true</USE_SSL>
     </PropertyGroup>
     <ItemGroup>
-        <CompressImageSymdef Include="$(BIN_DIR)\TinyCLR.symdefs" />
-        <CompressImageFlash Include="$(BIN_DIR)\TinyCLR.bin\ER_FLASH" />
-        <CompressImageDat Include="$(BIN_DIR)\TinyCLR.bin\ER_DAT" />
-        <CompressImageCfg Include="$(BIN_DIR)\TinyCLR.bin\ER_CONFIG" />
+        <CompressImageSymdef Include="$(BIN_DIR)\$(AssemblyName).symdefs" />
+        <CompressImageFlash Include="$(BIN_DIR)\$(AssemblyName).bin\ER_FLASH" />
+        <CompressImageDat Include="$(BIN_DIR)\$(AssemblyName).bin\ER_DAT" />
+        <CompressImageCfg Include="$(BIN_DIR)\$(AssemblyName).bin\ER_CONFIG" />
     </ItemGroup>
     <ItemGroup>
         <IncludePaths Include="DeviceCode\PAL" />
@@ -47,8 +47,8 @@
         <Compile Include="allocator.cpp" />
         <Compile Include="tinyclr.cpp" />
         <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
-        <ObjFiles Include="$(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)" />
-        <ScatterFileReferences Include="$(SRC_DIR)\scatterfile_tinyclr_$(COMPILER_TOOL).$(SCATTER_EXT)" />
+        <ObjFiles Include="$(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT)" />
+        <ScatterFileReferences Include="$(SRC_DIR)\scatterfile_$(AssemblyName)_$(COMPILER_TOOL).$(SCATTER_EXT)" />
     </ItemGroup>
     <Import Condition="'$(CORE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
     <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
@@ -497,7 +497,7 @@
         <DriverLibs Include="M29W640FB_Flash.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj" />
     </ItemGroup>
-	<ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj" />
     </ItemGroup>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+    <PropertyGroup>
+        <Author>Microsoft .NET Foundation</Author>
+        <Description>
+            NETMF port to MCBSTM32F400 (STMicroelectronics STM32F407IG Cortex-M4F) dev board from Keil.
+            Based on the STM32F4 port by Oberon Systems, CSA Engineering and, Mountaineering Group.
+        </Description>
+        <Documentation />
+        <PlatformGuid>{eb85333d-ae15-4ad6-b6d9-8239c38de2be}</PlatformGuid>
+        <TARGETPLATFORM>MCBSTM32F400</TARGETPLATFORM>
+        <PLATFORM>MCBSTM32F400</PLATFORM>
+        <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+        <ENDIANNESS>le</ENDIANNESS>
+        <NO_BOOTLOADER_COMPRESSION>true</NO_BOOTLOADER_COMPRESSION>
+    </PropertyGroup>
+    <PropertyGroup>
+        <OEMSystemInfoString>Copyright (C) Microsoft .NET Foundation</OEMSystemInfoString>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <IncludePaths Include="Solutions\MCBSTM32F400" />
+    </ItemGroup>
+    <Import Project="$(SPOCLIENT)\devicecode\Targets\Native\STM32F4\STM32F4.settings" />
+</Project>

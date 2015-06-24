@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <!-- STM32F4 with 1M Flash, 128k SRAM, and 64k DATA CCM -->
+
+    <Set Name="Valid" Value="false"/>
+
+    <!-- ################################################################################ -->
+    <!-- Memory Region base and size values for physical hardware to help clarify the mapping
+         by making Symbolic names available instead of a bunch of numbers. These values are
+         fixed in hardware and therefore, don't change.
+    -->
+    <!-- Internal FLASH -->
+    <Set Name="IFLASH_BaseAddress"      Value="0x08000000"/>
+    <Set Name="IFLASH_Size"             Value="0x00100000"/><!-- 1MB -->
+
+    <!-- Core Coupled Memory (CCM) [D-Bus] -->
+    <Set Name="CCM_BaseAddress"         Value="0x10000000"/>
+    <Set Name="CCM_Size"                Value="0x00010000"/><!-- 64KB -->
+
+    <!-- Internal SRAM -->
+    <Set Name="IRAM_BaseAddress"        Value="0x20000000"/>
+    <Set Name="IRAM_Size"               Value="0x00020000"/><!-- 128KB -->
+
+    <!-- External NOR Flash-->
+    <Set Name="NOR_BaseAddress"         Value="0x60000000"/>
+    <Set Name="NOR_Size"                Value="0x00800000"/><!-- 8MB -->
+
+    <!-- External SRAM -->
+    <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
+    <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
+
+    <!-- Solution/Project specific usage settings -->
+    <!-- Internal CCM (D-Bus) -->
+    <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
+    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
+
+    <!-- External SRAM -->
+    <Set Name="Heap_BaseAddress"        Value="%EXTRAM_BaseAddress%"/>
+
+    <!-- External NOR FLASH -->
+    <!-- Configuration section is at base of external NOR flash
+         This needs to be in the same block storage device as the
+         deployment region to enable the MFDeploy to access it.
+         ( Due to device side library implementation limit )
+    -->
+    <Set Name="Config_BaseAddress"      Value="%NOR_BaseAddress%"/>
+    <Set Name="Config_Size"             Value="0x00010000"/><!-- 64KB -->
+
+    <!-- DAT region goes into external NOR Flash -->
+    <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
+    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
+    <!-- Deployment fills the rest of external NOR flash... -->
+
+    <!-- Internal FLASH -->
+    <!-- TinyBooter sits at power on Reset vector-->
+    <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
+    <Set Name="BooterCode_Size"         Value="0x00010000"/><!-- 64KB -->
+        
+    <If Name="TARGETLOCATION" Value="FLASH">
+        <!-- Internal FLASH -->
+        
+        <!-- Native Code section -->
+        <Set Name="Code_BaseAddress"    Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
+        <Set Name="Code_Size"           Value="%IFLASH_Size%-%BooterCode_Size%"/>
+
+        <!-- =========================================================== -->
+        <If Name="TARGETTYPE" Value="Release">
+            <!-- ALL of external RAM is enabled for the CLR HEAP -->
+            <Set Name="Heap_Size"       Value="%EXTRAM_Size%"/>
+            <Set Name="CustomHeap_Size" Value="0"/>
+        
+            <Set Name="Valid"           Value="true"/>
+        </If>
+        <If Name="TARGETTYPE" Value="Debug">
+            <!-- Use only 1MB of external RAM for Debug builds.
+                 Can't use all of external RAM as the address pins overlap
+                 with the SWD pins used for ETM tracing in Debug builds.
+            -->
+            <Set Name="Heap_Size"       Value="0x00100000"/><!--1MB-->
+            <Set Name="CustomHeap_Size" Value="0"/>
+            
+            <Set Name="Valid"           Value="true"/>
+        </If>
+    </If>
+
+    <!-- ################################################################################ -->
+    <If Name="Valid" Value="false">
+        <Error Message="Configuration not recognized"/>
+    </If>
+
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
+
+        <!-- ========= INTERNAL FLASH ============================================ -->
+        <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
+            <FileMapping Name="AppEntry.obj" Options="(+RO, +FIRST)" />
+            <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+            <FileMapping Name="*" Options="(+RO-CODE)" />
+            <FileMapping Name="*" Options="(+RO-DATA)" />
+        </ExecRegion>
+
+        <!-- ========= INTERNAL RAM ============================================= -->
+        <!-- Writeable Vector table -->
+        <!-- NOTE:
+             Despite what you might hope for, this CANNOT go into the CCM area as the NVIC does not
+             have access to that space (it sees the AHB layer and below, rather than the core's D-Bus)
+        -->
+        <!-- Alignment for the vector table is important to allow the NVIC to decode the proper locations
+            (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
+            Since this starts the SRAM block, it's aligned just fine for any size table.
+        -->
+        <!-- NOTE: Using uncompressed sections as this project uses the NETMF startup code that
+             doesn't know about compressed init regions. Eventually this should be unified so that
+             the normal embedded (Microlib/nanolib) runtime startup is used for all tool chains
+             instead of doing it in the NETMF code base.
+        -->
+        <ExecRegion Name="ER_VECTORS" Base="%IRAM_BaseAddress%" Options="ABSOLUTE NOCOMPRESS" Size="">
+            <FileMapping Name="*" Options="(VectorTable +FIRST)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
+            <!-- Flash programming from Flash is safe on STM32 -->
+            <!-- No need to place Flash programming code in RAM -->
+            <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
+        </ExecRegion>
+
+        <!-- ========= EXTERNAL RAM ============================================= -->
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for a heap -->
+
+        <ExecRegion Name="ER_HEAP_END" Base="+%Heap_Size%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="+0" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
+
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="+%CustomHeap_Size%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
+        </ExecRegion>
+
+        <!-- ========= Internal CCM ============================================ -->
+        <!-- Stack allocation pools for the OS, Sizes are set in RTX_Conf_CM.c along with other OS configuration -->
+        <ExecRegion Name="ER_RT_STACK" Base="%Stack_Bottom%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(rtx_stack)" />
+        </ExecRegion>
+
+        <!-- The rest of the CCM is used as a general stack during startup. This can't overlap with the ER_RT_STACK
+             region as the kernel will zero that out during initialization, which would overwrite the stack of the
+             code running the initialization, causing an early FAULT. Size and alignment are critical here. The stack
+             must be aligned on an 8 byte boundary AND the size of this region must not extend it past the end of the
+             actual physical CCM space. The CRT startup code will initialize the region and, if the aligned size
+             puts the end outside of physical memory it will generate an imprecise abort.
+        -->
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="AlignExpr( +0, 8 )" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>
+        <ExecRegion Name="ER_STACK" Base="+0" Options="ABSOLUTE EMPTY" Size="(AlignExpr(%CCM_Size% - 8 - ImageLength(ER_RT_STACK), 8))" />
+        <ExecRegion Name="ER_STACK_TOP" Base="+0" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
+        </ExecRegion>
+    </LoadRegion>
+
+    <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Options="ABSOLUTE" Size="%Data_Size%">
+        <ExecRegion Name="ER_DAT" Base="%Data_BaseAddress%" Options="FIXED" Size="%Data_Size%">
+            <FileMapping Name="tinyclr_dat.obj" Options="(+RO)" />
+        </ExecRegion>
+    </LoadRegion>
+
+    <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
+        <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
+            <FileMapping Name="*" Options="(SectionForConfig)" />
+        </ExecRegion>
+    </LoadRegion>
+</ScatterFile>
+

@@ -1,6 +1,5 @@
 <Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
 
-
  <!-- base on cpu type, setup compiler-->
 
   <!-- set up the base DST_DIR path base on different INSTRUCTION_SET -->  
@@ -24,9 +23,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <IncludePaths Include="DeviceCode\Cores\arm"/>
+    <IncludePaths Include="DeviceCode\Cores\arm"/>
 
-    <IncludePaths Include="DeviceCode\Cores\arm\Include"/>
+
+    <IncludePaths Include="DeviceCode\Cores\arm\Include"/>
+
 
     <IncludePaths Include="DeviceCode"/>
     <IncludePaths Include="DeviceCode\Include"/>

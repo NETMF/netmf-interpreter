@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<ScatterFile xmlns="http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd">
+
+    <!-- STM32F4 with 1M Flash, 128k SRAM, and 64k DATA CCM -->
+
+    <Set Name="Valid" Value="false"/>
+
+    <!-- ################################################################################ -->
+
+    <!-- Memory Region base and size values for physical hardware to help clarify the mapping
+         by making Symbolic names available instead of a bunch of numbers. These values are
+         fixed in hardware and therefore, don't change.
+    -->
+    <!-- Internal FLASH -->
+    <Set Name="IFLASH_BaseAddress"      Value="0x08000000"/>
+    <Set Name="IFLASH_Size"             Value="0x00100000"/><!-- 1MB -->
+
+    <!-- Internal Core Coupled Memory (CCM) [D-Bus] -->
+    <Set Name="CCM_BaseAddress"         Value="0x10000000"/>
+    <Set Name="CCM_Size"                Value="0x00010000"/><!-- 64KB -->
+
+    <!-- Internal SRAM -->
+    <Set Name="IRAM_BaseAddress"        Value="0x20000000"/>
+    <Set Name="IRAM_Size"               Value="0x00020000"/><!-- 128KB -->
+
+    <!-- Solution/Project specific usage settings -->
+
+    <!-- Internal FLASH -->
+    <!--
+         The flash memory layout must match BlockRange definitions
+         in DeviceCode\Blockstorage\STM32F4\STM32F4_BlConfig.cpp
+    -->
+    <!-- TinyBooter sits at power on Reset vector-->
+    <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
+    <Set Name="BooterCode_Size"         Value="0x0000C000"/><!-- 48KB -->
+
+    <!-- Configuration section -->
+    <Set Name="Config_BaseAddress"      Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
+    <Set Name="Config_Size"             Value="0x00004000"/><!-- 16KB -->
+
+    <!-- Native Code section -->
+    <Set Name="Code_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
+    <Set Name="Code_Size"               Value="0x00080000"/><!-- 512KB -->
+
+    <!-- Deployment fills the rest of flash... --><!-- 384KB -->
+
+    <!-- Internal CCM (D-Bus) -->
+    <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
+    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
+    <Set Name="Stack_Size"              Value="%CCM_Size%" />
+
+    <!-- Internal SRAM -->
+    <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
+    <Set Name="Heap_BaseAddress"        Value="0x20008000"/>
+    <Set Name="Heap_Size"               Value="0x00017000"/><!-- 92K -->
+
+    <Set Name="CustomHeap_Size"         Value="0x00001000"/><!--  4K -->
+
+
+    <If Name="TARGETLOCATION" Value="FLASH">
+        <Set Name="Valid"               Value="true"/>
+    </If>
+
+    <!-- ################################################################################ -->
+
+    <If Name="Valid" Value="false">
+        <Error Message="Configuration not recognized"/>
+    </If>
+
+    <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="ABSOLUTE" Size="%Code_Size%">
+
+        <!-- ========= INTERNAL FLASH ============================================ -->
+        <ExecRegion Name="ER_%TARGETLOCATION%" Base="%Code_BaseAddress%" Options="FIXED" Size="">
+            <FileMapping Name="AppEntry.obj" Options="(+RO, +FIRST)" />
+            <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
+            <FileMapping Name="*" Options="(+RO-CODE)" />
+            <FileMapping Name="*" Options="(+RO-DATA)" />
+
+            <!-- There is no special region section for DAT-->
+            <FileMapping Name="tinyclr_dat.obj" Options="(+RO, +LAST)" />
+        </ExecRegion>
+
+        <!-- ========= INTERNAL RAM ============================================= -->
+        <!-- Writeable Vector table -->
+        <!-- NOTE:
+             Despite what you might hope for, this CANNOT go into the CCM area as the NVIC does not
+             have access to that space (it sees the AHB layer and below, rather than the core's D-Bus)
+        -->
+        <!-- Alignment for the vector table is important to allow the NVIC to decode the proper locations
+            (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
+            Since this starts the SRAM block, it's aligned just fine for any size table.
+        -->
+        <!-- NOTE: Using uncompressed sections as this project uses the NETMF startup code that
+             doesn't know about compressed init regions. Eventually this should be unified so that
+             the normal embedded (Microlib/nanolib) runtime startup is used for all tool chains
+             instead of doing it in the NETMF code base.
+        -->
+        <ExecRegion Name="ER_VECTORS" Base="%IRAM_BaseAddress%" Options="ABSOLUTE NOCOMPRESS" Size="">
+            <FileMapping Name="*" Options="(VectorTable +FIRST)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
+            <!-- Flash programming from Flash is safe on STM32 -->
+            <!-- No need to place Flash programming code in RAM -->
+            <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
+        </ExecRegion>
+
+        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for a heap -->
+
+        <ExecRegion Name="ER_HEAP_END" Base="+%Heap_Size%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="+0" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
+
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="+%CustomHeap_Size%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
+        </ExecRegion>
+
+        <!-- ========= Internal CCM ============================================ -->
+        <ExecRegion Name="ER_STACK_BOTTOM" Base="%Stack_Bottom%" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>
+        <ExecRegion Name="ER_STACK_TOP" Base="AlignExpr(+%CCM_Size% -8, 8 )" Options="ABSOLUTE UNINIT" Size="">
+            <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
+        </ExecRegion>
+    </LoadRegion>
+
+    <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
+        <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
+            <FileMapping Name="*" Options="(SectionForConfig)" />
+        </ExecRegion>
+    </LoadRegion>
+</ScatterFile>
+

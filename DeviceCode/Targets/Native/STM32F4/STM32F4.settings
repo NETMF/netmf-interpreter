@@ -18,6 +18,7 @@
     </PropertyGroup>
     <ItemGroup>
         <CC_CPP_Defines Include="__CORTEX_M4F" />
+        <CC_CPP_Defines Include="CORTEX_M4" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
@@ -27,6 +28,10 @@
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='MDK'">
         <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
         <BUILD_TOOL_GUID>{00EC0018-007A-0040-9936-929B39330107}</BUILD_TOOL_GUID>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'">
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">cortex-m4</DEVICE_TYPE>
+        <BUILD_TOOL_GUID>{C47384E0-EAC5-44B4-9817-5BF7D16218F8}</BUILD_TOOL_GUID>
     </PropertyGroup>
 
     <ItemGroup>

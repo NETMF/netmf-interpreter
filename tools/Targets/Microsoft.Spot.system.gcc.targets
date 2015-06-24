@@ -1,6 +1,5 @@
 <Project  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"  ToolsVersion="4.0">
 
-
   <PropertyGroup>
     <BuildToolName>GCC</BuildToolName>
     <BuildToolGuid>{722B0D5D-1243-4557-913F-61FAB04E9209}</BuildToolGuid>
@@ -14,83 +13,67 @@
 
     <!-- GNU Tools - Assumes that the Path is already set up to these tools (the default) -->
 
-    
     <CC>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-gcc.exe"</CC>
     <TCC>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-gcc.exe"</TCC>
     <CPP>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-gcc.exe"</CPP>
     <TCPP>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-gcc.exe"</TCPP>
     <AS>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-as.exe"</AS>
-    <LINK>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ld.exe"</LINK>
+    <LINK>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-g++.exe"</LINK>
     <AR>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ar.exe"</AR>
     <NM>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-nm.exe"</NM>
     <FROMELF>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-objcopy.exe"</FROMELF>
     <OBJDUMP>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-objdump.exe"</OBJDUMP>
     <RANLIB>"$(GNU_TOOLS_BIN)\$(GNU_TARGET)-ranlib.exe"</RANLIB>
     <CREATESYMDEF>$(TOOLS_DIR)\CreateSymdef.exe</CREATESYMDEF>
-    <CREATESYMDEF_ALT>$(SPOCLIENT)\TOOLS\BIN\CreateSymdef.exe</CREATESYMDEF_ALT>
-
-    <!-- alternate location for tool binaries -->
-    <AS      Condition="!EXISTS('$(AS)')"     >"$(GNU_TOOLS_BIN)\..\$(GNU_TARGET)\bin\as.exe"</AS>
-    <LINK    Condition="!EXISTS('$(LINK)')"   >"$(GNU_TOOLS_BIN)\..\$(GNU_TARGET)\bin\ld.exe"</LINK>
-    <AR      Condition="!EXISTS('$(AR)')"     >"$(GNU_TOOLS_BIN)\..\$(GNU_TARGET)\bin\ar.exe"</AR>
-    <NM      Condition="!EXISTS('$(NM)')"     >"$(GNU_TOOLS_BIN)\..\$(GNU_TARGET)\bin\nm.exe"</NM>
-    <FROMELF Condition="!EXISTS('$(FROMELF)')">"$(GNU_TOOLS_BIN)\..\$(GNU_TARGET)\bin\objcopy.exe"</FROMELF>
-    <OBJDUMP Condition="!EXISTS('$(OBJDUMP)')">"$(GNU_TOOLS_BIN)\..\$(GNU_TARGET)\bin\objdump.exe"</OBJDUMP>
-    <RANLIB  Condition="!EXISTS('$(RANLIB)')" >"$(GNU_TOOLS_BIN)\..\$(GNU_TARGET)\bin\ranlib.exe"</RANLIB>
-  </PropertyGroup>
-
-
-  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCCOP'" >
-    <TARGETCURRENT>$(SPO_BUILD)\$(INSTRUCTION_SET)\$(TARGETLOCATION)\$(OLD_FLAVOR)\$(TARGETPLATFORM)\bin</TARGETCURRENT>
-
-    <!-- GNU Tools - Assumes that the Path is already set up to these tools (the default) -->
-    <CC>"$(GNU_TOOLS_BIN)\gcc.exe"</CC>
-    <TCC>"$(GNU_TOOLS_BIN)\gcc.exe"</TCC>
-    <CPP>"$(GNU_TOOLS_BIN)\gcc.exe"</CPP>
-    <TCPP>"$(GNU_TOOLS_BIN)\gcc.exe"</TCPP>
-    <AS>"$(GNU_TOOLS_BIN)\as.exe"</AS>
-    <LINK>"$(GNU_TOOLS_BIN)\ld.exe"</LINK>
-    <AR>"$(GNU_TOOLS_BIN)\ar.exe"</AR>
-    <NM>"$(GNU_TOOLS_BIN)\nm.exe"</NM>
-    <FROMELF>"$(GNU_TOOLS_BIN)\objcopy.exe"</FROMELF>
-    <OBJDUMP>"$(GNU_TOOLS_BIN)\objdump.exe"</OBJDUMP>
-    <RANLIB>"$(GNU_TOOLS_BIN)\ranlib.exe"</RANLIB>
-    <CREATESYMDEF>$(TOOLS_DIR)\CreateSymdef.exe</CREATESYMDEF>
-    <CREATESYMDEF_ALT>$(SPOCLIENT)\TOOLS\BIN\CreateSymdef.exe</CREATESYMDEF_ALT>
   </PropertyGroup>
 
   <!-- based on cpu type, setup compiler-->  
   
   <PropertyGroup>
     <!-- We need to convert the RVDS CPU type to its GCC equivalent if needed-->
-    <ARM_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'arm926EJ-S'">arm926ej-s</ARM_TYPE_FLAGS>
-    <ARM_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'ARM7TDMI'">arm7tdmi</ARM_TYPE_FLAGS>
-    <ARM_TYPE_FLAGS Condition="'$(ARM_TYPE_FLAGS)'==''">$(DEVICE_TYPE)</ARM_TYPE_FLAGS>
+    <ARCH_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'arm926EJ-S'">-mcpu=arm926ej-s -marm </ARCH_TYPE_FLAGS>
+    <ARCH_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'ARM7TDMI'">-mcpu=arm7tdmi -marm </ARCH_TYPE_FLAGS>
+    <ARCH_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'cortex-m4'">-mcpu=cortex-m4 -mthumb</ARCH_TYPE_FLAGS>
+    <ARCH_TYPE_FLAGS Condition="'$(DEVICE_TYPE)' == 'cortex-m3'">-mcpu=cortex-m3 -mthumb</ARCH_TYPE_FLAGS>
+    <ARCH_TYPE_FLAGS Condition="'$(ARCH_TYPE_FLAGS)'==''">-mcpu=$(DEVICE_TYPE)</ARCH_TYPE_FLAGS>
+
+    <!-- GCC_ARCH_DIR specifies the CPU architecture portion of the path to the appropriate libraries for a given device -->
+    <GCC_ARCH_DIR Condition="'$(DEVICE_TYPE)' == 'arm926EJ-S'"></GCC_ARCH_DIR>
+    <GCC_ARCH_DIR Condition="'$(DEVICE_TYPE)' == 'ARM7TDMI'"></GCC_ARCH_DIR>
+    <GCC_ARCH_DIR Condition="'$(DEVICE_TYPE)' == 'cortex-m4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'">armv7e-m\softfp</GCC_ARCH_DIR>
+    <GCC_ARCH_DIR Condition="'$(DEVICE_TYPE)' == 'cortex-m4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'">armv7e-m\fpu</GCC_ARCH_DIR>
+    <GCC_ARCH_DIR Condition="'$(DEVICE_TYPE)' == 'cortex-m3'">armv7-m</GCC_ARCH_DIR>
 
     <POS_DEPENDENT></POS_DEPENDENT>
     <POS_INDEPENDENT>-fpic</POS_INDEPENDENT>
-    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions  -funsigned-char -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >$(CC_CPP_TARGETTYPE_FLAGS) -O3</CC_CPP_TARGETTYPE_FLAGS>
-    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >$(CC_CPP_TARGETTYPE_FLAGS) -g -O0 -femit-class-debug-always</CC_CPP_TARGETTYPE_FLAGS>
-    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(CC_CPP_TARGETTYPE_FLAGS) -g -O0</CC_CPP_TARGETTYPE_FLAGS>
-    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"      >$(CC_CPP_TARGETTYPE_FLAGS) -g1 -Os</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >$(CC_CPP_TARGETTYPE_FLAGS) -O0 -femit-class-debug-always</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(CC_CPP_TARGETTYPE_FLAGS) -O0</CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"      >$(CC_CPP_TARGETTYPE_FLAGS) -Os</CC_CPP_TARGETTYPE_FLAGS>
 
-    <CC_FLAGS>$(CC_FLAGS)-xc </CC_FLAGS>
-    <CPP_FLAGS>$(CPP_FLAGS)-xc++ -Wno-invalid-offsetof -fcheck-new </CPP_FLAGS>
+    <CC_FLAGS>$(CC_FLAGS)-xc</CC_FLAGS>
+    <!--
+    Disabling all warnings for GCC - it's just too noisy to be useful.
+    Even worse is that some of the most useless can't even be disabled.
+    See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=45977
+    and, http://stackoverflow.com/questions/4268589/warning-in-extern-declaration
+    NETMF already builds under two other compilers, so warnings from
+    yet another compiler aren't really that valuable anyway.
+    -->
+    <CPP_FLAGS>$(CPP_FLAGS)-xc++ -w -fcheck-new</CPP_FLAGS>
 
-    <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'"> -mfloat-abi=soft </FLOATING_POINT_FLAG>
-    <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'"> </FLOATING_POINT_FLAG>
+    <FLOATING_POINT_FLAG Condition="('$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true' and '$(DEVICE_TYPE)' == 'cortex-m4') or '$(INSTRUCTION_SET)'=='thumb2fp'">-mfloat-abi=hard -mfpu=fpv4-sp-d16</FLOATING_POINT_FLAG>
+    <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'">-mfloat-abi=soft</FLOATING_POINT_FLAG>
 
-    <AS_CC_CPP_COMMON_FLAGS Condition="'$(COMPILER_TOOL)'!='GCCOP'">$(AS_CC_CPP_COMMON_FLAGS) $(FLOATING_POINT_FLAG) </AS_CC_CPP_COMMON_FLAGS>
-    <AS_CC_CPP_COMMON_FLAGS>$(AS_CC_CPP_COMMON_FLAGS) -mcpu=$(ARM_TYPE_FLAGS)</AS_CC_CPP_COMMON_FLAGS>
+    <AS_CC_CPP_COMMON_FLAGS>$(AS_CC_CPP_COMMON_FLAGS) $(FLOATING_POINT_FLAG) </AS_CC_CPP_COMMON_FLAGS>
+    <AS_CC_CPP_COMMON_FLAGS>$(AS_CC_CPP_COMMON_FLAGS) $(ARCH_TYPE_FLAGS)</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(ENDIANNESS)'=='le'">$(AS_CC_CPP_COMMON_FLAGS) -mlittle-endian</AS_CC_CPP_COMMON_FLAGS>
     <AS_CC_CPP_COMMON_FLAGS Condition="'$(ENDIANNESS)'=='be'">$(AS_CC_CPP_COMMON_FLAGS) -mbig-endian</AS_CC_CPP_COMMON_FLAGS>
   </PropertyGroup>
 
-
   <!-- Assembler flags -->
   <PropertyGroup>
-
     <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(AS_TARGETTYPE_FLAGS) --defsym BUILD_RTM=1</AS_TARGETTYPE_FLAGS>
     <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"     >$(AS_TARGETTYPE_FLAGS) --defsym BUILD_RTM=0 </AS_TARGETTYPE_FLAGS>
     <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"       >$(AS_TARGETTYPE_FLAGS) --defsym BUILD_RTM=0 -g</AS_TARGETTYPE_FLAGS>
@@ -100,10 +83,9 @@
     <AS_FLAGS Condition="'$(sampleprof)'=='true'" >$(AS_FLAGS) --defsym FIQ_SAMPLING_PROFILER=1</AS_FLAGS>
     <AS_FLAGS Condition="'$(latencyprof)'=='true'">$(AS_FLAGS) --defsym FIQ_LATENCY_PROFILER=1</AS_FLAGS>
     <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='arm'"     >$(AS_FLAGS) --defsym COMPILE_ARM=1</AS_FLAGS>
-    <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(COMPILER_TOOL)'=='GCCOP'">$(AS_FLAGS) --defsym COMPILE_THUMB=1 -mthumb</AS_FLAGS>
-    <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(COMPILER_TOOL)'!='GCCOP'">$(AS_FLAGS) --defsym COMPILE_THUMB=1 -mthumb-interwork</AS_FLAGS>
-    <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2'"  >$(AS_FLAGS) --defsym COMPILE_THUMB2=1</AS_FLAGS>
-    <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">$(AS_FLAGS) --defsym COMPILE_THUMB2=1</AS_FLAGS>
+    <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb'">$(AS_FLAGS) --defsym COMPILE_THUMB=1 -mthumb</AS_FLAGS>
+    <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2'"  >$(AS_FLAGS) --defsym COMPILE_THUMB2=1 -mthumb</AS_FLAGS>
+    <AS_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">$(AS_FLAGS) --defsym COMPILE_THUMB2=1 -mthumb</AS_FLAGS>
 
     <!-- Assembler flags -->
     <!-- TODO: There are no string macros in the GDD assembler, so this must be done another way
@@ -137,8 +119,8 @@
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"      >$(CC_CPP_TARGETTYPE_FLAGS) -DNDEBUG</CC_CPP_TARGETTYPE_FLAGS>
 
     <CPP_FLAGS Condition="'$(FLAVOR)'=='Release'">$(CPP_FLAGS) -fno-default-inline</CPP_FLAGS>
+    <CPP_FLAGS Condition="'$(GCC_VERNUM)'!='' and $(GCC_VERNUM)&gt;=40400">$(CPP_FLAGS) -Wno-psabi </CPP_FLAGS>
 
-    <CC_CPP_COMMON_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP'">$(CC_CPP_COMMON_FLAGS) -DTCPIP_LWIP</CC_CPP_COMMON_FLAGS>
 	<CC_CPP_COMMON_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">$(CC_CPP_COMMON_FLAGS) -DTCPIP_LWIP_OS</CC_CPP_COMMON_FLAGS>
 
     <CC_CPP_COMMON_FLAGS Condition="'$(reducesize)'=='true'" >$(CC_CPP_COMMON_FLAGS) -DHAL_REDUCESIZE</CC_CPP_COMMON_FLAGS>
@@ -148,10 +130,9 @@
     <CC_CPP_COMMON_FLAGS Condition="'$(sampleprof)'=='true'" >$(CC_CPP_COMMON_FLAGS) -DFIQ_SAMPLING_PROFILER </CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(latencyprof)'=='true'">$(CC_CPP_COMMON_FLAGS) -DFIQ_LATENCY_PROFILER </CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='arm'"     >$(CC_CPP_COMMON_FLAGS) -DCOMPILE_ARM </CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(COMPILER_TOOL)'=='GCCOP'"   >$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB </CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(COMPILER_TOOL)'!='GCCOP'"   >$(CC_CPP_COMMON_FLAGS) -mthumb-interwork -DCOMPILE_THUMB </CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2'"  >$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB2 </CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB2 </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb'">$(CC_CPP_COMMON_FLAGS) -mthumb-interwork -DCOMPILE_THUMB </CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2'"  >$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB2 -mthumb</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">$(CC_CPP_COMMON_FLAGS) -DCOMPILE_THUMB2 -mthumb</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(ARMBUILD_ONLY)'!='true' "   >$(CC_CPP_COMMON_FLAGS) -mthumb </CC_CPP_COMMON_FLAGS>    
 
     <CC_CPP_COMMON_FLAGS Condition="'$(FLAVOR)'=='Instrumented' and '$(NATIVE_PROFILE_CLR)'!=''">$(CC_CPP_COMMON_FLAGS) -DNATIVE_PROFILE_CLR=$(NATIVE_PROFILE_CLR)</CC_CPP_COMMON_FLAGS>
@@ -170,7 +151,6 @@
     <CC_CPP_COMMON_FLAGS Condition="'$(OS_PLATFORM)'=='true'">$(CC_CPP_COMMON_FLAGS) -DPLATFORM_ARM_OS_PORT</CC_CPP_COMMON_FLAGS>
 
     <CC_CPP_COMMON_FLAGS Condition="'$(COMPILER_TOOL)'=='GCC'"   >$(CC_CPP_COMMON_FLAGS) -DGCC </CC_CPP_COMMON_FLAGS>
-    <CC_CPP_COMMON_FLAGS Condition="'$(COMPILER_TOOL)'=='GCCOP'" >$(CC_CPP_COMMON_FLAGS) -DGCCOP -D__ELIPS_COMPONENT_GENERATE_=true </CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(COMPILER_TOOL_VERSION_NUM)'&lt;'4.4'"   >$(CC_CPP_COMMON_FLAGS) -DGCC_OLD_ARG_LIST </CC_CPP_COMMON_FLAGS>
 
     <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) @(TinyCLR_Defines->'-D%(filename)',' ')</CC_CPP_COMMON_FLAGS>
@@ -188,7 +168,7 @@
     <CC_CPP_INCS>$(CC_CPP_INCS) -I$(SPO_SDK)\CLR\Libraries\SPOT_Hardware</CC_CPP_INCS>
     <CC_CPP_INCS>$(CC_CPP_INCS) -I$(SPO_SDK)\CLR\Libraries\SPOT_Graphics</CC_CPP_INCS>
     <CC_CPP_INCS>$(CC_CPP_INCS) -I$(SPO_SDK)\CLR\Libraries\SPOT_Net</CC_CPP_INCS>
-    <CC_CPP_INCS>$(CC_CPP_INCS) -I$(ARMINC)</CC_CPP_INCS>
+    <CC_CPP_INCS>$(CC_CPP_INCS) -I"$(ARMINC)"</CC_CPP_INCS>
     <CC_CPP_INCS>$(CC_CPP_INCS) @(IncludePaths->'-I$(CLRROOT)\%(relativedir)%(filename)',' ')</CC_CPP_INCS>
     <CC_CPP_INCS>$(CC_CPP_INCS) @(DirectIncludePaths->'-I%(FullPath)',' ')</CC_CPP_INCS>
 
@@ -214,17 +194,9 @@
   <!-- other flags -->
   <PropertyGroup>
     <ARFLAGS>$(ARFLAGS) -rcs</ARFLAGS>
-
-    <LINK_FLAGS>$(LINK_FLAGS) -static --gc-sections --no-warn-mismatch --library-path=$(LIB_DIR) --library-path=$(PLATFORM_INDEPENDENT_LIB_DIR)  </LINK_FLAGS>
-    
-    <!-- 
-        We need to allow multiple symbol definition in thumb mode because the ARM compatibility library interfere with GCC
-        which prevents from linking properly. 
-    -->
-    <LINK_FLAGS Condition="'$(INSTRUCTION_SET)'=='thumb'">$(LINK_FLAGS) --allow-multiple-definition</LINK_FLAGS>
+    <LINK_FLAGS>$(LINK_FLAGS),-static,--gc-sections,--no-wchar-size-warning</LINK_FLAGS>
   </PropertyGroup>
    
-
   <PropertyGroup>
     <EXEName>$(BIN_DIR)\$(AssemblyName)</EXEName>
 
@@ -233,36 +205,17 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'" >
-    <GNU_LIB_DIR     Condition="'$(INSTRUCTION_SET)'=='arm'">$(GNU_TOOLS)\$(GNU_TARGET)\lib</GNU_LIB_DIR>
-    <GNU_LIBGCC_DIR  Condition="'$(INSTRUCTION_SET)'=='arm'">$(GNU_TOOLS)\lib\gcc\$(GNU_TARGET)\$(GNU_VERSION)</GNU_LIBGCC_DIR>
+    <GNU_LIB_DIR   >$(GNU_TOOLS)\$(GNU_TARGET)\lib</GNU_LIB_DIR>
+    <GNU_LIBGCC_DIR>$(GNU_LIB_DIR)\$(GCC_ARCH_DIR)</GNU_LIBGCC_DIR>
     <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='arm'"></ExtraLibs>
 
-    <!-- instead include the Thumb libc.a and libgcc.a... we include the ARM mode one, if include the THUMB libs, the linker failed to resolve the branch function address and function branch to unknown address-->
-    <!-- this is happened at the libgcc.a, e.g ldivmod function, helper function address are not found -->
-    <GNU_LIB_DIR     Condition="'$(INSTRUCTION_SET)'=='thumb'">$(GNU_TOOLS)\$(GNU_TARGET)\lib\thumb</GNU_LIB_DIR>
-    <GNU_LIBGCC_DIR  Condition="'$(INSTRUCTION_SET)'=='thumb'">$(GNU_TOOLS)\lib\gcc\$(GNU_TARGET)\$(GNU_VERSION)\thumb</GNU_LIBGCC_DIR>
-    <!-- adding the extra lib if the CLR is compiled in RVDS, whenever we have libs from RVDS, we need this -->
-    <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(ENDIANNESS)'=='be'">$(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\h_t.b $(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\c_t.b</ExtraLibs>
-    <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='thumb' and '$(ENDIANNESS)'=='le'">$(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\h_t.l $(SPOCLIENT)\tools\ads_v3_1\Lib\armlib\c_t.l</ExtraLibs>
+    <!--Standard libraries -->
+    <!-- NOTE: These are renamed by the "specs" provided to the command line-->
+    <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lgcc -lc</GCCSTDLIBS>
 
-    <LIBGCC >libgcc.a</LIBGCC>
-    <LIBCGCC>libc.a</LIBCGCC>
+    <!-- Use newlib-nano (default) or newlib -->
+    <LINK_NANO_SPECS Condition="'$(NewlibNano)' != 'false'">-specs="$(GNU_LIBGCC_DIR)\nano.specs"</LINK_NANO_SPECS>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCCOP'" >
-    <ENABLE_FASTCOMPILE Condition="'$(FLAVOR)'=='Debug'">false</ENABLE_FASTCOMPILE>
-    <GNU_LIB_DIR     Condition="'$(INSTRUCTION_SET)'=='arm'">$(GNU_TOOLS)\lib</GNU_LIB_DIR>
-    <GNU_LIBGCC_DIR  Condition="'$(INSTRUCTION_SET)'=='arm'">$(GNU_TOOLS)\lib</GNU_LIBGCC_DIR>
-    <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='arm'"></ExtraLibs>
-    <LIBGCC          Condition="'$(INSTRUCTION_SET)'=='arm'">libgccale.a</LIBGCC>
-	
-    <GNU_LIB_DIR     Condition="'$(INSTRUCTION_SET)'=='thumb'">$(GNU_TOOLS)\lib</GNU_LIB_DIR>
-    <GNU_LIBGCC_DIR  Condition="'$(INSTRUCTION_SET)'=='thumb'">$(GNU_TOOLS)\lib</GNU_LIBGCC_DIR>
-    <LIBGCC          Condition="'$(INSTRUCTION_SET)'=='thumb'">libgcctle.a</LIBGCC>
-    <LIBCGCC>libc.a</LIBCGCC>
-
-  </PropertyGroup>
-
 
   <!-- item group  -->
 
@@ -272,7 +225,6 @@
     <FastCompileFile Condition="'$(ENABLE_FASTCOMPILE)'=='true'" Include="@(FastCompileCPPFile)"/>
   </ItemGroup>
 
-
   <ItemGroup Condition="'$(OutputType)'=='Executable'">
     <!-- use the tools\make\scatterfile_definition.xml, otherwise has to state the scatterfile at the dotNetMF.proj-->
 
@@ -281,12 +233,6 @@
 
     <EXEScatterFile Include="$(BIN_DIR)\$(AssemblyName)_scatterfile.ldf"/>
     <EXEIncludePaths Include="$(ARMINC)"/>
-  </ItemGroup>
-
- <!-- stubs function for all build in OP's GCC, as those functions are not included in their tool-chain -->
-  <ItemGroup Condition="'$(COMPILER_TOOL)'=='GCCOP' and '$(OutputType)'=='Executable' and EXISTS('$(SPOCLIENT)\DeviceCode\Drivers\Stubs\TempForGCC\dotNetMF.proj')">
-    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\TempForGCC\dotNetMF.proj" />
-    <DriverLibs Include="Gcc_hal.$(LIB_EXT)" />
   </ItemGroup>
 
   <!-- target group for compile,assembler,linker, librarian, loader -->
@@ -315,52 +261,36 @@
     <Exec WorkingDirectory="$(OBJ_DIR)" Condition="'@(FilesExist)'!=''" Command="$(AR) $(ARFLAGS) @(TargetLib) @(ObjFiles->'%(FileName)%(Extension)',' ') "/>
   </Target>
 
-  <Target Name="BuildAXF" Condition="'$(OutputType)'=='Executable'" DependsOnTargets="ArmCompileCPP;ArmCompileC;ArmAssemble;$(ExtraEXETargets);BuildScatterfile" Inputs="@(EXEInputs);@(InputLibs);@(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)\%(FileName)%(Extension)');@(DriverLibs->'$(LIB_DIR)\%(FileName)%(Extension)');@(EXEScatterFile)" Outputs="@(EXEOutput)">
-    <!-- 
-        The GCC archiver does not support concatening libraries into a single one. The only way is to extract all the obj files then rearchive them altogether. 
-        However, we probably want to consider using a BuildTask instead of using the following ugly script. 
+  <Target Name="BuildAXF" Condition="'$(OutputType)'=='Executable'" DependsOnTargets="ArmCompileCPP;ArmCompileC;ArmAssemble;$(ExtraEXETargets);BuildScatterfile" Inputs="@(EXEInputs);@(InputLibs);@(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)\%(FileName)%(Extension)');@(DriverLibs->'%(FileName)%(Extension)');@(EXEScatterFile)" Outputs="@(EXEOutput)">
+    <!-- NOTE:
+         This forces the working directory to LIB_DIR in order to work around issues with long command lines.
+         (GNU Embedded for ARM 4.9.3 at least has a bug where long command lines will drop a character and thus generate an error)
+         This also deals with the fact that lib files listed explicitly on the command line don't use search paths. (any -lxxx
+         libraries use search paths but the search is for libxxx.a rather than xxx) So, this uses the common lib directory for
+         the majority of libs (platform dependent) and provides the explicit full path for the smaller percentage
+         (platform independent). Thus the linker looks in the current working directory and finds the specified library without
+         needing to list the full path for each one. 
     -->
-    <Exec command="PrepareLibsForConcat.cmd $(LIB_DIR) @(DriverLibs,' ')" />
-    <Exec Command="$(AR) $(ARFLAGS) $(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT) $(LIB_DIR)\tmp\*.$(OBJ_EXT)" />
-    <Exec Command="del $(LIB_DIR)\tmp\*.$(OBJ_EXT)" />
-    <Exec Command="rmdir $(LIB_DIR)\tmp" />
-    
-    <Exec Condition="'$(COMPILER_TOOL)'=='GCC'" Command="$(LINK) $(LINK_FLAGS) -u ARM_Vectors -u _start --Map $(EXEName).map --output=@(EXEOutput) --script=@(EXEScatterFile,' ') @(EXEInputs,' ') -( @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') $(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT) @(InputLibs,' ') -) -( &#x22;$(GNU_LIB_DIR)\libm.a&#x22; &#x22;$(GNU_LIB_DIR)\libc.a&#x22; &#x22;$(GNU_LIBGCC_DIR)\$(LIBGCC)&#x22; -) -( $(ExtraLibs) -)"/>
-    
-    <Exec Condition="'$(COMPILER_TOOL)'=='GCCOP'"  Command="$(LINK) $(LINK_FLAGS) -u ARM_Vectors -u _start --Map $(EXEName).map --output=@(EXEOutput) --script=@(EXEScatterFile,' ') @(EXEInputs,' ') -( @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') $(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT) @(InputLibs,' ') -) -( &#x22;$(GNU_LIBGCC_DIR)\$(LIBGCC)&#x22;  -) -( $(ExtraLibs) -)"/>
-    <Exec Command="del /q $(LIB_DIR)\tmp_$(AssemblyName).$(LIB_EXT)"/>    
-
+    <Exec WorkingDirectory="$(LIB_DIR)" Command="$(LINK) $(ARCH_TYPE_FLAGS) $(FLOATING_POINT_FLAG) -L&quot;$(GNU_LIBGCC_DIR)&quot; -specs=$(MsBuildThisFileDirectory)startfile.specs -Wl$(LINK_FLAGS),-Map=$(EXEName).map $(LINK_NANO_SPECS) -T@(EXEScatterFile,' ') @(EXEInputs,' ') -Wl,-( @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') @(DriverLibs->'%(FileName)%(Extension)',' ') @(InputLibs,' ') -Wl,-) -Wl,-no-whole-archive -Wl,-( $(GCCSTDLIBS) -Wl,-) $(ExtraLibs) -o@(EXEOutput)" />
 
     <Exec Command="$(OBJDUMP) -d -EL @(EXEOutput) > $(EXEName).axfdump" />
 
     <MakeDir Directories="$(EXEName).bin" Condition="'$(MultipleOutputSections)'=='true' and !Exists('$(EXEName).bin')" />
     <MakeDir Directories="$(EXEName).hex" Condition="'$(MultipleOutputSections)'=='true' and !Exists('$(EXEName).hex')" />
-    <MakeDir Directories="$(EXEName).ihex" Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true' and !Exists('$(EXEName).ihex')" />
 
+    <Exec Command="$(FROMELF) -S -O binary @(EXEOutput) $(EXEName).bin"                      Condition="'$(MultipleOutputSections)'!='true'" />
+    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O binary @(EXEOutput) $(EXEName).bin\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -j ER_DAT              -O binary @(EXEOutput) $(EXEName).bin\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
+    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O binary @(EXEOutput) $(EXEName).bin\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
 
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -O binary @(EXEOutput) $(EXEName).bin"                      Condition="'$(MultipleOutputSections)'!='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -O binary @(EXEOutput) $(EXEName).bin\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT                                                                                     -O binary @(EXEOutput) $(EXEName).bin\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM' OR '$(Platform)'=='SAM9261_EK')" />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG                                                                                  -O binary @(EXEOutput) $(EXEName).bin\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex"                  Condition="'$(MultipleOutputSections)'!='true'" />
 
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex"                      Condition="'$(MultipleOutputSections)'!='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O ihex --gap-fill 0                 @(EXEOutput) $(EXEName).ihex"                     Condition="'$(MultipleOutputSections)'!='true' and '$(IntelHexFormat)'=='true'" />
-
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT                                                                                                -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM' OR '$(Platform)'=='SAM9261_EK')" />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG                                                                                             -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_IFLASH                                                                                             -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_IFLASH"            Condition="'$(MultipleOutputSections)'=='true'" />
-
-
-    <Exec Command="$(FROMELF) -S -j ER_$(TARGETLOCATION) -j ER_IRAM_TC  -j ER_$(TARGETLOCATION)_CONT -j ER_RAM_RO -j ER_RAM_RW  -j ER_IRAM -O ihex --gap-fill 0 @(EXEOutput) $(EXEName).ihex\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT                                                                                                 -O ihex              @(EXEOutput) $(EXEName).ihex\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true' and ('$(FLAVOR)'!='RTM' OR '$(Platform)'=='SAM9261_EK') " />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG                                                                                              -O ihex              @(EXEOutput) $(EXEName).ihex\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_IFLASH                                                                                              -O ihex              @(EXEOutput) $(EXEName).ihex\ER_IFLASH"            Condition="'$(MultipleOutputSections)'=='true' and '$(IntelHexFormat)'=='true'" />
-
+    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -j ER_DAT              -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
+    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
 
     <Exec Command="$(NM) $(EXEName).axf >> $(EXEName).dump"/>
-    <Exec Command="$(CREATESYMDEF)     $(EXEName).dump $(EXEName).symdefs" Condition="EXISTS('$(CREATESYMDEF)')" />
-    <Exec Command="$(CREATESYMDEF_ALT) $(EXEName).dump $(EXEName).symdefs" Condition="!EXISTS('$(CREATESYMDEF)')" />
+    <Exec Command="$(CREATESYMDEF) $(EXEName).dump $(EXEName).symdefs" Condition="EXISTS('$(CREATESYMDEF)')" />
 
     <!--     echo adding LOAD_IMAGE_CRC value to $*.symdefs -->
     <Exec Condition="'$(ADD_LOAD_IMAGE_CRC)'=='true'" Command="$(TOOLS_DIR)\BuildHelper -hashBuild $(EXEName).bin$(ImageLocation) $(EXEName).symdefs" />
@@ -398,8 +328,6 @@
     <Message Text="file selected @(SigFilesInHexDir)"/>
     <Message Text="file selected @(SigFiles)"/>
     <Message Text="file selected @(AllSigFiles)"/>
-
-
   </Target>
 
   <Target Name="CompressBin" Inputs="@(CompressBinFile);@(CompressBinFile->'%(RootDir)%(Directory)%(FileName).symdefs')" Outputs="@(CompressBinOutput);@(CompressBinComp)" >
@@ -446,19 +374,18 @@
      />
   </Target>
 
-  <Target Name="TinyClrDat" Inputs="$(BIN_DIR)\tinyclr.dat;$(AS_SUBDIR)\tinyclr_dat.s" Outputs="$(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)">
+  <Target Name="TinyClrDat" Inputs="$(BIN_DIR)\$(AssemblyName).dat;$(AS_SUBDIR)\$(AssemblyName)_dat.s" Outputs="$(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT)">
     <Message                               Text="***************************************************************************************************"/>
-    <Message Text="Target: TinyClrDat with outputs $(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)"/>
-    <Message Condition="'$(FORCEDAT)'!=''" Text="Building Tinyclr.dat from $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat"/>
-    <Message Condition="'$(FORCEDAT)'==''" Text="Building Tinyclr.dat from the features specified in the tinyclr.proj file"/>
-    <Exec Condition="'$(FORCEDAT)'!='' AND EXISTS('$(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat')" Command="copy /y $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\tinyclr_$(FORCEDAT).dat $(BIN_DIR)\tinyclr.dat" />
-    <Exec Command="$(AS) -I$(BIN_DIR) $(AS_FLAGS) -a=$(OBJ_DIR)\tinyclr_dat.txt -o $(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT) $(AS_SUBDIR)\tinyclr_dat.s"/>
+    <Message Text="Target: TinyClrDat with outputs $(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT)"/>
+    <Message Condition="'$(FORCEDAT)'!=''" Text="Building $(AssemblyName).dat from $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\$(AssemblyName)_$(FORCEDAT).dat"/>
+    <Message Condition="'$(FORCEDAT)'==''" Text="Building $(AssemblyName).dat from the features specified in the $(AssemblyName).proj file"/>
+    <Exec Condition="'$(FORCEDAT)'!='' AND EXISTS('$(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\$(AssemblyName)_$(FORCEDAT).dat')" Command="copy /y $(BUILD_TREE_CLIENT)\dat\$(ENDIANNESS)\$(AssemblyName)_$(FORCEDAT).dat $(BIN_DIR)\$(AssemblyName).dat" />
+    <Exec Command="$(AS) -I$(BIN_DIR) $(AS_FLAGS) -a=$(OBJ_DIR)\$(AssemblyName)_dat.txt -o $(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT) $(AS_SUBDIR)\$(AssemblyName)_dat.s"/>
     <Message                               Text="========== Database file content:"/>    
-    <Exec Command="$(PRG_MMP) -dump_dat $(BIN_DIR)\tinyclr.dat" />
+    <Exec Command="$(PRG_MMP) -dump_dat $(BIN_DIR)\$(AssemblyName).dat" />
     <Message                               Text="========== End of Database file content"/>    
     <Message                               Text="***************************************************************************************************"/>
-    <Exec Command="copy /BVY $(BIN_DIR)\tinyclr.dat $(BIN_DIR)\tinyclr.dat.fromlastbuildrun" />
-    <Exec Command="del  /Q /F $(BIN_DIR)\tinyclr.dat"/>
+    <Exec Command="copy /BVY $(BIN_DIR)\$(AssemblyName).dat $(BIN_DIR)\$(AssemblyName).dat.fromlastbuildrun" />
+    <Exec Command="del  /Q /F $(BIN_DIR)\$(AssemblyName).dat"/>
   </Target>
-
 </Project>

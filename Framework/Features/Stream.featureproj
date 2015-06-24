@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <InteropFeature Include="Microsoft_SPOT_IO" />
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.Net.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_Net\Core_Net.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+
+    <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\system.pe" />
+    <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\core\System\System.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
+    
     <MMP_DAT_CreateDatabase Include="$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\Microsoft.SPOT.io.pe" />
     <RequiredManagedProjects Include="$(SPOCLIENT)\Framework\Core\Native_IO\Core_IO.csproj" Condition="'$(AUTOMATED_BUILD)'==''" />
 

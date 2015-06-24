@@ -1,0 +1,36 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\Init\dotnetmf.proj</ProjectPath>
+    <AssemblyName>IO_Init_STM32F4DISCOVERY</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{EC3ADEC7-57CC-4F26-B540-30EBA51C32DA}</ProjectGuid>
+    <Description>IO port initialization for STM32F4DISCOVERY solution</Description>
+    <Level>HAL</Level>
+    <LibraryFile>IO_Init_STM32F4DISCOVERY.$(LIB_EXT)</LibraryFile>
+    <ManifestFile>IO_Init_STM32F4DISCOVERY.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Solutions\STM32F4DISCOVERY</Groups>
+    <LibraryCategory>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomSpecific>
+    </CustomSpecific>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Solutions\STM32F4DISCOVERY\DeviceCode\Init</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <HFiles Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\stm32f4xx.h" />
+    <Compile Include="IO_Init.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

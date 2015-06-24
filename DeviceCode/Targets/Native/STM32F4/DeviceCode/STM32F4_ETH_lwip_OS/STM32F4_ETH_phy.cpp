@@ -133,7 +133,7 @@ BOOL eth_isPhyLinkValid(BOOL isCallBlocking)
     // Read status register until a valid link is detected or a timeout is elapsed
     do 
     {
-        if( !readRegister(PHY_STATUS_REGISTER, &status) )
+        if( !readRegister(PHY_STATUS_REGISTER, &status) || 0xFFFF == status )
             return FALSE;
 
         if (status & PHY_SR_LINK)
