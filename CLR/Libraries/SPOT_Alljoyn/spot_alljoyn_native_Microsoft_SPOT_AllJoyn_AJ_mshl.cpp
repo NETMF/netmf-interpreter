@@ -855,7 +855,6 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientFindService
 }
 
 //--//
-
 AJ_Status ClientConnectService( AJ_BusAttachment * bus, 
                                 CLR_UINT32 timeout,
                                 LPSTR serviceName,
@@ -867,167 +866,181 @@ AJ_Status ClientConnectService( AJ_BusAttachment * bus,
     bool clientStarted      = false;
     bool found              = false;
     AJ_Status status        = AJ_OK;
+    uint32_t elapsed        = 0;
+    AJ_Time timer;
+
            
     *sessionId = 0;
-    if (serviceName != NULL) {
+    if (serviceName != NULL){
         *serviceName = '\0';
     }
-
-    uint32_t elapsed = 0;
-    AJ_Time timer;
-    
     AJ_InitTimer(&timer);
-
     while (!clientStarted && (status == AJ_OK) ) {
         AJ_Message msg;
-        status = AJ_UnmarshalMsg(bus, &msg, AJ_UNMARSHAL_TIMEOUT);
 
+        status = AJ_UnmarshalMsg(bus, &msg, AJ_UNMARSHAL_TIMEOUT);
         if ((status == AJ_ERR_TIMEOUT) && !found) {
             /*
              * Timeouts are expected until we find a name or service
              */
-             
-            elapsed = AJ_GetElapsedTime(&timer, TRUE);
-            if ((timeout- elapsed) < AJ_UNMARSHAL_TIMEOUT) {
+            /* 
+            if (timeout < AJ_UNMARSHAL_TIMEOUT) {
                 return status;
             }
-//            timeout -= AJ_UNMARSHAL_TIMEOUT;
+            timeout -= AJ_UNMARSHAL_TIMEOUT;
             status = AJ_OK;
             continue;
+
+            */
+            status = AJ_OK;
+//            continue;
+
         }
-        if (status == AJ_ERR_NO_MATCH) {
+        else if (status == AJ_ERR_NO_MATCH) {
             // Ignore unknown messages
             status = AJ_OK;
-            continue;
+//            continue;
         }
-        if (status != AJ_OK) {
-            debug_printf("AJ_StartClient(): status=%s\n", AJ_StatusText(status));
+        else if (status != AJ_OK) {
+            AJ_ErrPrintf(("AJ_StartClient(): status=%s\n", AJ_StatusText(status)));
             break;
         }
-        switch (msg.msgId) {
+        else {
+            switch (msg.msgId) {
 
-        case AJ_REPLY_ID(AJ_METHOD_FIND_NAME):
-        case AJ_REPLY_ID(AJ_METHOD_FIND_NAME_BY_TRANSPORT):
-            if (msg.hdr->msgType == AJ_MSG_ERROR) {
-                debug_printf("AJ_StartClient(): AJ_METHOD_FIND_NAME: %s\n", msg.error);
-                status = AJ_ERR_FAILURE;
-            } else {
-                uint32_t disposition;
-                AJ_UnmarshalArgs(&msg, "u", &disposition);
-                if ((disposition != AJ_FIND_NAME_STARTED) && (disposition != AJ_FIND_NAME_ALREADY)) {
-                    debug_printf("AJ_StartClient(): AJ_ERR_FAILURE\n");
-                    status = AJ_ERR_FAILURE;
-                }
-            }
-            break;
-
-        case AJ_SIGNAL_FOUND_ADV_NAME:
-            {
-                AJ_Arg arg;
-                AJ_UnmarshalArg(&msg, &arg);
-                debug_printf("FoundAdvertisedName(%s)\n", arg.val.v_string);
-                if (!found) {
-                    if (fullName) {
-                        hal_strcpy_s( fullName, AJ_MAX_SERVICE_NAME_SIZE, arg.val.v_string );
-                        fullName[arg.len] = '\0';
-                    }
-                    found = TRUE;
-                    status = AJ_BusJoinSession(bus, arg.val.v_string, port, opts);
-                }
-            }
-            break;
-
-        case AJ_SIGNAL_ABOUT_ANNOUNCE:
-            {
-                uint16_t aboutVersion, aboutPort;
-#ifdef ANNOUNCE_BASED_DISCOVERY
-                status = AJ_AboutHandleAnnounce(&msg, &aboutVersion, &aboutPort, serviceName, &found);
-                if (interfaces != NULL) {
-                    found = TRUE;
-                }
-                if ((status == AJ_OK) && (found == TRUE)) {
-                    debug_printf("AJ_StartClient(): AboutAnnounce from (%s) About Version: %d Port: %d\n", msg.sender, aboutVersion, aboutPort);
-#else
-                debug_printf("AJ_StartClient(): AboutAnnounce from (%s)\n", msg.sender);
-                if (!found) {
-                    found = TRUE;
-                    AJ_UnmarshalArgs(&msg, "qq", &aboutVersion, &aboutPort);
-                    if (serviceName != NULL) {
-                        hal_strcpy_s( serviceName, AJ_MAX_SERVICE_NAME_SIZE, msg.sender );
-                        serviceName[AJ_MAX_NAME_SIZE] = '\0';
-                    }
-#endif
-                    /*
-                     * Establish a session with the provided port.
-                     * If port value is 0 use the About port unmarshalled from the Announcement instead.
-                     */
-                    if (port == 0) {
-                        status = AJ_BusJoinSession(bus, msg.sender, aboutPort, opts);
-                    } else {
-                        status = AJ_BusJoinSession(bus, msg.sender, port, opts);
-                    }
-                    if (status != AJ_OK) {
-                        debug_printf("AJ_StartClient(): BusJoinSession failed (%s)\n", AJ_StatusText(status));
-                    }
-                }
-            }
-            break;
-
-        case AJ_REPLY_ID(AJ_METHOD_JOIN_SESSION):
-            {
-                uint32_t replyCode;
-
+            case AJ_REPLY_ID(AJ_METHOD_FIND_NAME):
+            case AJ_REPLY_ID(AJ_METHOD_FIND_NAME_BY_TRANSPORT):
                 if (msg.hdr->msgType == AJ_MSG_ERROR) {
-                    debug_printf("AJ_StartClient(): AJ_METHOD_JOIN_SESSION: %s\n", msg.error);
+                    AJ_ErrPrintf(("AJ_StartClient(): AJ_METHOD_FIND_NAME: %s\n", msg.error));
                     status = AJ_ERR_FAILURE;
                 } else {
-                    status = AJ_UnmarshalArgs(&msg, "uu", &replyCode, sessionId);
-                    if (replyCode == AJ_JOINSESSION_REPLY_SUCCESS) {
-                        clientStarted = TRUE;
-                    } else {
-                        debug_printf("AJ_StartClient(): AJ_METHOD_JOIN_SESSION reply (%d)\n", replyCode);
+                    uint32_t disposition;
+                    AJ_UnmarshalArgs(&msg, "u", &disposition);
+                    if ((disposition != AJ_FIND_NAME_STARTED) && (disposition != AJ_FIND_NAME_ALREADY)) {
+                        AJ_ErrPrintf(("AJ_StartClient(): AJ_ERR_FAILURE\n"));
                         status = AJ_ERR_FAILURE;
                     }
                 }
-            }
-            break;
+                break;
 
-        case AJ_SIGNAL_SESSION_LOST_WITH_REASON:
-            /*
-             * Force a disconnect
-             */
-            {
-                uint32_t id, reason;
-                AJ_UnmarshalArgs(&msg, "uu", &id, &reason);
-                AJ_InfoPrintf(("Session lost. ID = %u, reason = %u", id, reason));
-            }
-            debug_printf("AJ_StartClient(): AJ_SIGNAL_SESSION_LOST_WITH_REASON: AJ_ERR_READ\n");
-            status = AJ_ERR_READ;
-            break;
+            case AJ_SIGNAL_FOUND_ADV_NAME:
+                {
+                    AJ_Arg arg;
+                    AJ_UnmarshalArg(&msg, &arg);
+                    AJ_InfoPrintf(("FoundAdvertisedName(%s)\n", arg.val.v_string));
+                    if (!found) {
+                        if (fullName) {
+                            hal_strcpy_s( fullName, AJ_MAX_SERVICE_NAME_SIZE, arg.val.v_string );
+                            fullName[arg.len] = '\0';
+                        }
+                        found = TRUE;
+                        status = AJ_BusJoinSession(bus, arg.val.v_string, port, opts);
+                    }
+                }
+                break;
 
-        default:
-            /*
-             * Pass to the built-in bus message handlers
-             */
-            debug_printf("AJ_StartClient(): AJ_BusHandleBusMessage()\n");
-            status = AJ_BusHandleBusMessage(&msg);
-            break;
+            case AJ_SIGNAL_ABOUT_ANNOUNCE:
+                {
+                    uint16_t aboutVersion, aboutPort;
+#ifdef ANNOUNCE_BASED_DISCOVERY
+                    status = AJ_AboutHandleAnnounce(&msg, &aboutVersion, &aboutPort, serviceName, &found);
+                    if (interfaces != NULL) {
+                        found = TRUE;
+                    }
+                    if ((status == AJ_OK) && (found == TRUE)) {
+                        AJ_InfoPrintf(("AJ_StartClient(): AboutAnnounce from (%s) About Version: %d Port: %d\n", msg.sender, aboutVersion, aboutPort));
+#else
+                    AJ_InfoPrintf(("AJ_StartClient(): AboutAnnounce from (%s)\n", msg.sender));
+                    if (!found) {
+                        found = TRUE;
+                        AJ_UnmarshalArgs(&msg, "qq", &aboutVersion, &aboutPort);
+                        if (serviceName != NULL) {
+                            hal_strcpy_s( serviceName, AJ_MAX_SERVICE_NAME_SIZE, msg.sender );
+                            serviceName[AJ_MAX_NAME_SIZE] = '\0';
+                        }
+#endif
+                        /*
+                         * Establish a session with the provided port.
+                         * If port value is 0 use the About port unmarshalled from the Announcement instead.
+                         */
+                        if (port == 0) {
+                            status = AJ_BusJoinSession(bus, msg.sender, aboutPort, opts);
+                        } else {
+                            status = AJ_BusJoinSession(bus, msg.sender, port, opts);
+                        }
+                        if (status != AJ_OK) {
+                            AJ_ErrPrintf(("AJ_StartClient(): BusJoinSession failed (%s)\n", AJ_StatusText(status)));
+                        }
+                    }
+                }
+                break;
+
+            case AJ_REPLY_ID(AJ_METHOD_JOIN_SESSION):
+                {
+                    uint32_t replyCode;
+
+                    if (msg.hdr->msgType == AJ_MSG_ERROR) {
+                        AJ_ErrPrintf(("AJ_StartClient(): AJ_METHOD_JOIN_SESSION: %s\n", msg.error));
+                        status = AJ_ERR_FAILURE;
+                    } else {
+                        status = AJ_UnmarshalArgs(&msg, "uu", &replyCode, sessionId);
+                        if (replyCode == AJ_JOINSESSION_REPLY_SUCCESS) {
+                            clientStarted = TRUE;
+                        } else {
+                            AJ_ErrPrintf(("AJ_StartClient(): AJ_METHOD_JOIN_SESSION reply (%d)\n", replyCode));
+                            status = AJ_ERR_FAILURE;
+                        }
+                    }
+                }
+                break;
+
+            case AJ_SIGNAL_SESSION_LOST_WITH_REASON:
+                /*
+                 * Force a disconnect
+                 */
+                {
+                    uint32_t id, reason;
+                    AJ_UnmarshalArgs(&msg, "uu", &id, &reason);
+                    AJ_InfoPrintf(("Session lost. ID = %u, reason = %u", id, reason));
+                }
+                AJ_ErrPrintf(("AJ_StartClient(): AJ_SIGNAL_SESSION_LOST_WITH_REASON: AJ_ERR_READ\n"));
+                status = AJ_ERR_READ;
+                break;
+
+            default:
+                /*
+                 * Pass to the built-in bus message handlers
+                 */
+                AJ_InfoPrintf(("AJ_StartClient(): AJ_BusHandleBusMessage()\n"));
+                status = AJ_BusHandleBusMessage(&msg);
+                break;
+            }
         }
         AJ_CloseMsg(&msg);
-        
-        elapsed = AJ_GetElapsedTime(&timer, TRUE);
-        if (elapsed >=timeout){
-            status = AJ_ERR_NO_MATCH;
-        debug_printf("Timeout %d, %d\r\n", elapsed, timeout);
-            break;
-        }
-    }
 
+        elapsed = AJ_GetElapsedTime(&timer, TRUE);
+        // has to check the time left should not be less than AJ_UNMASHAL_TIMEOUT, we dont'
+        // want the main CLR thread timeout the task and kill it ungracefully, so we won't start
+        // if not enough time to recall unmarshall, so the timeout is set at least AJ_UNMARSHAL_TIMEOUTx2
+        if ((elapsed >=timeout) || ( (INT32)(timeout-elapsed) < (INT32)AJ_UNMARSHAL_TIMEOUT) ){
+            // keep the other error code.    
+            if (status == AJ_OK)
+                status = AJ_ERR_NO_MATCH;
+            debug_printf("Timeout %d, %d\r\n", elapsed, timeout);
+            break;
+            
+        } 
+        debug_printf("Timeout %d, %d\r\n", elapsed, timeout);
+    }
         
     if (status != AJ_OK) {
-        debug_printf("AJ_StartClient(): Client disconnecting from bus: status=%s\n", AJ_StatusText(status));
+        AJ_WarnPrintf(("AJ_StartClient(): Client disconnecting from bus: status=%s\n", AJ_StatusText(status)));
 //        AJ_Disconnect(bus);
     }
+
+// if return status is AJ_ERR_NO_MATCH, it is ok to redo this loop, 
+// if other error should AJ_Disconnect(bus) and restart to connectBus
+ 
     return status;
 }
 
@@ -1090,7 +1103,6 @@ struct ConnectServiceDiscoveryContext
 void StartClientConnectServiceCallback( void* context )
 {
     ConnectServiceDiscoveryContext* dc = (ConnectServiceDiscoveryContext*)context;
-    CLR_Debug::Printf("start Client ConnectBus\r\n");
     dc->_status = ClientConnectService( dc->_bus, dc->_timeout, dc->_serviceName, dc->_port, &dc->_sessionId, dc->_pOpts, dc->_pFullName); 
 }
 
@@ -1221,10 +1233,10 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectServ
 
         // has to set it longer than the AJ_CONNECT_TIMEOUT, otherwise it will timeout much quicker than the discovery time.
         // adding extra 300ms for extra factor.Extra 300 for overhead
-        if (timeout < (AJ_UNMARSHAL_TIMEOUT + 300))
-            timeout = (AJ_UNMARSHAL_TIMEOUT + 300);
-           
-        hbTimeout.SetInteger( timeout + 300);        
+        if (timeout < (AJ_UNMARSHAL_TIMEOUT *2))
+            timeout = (AJ_UNMARSHAL_TIMEOUT *2);
+        
+        hbTimeout.SetInteger( timeout + 3000);        
         TINYCLR_CHECK_HRESULT(stack.SetupTimeout( hbTimeout, timeoutTicks ));
     }
 
@@ -1233,16 +1245,11 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectServ
      //
      if(stack.m_customState == 1)
      {   
-debug_printf(" in start ClientConnect service  1\r\n");
-
-
          task    = (OSTASK*)private_malloc( sizeof(OSTASK) );        
          context = (ConnectServiceDiscoveryContext*)private_malloc( sizeof(ConnectServiceDiscoveryContext) ); 
          
          context->Initialize( bus, timeout, serviceName, port, sessionId,  NULL, managedOpts, fullName ); 
          task   ->Initialize( StartClientConnectServiceCallback,  context ); 
-
-
          //
          // we will keep track of task in our managed stack, context is attached to task
          //
@@ -1250,7 +1257,6 @@ debug_printf(" in start ClientConnect service  1\r\n");
          stack.m_evalStack[ 1 ].NumericByRef().u4 = (CLR_UINT32)task;
          stack.m_customState = 2;
          
-    //     Events_Clear(SYSTEM_EVENT_FLAG_OSTASK_TIMEOUT);
          //
          // post to the underlying sub-system
          //
@@ -1274,59 +1280,53 @@ debug_printf(" in start ClientConnect service  1\r\n");
 
      while(task->HasCompleted()== FALSE)
      {
-         TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled ));
+        TINYCLR_CHECK_HRESULT(g_CLR_RT_ExecutionEngine.WaitEvents( stack.m_owningThread, *timeoutTicks, CLR_RT_ExecutionEngine::c_Event_OSTask, fSignaled ));
 
-         // if timeout without c_Event_Otask, then the StartService was looped forever in unknown cause, 
-         // has to kill the thread.
-         if(fSignaled == false)
-         {
-//         Events_Set(SYSTEM_EVENT_FLAG_OSTASK_TIMEOUT);
-//             break;
-         }
+        // if timeout without c_Event_Otask, then the StartService was looped forever in unknown cause, 
+        // has to kill the thread.
+        // this timeout should be much longer than the timeout set for the task, so if timeout here, the task is running werid.
+        break;        
      }
 
-     //
-     // We either completed(with or without successfully established the conneciton) or timeout
-     // 
-debug_printf(" wait event completed.\r\n");
-   
+    //
+    // We either completed(with or without successfully established the conneciton) or timeout
+    // 
     if ((fSignaled == false) && (!task->HasCompleted()))
     {
-         // this is undesiable timeout that task thread is not time out and non-completed. 
-         // we have to force a timeout, which may ends to an unrecoverable AJ-startService.
-         status = AJ_ERR_TIMEOUT;
+        // this is undesiable timeout that task thread is not time out and non-completed. 
+        // we have to force a timeout, which may ends to an unrecoverable AJ-startService.
+        status = AJ_ERR_TIMEOUT;
 
-         //
-         // timeout of waitEvent happened but not task completed, ie. the timeout of findBusandAttachement wasn't happened,
-         // something goes very wrong.
-         //
-         // Should signal the task to kill itself, rather then kill it here.
-         OSTASK_Cancel( task );
-     }
-     else 
-     {
-         status = context->_status;
-         _ASSERTE( task->HasCompleted() ); 
-         
-         if( status == AJ_OK )
-         {     
+        //
+        // timeout of waitEvent happened but not task completed, ie. the timeout of findBusandAttachement wasn't happened,
+        // something goes very wrong.
+        //
+        // Should signal the task to kill itself, rather then kill it here.
+        OSTASK_Cancel( task );
+    }
+    else 
+    {
+        status = context->_status;
+        _ASSERTE( task->HasCompleted() ); 
+
+        if( status == AJ_OK )
+        {     
              hbSessionId.SetInteger( context->_sessionId  );
              TINYCLR_CHECK_HRESULT( hbSessionId.StoreToReference( stack.Arg5( ), 0 ) );   
-             
-             if(context->_pFullName)
-             {
-                 TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_String::CreateInstance( hbFullName, context->_fullServiceName ));
-             }
-             else
-             {
-                 hbFullName.SetObjectReference( NULL );
-             }
-             TINYCLR_CHECK_HRESULT( hbFullName.StoreToReference( stack.Arg7( ), 0 ) );
-         }
          
-     }
+         if(context->_pFullName)
+         {
+            TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_String::CreateInstance( hbFullName, context->_fullServiceName ));
+         }
+         else
+         {
+             hbFullName.SetObjectReference( NULL );
+         }
+         TINYCLR_CHECK_HRESULT( hbFullName.StoreToReference( stack.Arg7( ), 0 ) );
+        }
+    }
 
-    CLR_Debug::Printf(" status %d, id %x, full name %s \r\n", status,  context->_sessionId, context->_fullServiceName);
+    //CLR_Debug::Printf(" status %d, id %x, full name %s \r\n", status,  context->_sessionId, context->_fullServiceName);
       
      // this task is now fully executed or foreced terminated, free it then.
      if( task->GetArgument() ) 
