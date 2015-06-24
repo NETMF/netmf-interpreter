@@ -162,23 +162,11 @@
                  TypicalDefault='install'
                  Display='hidden'
              >
-            <MergeRef Id='CRT90' />
-            <MergeRef Id='CRT100' />
-            <MergeRef Id='CRT110' />
-            
-            <!--        <MergeRef Id='CRT Policy' /> -->
+            <MergeRef Id='CRT140' />
 
-            <MergeRef Id='ATL90' />
-            <MergeRef Id='ATL100' />
-            <MergeRef Id='ATL110' />
-            
             <!--        <MergeRef Id='ATL Policy' /> -->
-
             <?if $(var.BuildFlavor) = "Debug"?>
-            <MergeRef Id='Debug CRT90' />
-            <MergeRef Id='Debug CRT100' />
-            <MergeRef Id='Debug CRT110' />
-            
+            <MergeRef Id='Debug CRT140' />            
             <!--        <MergeRef Id='Debug CRT Policy' /> -->
             <?endif?>
         </Feature>

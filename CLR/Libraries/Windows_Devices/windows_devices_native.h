@@ -11,6 +11,27 @@
 #define _WINDOWS_DEVICES_NATIVE_H_
 
 #include <TinyCLR_Interop.h>
+struct Library_windows_devices_native_Windows_Devices_Adc_AdcChannel
+{
+    static const int FIELD__m_channelNumber = 1;
+    static const int FIELD__m_controller = 2;
+    static const int FIELD__m_provider = 3;
+    static const int FIELD__m_disposed = 4;
+
+
+    //--//
+
+};
+
+struct Library_windows_devices_native_Windows_Devices_Adc_AdcController
+{
+    static const int FIELD__m_provider = 1;
+
+
+    //--//
+
+};
+
 struct Library_windows_devices_native_Windows_Devices_Enumeration_DeviceInformation
 {
     static const int FIELD__m_id = 1;
@@ -121,9 +142,37 @@ struct Library_windows_devices_native_Windows_Devices_I2c_I2cTransferResult
 
 };
 
+struct Library_windows_devices_native_Windows_Devices_Pwm_PwmController
+{
+    static const int FIELD__m_provider = 1;
+
+
+    //--//
+
+};
+
+struct Library_windows_devices_native_Windows_Devices_Pwm_PwmPin
+{
+    static const int FIELD__m_pinNumber = 1;
+    static const int FIELD__m_controller = 2;
+    static const int FIELD__m_provider = 3;
+    static const int FIELD__m_started = 4;
+    static const int FIELD__m_disposed = 5;
+    static const int FIELD__m_dutyCycle = 6;
+    static const int FIELD__m_polarity = 7;
+
+
+    //--//
+
+};
+
 struct Library_windows_devices_native_Windows_Devices_Spi_SpiBusInfo
 {
-    TINYCLR_NATIVE_DECLARE(get_ChipSelectLineCount___I4);
+    static const int FIELD__MinClockFrequency_ = 1;
+    static const int FIELD__MaxClockFrequency_ = 2;
+    static const int FIELD__ChipSelectLineCount_ = 3;
+
+    TINYCLR_NATIVE_DECLARE(_ctor___VOID__I4);
 
     //--//
 
@@ -145,11 +194,10 @@ struct Library_windows_devices_native_Windows_Devices_Spi_SpiConnectionSettings
 struct Library_windows_devices_native_Windows_Devices_Spi_SpiDevice
 {
     static const int FIELD_STATIC__s_SpiPrefix = 6;
-    static const int FIELD_STATIC__s_busInfo = 7;
 
-    static const int FIELD__m_deviceId = 1;
-    static const int FIELD__m_settings = 2;
-    static const int FIELD__m_syncLock = 3;
+    static const int FIELD__m_busInfo = 1;
+    static const int FIELD__m_deviceId = 2;
+    static const int FIELD__m_settings = 3;
     static const int FIELD__m_disposed = 4;
     static const int FIELD__m_mskPin = 5;
     static const int FIELD__m_misoPin = 6;

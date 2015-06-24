@@ -60,7 +60,7 @@ namespace Microsoft.SPOT.Hardware
 
         public enum PWMChannel : int
         {
-            PWM_NONE = -1, 
+            PWM_NONE = -1,
             PWM_0    =  0,
             PWM_1    =  1,
             PWM_2    =  2,
@@ -69,6 +69,14 @@ namespace Microsoft.SPOT.Hardware
             PWM_5    =  5,
             PWM_6    =  6,
             PWM_7    =  7,
+            PWM_8    =  8,
+            PWM_9    =  9,
+            PWM_10   = 10,
+            PWM_11   = 11,
+            PWM_12   = 12,
+            PWM_13   = 13,
+            PWM_14   = 14,
+            PWM_15   = 15,
         }
 
         public enum AnalogChannel : int

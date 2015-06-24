@@ -7,8 +7,6 @@
 
 #define SPI_CTRL_DEFAULT 0
 
-//--//
-
 struct SPI_CONFIGURATION
 {
     GPIO_PIN       DeviceCS;
@@ -45,8 +43,6 @@ struct SPI_XACTION_8
     GPIO_FLAG BusyPin;
 };
 
-//--//
-
 BOOL   CPU_SPI_Initialize      ();
 void   CPU_SPI_Uninitialize    ();
 BOOL   CPU_SPI_nWrite16_nRead16( const SPI_CONFIGURATION& Configuration, UINT16* Write16, INT32 WriteCount, UINT16* Read16, INT32 ReadCount, INT32 ReadStartOffset );
@@ -58,7 +54,9 @@ BOOL   CPU_SPI_Xaction_nWrite8_nRead8  ( SPI_XACTION_8& Transaction  );
 UINT32 CPU_SPI_PortsCount      ();
 void   CPU_SPI_GetPins         ( UINT32 spi_mod, GPIO_PIN& msk, GPIO_PIN& miso, GPIO_PIN& mosi );
 
-//--//
+UINT32 CPU_SPI_MinClockFrequency( UINT32 spi_mod );
+UINT32 CPU_SPI_MaxClockFrequency( UINT32 spi_mod );
+UINT32 CPU_SPI_ChipSelectLineCount( UINT32 spi_mod );
 
 #endif // _DRIVERS_SPI_DECL_H_
 

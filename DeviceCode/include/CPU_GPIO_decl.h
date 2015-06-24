@@ -5,11 +5,7 @@
 #ifndef _DRIVERS_GPIO_DECL_H_
 #define _DRIVERS_GPIO_DECL_H_ 1
 
-//--//
-
 #define GPIO_PIN_NONE               0xFFFFFFFF
-
-//--//
 
 #define GPIO_ATTRIBUTE_NONE         0x00
 #define GPIO_ATTRIBUTE_INPUT        0x01
@@ -41,7 +37,6 @@ struct GPIO_FLAG_RESISTOR
     GPIO_RESISTOR Resistor;
 };
 
-
 // Generic enum for GPIO Primary/Alternate/Mux function 
 // Different processor have different defintion for the mode
 enum GPIO_ALT_MODE
@@ -57,10 +52,7 @@ enum GPIO_ALT_MODE
     GPIO_ALT_MODE_8     = 8,
 };
 
- 
 typedef void (*GPIO_INTERRUPT_SERVICE_ROUTINE)( GPIO_PIN Pin, BOOL PinState, void* Param );
-
-//--//
 
 BOOL   CPU_GPIO_Initialize     ();
 BOOL   CPU_GPIO_Uninitialize   ();
@@ -80,8 +72,8 @@ void   CPU_GPIO_GetPinsMap     ( UINT8* pins, size_t size );
 UINT8  CPU_GPIO_GetSupportedResistorModes(GPIO_PIN pin );
 UINT8  CPU_GPIO_GetSupportedInterruptModes(GPIO_PIN pin );
 
-        
-//--//
+UINT32 CPU_GPIO_GetPinDebounce( GPIO_PIN Pin );
+BOOL   CPU_GPIO_SetPinDebounce( GPIO_PIN Pin, INT64 debounceTimeMilliseconds );
 
 #endif // _DRIVERS_GPIO_DECL_H_
 

@@ -66,4 +66,17 @@ void CPU_SPI_GetPins( UINT32 spi_mod, GPIO_PIN& msk, GPIO_PIN& miso, GPIO_PIN& m
     return;
 }
 
+UINT32 CPU_SPI_MinClockFrequency( UINT32 spi_mod )
+{
+    return 0;
+}
 
+UINT32 CPU_SPI_MaxClockFrequency( UINT32 spi_mod )
+{
+    return 0;
+}
+
+UINT32 CPU_SPI_ChipSelectLineCount( UINT32 spi_mod )
+{
+    return 0;
+}

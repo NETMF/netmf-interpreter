@@ -32,24 +32,39 @@ HRESULT Library_corlib_native_System_Text_UTF8Encoding::GetBytes___I4__STRING__I
     NATIVE_PROFILE_CLR_CORE();
     TINYCLR_HEADER();
 
-    size_t                  cMaxBytes;
     LPCSTR                  str         = stack.Arg1().RecoverString();
     CLR_INT32               strIdx      = stack.Arg2().NumericByRef().s4;
     CLR_INT32               strCnt      = stack.Arg3().NumericByRef().s4;
     CLR_RT_HeapBlock_Array* pArrayBytes = stack.Arg4().DereferenceArray();
     CLR_INT32               byteIdx     = stack.Arg5().NumericByRef().s4;
 
+    const CLR_UINT8*        i;
+    const CLR_UINT8*        j;
+    CLR_RT_UnicodeHelper    uh;
+    int                     strLength;
+
     FAULT_ON_NULL(str);
     FAULT_ON_NULL(pArrayBytes);
 
-    cMaxBytes = hal_strlen_s(str);    
+    uh.SetInputUTF8(str);
+    strLength = uh.CountNumberOfCharacters();
+    if (strLength < 0) 
+        TINYCLR_SET_AND_LEAVE(CLR_E_WRONG_TYPE);   
 
-    if((strIdx  + strCnt) > (CLR_INT32)cMaxBytes                   ) TINYCLR_SET_AND_LEAVE(CLR_E_OUT_OF_RANGE);
-    if((byteIdx + strCnt) > (CLR_INT32)pArrayBytes->m_numOfElements) TINYCLR_SET_AND_LEAVE(CLR_E_OUT_OF_RANGE);
+    if ((strIdx + strCnt) > (CLR_INT32)strLength) 
+        TINYCLR_SET_AND_LEAVE(CLR_E_OUT_OF_RANGE);
 
-    memcpy(pArrayBytes->GetElement(byteIdx), &str[strIdx], strCnt);
+    uh.ConvertFromUTF8(strIdx, true);
+    i = uh.m_inputUTF8;
+    uh.ConvertFromUTF8(strCnt, true);
+    j = uh.m_inputUTF8;
 
-    stack.SetResult_I4(strCnt);
+    if ((byteIdx + j - i) > (CLR_INT32)pArrayBytes->m_numOfElements) 
+        TINYCLR_SET_AND_LEAVE(CLR_E_OUT_OF_RANGE);
+
+    memcpy(pArrayBytes->GetElement(byteIdx), i, j - i);
+
+    stack.SetResult_I4(j - i);
 
     TINYCLR_NOCLEANUP();
 }

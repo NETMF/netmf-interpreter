@@ -8,6 +8,7 @@
              Absent="disallow"
              InstallDefault="followParent">
       <ComponentRef Id="Component_TFConvert"/>
+      <ComponentRef Id="Component_BuildHelper"/>
       <ComponentRef Id="Component_MFDeploy"/>
       <ComponentRef Id="Component_MFDeployEngine"/>       
       <ComponentRef Id="COMPONENT_TRUETYPEFONTS"/>
