@@ -14,9 +14,6 @@
 #include <tinyhal.h>
 #include <TinyBooterEntry.h>
 
-#define BUTTON_ENTR     BUTTON_B4
-#define BUTTON_USER_IDX BUTTON_B5_BITIDX
-
 // boot loader doesn't use the CMSIS-RTOS kernel, so sleep goes direct
 // to the low level support
 extern void HAL_CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents );
@@ -90,24 +87,24 @@ void Tinybooter_PrepareForDecompressedLaunch()
 bool WaitForTinyBooterUpload( INT32 &timeout_ms )
 {
     bool enterBooterMode = false;
-    GPIO_BUTTON_CONFIG *  ButtonConfig = &g_GPIO_BUTTON_Config;
 
-// wait forever when using RAM build 
 #if defined(TARGETLOCATION_RAM)
+    // Wait forever when using RAM build 
     enterBooterMode = true;
     timeout_ms = -1;
-#else
-    //// User override (button held)
-    //if(ButtonConfig->Mapping[BUTTON_USER_IDX].m_HW != GPIO_PIN_NONE)
-    //{
-    //    Events_WaitForEvents(0,100); // wait for buttons to init
-    //    if(CPU_GPIO_GetPinState(ButtonConfig->Mapping[BUTTON_USER_IDX].m_HW))
-    //    {
-    //        // user override, so lets stay forever
-    //        timeout_ms = -1;
-    //        enterBooterMode = true;
-    //    }
-    //}
+#elif defined(TINYBOOTER_ENTRY_GPIO_PIN)
+
+    if(!CPU_GPIO_EnableInputPin(TINYBOOTER_ENTRY_GPIO_PIN, FALSE, NULL, GPIO_INT_NONE, TINYBOOTER_ENTRY_GPIO_RESISTOR))
+    {
+        ASSERT(FALSE);
+    }
+    if(CPU_GPIO_GetPinState(TINYBOOTER_ENTRY_GPIO_PIN) == TINYBOOTER_ENTRY_GPIO_STATE)
+    {
+        // User override, so let's stay forever
+        enterBooterMode = true;
+        timeout_ms = -1;
+    }
+
 #endif
     return enterBooterMode;
 }
@@ -139,25 +136,6 @@ void TinyBooter_OnStateChange( TinyBooterState state, void* data, void ** retDat
         // The data parameter is a pointer to the timeout value for the booter mode.
         ////////////////////////////////////////////////////////////////////////////////////
         case State_ButtonPress:
-            if(NULL != data)
-            {
-                UINT32 down, up;
-                INT32* timeout_ms = (INT32*)data;
-                
-                // wait forever if a button was pressed
-                *timeout_ms = -1;
-
-                // process buttons
-                while(Buttons_GetNextStateChange(down, up))
-                {
-                    // leave a way to exit boot mode incase it was accidentally entered
-                     if(0 != (down & BUTTON_ENTR)) 
-                     {
-                        // force an enumerate and launch
-                        *timeout_ms = 0; 
-                     }
-                }
-            }
             break;
 
         ////////////////////////////////////////////////////////////////////////////////////
