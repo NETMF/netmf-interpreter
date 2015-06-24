@@ -928,7 +928,7 @@ AJ_Status ClientConnectService( AJ_BusAttachment * bus,
                 debug_printf("FoundAdvertisedName(%s)\n", arg.val.v_string);
                 if (!found) {
                     if (fullName) {
-                        hal_strcpy_s( fullName, AJ_MAX_SERVICE_NAME_SIZE, arg.val.v_string, arg.len );
+                        hal_strcpy_s( fullName, AJ_MAX_SERVICE_NAME_SIZE, arg.val.v_string );
                         fullName[arg.len] = '\0';
                     }
                     found = TRUE;
