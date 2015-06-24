@@ -439,20 +439,24 @@ namespace System.Net
         {
             if (!m_IsResponseClosed)
             {
-                // Iterates over list of client connections and remove its stream from it.
-                m_Listener.RemoveClientStream(m_clientStream);
-
-                m_clientStream.Flush();
-
-                // If KeepAlive is true,
-                if (m_KeepAlive)
-                {   // Then socket is tramsferred to the list of waiting for new data.
-                    m_Listener.AddToWaitingConnections(m_clientStream);
-                }
-                else  // If not KeepAlive then close
+                try
                 {
-                    m_clientStream.Dispose();
+                    // Iterates over list of client connections and remove its stream from it.
+                    m_Listener.RemoveClientStream(m_clientStream);
+
+                    m_clientStream.Flush();
+
+                    // If KeepAlive is true,
+                    if (m_KeepAlive)
+                    {   // Then socket is tramsferred to the list of waiting for new data.
+                        m_Listener.AddToWaitingConnections(m_clientStream);
+                    }
+                    else  // If not KeepAlive then close
+                    {
+                        m_clientStream.Dispose();
+                    }
                 }
+                catch{}
 
                 m_IsResponseClosed = true;
             }

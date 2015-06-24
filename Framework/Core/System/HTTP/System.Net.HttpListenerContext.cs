@@ -150,8 +150,7 @@ namespace System.Net
         public void Close(int lingerValue)
         {
             try
-            {                
-                // Close the underlying stream
+            {  
                 if (m_clientOutputStream != null)
                 {
                     try
@@ -162,9 +161,21 @@ namespace System.Net
                         }
                     }
                     catch{}
+                }
+                
+                if (m_ResponseToClient != null)
+                {
+                    m_ResponseToClient.Close();
+                    m_ResponseToClient = null;
+                }
+                
+                // Close the underlying stream
+                if (m_clientOutputStream != null)
+                {
                     m_clientOutputStream.Dispose();
                     m_clientOutputStream = null;
                 }
+                
                 if (m_clientInputStream != null)
                 {
                     m_clientInputStream.Dispose();
