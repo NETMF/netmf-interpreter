@@ -37,8 +37,9 @@ static char             PemX509[MAX_CERT_LENGTH] = "";
 static CLR_UINT32 KeyExpiration = 0;
 static ecc_privatekey Prv;
 static X509CertificateChain* Chain = NULL;
-static int SecuritySuites[MAX_NUM_SECURITY_SUITES] = {0};
-static int NumSecuritySuites = 0;
+//static int SecuritySuites[MAX_NUM_SECURITY_SUITES] = {0};
+//static int NumSecuritySuites = 0;
+static AJ_Status AuthPeerStatus = AJ_ERR_NULL;
 
 //--//
 
@@ -141,10 +142,10 @@ void FreeInterfaceStorage( LPSTR iface[] )
 {
     for ( int i=0; i<MAX_DIM_INTERFACE; i++ )
     {
-        if ( iface[ i ] != NULL )
+        if ( iface[ i ] != 0 )
         {
             private_free( iface[ i ] );
-            iface[ i ] = NULL;
+            iface[ i ] = 0;
         }
     }
 }
@@ -210,7 +211,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetBusLinkTimeout
     
     AJ_SetBusLinkTimeout( bus, timeout ); 
     
-    stack.SetResult_I4( status );
+    stack.SetResult_I4( (CLR_INT32)status );
     
     TINYCLR_NOCLEANUP();
 } 
@@ -237,7 +238,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusLinkStateProc_
     
     status = AJ_BusLinkStateProc( bus );
 
-    stack.SetResult_I4( status );
+    stack.SetResult_I4( (CLR_INT32)status );
     
     TINYCLR_NOCLEANUP();
 }
@@ -443,7 +444,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::StartService___Mi
     
     stack.PopValue(); // task   
     stack.PopValue(); // Timeout
-    stack.SetResult_I4( status );        
+    stack.SetResult_I4( (CLR_INT32)status );        
 
     //it is done.
     g_ajDiscoverStarted = FALSE; 
@@ -743,7 +744,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectBus_
      
      stack.PopValue(); // task   
      stack.PopValue(); // Timeout
-     stack.SetResult_I4( status ); 
+     stack.SetResult_I4( (CLR_INT32)status ); 
      
      //it is done.
      g_ajDiscoverStarted = FALSE; 
@@ -1337,7 +1338,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectServ
 
      stack.PopValue(); // task   
      stack.PopValue(); // Timeout
-     stack.SetResult_I4( status ); 
+     stack.SetResult_I4( (CLR_INT32)status ); 
      
      //it is done.
      g_ajDiscoverStarted = FALSE; 
@@ -1560,86 +1561,79 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UsePeerAuthentica
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::EnableSecurity___MicrosoftSPOTAllJoynAJStatus__U4__SZARRAY_I4( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {        
+    TINYCLR_HEADER();
         
-        AJ_BusAttachment* bus                       = NULL;    
-        CLR_RT_HeapBlock_Array * securitySuites     = NULL;
+    AJ_BusAttachment * bus                                  = NULL;    
+    CLR_RT_HeapBlock_Array * securitySuites                 = NULL;
+    CLR_UINT32 securitySuitesArr[MAX_NUM_SECURITY_SUITES]    = {0,};
+    
+    TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );        
+    securitySuites = stack.Arg2().DereferenceArray();  
+    FAULT_ON_NULL(securitySuites);    
         
-        TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );        
-        securitySuites = stack.Arg2().DereferenceArray() ;  FAULT_ON_NULL(securitySuites);   
-        
-        NumSecuritySuites = 0;
-        for(int i=0; i<MAX_NUM_SECURITY_SUITES; i ++)
-        {
-            SecuritySuites[i] = 0;
-        }
-        
-        NumSecuritySuites = securitySuites->m_numOfElements;
-        for(int i=0; i<securitySuites->m_numOfElements; i ++)
-        {
-            SecuritySuites[i] = * (CLR_UINT32 *) securitySuites->GetElement(i);
-        }
-        
-        AJ_Status status = AJ_BusEnableSecurity(bus, (const CLR_UINT32 *)SecuritySuites, NumSecuritySuites);
-        
-        AJ_BusSetAuthListenerCallback(bus, AuthListenerCallback);
-        
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, status );
-        
+    if (securitySuites->m_numOfElements > MAX_NUM_SECURITY_SUITES)
+    {
+        TINYCLR_SET_AND_LEAVE( CLR_E_INVALID_PARAMETER );
     }
+    
+    for(int i=0; i<securitySuites->m_numOfElements; i ++)
+    {
+        securitySuitesArr[i] = * (CLR_UINT32 *) securitySuites->GetElement(i);
+    }
+    
+    AJ_Status status = AJ_BusEnableSecurity(bus, (const CLR_UINT32 *)securitySuitesArr, securitySuites->m_numOfElements);
+    
+    AJ_BusSetAuthListenerCallback(bus, AuthListenerCallback);
+    
+    stack.SetResult_I4( (CLR_INT32)status );
+        
     TINYCLR_NOCLEANUP();
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClearCredentials___MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        INT32 retVal = AJ_ClearCredentials( );
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, retVal );
-    }
+    TINYCLR_HEADER();
+    
+    INT32 retVal = AJ_ClearCredentials( );
+    stack.SetResult_I4( retVal );
+    
     TINYCLR_NOCLEANUP();
 }
 
-AJ_Status AuthPeerStatus = AJ_ERR_NULL;
-
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AuthenticatePeer___MicrosoftSPOTAllJoynAJStatus__U4__STRING( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        AJ_BusAttachment * bus;
-        LPCSTR fullServiceName = NULL;         
+    TINYCLR_HEADER();
         
-        TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
-        fullServiceName = stack.Arg2().RecoverString();    
-            
-        AJ_Status status = AJ_BusAuthenticatePeer(bus, fullServiceName, AuthCallback, &AuthPeerStatus);
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, status );
-    }
+    AJ_BusAttachment * bus;
+    LPCSTR fullServiceName = NULL;         
+    
+    TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
+    fullServiceName = stack.Arg2().RecoverString();    
+        
+    AJ_Status status = AJ_BusAuthenticatePeer(bus, fullServiceName, AuthCallback, &AuthPeerStatus);
+    stack.SetResult_I4( (CLR_INT32)status );
+    
     TINYCLR_NOCLEANUP();
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetAuthStatus___MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {        
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, AuthPeerStatus );
-    }
+    TINYCLR_HEADER();
+    
+    AJ_Status status = AuthPeerStatus;
+    stack.SetResult_I4( (CLR_INT32)status );
+    
     TINYCLR_NOCLEANUP();
 }
 
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::SetAuthStatus___VOID__MicrosoftSPOTAllJoynAJStatus( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        AJ_Status authStatus = (AJ_Status)stack.Arg1().NumericByRef().u4;            
-        AuthPeerStatus = authStatus;
-    }
+    TINYCLR_HEADER();
+
+    AJ_Status authStatus = (AJ_Status)stack.Arg1().NumericByRef().u4;            
+    AuthPeerStatus = authStatus;
+
     TINYCLR_NOCLEANUP();
 }
 
@@ -1753,24 +1747,23 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::AlwaysPrintf___VO
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalReplyMsg___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__MicrosoftSPOTAllJoynAJMessage( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        AJ_Message replyMsg;
-        AJ_Message msg;
+    TINYCLR_HEADER();
+    
+    AJ_Message replyMsg;
+    AJ_Message msg;
 
-        CLR_RT_HeapBlock* managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg); 
-        CopyFromManagedMsg(managedMsg, &msg);
-        
-        AJ_Status status = AJ_MarshalReplyMsg(&msg, &replyMsg);
-        
-        CLR_RT_HeapBlock* managedReplyMsg = stack.Arg2().Dereference();  FAULT_ON_NULL(managedReplyMsg);    
-        
-        CopyToManagedMsg(managedReplyMsg, &replyMsg);
-        CopyToManagedMsg(managedMsg, &msg);
-        
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, status );
-    }
+    CLR_RT_HeapBlock* managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg); 
+    CopyFromManagedMsg(managedMsg, &msg);
+    
+    AJ_Status status = AJ_MarshalReplyMsg(&msg, &replyMsg);
+    
+    CLR_RT_HeapBlock* managedReplyMsg = stack.Arg2().Dereference();  FAULT_ON_NULL(managedReplyMsg);    
+    
+    CopyToManagedMsg(managedReplyMsg, &replyMsg);
+    CopyToManagedMsg(managedMsg, &msg);
+    
+    stack.SetResult_I4( (CLR_INT32)status );
+    
     TINYCLR_NOCLEANUP();
 }
 
@@ -1910,8 +1903,6 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalArg___Micr
     stack.SetResult_I4( (CLR_INT32)status );
 
     TINYCLR_NOCLEANUP();
-
-
     
 }
 
@@ -2198,7 +2189,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::RegisterObjects__
     bool fLocal                      = stack.Arg5().NumericByRef().u1 != 0;
 
     LPCSTR path   = pathS  ->StringText(); 
-    LPCSTR ifaces = ifacesS->StringText();
+    LPCSTR ifaces = ifacesS->StringText();       
     
     FreeInterfaceStorage( ajIface ); // clear out previous interfaces
     DeserializeInterfaceString( ifaces, ajIface );
@@ -2407,7 +2398,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArg___Mi
     
     status = AJ_UnmarshalArg( &msg, pArg );
     
-    stack.SetResult_I4( status );
+    stack.SetResult_I4( (CLR_INT32)status );
     
     TINYCLR_NOCLEANUP();
 }
@@ -2443,83 +2434,82 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArgs___M
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__BYREF_U4( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        AJ_Message msg;
-        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
-        
-        CopyFromManagedMsg(managedMsg, &msg);
-        
-        CLR_RT_HeapBlock_String *  param1 = stack.Arg2().DereferenceString();
+    TINYCLR_HEADER();
+    
+    AJ_Message msg;
+    CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
+    
+    CopyFromManagedMsg(managedMsg, &msg);
+    
+    CLR_RT_HeapBlock_String *  param1 = stack.Arg2().DereferenceString();
 
-        UINT32 * param2;
-        UINT8 heapblock2[CLR_RT_HEAP_BLOCK_SIZE];
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock2, 3, param2 ) );
+    UINT32 * param2;
+    UINT8 heapblock2[CLR_RT_HEAP_BLOCK_SIZE];
+    TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock2, 3, param2 ) );
 
-        AJ_Status status = AJ_UnmarshalArgs(&msg, param1->StringText(), param2);
-        
-        CopyToManagedMsg(managedMsg, &msg);
-        
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_INT32( stack, status );
+    AJ_Status status = AJ_UnmarshalArgs(&msg, param1->StringText(), param2);
+    
+    CopyToManagedMsg(managedMsg, &msg);
+    
+    stack.SetResult_I4( (CLR_INT32)status );
 
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock2, 3 ) );
-    }
+    TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock2, 3 ) );
+
     TINYCLR_NOCLEANUP();
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArgs___STRING__MicrosoftSPOTAllJoynAJMessage__STRING( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        AJ_Message msg;
-        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
-        
-        CopyFromManagedMsg(managedMsg, &msg);
+    TINYCLR_HEADER();
+    
+    AJ_Message msg;
+    CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
+    
+    CopyFromManagedMsg(managedMsg, &msg);
 
-        CLR_RT_HeapBlock_String *  sig = stack.Arg2().DereferenceString();
-        
-        const char* data;
-        AJ_UnmarshalArgs(&msg, sig->StringText(), &data);
-        
-        CopyToManagedMsg(managedMsg, &msg);
-        
-        TINYCLR_CHECK_HRESULT( hr );
-        SetResult_LPCSTR( stack, data );
-    }
+    CLR_RT_HeapBlock_String *  sig = stack.Arg2().DereferenceString();
+    
+    const char* data;
+    AJ_UnmarshalArgs(&msg, sig->StringText(), &data);
+    
+    CopyToManagedMsg(managedMsg, &msg);
+    
+    TINYCLR_CHECK_HRESULT( hr );
+    stack.SetResult_String( data );
+    
     TINYCLR_NOCLEANUP();
 }
 
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalArgs___MicrosoftSPOTAllJoynAJStatus__MicrosoftSPOTAllJoynAJMessage__STRING__BYREF_U4__BYREF_U4( CLR_RT_StackFrame& stack )
 {
-    TINYCLR_HEADER(); hr = S_OK;
-    {
-        AJ_Message msg;
-        CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
-        
-        CopyFromManagedMsg(managedMsg, &msg);
+    TINYCLR_HEADER();
+    
+    AJ_Message msg;
+    CLR_RT_HeapBlock * managedMsg = stack.Arg1().Dereference();  FAULT_ON_NULL(managedMsg);                
+    
+    CopyFromManagedMsg(managedMsg, &msg);
 
-        CLR_RT_HeapBlock_String *  sig = stack.Arg2().DereferenceString();
-        
-        UINT32 * arg1;
-        UINT8 heapblock2[CLR_RT_HEAP_BLOCK_SIZE];
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock2, 3, arg1 ) );
+    CLR_RT_HeapBlock_String *  sig = stack.Arg2().DereferenceString();
+    
+    UINT32 * arg1;
+    UINT8 heapblock2[CLR_RT_HEAP_BLOCK_SIZE];
+    TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock2, 3, arg1 ) );
 
-        UINT32 * arg2;
-        UINT8 heapblock3[CLR_RT_HEAP_BLOCK_SIZE];
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock3, 4, arg2 ) );
+    UINT32 * arg2;
+    UINT8 heapblock3[CLR_RT_HEAP_BLOCK_SIZE];
+    TINYCLR_CHECK_HRESULT( Interop_Marshal_UINT32_ByRef( stack, heapblock3, 4, arg2 ) );
 
-        AJ_Status status = AJ_UnmarshalArgs( &msg, sig->StringText(), arg1, arg2 );
-        TINYCLR_CHECK_HRESULT( hr );
-        
+    AJ_Status status = AJ_UnmarshalArgs( &msg, sig->StringText(), arg1, arg2 );
+    TINYCLR_CHECK_HRESULT( hr );
+    
 
-        CopyToManagedMsg(managedMsg, &msg);
-        
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock2, 3 ) );
-        TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock3, 4 ) );
-        
+    CopyToManagedMsg(managedMsg, &msg);
+    
+    TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock2, 3 ) );
+    TINYCLR_CHECK_HRESULT( Interop_Marshal_StoreRef( stack, heapblock3, 4 ) );
+    
     stack.SetResult_I4( (CLR_INT32)status );
-    }
+
     TINYCLR_NOCLEANUP();
 }
 
@@ -2561,7 +2551,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::BusHandleBusMessa
                    
     CopyToManagedMsg(managedMsg, &msg);
     
-    stack.SetResult_I4( status );
+    stack.SetResult_I4( (CLR_INT32)status );
     
     TINYCLR_NOCLEANUP();
 }
