@@ -19,6 +19,7 @@ const int MAX_PWD_LENGTH = 16;
 const int MAX_HINT_LENGTH = 255;
 const int MAX_CERT_LENGTH = 1024;
 const int MAX_NUM_SECURITY_SUITES = 3;
+const int MAX_DIM_INTERFACE = 100;
 
 //--//
 
@@ -37,14 +38,10 @@ static char             PemX509[MAX_CERT_LENGTH] = "";
 static CLR_UINT32 KeyExpiration = 0;
 static ecc_privatekey Prv;
 static X509CertificateChain* Chain = NULL;
-//static int SecuritySuites[MAX_NUM_SECURITY_SUITES] = {0};
-//static int NumSecuritySuites = 0;
 static AJ_Status AuthPeerStatus = AJ_ERR_NULL;
 
 //--//
 
-
-//--//
 
 //
 // Helpers
@@ -135,9 +132,6 @@ ErrorExit:
 
 //--//
 
-#define MAX_DIM_INTERFACE 100
-#define MAX_NUM_INTERFACE 100
-
 void FreeInterfaceStorage( LPSTR iface[] )
 {
     for ( int i=0; i<MAX_DIM_INTERFACE; i++ )
@@ -151,7 +145,8 @@ void FreeInterfaceStorage( LPSTR iface[] )
 }
 
 // Storage for the interface string(s) is dynamically
-// allocated. It must be freed using FreeInterfaceStorage
+// allocated. It must be freed using FreeInterfaceStorage()
+
 void DeserializeInterfaceString( LPCSTR data, LPSTR iface[] )
 {
     const char * p = data;
@@ -1107,87 +1102,6 @@ void StartClientConnectServiceCallback( void* context )
     dc->_status = ClientConnectService( dc->_bus, dc->_timeout, dc->_serviceName, dc->_port, &dc->_sessionId, dc->_pOpts, dc->_pFullName); 
 }
 
-
-#if 0
-HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectService___MicrosoftSPOTAllJoynAJStatus__U4__U4__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
-{
-    typedef Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ_SessionOpts Managed_AJ_SessionOpts;
-    
-    TINYCLR_HEADER();
-
-    char              fullServiceName[AJ_MAX_SERVICE_NAME_SIZE] = "";
-    char              cliName[AJ_MAX_SERVICE_NAME_SIZE] = "";
-    CLR_RT_HeapBlock  hbFullName;
-    LPSTR             fullName     = NULL;
-    CLR_RT_HeapBlock  hbSessionId;
-    CLR_UINT32        sessionId = 0;    
-    CLR_RT_HeapBlock* managedOpts = NULL;
-    AJ_SessionOpts    opts = {0};
-    AJ_BusAttachment* bus         = NULL;    
-    AJ_Status         status      = AJ_OK;
-    CLR_UINT32        timeout; 
-    LPCSTR            clientName  = NULL;
-    CLR_UINT16        port;    
-    
-    TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
-    
-    timeout     = stack.Arg2( ).NumericByRef( ).u4;
-    clientName  = stack.Arg3( ).RecoverString( );
-    port        = stack.Arg4( ).NumericByRef( ).s2;
-    
-    if ( clientName != NULL)
-    {
-        hal_strcpy_s( cliName, sizeof(cliName), clientName );
-    }
-    
-    TINYCLR_CHECK_HRESULT( hbSessionId.LoadFromReference( stack.Arg5( ) ) );
-    sessionId = hbSessionId.NumericByRef( ).u4;    
-           
-    managedOpts = stack.Arg6().Dereference( );
-    
-    if( NULL != managedOpts )
-    {
-        opts.traffic      =  managedOpts[ Managed_AJ_SessionOpts::FIELD__traffic      ].NumericByRef( ).u1;
-        opts.proximity    =  managedOpts[ Managed_AJ_SessionOpts::FIELD__proximity    ].NumericByRef( ).u1;
-        opts.transports   =  managedOpts[ Managed_AJ_SessionOpts::FIELD__transports   ].NumericByRef( ).u2;
-        opts.isMultipoint =  managedOpts[ Managed_AJ_SessionOpts::FIELD__isMultipoint ].NumericByRef( ).u4;
-    }
-
-    hbFullName.LoadFromReference( stack.Arg7( ) );
-    fullName = (LPSTR)hbFullName.RecoverString( );
-
-    status = ClientConnectService( bus,
-                                   timeout,
-                                   cliName,
-                                   port,
-                                   &sessionId,
-                                   managedOpts == NULL ? NULL : &opts,
-                                   fullName == NULL ? NULL : fullServiceName );
-        
-    if( status == AJ_OK )
-    {     
-        hbSessionId.SetInteger( sessionId );
-        TINYCLR_CHECK_HRESULT( hbSessionId.StoreToReference( stack.Arg5( ), 0 ) );   
-        
-        if(fullName)
-        {
-            TINYCLR_CHECK_HRESULT(CLR_RT_HeapBlock_String::CreateInstance( hbFullName, fullServiceName ));
-        }
-        else
-        {
-            hbFullName.SetObjectReference( NULL );
-        }
-        
-        TINYCLR_CHECK_HRESULT( hbFullName.StoreToReference( stack.Arg7( ), 0 ) );
-    }
-
-    stack.SetResult_I4( (CLR_INT32)status );
-    
-    TINYCLR_NOCLEANUP();
-}
-
-#endif
-
 HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::ClientConnectService___MicrosoftSPOTAllJoynAJStatus__U4__U4__STRING__U2__BYREF_U4__MicrosoftSPOTAllJoynAJSessionOpts__BYREF_STRING( CLR_RT_StackFrame& stack )
 {
     
@@ -1524,7 +1438,7 @@ static CLR_UINT32 PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
         pwdLen = bufLen;
     }
  
-	// Always terminated with a '\0' for following AJ_Printf().
+	// Always terminated with a '\0'
 
 	PwdText[ pwdLen ] = '\0';
 	for (int i=0; i<pwdLen; i ++)
@@ -1535,6 +1449,7 @@ static CLR_UINT32 PasswordCallback( CLR_UINT8 * buffer, CLR_UINT32 bufLen )
     return pwdLen;
 }
 
+// updates value of AuthPeerStatus
 void AuthCallback(const void* context, AJ_Status status)
 {
     *((AJ_Status*)context) = status;
@@ -1565,7 +1480,7 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::EnableSecurity___
         
     AJ_BusAttachment * bus                                  = NULL;    
     CLR_RT_HeapBlock_Array * securitySuites                 = NULL;
-    CLR_UINT32 securitySuitesArr[MAX_NUM_SECURITY_SUITES]    = {0,};
+    CLR_UINT32 securitySuitesArr[MAX_NUM_SECURITY_SUITES]   = {0,};
     
     TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );        
     securitySuites = stack.Arg2().DereferenceArray();  
@@ -2040,16 +1955,17 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::GetLocalGUID___ST
 {
     TINYCLR_HEADER();
     
-    AJ_GUID   guid;
-    AJ_Status status     = AJ_OK;
+    AJ_GUID   guid                  = {0,};
+    AJ_Status status                = AJ_OK;
+    CLR_RT_HeapBlock_Array * data   = NULL;
     
-    CLR_RT_HeapBlock_Array* data = stack.Arg0().DereferenceArray();  FAULT_ON_NULL(data);
+    data = stack.Arg0().DereferenceArray();
+    FAULT_ON_NULL(data);
 
     AJ_CreateNewGUID((uint8_t*)&guid, sizeof(AJ_GUID));
 
     char* a = (char*)data->GetFirstElement();
     char* p = (char*)&guid;
-
     memcpy( a, p, data->m_numOfElements ); 
 
     stack.SetResult_I4( (CLR_INT32)status );
@@ -2121,14 +2037,17 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalCloseConta
     AJ_Arg *    arg    = NULL;
     AJ_Status   status = AJ_OK; 
     
-    CLR_RT_HeapBlock* managedMsg =          stack.Arg1().Dereference();     FAULT_ON_NULL(managedMsg);     
+    CLR_RT_HeapBlock* managedMsg =          stack.Arg1().Dereference();      FAULT_ON_NULL(managedMsg);    
     arg                          = (AJ_Arg*)stack.Arg2().NumericByRef().u4;                     
     
     CopyFromManagedMsg(managedMsg, &msg);
          
     status = AJ_MarshalCloseContainer(&msg, arg);
 
-    if(status == AJ_OK) CopyToManagedMsg( managedMsg, &msg );
+    if(status == AJ_OK)
+    {
+        CopyToManagedMsg( managedMsg, &msg );
+    }
     
     stack.SetResult_I4( (CLR_INT32)status );
     
@@ -2148,7 +2067,10 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalObjectDesc
     
     status = MarshalObjectDescriptions(&msg);
         
-    if(status == AJ_OK) CopyToManagedMsg( managedMsg, &msg );
+    if(status == AJ_OK)
+    {
+        CopyToManagedMsg( managedMsg, &msg );
+    }
     
     stack.SetResult_I4( (CLR_INT32)status );
     
@@ -2168,7 +2090,10 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalDefaultPro
     
     status = MarshalDefaultProps(&msg);
     
-    if(status == AJ_OK) CopyToManagedMsg( managedMsg, &msg );
+    if(status == AJ_OK)
+    {
+        CopyToManagedMsg( managedMsg, &msg );    
+    }
         
     stack.SetResult_I4( (CLR_INT32)status );
     
@@ -2281,7 +2206,10 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalVariant_
         
     status = AJ_UnmarshalVariant(&msg, &variant);
     
-    if(status == AJ_OK) CopyToManagedMsg( managedMsg, &msg );
+    if(status == AJ_OK)
+    {
+        CopyToManagedMsg( managedMsg, &msg );
+    }
     
     stack.SetResult_String( variant );
     
@@ -2297,14 +2225,17 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::MarshalVariant___
     CLR_RT_HeapBlock_String* signature  = NULL;
     AJ_Status                status     = AJ_OK;   
 
-    managedMsg = stack.Arg1().Dereference();        FAULT_ON_NULL(managedMsg);                
+    managedMsg = stack.Arg1().Dereference();        FAULT_ON_NULL(managedMsg);    
     signature  = stack.Arg2().DereferenceString();  FAULT_ON_NULL(signature);
 
     CopyFromManagedMsg(managedMsg, &msg);        
 
     status = AJ_MarshalVariant(&msg, signature->StringText());
     
-    if(status == AJ_OK) CopyToManagedMsg( managedMsg, &msg );    
+    if(status == AJ_OK)
+    {
+        CopyToManagedMsg( managedMsg, &msg );        
+    }
     
     stack.SetResult_I4( (CLR_INT32)status );
 
@@ -2368,14 +2299,17 @@ HRESULT Library_spot_alljoyn_native_Microsoft_SPOT_AllJoyn_AJ::UnmarshalMsg___Mi
 
     TINYCLR_CHECK_HRESULT( RetrieveBus( stack, bus ) );
     
-    managedMsg = stack.Arg2().Dereference();        FAULT_ON_NULL(managedMsg);                    
+    managedMsg = stack.Arg2().Dereference();    FAULT_ON_NULL(managedMsg);                        
     timeout    = stack.Arg3().NumericByRef().u4;
     
     CopyFromManagedMsg(managedMsg, &msg);
     
     status = AJ_UnmarshalMsg((AJ_BusAttachment *)bus, &msg, timeout);
         
-    if(status == AJ_OK) CopyToManagedMsg( managedMsg, &msg );
+    if(status == AJ_OK)
+    {
+        CopyToManagedMsg( managedMsg, &msg );
+    }
     
     stack.SetResult_I4( (CLR_INT32)status );
     
