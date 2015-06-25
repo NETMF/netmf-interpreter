@@ -44,10 +44,8 @@
 #define GPIO_PORTC 2
 #define GPIO_PORTD 3
 #define GPIO_PORTE 4
-#define GPIO_PORTF 5
-#define GPIO_PORTG 6
-#define GPIO_PORTH 7
-#define GPIO_PORTI 8
+// The remaining ports are not broken out - except PH0 and PH1,
+// which are deliberately omitted to keep the range continuous.
 
 #define PORT_PIN(port,pin) ( ( (int)port) * 16 + ( pin ) )
 
@@ -77,7 +75,7 @@
 #define CTSPROTECTRESISTOR              RESISTOR_DISABLED
 #define RTSPROTECTRESISTOR              RESISTOR_DISABLED
 
-#define TOTAL_GPIO_PORT                 9 // PA - PI
+#define TOTAL_GPIO_PORT                 (GPIO_PORTE + 1)
 #define TOTAL_GPIO_PINS                 (TOTAL_GPIO_PORT*16)
 
 #define INSTRUMENTATION_H_GPIO_PIN      GPIO_PIN_NONE
