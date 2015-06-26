@@ -71,7 +71,16 @@
     <Import Condition="'$(CRYPTO_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />
     <Import Condition="'$(SSL_OPEN_LWIP_OS_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" />
     <Import Condition="'$(WINDOWS_DEVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Windows_Devices.featureproj" />
+    <Import Condition="'$(XML_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\XML.featureproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
+    <ItemGroup>
+        <PlatformIndependentLibs Include="System_Xml.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\System_Xml\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PlatformIndependentLibs Include="Xml.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\Xml\dotNetMF.proj" />
+    </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\stubs\dotnetmf.proj" />
