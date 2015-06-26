@@ -29,6 +29,11 @@
 #include <openssl/aes.h>
 #include <openssl/bn.h>
 
+extern uint32_t Random_Generate();
+extern void Random_Start();
+extern void Random_Stop();
+
+
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
  * (usually in debugger).
@@ -86,32 +91,42 @@ void AJ_AES_ECB_128_ENCRYPT(const uint8_t* key, const uint8_t* in, uint8_t* out)
 
 uint32_t AJ_PlatformEntropy(uint8_t* data, uint32_t size)
 {
-#ifdef BUILD_READ_FROM_RANDFILE
-    FILE* f = fopen("/dev/urandom", "r");
-    if (NULL == f) {
-        return 0;
-    }
-    size = fread(data, sizeof (uint8_t), size, f);
-    fclose(f);
 
-#elif BUILD_SSL_CRYPTO
+
+#if BUILD_SSL_CRYPTO
     BIGNUM* bn = BN_new();
     BN_rand(bn, size * 8, -1, 0);
     BN_bn2bin(bn, data);
     BN_free(bn);
     
 #else
+
+#if 0
     static uint8_t seed = 0;
     for (int i = 0; i < size; i++)
     {
         *data++ = seed++ ^ 0xaa;
     }
+
+#else
+    Random_Start();
+
+    while (size) {
+        *data = Random_Generate() & 0xFF;
+        size -= 1;
+        data += 1;
+    }
+
+    Random_Stop();
+#endif
+    
 #endif
     return size;
 }
 
 void AJ_RandBytes(uint8_t* rand, uint32_t size)
 {
+
     AJ_Status status = AJ_ERR_SECURITY;
     uint8_t seed[SEEDLEN];
 

@@ -26,6 +26,7 @@
 #include "aj_nvram.h"
 #include "aj_target_nvram.h"
 #include "aj_debug.h"
+#include <tinyhal.h>
 
 /**
  * Turn on per-module debug printing by setting this variable to non-zero value
@@ -34,9 +35,17 @@
 #ifndef NDEBUG
 uint8_t dbgTARGET_NVRAM = 0;
 #endif
+//--// Use netmf configure block as the NV-RAM
 
+#define AJ_USE_HAL_CONFIG       1
+#define AJ_NVRAM_CONFIGURE      "AJ_NVRAM"
+
+
+
+//--//
 uint8_t AJ_EMULATED_NVRAM[AJ_NVRAM_SIZE];
 uint8_t* AJ_NVRAM_BASE_ADDRESS;
+
 
 extern void AJ_NVRAM_Layout_Print();
 
@@ -57,13 +66,16 @@ void AJ_NVRAM_Init()
     AJ_NVRAM_BASE_ADDRESS = AJ_EMULATED_NVRAM;
     _AJ_LoadNVFromFile();
     if (*((uint32_t*)AJ_NVRAM_BASE_ADDRESS) != AJ_NV_SENTINEL) {
-        AJ_NVRAM_Clear();
+        _AJ_NVRAM_Clear();
         _AJ_StoreNVToFile();
     }
 }
 
 void _AJ_NV_Write(void* dest, void* buf, uint16_t size)
 {
+    
+    if (((uint32_t)size + (uint32_t) dest) > (uint32_t)AJ_NVRAM_END_ADDRESS)
+        return;  
     memcpy(dest, buf, size);
     _AJ_StoreNVToFile();
 }
@@ -82,32 +94,34 @@ void _AJ_NVRAM_Clear()
 
 AJ_Status _AJ_LoadNVFromFile()
 {
-#ifdef TODO_BUILD_NVRAM
-    FILE* f = fopen(nvFile, "r");
-    if (f == NULL) {
-        AJ_ErrPrintf(("_AJ_LoadNVFromFile(): LoadNVFromFile() failed. status=AJ_ERR_FAILURE\n"));
-        return AJ_ERR_FAILURE;
-    }
+
+#ifdef AJ_USE_HAL_CONFIG
+    BOOL state ;
 
     memset(AJ_NVRAM_BASE_ADDRESS, INVALID_DATA_BYTE, AJ_NVRAM_SIZE);
-    fread(AJ_NVRAM_BASE_ADDRESS, AJ_NVRAM_SIZE, 1, f);
-    fclose(f);
+    state = HAL_CONFIG_BLOCK::ApplyConfig( AJ_NVRAM_CONFIGURE, AJ_NVRAM_BASE_ADDRESS, AJ_NVRAM_SIZE );
+    if (state)
+        return AJ_OK;
+    else
+        return AJ_ERR_FAILURE;
 #endif
+
     return AJ_OK;
 }
 
 AJ_Status _AJ_StoreNVToFile()
 {
-#ifdef TODO_BUILD_NVRAM
-    FILE* f = fopen(nvFile, "w");
-    if (!f) {
-        AJ_ErrPrintf(("_AJ_StoreNVToFile(): StoreNVToFile() failed. status=AJ_ERR_FAILURE\n"));
-        return AJ_ERR_FAILURE;
-    }
 
-    fwrite(AJ_NVRAM_BASE_ADDRESS, AJ_NVRAM_SIZE, 1, f);
-    fclose(f);
+#ifdef AJ_USE_HAL_CONFIG
+
+    BOOL state ;
+    state = HAL_CONFIG_BLOCK::UpdateBlockWithName( AJ_NVRAM_CONFIGURE, AJ_NVRAM_BASE_ADDRESS, AJ_NVRAM_SIZE, FALSE );
+    if (state)
+        return AJ_OK;
+    else
+        return AJ_ERR_FAILURE;
 #endif
+
     return AJ_OK;
 }
 
@@ -125,13 +139,21 @@ AJ_Status _AJ_CompactNVStorage()
         id = *data;
         capacity = *(data + 1);
         entrySize = ENTRY_HEADER_SIZE + capacity;
-        if (id != INVALID_ID) {
-            _AJ_NV_Write(writePtr, data, entrySize);
+
+        // add the check for capacity size, just to avoid corruption of data cause some 
+        // the data set to larger than our AJ_NVRAM_SIZE
+        if ((id != INVALID_ID) && (capacity <0x100)  )  {
+            // make sure the size of the entry is not large than the memory size.                
+            if ((uint32_t)( writePtr + entrySize) >= (uint32_t)AJ_NVRAM_END_ADDRESS)
+                break;
+            // instead keep update the NV ram, updated the RAM first, write it at the end.
+            memcpy(writePtr, data, entrySize);
+//            _AJ_NV_Write(writePtr, data, entrySize);
             writePtr += entrySize;
         } else {
             garbage += entrySize;
         }
-        data += entrySize >> 1;
+        data += (entrySize >> 1);
     }
 
     memset(writePtr, INVALID_DATA_BYTE, garbage);

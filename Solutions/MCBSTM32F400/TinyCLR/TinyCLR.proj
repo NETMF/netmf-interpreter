@@ -428,6 +428,10 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_PWM\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
+        <DriverLibs Include="STM32F4_Random.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_RANDOM\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="STM32F4_Analog.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_Analog\dotNetMF.proj" />
     </ItemGroup>
