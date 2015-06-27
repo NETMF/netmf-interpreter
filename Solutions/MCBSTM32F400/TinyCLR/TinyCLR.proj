@@ -426,7 +426,7 @@
         <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\CMSIS\CMSIS_RTX\dotnetmf.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\CMSIS\CMSIS\RTOS\RTX\dotnetmf.proj" />
         <DriverLibs Include="CMSIS_RTX.$(LIB_EXT)" />
     </ItemGroup>
     <ItemGroup>

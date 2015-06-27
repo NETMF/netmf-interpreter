@@ -7,10 +7,9 @@
 
 # CMSIS and CMSIS_RTX
 /CMSIS/CMSIS/
-/CMSIS/CMSIS_RTX/*
 /CMSIS/Device/*
 /CMSIS/ARM.CMSIS.pdsc
-!/CMSIS/CMSIS_RTX/dotNetMF.proj
+!/CMSIS/CMSIS/RTOS/RTX/dotNetMF.proj
 
 # Visual Studio
 *.aps
