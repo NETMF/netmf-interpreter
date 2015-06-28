@@ -8,10 +8,10 @@
     <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{688AF8C9-E814-4A8F-9D0B-1CFC2B4E4A19}</ProjectGuid>
+    <ProjectGuid>{b8bcf06f-d759-46ae-95b1-0e035603040a}</ProjectGuid>
 
     <NoWarn>$(NoWarn),0169</NoWarn>
-    <ComponentGuid>{ED6571F6-10D3-4488-B042-02BBB6E2916A}</ComponentGuid>
+    <ComponentGuid>{2a423075-a6d1-4449-a385-ceda637c7616}</ComponentGuid>
     <AssemblyBothEndian>true</AssemblyBothEndian>
   </PropertyGroup>
   

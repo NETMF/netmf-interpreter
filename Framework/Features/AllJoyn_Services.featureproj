@@ -2,7 +2,7 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <FeatureName>AllJoyn_Services</FeatureName>
-    <Guid>{789367f1-97eb-4dbd-823e-dfc4c0b701b8}</Guid>
+    <Guid>{f2d30cde-d351-49cc-8773-89366f79278e}</Guid>
     <Description>&lt;AllJoyn demo&gt;</Description>
     <Groups />
     <ALLJOYN_FEATUREPROJ>True</ALLJOYN_FEATUREPROJ>
