@@ -144,6 +144,14 @@ namespace AlljoynSecurityClient
 
                 if (!connected) {
 
+                    // the original AJ_StartClientByName is splitted into 3 functions instead of one, as it will block the other CLR functions
+                    // and have a more efficient connection, especially when the service it is looking for is not existed yet. Instead of
+                    // keep connect and disconnect to router, send the findserive, we can just wait at the 3rd stage,ClientConnectservice.
+                    //
+                    // 1st stage - ClientconnectBus , found router and attached bus to it, wait until router found or timeout is set.
+                    // 2nd stage - ClientFindService, Adverstise the service it is looking for 
+                    // 3rd stage - ClientConnectService, Connect to the services it is looking for, it will wait until the service pop up or timeout is set,
+                    
                    do {
                         status = myAlljoyn.ClientConnectBus(bus,
                                                             null,
@@ -156,7 +164,7 @@ namespace AlljoynSecurityClient
                                                             null,
                                                             CONNECT_TIMEOUT);
                    }while ( status != AJ_Status.AJ_OK);
-
+                   int retry = 0;
                    do {
                        status = myAlljoyn.ClientConnectService(bus,
                                                                CONNECT_TIMEOUT,
@@ -165,8 +173,13 @@ namespace AlljoynSecurityClient
                                                                ref sessionId,
                                                                null,
                                                                ref FullServiceName);
-                   } while (status != AJ_Status.AJ_OK); 
-                    // if break from here, need to call AJ_Disconnect(bus);
+                       // user can break from this call, instead of having a while loop
+                       retry++;
+                       if (retry > 10) break;
+                   } while (status != AJ_Status.AJ_OK);
+                   // if break from here, need to call myAlljoyn.Disconnect(bus);
+                   if (status != AJ_Status.AJ_OK)
+                       myAlljoyn.Disconnect(bus);
                    
                    if (status == AJ_Status.AJ_OK) {
                         connected = true;
