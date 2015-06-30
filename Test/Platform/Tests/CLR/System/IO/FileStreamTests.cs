@@ -635,5 +635,51 @@ out what this is all about.";
 
             return (pass)? MFTestResults.Pass : MFTestResults.Fail;
         }
+        
+        [TestMethod]
+        public MFTestResults Test_Fix2048()
+        {
+            // This test was created for http://netmf.codeplex.com/workitem/2048
+            const string file = "foo.txt";
+            MFTestResults result = MFTestResults.Pass;
+            try
+            {
+                const string content = "\"this is param0 HH:MM:SS-YY-mm-dd\", \"this is param1\", \"this is param2\", \"this is param3\",MAXMOISTURE=4.5,MINLEVEL=10,WATERACTIVE=True";
+
+                StreamWriter sw = new StreamWriter(file);
+                
+                for (int i = 0; i < 616; i++)
+                {
+                    sw.WriteLine(content);
+                }
+
+                sw.Close();
+
+                StreamReader sr = new StreamReader(file);
+                string str = sr.ReadLine();
+
+                if(str != content)
+                {
+                    result = MFTestResults.Fail;
+                }
+                
+                sr.Close();
+            }
+            catch (Exception ex)
+            {
+                result = MFTestResults.Fail;
+                Log.Exception("Unexpected Exception", ex);
+            }
+            finally
+            {
+                try
+                {
+                    File.Delete(file);
+                }
+                catch { }
+            }
+
+            return result;
+        }
     }
 }

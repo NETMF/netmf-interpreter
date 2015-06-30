@@ -87,7 +87,8 @@ namespace System.IO
             int nextChar;
 
             // If buffer need refresh take into account max UTF8 bytes if the next character is UTF8 encoded
-            if ((m_curBufPos                       == (m_curBufLen-1)) || 
+            // Note: In some occasions, m_curBufPos may go beyond m_curBufLen-1 (for example, when trying to peek after reading the last character of the buffer), so we need to refresh the buffer in these cases too
+            if ((m_curBufPos                       >= (m_curBufLen-1)) || 
                ((m_buffer[m_curBufPos + 1] & 0x80) !=  0 && 
                 (m_curBufPos + 3                   >=  m_curBufLen)))
             {
