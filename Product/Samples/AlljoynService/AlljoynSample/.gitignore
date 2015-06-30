@@ -1,9 +1,0 @@
-bin/
-obj/
-Stubs/
-DOTNETMF_FS_EMULATION/
-
-*.user
-*.nvram
-*.dat
-*.smd
