@@ -49,6 +49,9 @@ static CTR_DRBG_CTX drbgctx;
 
 static AES_KEY keyState;
 
+// we are using the ajtcl\crypto instead of using the SSL in our branch. less codes.
+// but we can uncomment the below for using the SSL AES
+#if 0
 void AJ_AES_Enable(const uint8_t* key)
 {
     AES_set_encrypt_key(key, 16 * 8, &keyState);
@@ -88,7 +91,7 @@ void AJ_AES_ECB_128_ENCRYPT(const uint8_t* key, const uint8_t* in, uint8_t* out)
 {
     AES_encrypt(in, out, &keyState);
 }
-
+#endif
 uint32_t AJ_PlatformEntropy(uint8_t* data, uint32_t size)
 {
 

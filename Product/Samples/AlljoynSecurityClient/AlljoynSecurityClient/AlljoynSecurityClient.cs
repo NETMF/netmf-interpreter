@@ -144,26 +144,31 @@ namespace AlljoynSecurityClient
 
                 if (!connected) {
 
-                    status = myAlljoyn.ClientConnectBus(bus, null, CONNECT_TIMEOUT);
+                   do {
+                        status = myAlljoyn.ClientConnectBus(bus,
+                                                            null,
+                                                            CONNECT_TIMEOUT);
+                   }while ( status != AJ_Status.AJ_OK);
+                    
+                   do {
+                        status = myAlljoyn.ClientFindService(bus,
+                                                            ServiceName,
+                                                            null,
+                                                            CONNECT_TIMEOUT);
+                   }while ( status != AJ_Status.AJ_OK);
 
-                    if (status == AJ_Status.AJ_OK)
-                    {
-                        status = myAlljoyn.ClientFindService(bus, ServiceName, null, CONNECT_TIMEOUT);
-
-                        if (status == AJ_Status.AJ_OK)
-                        {
-                            status = myAlljoyn.ClientConnectService(bus, 
-                                                                    CONNECT_TIMEOUT,
-                                                                    ServiceName,
-                                                                    ServicePort,
-                                                                    ref sessionId,
-                                                                    null,
-                                                                    ref FullServiceName);
-                        }
-                    }
-
-
-                    if (status == AJ_Status.AJ_OK) {
+                   do {
+                       status = myAlljoyn.ClientConnectService(bus,
+                                                               CONNECT_TIMEOUT,
+                                                               ServiceName,
+                                                               ServicePort,
+                                                               ref sessionId,
+                                                               null,
+                                                               ref FullServiceName);
+                   } while (status != AJ_Status.AJ_OK); 
+                    // if break from here, need to call AJ_Disconnect(bus);
+                   
+                   if (status == AJ_Status.AJ_OK) {
                         connected = true;
                         authStatus = AJ_Status.AJ_ERR_NULL;
 

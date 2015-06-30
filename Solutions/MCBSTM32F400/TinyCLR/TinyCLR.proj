@@ -124,13 +124,14 @@
     <!-- note: the following projects are necessary for 'proper' AJ_RandBytes implementation
          but it increases NetduinoPlus2 flash memory use by roughly 1 64k page -->
 
-
+<!--
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\aes\dotNetMF.proj" />
     <DriverLibs Include="aes_openssl.$(LIB_EXT)" />
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\modes\dotNetMF.proj" />
     <DriverLibs Include="modes_openssl.$(LIB_EXT)" />
 
-<!--
+
+
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\OpenSSL\stubs\dotNetMF.proj" />
     <DriverLibs Include="openssl_pal_stubs.$(LIB_EXT)" />
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\dotNetMF.proj" />
