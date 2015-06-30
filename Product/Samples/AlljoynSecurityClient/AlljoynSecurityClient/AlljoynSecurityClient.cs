@@ -37,7 +37,7 @@ namespace AlljoynSecurityClient
         // AUTH_SUITE_ECDHE_ECDSA
         // AUTH_SUITE_ECDHE_PSK
         // AUTH_SUITE_ECDHE_NULL
-        static int[] SecuritySuites = { AUTH_SUITE_ECDHE_NULL };
+        static int[] SecuritySuites = { AUTH_SUITE_ECDHE_ECDSA };
 
         const byte AJ_FLAG_ENCRYPTED = 0x80;
 
@@ -143,17 +143,26 @@ namespace AlljoynSecurityClient
                 AJ_Message msg = new AJ_Message();
 
                 if (!connected) {
-                    status = myAlljoyn.StartClientByName(  bus,
-                                                            null,
-                                                            CONNECT_TIMEOUT,
-                                                            0,
-                                                            ServiceName,
-                                                            ServicePort,
-                                                            ref sessionId,
-                                                            null,
-                                                            ref FullServiceName);
-                    
-                    
+
+                    status = myAlljoyn.ClientConnectBus(bus, null, CONNECT_TIMEOUT);
+
+                    if (status == AJ_Status.AJ_OK)
+                    {
+                        status = myAlljoyn.ClientFindService(bus, ServiceName, null, CONNECT_TIMEOUT);
+
+                        if (status == AJ_Status.AJ_OK)
+                        {
+                            status = myAlljoyn.ClientConnectService(bus, 
+                                                                    CONNECT_TIMEOUT,
+                                                                    ServiceName,
+                                                                    ServicePort,
+                                                                    ref sessionId,
+                                                                    null,
+                                                                    ref FullServiceName);
+                        }
+                    }
+
+
                     if (status == AJ_Status.AJ_OK) {
                         connected = true;
                         authStatus = AJ_Status.AJ_ERR_NULL;
@@ -176,8 +185,7 @@ namespace AlljoynSecurityClient
 
                         // Begin authentication process with the service. This is
                         // an asynchronous process so we will need to poll the 
-                        // authStatus value before the main message processing loop
-                        // can begin
+                        // authStatus value during the main message processing loop
                         status = myAlljoyn.AuthenticatePeer(bus, FullServiceName);
                         
                         if (status != AJ_Status.AJ_OK)
