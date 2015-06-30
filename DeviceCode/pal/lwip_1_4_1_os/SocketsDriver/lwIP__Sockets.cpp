@@ -562,13 +562,28 @@ int LWIP_SOCKETS_Driver::SetSockOpt( SOCK_SOCKET socket, int level, int optname,
             nativeOptionName = GetNativeSockOption(optname);            
 
             switch(optname)
-            {
+            {        
+                // LINGER is not implemented in LWIP
+                case SOCK_SOCKO_LINGER:
+                    if (*(int*)optval)
+                    {
+                        errno = SOCK_ENOPROTOOPT;
+                        return SOCK_SOCKET_ERROR;
+                    }
+                    return 0;
+                case SOCK_SOCKO_DONTLINGER:
+                    if (!*(int*)optval)
+                    {
+                        errno = SOCK_ENOPROTOOPT;
+                        return SOCK_SOCKET_ERROR;
+                    }
+                    return 0;
+                    
 				// ignore this item to enable http to work
 				case SOCK_SOCKO_REUSEADDRESS:
 					return 0;
                 
                 case SOCK_SOCKO_EXCLUSIVEADDRESSUSE:
-                case SOCK_SOCKO_DONTLINGER:
                     nativeIntValue     = !*(int*)optval;
                     pNativeOptionValue = (char*)&nativeIntValue;
                     break;
@@ -610,6 +625,18 @@ int LWIP_SOCKETS_Driver::GetSockOpt( SOCK_SOCKET socket, int level, int optname,
         case SOCK_SOL_SOCKET:
             nativeLevel         = SOL_SOCKET;
             nativeOptionName    = GetNativeSockOption(optname);
+            switch(optname)
+            {        
+                // LINGER is not implemented in LWIP
+                case SOCK_SOCKO_LINGER:
+                    *optval = 0;
+                    return 0;
+                case SOCK_SOCKO_DONTLINGER:
+                    *optval = 1;
+                    return 0;
+                default:
+                    break;
+            }
             break;
         default:
             nativeLevel         = level;
@@ -625,9 +652,8 @@ int LWIP_SOCKETS_Driver::GetSockOpt( SOCK_SOCKET socket, int level, int optname,
         {
             case SOCK_SOL_SOCKET:
                 switch(optname)
-                {
+                {       
                     case SOCK_SOCKO_EXCLUSIVEADDRESSUSE:
-                    case SOCK_SOCKO_DONTLINGER:
                         *optval = !(*(int*)optval != 0);
                         break;
                         
