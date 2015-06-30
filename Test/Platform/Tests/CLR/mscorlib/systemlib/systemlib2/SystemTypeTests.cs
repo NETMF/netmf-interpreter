@@ -63,6 +63,7 @@ namespace Microsoft.SPOT.Platform.Tests
             // will display its full hex value
             bRet &=               "FE" == ((sbyte )                -2).ToString("x02");
             bRet &=               "36" == ((byte  )              0x36).ToString("x02");
+            bRet &=               "FF" == ((byte  )               255).ToString("X2");
             bRet &=             "FFFD" == ((short )                -3).ToString("x04");
             bRet &=             "3049" == ((ushort)            0x3049).ToString("x4");
             bRet &=             "FC00" == ((short )             -1024).ToString("x02");
@@ -98,6 +99,14 @@ namespace Microsoft.SPOT.Platform.Tests
 
             tst = (-3210).ToString("g");
             bRet &= "-3210" == tst;
+
+            bRet &= "NaN" == ((float)0f / 0f).ToString();
+            bRet &= "Infinity" == ((float)1f / 0f).ToString();
+            bRet &= "-Infinity" == ((float)-1f / 0f).ToString();
+
+            bRet &= "NaN" == ((double)0f / 0f).ToString();
+            bRet &= "Infinity" == ((double)1f / 0f).ToString();
+            bRet &= "-Infinity" == ((double)-1f / 0f).ToString();
 
             if (bRet)
             {

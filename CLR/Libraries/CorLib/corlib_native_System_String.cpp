@@ -547,14 +547,23 @@ HRESULT Library_corlib_native_System_String::FromCharArray( CLR_RT_StackFrame& s
     CLR_RT_HeapBlock_Array* array;
     CLR_UINT32              len;
 
-    array = stack.Arg1().DereferenceArray(); if(!array) TINYCLR_SET_AND_LEAVE(S_OK);
-    len   = array->m_numOfElements         ; if(!len  ) TINYCLR_SET_AND_LEAVE(S_OK);
+    array = stack.Arg1().DereferenceArray();
+    if (!array || array->m_numOfElements == 0)
+    {
+        TINYCLR_SET_AND_LEAVE(CLR_RT_HeapBlock_String::CreateInstance(stack.Arg0(), ""));
+    }
+    else
+    {
+        len = array->m_numOfElements;
 
-    if(length == -1) length = len - startIndex;
+        if (length == -1) 
+            length = len - startIndex;
 
-    if(CLR_RT_HeapBlock_Array::CheckRange( startIndex, length, len ) == false) TINYCLR_SET_AND_LEAVE(CLR_E_OUT_OF_RANGE);
+        if (CLR_RT_HeapBlock_Array::CheckRange(startIndex, length, len) == false) 
+            TINYCLR_SET_AND_LEAVE(CLR_E_OUT_OF_RANGE);
 
-    TINYCLR_SET_AND_LEAVE(CLR_RT_HeapBlock_String::CreateInstance( stack.Arg0(), (CLR_UINT16*)array->GetElement( startIndex ), length ));
+        TINYCLR_SET_AND_LEAVE(CLR_RT_HeapBlock_String::CreateInstance(stack.Arg0(), (CLR_UINT16*)array->GetElement(startIndex), length));
+    }
 
     TINYCLR_NOCLEANUP();
 }

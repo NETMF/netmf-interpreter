@@ -57,8 +57,16 @@ namespace Microsoft.SPOT.Platform.Tests
             char[] car2 = new char[] { (char)0, (char)65};
             string s = new string(car2);
             testResult &= (s == "\0A");
-                
             Log.Comment("This was previously bug 20620");
+
+            Log.Comment("new char[0]");
+            str = new string(new char[0]);
+            testResult &= (str == string.Empty);
+
+            Log.Comment("null");
+            str = new string(null);
+            testResult &= (str == string.Empty);
+
             return (testResult ? MFTestResults.Pass : MFTestResults.Fail);
         }
         [TestMethod]
@@ -436,6 +444,35 @@ namespace Microsoft.SPOT.Platform.Tests
             testResult &= (str1.Length == 9);
             return (testResult ? MFTestResults.Pass : MFTestResults.Fail);
         }
-    
+        
+        [TestMethod]
+        public MFTestResults Concat_Test1()
+        {
+            /// <summary>
+            /// 1. Tests the string concat of several object where one of the arguments returns a null value for ToString()
+            /// </summary>
+            ///
+            
+            try
+            {
+                string str = "a" + 1 + "b" + new ToStringReturnsNull();
+                return (str == "a1b" ? MFTestResults.Pass : MFTestResults.Fail);
+            }
+            catch
+            {
+                return MFTestResults.Fail;
+            }
+        }
+    }
+
+    /// <summary>
+    /// A class whose ToString method return null
+    /// </summary>
+    public class ToStringReturnsNull
+    {
+        public override string ToString()
+        {
+            return null;
+        }
     }
 }

@@ -2,7 +2,6 @@ using System;
 using Microsoft.SPOT.Hardware;
 using System.Runtime.CompilerServices;
 
-
 namespace Microsoft.SPOT.Hardware
 {
     /// <summary>
@@ -43,6 +42,10 @@ namespace Microsoft.SPOT.Hardware
         /// Scale of the period/duration (mS, uS, nS)
         /// </summary>
         private ScaleFactor m_scale;
+        /// <summary>
+        /// Whether this object has been disposed.
+        /// </summary>
+        private bool m_disposed = false;
 
         //--//
 
@@ -129,7 +132,12 @@ namespace Microsoft.SPOT.Hardware
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            if (!m_disposed)
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+                m_disposed = true;
+            }
         }
 
         /// <summary>

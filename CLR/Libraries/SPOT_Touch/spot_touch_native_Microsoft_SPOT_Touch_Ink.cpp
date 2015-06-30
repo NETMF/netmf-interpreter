@@ -32,7 +32,7 @@ HRESULT Library_spot_touch_native_Microsoft_SPOT_Touch_Ink::SetInkRegion___STATI
     inkRegionInfo.Y2 = pArgs[ 4 ].NumericByRef().s4;    
     inkRegionInfo.BorderWidth = pArgs[ 5 ].NumericByRef().s4;
 
-    GFX_Pen pen = {pArgs[ 6 ].NumericByRef().s4, pArgs[ 7 ].NumericByRef().s4};
+    GFX_Pen pen = {pArgs[ 6 ].NumericByRef().u4, pArgs[ 7 ].NumericByRef().s4};
     inkRegionInfo.Pen = pen;
 
     m_InkPinnedBitmap = pArgs[ 8 ].Dereference();

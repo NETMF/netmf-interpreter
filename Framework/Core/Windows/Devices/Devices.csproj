@@ -24,6 +24,10 @@
     </MMP_STUB_Load>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adc\AdcChannel.cs" />
+    <Compile Include="Adc\AdcController.cs" />
+    <Compile Include="Adc\AdcEnums.cs" />
+    <Compile Include="Adc\AdcProvider.cs" />
     <Compile Include="Enumeration\DeviceInformation.cs" />
     <Compile Include="Gpio\GpioController.cs" />
     <Compile Include="Gpio\GpioEnums.cs" />
@@ -33,11 +37,16 @@
     <Compile Include="I2c\I2cConnectionSettings.cs" />
     <Compile Include="I2c\I2cDevice.cs" />
     <Compile Include="I2c\I2cEnums.cs" />
+    <Compile Include="Pwm\PwmController.cs" />
+    <Compile Include="Pwm\PwmEnums.cs" />
+    <Compile Include="Pwm\PwmPin.cs" />
+    <Compile Include="Pwm\PwmProvider.cs" />
+    <Compile Include="Spi\SpiBusInfo.cs" />
+    <Compile Include="Spi\SpiConnectionSettings.cs" />
+    <Compile Include="Spi\SpiDevice.cs" />
+    <Compile Include="Spi\SpiEnums.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System">
-      <HintPath>$(BUILD_TREE_DLL)\System.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.SPOT.Hardware">
       <HintPath>$(BUILD_TREE_DLL)\Microsoft.SPOT.Hardware.dll</HintPath>
     </Reference>

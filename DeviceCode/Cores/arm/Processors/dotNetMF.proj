@@ -7,7 +7,7 @@
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
 
   <ItemGroup Condition="'$(PLATFORM_FAMILY)'=='arm'">
-    <SubDirectories Include="ARM9"/>
+    <SubDirectories Include="CortexMx"/>
   </ItemGroup>
 
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />

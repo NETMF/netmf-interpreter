@@ -24,7 +24,7 @@ void USB_debug_printf( const char*format, ... )
     DebuggerPort_Flush( USART_DEFAULT_PORT );
 
     // write string
-    DebuggerPort_Write( USART_DEFAULT_PORT, buffer, len );
+    DebuggerPort_Write( USART_DEFAULT_PORT, buffer, len, 0 );
 
     // flush new characters
     DebuggerPort_Flush( USART_DEFAULT_PORT );
@@ -51,13 +51,13 @@ UINT8 USB_LanguageDescriptor[USB_LANGUAGE_DESCRIPTOR_SIZE] =
 
 // This provides storage for the "friendly name" (String 5) if it is specified
 // by the Flash configuration sector
-ADS_PACKED struct GNU_PACKED
+ADS_PACKED struct GNU_PACKED 
 {
     UINT8 bLength;
     UINT8 bDescriptorType;
     UINT8 sFriendlyName[USB_FRIENDLY_NAME_LENGTH * sizeof(USB_STRING_CHAR)];
     static LPCSTR GetDriverName() { return "USB_NAME_CONFIG"; }
-} FriendlyNameString;
+}FriendlyNameString;
 
 USB_SETUP_PACKET RequestPacket = { 0, 0, 0, 0, 0 };
 
@@ -277,11 +277,13 @@ BOOL USB_Driver::Initialize( int Controller )
 int USB_Driver::Configure( int Controller, const USB_DYNAMIC_CONFIGURATION* Config )
 {
     NATIVE_PROFILE_PAL_COM();
+    if( Controller > 9 )
+        return USB_CONFIG_ERR_NO_CONTROLLER;
 
     int err;
     size_t Length = 0;
     USB_DESCRIPTOR_HEADER *configHeader; 
-    char configName[5] = { 'U', 'S', 'B', '1' + Controller, 0 }; 
+    char configName[5] = { 'U', 'S', 'B', '1' + (char)Controller, 0 }; 
     USB_CONTROLLER_STATE* State = CPU_USB_GetState( Controller );
     
     // Check if controller exists

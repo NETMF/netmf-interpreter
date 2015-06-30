@@ -596,15 +596,14 @@ struct IBlockStorageDevice
 //
 // Remarks:
 //   The design pattern here effectively mimics a C++ class
-//   with virtuals. THe reason virtuals are not used is that
+//   with virtuals. The reason virtuals are not used is that
 //   the .NET MF supports a wide variety of compiler/Linker
-//   tool chains and soime of them bring in a large Run-time
+//   tool chains and some of them bring in a large Run-time
 //   library footprint when Certain C++ language features are
 //   used. Since a major goal of the .NET MF is to reduce
 //   code footprint we avoid anything that brings in additional
 //   library code. 
 //
-
 
 struct BlockStorageDevice : public HAL_DblLinkedNode<BlockStorageDevice>
 {

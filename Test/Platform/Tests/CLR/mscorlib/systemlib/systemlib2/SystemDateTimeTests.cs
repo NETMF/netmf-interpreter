@@ -11,6 +11,10 @@ namespace Microsoft.SPOT.Platform.Tests
 {
     public class SystemDateTimeTests : IMFTestInterface
     {
+        // Ticks at 12:00 AM January 1, year 1601 A.D.
+        private const long TicksAtOrigin = 504911232000000000;
+        private const long MaxTicks = 946708127990000000;
+
         [SetUp]
         public InitializeResult Initialize()
         {
@@ -115,7 +119,7 @@ namespace Microsoft.SPOT.Platform.Tests
                 Log.Comment("Creating Minimum DateTime and verifying");
                 DateTime minDT1 = DateTime.MinValue;
                 DateTime minDT2 = new DateTime();
-                DateTime minDT3 = new DateTime(0);
+                DateTime minDT3 = new DateTime(TicksAtOrigin);
                 DateTime minDT4 = new DateTime(1601, 1, 1, 0, 0, 0, 0);
 
                 if ((DateTime.Compare(minDT1, minDT2) != 0) ||
@@ -131,10 +135,10 @@ namespace Microsoft.SPOT.Platform.Tests
                 }
 
                 Log.Comment("Creating Maximum DateTime and verifying");
-                DateTime maxDateTime = new DateTime(441796895990000000);
+                DateTime maxDateTime = new DateTime(MaxTicks);
                 if (!DateTime.MaxValue.Equals(maxDateTime))
                 {
-                    Log.Comment("Expected Ticks '441796895990000000' but got '" + DateTime.MaxValue.Ticks + "'");
+                    Log.Comment("Expected Ticks '946708127990000000' but got '" + DateTime.MaxValue.Ticks + "'");
                     testResult = MFTestResults.Fail;
                 }
             }
@@ -1316,7 +1320,7 @@ namespace Microsoft.SPOT.Platform.Tests
                 for (int i = 0; i < dtArr.Length; i++)
                 {
                     DateTime dt1 = dtArr[i];
-                    DateTime dt2 = new DateTime(random.Next(1000) + 1);
+                    DateTime dt2 = new DateTime(random.Next(1000) + 1 + TicksAtOrigin);
                     TimeSpan ts = dt1 - dt2;
                     if (ts.Ticks != (dt1.Ticks - dt2.Ticks))
                     {
@@ -1562,9 +1566,9 @@ namespace Microsoft.SPOT.Platform.Tests
             {
                 Log.Comment("Getting the Min. DateTime and Verifying");
                 DateTime field = DateTime.MinValue;
-                if (field.Ticks != 0)
+                if (field.Ticks != TicksAtOrigin)
                 {
-                    Log.Comment("Failure : expected DateTime.MinValue = '0' but got '" + field.Ticks + "'");
+                    Log.Comment("Failure : expected DateTime.MinValue = '504911232000000000' but got '" + field.Ticks + "'");
                     testResult = MFTestResults.Fail;
                 }
             }
@@ -1590,9 +1594,9 @@ namespace Microsoft.SPOT.Platform.Tests
                 Log.Comment("Getting the Max. DateTime and Verifying");
                 DateTime field = DateTime.MaxValue;
                 Log.Comment(field.Ticks.ToString());
-                if (field.Ticks != 441796895990000000)
+                if (field.Ticks != MaxTicks)
                 {
-                    Log.Comment("Failure : expected DateTime.MinValue = '441796895990000000'" +
+                    Log.Comment("Failure : expected DateTime.MaxValue = '946708127990000000'" +
                         " but got '" + field.Ticks + "'");
                     testResult = MFTestResults.Fail;
                 }
@@ -1940,12 +1944,15 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults testResult = MFTestResults.Pass;
             try
             {
+                // This is an arbitrary ticks value which corresponds to a point of time in year 2015
+                long testTicks = 635688622030533832;
+                
                 Log.Comment("Creating a DateTime, getting the Ticks and Verifying");
-                DateTime testDateTime = new System.DateTime(0);
+                DateTime testDateTime = new System.DateTime(testTicks);
                 long _ticks = testDateTime.Ticks;
-                if (_ticks != 0)
+                if (_ticks != testTicks)
                 {
-                    Log.Comment("Failure : Expected ticks '0' but got '" + _ticks + "'");
+                    Log.Comment("Failure : Expected ticks '635688622030533832' but got '" + _ticks + "'");
                     testResult = MFTestResults.Fail;
                 }
             }

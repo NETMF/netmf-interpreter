@@ -111,7 +111,7 @@ INT32 AD_Read( ANALOG_CHANNEL channel )
     
             // disable internally reference
             if(chNum == 16 || chNum == 17) {
-                ADC->CCR &= ~(1 << ADC_CCR_TSVREFE); 
+                ADC->CCR &= ~ADC_CCR_TSVREFE; 
             }
     
             return ADCx->DR; // read result

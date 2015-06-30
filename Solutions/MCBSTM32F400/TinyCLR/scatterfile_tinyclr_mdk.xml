@@ -6,7 +6,6 @@
     <Set Name="Valid" Value="false"/>
 
     <!-- ################################################################################ -->
-
     <!-- Memory Region base and size values for physical hardware to help clarify the mapping
          by making Symbolic names available instead of a bunch of numbers. These values are
          fixed in hardware and therefore, don't change.
@@ -31,7 +30,7 @@
     <Set Name="EXTRAM_BaseAddress"      Value="0x68000000"/>
     <Set Name="EXTRAM_Size"             Value="0x00200000"/><!-- 2MB -->
 
-    <!-- Solution specific usage settings -->
+    <!-- Solution/Project specific usage settings -->
     <!-- Internal CCM (D-Bus) -->
     <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
     <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
@@ -43,52 +42,50 @@
     <!-- Configuration section is at base of external NOR flash
          This needs to be in the same block storage device as the
          deployment region to enable the MFDeploy to access it.
-         ( Due to device side library implementation limit )
+         ( Due to device side library implementation limitation )
     -->
-
-    <!-- DAT region goes into external NOR Flash -->
-    <Set Name="Data_BaseAddress"        Value="%NOR_BaseAddress%"/>
-    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
-
-    <Set Name="Config_BaseAddress"      Value="%Data_BaseAddress% + %Data_Size%"/>
+    <Set Name="Config_BaseAddress"      Value="%NOR_BaseAddress%"/>
     <Set Name="Config_Size"             Value="0x00010000"/><!-- 64KB -->
 
-    <!-- Deployment fills the rest of external NOR flash... -->
+    <!-- DAT region goes into external NOR Flash -->
+    <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
+    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
+
+    <!-- [Deployment fills the rest of external NOR flash...] -->
 
     <!-- Internal FLASH -->
-    <!-- TinyBooter sits at power on Reset vector-->
+    <!-- TinyBooter sits at power on Reset vector -->
     <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
-    <Set Name="BooterCode_Size"         Value="0x0000C000"/><!-- 48KB -->
+    <Set Name="BooterCode_Size"         Value="0x00010000"/><!-- 64KB -->
         
     <If Name="TARGETLOCATION" Value="FLASH">
         <!-- Internal FLASH -->
         
         <!-- Native Code section -->
-        <Set Name="Code_BaseAddress"         Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
-        <Set Name="Code_Size"                Value="%IFLASH_Size%-%BooterCode_Size%"/>
+        <Set Name="Code_BaseAddress"    Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
+        <Set Name="Code_Size"           Value="%IFLASH_Size%-%BooterCode_Size%"/>
 
         <!-- =========================================================== -->
         <If Name="TARGETTYPE" Value="Release">
             <!-- ALL of external RAM is enabled for the CLR HEAP -->
-            <Set Name="Heap_Size"           Value="%EXTRAM_Size%"/>
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="%EXTRAM_Size%"/>
+            <Set Name="CustomHeap_Size" Value="0"/>
         
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
         <If Name="TARGETTYPE" Value="Debug">
             <!-- Use only 1MB of external RAM for Debug builds.
                  Can't use all of external RAM as the address pins overlap
                  with the SWD pins used for ETM tracing in Debug builds.
             -->
-            <Set Name="Heap_Size"           Value="0x00100000"/><!--1MB-->
-            <Set Name="CustomHeap_Size"     Value="0"/>
+            <Set Name="Heap_Size"       Value="0x00100000"/><!--1MB-->
+            <Set Name="CustomHeap_Size" Value="0"/>
             
-            <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
         </If>
     </If>
 
     <!-- ################################################################################ -->
-
     <If Name="Valid" Value="false">
         <Error Message="Configuration not recognized"/>
     </If>
@@ -117,6 +114,10 @@
             <FileMapping Name="*" Options="(VectorTable +FIRST)" />
         </ExecRegion>
         
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
+        </ExecRegion>
+
         <!-- To enable re-initialization of the LWIP stack, which has no built-in support
              for re-init, all RW and ZI data for the stack is placed into an isolated region
              and the HAL soft reboot code handles re-initializing the data in this region.
@@ -126,21 +127,11 @@
           <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib" Options="(+RW-DATA +ZI)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_ETHERNET" Base="+0" Options="ABSOLUTE" Size="0x1E00">
-          <FileMapping Name="STM32F4_ETH_rx_desc.obj" Options="(+ZI)" />
-          <FileMapping Name="STM32F4_ETH_tx_desc.obj" Options="(+ZI)" />
-        </ExecRegion>
-
-        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
-            <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
-        </ExecRegion>
-
         <ExecRegion Name="ER_RAM_RO" Base="+0" Options="ABSOLUTE" Size="">
             <!-- Flash programming from Flash is safe on STM32 -->
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
-
 
         <!-- ========= EXTERNAL RAM ============================================= -->
         <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="ABSOLUTE UNINIT" Size="">
@@ -185,22 +176,16 @@
         </ExecRegion>
     </LoadRegion>
 
-    <!-- If this variable is defined, create a separate section for the tinyclr.dat file -->
-
-    <IfDefined Name="Data_BaseAddress">
         <LoadRegion Name="LR_DAT" Base="%Data_BaseAddress%" Options="ABSOLUTE" Size="%Data_Size%">
             <ExecRegion Name="ER_DAT" Base="%Data_BaseAddress%" Options="FIXED" Size="%Data_Size%">
                 <FileMapping Name="tinyclr_dat.obj" Options="(+RO)" />
             </ExecRegion>
         </LoadRegion>
-    </IfDefined>
 
-    <IfDefined Name="Config_BaseAddress">
         <LoadRegion Name="LR_CONFIG" Base="%Config_BaseAddress%" Options="ABSOLUTE" Size="%Config_Size%">
             <ExecRegion Name="ER_CONFIG" Base="%Config_BaseAddress%" Options="FIXED" Size="%Config_Size%">
                 <FileMapping Name="*" Options="(SectionForConfig)" />
             </ExecRegion>
         </LoadRegion>
-    </IfDefined>
 </ScatterFile>
 

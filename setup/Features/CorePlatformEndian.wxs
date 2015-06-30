@@ -5,8 +5,10 @@
              Description="A set of managed assemblies that comprise the core of the .NET MF"
              Display="hidden"
              Level="1">
+
       <ComponentRef Id="Component_le_Microsoft.SPOT.Alljoyn" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Alljoyn.Services" />
+      <ComponentRef Id="Component_le_Windows.Devices" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware.PWM" />
       <ComponentRef Id="Component_le_Microsoft.SPOT.Hardware.SerialPort" />
@@ -49,8 +51,10 @@
              Description="A set of managed assemblies that comprise the core of the .NET MF"
              Display="hidden"
              Level="1">
+
       <ComponentRef Id="Component_be_Microsoft.SPOT.Alljoyn" />
       <ComponentRef Id="Component_be_Microsoft.SPOT.Alljoyn.Services" />
+      <ComponentRef Id="Component_be_Windows.Devices" />
       <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware"/>
       <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware.PWM" />
       <ComponentRef Id="Component_be_Microsoft.SPOT.Hardware.SerialPort"/>
@@ -85,5 +89,5 @@
       <ComponentRef Id="Component_be_Microsoft.SPOT.Wireless.IEEE_802_15_4.Phy" />
     </Feature>
 
-  </Fragment>  
+  </Fragment>
 </Wix>

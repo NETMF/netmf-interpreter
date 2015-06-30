@@ -11,7 +11,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <cores\arm\include\cpu.h>
+#include <tinyhal.h>
 #include "..\stm32f10x.h"
 
 
@@ -72,7 +72,7 @@ UINT64 CPU_MillisecondsToTicks( UINT32 Ticks32 )
 
 #pragma arm section code = "SectionForFlashOperations"
 
-UINT64 __section(SectionForFlashOperations) CPU_MicrosecondsToTicks( UINT64 uSec )
+UINT64 __section("SectionForFlashOperations") CPU_MicrosecondsToTicks( UINT64 uSec )
 {
 #if ONE_MHZ <= SLOW_CLOCKS_PER_SECOND
     return uSec * (SLOW_CLOCKS_PER_SECOND / ONE_MHZ);
@@ -81,7 +81,7 @@ UINT64 __section(SectionForFlashOperations) CPU_MicrosecondsToTicks( UINT64 uSec
 #endif
 }
 
-UINT32 __section(SectionForFlashOperations) CPU_MicrosecondsToTicks( UINT32 uSec )
+UINT32 __section("SectionForFlashOperations") CPU_MicrosecondsToTicks( UINT32 uSec )
 {
 #if ONE_MHZ <= SLOW_CLOCKS_PER_SECOND
     return uSec * (SLOW_CLOCKS_PER_SECOND / ONE_MHZ);
@@ -139,7 +139,7 @@ void Timer_Interrupt (void* param) // timer2 compare event
 
 #pragma arm section code = "SectionForFlashOperations"
 
-UINT64 __section(SectionForFlashOperations) HAL_Time_CurrentTicks()
+UINT64 __section("SectionForFlashOperations") HAL_Time_CurrentTicks()
 {
     UINT32 t2, t3, t4; // cascaded timers
     do {
@@ -239,7 +239,7 @@ BOOL HAL_Time_Uninitialize()
 //
 #define STM32_SLEEP_USEC_FIXED_OVERHEAD_CLOCKS 3
 
-void __section(SectionForFlashOperations) HAL_Time_Sleep_MicroSeconds( UINT32 uSec )
+void __section("SectionForFlashOperations") HAL_Time_Sleep_MicroSeconds( UINT32 uSec )
 {
     GLOBAL_LOCK(irq);
 

@@ -15,7 +15,7 @@
 
 #define FLASH_BYTES_PER_SECTOR               2
 #define FLASH_SECTOR_WRITE_TYPICAL_TIME_USEC 1400    // not used
-#define FLASH_BLOCK_ERASE_ACTUAL_TIME_USEC   800000 // not used
+#define FLASH_BLOCK_ERASE_ACTUAL_TIME_USEC   800000  // not used
 #define FLASH_BLOCK_ERASE_MAX_TIME_USEC      6000000 // not used
 
 #define FLASH_ADDRESS1                       0x60000000
@@ -28,7 +28,7 @@
 
 // EBIU Information
 
-#define M29W640FB__SIZE_IN_BYTES     0x00800000    // 8MB
+#define M29W640FB__SIZE_IN_BYTES     0x00800000      // 8MB
 #define M29W640FB__WP_GPIO_PIN       GPIO_PIN_NONE
 #define M29W640FB__WP_ACTIVE         FALSE
 
@@ -43,21 +43,19 @@
 
 const BlockRange g_M29W640FB_BlockRange1[] =
 {
-    // ER_DAT
-    { BlockRange::BLOCKTYPE_CODE,   0,  7 },    // 8x8KB=64KB
+    // ER_CONFIG
+    { BlockRange::BLOCKTYPE_CONFIG,   0,  7 },        // 8x8KB=64KB
 };
 
 const BlockRange g_M29W640FB_BlockRange2[] =
 {
-    { BlockRange::BLOCKTYPE_CODE,   0,  1 },    // 2x64KB = 128K, total = 192KB
-
     // ER_DAT
-    { BlockRange::BLOCKTYPE_CONFIG,   2,  2 },    // 1x64KB = 64KB
+    { BlockRange::BLOCKTYPE_CODE,   0,  2 },          // 3x64KB = 192KB
 #ifdef DEBUG
     // In debug builds with TRACE pins enabled, only 1MB is available
-    { BlockRange::BLOCKTYPE_DEPLOYMENT,   3,  15 },   // 15x64KB = 896KB
+    { BlockRange::BLOCKTYPE_DEPLOYMENT,   3,  15 },   // 13x64KB = 832KB
 #else
-    { BlockRange::BLOCKTYPE_DEPLOYMENT,   3,  126 },  // 126x64KB = 8000KB
+    { BlockRange::BLOCKTYPE_DEPLOYMENT,   3,  126 },  // 124x64KB = 7936KB
 #endif
 };
 
@@ -67,14 +65,14 @@ const BlockRegionInfo  g_M29W640FB_BlkRegion[M29W640FB__NUM_REGIONS] =
     {
         FLASH_ADDRESS1,                 // ByteAddress  Start;         // Starting Sector address
         FLASH_BLOCK1_COUNT,             // UINT32       NumBlocks;     // total number of blocks in this region
-        FLASH_BLOCK1_BYTES_PER_BLOCK,     // UINT32       BytesPerBlock; // Total number of bytes per block
+        FLASH_BLOCK1_BYTES_PER_BLOCK,   // UINT32       BytesPerBlock; // Total number of bytes per block
         ARRAYSIZE_CONST_EXPR(g_M29W640FB_BlockRange1),
         g_M29W640FB_BlockRange1,
     },
     {
         FLASH_ADDRESS2,                 // ByteAddress  Start;         // Starting Sector address
         FLASH_BLOCK2_COUNT,             // UINT32       NumBlocks;     // total number of blocks in this region
-        FLASH_BLOCK2_BYTES_PER_BLOCK,     // UINT32       BytesPerBlock; // Total number of bytes per block
+        FLASH_BLOCK2_BYTES_PER_BLOCK,   // UINT32       BytesPerBlock; // Total number of bytes per block
         ARRAYSIZE_CONST_EXPR(g_M29W640FB_BlockRange2),
         g_M29W640FB_BlockRange2,
     }

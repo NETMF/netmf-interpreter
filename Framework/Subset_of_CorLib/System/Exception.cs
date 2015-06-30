@@ -58,7 +58,7 @@ namespace System
 
         public override String ToString()
         {
-            String message = _message;
+            String message = Message;
             String s = base.ToString();
 
             if (message != null && message.Length > 0)

@@ -81,13 +81,13 @@
     -->
     <ItemGroup Condition="'$(CpuName)'=='Cortex-M4'">
         <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM4.c" />
-        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM4.c" />
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM4.s" />
     </ItemGroup>
     <ItemGroup Condition="'$(CpuName)'=='Cortex-M3'">
         <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM3.c" />
-        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM3.c" />
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM3.s" />
     </ItemGroup>
-	<Import Project="$(SPOCLIENT)\Framework\Features\RTX_Config.libcatproj" />
+    <Import Project="$(SPOCLIENT)\Framework\Features\RTX_Config.libcatproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
     <Target Name="CheckPreRquisitesInstalled">
         <Error Code="NETMFBLD"

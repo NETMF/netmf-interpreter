@@ -41,16 +41,16 @@ BOOL DebuggerPort_Uninitialize( COM_HANDLE ComPortNum )
     return FALSE;
 }
 
-int DebuggerPort_Write( COM_HANDLE ComPortNum, const char* Data, size_t size )
+int DebuggerPort_Write( COM_HANDLE ComPortNum, const char* Data, size_t size, int maxRetries )
 {
     NATIVE_PROFILE_PAL_COM();
     
     UINT32       transport = ExtractTransport(ComPortNum);
     const char*  dataTmp   = Data;
     INT32        totWrite  = 0;
-    int          retries   = 100;
+    int          retries   = maxRetries + 1;
 
-    while(size > 0 && retries--)
+    while(size > 0 && retries > 0 )
     {
         int ret = 0;
         
@@ -66,20 +66,26 @@ int DebuggerPort_Write( COM_HANDLE ComPortNum, const char* Data, size_t size )
                 ret = SOCKETS_Write( ConvertCOM_SockPort(ComPortNum), dataTmp, size );
                 break;
         }
+
         if(ret < 0)
-        {
+        { // error condition, bug out
             break;
         }
         else if(ret == 0)
-        {
-            // if interrupts are off and our buffer is full then there is nothing we can do
-            if(!INTERRUPTS_ENABLED_STATE()) break;
+        { // didn't send any data ( assume buffer full )
+            --retries;
+
+            // if interrupts are off and buffer is full or out of retries
+            // then there is nothing more to do.
+            if(!INTERRUPTS_ENABLED_STATE() || retries <= 0 )
+                break;
 
             Events_WaitForEvents(0, 1);
         }
         else
-        {
-            retries   = 50;   // reset retries
+        { // succesfully transmitted at least some of the data
+          // update counters and loop back to try sending more
+            retries   = maxRetries + 1;
             size     -= ret;
             dataTmp  += ret;
             totWrite += ret;
@@ -88,7 +94,6 @@ int DebuggerPort_Write( COM_HANDLE ComPortNum, const char* Data, size_t size )
 
     return totWrite;
 }
-
 
 int DebuggerPort_Read( COM_HANDLE ComPortNum, char* Data, size_t size )
 {

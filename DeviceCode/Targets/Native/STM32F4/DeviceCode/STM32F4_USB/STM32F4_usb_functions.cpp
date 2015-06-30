@@ -322,7 +322,7 @@ void STM32F4_USB_Driver_EP_RX_Int( OTG_TypeDef* OTG
     }
 
     // read data
-    volatile UINT32* ps = OTG->DFIFO[ ep ];
+    uint32_t volatile* ps = OTG->DFIFO[ ep ];
     for( int c = count; c > 0; c -= 4 )
     {
         *pd++ = *ps;
@@ -381,7 +381,7 @@ void STM32F4_USB_Driver_EP_In_Int( OTG_TypeDef* OTG, USB_CONTROLLER_STATE* State
             OTG->DIEP[ ep ].CTL |= OTG_DIEPCTL_EPENA | OTG_DIEPCTL_CNAK;
 
             // write data
-            volatile UINT32* pd = OTG->DFIFO[ ep ];
+            uint32_t volatile* pd = OTG->DFIFO[ ep ];
             for( int c = count; c > 0; c -= 4 )
             {
                 *pd = *ps++;
