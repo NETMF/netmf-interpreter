@@ -64,7 +64,7 @@ namespace sample_client
 
             // Attach to Netowrk Link state change notifications
             var netmon = new NetworkStateMonitor();
-
+            int retry = 0;
 
             while (!done) {
 
@@ -74,12 +74,22 @@ namespace sample_client
 
                 if (!connected) {
 
-                    status = myAlljoyn.ClientConnectBus(bus, null, CONNECT_TIMEOUT);
+                    do
+                    {
+                      status = myAlljoyn.ClientConnectBus(bus, null, CONNECT_TIMEOUT);
+                    } while (status != AJ_Status.AJ_OK);
 
-                    status = myAlljoyn.ClientFindService(bus, ServiceName, null, CONNECT_TIMEOUT);
-
-                    status = myAlljoyn.ClientConnectService(bus, CONNECT_TIMEOUT, ServiceName, ServicePort, ref sessionId, null, ref fullServiceName);
-
+                    do
+                    {
+                      status = myAlljoyn.ClientFindService(bus, ServiceName, null, CONNECT_TIMEOUT);
+                    } while (status != AJ_Status.AJ_OK);
+                    retry = 0;
+                    do
+                    {
+                        status = myAlljoyn.ClientConnectService(bus, CONNECT_TIMEOUT, ServiceName, ServicePort, ref sessionId, null, ref fullServiceName);
+                        if (retry++ > 10) break;
+                    } while (status != AJ_Status.AJ_OK);
+                    
                     if (status == AJ_Status.AJ_OK) {
                         connected = true;
                         MakeMethodCall(bus, sessionId, myAlljoyn);

@@ -37,13 +37,6 @@ namespace Microsoft.NETMF.Networking
                         continue;
 
                     Debug.Print( "Found IP: " + itf.IPAddress );
-                    Debug.Print( "     MAC: " + itf.PhysicalAddress[ 0 ]
-                                              + ":" + ((uint)itf.PhysicalAddress[ 1 ]).ToString( "X" )
-                                              + ":" + ((uint)itf.PhysicalAddress[ 2 ]).ToString( "X" )
-                                              + ":" + ((uint)itf.PhysicalAddress[ 3 ]).ToString( "X" )
-                                              + ":" + ((uint)itf.PhysicalAddress[ 4 ]).ToString( "X" )
-                                              + ":" + ((uint)itf.PhysicalAddress[ 5 ]).ToString( "X" )
-                                              );
                     return;
                 }
             }while( StatusChanged.WaitOne() );
