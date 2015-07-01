@@ -1449,16 +1449,16 @@ extern const ConfigurationSector g_ConfigurationSector;
 
 #if !defined(BUILD_RTM)
 
-#define DEBUG_TRACE0(t, s)                              if(((t) & DEBUG_TRACE) != 0) hal_printf( (s)                                               )
-#define DEBUG_TRACE1(t, s, p1)                          if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1)                                         )
-#define DEBUG_TRACE2(t, s, p1,p2)                       if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2)                                    )
-#define DEBUG_TRACE3(t, s, p1,p2,p3)                    if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2),(p3)                               )
-#define DEBUG_TRACE4(t, s, p1,p2,p3,p4)                 if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2),(p3),(p4)                          )
-#define DEBUG_TRACE5(t, s, p1,p2,p3,p4,p5)              if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2),(p3),(p4),(p5)                     )
-#define DEBUG_TRACE6(t, s, p1,p2,p3,p4,p5,p6)           if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6)                )
-#define DEBUG_TRACE7(t, s, p1,p2,p3,p4,p5,p6,p7)        if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6),(p7)           )
-#define DEBUG_TRACE8(t, s, p1,p2,p3,p4,p5,p6,p7,p8)     if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6),(p7),(p8)      )
-#define DEBUG_TRACE9(t, s, p1,p2,p3,p4,p5,p6,p7,p8,p9)  if(((t) & DEBUG_TRACE) != 0) hal_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6),(p7),(p8),(p9) )
+#define DEBUG_TRACE0(t, s)                              if(((t) & DEBUG_TRACE) != 0) debug_printf( (s)                                               )
+#define DEBUG_TRACE1(t, s, p1)                          if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1)                                         )
+#define DEBUG_TRACE2(t, s, p1,p2)                       if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2)                                    )
+#define DEBUG_TRACE3(t, s, p1,p2,p3)                    if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2),(p3)                               )
+#define DEBUG_TRACE4(t, s, p1,p2,p3,p4)                 if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2),(p3),(p4)                          )
+#define DEBUG_TRACE5(t, s, p1,p2,p3,p4,p5)              if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2),(p3),(p4),(p5)                     )
+#define DEBUG_TRACE6(t, s, p1,p2,p3,p4,p5,p6)           if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6)                )
+#define DEBUG_TRACE7(t, s, p1,p2,p3,p4,p5,p6,p7)        if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6),(p7)           )
+#define DEBUG_TRACE8(t, s, p1,p2,p3,p4,p5,p6,p7,p8)     if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6),(p7),(p8)      )
+#define DEBUG_TRACE9(t, s, p1,p2,p3,p4,p5,p6,p7,p8,p9)  if(((t) & DEBUG_TRACE) != 0) debug_printf( (s), (p1),(p2),(p3),(p4),(p5),(p6),(p7),(p8),(p9) )
 
 #else
 

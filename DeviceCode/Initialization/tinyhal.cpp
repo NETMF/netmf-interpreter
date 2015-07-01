@@ -382,9 +382,7 @@ void HAL_Initialize()
 
     LCD_Initialize();
     
-#if !defined(HAL_REDUCESIZE)
     CPU_InitializeCommunication();
-#endif
 
     I2C_Initialize();
 
