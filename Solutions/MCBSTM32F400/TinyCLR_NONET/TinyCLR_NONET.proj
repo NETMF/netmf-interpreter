@@ -64,6 +64,10 @@
     <Import Condition="'$(WINDOWS_DEVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Windows_Devices.featureproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
     <ItemGroup>
+        <DriverLibs Include="CortexMx_ItmPort.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\ItmPort\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
         <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\stubs\dotnetmf.proj" />
     </ItemGroup>
