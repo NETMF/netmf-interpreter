@@ -55,7 +55,7 @@ static void findPhyAddr()
         if ((value == PHY_KENDIN_OUI_ID1) || (value == PHY_ST802RT1X_OUI_ID1))
         {
             rc = phyAddress;
-            debug_printf( "Valid PHY Found: %x (%x)\r\n", rc, value);
+            hal_printf( "Valid PHY Found: %x (%x)\r\n", rc, value);
             g_foundPhyAddress = TRUE;
             g_phyAddress = phyAddress;
             
@@ -189,7 +189,7 @@ EthMode eth_enableAutoNegotiation()
         return ETHMODE_FAIL;
 
 #if (DEBUG_TRACE)    
-    debug_printf("PHY CR status 0x%x \n",status);
+    hal_printf("PHY CR status 0x%x \n",status);
 #endif 
 
     // Start Auto Negotiation    
@@ -210,13 +210,13 @@ EthMode eth_enableAutoNegotiation()
     // Check auto negotiation completed
     if ((status & PHY_SR_ANEGC) != PHY_SR_ANEGC)
     {
-        debug_printf("autonegotiate failed. Status: %x\n", status);    
+        hal_printf("autonegotiate failed. Status: %x\n", status);    
         return ETHMODE_FAIL;
 
     }
     
 #if (DEBUG_TRACE)
-    debug_printf("Autonegotiate Complete SR:%x\n", status);
+    hal_printf("Autonegotiate Complete SR:%x\n", status);
 #endif
 
 #if STM32F4_ETH_PHY_MII

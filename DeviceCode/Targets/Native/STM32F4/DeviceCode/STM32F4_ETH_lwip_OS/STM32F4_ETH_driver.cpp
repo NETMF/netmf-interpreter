@@ -228,7 +228,7 @@ void eth_resumeDmaReception()
 void eth_dmaInterruptHandler()
 {
     #if defined (_DEBUG) && DEBUG_DMA_INT
-    debug_printf("DMA Int:");
+    hal_printf("DMA Int:");
     #endif
 
     // Normal interrupt summary
@@ -239,7 +239,7 @@ void eth_dmaInterruptHandler()
         {
             // Ethernet frame received
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" RS");
+            hal_printf(" RS");
             #endif
 
             // Clear interrupt flag
@@ -257,7 +257,7 @@ void eth_dmaInterruptHandler()
         {
             // Ethernet frame sent
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" TS");
+            hal_printf(" TS");
             #endif
 
             // Clear interrupt flag
@@ -269,7 +269,7 @@ void eth_dmaInterruptHandler()
         {
             // Transmit buffer unavailable
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" TBUS");
+            hal_printf(" TBUS");
             #endif
 
             // Clear interrupt flag, transmition is resumed after descriptors have been prepared
@@ -281,7 +281,7 @@ void eth_dmaInterruptHandler()
         {
             // Early receive
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" ERS");
+            hal_printf(" ERS");
             #endif
 
             // Clear interrupt flag. Also cleared automatically by RI
@@ -301,7 +301,7 @@ void eth_dmaInterruptHandler()
         {
             // Fatal bus error
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" FBES");
+            hal_printf(" FBES");
             #endif
 
             // Clear interrupt flag
@@ -313,7 +313,7 @@ void eth_dmaInterruptHandler()
         {
             // Transmit process stopped
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" TPSS");
+            hal_printf(" TPSS");
             #endif
 
             // Clear interrupt flag
@@ -325,7 +325,7 @@ void eth_dmaInterruptHandler()
         {
             // Transmit jabber timeout
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" TJTS");
+            hal_printf(" TJTS");
             #endif
 
             // Clear interrupt flag
@@ -337,7 +337,7 @@ void eth_dmaInterruptHandler()
         {
             // Receive overflow
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" ROS");
+            hal_printf(" ROS");
             #endif
 
             // Clear interrupt flag
@@ -349,7 +349,7 @@ void eth_dmaInterruptHandler()
         {
             // Transmit underflow
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" TUS");
+            hal_printf(" TUS");
             #endif
 
             // Clear interrupt flag
@@ -361,7 +361,7 @@ void eth_dmaInterruptHandler()
         {
             // Receive buffer unavailable
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" RBUS");
+            hal_printf(" RBUS");
             #endif
 
             // Clear interrupt flag
@@ -373,7 +373,7 @@ void eth_dmaInterruptHandler()
         {
             // Receive process stopped
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" RPSS");
+            hal_printf(" RPSS");
             #endif
 
             // Clear interrupt flag
@@ -385,7 +385,7 @@ void eth_dmaInterruptHandler()
         {
             // Receive watchdog timeout
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" RWTS");
+            hal_printf(" RWTS");
             #endif
 
             // Clear interrupt flag
@@ -397,7 +397,7 @@ void eth_dmaInterruptHandler()
         {
             // Early transmit interrupt
             #if defined (_DEBUG) && DEBUG_DMA_INT
-            debug_printf(" ETS");
+            hal_printf(" ETS");
             #endif
 
             // Clear interrupt flag
@@ -410,7 +410,7 @@ void eth_dmaInterruptHandler()
     }
 
     #if defined (_DEBUG) && DEBUG_DMA_INT
-    debug_printf("\r\n");
+    hal_printf("\r\n");
     #endif
 }
 
