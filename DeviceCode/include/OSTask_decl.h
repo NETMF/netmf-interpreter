@@ -6,7 +6,6 @@
 #define _DRIVERS_OSTASK_DECL_H_ 1
 
 //--//
-#include "Tinyhal.h"
 
 #include "ASyncProcCalls_decl.h"
 
