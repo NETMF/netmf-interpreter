@@ -22,7 +22,7 @@
 #elif defined(PLATFORM_ARM_STM32F4)
 #define STM32F4XX
 #else
-ERROR - WE SHOULD NOT INCLUDE THIS HEADER IF NOT BUILDING A STM32F2/F4 PLATFORM
+ERROR - WE SHOULD NOT INCLUDE THIS HEADER IF NOT BUILDING AN STM32F2/F4 PLATFORM
 #endif
 
 /////////////////////////////////////////////////////////
@@ -61,9 +61,11 @@ ERROR - WE SHOULD NOT INCLUDE THIS HEADER IF NOT BUILDING A STM32F2/F4 PLATFORM
 //
 
 // Port definitions
-#define ITM_VIRTUAL_COMPORTNUM 0
+#ifndef ITM_GENERIC_PORTNUM
+#define ITM_GENERIC_PORTNUM 0
+#endif
 
-#define ITM0                   ConvertCOM_ComHandle( ITM_VIRTUAL_COMPORTNUM ) 
+#define ITM0                   ConvertCOM_GenericHandle( ITM_GENERIC_PORTNUM ) 
 #define COM1                   ConvertCOM_ComHandle(1)
 #define COM2                   ConvertCOM_ComHandle(2)
 #define COM3                   ConvertCOM_ComHandle(3)

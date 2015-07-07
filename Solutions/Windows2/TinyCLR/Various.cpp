@@ -503,16 +503,14 @@ int hal_vfprintf( COM_HANDLE stream, const char* format, va_list arg )
 
     switch(ExtractTransport(stream))
     {
-    case USART_TRANSPORT:
-    case USB_TRANSPORT:
-    case SOCKET_TRANSPORT:
+    default:
         DebuggerPort_Write( stream, buffer, chars, 0 ); // skip null terminator
         break;
 
     case LCD_TRANSPORT:
         break;
 
-    default:
+    case FLASH_WRITE_TRANSPORT:
         _ASSERTE(FALSE);
     }
 

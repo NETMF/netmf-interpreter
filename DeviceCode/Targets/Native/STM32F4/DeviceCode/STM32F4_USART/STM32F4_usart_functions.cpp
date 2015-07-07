@@ -106,10 +106,6 @@ void STM32F4_USART_Interrupt5 (void* param)
 
 BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBits, int StopBits, int FlowValue )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return TRUE;
-
-    --ComPortNum;
     if (ComPortNum >= TOTAL_USART_PORT)
         return FALSE;
 
@@ -232,8 +228,8 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
         CPU_INTC_ActivateInterrupt(USART6_IRQn, STM32F4_USART_Interrupt5, 0);
         break;
 
-// some SoCS have more UARTs (default is 6 + ITM channel 0)
-#if TOTAL_USART_PORT > 7 
+// some SoCS have more UARTs (default is 6 )
+#if TOTAL_USART_PORT > 6 
     case 6:
         CPU_INTC_ActivateInterrupt(UART7_IRQn, STM32F4_USART_Interrupt4, 0);
         break;
@@ -251,10 +247,6 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
 
 BOOL CPU_USART_Uninitialize( int ComPortNum )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return TRUE;
-
-    --ComPortNum;
     GLOBAL_LOCK(irq);
     
     g_STM32F4_Uart_Ports[ComPortNum]->CR1 = 0; // stop uart
@@ -285,8 +277,8 @@ BOOL CPU_USART_Uninitialize( int ComPortNum )
         CPU_INTC_DeactivateInterrupt(USART6_IRQn);
         break;
 
-// some SoCS have more UARTs (default is 6 + ITM channel 0)
-#if TOTAL_USART_PORT > 7 
+// some SoCS have more UARTs (default is 6 )
+#if TOTAL_USART_PORT > 6 
     case 6:
         CPU_INTC_DeactivateInterrupt(UART7_IRQn);
         break;
@@ -322,10 +314,6 @@ BOOL CPU_USART_Uninitialize( int ComPortNum )
 
 BOOL CPU_USART_TxBufferEmpty( int ComPortNum )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return TRUE;
-
-    --ComPortNum;
     if (g_STM32F4_Uart_Ports[ComPortNum]->SR & USART_SR_TXE)
         return TRUE;
 
@@ -334,10 +322,6 @@ BOOL CPU_USART_TxBufferEmpty( int ComPortNum )
 
 BOOL CPU_USART_TxShiftRegisterEmpty( int ComPortNum )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return TRUE;
-
-    --ComPortNum;
     if (g_STM32F4_Uart_Ports[ComPortNum]->SR & USART_SR_TC)
         return TRUE;
 
@@ -346,12 +330,6 @@ BOOL CPU_USART_TxShiftRegisterEmpty( int ComPortNum )
 
 void CPU_USART_WriteCharToTxBuffer( int ComPortNum, UINT8 c )
 {   
-    if (ComPortNum == ITM_VIRTUAL_COMPORTNUM)
-    {
-        ITM_SendChar(c);
-        return;
-    }
-    --ComPortNum;
 #ifdef DEBUG
     ASSERT(CPU_USART_TxBufferEmpty(ComPortNum));
 #endif
@@ -360,10 +338,6 @@ void CPU_USART_WriteCharToTxBuffer( int ComPortNum, UINT8 c )
 
 void CPU_USART_TxBufferEmptyInterruptEnable( int ComPortNum, BOOL Enable )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return;
-
-    --ComPortNum;
     ptr_USART_TypeDef uart = g_STM32F4_Uart_Ports[ComPortNum];
     if (Enable) 
     {
@@ -377,10 +351,6 @@ void CPU_USART_TxBufferEmptyInterruptEnable( int ComPortNum, BOOL Enable )
 
 BOOL CPU_USART_TxBufferEmptyInterruptState( int ComPortNum )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return FALSE; // no TX interrupt for ITM port, it is one word at a time pulled by hardware
-
-    --ComPortNum;
     if (g_STM32F4_Uart_Ports[ComPortNum]->CR1 & USART_CR1_TXEIE)
         return TRUE;
 
@@ -389,10 +359,6 @@ BOOL CPU_USART_TxBufferEmptyInterruptState( int ComPortNum )
 
 void CPU_USART_RxBufferFullInterruptEnable( int ComPortNum, BOOL Enable )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return;
-
-    --ComPortNum;
     ptr_USART_TypeDef uart = g_STM32F4_Uart_Ports[ComPortNum];
     if (Enable) 
     {
@@ -406,11 +372,6 @@ void CPU_USART_RxBufferFullInterruptEnable( int ComPortNum, BOOL Enable )
 
 BOOL CPU_USART_RxBufferFullInterruptState( int ComPortNum )
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return FALSE; // there is no receive interrupt for ITM; it's one way only.
-
-    --ComPortNum;
-
     if (g_STM32F4_Uart_Ports[ComPortNum]->CR1 & USART_CR1_RXNEIE)
         return TRUE;
 
@@ -419,8 +380,6 @@ BOOL CPU_USART_RxBufferFullInterruptState( int ComPortNum )
 
 BOOL CPU_USART_TxHandshakeEnabledState( int ComPortNum )
 {
-    --ComPortNum;
-
     // The state of the CTS input only matters if Flow Control is enabled
 #ifdef STM32F4_UART_CTS_PINS
     if( (UINT32)ComPortNum < ARRAYSIZE_CONST_EXPR(g_STM32F4_Uart_CTS_Pins)
@@ -436,11 +395,6 @@ BOOL CPU_USART_TxHandshakeEnabledState( int ComPortNum )
 
 void CPU_USART_ProtectPins( int ComPortNum, BOOL On )  // idempotent
 {
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return;
-
-    --ComPortNum;
-
     if (On)
     {
         CPU_USART_RxBufferFullInterruptEnable(ComPortNum, FALSE);
@@ -461,11 +415,6 @@ UINT32 CPU_USART_PortsCount()
 void CPU_USART_GetPins( int ComPortNum, GPIO_PIN& rxPin, GPIO_PIN& txPin,GPIO_PIN& ctsPin, GPIO_PIN& rtsPin )
 {
     rxPin = txPin = ctsPin = rtsPin = GPIO_PIN_NONE;
-    if( ComPortNum == ITM_VIRTUAL_COMPORTNUM )
-        return;
-
-    --ComPortNum;
-
     if ((UINT32)ComPortNum >= ARRAYSIZE_CONST_EXPR(g_STM32F4_Uart_RxD_Pins))
         return;
 
@@ -483,13 +432,6 @@ void CPU_USART_GetPins( int ComPortNum, GPIO_PIN& rxPin, GPIO_PIN& txPin,GPIO_PI
 
 void CPU_USART_GetBaudrateBoundary( int ComPortNum, UINT32 & maxBaudrateHz, UINT32 & minBaudrateHz )
 {
-    if (ComPortNum == ITM_VIRTUAL_COMPORTNUM)
-    {
-        maxBaudrateHz = 0;
-        minBaudrateHz = 0;
-        return;
-    }
-    --ComPortNum;
     UINT32 clk = SYSTEM_APB2_CLOCK_HZ;
     if (ComPortNum && ComPortNum != 5)
         clk = SYSTEM_APB1_CLOCK_HZ;
@@ -500,24 +442,11 @@ void CPU_USART_GetBaudrateBoundary( int ComPortNum, UINT32 & maxBaudrateHz, UINT
 
 BOOL CPU_USART_SupportNonStandardBaudRate( int ComPortNum )
 {
-    if (ComPortNum == ITM_VIRTUAL_COMPORTNUM)
-        return FALSE;
-
     return TRUE;
 }
 
 BOOL CPU_USART_IsBaudrateSupported( int ComPortNum, UINT32& BaudrateHz )
 {
-    if (ComPortNum == ITM_VIRTUAL_COMPORTNUM)
-    {
-        if ( BaudrateHz == 0 )
-            return TRUE;
-        
-        BaudrateHz = 0;
-        return FALSE;
-    }
-    
-    --ComPortNum;
     UINT32 max = SYSTEM_APB2_CLOCK_HZ >> 4;
     if (ComPortNum && ComPortNum != 5)
         max = SYSTEM_APB1_CLOCK_HZ >> 4;

@@ -70,13 +70,13 @@ typedef intptr_t    mem_ptr_t;
 #define PACK_STRUCT_END
 
 /* Plaform specific diagnostic output */
-extern void debug_printf(const char *format, ...);
+extern void hal_printf(const char *format, ...);
 
 #define LWIP_PLATFORM_DIAG(x) do {debug_printf x;} while(0)
 
 #ifndef LWIP_NOASSERT
 #define LWIP_PLATFORM_ASSERT(x) \
-  do {debug_printf("LWIP Assertion \"%s\" failed at line %d in %s\n", \
+  do {hal_printf("LWIP Assertion \"%s\" failed at line %d in %s\n", \
              x, __LINE__, __FILE__); } while(0)
 #else
 #define LWIP_PLATFORM_ASSERT(x)

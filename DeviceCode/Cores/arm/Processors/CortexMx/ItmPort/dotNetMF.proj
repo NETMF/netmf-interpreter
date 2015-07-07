@@ -1,12 +1,12 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <AssemblyName>GlobalLock_hal_Cortex</AssemblyName>
-        <ProjectGuid>{A839EEC5-C737-48C5-958B-BBF12920AA41}</ProjectGuid>
-        <Description>Cortex-Mx Global lock</Description>
+        <AssemblyName>CortexMx_ItmPort</AssemblyName>
+        <ProjectGuid>{E30D2587-7481-4ECB-A961-16A8BA3DECB9}</ProjectGuid>
+        <Description>Cortex-Mx Generic ITM port</Description>
         <Level>HAL</Level>
-        <LibraryFile>GlobalLock_hal_Cortex.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj</ProjectPath>
-        <ManifestFile>GlobalLock_hal_Cortex.$(LIB_EXT).manifest</ManifestFile>
+        <LibraryFile>CortexMx_ItmPort.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\ItmPort\dotNetMF.proj</ProjectPath>
+        <ManifestFile>CortexMx_ItmPort.$(LIB_EXT).manifest</ManifestFile>
         <Documentation>
         </Documentation>
         <PlatformIndependent>False</PlatformIndependent>
@@ -21,7 +21,7 @@
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
     <PropertyGroup />
     <ItemGroup>
-        <Compile Include="SmartPtr_cortex.cpp" />
+        <Compile Include="ItmPort.cpp" />
     </ItemGroup>
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>

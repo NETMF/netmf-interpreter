@@ -7,8 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if 0
-#define TRACE0( msg, ...) debug_printf( msg ) 
-#define TRACE( msg, ...) debug_printf( msg, __VA_ARGS__ ) 
+#define TRACE0( msg, ...) hal_printf( msg ) 
+#define TRACE( msg, ...) hal_printf( msg, __VA_ARGS__ ) 
 #else
 #define TRACE0(msg,...)
 #define TRACE(msg,...)
