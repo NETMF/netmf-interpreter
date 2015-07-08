@@ -13,7 +13,6 @@
     </Metadata>
     <Installation InstalledByMsi="false">
         <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[14.0,15.0)" />
-        <InstallationTarget Version="[12.0,13.0)" Id="Microsoft.VisualStudio.VSWinDesktopExpress" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
@@ -21,7 +20,7 @@
     </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" Path="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="ItemTemplates" />        
+        <Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="ItemTemplates" />
         <Asset Type="Microsoft.VisualStudio.VsPackage" Path="Microsoft.SPOT.Debugger.CorDebug.14.pkgdef" />
     </Assets>
 </PackageManifest>

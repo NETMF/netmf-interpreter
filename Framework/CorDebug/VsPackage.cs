@@ -63,7 +63,6 @@ namespace Microsoft.SPOT.Debugger
                           , TemplateIDsVsTemplate=VsPackage.VbTemplateIds
                           )
     ]
-    [ProvideExpressLoadKey( "4.3.0.0", "Microsoft .NET Micro Framework SDK", "Microsoft Corporation", VsWinExpressId=1001 )]
     [ProvideObject( typeof( PropertyPageComObject ) )]
     [ProvideObject( typeof( CorDebug ) )]
     [ProvideDebugEngine]

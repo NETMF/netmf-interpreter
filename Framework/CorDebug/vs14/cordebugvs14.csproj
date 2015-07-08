@@ -28,7 +28,6 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <NetMFBuildVsSdkVersion>14</NetMFBuildVsSdkVersion>
-    <OutDir>$(BUILD_TREE_SERVER)\DLL\</OutDir>
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
