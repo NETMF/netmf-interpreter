@@ -75,6 +75,7 @@ extern "C" {
 #define PHY_RMII_ANEG_ADVERT_SPEED_MASK     ( PHY_RMII_ANEG_ADVERT_100BASE_T4 | PHY_RMII_ANEG_ADVERT_100BASE_TXF | PHY_RMII_ANEG_ADVERT_100BASE_TX | PHY_RMII_ANEG_ADVERT_10BASE_TF | PHY_RMII_ANEG_ADVERT_10BASE_T)
 
 #define PHY_AUTO_NEGOTIATION_TIMEOUT        0x00100000U     // Auto negotiation timeout
+
 #define PHY_ST802RT1X_OUI               0x80E1U         // ST802RT1x PHY unique identifier
 #define PHY_ST802RT1X_OUI_ID1           0x0203U         // the value directly read out from ID1
 
@@ -88,7 +89,6 @@ extern "C" {
 #define PHY_LINK_TIMEOUT                0x0004FFFFU     // PHY link timeout
 #define PHY_RESET_DELAY                 0x000FFFFFU     // PHY reset delay
 #define PHY_RESPONSE_TIMEOUT            0x0004FFFFU     // PHY response timeout
-#define PHY_TERIDIAN_OUI                0x000EU         // Teridian unique identifier
 // for KSZ8081RNB
 #define PHY_KENDIN_OUI                  0x10A1U
 #define PHY_KENDIN_OUI_ID1              0x0022U
@@ -109,19 +109,20 @@ enum EthMode
     ETHMODE_100MBPS_FDPX = ETHMODE_100MPS_BIT | ETHMODE_FULLDPX_BIT,
 };
 
+
 //--------------------------------------------------------------------------------------------
 // Typedefs and enums
 //--------------------------------------------------------------------------------------------
 
-typedef BOOL (*pRead)(const uint32_t, uint16_t *const);
-typedef BOOL (*pWrite)(const uint32_t, const uint16_t);
+//typedef BOOL (*pRead)(uint32_t, const uint32_t, uint16_t *const);
+//typedef BOOL (*pWrite)(uint32_t, const uint32_t, const uint16_t);
 
 //--------------------------------------------------------------------------------------------
 // Functions prototypes
 //--------------------------------------------------------------------------------------------
 
-void initReadPhyCallback(pRead readCallback);
-void initWritePhyCallback(pWrite writeCallback);
+//void initReadPhyCallback(pRead readCallback);
+// initWritePhyCallback(pWrite writeCallback);
 
 BOOL eth_phyReset();
 BOOL eth_isPhyLinkValid(BOOL isCallBlocking);

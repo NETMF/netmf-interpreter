@@ -102,6 +102,8 @@
   <Import Condition="'$(SERIAL_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" />
   <Import Condition="'$(XML_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Xml.featureproj" />
   <Import Condition="'$(PWM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\PWM.featureproj" />
+  <Import Condition="'$(ALLJOYN_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Alljoyn.featureproj" />
+  <Import Condition="'$(ALLJOYN_SERVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Alljoyn_Services.featureproj" />  
   <Import Condition="'$(ONEWIRE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\OneWire.featureproj" />
   <Import Condition="'$(INTEROPSAMPLE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\InteropSample.featureproj" />
   <Import Condition="'$(SERIALPORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SerialPort.featureproj" />
@@ -133,6 +135,29 @@
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\dotNetMF.proj" />
     <DriverLibs Include="PKCS11_Engine.$(LIB_EXT)" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\OSTask\dotNetMF.proj" />
+    <DriverLibs Include="ostask_pal.$(LIB_EXT)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Alljoyn\dotNetMF.proj" />
+    <PlatformIndependentLibs Include="SPOT_Alljoyn.$(LIB_EXT)" />
+    <!--<DriverLibs Include="SPOT_Alljoyn.$(LIB_EXT)" />-->
+  </ItemGroup>    
+  <ItemGroup>
+	<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\ajtcl\dotNetMF.proj" />
+	<DriverLibs Include="ajtcl_core_pal.$(LIB_EXT)" />
+	<DriverLibs Include="ajtcl_target_pal.$(LIB_EXT)" />
+	<DriverLibs Include="ajtcl_crypto_pal.$(LIB_EXT)" />
+  </ItemGroup>
+  
+  <ItemGroup>
+	<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\base_tcl\dotNetMF.proj" />
+    <DriverLibs Include="base_tcl_pal.$(LIB_EXT)" />
+  </ItemGroup>
+  
   <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\tinyclr\dotnetmf.proj" />
     <DriverLibs Include="ssl_types.$(LIB_EXT)" />
@@ -362,6 +387,7 @@
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Diagnostics\dotNetMF.proj" />
     <DriverLibs Include="diagnostics_pal.$(LIB_EXT)" />
   </ItemGroup>
+  
   <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT\SPOT_Messaging\dotNetMF.proj" />
     <PlatformIndependentLibs Include="SPOT_Messaging.$(LIB_EXT)" />

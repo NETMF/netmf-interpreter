@@ -1,0 +1,52 @@
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>ajtcl_crypto_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{4E798E55-35F3-48BD-9876-6065A9A4B3D8}</ProjectGuid>
+    <Description>AllJoyn crypto library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>ajtcl_crypto_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\src\dotNetMF.proj</ProjectPath>
+    <ManifestFile>ajtcl_crypto_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Library</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="AllJoyn Crypto Lib" Guid="{4E798E55-35F3-48BD-9876-6065A9A4B3D8}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2014-11-20</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\ajtcl\src</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\ajtcl\inc;DeviceCode\pal\ajtcl\external\sha2;" />
+    <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
+    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
+    <Compile Include="aj_sw_crypto.cpp" />
+    <Compile Include="ecc\aj_crypto_ecc.cpp" />
+    <Compile Include="ecc\aj_crypto_sha2.cpp" />
+    <Compile Include="..\external\sha2\sha2.cpp" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

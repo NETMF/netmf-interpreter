@@ -1,0 +1,50 @@
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>ajtcl_target_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{FAB0DD58-A335-4F1C-AE28-52BCA205369C}</ProjectGuid>
+    <Description>AllJoyn target library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>ajtcl_target_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\target\win32\dotNetMF.proj</ProjectPath>
+    <ManifestFile>ajtcl_target_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Library</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OneWire_PAL" Guid="{8B4E8B4B-774D-4F2F-AA52-085848AA8D70}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2014-11-15</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\ajtcl\target\win32</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\ajtcl\inc;DeviceCode\pal\ajtcl\target\win32;DeviceCode\pal\ajtcl\external\sha2" />
+    <Compile Include="aj_net.cpp" />
+    <Compile Include="aj_target_crypto.cpp" />
+    <Compile Include="aj_target_nvram.cpp" />
+    <Compile Include="aj_target_util.cpp" />
+  </ItemGroup>
+
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

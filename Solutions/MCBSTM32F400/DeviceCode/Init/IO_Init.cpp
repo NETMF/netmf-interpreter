@@ -66,8 +66,8 @@ void __section("SectionForBootstrapOperations") InitSram()
     FSMC_Bank1->BTCR[4] = sram_fsmc_bcr1;
     
     /* Setup SRAM timing register*/
-    sram_fsmc_btr1 |= 0x02 << 0;        /* Address setup phase duration    should be >8nS. With the value set to 0x02 and a 168Mhz clock, the duration becomes 11.9nS       */
-    sram_fsmc_btr1 |= 0x01 << 8;        /* Data-phase duration    should be >8nS. With the value set to 0x01 and a 168Mhz clock, the duration becomes 11.9nS                */
+    sram_fsmc_btr1 |= 0x03 << 0;        /* Address setup phase duration    should be >8nS. With the value set to 0x02 and a 168Mhz clock, the duration becomes 11.9nS       */
+    sram_fsmc_btr1 |= 0x02 << 8;        /* Data-phase duration    should be >8nS. With the value set to 0x01 and a 168Mhz clock, the duration becomes 11.9nS                */
     
     FSMC_Bank1->BTCR[5] = sram_fsmc_btr1;
     
