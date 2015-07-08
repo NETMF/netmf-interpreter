@@ -237,13 +237,13 @@ static int32_t ProgramData (uint32_t addr, const void *data, uint32_t cnt) {
     M16(FLASH_ADDR + (0x555 << 1)) = CMD_PROGRAM;
     M16(addr) = *mem++;
     addr += 2;
-    if (n > 1) {
+//    if (n > 1) {
       if (!DQ6_Polling(FLASH_ADDR)) {
         FlashStatus.busy  = 0;
         FlashStatus.error = 1;
         return ARM_DRIVER_ERROR;
       }
-    }
+//    }
   }
 
   return cnt;
@@ -257,6 +257,8 @@ static int32_t ProgramData (uint32_t addr, const void *data, uint32_t cnt) {
 */
 static int32_t EraseSector (uint32_t addr) {
 
+  volatile uint16_t *data;
+
   if (FlashStatus.busy) {
     return ARM_DRIVER_ERROR_BUSY;
   }
@@ -268,8 +270,11 @@ static int32_t EraseSector (uint32_t addr) {
   M16(FLASH_ADDR + (0x555 << 1)) = CMD_ERASE;
   M16(FLASH_ADDR + (0x555 << 1)) = 0xAA;
   M16(FLASH_ADDR + (0x2AA << 1)) = 0x55;
-  M16(/*FLASH_ADDR +*/  addr)        = CMD_ERASE_SECTOR;
+  M16( addr)        = CMD_ERASE_SECTOR;
+  data = (volatile uint16_t *)addr;
 
+  while ((*data & 0x80)==0){};
+  
   return ARM_DRIVER_OK;
 }
 
@@ -293,7 +298,6 @@ static int32_t EraseChip (void) {
   M16(FLASH_ADDR + (0x555 << 1)) = 0xAA;
   M16(FLASH_ADDR + (0x2AA << 1)) = 0x55;
   M16(FLASH_ADDR + (0x555 << 1)) = CMD_ERASE_CHIP;
-
   return ARM_DRIVER_OK;
 }
 

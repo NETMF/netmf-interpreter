@@ -4,6 +4,7 @@
   </PropertyGroup>
 
   <Import Project="$(SPOCLIENT)\Framework\Features\SSL_PAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\OSTask.libcatproj" />
 
   <ItemGroup>
     <InteropFeature Include="mscorlib" />

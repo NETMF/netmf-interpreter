@@ -1,0 +1,69 @@
+./pal/ajtcl/.gitignore:libajtcl.so
+./pal/ajtcl/.gitignore:ajtcl.dll
+./pal/ajtcl/crypto/dotNetMF.proj:    <AssemblyName>ajtcl_crypto_pal</AssemblyName>
+./pal/ajtcl/crypto/dotNetMF.proj:    <LibraryFile>ajtcl_crypto_pal.$(LIB_EXT)</LibraryFile>
+./pal/ajtcl/crypto/dotNetMF.proj:    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\src\dotNetMF.proj</ProjectPath>
+./pal/ajtcl/crypto/dotNetMF.proj:    <ManifestFile>ajtcl_crypto_pal.$(LIB_EXT).manifest</ManifestFile>
+./pal/ajtcl/crypto/dotNetMF.proj:    <Directory>DeviceCode\pal\ajtcl\src</Directory>
+./pal/ajtcl/crypto/dotNetMF.proj:    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\ajtcl\inc;DeviceCode\pal\ajtcl\external\sha2;" />
+./pal/ajtcl/crypto/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
+./pal/ajtcl/crypto/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
+./pal/ajtcl/dotNetMF.proj:    <Directory>DeviceCode\pal\ajtcl</Directory>
+./pal/ajtcl/Makefile:	cd ajtcl; cmd /C del /S *.o
+./pal/ajtcl/Makefile:	cd ajtcl; cmd /C del /S *.d
+./pal/ajtcl/ReleaseNotes.txt:  ajtcl/RTOS/aj_net.c 
+./pal/ajtcl/ReleaseNotes.txt:14.06a: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?id=v14.06a
+./pal/ajtcl/ReleaseNotes.txt:14.06: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?id=v14.06
+./pal/ajtcl/ReleaseNotes.txt:14.02: https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?id=v14.02
+./pal/ajtcl/ReleaseNotes.txt:         https://git.allseenalliance.org/cgit/core/ajtcl.git/tree/ReleaseNotes.txt?id=v14.06
+./pal/ajtcl/SConscript:    env.SharedLibrary('ajtcl', srcs)
+./pal/ajtcl/SConscript:    env.StaticLibrary('ajtcl_st', srcs)
+./pal/ajtcl/SConscript:    # Build standard ajtcl test programs
+./pal/ajtcl/SConscript:    stm_lib = env.StaticLibrary('ajtcl_stm32', srcs)
+./pal/ajtcl/SConscript:    # Build standard ajtcl test programs
+./pal/ajtcl/SConscript:    env.Command('#/ws_ajtcl', Dir('$DISTDIR'), wsbuild)
+./pal/ajtcl/src/dotNetMF.proj:    <AssemblyName>ajtcl_core_pal</AssemblyName>
+./pal/ajtcl/src/dotNetMF.proj:    <LibraryFile>ajtcl_core_pal.$(LIB_EXT)</LibraryFile>
+./pal/ajtcl/src/dotNetMF.proj:    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\src\dotNetMF.proj</ProjectPath>
+./pal/ajtcl/src/dotNetMF.proj:    <ManifestFile>ajtcl_core_pal.$(LIB_EXT).manifest</ManifestFile>
+./pal/ajtcl/src/dotNetMF.proj:    <Directory>DeviceCode\pal\ajtcl\src</Directory>
+./pal/ajtcl/src/dotNetMF.proj:    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\ajtcl\inc;DeviceCode\pal\ajtcl\external\sha2;" />
+./pal/ajtcl/src/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
+./pal/ajtcl/src/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>
+./pal/ajtcl/target/arduino/CopyAjToArduino.bat:SET SRC=c:\cygwin\home\%USERNAME%\repos\alljoyn-tc\ajtcl
+./pal/ajtcl/target/dotNetMF.proj:    <Directory>DeviceCode\pal\ajtcl\target</Directory>
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <AssemblyName>ajtcl_target_pal</AssemblyName>
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <LibraryFile>ajtcl_target_pal.$(LIB_EXT)</LibraryFile>
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\target\netmf\dotNetMF.proj</ProjectPath>
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <ManifestFile>ajtcl_target_pal.$(LIB_EXT).manifest</ManifestFile>
+./pal/ajtcl/target/netmf/dotNetMF.proj:      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ajtcl_target_pal" Guid="{44F7AA56-20EA-4264-8025-BAF1211A9E5E}" ProjectPath="" Conditional="" xmlns="">
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <Directory>DeviceCode\pal\ajtcl\target\netmf</Directory>
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\inc" />
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" />
+./pal/ajtcl/target/netmf/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\external\sha2" />
+./pal/ajtcl/target/win32/dotNetMF.proj:    <AssemblyName>ajtcl_target_pal</AssemblyName>
+./pal/ajtcl/target/win32/dotNetMF.proj:    <LibraryFile>ajtcl_target_pal.$(LIB_EXT)</LibraryFile>
+./pal/ajtcl/target/win32/dotNetMF.proj:    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\ajtcl\target\win32\dotNetMF.proj</ProjectPath>
+./pal/ajtcl/target/win32/dotNetMF.proj:    <ManifestFile>ajtcl_target_pal.$(LIB_EXT).manifest</ManifestFile>
+./pal/ajtcl/target/win32/dotNetMF.proj:    <Directory>DeviceCode\pal\ajtcl\target\win32</Directory>
+./pal/ajtcl/target/win32/dotNetMF.proj:    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\ajtcl\inc;DeviceCode\pal\ajtcl\target\win32;DeviceCode\pal\ajtcl\external\sha2" />
+./pal/ajtcl/tools/whitespace.py:# Changes to this file must be done here (ajtcl) and in build_core 
+./pal/ajtcl/unit_test/.gitignore:ajtcltest
+./pal/ajtcl/unit_test/ajtclTest.cc:    AJ_AlwaysPrintf(("\n Running ajtcl unit test\n"));
+./pal/ajtcl/unit_test/SConscript:    print('GTEST_DIR not specified skipping ajtcl unit test build')
+./pal/ajtcl/unit_test/SConscript:    unittest_prog = unittest_env.Program('ajtcltest', objs + unittest_env['aj_obj'])
+./pal/ajtcl/unit_test/test_report/ajtcltest-buildbot.conf:# This is buildbot's test_harness configuration for ajtcltest
+./pal/ajtcl/unit_test/test_report/ajtcltest-buildbot.conf:    GTEST_OUTPUT=xml:ajtcltest.xml
+./pal/ajtcl/unit_test/test_report/ajtcltest-buildbot.conf:    # ajtcltest
+./pal/ajtcl/unit_test/test_report/ajtcltest-buildbot.conf:    ajtcltest
+./pal/ajtcl/unit_test/test_report/runall.sh:Runs GTest executable ajtcltest
+./pal/ajtcl/unit_test/test_report/runall.sh:			#	default 'ajtcltest.conf'
+./pal/ajtcl/unit_test/test_report/runall.sh:	gtests="ajtcltest"
+./pal/ajtcl/unit_test/test_report/sample.conf:# This is an example test_harness configuration for ajtcl
+./pal/ajtcl/unit_test/test_report/sample.conf:    # ajtcltest, or ...
+./pal/ajtcl/unit_test/test_report/sample.conf:    ajtcltest
+./pal/ajtcl/unit_test/test_report/test_harness.py:    gtestfile:      name of gtest executable file;  default: ajtcltest
+./pal/ajtcl/unit_test/test_report/test_harness.py:        command = 'ajtcltest'
+./pal/base_tcl/dotNetMF.proj:    <IncludePaths Include="DeviceCode\include;DeviceCode\pal\ajtcl\inc;DeviceCode\pal\ajtcl\external\sha2;DeviceCode\pal\base_tcl\services_common\inc;" />
+./pal/base_tcl/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\target\win32" Condition="'$(PLATFORM_FAMILY)'=='x86'"/>
+./pal/base_tcl/dotNetMF.proj:    <IncludePaths Include="DeviceCode\pal\ajtcl\target\netmf" Condition="'$(PLATFORM_FAMILY)'!='x86'"/>

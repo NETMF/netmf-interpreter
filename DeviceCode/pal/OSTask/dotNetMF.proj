@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>ostask_pal</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{cc96c8dd-450d-4349-cbf1-ef515d05ba15}</ProjectGuid>
+    <Description>OS Task library</Description>
+    <Level>PAL</Level>
+    <LibraryFile>ostask_pal.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\PAL\OSTask\dotNetMF.proj</ProjectPath>
+    <ManifestFile>ostask_pal.$(LIB_EXT).manifest</ManifestFile>
+    <Groups>Threading</Groups>
+    <LibraryCategory>
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OSTask_PAL" Guid="{5E780D3F-C004-4A2B-9771-2A71F5E7FB84}" ProjectPath="" Conditional="" xmlns="">
+        <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+          <Major>4</Major>
+          <Minor>0</Minor>
+          <Revision>0</Revision>
+          <Build>0</Build>
+          <Extra />
+          <Date>2015-05-14</Date>
+        </VersionDependency>
+      </MFComponent>
+    </LibraryCategory>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\pal\OSTask</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <SubDirectories Include="stubs" />
+  </ItemGroup>
+  <ItemGroup>
+<!--
+    <FastCompileCPPFile Include="OSTask_fastcompile.cpp" />
+-->
+    <Compile Condition="'$(PLATFORM_FAMILY)'!='x86'" Include="OSTask.cpp" />
+    <Compile Condition="'$(PLATFORM_FAMILY)'=='x86'" Include="OSTask_Win32.cpp" />
+    <IncludePaths Condition="'$(PLATFORM_FAMILY)'!='x86'" Include="DeviceCode\Targets\OS\CMSIS_RTOS" />
+
+    <IncludePaths Include="DeviceCode\include" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

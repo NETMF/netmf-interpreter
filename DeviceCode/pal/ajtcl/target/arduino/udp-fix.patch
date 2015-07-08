@@ -1,0 +1,165 @@
+diff --git a/libraries/WiFi/WiFiClient.cpp b/libraries/WiFi/WiFiClient.cpp
+index 1fc34e0..f930cd9 100755
+--- a/libraries/WiFi/WiFiClient.cpp
++++ b/libraries/WiFi/WiFiClient.cpp
+@@ -1,7 +1,11 @@
+ extern "C" {
+   #include "utility/wl_definitions.h"
+   #include "utility/wl_types.h"
+-  #include "socket.h"
++#if 0
++   #include "socket.h"
++#else
++  #define SOCK_NOT_AVAIL  255
++#endif
+   #include "string.h"
+   #include "utility/debug.h"
+ }
+@@ -69,8 +73,20 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size) {
+       return 0;
+   }
+ 
++  size_t i = size;
++  // I found there was an issue sending more than 90 bytes at a time to the WiFi shield.
++  for ( ; i > 90 ; ) {
++      Serial.print("WiFiClient::write i:");
++      Serial.println(i);
++      if (!ServerDrv::sendData(_sock, buf + (size-i), 90))
++      {
++          setWriteError(__LINE__);
++          return 0;
++      }
++      i -= 90;
++  }
+ 
+-  if (!ServerDrv::sendData(_sock, buf, size))
++  if (!ServerDrv::sendData(_sock, buf + (size-i), i))
+   {
+ 	  setWriteError();
+       return 0;
+@@ -104,9 +120,16 @@ int WiFiClient::read() {
+ 
+ 
+ int WiFiClient::read(uint8_t* buf, size_t size) {
+-  if (!ServerDrv::getDataBuf(_sock, buf, &size))
+-      return -1;
+-  return 0;
++    if(available()) {
++        uint16_t sizeN = size;
++        if (!ServerDrv::getDataBuf(_sock, buf, &sizeN)) {
++            return -1;
++        } else {
++            return sizeN;
++        }
++    } else {
++        return -1;
++    }
+ }
+ 
+ int WiFiClient::peek() {
+diff --git a/libraries/WiFi/WiFiUdp.cpp b/libraries/WiFi/WiFiUdp.cpp
+index 7020df8..b2d135d 100644
+--- a/libraries/WiFi/WiFiUdp.cpp
++++ b/libraries/WiFi/WiFiUdp.cpp
+@@ -115,7 +115,7 @@ int WiFiUDP::read(unsigned char* buffer, size_t len)
+ {
+   if (available())
+   {
+-	  size_t size = 0;
++	  uint16_t size = 0;
+ 	  if (!ServerDrv::getDataBuf(_sock, buffer, &size))
+ 		  return -1;
+ 	  // TODO check if the buffer is too smal respect to buffer size
+diff --git a/libraries/WiFi/utility/spi_drv.cpp b/libraries/WiFi/utility/spi_drv.cpp
+index 12a320b..2c32470 100644
+--- a/libraries/WiFi/utility/spi_drv.cpp
++++ b/libraries/WiFi/utility/spi_drv.cpp
+@@ -1,5 +1,6 @@
+ 
+ #include "Arduino.h"
++#include <SPI.h>
+ #include "spi_drv.h"                   
+ #include "pins_arduino.h"
+ //#define _DEBUG_
+@@ -14,45 +15,29 @@ extern "C" {
+ #define SLAVEREADY 	7  // handshake pin
+ #define WIFILED 	9  // led on wifi shield
+ 
+-#define DELAY_100NS do { asm volatile("nop"); }while(0);
+-#define DELAY_SPI(X) { int ii=0; do {  asm volatile("nop"); }while(++ii<X);}
++#define DELAY_SPI(X) { int ii=0; do { asm volatile("nop"); } while(++ii < X*6); }
+ #define DELAY_TRANSFER() DELAY_SPI(10)
+ 
+ void SpiDrv::begin()
+ {
+-	  // Set direction register for SCK and MOSI pin.
+-	  // MISO pin automatically overrides to INPUT.
+-	  // When the SS pin is set as OUTPUT, it can be used as
+-	  // a general purpose output port (it doesn't influence
+-	  // SPI operations).
+-
+-	  pinMode(SCK, OUTPUT);
+-	  pinMode(MOSI, OUTPUT);
+-	  pinMode(SS, OUTPUT);
+-	  pinMode(SLAVESELECT, OUTPUT);
+-	  pinMode(SLAVEREADY, INPUT);
+-	  pinMode(WIFILED, OUTPUT);
+-
+-	  digitalWrite(SCK, LOW);
+-	  digitalWrite(MOSI, LOW);
+-	  digitalWrite(SS, HIGH);
+-	  digitalWrite(SLAVESELECT, HIGH);
+-	  digitalWrite(WIFILED, LOW);
++    SPI.begin(SLAVESELECT);
++    SPI.setClockDivider(SLAVESELECT, 21);
++    SPI.setDataMode(SLAVESELECT, SPI_MODE0);
++
++    pinMode(SLAVEREADY, INPUT);
++    pinMode(WIFILED, OUTPUT);
++
++    digitalWrite(SLAVESELECT, HIGH);
++    digitalWrite(WIFILED, LOW);
+ 
+ #ifdef _DEBUG_
+ 	  INIT_TRIGGER()
+ #endif
+ 
+-	  // Warning: if the SS pin ever becomes a LOW INPUT then SPI
+-	  // automatically switches to Slave, so the data direction of
+-	  // the SS pin MUST be kept as OUTPUT.
+-	  SPCR |= _BV(MSTR);
+-	  SPCR |= _BV(SPE);
+-	  //SPSR |= _BV(SPI2X);
+ }
+ 
+ void SpiDrv::end() {
+-  SPCR &= ~_BV(SPE);
++  SPI.end(SLAVESELECT);
+ }
+ 
+ void SpiDrv::spiSlaveSelect()
+@@ -78,11 +63,7 @@ void delaySpi()
+ 
+ char SpiDrv::spiTransfer(volatile char data)
+ {
+-    SPDR = data;                    // Start the transmission
+-    while (!(SPSR & (1<<SPIF)))     // Wait the end of the transmission
+-    {
+-    };
+-    char result = SPDR;
++    char result = SPI.transfer(SLAVESELECT, data);
+     DELAY_TRANSFER();
+ 
+     return result;                    // return the received byte
+diff --git a/libraries/WiFi/utility/wifi_spi.h b/libraries/WiFi/utility/wifi_spi.h
+index 8044efb..bbf0830 100644
+--- a/libraries/WiFi/utility/wifi_spi.h
++++ b/libraries/WiFi/utility/wifi_spi.h
+@@ -1,6 +1,7 @@
+ #ifndef WiFi_Spi_h
+ #define WiFi_Spi_h
+ 
++#include <stdint.h>
+ #include "wl_definitions.h"
+ 
+ #define CMD_FLAG        0

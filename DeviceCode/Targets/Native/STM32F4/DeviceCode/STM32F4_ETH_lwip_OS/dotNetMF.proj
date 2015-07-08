@@ -78,7 +78,6 @@
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\lwip\src\include\lwip\tcpip.h" />
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\lwip\src\include\lwip\udp.h" />
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\lwip\src\include\netif\etharp.h" />
-    <HFiles Include="STM32F4_ETH_phy_TERIDIAN_78Q2123.h" />
     <HFiles Include="STM32F4_ETH_gpio.h" />
     <HFiles Include="STM32F4_ETH_driver.h" />
     <HFiles Include="STM32F4_ETH_tx_desc.h" />

@@ -1,0 +1,69 @@
+# Copyright AllSeen Alliance. All rights reserved.
+#
+#    Permission to use, copy, modify, and/or distribute this software for any
+#    purpose with or without fee is hereby granted, provided that the above
+#    copyright notice and this permission notice appear in all copies.
+#
+#    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+Import('env')
+
+# Build the test programs on win32/linux
+if env['TARG'] == 'win32' or env['TARG'] == 'linux' or env['TARG'] == 'linux-uart' or env['TARG'] == 'darwin':
+    env.Program('mutter', ['mutter.c'] + env['aj_obj'])
+    env.Program('ajlite', ['ajlite.c'] + env['aj_obj'])
+    env.Program('aestest', ['aestest.c'] + env['aj_obj'])
+    env.Program('aesbench', ['aesbench.c'] + env['aj_obj'])
+    env.Program('svclite', ['svclite.c'] + env['aj_obj'])
+    env.Program('clientlite', ['clientlite.c'] + env['aj_obj'])
+    env.Program('siglite', ['siglite.c'] + env['aj_obj'])
+    env.Program('sessions', ['sessions.c'] + env['aj_obj'])
+    env.Program('sessionslite', ['sessionslite.c'] + env['aj_obj'])
+    env.Program('nvramtest', ['nvramtest.c'] + env['aj_obj'])
+    env.Program('nvramdump', ['nvramdump.c'] + env['aj_obj'])
+    env.Program('nvrampersistencetest', ['nvrampersistencetest.c'] + env['aj_obj'])
+    env.Program('bastress2', ['bastress2.c'] + env['aj_obj'])
+    env.Program('certificate', ['certificate.c'] + env['aj_obj'])
+    env.Program('base64', ['base64.c'] + env['aj_obj'])
+    env.Program('codisco', ['codisco.c'] + env['aj_obj'])
+    env.Program('sigtest', ['sigtest.c'] + env['aj_obj'])
+    env.Program('ctrdrbg', ['ctrdrbg.c'] + env['aj_obj'])
+
+    if env['TARG'] == 'linux-uart':
+        env.Program('timertest', ['timertest.c'] + env['aj_obj'])
+        env.Program('semaphoretest', ['semaphoretest.c'] + env['aj_obj'])
+
+        env.Object('uarttest.o', ['uarttest.c'])
+        env.Program('uarttest', ['uarttest.o'] + env['aj_obj'])
+        env.Object('uarttest1.o', ['uarttest1.c'])
+        env.Program('uarttest1', ['uarttest1.o'] + env['aj_obj'])
+        env.Object('uartbigsmallsend.o', ['uartbigsmall.c'])
+        env.Program('uartbigsmallsend', ['uartbigsmallsend.o'] + env['aj_obj'])
+        env.Object('echo.o', ['echo.c'])
+        env.Program('echo', ['echo.o'] + env['aj_obj'])
+    
+        # Buld the same source into the receiving side executable
+        uartEnv = env.Clone()
+        uartEnv.Append(CPPDEFINES = ['READTEST'])
+        uartEnv.Object('uartbigsmallrecv.o', ['uartbigsmall.c'])
+        uartEnv.Program('uartbigsmallrecv', ['uartbigsmallrecv.o'] + env['aj_obj'])
+        uartEnv.Object('uarttestReceiver.o', ['uarttest.c'])
+        uartEnv.Program('uarttestReceiver', ['uarttestReceiver.o'] + uartEnv['aj_obj'])
+        uartEnv.Object('uarttest1Receiver.o', ['uarttest1.c'])
+        uartEnv.Program('uarttest1Receiver', ['uarttest1Receiver.o'] + uartEnv['aj_obj'])
+        uartEnv.Object('echoReceiver.o', ['echo.c'])
+        uartEnv.Program('echoReceiver', ['echoReceiver.o'] + uartEnv['aj_obj'])
+
+if env['AJWSL'] == 'on':
+    env.Program('wsltest', ['WSL/unit_test.c'] + env['aj_obj'])
+    env.Program('bufferlisttest', ['WSL/bufferlisttest.c'] + env['aj_obj'])
+    env.Program('spi_test', ['WSL/spi_test.c'] + env['aj_obj'])
+    env.Program('unmarshal_test', ['WSL/unmarshal_test.c'] + env['aj_obj'])
+
+

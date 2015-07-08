@@ -89,6 +89,7 @@
     <CC_CPP_ASM_INTERLEAVE Condition="'$(COMPILER_TOOL_VERSION)'=='MDK4.23'" > $(SWTC)asm $(SWTC)interleave </CC_CPP_ASM_INTERLEAVE>
     <CC_CPP_ASM_INTERLEAVE Condition="'$(COMPILER_TOOL_VERSION)'=='MDK4.54'" >                              </CC_CPP_ASM_INTERLEAVE>
 
+
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(CC_CPP_TARGETTYPE_FLAGS) $(SWTC)no_debug $(SWTC)dwarf2 $(SWTC)no_debug_macros -O3 $(SWTC)inline -Otime $(SWTC)no_autoinline $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"       >$(CC_CPP_TARGETTYPE_FLAGS) $(SWTC)debug    $(SWTC)dwarf2 $(SWTC)debug_macros    -O0 $(SWTC)inline                             $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'">$(CC_CPP_TARGETTYPE_FLAGS) $(SWTC)debug    $(SWTC)dwarf2 $(SWTC)debug_macros    -O0 $(SWTC)inline                             $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
