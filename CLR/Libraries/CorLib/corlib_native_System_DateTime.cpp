@@ -243,7 +243,7 @@ HRESULT Library_corlib_native_System_DateTime::get_UtcNow___STATIC__SystemDateTi
 
     CLR_INT64* pRes = NewObject( stack );
 
-    *pRes = Time_GetUtcTime();
+    *pRes = Time_GetUtcTime() | s_UTCMask;
 
     TINYCLR_NOCLEANUP_NOLABEL();
 }
