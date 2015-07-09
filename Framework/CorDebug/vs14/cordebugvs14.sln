@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VBWinTemplateProject", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyInfoTemplateProject", "..\..\..\Product\AllSDK\ItemTemplates\CSharp\AssemblyInfo\AssemblyInfoTemplateProject.csproj", "{422D820B-8B80-4FF1-9828-3AB113C2ABC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTasks", "..\..\Tools\BuildTasks\BuildTasks.csproj", "{9B3D156D-B9D2-4F9C-BFDF-91FC42EE1280}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +49,6 @@ Global
 		{B4C10D84-59C4-48EE-A62B-9DA56A2E9681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C10D84-59C4-48EE-A62B-9DA56A2E9681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4C10D84-59C4-48EE-A62B-9DA56A2E9681}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B836C62B-C80E-4B86-A4D3-E0018C295906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B836C62B-C80E-4B86-A4D3-E0018C295906}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B836C62B-C80E-4B86-A4D3-E0018C295906}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B836C62B-C80E-4B86-A4D3-E0018C295906}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9DCA6FB-680F-4355-ABEF-128DB02721E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9DCA6FB-680F-4355-ABEF-128DB02721E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9DCA6FB-680F-4355-ABEF-128DB02721E6}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -95,6 +93,10 @@ Global
 		{422D820B-8B80-4FF1-9828-3AB113C2ABC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{422D820B-8B80-4FF1-9828-3AB113C2ABC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{422D820B-8B80-4FF1-9828-3AB113C2ABC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B3D156D-B9D2-4F9C-BFDF-91FC42EE1280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B3D156D-B9D2-4F9C-BFDF-91FC42EE1280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B3D156D-B9D2-4F9C-BFDF-91FC42EE1280}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B3D156D-B9D2-4F9C-BFDF-91FC42EE1280}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

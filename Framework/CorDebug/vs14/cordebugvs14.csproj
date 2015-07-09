@@ -188,6 +188,14 @@
       <Project>{d9dca6fb-680f-4355-abef-128db02721e6}</Project>
       <Name>Debugger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Debugger\WinUsb\WinUsb.csproj">
+      <Project>{daeb83a4-5868-4725-a15d-85f75db87eac}</Project>
+      <Name>WinUsb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\BuildTasks\BuildTasks.csproj">
+      <Project>{9b3d156d-b9d2-4f9c-bfdf-91fc42ee1280}</Project>
+      <Name>BuildTasks</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
