@@ -1,4 +1,0 @@
-./TinyCLR/TinyCLR.proj:	<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\ajtcl\dotNetMF.proj" />
-./TinyCLR/TinyCLR.proj:	<DriverLibs Include="ajtcl_core_pal.$(LIB_EXT)" />
-./TinyCLR/TinyCLR.proj:	<DriverLibs Include="ajtcl_target_pal.$(LIB_EXT)" />
-./TinyCLR/TinyCLR.proj:	<DriverLibs Include="ajtcl_crypto_pal.$(LIB_EXT)" />
