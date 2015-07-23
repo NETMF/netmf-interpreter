@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("$registeredorganization$")>
+<Assembly: AssemblyTitle("")>
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("Microsoft Corporation")>
 <Assembly: AssemblyProduct("")>
-<Assembly: AssemblyCopyright("Copyright © $registeredorganization$ $year$")>
+<Assembly: AssemblyCopyright("Copyright © Microsoft Corporation")>
 <Assembly: AssemblyTrademark("")>
 
 ' Version information for an assembly consists of the following four values:
