@@ -35,17 +35,7 @@ namespace System
      * This value type represents a date and time.  Every DateTime
      * object has a private field (Ticks) of type Int64 that stores the
      * date and time as the number of 100 nanosecond intervals since
-     * 12:00 AM January 1, year 1601 A.D. in the proleptic Gregorian Calendar. 
-     * See DeviceCode\PAL\time_decl.h for explanation of why we are taking
-     * year 1601 as origin for our HAL, PAL, and CLR.
-     *
-     * It should be considered that previously DateTime.Ticks used to represent
-     * the number 100 nanosecond intervals since 12:00 AM January 1, year 1601 A.D.
-     * causing a 504911232000000000 difference between ticks in .NET and .NET MF
-     * To fix this disparity, we modified the CLR portion of DateTime type without 
-     * changing the origin of the DateTime. In particular, TicksAtOrigin is subtracted
-     * from any ticks value provided by user code, and it is added back whenever the 
-     * ticks value is read.
+     * 12:00 AM January 1, year 1601 A.D. in the proleptic Gregorian Calendar.
      *
      * <p>For a description of various calendar issues, look at
      * <a href="http://serendipity.nofadz.com/hermetic/cal_stud.htm">
@@ -87,6 +77,11 @@ namespace System
         private const int DaysPer100Years = DaysPer4Years * 25 - 1;
         // Number of days in 400 years
         private const int DaysPer400Years = DaysPer100Years * 4 + 1;
+
+        // Number of days from 1/1/0001 to 12/31/1600
+        private const int DaysTo1601 = DaysPer400Years * 4;
+        // Number of days from 1/1/0001 to 12/30/1899
+        private const int DaysTo1899 = DaysPer400Years * 4 + DaysPer100Years * 3 - 367;
         // Number of days from 1/1/0001 to 12/31/9999
         private const int DaysTo10000 = DaysPer400Years * 25 - 366;
 
@@ -98,18 +93,13 @@ namespace System
         private const ulong TickMask = 0x7FFFFFFFFFFFFFFFL;
         private const ulong UTCMask = 0x8000000000000000L;
 
-        // Ticks at 12:00 AM January 1, year 1601 A.D.
-        private const long TicksAtOrigin = 504911232000000000;
-
-        public static readonly DateTime MinValue = new DateTime(MinTicks + TicksAtOrigin);
-        public static readonly DateTime MaxValue = new DateTime(MaxTicks + TicksAtOrigin);
+        public static readonly DateTime MinValue = new DateTime(MinTicks);
+        public static readonly DateTime MaxValue = new DateTime(MaxTicks);
 
         private ulong m_ticks;
 
         public DateTime(long ticks)
         {
-            ticks -= TicksAtOrigin;
-
             if (((ticks & (long)TickMask) < MinTicks) || ((ticks & (long)TickMask) > MaxTicks))
             {
                 throw new ArgumentOutOfRangeException("ticks", "Ticks must be between DateTime.MinValue.Ticks and DateTime.MaxValue.Ticks.");
@@ -146,12 +136,12 @@ namespace System
 
         public DateTime Add(TimeSpan val)
         {
-            return new DateTime((long)m_ticks + val.Ticks + TicksAtOrigin);
+            return new DateTime((long)m_ticks + val.Ticks);
         }
 
         private DateTime Add(double val, int scale)
         {
-            return new DateTime((long)((long)m_ticks + (long)(val * scale * TicksPerMillisecond + (val >= 0 ? 0.5 : -0.5))) + TicksAtOrigin);
+            return new DateTime((long)((long)m_ticks + (long)(val * scale * TicksPerMillisecond + (val >= 0 ? 0.5 : -0.5))));
         }
 
         public DateTime AddDays(double val)
@@ -181,7 +171,7 @@ namespace System
 
         public DateTime AddTicks(long val)
         {
-            return new DateTime((long)m_ticks + val + TicksAtOrigin);
+            return new DateTime((long)m_ticks + val);
         }
 
         public static int Compare(DateTime t1, DateTime t2)
@@ -243,11 +233,11 @@ namespace System
                 // Need to remove UTC mask before arithmetic operations. Then set it back.
                 if ((m_ticks & UTCMask) != 0)
                 {
-                    return new DateTime((long)(((m_ticks & TickMask) - (m_ticks & TickMask) % TicksPerDay) | UTCMask) + TicksAtOrigin);
+                    return new DateTime((long)(((m_ticks & TickMask) - (m_ticks & TickMask) % TicksPerDay) | UTCMask));
                 }
                 else
                 {
-                    return new DateTime((long)(m_ticks - m_ticks % TicksPerDay) + TicksAtOrigin);
+                    return new DateTime((long)(m_ticks - m_ticks % TicksPerDay));
                 }
             }
         }
@@ -301,7 +291,7 @@ namespace System
 
         public static DateTime SpecifyKind(DateTime value, DateTimeKind kind)
         {
-            DateTime retVal = new DateTime((long)value.m_ticks + TicksAtOrigin);
+            DateTime retVal = new DateTime((long)value.m_ticks);
 
             if (kind == DateTimeKind.Utc)
             {
@@ -370,11 +360,18 @@ namespace System
             }
         }
 
+        /// Our origin is at 1601/01/01:00:00:00.000
+        /// While desktop CLR's origin is at 0001/01/01:00:00:00.000.
+        /// There are 504911232000000000 ticks between them which we are subtracting.
+        /// See DeviceCode\PAL\time_decl.h for explanation of why we are taking
+        /// year 1601 as origin for our HAL, PAL, and CLR.
+        // static Int64 ticksAtOrigin = 504911232000000000;
+        static Int64 ticksAtOrigin = 0;
         public long Ticks
         {
             get
             {
-                return (long)(m_ticks & TickMask) + TicksAtOrigin;
+                return (long)(m_ticks & TickMask) + ticksAtOrigin;
             }
         }
 
@@ -411,7 +408,7 @@ namespace System
 
         public DateTime Subtract(TimeSpan val)
         {
-            return new DateTime((long)(m_ticks - (ulong)val.m_ticks) + TicksAtOrigin);
+            return new DateTime((long)(m_ticks - (ulong)val.m_ticks));
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -432,12 +429,12 @@ namespace System
 
         public static DateTime operator +(DateTime d, TimeSpan t)
         {
-            return new DateTime((long)(d.m_ticks + (ulong)t.m_ticks) + TicksAtOrigin);
+            return new DateTime((long)(d.m_ticks + (ulong)t.m_ticks));
         }
 
         public static DateTime operator -(DateTime d, TimeSpan t)
         {
-            return new DateTime((long)(d.m_ticks - (ulong)t.m_ticks) + TicksAtOrigin);
+            return new DateTime((long)(d.m_ticks - (ulong)t.m_ticks));
         }
 
         public static TimeSpan operator -(DateTime d1, DateTime d2)
