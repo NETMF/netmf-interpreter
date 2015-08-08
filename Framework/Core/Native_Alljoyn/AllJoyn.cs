@@ -441,11 +441,6 @@ namespace Microsoft.SPOT.AllJoyn
                                                   ref UInt32 sessionId,
                                                   AJ_SessionOpts opts,
                                                   ref string fullName);
-                                                      
-                                                      
-                                                      
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void AlwaysPrintf(string msg);                
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern AJ_Status AboutIconHandleGetContent(AJ_Message msg, AJ_Message reply, byte [] aboutIconContent);
