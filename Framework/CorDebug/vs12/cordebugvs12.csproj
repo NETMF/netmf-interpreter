@@ -181,6 +181,12 @@
     <ProjectReference Include="..\..\Debugger\Debugger.csproj">
       <Project>{d9dca6fb-680f-4355-abef-128db02721e6}</Project>
       <Name>Debugger</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Debugger\WinUsb\WinUsb.csproj">
+      <Project>{daeb83a4-5868-4725-a15d-85f75db87eac}</Project>
+      <Name>WinUsb</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

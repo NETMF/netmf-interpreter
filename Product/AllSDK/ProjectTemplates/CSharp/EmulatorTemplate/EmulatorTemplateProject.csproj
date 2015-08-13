@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <NetMFTemplateName>MFEmulator</NetMFTemplateName>
     <SPOCLIENT Condition="'$(SPOCLIENT)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), sdk.dirproj))</SPOCLIENT>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
   </PropertyGroup>
   <!-- Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/ -->
   <PropertyGroup>
@@ -51,13 +56,12 @@
     <Content Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\Resources.Designer.cs" />
     <Content Include="Properties\Resources.resx" />
-	<Content Include="Properties\Settings.Designer.cs" />
-	<Content Include="Properties\Settings.Settings" />
-	<Content Include="Emulator.config" />
-	<Content Include="Form1.cs" />
-	<Content Include="Form1.Designer.cs" />
+    <Content Include="Properties\Settings.Designer.cs" />
+    <Content Include="Properties\Settings.Settings" />
+    <Content Include="Emulator.config" />
+    <Content Include="Form1.cs" />
+    <Content Include="Form1.Designer.cs" />
     <Content Include="Program.cs" />
-	
     <Content Include="$(NetMFTemplateName).csproj" />
   </ItemGroup>
   <ItemGroup>

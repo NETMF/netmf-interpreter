@@ -19,8 +19,8 @@
     <ProjectGuid>{0F0DFBB2-249D-4769-BF7D-29885153CF87}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>$(NetMFTemplateName)</RootNamespace>
-    <AssemblyName>$(NetMFTemplateName)</AssemblyName>
+    <RootNamespace>CSMFClassLibrary</RootNamespace>
+    <AssemblyName>CSMFClassLibrary</AssemblyName>
     <PlatformTarget>x86</PlatformTarget>
     <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -40,12 +40,10 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <CreateVsixContainer>False</CreateVsixContainer>
     <DeployExtension>False</DeployExtension>
-    <IntermediateOutputPath>C:\Users\smaillet\AppData\Local\Temp\vsB8E5.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <CreateVsixContainer>False</CreateVsixContainer>
     <DeployExtension>False</DeployExtension>
-    <IntermediateOutputPath>C:\Users\smaillet\AppData\Local\Temp\vsB8E5.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.CoreUtility">
