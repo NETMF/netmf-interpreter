@@ -20,7 +20,6 @@
     <ProjectPath>$(SPOCLIENT)\ProjectTemplates\MicroBooter\MicroBooter.proj</ProjectPath>
     <ManifestFile />
     <Groups />
-    <CustomSpecific />
     <IsStub>False</IsStub>
     <reducesize>true</reducesize>
     <OutputType>Executable</OutputType>

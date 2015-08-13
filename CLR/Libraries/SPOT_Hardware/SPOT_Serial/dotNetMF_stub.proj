@@ -32,8 +32,6 @@
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>True</IsStub>
     <HasLibraryCategory>True</HasLibraryCategory>
-    <CustomSpecific>
-    </CustomSpecific>
     <Directory>CLR\Libraries\SPOT_Hardware\SPOT_Serial</Directory>
     <OutputType>Library</OutputType>
     <VCProjName>Lib_SPOT_Hardware_SerialPort_stub</VCProjName>

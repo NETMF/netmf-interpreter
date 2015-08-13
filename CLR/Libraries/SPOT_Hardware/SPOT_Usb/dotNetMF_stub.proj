@@ -36,8 +36,6 @@
     <IsStub>True</IsStub>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
     <HasLibraryCategory>True</HasLibraryCategory>
-    <CustomSpecific>
-    </CustomSpecific>
     <Directory>CLR\Libraries\SPOT_Hardware\SPOT_Usb</Directory>
     <OutputType>Library</OutputType>
     <VCProjName>Lib_SPOT_Hardware_Usb_stub</VCProjName>
