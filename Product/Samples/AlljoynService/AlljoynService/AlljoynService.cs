@@ -198,7 +198,7 @@ namespace TestAlljoyn
                     {
                         goto exit;
                     }
-                    myAlljoyn.AlwaysPrintf(("StartService returned AJ_OK; running \n"));
+                    Debug.Print("StartService returned AJ_OK; running \n");
                     connected = true;
 
                     if (status == AJ_Status.AJ_OK)
@@ -213,7 +213,7 @@ namespace TestAlljoyn
                 {
                     if (status == AJ_Status.AJ_ERR_TIMEOUT)
                     {
-                        myAlljoyn.AlwaysPrintf(("do work\n"));
+                        Debug.Print("do work\n");
                         goto exit;
                     }
                 }
@@ -221,7 +221,7 @@ namespace TestAlljoyn
                 if (status == AJ_Status.AJ_OK)
                 {
                     string str = "Received message + msgId=" + msg.msgId.ToString("X") + "\n";
-                    myAlljoyn.AlwaysPrintf((str));
+                    Debug.Print(str);
 
                     if (msg.msgId == AJ_METHOD_ACCEPT_SESSION)
                     {
@@ -233,11 +233,11 @@ namespace TestAlljoyn
 
                         if (status == AJ_Status.AJ_OK)
                         {
-                            myAlljoyn.AlwaysPrintf(("Accepted session session_id \n"));
+                            Debug.Print("Accepted session session_id \n");
                         }
                         else
                         {
-                            myAlljoyn.AlwaysPrintf(("AJ_BusReplyAcceptSession: error \n"));
+                            Debug.Print("AJ_BusReplyAcceptSession: error \n");
                         }
 
                     }
@@ -292,7 +292,7 @@ namespace TestAlljoyn
 
                 if (status == AJ_Status.AJ_ERR_READ)
                 {
-                    myAlljoyn.AlwaysPrintf(("AllJoyn disconnect\n"));
+                    Debug.Print("AllJoyn disconnect\n");
                     myAlljoyn.Disconnect(bus);
                     connected = false;
                     
@@ -302,7 +302,7 @@ namespace TestAlljoyn
                 }
 
             exit:
-                myAlljoyn.AlwaysPrintf((" Exit  \n"));
+                Debug.Print(" Exit  \n");
             }
         }
     }

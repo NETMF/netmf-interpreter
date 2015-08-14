@@ -6,6 +6,7 @@
 //
 
 using System;
+using Microsoft.SPOT;
 using Microsoft.SPOT.AllJoyn;
 
 namespace AlljoynBasicService
@@ -99,7 +100,7 @@ namespace AlljoynBasicService
                     {
                         goto exit;
                     }
-                    myAlljoyn.AlwaysPrintf(("StartService returned AJ_OK; running \n"));
+                    Debug.Print("StartService returned AJ_OK; running \n");
                     connected = true;
 
                     if (status == AJ_Status.AJ_OK)
@@ -114,7 +115,7 @@ namespace AlljoynBasicService
                 {
                     if (status == AJ_Status.AJ_ERR_TIMEOUT)
                     {
-                        myAlljoyn.AlwaysPrintf(("do work\n"));
+                        Debug.Print("do work\n");
                         goto exit;
                     }
                 }
@@ -122,7 +123,7 @@ namespace AlljoynBasicService
                 if (status == AJ_Status.AJ_OK)
                 {
                     string str = "Received message + msgId=" + msg.msgId.ToString("X") + "\n";
-                    myAlljoyn.AlwaysPrintf((str));
+                    Debug.Print(str);
 
                     if (msg.msgId == AJ_METHOD_ACCEPT_SESSION)
                     {
@@ -134,11 +135,11 @@ namespace AlljoynBasicService
 
                         if (status == AJ_Status.AJ_OK)
                         {
-                            myAlljoyn.AlwaysPrintf(("Accepted session session_id \n"));
+                            Debug.Print("Accepted session session_id \n");
                         }
                         else
                         {
-                            myAlljoyn.AlwaysPrintf(("AJ_BusReplyAcceptSession: error \n"));
+                            Debug.Print("AJ_BusReplyAcceptSession: error \n");
                         }
 
                     }
@@ -160,7 +161,7 @@ namespace AlljoynBasicService
 
                 if (status == AJ_Status.AJ_ERR_READ)
                 {
-                    myAlljoyn.AlwaysPrintf(("AllJoyn disconnect\n"));
+                    Debug.Print("AllJoyn disconnect\n");
                     myAlljoyn.Disconnect(bus);
                     connected = false;
 
@@ -170,7 +171,7 @@ namespace AlljoynBasicService
                 }
 
             exit:
-                myAlljoyn.AlwaysPrintf((" Exit  \n"));
+                Debug.Print(" Exit  \n");
             }
         }
     }
