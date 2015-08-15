@@ -8,7 +8,6 @@
     <Description>PKCS11 Crypto configuration for MCBSTM32F400</Description>
     <Level>HAL</Level>
     <LibraryFile>Crypto_config_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Crypto\dotNetMF.proj</ProjectPath>
     <ManifestFile>Crypto_config_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\MCBSTM32F400</Groups>
     <LibraryCategory>

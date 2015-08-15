@@ -8,7 +8,6 @@
         <Description>CMSIS-RTX OS Config</Description>
         <Level>HAL</Level>
         <LibraryFile>CMSIS_RTX_CONFIG.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\CMSIS_RTX_Config\dotNetMF.proj</ProjectPath>
         <ManifestFile>CMSIS_RTX_CONFIG.$(LIB_EXT).manifest</ManifestFile>
         <Groups>OS\CMSIS_RTOS</Groups>
         <LibraryCategory>

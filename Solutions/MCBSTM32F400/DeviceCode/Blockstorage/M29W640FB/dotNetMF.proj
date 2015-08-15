@@ -7,7 +7,6 @@
     <Description>Block storage configuration for external NOR flash M29W640FB on the MCBSTM32F400</Description>
     <Level>HAL</Level>
     <LibraryFile>M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\M29W640FB\dotNetMF.proj</ProjectPath>
     <ManifestFile>M29W640FB_blconfig_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\MCBSTM32F400</Groups>
     <LibraryCategory>

@@ -1,6 +1,5 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj</ProjectPath>
     <ProjectGuid>{ADD1DC98-CBE4-494B-92E7-F982B9E01A4B}</ProjectGuid>
     <AssemblyName>M29W640FB_Flash</AssemblyName>
     <Size>

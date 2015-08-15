@@ -7,7 +7,6 @@
     <Description>USB TEMPLATE library</Description>
     <Level>HAL</Level>
     <LibraryFile>USB_HAL_TEMPLATE.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Template\DeviceCode\USB_HAL\dotNetMF.proj</ProjectPath>
     <ManifestFile>USB_HAL_TEMPLATE.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Processor\TEMPLATE</Groups>
     <LibraryCategory>

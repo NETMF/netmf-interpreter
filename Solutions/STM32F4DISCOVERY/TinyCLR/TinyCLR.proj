@@ -9,7 +9,6 @@
         <IsClrProject>True</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\TinyCLR\TinyCLR.proj</ProjectPath>
         <MFSettingsFile>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\STM32F4DISCOVERY.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>false</reducesize>

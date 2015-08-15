@@ -7,7 +7,6 @@
     <Description>Block storage add device driver for MCBSTM32F400</Description>
     <Level>HAL</Level>
     <LibraryFile>BlockStorage_AddDevices_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\addDevices\dotNetMF.proj</ProjectPath>
     <ManifestFile>BlockStorage_AddDevices_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\MCBSTM32F400</Groups>
     <LibraryCategory>

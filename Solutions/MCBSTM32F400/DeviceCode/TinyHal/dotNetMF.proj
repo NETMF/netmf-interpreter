@@ -8,7 +8,6 @@
         <Description>MCBSTM32F400 tinyhal library</Description>
         <Level>HAL</Level>
         <LibraryFile>MCBSTM32F400_tinyhal.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\TinyHal\dotNetMF.proj</ProjectPath>
         <ManifestFile>MCBSTM32F400_tinyhal.$(LIB_EXT).manifest</ManifestFile>
         <Groups>System</Groups>
         <LibraryCategory>

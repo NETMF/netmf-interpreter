@@ -7,7 +7,6 @@
     <Description>USB configuration TEMPLATE_BE library</Description>
     <Level>PAL</Level>
     <LibraryFile>USB_Config_PAL_TEMPLATE_BE.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Template_BE\DeviceCode\USB_Config_PAL\dotNetMF.proj</ProjectPath>
     <ManifestFile>USB_Config_PAL_TEMPLATE_BE.$(LIB_EXT).manifest</ManifestFile>
     <Groups>USB</Groups>
     <LibraryCategory>

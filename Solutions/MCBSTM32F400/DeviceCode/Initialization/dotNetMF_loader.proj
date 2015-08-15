@@ -8,7 +8,6 @@
     <Description>System initialization library for MCBSTM32F400 (for boot loaders)</Description>
     <Level>HAL</Level>
     <LibraryFile>MCBSTM32F400_initialization_hal_loader.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Initialization\dotNetMF_loader.proj</ProjectPath>
     <ManifestFile>MCBSTM32F400_initialization_hal_loader.$(LIB_EXT).manifest</ManifestFile>
     <Groups>System</Groups>
     <LibraryCategory>

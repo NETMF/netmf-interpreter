@@ -7,7 +7,6 @@
     <Description>Block storage add device driver for STM32F4DISCOVERY</Description>
     <Level>HAL</Level>
     <LibraryFile>BlockStorage_AddDevices_STM32F4DISCOVERY.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\Blockstorage\addDevices\dotNetMF.proj</ProjectPath>
     <ManifestFile>BlockStorage_AddDevices_STM32F4DISCOVERY.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\STM32F4DISCOVERY</Groups>
     <LibraryCategory>

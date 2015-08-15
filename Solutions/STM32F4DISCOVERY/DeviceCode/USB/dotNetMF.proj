@@ -7,7 +7,6 @@
     <Description>USB PAL configuration for STM32F4DISCOVERY solution</Description>
     <Level>PAL</Level>
     <LibraryFile>usb_pal_config_STM32F4DISCOVERY.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\USB\dotnetmf.proj</ProjectPath>
     <ManifestFile>usb_pal_config_STM32F4DISCOVERY.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\STM32F4DISCOVERY</Groups>
     <LibraryCategory>

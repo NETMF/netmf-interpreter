@@ -7,7 +7,6 @@
     <Description>Block storage configuration for MCBSTM32F400</Description>
     <Level>HAL</Level>
     <LibraryFile>STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj</ProjectPath>
     <ManifestFile>STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\MCBSTM32F400</Groups>
     <LibraryCategory>

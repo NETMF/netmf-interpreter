@@ -7,7 +7,6 @@
     <Description>Block storage configuration for STM32F4DISCOVERY</Description>
     <Level>HAL</Level>
     <LibraryFile>STM32F4_blconfig_STM32F4DISCOVERY.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj</ProjectPath>
     <ManifestFile>STM32F4_blconfig_STM32F4DISCOVERY.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\STM32F4DISCOVERY</Groups>
     <LibraryCategory>
