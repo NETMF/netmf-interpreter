@@ -12,7 +12,7 @@
     <ManifestFile>cpu_dma_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Processor\stubs</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="DMA_HAL" Guid="{E16D3D03-A668-4609-9DF0-0279761DD1F3}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="DMA_HAL" Guid="{E16D3D03-A668-4609-9DF0-0279761DD1F3}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

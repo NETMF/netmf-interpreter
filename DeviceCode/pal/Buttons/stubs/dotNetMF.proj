@@ -12,7 +12,7 @@
     <ManifestFile>Buttons_pal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Buttons</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Buttons_PAL" Guid="{B383D746-6B38-40B5-841A-409CB239A00F}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Buttons_PAL" Guid="{B383D746-6B38-40B5-841A-409CB239A00F}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

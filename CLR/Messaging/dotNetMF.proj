@@ -12,7 +12,7 @@
     <ManifestFile>Messaging.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Communication</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Messaging_CLR" Guid="{5EC01C82-A2F2-4A0F-B412-C8451F0EC70C}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Messaging_CLR" Guid="{5EC01C82-A2F2-4A0F-B412-C8451F0EC70C}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

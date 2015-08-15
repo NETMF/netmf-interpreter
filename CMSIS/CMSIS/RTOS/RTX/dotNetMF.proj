@@ -12,7 +12,7 @@
         <ManifestFile>CMSIS_RTX.$(LIB_EXT).manifest</ManifestFile>
         <Groups>OS\CMSIS_RTOS</Groups>
         <LibraryCategory>
-            <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OS" Guid="{F0C31986-B463-437E-9814-EDAB2BE46109}" ProjectPath="" Conditional="" xmlns="">
+            <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OS" Guid="{F0C31986-B463-437E-9814-EDAB2BE46109}" Conditional="" xmlns="">
                 <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
             </MFComponent>
         </LibraryCategory>
