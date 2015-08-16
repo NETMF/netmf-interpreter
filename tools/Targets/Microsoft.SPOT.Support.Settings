@@ -138,17 +138,13 @@
     <CSHARP_MACROS>TINYCLR_RTM</CSHARP_MACROS>
   </PropertyGroup>
 
-  <ItemGroup>
-    <StringTableInputs Include="Microsoft.SPOT.Application.Channels.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Application.Data.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Application.TimeChannel.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Data.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Native.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Shell.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="mscorlib.strings"><InProject>false</InProject></StringTableInputs>
-  </ItemGroup>
+  <PropertyGroup>
+    <ENDIANNESS Condition="'$(ENDIANNESS)'==''">le</ENDIANNESS>
+  </PropertyGroup>
 
   <ItemGroup>
+    <StringTableInputs Include="Microsoft.SPOT.Native.strings" />
+    <StringTableInputs Include="mscorlib.strings" />
   </ItemGroup>
 
   <!--=============================================================================================-->
@@ -159,8 +155,8 @@
     <Message Text="Building targets $(SupportTargets) for configuration $(Configuration)"/>
   </Target>
 
-  <Target Name="buildstring" Inputs="@(StringTableInputs->'$(BUILD_TREE_CLIENT)\pe\%(Identity).dll')" Outputs="$(BUILD_TREE_CLIENT)\stubs\StringTable.cpp">
-    <Exec Command="$(PRG_MMP) @(StringTableInputs->' -loadstrings $(BUILD_TREE_CLIENT)\pe\%(Identity)') -generateStringsTable $(BUILD_TREE_CLIENT)\stubs\StringTable.cpp"/>
+  <Target Name="buildstring" Inputs="@(StringTableInputs->'$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\%(Identity).dll')" Outputs="$(BUILD_TREE_CLIENT)\stubs\StringTable.cpp">
+    <Exec Command="$(PRG_MMP) @(StringTableInputs->' -loadstrings $(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\%(Identity)', ' ') -generateStringsTable $(BUILD_TREE_CLIENT)\stubs\StringTable.cpp"/>
   </Target>
 
 </Project>
