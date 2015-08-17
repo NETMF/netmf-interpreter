@@ -1,3 +1,11 @@
+//
+// The StringTable was generated from the following <StringTableInputs>
+// specified in Microsoft.SPOT.Support.Settings:
+//
+//   Microsoft.SPOT.Native.strings
+//   mscorlib.strings
+//
+
 const size_t c_CLR_StringTable_Size = 860;
 
 const CLR_STRING c_CLR_StringTable_Lookup[] = 
