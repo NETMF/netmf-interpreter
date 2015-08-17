@@ -156,7 +156,7 @@
   </Target>
 
   <Target Name="buildstring" Inputs="@(StringTableInputs->'$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\%(Identity).dll')" Outputs="$(BUILD_TREE_CLIENT)\stubs\StringTable.cpp">
-    <Exec Command="$(PRG_MMP) @(StringTableInputs->' -loadstrings $(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\%(Identity)', ' ') -generateStringsTable $(BUILD_TREE_CLIENT)\stubs\StringTable.cpp"/>
+    <Exec Command="$(PRG_MMP) @(StringTableInputs->' -loadstrings $(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\%(Identity)', ' ') -generateStringsTable $(BUILD_TREE_CLIENT)\stubs\StringTableData.cpp"/>
   </Target>
 
 </Project>
