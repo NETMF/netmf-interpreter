@@ -14,8 +14,8 @@ namespace lwIP
 {
     namespace SysArch
     {
-		typedef void (*TimerCallback) (void const *);
-		
+        typedef void (*TimerCallback) (void const *);
+        
         const uint64_t SystemTimeUnitsPerMicrosecond = 10; // HAL system time is in 100ns intervals
         const uint64_t SystemTimeUnitsPerMillisecond = 1000 * SystemTimeUnitsPerMicrosecond;
         
@@ -36,7 +36,7 @@ namespace lwIP
         template< typename OsTimerT >
         class TimeoutCompare
         {
-		public:
+        public:
             // Compare this Timeout with the specified handler and arg
             // returns 0 if equal, negative value if this instance is less
             // and 1 if this instance is greater.
@@ -49,7 +49,7 @@ namespace lwIP
             {
                 return Compare( lhs, rhs.get_Handler(), rhs.get_Arg() );
             }
-			
+            
             static int Compare( const OsTimerT& lhs, TimerCallback handler, void* arg )
             {
                 if( handler < lhs.get_Handler() )
@@ -81,7 +81,7 @@ namespace lwIP
             Timeout( sys_timeout_handler handler, void* arg )
                 : OsTimer( reinterpret_cast<TimerCallback>(handler), arg )
             {
-				this->Initialize();
+                this->Initialize();
             }
 
             // To prevent the timer from triggering and attempting to call a partially

@@ -114,7 +114,7 @@
             <FileMapping Name="*" Options="(VectorTable +FIRST)" />
         </ExecRegion>
         
-        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
 
