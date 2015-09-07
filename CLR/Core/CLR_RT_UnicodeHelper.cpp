@@ -103,6 +103,7 @@ int CLR_RT_UnicodeHelper::CountNumberOfBytes( int max )
             if(ch >= LOW_SURROGATE_START && ch <= LOW_SURROGATE_END)
             {
                 num += 4;
+                max--;
             }
             else
             {
@@ -375,6 +376,8 @@ bool CLR_RT_UnicodeHelper::ConvertToUTF8( int iMaxChars, bool fJustMove )
                 outputUTF8      += 4;
                 outputUTF8_size -= 4;
             }
+
+            iMaxChars -= 2;
         }
         else
         {

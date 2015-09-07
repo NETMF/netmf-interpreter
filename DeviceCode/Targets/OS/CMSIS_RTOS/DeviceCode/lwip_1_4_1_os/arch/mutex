@@ -12,8 +12,10 @@ namespace std
     {
     public:
         recursive_mutex( )
+            : MutexId( 0 )
+            , osMutexInitMember( MutexDef )
         {
-            osMutexInitMember( MutexDef );
+            osMutexConstructMember( MutexDef );
             MutexId = osMutexCreate( osMutex( MutexDef ) );
         }
 
