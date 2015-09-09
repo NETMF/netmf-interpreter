@@ -63,23 +63,23 @@ namespace TextTests
         {
             /*
             // The example displays the following output:
-            //       ®: Microsoft
-            //       ®: Excel
-            //       ®: Access
-            //       ®: Outlook
-            //       ®: PowerPoint
-            //       ™: Silverlight
+            //       ? Microsoft
+            //       ? Excel
+            //       ? Access
+            //       ? Outlook
+            //       ? PowerPoint
+            //       ? Silverlight
             // Found 6 trademarks or registered trademarks.
             */
             bool result = true;
             int expectedCount = 6;
 
             string pattern = @"\b(\w+?)([®™])";
-            string input = "Microsoft® Office Professional Edition combines several office " +
-                           "productivity products, including Word, Excel®, Access®, Outlook®, " +
-                           "PowerPoint®, and several others. Some guidelines for creating " +
+            string input = "Microsoft?Office Professional Edition combines several office " +
+                           "productivity products, including Word, Excel? Access? Outlook? " +
+                           "PowerPoint? and several others. Some guidelines for creating " +
                            "corporate documents using these productivity tools are available " +
-                           "from the documents created using Silverlight™ on the corporate " +
+                           "from the documents created using Silverlight?on the corporate " +
                            "intranet site.";
             Regex test = new Regex(pattern);
             MatchCollection matches = test.Matches(input);
@@ -96,27 +96,27 @@ namespace TextTests
                 result = false;
             }
 
-            if (matches[0].ToString() != "Microsoft®")
+            if (matches[0].ToString() != "Microsoft")
             {
                 result = false;
             }
-            else if (matches[1].ToString() != "Excel®")
+            else if (matches[1].ToString() != "Excel")
             {
                 result = false;
             }
-            else if (matches[2].ToString() != "Access®")
+            else if (matches[2].ToString() != "Access")
             {
                 result = false;
             }
-            else if (matches[3].ToString() != "Outlook®")
+            else if (matches[3].ToString() != "Outlook")
             {
                 result = false;
             }
-            else if (matches[4].ToString() != "PowerPoint®")
+            else if (matches[4].ToString() != "PowerPoint")
             {
                 result = false;
             }
-            else if (matches[5].ToString() != "Silverlight™")
+            else if (matches[5].ToString() != "Silverlight")
             {
                 result = false;
             }
