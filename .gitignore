@@ -30,8 +30,6 @@
 [Oo]bj/
 ipch/
 
-!/tools/bin/
-
 #uVision
 *.uvguix*
 Listings/
@@ -41,4 +39,3 @@ Listings/
 /DeviceCode/Targets/OS/Win32/DeviceCode/WinPcap_Eth/Dependencies/WpdPack/
 
 *.axfdump
-/crypto/lib
