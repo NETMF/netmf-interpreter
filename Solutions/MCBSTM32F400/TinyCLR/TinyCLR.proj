@@ -134,8 +134,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\CLR\StartupLib\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="Crypto_stub.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Crypto\stubs\dotNetMF.proj" />
+        <DriverLibs Include="Crypto.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\GlobalLock\dotNetMF.proj" />

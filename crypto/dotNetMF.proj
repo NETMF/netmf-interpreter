@@ -67,7 +67,7 @@
   <PropertyGroup Condition="'$(CryptoInstructionSet)'!='x86'">
     <LibSrc                                                                >lib\$(CryptoInstructionSet)\$(DOTNETMF_COMPILER)\crypto.$(LIB_EXT)</LibSrc>
     <LibSrc Condition="'$(COMPILER_TOOL)'=='ARM' AND !EXISTS('$(LibSrc)')" >lib\$(CryptoInstructionSet)\RVDS4.0\crypto.$(LIB_EXT)</LibSrc>
-    <LibSrc Condition="'$(COMPILER_TOOL)'=='GCC'"                          >lib\$(CryptoInstructionSet)\RVDS3.1\crypto.$(LIB_EXT)</LibSrc>
+    <LibSrc Condition="'$(COMPILER_TOOL)'=='GCC' OR '$(COMPILER_TOOL)'=='MDK'">lib\$(CryptoInstructionSet)\RVDS3.1\crypto.$(LIB_EXT)</LibSrc>
     <LibSrc Condition="'$(COMPILER_TOOL)'=='ARC'"                          >lib\$(CryptoInstructionSet)\MTWR8.0\crypto.$(LIB_EXT)</LibSrc>
     <LibSrc Condition="!EXISTS('$(LibSrc)')"                               >$(LIB_DIR)\crypto_stub.$(LIB_EXT)</LibSrc>
     <LibTo>crypto.$(LIB_EXT)</LibTo>
