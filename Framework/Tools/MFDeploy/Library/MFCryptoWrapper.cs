@@ -43,22 +43,17 @@ namespace dotNetMFCrypto
             VERIFYSIGNATURE
         }
 
-        [DllImport(@"Crypto.dll", CallingConvention = CallingConvention.Cdecl ) ]
+        [DllImport(@"Crypto.dll")]
         static public extern bool Crypto_Encrypt([In] byte[] Key, [In, Out] byte[] IV, int cbIVSize, [In] byte[] pPlainText, int cbPlainText, [Out] byte[] pCypherText, int cbCypherText);
-
-        [DllImport(@"Crypto.dll", CallingConvention = CallingConvention.Cdecl )]
+        [DllImport(@"Crypto.dll")]
         static public extern bool Crypto_Decrypt([In] byte[] Key, [In, Out] byte[] IV, int cbIVSize, [In] byte[] pCypherText, int cbCypherText, [Out] byte[] pPlainText, int cbPlainText);
-
-        [DllImport(@"Crypto.dll", CallingConvention = CallingConvention.Cdecl )]
+        [DllImport(@"Crypto.dll")]
         static public extern int Crypto_CreateZenithKey([In] byte[] seed, out ushort delta1, out ushort delta2);
-
-        [DllImport(@"Crypto.dll", CallingConvention = CallingConvention.Cdecl )]
+        [DllImport(@"Crypto.dll")]
         static public extern int Crypto_SignBuffer([In] byte[] buffer, int bufLen, [In] byte[] key, [Out] byte[] signature, int siglen);
-
-        [DllImport(@"Crypto.dll", CallingConvention = CallingConvention.Cdecl )]
+        [DllImport(@"Crypto.dll")]
         static public extern int Crypto_GeneratePrivateKey([In] byte[] seed, [Out] byte[] privateKey);
-
-        [DllImport(@"Crypto.dll", CallingConvention = CallingConvention.Cdecl )]
+        [DllImport(@"Crypto.dll")]
         static public extern int Crypto_PublicKeyFromPrivate([In] byte[] privkey, [Out] byte[] pubkey);
     }
 }
