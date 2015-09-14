@@ -1659,6 +1659,7 @@ namespace Microsoft.SPOT.Debugger
 
                 cmd.PrepareForSend( address, buf, pos, len );
 
+                DebuggerEventSource.Log.EngineWriteMemory( address, len );
                 IncomingMessage reply = SyncMessage( Commands.c_Monitor_WriteMemory, 0, cmd );
 
                 if( !IncomingMessage.IsPositiveAcknowledge( reply ) )
