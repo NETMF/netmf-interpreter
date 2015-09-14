@@ -43,14 +43,7 @@ namespace Microsoft.SPOT.Debugger.WireProtocol
         {
             try
             {
-                DebuggerEventSource.Log.WireProtocolTxHeader( m_base.m_header.m_crcHeader
-                                                            , m_base.m_header.m_crcData
-                                                            , m_base.m_header.m_cmd
-                                                            , m_base.m_header.m_flags
-                                                            , m_base.m_header.m_seq
-                                                            , m_base.m_header.m_seqReply
-                                                            , m_base.m_header.m_size
-                                                            );
+                DebuggerEventSource.Log.WireProtocolTxHeader( m_base.m_header.m_cmd, m_base.m_header.m_flags, m_base.m_header.m_seq, m_base.m_header.m_seqReply );
                 return m_parent.QueueOutput( m_raw );
             }
             catch
