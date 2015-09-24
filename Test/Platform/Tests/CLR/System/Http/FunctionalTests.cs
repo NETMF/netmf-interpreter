@@ -45,7 +45,7 @@ namespace Microsoft.SPOT.Platform.Tests
             {
                 Log.Comment("Small web page - redirect");
                 // Print for now, Parse later
-                string data = new string(Encoding.UTF8.GetChars(GetRequested("http://www.microsoft.com", "IIS")));
+                string data = new string(Encoding.UTF8.GetChars(GetRequested("http://www.microsoft.com", "APACHE")));
             }
             catch (Exception ex)
             {
