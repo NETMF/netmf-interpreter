@@ -563,22 +563,13 @@ int LWIP_SOCKETS_Driver::SetSockOpt( SOCK_SOCKET socket, int level, int optname,
 
             switch(optname)
             {        
-                // LINGER is not implemented in LWIP
+                // LINGER and DONTLINGER are not implemented in LWIP
                 case SOCK_SOCKO_LINGER:
-                    if (*(int*)optval)
-                    {
-                        errno = SOCK_ENOPROTOOPT;
-                        return SOCK_SOCKET_ERROR;
-                    }
-                    return 0;
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
                 case SOCK_SOCKO_DONTLINGER:
-                    if (!*(int*)optval)
-                    {
-                        errno = SOCK_ENOPROTOOPT;
-                        return SOCK_SOCKET_ERROR;
-                    }
-                    return 0;
-                    
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
 				// ignore this item to enable http to work
 				case SOCK_SOCKO_REUSEADDRESS:
 					return 0;
@@ -627,13 +618,13 @@ int LWIP_SOCKETS_Driver::GetSockOpt( SOCK_SOCKET socket, int level, int optname,
             nativeOptionName    = GetNativeSockOption(optname);
             switch(optname)
             {        
-                // LINGER is not implemented in LWIP
+                // LINGER and DONTLINGER are not implemented in LWIP
                 case SOCK_SOCKO_LINGER:
-                    *optval = 0;
-                    return 0;
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
                 case SOCK_SOCKO_DONTLINGER:
-                    *optval = 1;
-                    return 0;
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
                 default:
                     break;
             }
