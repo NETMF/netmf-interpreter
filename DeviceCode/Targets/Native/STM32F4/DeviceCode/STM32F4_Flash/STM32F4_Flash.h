@@ -19,6 +19,10 @@
 
 //--//
 
+#ifndef FLASH
+#define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
+#endif
+
 struct STM32F4_Flash_Driver
 {
 
