@@ -20,6 +20,10 @@
 #include "..\stm32f2xx.h"
 #endif
 
+#ifndef FLASH
+#define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
+#endif
+
     typedef UINT16 CHIP_WORD;
 
 #define FLASH_CR_PSIZE_BITS FLASH_CR_PSIZE_0 // 16 bit programming
