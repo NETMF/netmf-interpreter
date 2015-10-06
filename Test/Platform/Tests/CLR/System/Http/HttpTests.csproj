@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <AssemblyName>Microsoft.SPOT.Platform.Tests.HttpTests</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -25,6 +26,7 @@
     <Compile Include="ProtocolViolationExceptionTests.cs" />
     <Compile Include="TestServer.cs" />
     <Compile Include="UriTests.cs" />
+    <Compile Include="Utilities.cs" />
     <Compile Include="WebExceptionTests.cs" />
     <Compile Include="WebHeaderCollectionTests.cs" />
     <Compile Include="WebProxyTests.cs" />

@@ -44,7 +44,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -98,7 +98,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/Unauth.html");  //expect 401 - Unauthorized 
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/Unauth.html");  //expect 401 - Unauthorized 
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -150,7 +150,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotFound.html");  //expect 404 - NotFound  
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotFound.html");  //expect 404 - NotFound  
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -205,7 +205,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotExistUriPath.html");      
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotExistUriPath.html");      
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -258,7 +258,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -288,7 +288,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -361,7 +361,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/index.html");  //expect 300 - Ambiguous
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/index.html");  //expect 300 - Ambiguous
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -413,7 +413,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/Gateway.html");  //expect 502 - BadGateway
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/Gateway.html");  //expect 502 - BadGateway
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -467,7 +467,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/conflict.html");  //expect 409 - Conflict
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/conflict.html");  //expect 409 - Conflict
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -521,7 +521,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/moved.html");  //expect 301 - Moved
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/moved.html");  //expect 301 - Moved
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -575,7 +575,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/redirect.html");  //expect 302 - Redirect
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/redirect.html");  //expect 302 - Redirect
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -629,7 +629,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/payment.html");  //expect 402 - PaymentRequired
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/payment.html");  //expect 402 - PaymentRequired
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -683,7 +683,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/testTimeOut.html");  //expect 408 - RequestTimeout
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/testTimeOut.html");  //expect 408 - RequestTimeout
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -739,7 +739,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/local/webpages/mysubdir/index.html");  //expect 414 - RequestUriTooLong
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/local/webpages/mysubdir/index.html");  //expect 414 - RequestUriTooLong
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -795,7 +795,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/service.html");  //expect 503 - ServiceUnavailable
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/service.html");  //expect 503 - ServiceUnavailable
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -851,7 +851,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/tempRedir.html");  //expect 307 - TemporaryRedirect
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/tempRedir.html");  //expect 307 - TemporaryRedirect
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -906,7 +906,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/accepted.html");  //expect 202 - Accepted
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/accepted.html");  //expect 202 - Accepted
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -961,7 +961,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/badRequest.html");  //expect 400 - BadRequest
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/badRequest.html");  //expect 400 - BadRequest
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1016,7 +1016,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/continue.html");  //expect 100 - Continue
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/continue.html");  //expect 100 - Continue
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1073,7 +1073,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/created.html");  //expect 201 - Created
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/created.html");  //expect 201 - Created
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1128,7 +1128,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/expfailed.html");  //expect 417 - ExpectationFailed
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/expfailed.html");  //expect 417 - ExpectationFailed
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1183,7 +1183,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/forbidden.html");  //expect 403 - Forbidden
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/forbidden.html");  //expect 403 - Forbidden
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1238,7 +1238,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/found.html");  //expect 302 - Found
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/found.html");  //expect 302 - Found
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1293,7 +1293,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/gateway.html");  //expect  - GatewayTimeout
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/gateway.html");  //expect  - GatewayTimeout
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1348,7 +1348,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/gone.html");  //expect 410 - Gone
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/gone.html");  //expect 410 - Gone
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1402,7 +1402,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/httpversion.html");  //expect 505 - HttpVersionNotSupported
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/httpversion.html");  //expect 505 - HttpVersionNotSupported
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1457,7 +1457,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/iserror.html");  //expect 500 - InternalServerError
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/iserror.html");  //expect 500 - InternalServerError
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1512,7 +1512,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/lrequired.html");  //expect 411 - LengthRequired
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/lrequired.html");  //expect 411 - LengthRequired
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1567,7 +1567,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/method.html");  //expect 405 - MethodNotAllowed
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/method.html");  //expect 405 - MethodNotAllowed
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1622,7 +1622,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/NoContent.html");  //expect 204 - NoContent
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/NoContent.html");  //expect 204 - NoContent
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1677,7 +1677,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/nonauthInfo.html");  //expect 203 - NonAuthoritativeInformation
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/nonauthInfo.html");  //expect 203 - NonAuthoritativeInformation
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1732,7 +1732,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotAccept.html");  //expect  - NotAcceptable
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotAccept.html");  //expect  - NotAcceptable
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1787,7 +1787,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotImplement.html");  //expect 501 - NotImplemented
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotImplement.html");  //expect 501 - NotImplemented
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1842,7 +1842,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotModified.html");  //expect  - NotModified
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/NotModified.html");  //expect  - NotModified
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1897,7 +1897,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/PContent.html");  //expect 206 - PartialContent
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/PContent.html");  //expect 206 - PartialContent
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -1952,7 +1952,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/Precond.html");  //expect 412 - PreconditionFailed
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/Precond.html");  //expect 412 - PreconditionFailed
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2007,7 +2007,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/ProxyAuth.html");  //expect  - ProxyAuthenticationRequired
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/ProxyAuth.html");  //expect  - ProxyAuthenticationRequired
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2062,7 +2062,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/RMethod.html");  //expect  - RedirectMethod
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/RMethod.html");  //expect  - RedirectMethod
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2117,7 +2117,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/reqRange.html");  //expect 416 - RequestedRangeNotSatisfiable
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/reqRange.html");  //expect 416 - RequestedRangeNotSatisfiable
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2172,7 +2172,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/reqEntity.html");  //expect 413 - RequestEntityTooLarge
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/reqEntity.html");  //expect 413 - RequestEntityTooLarge
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2227,7 +2227,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/ResetContent.html");  //expect  - ResetContent
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/ResetContent.html");  //expect  - ResetContent
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2282,7 +2282,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/SeeOther.html");  //expect  - SeeOther
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/SeeOther.html");  //expect  - SeeOther
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2337,7 +2337,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/SwitchProt.html");  //expect  - SwitchingProtocols
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/SwitchProt.html");  //expect  - SwitchingProtocols
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2392,7 +2392,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/Unauth.html");  //expect  - Unauthorized
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/Unauth.html");  //expect  - Unauthorized
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2447,7 +2447,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/Unused.html");  //expect  - Unused
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/Unused.html");  //expect  - Unused
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2502,7 +2502,7 @@ namespace Microsoft.SPOT.Platform.Tests
             MFTestResults result = MFTestResults.Pass;
 
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/webpages/UseProxy.html");  //expect  - UseProxy
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/webpages/UseProxy.html");  //expect  - UseProxy
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.Method = "GET";
 
@@ -2556,7 +2556,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
