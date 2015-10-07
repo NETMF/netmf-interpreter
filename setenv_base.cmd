@@ -96,6 +96,7 @@ rem set tool-chain specific environment variables
 IF /I "%COMPILER_TOOL%"=="VS"       GOTO :SET_VS_VARS 
 IF /I "%COMPILER_TOOL%"=="GCC"      GOTO :SET_GCC_VARS 
 IF /I "%COMPILER_TOOL%"=="MDK"      GOTO :SET_MDK_VARS
+IF /I "%COMPILER_TOOL%"=="DS5"      GOTO :SET_DS5_VARS
 
 IF "%COMPILER_TOOL%"=="" GOTO :ERROR
 
@@ -186,7 +187,32 @@ GOTO :EOF
 @ECHO.
 
 GOTO :EOF
+rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+:SET_DS5_VARS
+@ECHO Setting DS5 env var and path for version %COMPILER_TOOL_VERSION%
 
+rem use a default for MDK
+set NO_ADS_WRAPPER=1
+set DOTNETMF_COMPILER=%COMPILER_TOOL_VERSION%
+
+IF "%ARG3%"=="" set ARG3=%SystemDrive%\Program Files\DS-5 v5.22.0\sw\ARMCompiler5.05u2
+IF NOT EXIST "%ARG3%" GOTO :BAD_DS5_ARG
+
+SET DS5_TOOL_PATH=%ARG3%
+SET PATH=%DS5_TOOL_PATH%\bin;%PATH%
+
+SET ARMCC50BIN=%DS5_TOOL_PATH%\BIN
+SET ARMCC50LIB=%DS5_TOOL_PATH%\LIB
+SET ARMCC50INC=%DS5_TOOL_PATH%\INCLUDE
+
+GOTO :EOF
+
+:BAD_DS5_ARG
+@ECHO.
+@ECHO Error - Invalid argument.  Could not find DS5 path %ARG3%.
+@ECHO.
+
+GOTO :EOF
 rem @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 :SET_VS_VARS
 set VSSDK12INSTALLDIR=%SPOROOT%\tools\x86\MicrosoftSDKs\VSSDK\vs12\

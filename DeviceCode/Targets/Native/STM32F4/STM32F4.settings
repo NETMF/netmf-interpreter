@@ -20,7 +20,10 @@
         <CC_CPP_Defines Include="__CORTEX_M4F" />
         <CC_CPP_Defines Include="CORTEX_M4" />
     </ItemGroup>
-
+    <PropertyGroup Condition="'$(COMPILER_TOOL)'=='DS5'">
+		<DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M3</DEVICE_TYPE>
+		<BUILD_TOOL_GUID>{F7823E3C-8BCE-4D9A-AD56-9E06063C47CD}</BUILD_TOOL_GUID>
+	</PropertyGroup>
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
         <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
         <BUILD_TOOL_GUID>{00C50096-00DD-00E7-BBA9-7FC84D408562}</BUILD_TOOL_GUID>
