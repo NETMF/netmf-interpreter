@@ -563,22 +563,13 @@ int LWIP_SOCKETS_Driver::SetSockOpt( SOCK_SOCKET socket, int level, int optname,
 
             switch(optname)
             {        
-                // LINGER is not implemented in LWIP
+                // LINGER and DONTLINGER are not implemented in LWIP
                 case SOCK_SOCKO_LINGER:
-                    if (*(int*)optval)
-                    {
-                        errno = SOCK_ENOPROTOOPT;
-                        return SOCK_SOCKET_ERROR;
-                    }
-                    return 0;
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
                 case SOCK_SOCKO_DONTLINGER:
-                    if (!*(int*)optval)
-                    {
-                        errno = SOCK_ENOPROTOOPT;
-                        return SOCK_SOCKET_ERROR;
-                    }
-                    return 0;
-                    
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
 				// ignore this item to enable http to work
 				case SOCK_SOCKO_REUSEADDRESS:
 					return 0;
@@ -627,13 +618,13 @@ int LWIP_SOCKETS_Driver::GetSockOpt( SOCK_SOCKET socket, int level, int optname,
             nativeOptionName    = GetNativeSockOption(optname);
             switch(optname)
             {        
-                // LINGER is not implemented in LWIP
+                // LINGER and DONTLINGER are not implemented in LWIP
                 case SOCK_SOCKO_LINGER:
-                    *optval = 0;
-                    return 0;
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
                 case SOCK_SOCKO_DONTLINGER:
-                    *optval = 1;
-                    return 0;
+                    errno = SOCK_ENOPROTOOPT;
+                    return SOCK_SOCKET_ERROR;
                 default:
                     break;
             }
@@ -803,7 +794,7 @@ HRESULT LWIP_SOCKETS_Driver::UpdateAdapterConfiguration( UINT32 interfaceIndex, 
     }
     
     BOOL fEnableDhcp = (0 != (config->flags & SOCK_NETWORKCONFIGURATION_FLAGS_DHCP));
-    //BOOL fDynamicDns = (0 != (config->flags & SOCK_NETWORKCONFIGURATION_FLAGS_DYNAMIC_DNS));
+    BOOL fDynamicDns = (0 != (config->flags & SOCK_NETWORKCONFIGURATION_FLAGS_DYNAMIC_DNS));
     BOOL fDhcpStarted;
 
     struct netif *pNetIf = netif_find_interface(g_LWIP_SOCKETS_Driver.m_interfaces[interfaceIndex].m_interfaceNumber);
@@ -814,30 +805,12 @@ HRESULT LWIP_SOCKETS_Driver::UpdateAdapterConfiguration( UINT32 interfaceIndex, 
 
     fDhcpStarted = (0 != (pNetIf->flags & NETIF_FLAG_DHCP));
 
-// TODO Disable a separate option for dynamic DNS for now.
 #if LWIP_DNS
     // when using DHCP do not use the static settings
     if(0 != (updateFlags & SOCK_NETWORKCONFIGURATION_UPDATE_DNS))
     {
-        //// if dynamic dns is on, then we will set the corresonding NetIF flag
-        //// resetting dhcp if necessary.
-        //if(fDynamicDns || (config->dnsServer1 == 0 && config->dnsServer2 == 0))
-        //{
-        //    if(0 == (pNetIf->flagsExt & NETIF_FLAG_EXT_DYNAMIC_DNS))
-        //    {
-        //        pNetIf->flagsExt |= NETIF_FLAG_EXT_DYNAMIC_DNS;
-
-        //        // if dhcp is active, we need to reset in order to get the dynamic
-        //        // dns
-        //        if(fEnableDhcp && fDhcpStarted)
-        //        {
-        //            dhcp_stop(pNetIf);
-        //            dhcp_start(pNetIf);
-        //        }
-        //    }
-        //}
-        //else
-        //{
+        if(!fDynamicDns && (config->dnsServer1 != 0 || config->dnsServer2 != 0))
+        {
             // user defined DNS addresses
             if(config->dnsServer1 != 0)
             {
@@ -851,9 +824,7 @@ HRESULT LWIP_SOCKETS_Driver::UpdateAdapterConfiguration( UINT32 interfaceIndex, 
 
                 dns_setserver(idx, (struct ip_addr *)&config->dnsServer2);
             }
-
-        //    pNetIf->flagsExt &= ~NETIF_FLAG_EXT_DYNAMIC_DNS;
-        //}
+        }
     }
 #endif
 

@@ -138,18 +138,47 @@
     <CSHARP_MACROS>TINYCLR_RTM</CSHARP_MACROS>
   </PropertyGroup>
 
-  <ItemGroup>
-    <StringTableInputs Include="Microsoft.SPOT.Application.Channels.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Application.Data.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Application.TimeChannel.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Data.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Native.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="Microsoft.SPOT.Shell.strings"><InProject>false</InProject></StringTableInputs>
-    <StringTableInputs Include="mscorlib.strings"><InProject>false</InProject></StringTableInputs>
-  </ItemGroup>
+  <PropertyGroup>
+    <ENDIANNESS Condition="'$(ENDIANNESS)'==''">le</ENDIANNESS>
+  </PropertyGroup>
 
   <ItemGroup>
+    <StringTableInputs Include="Microsoft.SPOT.Native.strings" />
+    <StringTableInputs Include="mscorlib.strings" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <StringTableOutput>$(BUILD_TREE_CLIENT)\stubs\StringTableData.cpp</StringTableOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <StringTableLines Include="//" />
+    <StringTableLines Include="// The StringTable was generated from the following &lt;StringTableInputs&gt;" />
+    <StringTableLines Include="// specified in $(MSBuildThisFile):" />
+    <StringTableLines Include="//" />
+    <StringTableLines Include="@(StringTableInputs->'//   %(Identity)')" />
+    <StringTableLines Include="//%0D%0A" /><!-- An extra newline -->
+  </ItemGroup>
+
+  <!--
+    Unfortunately, ReadLinesFromFile task cannot be used, because it skips
+    all empty lines and trims whitespaces, which breaks the code formatting.
+    https://github.com/Microsoft/msbuild/blob/master/src/XMakeTasks/FileIO/ReadLinesFromFile.cs#L69
+  -->
+  <UsingTask TaskName="PrependLinesToFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <File ParameterType="System.String" Required="true" />
+      <Lines ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Linq"/>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var text = System.IO.File.ReadAllText(File);
+        System.IO.File.WriteAllLines(File, Lines.Select(x => x.ItemSpec));
+        System.IO.File.AppendAllText(File, text);
+      ]]></Code>
+    </Task>
+  </UsingTask>
 
   <!--=============================================================================================-->
 
@@ -159,8 +188,10 @@
     <Message Text="Building targets $(SupportTargets) for configuration $(Configuration)"/>
   </Target>
 
-  <Target Name="buildstring" Inputs="@(StringTableInputs->'$(BUILD_TREE_CLIENT)\pe\%(Identity).dll')" Outputs="$(BUILD_TREE_CLIENT)\stubs\StringTable.cpp">
-    <Exec Command="$(PRG_MMP) @(StringTableInputs->' -loadstrings $(BUILD_TREE_CLIENT)\pe\%(Identity)') -generateStringsTable $(BUILD_TREE_CLIENT)\stubs\StringTable.cpp"/>
+  <Target Name="buildstring" Inputs="@(StringTableInputs->'$(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\%(Identity).dll')" Outputs="$(BUILD_TREE_CLIENT)\stubs\StringTable.cpp">
+    <Exec Command="$(PRG_MMP) @(StringTableInputs->' -loadstrings $(BUILD_TREE_CLIENT)\pe\$(ENDIANNESS)\%(Identity)', ' ') -generateStringsTable $(StringTableOutput)"/>
+    <!-- Include list of inputs at the beginning of the file. -->
+    <PrependLinesToFile File="$(StringTableOutput)" Lines="@(StringTableLines)"/>
   </Target>
 
 </Project>
