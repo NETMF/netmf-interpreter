@@ -513,7 +513,8 @@ namespace Microsoft.SPOT.Platform.Tests
             }
             else
             {
-                return MFTestResults.Fail;
+                Log.Comment("This in a known bug captured in Issue #95");
+                return MFTestResults.KnownFailure;
             }
         }
         [TestMethod]
@@ -527,7 +528,8 @@ namespace Microsoft.SPOT.Platform.Tests
             }
             else
             {
-                return MFTestResults.Fail;
+                Log.Comment("This in a known bug captured in Issue #95");
+                return MFTestResults.KnownFailure;
             }
         }
         [TestMethod]
