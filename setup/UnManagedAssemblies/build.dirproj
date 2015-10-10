@@ -7,7 +7,6 @@
         TinyCLR.wixproj;
         TFConvert.wixproj;
         BuildHelper.wixproj;
-        Crypto.wixproj
         " />
   </ItemGroup>
 
