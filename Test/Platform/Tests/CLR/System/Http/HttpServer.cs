@@ -65,6 +65,8 @@ namespace Microsoft.SPOT.Platform.Tests
                 s_CurrentPort++;
                 throw new Exception("StartServer failed");
             }
+
+            s_CurrentPort++;
         }
 
 

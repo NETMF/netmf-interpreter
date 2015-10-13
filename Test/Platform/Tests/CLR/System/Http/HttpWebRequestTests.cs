@@ -25,7 +25,6 @@ namespace Microsoft.SPOT.Platform.Tests
                 return InitializeResult.Skip;
             }
 
-
             return InitializeResult.ReadyToGo;
         }
 
@@ -69,14 +68,14 @@ namespace Microsoft.SPOT.Platform.Tests
             {
                 Log.Comment("Create string request");
                 string URL = null;
-                try 
-                { 
+                try
+                {
                     HttpWebRequest strRequest = (HttpWebRequest)HttpWebRequest.Create(URL);
                     Log.Exception("Expected ArgumentNullException");
                     result = MFTestResults.Fail;
                 }
-                catch (Exception ex) 
-                { 
+                catch (Exception ex)
+                {
                     /* pass case */
                     if (!HttpTests.ValidateException(ex, typeof(ArgumentNullException)))
                         result = MFTestResults.Fail;
@@ -84,8 +83,8 @@ namespace Microsoft.SPOT.Platform.Tests
 
                 Log.Comment("Create URI request");
                 Uri uri = null;
-                try 
-                { 
+                try
+                {
                     HttpWebRequest uriRequest = (HttpWebRequest)HttpWebRequest.Create(uri);
                     Log.Exception("Expected ArgumentNullException");
                     result = MFTestResults.Fail;
@@ -114,8 +113,8 @@ namespace Microsoft.SPOT.Platform.Tests
             {
                 Log.Comment("Create string request");
                 string URL = "";
-                try 
-                { 
+                try
+                {
                     HttpWebRequest strRequest = (HttpWebRequest)HttpWebRequest.Create(URL);
                     Log.Exception("Expected ArgumentException");
                     result = MFTestResults.Fail;
@@ -159,7 +158,7 @@ namespace Microsoft.SPOT.Platform.Tests
                 {
                     Log.Exception("Expected bytes=-1, but got " + wr.Headers["Range"]);
                     result = MFTestResults.Fail;
-                } 
+                }
                 Log.Comment("AddRange(100, 500)");
                 wr = (HttpWebRequest)WebRequest.Create(HttpTests.MSUrl);
                 wr.AddRange(100, 500);
@@ -216,8 +215,8 @@ namespace Microsoft.SPOT.Platform.Tests
             {
                 Log.Comment("invalid from - AddRange(-1, 500)");
                 wr = (HttpWebRequest)WebRequest.Create(HttpTests.MSUrl);
-                try 
-                { 
+                try
+                {
                     wr.AddRange(-1, 500);
                     Log.Exception("Expected ArgumentOutOfRangeException");
                     result = MFTestResults.Fail;
@@ -339,7 +338,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults AcceptHeaderTest()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(HttpTests.MSUrl);;
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(HttpTests.MSUrl); ;
             try
             {
                 Log.Comment("Initial value should be null");
@@ -470,13 +469,13 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults SetHeadersAfterRequest()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpTestServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://" + Utilities.GetLocalIpAddress() + ":" + HttpTestServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
-            HttpTestServer server = new HttpTestServer("http", ref result) 
-            { 
+            HttpTestServer server = new HttpTestServer("http", ref result)
+            {
                 RequestUri = wr.RequestUri,
                 RequestHeaders = wr.Headers,
-                ResponseString = "<html><body>SetHeadersAfterRequest</body></html>" 
+                ResponseString = "<html><body>SetHeadersAfterRequest</body></html>"
             };
 
             try
@@ -569,7 +568,8 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults FunctionalChunkTests()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpTestServer.s_CurrentPort.ToString() + "/");
+            string currentPort = HttpTestServer.s_CurrentPort.ToString();
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + currentPort + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
             wr.KeepAlive = true;
             HttpTestServer server = new HttpTestServer("http", ref result)
@@ -606,10 +606,10 @@ namespace Microsoft.SPOT.Platform.Tests
                         result = MFTestResults.Fail;
                         Log.Exception("[Client] Expected stream, but got null");
                     }
-                }      
+                }
 
                 Log.Comment("Send Chunked");
-                wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpTestServer.s_CurrentPort.ToString() + "/");
+                wr = (HttpWebRequest)WebRequest.Create("http://" + Utilities.GetLocalIpAddress() + ":" + currentPort + "/");
                 wr.UserAgent = ".Net Micro Framwork Device/4.0";
                 wr.SendChunked = true;
                 server.SendChunked = true;
