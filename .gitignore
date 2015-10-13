@@ -30,6 +30,8 @@
 [Oo]bj/
 ipch/
 
+!/tools/bin/
+
 #uVision
 *.uvguix*
 Listings/
