@@ -16,7 +16,7 @@
     <CodeSignAuthenticodeCert>400</CodeSignAuthenticodeCert>
     <CodeSignOpcCert>100040160</CodeSignOpcCert>
     <CodeSignStrongNameCert>272</CodeSignStrongNameCert>
-    <CodeSignApprovers>smaillet;mortezag</CodeSignApprovers>
+    <CodeSignApprovers>colina;mortezag;lorenzte</CodeSignApprovers>
       
     <!--
     <VSIPInstalled>false</VSIPInstalled>
