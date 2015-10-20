@@ -5,13 +5,19 @@
 #include "stdafx.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+#define TRACE_ERRORS 1
+#define TRACE_HEADERS 2
+#define TRACE_STATE 4
+#define TRACE_NODATA 8
 
-#if 0
-#define TRACE0( msg, ...) debug_printf( msg ) 
-#define TRACE( msg, ...) debug_printf( msg, __VA_ARGS__ ) 
+#define TRACE_MASK (TRACE_ERRORS)
+
+#if TRACE_MASK != 0
+#define TRACE0( f, msg ) if((f) & TRACE_MASK ) debug_printf( msg ) 
+#define TRACE( f, msg, ...) if((f) & TRACE_MASK ) debug_printf( msg, __VA_ARGS__ ) 
 #else
-#define TRACE0(msg,...)
-#define TRACE(msg,...)
+#define TRACE0( f, msg,...)
+#define TRACE( f, msg,...)
 #endif
 
 void WP_Message::Initialize( WP_Controller* parent )
@@ -113,18 +119,26 @@ bool WP_Message::VerifyHeader()
     UINT32 crc = ::SwapEndian( m_header.m_crcHeader );
 #endif
     m_header.m_crcHeader = 0;
-    fRes = SUPPORT_ComputeCRC( (UINT8*)&m_header, sizeof(m_header), 0 ) == crc;
-
+    UINT32 computedCrc = SUPPORT_ComputeCRC( ( UINT8* )&m_header, sizeof( m_header ), 0 );
     m_header.m_crcHeader = crc;
+    fRes = computedCrc == crc;
+    if( !fRes )
+        TRACE( TRACE_ERRORS, "Header CRC check failed: computed: 0x%08X; got: 0x%08X\n", computedCrc, m_header.m_crcHeader );
 
     return fRes;
 }
 
 bool WP_Message::VerifyPayload()
 {
-    if(m_payload == NULL && m_header.m_size) return false;
+    if( m_payload == NULL && m_header.m_size )
+        return false;
 
-    return SUPPORT_ComputeCRC( m_payload, m_header.m_size, 0 ) == m_header.m_crcData;
+    UINT32 computedCrc = SUPPORT_ComputeCRC( m_payload, m_header.m_size, 0 );
+    bool fRes = ( computedCrc == m_header.m_crcData );
+    if( !fRes )
+        TRACE( TRACE_ERRORS, "Payload CRC check failed: computed: 0x%08X; got: 0x%08X\n", computedCrc, m_header.m_crcData );
+
+    return fRes;
 }
 
 void WP_Message::ReplyBadPacket( UINT32 flags )
@@ -134,9 +148,9 @@ void WP_Message::ReplyBadPacket( UINT32 flags )
     msg.Initialize( m_parent );
 
     msg.PrepareRequest( 0, WP_Flags::c_NonCritical | WP_Flags::c_NACK | flags, 0, NULL );
-
     m_parent->SendProtocolMessage( msg );
 }
+
 bool WP_Message::Process()
 {
     UINT8* buf = (UINT8*)&m_header;
@@ -147,11 +161,11 @@ bool WP_Message::Process()
         switch(m_rxState)
         {
         case ReceiveState::Idle:
-            TRACE0("RxState==IDLE\n");
+            TRACE0( TRACE_STATE, "RxState==IDLE\n");
             return true;
 
         case ReceiveState::Initialize:
-            TRACE0("RxState==INIT\n");
+            TRACE0( TRACE_STATE, "RxState==INIT\n");
             Release();
 
             m_rxState = ReceiveState::WaitingForHeader;
@@ -160,10 +174,10 @@ bool WP_Message::Process()
             break;
 
         case ReceiveState::WaitingForHeader:
-            TRACE0("RxState==WaitForHeader\n");
+            TRACE0( TRACE_STATE, "RxState==WaitForHeader\n");
             if(m_parent->m_phy->ReceiveBytes( m_parent->m_state, m_pos, m_size ) == false)
             {
-                TRACE0("RxError - bailing out\n");
+                TRACE0( TRACE_NODATA, "ReceiveBytes returned false - bailing out\n");
                 return true;
             }
 
@@ -192,10 +206,10 @@ bool WP_Message::Process()
             break;
 
         case ReceiveState::ReadingHeader:
-            TRACE0("RxState==ReadingHeader\n");
+            TRACE0( TRACE_STATE, "RxState==ReadingHeader\n");
             if(m_parent->m_phy->ReceiveBytes( m_parent->m_state, m_pos, m_size ) == false)
             {
-                TRACE0("RxError - bailing out\n");
+                TRACE0( TRACE_NODATA, "ReceiveBytes returned false - bailing out\n");
                 return true;
             }
 
@@ -207,7 +221,7 @@ bool WP_Message::Process()
 
         case ReceiveState::CompleteHeader:
             {
-                TRACE0("RxState=CompleteHeader\n");
+                TRACE0( TRACE_STATE, "RxState=CompleteHeader\n");
 
                 bool fBadPacket=true;
                 if( VerifyHeader() )
@@ -215,6 +229,7 @@ bool WP_Message::Process()
 #if defined(BIG_ENDIAN)
                     SwapEndian();
 #endif
+                    TRACE( TRACE_HEADERS, "RXMSG: 0x%08X, 0x%08X, 0x%08X\n", m_header.m_cmd, m_header.m_flags, m_header.m_size );
                     if ( m_parent->m_app->ProcessHeader( m_parent->m_state, this ) )
                     {
                         fBadPacket = false;
@@ -253,7 +268,7 @@ bool WP_Message::Process()
 
         case ReceiveState::ReadingPayload:
             {
-                TRACE0("RxState=ReadingPayload\n");
+                TRACE0( TRACE_STATE, "RxState=ReadingPayload\n");
                 
                 UINT64 curTicks = HAL_Time_CurrentTicks();
 
@@ -266,7 +281,7 @@ bool WP_Message::Process()
                 
                     if(m_parent->m_phy->ReceiveBytes( m_parent->m_state, m_pos, m_size ) == false)
                     {
-                        TRACE0("RxError - Bailing out!\n");
+                        TRACE0( TRACE_NODATA, "ReceiveBytes returned false - bailing out\n");
                         return true;
                     }
 
@@ -277,14 +292,14 @@ bool WP_Message::Process()
                 }
                 else
                 {
-                    TRACE0("RxError: Payload InterCharacterTimeout exceeded\n");
+                    TRACE0( TRACE_ERRORS, "RxError: Payload InterCharacterTimeout exceeded\n");
                     m_rxState = ReceiveState::Initialize;
                 }
             }
             break;
 
         case ReceiveState::CompletePayload:
-            TRACE0("RsState=CompletePayload\n");
+            TRACE0( TRACE_STATE, "RxState=CompletePayload\n");
             if(VerifyPayload() == true)
             {
                 m_parent->m_app->ProcessPayload( m_parent->m_state, this );
@@ -299,7 +314,7 @@ bool WP_Message::Process()
 
 
         default:
-            TRACE0("RxState=UNKNOWN!!\n");
+            TRACE0( TRACE_ERRORS, "RxState=UNKNOWN!!\n");
             return false;
         }
     }
@@ -344,6 +359,7 @@ bool WP_Controller::AdvanceState()
 
 bool WP_Controller::SendProtocolMessage( const WP_Message& msg )
 {
+    TRACE( TRACE_HEADERS, "TXMSG: 0x%08X, 0x%08X, 0x%08X\n", msg.m_header.m_cmd, msg.m_header.m_flags, msg.m_header.m_size );
     return m_phy->TransmitMessage( m_state, &msg );
 }
 

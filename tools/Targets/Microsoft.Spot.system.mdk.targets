@@ -89,10 +89,10 @@
     <CC_CPP_ASM_INTERLEAVE Condition="'$(COMPILER_TOOL_VERSION)'=='MDK4.23'" > $(SWTC)asm $(SWTC)interleave </CC_CPP_ASM_INTERLEAVE>
     <CC_CPP_ASM_INTERLEAVE Condition="'$(COMPILER_TOOL_VERSION)'=='MDK4.54'" >                              </CC_CPP_ASM_INTERLEAVE>
 
-    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(CC_CPP_TARGETTYPE_FLAGS) $(SWTC)no_debug $(SWTC)dwarf2 $(SWTC)no_debug_macros -O3 $(SWTC)inline -Otime $(SWTC)no_autoinline $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
-    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"       >$(CC_CPP_TARGETTYPE_FLAGS) $(SWTC)debug    $(SWTC)dwarf2 $(SWTC)debug_macros    -O0 $(SWTC)inline                             $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
-    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'">$(CC_CPP_TARGETTYPE_FLAGS) $(SWTC)debug    $(SWTC)dwarf2 $(SWTC)debug_macros    -O0 $(SWTC)inline                             $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
-    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"     >$(CC_CPP_TARGETTYPE_FLAGS) $(SWTC)no_debug $(SWTC)dwarf2 $(SWTC)no_debug_macros -O2 $(SWTC)inline -Otime $(SWTC)no_autoinline $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(CC_CPP_TARGETTYPE_FLAGS) -g -O3 $(SWTC)inline -Otime $(SWTC)no_autoinline $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"       >$(CC_CPP_TARGETTYPE_FLAGS) -g -O0 $(SWTC)inline                             $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'">$(CC_CPP_TARGETTYPE_FLAGS) -g -O0 $(SWTC)inline                             $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
+    <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"     >$(CC_CPP_TARGETTYPE_FLAGS) -g -O2 $(SWTC)inline -Otime $(SWTC)no_autoinline $(CC_CPP_ASM_INTERLEAVE) </CC_CPP_TARGETTYPE_FLAGS>
 
 
     <AS_FLAGS>$(AS_FLAGS) $(SWTC)diag_suppress A1658</AS_FLAGS>
@@ -125,8 +125,8 @@
 
   <!-- Assembler flags -->
   <PropertyGroup>
-    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(AS_TARGETTYPE_FLAGS) $(SWTC)PD "BUILD_RTM SETS \"1\""</AS_TARGETTYPE_FLAGS>
-    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"     >$(AS_TARGETTYPE_FLAGS) $(SWTC)PD "BUILD_RTM SETS \"0\""</AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"         >$(AS_TARGETTYPE_FLAGS) $(SWTC)PD "BUILD_RTM SETS \"1\"" -g</AS_TARGETTYPE_FLAGS>
+    <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"     >$(AS_TARGETTYPE_FLAGS) $(SWTC)PD "BUILD_RTM SETS \"0\"" -g</AS_TARGETTYPE_FLAGS>
     <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'">$(AS_TARGETTYPE_FLAGS) $(SWTC)PD "BUILD_RTM SETS \"0\"" -g</AS_TARGETTYPE_FLAGS>
     <AS_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"       >$(AS_TARGETTYPE_FLAGS) $(SWTC)PD "BUILD_RTM SETS \"0\"" -g</AS_TARGETTYPE_FLAGS>
 

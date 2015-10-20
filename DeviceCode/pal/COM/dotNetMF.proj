@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComDirector.cpp" />
+    <Compile Include="GenericPort.cpp" />
     <IncludePaths Include="DeviceCode\include" />
   </ItemGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />

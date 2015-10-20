@@ -44,10 +44,8 @@
 #define GPIO_PORTC 2
 #define GPIO_PORTD 3
 #define GPIO_PORTE 4
-#define GPIO_PORTF 5
-#define GPIO_PORTG 6
-#define GPIO_PORTH 7
-#define GPIO_PORTI 8
+// The remaining ports are not broken out - except PH0 and PH1,
+// which are deliberately omitted to keep the range continuous.
 
 #define PORT_PIN(port,pin) ( ( (int)port) * 16 + ( pin ) )
 
@@ -77,18 +75,21 @@
 #define CTSPROTECTRESISTOR              RESISTOR_DISABLED
 #define RTSPROTECTRESISTOR              RESISTOR_DISABLED
 
-#define TOTAL_GPIO_PORT                 9 // PA - PI
+#define TOTAL_GPIO_PORT                 (GPIO_PORTE + 1)
 #define TOTAL_GPIO_PINS                 (TOTAL_GPIO_PORT*16)
 
 #define INSTRUMENTATION_H_GPIO_PIN      GPIO_PIN_NONE
 
-#define TOTAL_USART_PORT                7 // ITM0 + 6 physical UARTS
+#define TOTAL_USART_PORT                6 // 6 physical UARTS
 
 #define USART_DEFAULT_PORT              COM1
 #define USART_DEFAULT_BAUDRATE          115200
 
+#define TOTAL_GENERIC_PORTS             1 // 1 generic port extensions (ITM channel 0 )
+#define ITM_GENERIC_PORTNUM             0 // ITM0 is index 0 in generic port interface table
+
 #define DEBUG_TEXT_PORT                 ITM0
-#define STDIO                           USB1
+#define STDIO                           ITM0
 #define DEBUGGER_PORT                   USB1
 #define MESSAGING_PORT                  USB1
 

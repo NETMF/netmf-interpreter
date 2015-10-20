@@ -11,6 +11,7 @@
       <ComponentRef Id="Component_BuildHelper"/>
       <ComponentRef Id="Component_MFDeploy"/>
       <ComponentRef Id="Component_MFDeployEngine"/>       
+      <ComponentRef Id="Component_Crypto"/>
       <ComponentRef Id="COMPONENT_TRUETYPEFONTS"/>
       <ComponentRef Id="Component_ToolsDirectoryShortcut"/>
 <!--

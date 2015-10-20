@@ -1,0 +1,27 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AssemblyName>CortexMx_ItmPort</AssemblyName>
+        <ProjectGuid>{E30D2587-7481-4ECB-A961-16A8BA3DECB9}</ProjectGuid>
+        <Description>Cortex-Mx Generic ITM port</Description>
+        <Level>HAL</Level>
+        <LibraryFile>CortexMx_ItmPort.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\ItmPort\dotNetMF.proj</ProjectPath>
+        <ManifestFile>CortexMx_ItmPort.$(LIB_EXT).manifest</ManifestFile>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>False</IsStub>
+        <Directory>DeviceCode\Cores\arm\Processors\CortexMx</Directory>
+        <OutputType>Library</OutputType>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+    <PropertyGroup />
+    <ItemGroup>
+        <Compile Include="ItmPort.cpp" />
+    </ItemGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

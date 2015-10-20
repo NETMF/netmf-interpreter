@@ -1452,6 +1452,17 @@ bool Loader_Engine::Monitor_CheckSignature( WP_Message* msg )
     return true;
 }
 
+#ifdef DEBUG
+// dumps binary block in a form useable as C code constants for isolated testing and verification
+void DumpBlockDeclaration( char const* name, UINT8 const* pBlock, size_t len )
+{
+    debug_printf( "const char %s[] = {", name );
+    for( int i = 0; i < len; ++i )
+        debug_printf( "%c%d", i == 0 ? ' ' : ',', pBlock[ i ] );
+    debug_printf( "};\n" );
+}
+#endif
+
 bool Loader_Engine::Monitor_SignatureKeyUpdate( WP_Message* msg )
 {
     bool fSuccess = false;
@@ -1486,13 +1497,23 @@ bool Loader_Engine::Monitor_SignatureKeyUpdate( WP_Message* msg )
                         ASSERT(0);
                     fSuccess = true;
                 }
+                else
+                {
+#ifdef DEBUG
+                    debug_printf( "Failed cert check for new key:\n");
+                    DumpBlockDeclaration( "newKey", cmd->m_newKey, sizeof(RSAKey) );
+                    DumpBlockDeclaration( "newKeySig", cmd->m_newKeySignature, sizeof( cmd->m_newKeySignature ) );
+                    DumpBlockDeclaration( "currentKey", g_PrimaryConfigManager.GetDeploymentKeys( cmd->m_keyIndex ), sizeof(RSAKey) );
+#endif                    
+                    fSuccess = false;
+                }
             }
         }
     }
     
     ReplyToCommand( msg, fSuccess, false );
 
-    return true;    
+    return true;
 }
 
 bool Loader_Engine::Monitor_FlashSectorMap( WP_Message* msg )

@@ -2,10 +2,10 @@
     <PropertyGroup>
         <AssemblyName>GlobalLock_hal_Cortex</AssemblyName>
         <ProjectGuid>{A839EEC5-C737-48C5-958B-BBF12920AA41}</ProjectGuid>
-        <Description>Cortex-M3 Global lock</Description>
+        <Description>Cortex-Mx Global lock</Description>
         <Level>HAL</Level>
         <LibraryFile>GlobalLock_hal_Cortex.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\dotNetMF.proj</ProjectPath>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj</ProjectPath>
         <ManifestFile>GlobalLock_hal_Cortex.$(LIB_EXT).manifest</ManifestFile>
         <Documentation>
         </Documentation>

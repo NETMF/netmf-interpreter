@@ -7,10 +7,9 @@
 
 # CMSIS and CMSIS_RTX
 /CMSIS/CMSIS/
-/CMSIS/CMSIS_RTX/*
 /CMSIS/Device/*
 /CMSIS/ARM.CMSIS.pdsc
-!/CMSIS/CMSIS_RTX/dotNetMF.proj
+!/CMSIS/CMSIS/RTOS/RTX/dotNetMF.proj
 
 # Visual Studio
 *.aps
@@ -31,6 +30,8 @@
 [Oo]bj/
 ipch/
 
+!/tools/bin/
+
 #uVision
 *.uvguix*
 Listings/
@@ -40,3 +41,4 @@ Listings/
 /DeviceCode/Targets/OS/Win32/DeviceCode/WinPcap_Eth/Dependencies/WpdPack/
 
 *.axfdump
+/crypto/lib

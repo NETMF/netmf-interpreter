@@ -4,11 +4,9 @@
     <TinyCLR_Platform>Server</TinyCLR_Platform>
   </PropertyGroup>
 
-  <ItemGroup Condition="EXISTS('$(SPOCLIENT)\Framework\Tools\BuildTasksInternal\InternalBuildTasks.csproj')">
+  <ItemGroup>
     <Project Include="WiXLib\WixLibSpotBuild.csproj"/>
     <Project Include="BuildTasksInternal\BuildSigner\BuildSignerSpotBuild.csproj"/>
-  </ItemGroup>
-  <ItemGroup>
     <Project Include="BuildTasksInternal\InternalBuildTasks.csproj" Condition="EXISTS('$(SPOCLIENT)\Framework\Tools\BuildTasksInternal\InternalBuildTasks.csproj')"/>
     <Project Include="BuildTasks\BuildTasks.csproj"/>
     <Project Include="BuildTasksNativeBuild\NativeBuildTasks.csproj"/>

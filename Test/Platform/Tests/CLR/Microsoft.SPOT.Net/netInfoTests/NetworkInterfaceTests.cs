@@ -36,7 +36,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             Log.Comment("Cleaning up after the tests");
         }
-
+        
         [TestMethod]
         public MFTestResults NetworkInterfaceTest_GetAllNetworkInterfaces_Count()
         {
@@ -236,6 +236,7 @@ namespace Microsoft.SPOT.Platform.Tests
         }
 
         //Validate the settings for Dynamic IP and Static DNS work.
+        // Issue #320: The not supported combinations of Dynamic/Static DNS and Dynamic/Static IP do not cause exception
         [TestMethod]
         public MFTestResults NetworkInterfaceTest4_DynamicIP_StaticDNS()
         {
@@ -259,11 +260,22 @@ namespace Microsoft.SPOT.Platform.Tests
                     if (!testNI.IsDhcpEnabled)
                         throw new Exception("IsDhcpEnabled data incorrect after EnableDhcp");
 
-                    Log.Comment("EnableStaticDns");
-                    testNI.EnableStaticDns(new string[] { "157.54.14.146" });
+                    try
+                    {
+                        // The combination of DHCP and StaticDNS is not supported at the moment
+                        Log.Comment("EnableStaticDns should fail");
+                        testNI.EnableStaticDns(new string[] { "157.54.14.146" });
+                        testResult = MFTestResults.Fail;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Comment("Expected Exception: " + e.ToString());
+                        Log.Comment("Trying to enable Dynamic DNS with a Static IP address correctly fails");
+                        testResult = MFTestResults.Pass;
+                    }
 
-                    if (testNI.IsDynamicDnsEnabled)
-                        throw new Exception("IsDynamicDnsEnabled data incorrect after EnableStaticDns");
+                    if (!testNI.IsDynamicDnsEnabled)
+                        throw new Exception("IsDynamicDnsEnabled data incorrect");
 
                     testResult = MFTestResults.Pass;
                 }
@@ -306,20 +318,11 @@ namespace Microsoft.SPOT.Platform.Tests
                     if (!testNI.IsDhcpEnabled)
                         throw new Exception("IsDhcpEnabled data incorrect after EnableDhcp");
 
-                    try
-                    {
-                        Log.Comment("EnableDynamicDns");
-                        testNI.EnableDynamicDns();
-                    }
-                    catch
-                    {
-                        Log.Comment("correctly throws an exception for EnableDynamicDNS which isn't supported");
-                        testResult = MFTestResults.Pass;
-                    }
+                    Log.Comment("EnableDynamicDns");
+                    testNI.EnableDynamicDns();
 
-                    Log.Comment("should not be set since it is not supported.");
-                    if (testNI.IsDynamicDnsEnabled)
-                        throw new Exception("IsDynamicDnsEnabled data incorrect after EnableDhcp");
+                    if (!testNI.IsDynamicDnsEnabled)
+                        throw new Exception("IsDynamicDnsEnabled data incorrect after EnableDynamicDns");
 
                     testResult = MFTestResults.Pass;
                 }
@@ -335,7 +338,6 @@ namespace Microsoft.SPOT.Platform.Tests
                 }
             }
 
-            Log.Comment("Fixed Bug number: 20533	IsDynamicDnsEnabled incorrectly returns true after call to EnableDynamicDns().");
             return testResult;
         }
 
@@ -385,6 +387,7 @@ namespace Microsoft.SPOT.Platform.Tests
         }
 
         //Validate the settings for Static IP and Dynamic DNS fails.
+        //Issue #320: The not supported combinations of Dynamic/Static DNS and Dynamic/Static IP do not cause exception
         [TestMethod]
         public MFTestResults NetworkInterfaceTest6_StaticIP_DynamicDNS()
         {
@@ -411,16 +414,17 @@ namespace Microsoft.SPOT.Platform.Tests
                     {
                         Log.Comment("EnableDynamicDns should fail");
                         testNI.EnableDynamicDns();
+                        testResult = MFTestResults.Fail;
                     }
                     catch (Exception e)
                     {
-                        Log.Comment("Exception: " + e.ToString());
+                        Log.Comment("Expected Exception: " + e.ToString());
                         Log.Comment("Trying to enable Dynamic DNS with a Static IP address correctly fails");
                         testResult = MFTestResults.Pass;
                     }
 
                     if (testNI.IsDynamicDnsEnabled)
-                        testResult = MFTestResults.Fail;
+                        throw new Exception("IsDynamicDnsEnabled data incorrect");
 
                 }
                 catch (Exception e)
@@ -433,7 +437,7 @@ namespace Microsoft.SPOT.Platform.Tests
                     ipSettings.Restore(testNI);
                 }
             }
-            Log.Comment("Fixed Bug number: 20533	IsDynamicDnsEnabled incorrectly returns true after call to EnableDynamicDns().");
+
             return testResult;
         }
 
@@ -492,70 +496,70 @@ namespace Microsoft.SPOT.Platform.Tests
             return testResult;
         }
 
-        [TestMethod]
-        public MFTestResults NetworkInterfaceTest8_GetHostEntry()
-        {
-            /// <summary>
-            /// 1. Save network configuration
-            /// 2. Enable Static IP (bad address)
-            /// 3. Enable Static DNS
-            /// 4. Test GetHostEntry
-            /// 5. Restore network configuration
-            /// </summary>
-            ///
-            MFTestResults testResult = MFTestResults.Pass;
+        //[TestMethod]
+        //public MFTestResults NetworkInterfaceTest8_GetHostEntry()
+        //{
+        //    /// <summary>
+        //    /// 1. Save network configuration
+        //    /// 2. Enable Static IP (bad address)
+        //    /// 3. Enable Static DNS
+        //    /// 4. Test GetHostEntry
+        //    /// 5. Restore network configuration
+        //    /// </summary>
+        //    ///
+        //    MFTestResults testResult = MFTestResults.Pass;
 
-            //don't run these tests on the emulator.  The emulator is SKU # 3
-            if (Microsoft.SPOT.Hardware.SystemInfo.SystemID.SKU == 3)
-                return MFTestResults.Skip;
+        //    //don't run these tests on the emulator.  The emulator is SKU # 3
+        //    if (Microsoft.SPOT.Hardware.SystemInfo.SystemID.SKU == 3)
+        //        return MFTestResults.Skip;
 
-            try
-            {
-                for (int i = 0; i < NetworkInterface.GetAllNetworkInterfaces().Length; ++i)
-                {
-                    NetworkInterface testNI = NetworkInterface.GetAllNetworkInterfaces()[i];
-                    IPSettings ipConfig = new IPSettings(testNI);
+        //    try
+        //    {
+        //        for (int i = 0; i < NetworkInterface.GetAllNetworkInterfaces().Length; ++i)
+        //        {
+        //            NetworkInterface testNI = NetworkInterface.GetAllNetworkInterfaces()[i];
+        //            IPSettings ipConfig = new IPSettings(testNI);
 
-                    try
-                    {
-                        Log.Comment("EnableDhcp");
-                        testNI.EnableDhcp();
+        //            try
+        //            {
+        //                Log.Comment("EnableDhcp");
+        //                testNI.EnableDhcp();
 
-                        // leave the addresses alone, they are supposed to be somewhat bogus 
-                        Log.Comment("misconfigure the static IP configuration");
-                        testNI.EnableStaticIP(testNI.IPAddress, testNI.SubnetMask, testNI.GatewayAddress);
-                        testNI.EnableStaticDns(new string[] { "157.54.14.146", "157.54.14.178" });
+        //                // leave the addresses alone, they are supposed to be somewhat bogus 
+        //                Log.Comment("misconfigure the static IP configuration");
+        //                testNI.EnableStaticIP(testNI.IPAddress, testNI.SubnetMask, testNI.GatewayAddress);
+        //                testNI.EnableStaticDns(new string[] { "157.54.14.146", "157.54.14.178" });
 
-                        Log.Comment("get a DNS server host entry");
-                        IPHostEntry entry = Dns.GetHostEntry("msw.dns.microsoft.com");
+        //                Log.Comment("get a DNS server host entry");
+        //                IPHostEntry entry = Dns.GetHostEntry("msw.dns.microsoft.com");
     
-                    }
-                    catch (SocketException e)
-                    {
-                        Log.Comment("SocketException error code: " + e.ErrorCode);
-                        Log.Comment(e.Message);
-                        testResult = MFTestResults.Fail;
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Comment("Caught exception: " + e.Message);
-                        testResult = MFTestResults.Fail;
-                    }
-                    finally
-                    {
-                        ipConfig.Restore(testNI);
-                    }
-                }
+        //            }
+        //            catch (SocketException e)
+        //            {
+        //                Log.Comment("SocketException error code: " + e.ErrorCode);
+        //                Log.Comment(e.Message);
+        //                testResult = MFTestResults.Fail;
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                Log.Comment("Caught exception: " + e.Message);
+        //                testResult = MFTestResults.Fail;
+        //            }
+        //            finally
+        //            {
+        //                ipConfig.Restore(testNI);
+        //            }
+        //        }
 
-            }
-            catch (Exception e)
-            {
-                Log.Comment("Caught exception: " + e.Message);
-                testResult = MFTestResults.Fail;
-            }
-            Log.Comment("Bug number: 20845	GetHostEntry(\"msw.dns.microsoft.com\") fails with socket error code -1 on imxs_net platform");
-            return testResult;
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Log.Comment("Caught exception: " + e.Message);
+        //        testResult = MFTestResults.Fail;
+        //    }
+
+        //    return testResult;
+        //}
 
         [TestMethod]
         public MFTestResults NetworkInterfaceTest0_EnableStaticDnsTwice()

@@ -386,8 +386,8 @@ void MetaData::ByteCode::DumpOpcode( size_t index, LogicalOpcodeDesc& ref )
     if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_TOKEN) wprintf( L" %08x"       , ref.m_token   );
     if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_I4   ) wprintf( L" %d"         , ref.m_arg_I4  );
     if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_I8   ) wprintf( L" %I64d"      , ref.m_arg_I8  );
-    if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_R4   ) wprintf( L" %f"         , ref.m_arg_R4  );
-    if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_R8   ) wprintf( L" %g"         , ref.m_arg_R8  );
+    if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_R4   ) wprintf( L" %f"         , (float)ref.m_arg_R4  );
+    if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_R8   ) wprintf( L" %g"         , (double)ref.m_arg_R8  );
 
     if(ref.m_ol->m_flags & CLR_RT_OpcodeLookup::ATTRIB_HAS_TARGET)
     {

@@ -82,7 +82,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults ValidDefaultTestGetHTTPRequestHeaderAfterCreateHTTP1_1()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -166,7 +166,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults InValidDefaultTestGetHTTPRequestHeaderAfterCreateHTTP1_1_Https()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("https://127.0.0.1:443/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("https://"+ Utilities.GetLocalIpAddress() + ":443/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Negative Test case 1:");
@@ -309,7 +309,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults ValidDefaultTestGetHTTPRequestHeaderAfterCreateHTTP1_0()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -351,7 +351,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults ValidDefaultTestGetHTTPRequestHeaderAfterCreateHTTP1_0_HTTPS()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("https://127.0.0.1:443/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("https://"+ Utilities.GetLocalIpAddress() + ":443/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -393,7 +393,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults InValidDefaultTestGetHTTPRequestHeaderAfterCreateHTTP1_0_HTTPS()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("https://127.0.0.1:443/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("https://"+ Utilities.GetLocalIpAddress() + ":443/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Negative Test case 4:");

@@ -68,7 +68,9 @@ void ConfigurationSectorManager::LocateConfigurationSector( UINT32 BlockUsage )
 
 void ConfigurationSectorManager::LoadConfiguration()
 {
-    if (m_device ==NULL) return;
+    if (m_device ==NULL)
+            return;
+        
     if (m_fSupportsXIP)
     {
         // Get the real address 
@@ -91,7 +93,8 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
     BOOL eraseWrite = FALSE;
     UINT32 writeLengthInBytes ;
 
-    if (m_device ==NULL) return ;
+    if (m_device ==NULL)
+            return ;
 
     LoadConfiguration();
 
@@ -179,9 +182,10 @@ void ConfigurationSectorManager::EraseWriteConfigBlock( BYTE * data, UINT32 size
 
 BOOL ConfigurationSectorManager::IsBootLoaderRequired( INT32 &bootModeTimeout )
 {
-    const UINT32                c_Empty      = 0xFFFFFFFF;
+    const UINT32 c_Empty = 0xFFFFFFFF;
 
-    if(m_device == NULL) return FALSE;
+    if(m_device == NULL)
+            return FALSE;
 
     volatile UINT32* data = (volatile UINT32*)&m_configurationSector->BooterFlagArray[ 0 ];
 
