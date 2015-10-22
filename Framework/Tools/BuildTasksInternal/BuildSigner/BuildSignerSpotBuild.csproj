@@ -32,9 +32,9 @@
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <ItemGroup>
-    <Reference Include="CODESIGN.Submitter">
+    <Reference Include="CODESIGN.Submitter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=3d8252bd1272440d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SPOROOT)\tools\x86\CODESIGN\CODESIGN.Submitter.dll</HintPath>
+      <HintPath>$(MSBuildProgramFiles32)\Microsoft Internal\Codesign.Submitter\CODESIGN.Submitter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

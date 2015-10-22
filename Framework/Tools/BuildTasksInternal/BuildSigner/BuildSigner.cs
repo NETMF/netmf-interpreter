@@ -160,6 +160,11 @@ namespace Microsoft.SPOT.AutomatedBuild.BuildSigner
         */
         #endregion
 
+        //"Codesign" represents the server - static variable do not change
+        //9556 represents the port - constant value do not change
+        const string RelayServer = "codesign.gtm.microsoft.com";
+        const int RelayPort = 9556;
+
         private static bool SubmitJob(string unsignedDirectory, string signedDirectory)
         {
             // use env var so it is dynamic for the machine running this build to help prevent
@@ -170,9 +175,7 @@ namespace Microsoft.SPOT.AutomatedBuild.BuildSigner
             try
             {
                 //Initialize the Codesign.Submitter object
-                //"Codesign" represents the server - static variable do not change
-                //9556 represents the port - constant value do not change
-                job = CODESIGN.Submitter.Job.Initialize("codesign.gtm.microsoft.com", 9556, true);
+                job = CODESIGN.Submitter.Job.Initialize(RelayServer, RelayPort, true);
 
                 // Sets the Partial return flag option.
                 // False - If any files fail signing you will not get any files back.
@@ -253,11 +256,14 @@ namespace Microsoft.SPOT.AutomatedBuild.BuildSigner
                 JobWatcher jw = new JobWatcher();
                 if (!fakeSign)
                 {
-                    // These calls optionally wait till the job is finished
-                    // WARNING: this completely block execution for the specified timespan
-                    int Milliseconds = -1;	// -1: wait forever
-                    jw.Watch(job, Milliseconds);
-                    //jw.Watch(job);		// you can also call the Watch method this way and wait forever
+                    try
+                    {
+                        jw.Watch(job.JobNumber, RelayServer, RelayPort, true);
+                    }
+                    catch(Exception ex )
+                    { // I hate general exceptions but the complete lack of documentation on the submitter leaves little choice and we need to ship... 
+                        m_CallingTask.Log.LogWarning("Exception waiting for job - assuming job completed, subsequent steps may fail.\nExeption: {0}", ex);
+                    }
                 }
 
                 // Now we're done, so display any errors or warnings (in case we are in non-event mode)

@@ -109,10 +109,6 @@ typedef int  ssize_t;
 #define EWOULDBLOCK                 EAGAIN
 #endif
 
-#ifndef WSAEWOULDBLOCK
-#define WSAEWOULDBLOCK              EWOULDBLOCK
-#endif
-
 #define SIGINT                      4 // attention request from user from signal.h 
 
 #ifdef BUFSIZ
