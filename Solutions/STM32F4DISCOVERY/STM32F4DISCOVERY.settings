@@ -16,6 +16,7 @@
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
     <ENDIANNESS>le</ENDIANNESS>
     <NO_BOOTLOADER_COMPRESSION>true</NO_BOOTLOADER_COMPRESSION>
+    <PLATFORM_EMULATED_FLOATINGPOINT Condition="'$(COMPILER_TOOL)'=='GCC'">true</PLATFORM_EMULATED_FLOATINGPOINT>
   </PropertyGroup>
   <PropertyGroup>
     <!-- FIXME: Replaced with an appropriate value. -->
