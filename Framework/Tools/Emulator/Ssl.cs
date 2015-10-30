@@ -648,15 +648,26 @@ namespace Microsoft.SPOT.Emulator.Sockets.Security
             SslStreamData ssd;
             Socket sock = null;
 
-            if (!GetSslData(socket, out ssd)) return (int)SocketError.SocketError;
+            if (!GetSslData(socket, out ssd))
+            { 
+                return (int)SocketError.SocketError;
+            }
 
-            if (!_socketsDriver.GetSocket(socket, out sock)) return (int)SocketError.SocketError;
+            if (!_socketsDriver.GetSocket(socket, out sock))
+            {
+                return (int)SocketError.SocketError;
+            }
 
             var readData = ssd.m_readData;
-            int ret = readData != null ?
-                readData.Length - readData.Offset :
-                sock.Poll(0, SelectMode.SelectRead) ? 1024 : 0;
-            return ret;
+            
+            if(readData != null)
+            {
+                return (readData.Length - readData.Offset);
+            }
+            else
+            {
+                return sock.Poll(0, SelectMode.SelectRead) ? 1024 : 0;    
+            }
         }
     }    
 }
