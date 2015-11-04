@@ -35,12 +35,14 @@ class CriticalSection
 {
 public:
     CriticalSection( )
-        : Owner( NoOwner )
+        : osMutexInitMember( MutexDef )
+        , MutexId( 0 )
+        , Owner( NoOwner )
         , RefCount( 0 )
     {
-        osMutexInitMember( MutexDef );
+        osMutexConstructMember( MutexDef );
         MutexId = osMutexCreate( osMutex( MutexDef ) );
-	    ASSERT( MutexId != NULL);
+        ASSERT( MutexId != NULL);
     }
 
     void lock( )
