@@ -483,7 +483,8 @@ namespace Microsoft.NetMicroFramework.Tools.MFDeployTool.Engine
                     m_StaticConfig.Version.TinyBooter = 4;
                 }
 
-                if (m_StaticConfig.ConfigurationLength >= m_cfg_sector.m_size)    throw new MFInvalidConfigurationSectorException();
+                if (m_StaticConfig.ConfigurationLength >= m_cfg_sector.m_size)
+                    throw new MFInvalidConfigurationSectorException();
 
                 if (m_StaticConfig.Version.TinyBooter == 4)
                 {

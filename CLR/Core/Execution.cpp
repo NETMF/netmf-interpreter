@@ -840,7 +840,7 @@ bool CLR_RT_ExecutionEngine::SpawnStaticConstructorHelper( CLR_RT_AppDomain* app
     CLR_RT_MethodDef_Index idxNext;
 
     _ASSERTE(m_cctorThread != NULL);
-    _ASSERTE(m_cctorThread->CanThreadBeReused());  
+    //_ASSERTE(m_cctorThread->CanThreadBeReused());  
 
     idxNext.m_data = idx.m_data;
 

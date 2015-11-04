@@ -56,7 +56,6 @@
     <Import Condition="'$(DATASTORAGE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\DataStorage.featureproj" />
     <Import Condition="'$(BLOCKSTORAGE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\BlockStorage.featureproj" />
     <Import Condition="'$(DEBUGGER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Debugger.featureproj" />
-    <Import Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" />
     <Import Condition="'$(USB_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\USB_Port.featureproj" />
     <Import Condition="'$(USB_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Usb.featureproj" />
     <Import Condition="'$(INTERRUPTHANDLER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\InterruptHandler.featureproj" />
@@ -66,12 +65,15 @@
     <Import Condition="'$(I2C_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\I2C.featureproj" />
     <Import Condition="'$(SPI_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SPI.featureproj" />
     <Import Condition="'$(SERIALIZATION_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Serialization.featureproj" />
+    <Import Condition="'$(WINDOWS_DEVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Windows_Devices.featureproj" />
+    <Import Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" />
     <Import Condition="'$(STREAM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Stream.featureproj" />
     <Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_lwip_os.featureproj" />
     <Import Condition="'$(CRYPTO_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />
     <Import Condition="'$(SSL_OPEN_LWIP_OS_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" />
-    <Import Condition="'$(WINDOWS_DEVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Windows_Devices.featureproj" />
     <Import Condition="'$(XML_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\XML.featureproj" />
+    <Import Project="$(SPOCLIENT)\Framework\Features\HTTP_lwip_os.featureproj" />
+    <Import Project="$(SPOCLIENT)\Framework\Features\TimeService.featureproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
     <ItemGroup>
         <DriverLibs Include="CortexMx_ItmPort.$(LIB_EXT)" />
@@ -87,7 +89,7 @@
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\stubs\dotnetmf.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\LargeBuffer\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <PlatformIndependentLibs Include="Core.$(LIB_EXT)" />
@@ -134,8 +136,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\CLR\StartupLib\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="Crypto_stub.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Crypto\stubs\dotNetMF.proj" />
+        <DriverLibs Include="Crypto.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\GlobalLock\dotNetMF.proj" />
@@ -252,10 +254,6 @@
     <ItemGroup>
         <DriverLibs Include="FS_Config_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\FS\stubs\config\dotnetmf.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <DriverLibs Include="TimeService_pal_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\TimeService\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <PlatformIndependentLibs Include="Graphics_stub.$(LIB_EXT)" />
@@ -430,18 +428,24 @@
         <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\CMSIS\CMSIS\RTOS\RTX\dotnetmf.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\CMSIS\CMSIS\RTOS\RTX\dotNetMF.proj" />
         <DriverLibs Include="CMSIS_RTX.$(LIB_EXT)" />
     </ItemGroup>
     <ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\CMSIS_RTX_Config\dotNetMF.proj" />
-        <DriverLibs Include="CMSIS_RTX_Config.$(LIB_EXT)" />
+        <DriverLibs Include="CMSIS_RTX_CONFIG.$(LIB_EXT)" />
     </ItemGroup>
 
     <!-- lwIP STACK LIBRARIES -->
     <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
-        <RequiredProjects Include="$(SPOCLIENT)\devicecode\drivers\timeservice\stubs\dotNetMF.proj" />
-        <DriverLibs Include="timeservice_hal_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_TimeService\dotnetmf.proj" />
+        <PlatformIndependentLibs Include="SPOT_TimeService.$(LIB_EXT)" />
+
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\TimeService\dotNetMF.proj" />
+        <DriverLibs Include="TimeService_pal.$(LIB_EXT)" />
+
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\timeservice\driver\dotNetMF.proj" />
+        <DriverLibs Include="timeservice_hal_generic.$(LIB_EXT)" />
 
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets_lwip_os\dotNetMF.proj" />
         <DriverLibs Include="sockets_pal_lwip_os.$(LIB_EXT)" />
@@ -470,6 +474,8 @@
     <ItemGroup Condition="'$(USE_SSL)'!='true'">
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets\openssl\stubs\dotnetmf.proj" />
         <DriverLibs Include="openssl_pal_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net_security\dotNetMF_Stub.proj" />
+        <PlatformIndependentLibs Include="SPOT_Net_Security_stub.$(LIB_EXT)" />
     </ItemGroup>
     <ItemGroup Condition="'$(USE_SSL)'=='true'">
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Crypto\dotnetmf.proj" />

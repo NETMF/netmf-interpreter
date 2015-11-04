@@ -197,9 +197,6 @@ namespace Microsoft.SPOT.Platform.Tests
 
             // Create request.
             HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
-            // Set proxy information
-            WebProxy itgProxy = new WebProxy(HttpTests.Proxy, true);
-            request.Proxy = itgProxy;
             // Get response from server.
             WebResponse resp = null;
             try

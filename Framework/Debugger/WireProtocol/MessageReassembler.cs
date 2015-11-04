@@ -126,7 +126,7 @@ namespace Microsoft.SPOT.Debugger.WireProtocol
                         {
                             bool fReply = (m_base.m_header.m_flags & Flags.c_Reply) != 0;
 
-                            DebuggerEventSource.Log.WireProtocolRxHeader( m_base.m_header.m_cmd, m_base.m_header.m_flags, m_base.m_header.m_seq, m_base.m_header.m_seqReply );
+                            DebuggerEventSource.Log.WireProtocolRxHeader( m_base.m_header.m_crcHeader, m_base.m_header.m_crcData, m_base.m_header.m_cmd, m_base.m_header.m_flags, m_base.m_header.m_seq, m_base.m_header.m_seqReply, m_base.m_header.m_size );
 
                             if(m_base.m_header.m_size != 0)
                             {

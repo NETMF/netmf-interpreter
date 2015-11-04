@@ -51,7 +51,7 @@
 
     <!-- DAT region goes into external NOR Flash -->
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Data_Size"               Value="0x00020000"/><!-- 128KB -->
+    <Set Name="Data_Size"               Value="0x00040000"/><!-- 256KB -->
 
     <!-- [Deployment fills the rest of external NOR flash...] -->
 

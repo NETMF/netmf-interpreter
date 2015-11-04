@@ -159,8 +159,14 @@ extern ALIGN const RSABuffer dotNetMFPublicKeyModulus;
 // For RSA_VERIFYSIGNATURE pass the buffer in pSourceText and the signature in pDestText
 //
 
-CRYPTO_RESULT Crypto_StartRSAOperationWithKey(enum RSAOperations operation, RSAKey *pRSAKey, BYTE *pSourceText, DWORD cbSourceText, BYTE *pDestText, DWORD cbDestText,
-		   					   void **ppHandle);
+CRYPTO_RESULT Crypto_StartRSAOperationWithKey( enum RSAOperations operation
+                                             , RSAKey *pRSAKey
+                                             , BYTE *pSourceText
+                                             , DWORD cbSourceText
+                                             , BYTE *pDestText
+                                             , DWORD cbDestText
+                                             , void **ppHandle
+                                             );
 
 
 //

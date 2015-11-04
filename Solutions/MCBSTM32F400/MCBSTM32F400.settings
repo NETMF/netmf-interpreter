@@ -16,7 +16,7 @@
         <TCP_IP_STACK>LWIP_1_4_1_OS</TCP_IP_STACK>
     </PropertyGroup>
     <PropertyGroup>
-        <OEMSystemInfoString>Copyright (C) Microsoft Open Technologies Inc.</OEMSystemInfoString>
+        <OEMSystemInfoString>Copyright (C) Microsoft Corporation</OEMSystemInfoString>
     </PropertyGroup>
 
     <ItemGroup>

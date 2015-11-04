@@ -119,7 +119,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -162,7 +162,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -204,7 +204,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults TestWebHeaderCollectionAddLegal2()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -301,7 +301,7 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");  //expect 200 - OK
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -343,7 +343,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults TestWebHeaderCollectionRemove()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
