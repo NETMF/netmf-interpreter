@@ -12,7 +12,7 @@
     <ManifestFile>heap_pal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>System</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Heap_PAL" Guid="{EC718439-8D24-47C7-9555-9C4D314D1C9C}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Heap_PAL" Guid="{EC718439-8D24-47C7-9555-9C4D314D1C9C}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

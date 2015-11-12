@@ -12,7 +12,6 @@
     </InteropFeatures>
     <ExtraAssemblies>
     </ExtraAssemblies>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Template\TinyBooter\TinyBooterDecompressor.proj</ProjectPath>
     <MFSettingsFile>$(SPOCLIENT)\Solutions\Template\Template.settings</MFSettingsFile>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
   </PropertyGroup>

@@ -13,7 +13,7 @@
     <ManifestFile>fs_pal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>FileSystem</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="FileSystem_PAL" Guid="{BDB863C1-C7D0-4aac-8389-5BA89628B1DA}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="FileSystem_PAL" Guid="{BDB863C1-C7D0-4aac-8389-5BA89628B1DA}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

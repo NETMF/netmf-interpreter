@@ -13,7 +13,6 @@
     </InteropFeatures>
     <ExtraAssemblies>
     </ExtraAssemblies>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Template\NativeSample\NativeSample.proj</ProjectPath>
     <MFSettingsFile>$(SPOCLIENT)\Solutions\Template\Template.settings</MFSettingsFile>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
   </PropertyGroup>

@@ -12,7 +12,7 @@
     <ManifestFile>cpu_bootstrap_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Processor\stubs</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Bootstrap_HAL" Guid="{15AB3FEB-4D7A-40AD-B1A0-4BF663A6EF93}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Bootstrap_HAL" Guid="{15AB3FEB-4D7A-40AD-B1A0-4BF663A6EF93}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

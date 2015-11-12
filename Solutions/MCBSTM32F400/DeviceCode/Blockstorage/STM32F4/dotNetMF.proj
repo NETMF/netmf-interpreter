@@ -7,11 +7,10 @@
     <Description>Block storage configuration for MCBSTM32F400</Description>
     <Level>HAL</Level>
     <LibraryFile>STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Blockstorage\STM32F4\dotNetMF.proj</ProjectPath>
     <ManifestFile>STM32F4_blconfig_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\MCBSTM32F400</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorageConfig_HAL" Guid="{497F59BB-55D3-404e-B958-A6284806D184}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorageConfig_HAL" Guid="{497F59BB-55D3-404e-B958-A6284806D184}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
@@ -26,7 +25,6 @@
     <Documentation>
     </Documentation>
     <PlatformIndependent>False</PlatformIndependent>
-    <CustomSpecific>MCBSTM32F400</CustomSpecific>
     <Required>False</Required>
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>False</IsStub>
