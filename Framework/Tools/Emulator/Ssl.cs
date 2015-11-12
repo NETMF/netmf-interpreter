@@ -60,11 +60,13 @@ namespace Microsoft.SPOT.Emulator.Sockets.Security
                 internal byte[] ManagedBuffer;
                 internal int Socket;
                 internal int Length;
+                internal int Offset;
             }
 
             internal SslStream m_stream;
             internal SslAsyncState m_state = SslAsyncState.Init;
             internal object m_asyncData = null;
+            internal SslReadData m_readData;
         }
 
         Dictionary<int, SslData> _sslDataCollection = new Dictionary<int, SslData>();
@@ -430,7 +432,6 @@ namespace Microsoft.SPOT.Emulator.Sockets.Security
         }
 
 
-        [MethodImplAttribute(MethodImplOptions.Synchronized)]
         public int Read(int socket, IntPtr Data, int size)
         {
             int len = 0;
@@ -438,28 +439,69 @@ namespace Microsoft.SPOT.Emulator.Sockets.Security
 
             if (!GetSslData(socket, out ssd)) return (int)SocketError.SocketError;
 
-            try
+            if (ssd.m_state == SslStreamData.SslAsyncState.Failed)
+                return _socketsDriver.ReturnError(SocketError.ConnectionReset);
+
+            var readData = ssd.m_readData;
+            if (readData != null)
             {
-                byte[] managedBuffer = new byte[size];
-
-                len = ssd.m_stream.Read(managedBuffer, 0, size);
-
-                if (len > 0)
+                lock (ssd)
                 {
-                    Marshal.Copy(managedBuffer, 0, Data, len);
-                }
-                else
-                {
-                    _socketsDriver.ClearSocketEvent(socket, true);
+                    len = Math.Min(size, readData.Length - readData.Offset);
+                    if (len > 0)
+                    {
+                        Marshal.Copy(readData.ManagedBuffer, readData.Offset, Data, len);
+                        readData.Offset += len;
+                        if (readData.Offset == readData.Length) ssd.m_readData = null;
+                    }
+                    else
+                    {
+                        _socketsDriver.ClearSocketEvent(socket, true);
+                        len = -2;
+                    }
                 }
             }
-            catch (Exception e)
+            else
             {
-                Console.Error.WriteLine("Write Failed... " + e.Message);
-                return (int)SocketError.SocketError;
+                try
+                {
+                    byte[] managedBuffer = new byte[size];
+
+                    ssd.m_readData = new SslStreamData.SslReadData(socket, managedBuffer);
+                    ssd.m_stream.BeginRead(managedBuffer, 0, size, this.EndRead, ssd.m_readData);
+                    len = -2;
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("Write Failed... " + e.Message);
+                    len = (int)SocketError.SocketError;
+                }
             }
 
             return len;
+        }
+
+        void EndRead(IAsyncResult result)
+        {
+            var readData = (SslStreamData.SslReadData)result.AsyncState;
+            SslStreamData ssd;
+            if (!GetSslData(readData.Socket, out ssd)) return;
+
+            lock (ssd)
+            {
+                try
+                {
+                    readData.Length = ssd.m_stream.EndRead(result);
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("Read Failed... " + e.Message);
+                    ssd.m_readData = null;
+                    ssd.m_state = SslStreamData.SslAsyncState.Failed;
+                }
+
+                _socketsDriver.SignalSocketEvent(readData.Socket, true);
+            }
         }
 
         public int CloseSocket( int socket )
@@ -606,11 +648,26 @@ namespace Microsoft.SPOT.Emulator.Sockets.Security
             SslStreamData ssd;
             Socket sock = null;
 
-            if (!GetSslData(socket, out ssd)) return (int)SocketError.SocketError;
+            if (!GetSslData(socket, out ssd))
+            { 
+                return (int)SocketError.SocketError;
+            }
 
-            if(!_socketsDriver.GetSocket(socket, out sock)) return (int)SocketError.SocketError;
+            if (!_socketsDriver.GetSocket(socket, out sock))
+            {
+                return (int)SocketError.SocketError;
+            }
 
-            return sock.Poll(0,SelectMode.SelectRead) ? 1024 : 0;
+            var readData = ssd.m_readData;
+            
+            if(readData != null)
+            {
+                return (readData.Length - readData.Offset);
+            }
+            else
+            {
+                return sock.Poll(0, SelectMode.SelectRead) ? 1024 : 0;    
+            }
         }
     }    
 }
