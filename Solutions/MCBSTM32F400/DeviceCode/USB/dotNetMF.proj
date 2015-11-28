@@ -7,11 +7,10 @@
     <Description>USB PAL configuration for MCBSTM32F400 solution</Description>
     <Level>PAL</Level>
     <LibraryFile>usb_pal_config_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\USB\dotnetmf.proj</ProjectPath>
     <ManifestFile>usb_pal_config_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Solutions\MCBSTM32F400</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="USB_Config_PAL" Guid="{A03C06C1-23D7-493a-99C1-7E060BA5E7C4}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="USB_Config_PAL" Guid="{A03C06C1-23D7-493a-99C1-7E060BA5E7C4}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

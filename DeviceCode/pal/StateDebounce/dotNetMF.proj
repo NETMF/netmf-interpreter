@@ -12,7 +12,7 @@
     <ManifestFile>StateDebounce_pal.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Debounce</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="StateDebounce_PAL" Guid="{B3B337F1-2C64-4D62-9A86-D3C2BB0A083D}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="StateDebounce_PAL" Guid="{B3B337F1-2C64-4D62-9A86-D3C2BB0A083D}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

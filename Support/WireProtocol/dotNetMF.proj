@@ -13,7 +13,7 @@
     <Groups>
     </Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="WireProtocol_Support" Guid="{91AA2579-1BB8-4db7-806A-9999817E6274}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="WireProtocol_Support" Guid="{91AA2579-1BB8-4db7-806A-9999817E6274}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
@@ -28,8 +28,6 @@
     <Documentation>
     </Documentation>
     <PlatformIndependent>True</PlatformIndependent>
-    <CustomSpecific>
-    </CustomSpecific>
     <Required>False</Required>
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>False</IsStub>

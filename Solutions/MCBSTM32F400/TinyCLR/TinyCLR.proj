@@ -9,7 +9,6 @@
         <IsClrProject>True</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\TinyCLR\TinyCLR.proj</ProjectPath>
         <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>false</reducesize>

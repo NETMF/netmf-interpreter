@@ -12,7 +12,7 @@
     <ManifestFile>SPOT_Graphics.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Graphics</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Graphics_CLR" Guid="{6E04CE5E-46B5-4608-9CA3-6E17842DA36F}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Graphics_CLR" Guid="{6E04CE5E-46B5-4608-9CA3-6E17842DA36F}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

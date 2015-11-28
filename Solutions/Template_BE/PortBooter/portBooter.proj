@@ -12,7 +12,6 @@
     </InteropFeatures>
     <ExtraAssemblies>
     </ExtraAssemblies>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Template_BE\PortBooter\portBooter.proj</ProjectPath>
     <MFSettingsFile>$(SPOCLIENT)\Solutions\Template_BE\Template_BE.settings</MFSettingsFile>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
   </PropertyGroup>

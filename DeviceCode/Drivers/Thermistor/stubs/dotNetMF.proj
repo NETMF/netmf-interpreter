@@ -12,7 +12,7 @@
     <ManifestFile>thermistor_hal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Battery\stubs</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Thermistor_HAL" Guid="{005E7165-B501-4F4D-949D-9AC48AA408EC}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Thermistor_HAL" Guid="{005E7165-B501-4F4D-949D-9AC48AA408EC}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

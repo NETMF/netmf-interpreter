@@ -12,7 +12,7 @@
     <ManifestFile>openssl_pal.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SSL_PAL" Guid="{61CDC260-7D46-4660-826F-D212AC8B7608}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SSL_PAL" Guid="{61CDC260-7D46-4660-826F-D212AC8B7608}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
@@ -44,43 +44,43 @@
     <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\include\" />
     <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\" />
     <IncludePaths Include="DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\crypto\" />
-    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include" />
-    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include\ipv4" />
-    <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include\arch" />
-    <IncludePaths Include="DeviceCode\pal\lwip\SocketsDriver" />
-    <IncludePaths Include="DeviceCode\pal\lwip\TinyCLR" />
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\LWIP\src\include" />
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4" />
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\LWIP\src\include\arch" />
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\SocketsDriver" />
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\TinyCLR" />
     <IncludePaths Include="DeviceCode\pal\COM\" />
     <IncludePaths Include="DeviceCode\pal\net\" />
   </ItemGroup>
   <ItemGroup>
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\com\sockets\sockets.h" />
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\com\sockets_lwip\sockets_lwip.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\arch\cc.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\arch\sys_arch.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\autoip.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\icmp.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\igmp.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\inet.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\ip.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\ipv4\lwip\ip_addr.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\api.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\api_msg.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\arch.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\debug.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\def.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\dhcp.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\err.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\mem.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\netbuf.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\netif.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\netifapi.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\opt.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\pbuf.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\sys.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\tcp.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\tcpip.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\lwip\udp.h" />
-    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip\LWIP\src\include\netif\etharp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\arch\cc.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\arch\sys_arch.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4\lwip\autoip.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4\lwip\icmp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4\lwip\igmp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4\lwip\inet.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4\lwip\ip.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4\lwip\ip_addr.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\api.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\api_msg.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\arch.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\debug.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\def.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\dhcp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\err.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\mem.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\netbuf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\netif.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\netifapi.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\opt.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\pbuf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\sys.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\tcp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\tcpip.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\lwip\udp.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\pal\lwip_1_4_1_os\LWIP\src\include\netif\etharp.h" />
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\net\network_defines_lwip.h" />
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\net\net_decl_lwip.h" />
     <HFiles Include="$(SPOCLIENT)\devicecode\pal\openssl\openssl_1_0_0\crypto\objects\objects.h" />

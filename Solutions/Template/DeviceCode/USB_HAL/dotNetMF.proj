@@ -7,11 +7,10 @@
     <Description>USB TEMPLATE library</Description>
     <Level>HAL</Level>
     <LibraryFile>USB_HAL_TEMPLATE.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Template\DeviceCode\USB_HAL\dotNetMF.proj</ProjectPath>
     <ManifestFile>USB_HAL_TEMPLATE.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Processor\TEMPLATE</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="USB_HAL" Guid="{D5D07F9F-0BB9-4077-836B-580C4E7A734C}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="USB_HAL" Guid="{D5D07F9F-0BB9-4077-836B-580C4E7A734C}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
