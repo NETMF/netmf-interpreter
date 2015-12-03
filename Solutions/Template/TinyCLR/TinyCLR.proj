@@ -13,7 +13,6 @@
     </InteropFeatures>
     <ExtraAssemblies>
     </ExtraAssemblies>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Template\TinyCLR\TinyCLR.proj</ProjectPath>
     <MFSettingsFile>$(SPOCLIENT)\Solutions\Template\Template.settings</MFSettingsFile>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
   </PropertyGroup>

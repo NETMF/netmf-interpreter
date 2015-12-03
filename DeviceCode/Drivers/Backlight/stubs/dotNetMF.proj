@@ -12,7 +12,7 @@
     <ManifestFile>backlight_hal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Backlight</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Backlight_HAL" Guid="{3431C48D-5ED3-4896-8F85-110D2D09CDBD}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Backlight_HAL" Guid="{3431C48D-5ED3-4896-8F85-110D2D09CDBD}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

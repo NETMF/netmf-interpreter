@@ -12,7 +12,7 @@
     <ManifestFile>Graphics_Jpeg.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Graphics</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Graphics_JPG_CLR" Guid="{F7A2D3C6-F6A5-4102-9D94-0E0079442872}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Graphics_JPG_CLR" Guid="{F7A2D3C6-F6A5-4102-9D94-0E0079442872}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

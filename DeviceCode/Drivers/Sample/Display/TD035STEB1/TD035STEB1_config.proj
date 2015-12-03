@@ -12,7 +12,7 @@
     <ManifestFile>TD035STEB1_Config.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Display\Sample</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="LCDController_Config_HAL" Guid="{616E5384-4D7D-4299-A98F-BD5C887693BC}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="LCDController_Config_HAL" Guid="{616E5384-4D7D-4299-A98F-BD5C887693BC}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

@@ -12,7 +12,7 @@
     <ManifestFile>SPOT_TimeService.$(LIB_EXT).manifest</ManifestFile>
     <Groups>TimeService</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_TimeService_CLR" Guid="{D2494B68-C8A7-4aad-A087-C17FF83DF840}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_TimeService_CLR" Guid="{D2494B68-C8A7-4aad-A087-C17FF83DF840}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

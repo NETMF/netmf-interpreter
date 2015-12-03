@@ -12,7 +12,7 @@
     <ManifestFile>Graphics_Gif_stub.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Graphics</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Graphics_GIF_CLR" Guid="{E44003AC-2692-4343-A0D0-FA58BC2C2C31}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Graphics_GIF_CLR" Guid="{E44003AC-2692-4343-A0D0-FA58BC2C2C31}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

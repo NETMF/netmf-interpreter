@@ -12,7 +12,7 @@
     <ManifestFile>Stream_stub.$(LIB_EXT).manifest</ManifestFile>
     <Groups>IO</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Stream_CLR" Guid="{1B6EB6AA-1D7A-459C-A4A2-A20248101BC0}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Stream_CLR" Guid="{1B6EB6AA-1D7A-459C-A4A2-A20248101BC0}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

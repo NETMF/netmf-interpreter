@@ -12,7 +12,7 @@
     <ManifestFile>SocketsDriver_pal_lwip_os.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SocketDriver_PAL_LWIP" Guid="{9DB86889-471A-4743-9ACF-1AED838973FB}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SocketDriver_PAL_LWIP" Guid="{9DB86889-471A-4743-9ACF-1AED838973FB}" Conditional="" xmlns="">
         <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
       </MFComponent>
     </LibraryCategory>

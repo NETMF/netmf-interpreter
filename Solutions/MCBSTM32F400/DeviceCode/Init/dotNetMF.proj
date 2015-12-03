@@ -1,6 +1,5 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Init\dotnetmf.proj</ProjectPath>
     <AssemblyName>IO_Init_MCBSTM32F400</AssemblyName>
     <Size>
     </Size>
@@ -15,8 +14,6 @@
     <Documentation>
     </Documentation>
     <PlatformIndependent>False</PlatformIndependent>
-    <CustomSpecific>
-    </CustomSpecific>
     <Required>False</Required>
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>False</IsStub>

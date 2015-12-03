@@ -7,7 +7,6 @@
         <Description>GlobalLock library for CMSIS-RTOS</Description>
         <Level>HAL</Level>
         <LibraryFile>GlobalLock_hal_RTOS.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\GlobalLock\dotNetMF.proj</ProjectPath>
         <ManifestFile>GlobalLock_hal_RTOS.$(LIB_EXT).manifest</ManifestFile>
         <Documentation>
         </Documentation>

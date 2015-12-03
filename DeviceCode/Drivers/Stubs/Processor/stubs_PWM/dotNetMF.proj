@@ -12,7 +12,7 @@
     <ManifestFile>cpu_pwm_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Processor\stubs</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PWM_HAL" Guid="{53DABCD1-8C9D-485c-8C48-8ECEE7D27453}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PWM_HAL" Guid="{53DABCD1-8C9D-485c-8C48-8ECEE7D27453}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
