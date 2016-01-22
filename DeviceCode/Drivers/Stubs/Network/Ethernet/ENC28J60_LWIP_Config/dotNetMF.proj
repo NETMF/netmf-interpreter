@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <AssemblyName>ENC28J60_LWIP_config_stubs</AssemblyName>
+    <AssemblyName>ENC28J60_lwIP_config_stubs</AssemblyName>
     <Size>
     </Size>
     <ProjectGuid>{60F27EA8-91C6-4313-879B-900A6560956A}</ProjectGuid>
     <Description>ENC28J60 Ethernet driver stub configuration</Description>
     <Level>HAL</Level>
-    <LibraryFile>ENC28J60_LWIP_config_stubs.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_LWIP_config\dotnetmf.proj</ProjectPath>
-    <ManifestFile>ENC28J60_LWIP_config_stubs.$(LIB_EXT).manifest</ManifestFile>
+    <LibraryFile>ENC28J60_lwIP_config_stubs.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_lwP_config\dotnetmf.proj</ProjectPath>
+    <ManifestFile>ENC28J60_lwIP_config_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network\ENC28J60</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ENC28J60_Config_LWIP_HAL" Guid="{DD104859-675B-41E8-9885-092EBEDE8309}" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ENC28J60_Config_lwIP_HAL" Guid="{DD104859-675B-41E8-9885-092EBEDE8309}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
@@ -33,7 +33,7 @@
     <Required>False</Required>
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>True</IsStub>
-    <Directory>DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_LWIP_config</Directory>
+    <Directory>DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_lwIP_config</Directory>
     <OutputType>Library</OutputType>
     <PlatformIndependentBuild>false</PlatformIndependentBuild>
     <Version>4.0.0.0</Version>
@@ -41,8 +41,8 @@
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <PropertyGroup />
   <ItemGroup>
-    <Compile Include="enc28j60_LWIP_config_stubs.cpp" />
-    <IncludePaths Include="DeviceCode\Drivers\Ethernet\Enc28J60_LWIP" />
+    <Compile Include="enc28j60_lwIP_config_stubs.cpp" />
+    <IncludePaths Include="DeviceCode\Drivers\Ethernet\Enc28J60_lwIP" />
     <IncludePaths Include="DeviceCode\include" />
     <IncludePaths Include="DeviceCode\pal\net" />
     <IncludePaths Include="DeviceCode\pal\lwip\LWIP\src\include" />

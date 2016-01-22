@@ -19,6 +19,9 @@
 #include <stdint.h>
 #endif
 
+// we need this to force inclusion from library at link time
+#pragma import(EntryPoint)
+
 #undef  TRACE_ALWAYS
 #define TRACE_ALWAYS               0x00000001
 
@@ -70,6 +73,15 @@ extern UINT32 Image$$ER_LWIP_OS$$RW$$Length;
 extern UINT32 Image$$ER_LWIP_OS$$ZI$$Base;
 extern UINT32 Image$$ER_LWIP_OS$$ZI$$Length;
 #endif
+
+//
+//  The ARM linker is not keeping FirstEntry.obj (and EntryPoint) for RTM builds of NativeSample (possibly others)
+//  The --keep FirstEntry.obj linker option also does not work, however, this unused method call to EntryPoint does the trick.
+//
+void KEEP_THE_LINKER_HAPPY_SINCE_KEEP_IS_NOT_WORKING()
+{
+    EntryPoint();
+}
 
 #pragma arm section code = "SectionForBootstrapOperations"
 
@@ -124,6 +136,50 @@ static void __section("SectionForBootstrapOperations") Prepare_Zero( UINT32* dst
     }
 }
 
+
+#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
+// Hack: refer to work item #2374
+// For reasons unknown, the ARM linker is getting the
+// fixup for the LoadRegion symbol incorrect. The data
+// is located correctly but the fixed up pointer stored
+// in the literal pool that this code loads for the address
+// of the load base (src) is off by some factor. In initial
+// testing it was always 0x90, unfortunately it turns out
+// not to be consistent and bumped up to 0xED0, and is now
+// back at 0x90... Sigh... Hope to hear back from ARM support
+// on this soon. ARM has confirmed the bug as related to the
+// use of a non-compressed region in the scatter file. Since
+// the code here doesn't understand the linker compression
+// the region is uncompressed, however the linker bug is 
+// that an uncompressed region that follows after a compressed
+// one will get the invalid Load$$xxx$$Base value. If the
+// scatter file is updated to ensure all regions occuring
+// before this one are also uncompressed it works ok.
+const UINT32 ArmLinkerLoadRegionOffsetHack = 0x00000000;
+void LwipRegionInit()
+{
+    // Copy RAM RW regions into proper location.
+    {
+        UINT32* src = (UINT32*)&Load$$ER_LWIP_OS$$RW$$Base; 
+        UINT32* dst = (UINT32*)&Image$$ER_LWIP_OS$$RW$$Base;
+        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$RW$$Length; 
+
+        // Hack: refer to work item #2374
+        //src = reinterpret_cast<UINT32*>(reinterpret_cast<UINT32>(src) - ArmLinkerLoadRegionOffsetHack );
+
+        Prepare_Copy( src, dst, len );
+    }
+
+    // Initialize RAM ZI regions.
+    {
+        UINT32* dst = (UINT32*)&Image$$ER_LWIP_OS$$ZI$$Base;
+        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$ZI$$Length;
+
+        Prepare_Zero( dst, len );
+    }
+}
+#endif
+
 #if !defined(PLATFORM_ARM_OS_PORT) || defined(__GNUC__)
 void __section("SectionForBootstrapOperations") PrepareImageRegions()
 {
@@ -155,6 +211,26 @@ void __section("SectionForBootstrapOperations") PrepareImageRegions()
     {
         UINT32* dst = (UINT32*)&Image$$ER_RAM_RW$$ZI$$Base;
         UINT32  len = (UINT32 )&Image$$ER_RAM_RW$$ZI$$Length;
+
+        Prepare_Zero( dst, len );
+    }
+    
+    //Copy RAM RW regions into proper location.
+    {
+        UINT32* src = (UINT32*)&Load$$ER_LWIP_OS$$RW$$Base; 
+        UINT32* dst = (UINT32*)&Image$$ER_LWIP_OS$$RW$$Base;
+        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$RW$$Length; 
+
+        // Hack: refer to work item #2374
+        //src = reinterpret_cast<UINT32*>(reinterpret_cast<UINT32>(src) - ArmLinkerLoadRegionOffsetHack );
+
+        Prepare_Copy( src, dst, len );
+    }
+
+    // Initialize RAM ZI regions.
+    {
+        UINT32* dst = (UINT32*)&Image$$ER_LWIP_OS$$ZI$$Base;
+        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$ZI$$Length;
 
         Prepare_Zero( dst, len );
     }
@@ -325,7 +401,8 @@ void HAL_Initialize()
     // SystemInit handles this for the startup from reset
     // However, this is also called from the CLR when doing
     // a soft reboot.
-    __enable_irq();
+    //__enable_irq();
+    ENABLE_INTERRUPTS();
 #endif
 
     HAL_CONTINUATION::InitializeList();
@@ -343,7 +420,7 @@ void HAL_Initialize()
     // this is the place where interrupts are enabled after boot for the first time after boot
     ENABLE_INTERRUPTS();
 #endif
-
+//ENABLE_INTERRUPTS();
     // have to initialize the blockstorage first, as the USB device needs to update the configure block
 
     BlockStorageList::Initialize();
@@ -361,6 +438,7 @@ void HAL_Initialize()
     //FileSystemVolumeList::InitializeVolumes();
 
     //LCD_Initialize();
+CPU_GPIO_EnableOutputPin(LED5, TRUE);
     
 #if !defined(HAL_REDUCESIZE)
     CPU_InitializeCommunication();
@@ -396,49 +474,6 @@ void HAL_UnReserveAllGpios()
         CPU_GPIO_ReservePin((GPIO_PIN)i, false);
     }
 }
-
-#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
-// Hack: refer to work item #2374
-// For reasons unknown, the ARM linker is getting the
-// fixup for the LoadRegion symbol incorrect. The data
-// is located correctly but the fixed up pointer stored
-// in the literal pool that this code loads for the address
-// of the load base (src) is off by some factor. In initial
-// testing it was always 0x90, unfortunately it turns out
-// not to be consistent and bumped up to 0xED0, and is now
-// back at 0x90... Sigh... Hope to hear back from ARM support
-// on this soon. ARM has confirmed the bug as related to the
-// use of a non-compressed region in the scatter file. Since
-// the code here doesn't understand the linker compression
-// the region is uncompressed, however the linker bug is 
-// that an uncompressed region that follows after a compressed
-// one will get the invalid Load$$xxx$$Base value. If the
-// scatter file is updated to ensure all regions occuring
-// before this one are also uncompressed it works ok.
-const UINT32 ArmLinkerLoadRegionOffsetHack = 0x00000000;
-void LwipRegionInit()
-{
-    // Copy RAM RW regions into proper location.
-    {
-        UINT32* src = &Load$$ER_LWIP_OS$$RW$$Base; 
-        UINT32* dst = &Image$$ER_LWIP_OS$$RW$$Base;
-        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$RW$$Length; 
-
-        // Hack: refer to work item #2374
-        src = reinterpret_cast<UINT32*>(reinterpret_cast<UINT32>(src) - ArmLinkerLoadRegionOffsetHack );
-
-        Prepare_Copy( src, dst, len );
-    }
-
-    // Initialize RAM ZI regions.
-    {
-        UINT32* dst = &Image$$ER_LWIP_OS$$ZI$$Base;
-        UINT32  len = (UINT32) &Image$$ER_LWIP_OS$$ZI$$Length;
-
-        Prepare_Zero( dst, len );
-    }
-}
-#endif
 
 void HAL_Uninitialize()
 {
@@ -510,19 +545,64 @@ void HAL_Uninitialize()
 #endif
 }
 
+void BootstrapCode_GPIO();
+
 extern "C"
 {
 #if defined( __GNUC__ )
     extern "C++" int main(void);
     extern void __libc_init_array();
+    extern "C" void software_init_hook();
+
+    extern osThreadDef_t os_thread_def_main;
+
     void __main()
     {
         // Copy writeable data and zero init BSS
         PrepareImageRegions();
+        //CPU_GPIO_EnableOutputPin(LED3, TRUE); 
 
         // Call static constructors
         __libc_init_array();
-
+        //software_init_hook();
+        
+        if (osKernelInitialize () != osOK)  {          // check osStatus for other possible valid values
+            // exit with an error message
+            CPU_GPIO_EnableOutputPin(LED6, TRUE);        
+        }
+        else
+        {
+            // kernel init OK
+            CPU_GPIO_EnableOutputPin(LED6, FALSE);        
+        } 
+        //CPU_GPIO_EnableOutputPin(LED5, TRUE);       
+        //osKernelInitialize();
+        //CPU_GPIO_EnableOutputPin(LED6, TRUE); 
+        osThreadCreate(&os_thread_def_main, NULL);
+        //CPU_GPIO_EnableOutputPin(LED5, TRUE); 
+        //osKernelStart();
+        CPU_GPIO_EnableOutputPin(LED4, TRUE);        
+        //CPU_GPIO_EnableOutputPin(LED4, TRUE); 
+        // osKernelStart();    
+        // CPU_GPIO_EnableOutputPin(LED5, TRUE); 
+       
+        //     asm(".syntax unified\n");
+        //     asm(".thumb\n");
+        //     asm("movs r0,#0\n");
+        //     asm("movs r1,#0\n");
+        //     asm("mov  r4,r0\n");
+        //     asm("mov  r5,r1\n");
+        //     asm("ldr  r0,= __libc_fini_array\n");
+        //     asm("bl   atexit\n");
+        //    asm("bl   __libc_init_array\n");
+        //     asm("mov  r0,r4\n");
+        //     asm("mov  r1,r5\n");
+        //     asm("bl   osKernelInitialize\n");
+        //     asm("ldr  r0,=os_thread_def_main\n");
+        //     asm("movs r1,#0\n");
+        //     asm("bl   osThreadCreate\n");
+        //     asm("bl   osKernelStart\n");
+        
         // Call the application's entry point.
         main();
     }
@@ -648,13 +728,17 @@ extern "C" void STM32F4_BootstrapCode();
 extern "C" void SystemInit()
 {
     STM32F4_BootstrapCode();
+    // Copy writeable data and zero init BSS
+    PrepareImageRegions();
+    BootstrapCode_GPIO();
     CPU_Initialize();
-    __enable_irq();
+    //__enable_irq();
+    ENABLE_INTERRUPTS();
 }
 
 #endif //PLATFORM_ARM_OS_PORT
 
-#if !defined(BUILD_RTM)
+//#if !defined(BUILD_RTM)
 
 void debug_printf( const char* format, ... )
 {
@@ -684,7 +768,7 @@ void lcd_printf( const char* format, ... )
     hal_vfprintf( STREAM_LCD, format, arg_ptr );
 }
 
-#endif  // !defined(BUILD_RTM)
+//#endif  // !defined(BUILD_RTM)
 
 #if !defined(BUILD_RTM)
 

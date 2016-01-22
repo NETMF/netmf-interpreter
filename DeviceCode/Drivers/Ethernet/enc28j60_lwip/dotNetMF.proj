@@ -37,7 +37,7 @@
     <Version>4.0.0.0</Version>
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
-  <Import Project="$(SPOCLIENT)\Framework\Features\ENC28J60_Config_LWIP_HAL.libcatproj" />
+  <Import Project="$(SPOCLIENT)\Framework\Features\ENC28J60_Config_lwIP_HAL.libcatproj" />
   <PropertyGroup />
   <ItemGroup>
     <Compile Include="enc28j60_lwip.cpp" />

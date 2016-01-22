@@ -53,7 +53,7 @@
         <Compile Include="SRC\rt_Task.c" />
         <Compile Include="SRC\rt_Time.c" />
         <Compile Include="SRC\rt_Timer.c" />
-      
+        
         <HFiles Include="SRC\RTX_Config.h" />
         <HFiles Include="SRC\rt_Event.h" />
         <HFiles Include="SRC\rt_HAL_CM.h" />
@@ -65,9 +65,7 @@
         <HFiles Include="SRC\rt_Robin.h" />
         <HFiles Include="SRC\rt_Semaphore.h" />
         <HFiles Include="SRC\rt_System.h" />
-        <HFiles Include="SRC\rt_Task.c" />
         <HFiles Include="SRC\rt_Task.h" />
-        <HFiles Include="SRC\rt_Time.c" />
         <HFiles Include="SRC\rt_Time.h" />
         <HFiles Include="SRC\rt_Timer.h" />
         <HFiles Include="SRC\rt_TypeDef.h" />

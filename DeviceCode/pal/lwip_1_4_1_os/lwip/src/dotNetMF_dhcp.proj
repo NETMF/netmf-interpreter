@@ -7,9 +7,9 @@
     <ProjectGuid>{D3CD11CB-36F6-46B0-ABCE-F348F0384D15}</ProjectGuid>
     <Description>LWIP DHCP Driver</Description>
     <Level>PAL</Level>
-    <LibraryFile>sockets_hal_DHCP_LWIP_os.$(LIB_EXT)</LibraryFile>
+    <LibraryFile>sockets_hal_DHCP_lwIP_os.$(LIB_EXT)</LibraryFile>
     <ProjectPath>$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_os\LWIP\src\dotnetmf_dhcp.proj</ProjectPath>
-    <ManifestFile>sockets_hal_dhcp_LWIP_os.$(LIB_EXT).manifest</ManifestFile>
+    <ManifestFile>sockets_hal_dhcp_lwIP_os.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
       <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Sockets_dhcp_PAL" Guid="{2F810E63-C9B2-4938-9876-152FB11B80F6}" Conditional="" xmlns="">

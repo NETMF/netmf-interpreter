@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <AssemblyName>SocketsDriver_PAL_LWIP_os</AssemblyName>
+    <AssemblyName>SocketsDriver_PAL_lwIP_os</AssemblyName>
     <Size>
     </Size>
     <ProjectGuid>{DC694CAD-D139-4416-8A62-5E970598ECA5}</ProjectGuid>
@@ -12,7 +12,7 @@
     <ManifestFile>SocketsDriver_pal_lwip_os.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SocketDriver_PAL_LWIP" Guid="{9DB86889-471A-4743-9ACF-1AED838973FB}" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SocketDriver_PAL_lwIP" Guid="{9DB86889-471A-4743-9ACF-1AED838973FB}" Conditional="" xmlns="">
         <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
       </MFComponent>
     </LibraryCategory>

@@ -1,0 +1,33 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <PropertyGroup>
+        <AssemblyName>GlobalLock_hal_RTOS</AssemblyName>
+        <ProjectGuid>{1BAFD249-C7B9-43C4-A62B-D9541531F871}</ProjectGuid>
+        <Size>
+        </Size>
+        <Description>GlobalLock library for CMSIS-RTOS</Description>
+        <Level>HAL</Level>
+        <LibraryFile>GlobalLock_hal_RTOS.$(LIB_EXT)</LibraryFile>
+        <ManifestFile>GlobalLock_hal_RTOS.$(LIB_EXT).manifest</ManifestFile>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <CustomFilter>
+        </CustomFilter>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>False</IsStub>
+        <Directory>Solutions\STM32F4DISCOVERY\DeviceCode\GlobalLock</Directory>
+        <OutputType>Library</OutputType>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <ItemGroup>
+    <Compile Include="SmartPtr_IRQ.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\include" />
+    <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS"/>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
