@@ -46,7 +46,7 @@
 
     <POS_DEPENDENT></POS_DEPENDENT>
     <POS_INDEPENDENT>-fpic</POS_INDEPENDENT>
-    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fdata-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >$(CC_CPP_TARGETTYPE_FLAGS) -O3</CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >$(CC_CPP_TARGETTYPE_FLAGS) -O0 -femit-class-debug-always</CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(CC_CPP_TARGETTYPE_FLAGS) -O0</CC_CPP_TARGETTYPE_FLAGS>
@@ -210,11 +210,12 @@
   <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'" >
     <GNU_LIB_DIR   >$(GNU_TOOLS)\$(GNU_TARGET)\lib</GNU_LIB_DIR>
     <GNU_LIBGCC_DIR>$(GNU_LIB_DIR)\$(GCC_ARCH_DIR)</GNU_LIBGCC_DIR>
-    <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='arm'"></ExtraLibs>
+    <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='arm'"> </ExtraLibs>
+    <!--<ExtraLibs>-lRTX_CM3</ExtraLibs>-->
 
     <!--Standard libraries -->
     <!-- NOTE: These are renamed by the "specs" provided to the command line-->
-    <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lgcc -lc</GCCSTDLIBS>
+    <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lgcc -lc  </GCCSTDLIBS> <!---lnosys -->
 
     <!-- Use newlib-nano (default) or newlib -->
     <LINK_NANO_SPECS Condition="'$(NewlibNano)' != 'false'">-specs="$(GNU_LIBGCC_DIR)\nano.specs"</LINK_NANO_SPECS>
@@ -274,7 +275,7 @@
          (platform independent). Thus the linker looks in the current working directory and finds the specified library without
          needing to list the full path for each one. 
     -->
-    <Exec WorkingDirectory="$(LIB_DIR)" Command="$(LINK) $(ARCH_TYPE_FLAGS) $(FLOATING_POINT_FLAG) -L&quot;$(GNU_LIBGCC_DIR)&quot; -specs=$(MsBuildThisFileDirectory)startfile.specs -Wl$(LINK_FLAGS),-Map=$(EXEName).map $(LINK_NANO_SPECS) -T@(EXEScatterFile,' ') @(EXEInputs,' ') -Wl,-( @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') @(DriverLibs->'%(FileName)%(Extension)',' ') @(InputLibs,' ') -Wl,-) -Wl,-no-whole-archive -Wl,-( $(GCCSTDLIBS) -Wl,-) $(ExtraLibs) -o@(EXEOutput)" />
+    <Exec WorkingDirectory="$(LIB_DIR)" Command="$(LINK) $(ARCH_TYPE_FLAGS) $(FLOATING_POINT_FLAG) -L&quot;$(GNU_LIBGCC_DIR)&quot; -L&quot;E:\GitHub\netmf-interpreter\CMSIS\CMSIS\RTOS\RTX\LIB\GCC&quot;  -specs=$(MsBuildThisFileDirectory)startfile.specs -Wl$(LINK_FLAGS),-Map=$(EXEName).map $(LINK_NANO_SPECS) -T@(EXEScatterFile,' ') @(EXEInputs,' ') -Wl,-( @(PlatformIndependentLibs->'$(PLATFORM_INDEPENDENT_RELATIVE_LIB_DIR)%(FileName)%(Extension)',' ') @(DriverLibs->'%(FileName)%(Extension)',' ') @(InputLibs,' ') -Wl,-) -Wl,-no-whole-archive -Wl,-( $(GCCSTDLIBS) -Wl,-) $(ExtraLibs) -o@(EXEOutput)" />
 
     <Exec Command="$(OBJDUMP) -d -EL @(EXEOutput) > $(EXEName).axfdump" />
 

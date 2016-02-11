@@ -19,23 +19,23 @@
 #define ERRNO                           1
 
 #define NO_SYS                          0
-//#define MEM_SIZE                        (8*1024)
+#define MEM_SIZE                        (8*1024)
 #define MEM_ALIGNMENT                   4
-// #define MEMP_NUM_PBUF                   16
-// #define MEMP_NUM_UDP_PCB                6
-// #define MEMP_NUM_TCP_PCB                5
-// #define MEMP_NUM_TCP_PCB_LISTEN         5
-// #define MEMP_NUM_TCP_SEG                32
-// #define MEMP_NUM_SYS_TIMEOUT            8
-// #define MEMP_NUM_NETBUF                 8
-// #define MEMP_NUM_NETCONN                10
-// #define PBUF_POOL_SIZE                  12
-// #define PBUF_POOL_BUFSIZE               256
-// #define TCP_MSS                         128
-// #define TCP_SND_BUF                     (2*TCP_MSS)
-// #define TCP_SND_QUEUELEN                (4*TCP_SND_BUF/TCP_MSS)
-// #define TCP_WND                         1024
-// #define TCP_SNDLOWAT                    (TCP_SND_BUF/2)
+#define MEMP_NUM_PBUF                   16
+#define MEMP_NUM_UDP_PCB                6
+#define MEMP_NUM_TCP_PCB                5
+#define MEMP_NUM_TCP_PCB_LISTEN         5
+#define MEMP_NUM_TCP_SEG                32
+#define MEMP_NUM_SYS_TIMEOUT            8
+#define MEMP_NUM_NETBUF                 8
+#define MEMP_NUM_NETCONN                10
+#define PBUF_POOL_SIZE                  12
+#define PBUF_POOL_BUFSIZE               256
+#define TCP_MSS                         128
+#define TCP_SND_BUF                     (2*TCP_MSS)
+#define TCP_SND_QUEUELEN                (4*TCP_SND_BUF/TCP_MSS)
+#define TCP_WND                         1024
+#define TCP_SNDLOWAT                    (TCP_SND_BUF/2)
 
 #define TCPIP_LWIP                      1
 #define LWIP_NETIF_API                  1

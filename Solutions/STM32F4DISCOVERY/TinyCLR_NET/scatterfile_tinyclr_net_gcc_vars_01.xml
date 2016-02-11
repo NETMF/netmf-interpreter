@@ -14,7 +14,7 @@
     <Set Name="IFLASH_BaseAddress"      Value="0x08000000"/>
     <Set Name="IFLASH_Size"             Value="0x00100000"/><!-- 1MB -->
 
-    <!-- Internal Core Coupled Memory (CCM) [D-Bus] -->
+    <!-- Core Coupled Memory (CCM) [D-Bus] -->
     <Set Name="CCM_BaseAddress"         Value="0x10000000"/>
     <Set Name="CCM_Size"                Value="0x00010000"/><!-- 64KB -->
 
@@ -22,15 +22,22 @@
     <Set Name="IRAM_BaseAddress"        Value="0x20000000"/>
     <Set Name="IRAM_Size"               Value="0x00020000"/><!-- 128KB -->
 
-    <!-- Solution specific usage settings -->
+    <!-- Solution/Project specific usage settings -->
+    <!-- Internal CCM (D-Bus) -->
+    <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
+    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
+    <Set Name="Stack_Size"              Value="%CCM_Size%" />
 
-    <!-- Internal FLASH -->
-    <!--
-         The flash memory layout must match BlockRange definitions
-         in DeviceCode\Blockstorage\STM32F4\STM32F4_BlConfig.cpp
-    -->
-    <!-- TinyBooter sits at power on Reset vector-->
-    <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
+    <!-- ################################################################################ -->
+
+    <!-- Deployment fills the rest of flash... --><!-- 384KB -->
+
+    <If Name="TARGETLOCATION" Value="FLASH">
+        <!-- Internal FLASH -->
+
+        <!-- Internal FLASH -->
+        <!-- TinyBooter sits at power on Reset vector -->
+        <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
     <Set Name="BooterCode_Size"         Value="0x0000C000"/><!-- 48KB -->
 
     <!-- Configuration section -->
@@ -41,23 +48,26 @@
     <Set Name="Code_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
     <Set Name="Code_Size"               Value="0x00080000"/><!-- 512KB -->
 
-    <!-- Deployment fills the rest of flash... --><!-- 384KB -->
+        <!-- =========================================================== -->
+        <If Name="TARGETTYPE" Value="Release">
 
-    <!-- Internal CCM (D-Bus) -->
-    <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
-    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
-    <Set Name="Stack_Size"              Value="%CCM_Size%" />
+		    <!-- Internal SRAM -->
+		    <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
+            <Set Name="Heap_BaseAddress"        Value="0x20008000"/>
+            <Set Name="Heap_Size"               Value="0x00018000"/><!-- 96K -->
 
-    <!-- Internal SRAM -->
-    <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
-    <Set Name="Heap_BaseAddress"        Value="0x20008000"/>
-    <Set Name="Heap_Size"               Value="0x00017000"/><!-- 92K -->
+            <Set Name="CustomHeap_Size"         Value="0x00000000"/><!--  0  -->
 
-    <Set Name="CustomHeap_Size"         Value="0x00001000"/><!--  4K -->
-
-
-    <If Name="TARGETLOCATION" Value="FLASH">
-        <Set Name="Valid"               Value="true"/>
+            <Set Name="Valid"           Value="true"/>
+        </If>
+        <If Name="TARGETTYPE" Value="Debug">
+		    <Set Name="Heap_BaseAddress"        Value="0x20008000"/>
+		    <Set Name="Heap_Size"               Value="0x00017000"/><!-- 92K -->
+	
+		    <Set Name="CustomHeap_Size"         Value="0x00001000"/><!--  4K -->
+            
+            <Set Name="Valid"           Value="true"/>
+        </If>
     </If>
 
     <!-- ################################################################################ -->
@@ -66,7 +76,7 @@
     </If>
 
     <EntryPoint Name="EntryPoint" />
-
+    
     <NamedGroup Name="MEMORY">
         <LoadRegion Name="D_CCM" Base="%CCM_BaseAddress%" Size="%CCM_Size%" />
         <LoadRegion Name="IRAM" Base="%IRAM_BaseAddress%" Size="%IRAM_Size%" />
@@ -75,31 +85,62 @@
     </NamedGroup>
 
     <NamedGroup Name="SECTIONS">
+    
         <!-- ========= INTERNAL FLASH ============================================ -->
         <ExecRegion Name="ER_%TARGETLOCATION%" Options="&gt;LR_%TARGETLOCATION%">
             <FileMapping Name="*(i.EntryPoint)"/>
             <FileMapping Name="*(SectionForBootstrapOperations)"/>
+            <FileMapping Name="*" Options="(SectionForFlashOperations)"/>
+
+            <FileMapping Name="*(.text*)"/>
+            
             <FileMapping Name="KEEP(*(.init))"/>
             <FileMapping Name="KEEP(*(.fini))"/>
+            
+            <!-- .ctors -->
             <FileMapping Name="*crtbegin.o(.ctors)"/>
+            <FileMapping Name="*crtbegin?.o(.ctors)"/>
             <FileMapping Name="*(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)"/>
             <FileMapping Name="*(SORT(.ctors.*))"/>
             <FileMapping Name="*(.ctors)"/>
+            
+            <!-- .dtors -->
             <FileMapping Name="*crtbegin.o(.dtors)"/>
             <FileMapping Name="*crtbegin?.o(.dtors)"/>
             <FileMapping Name="*(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)"/>
             <FileMapping Name="*(SORT(.dtors.*))"/>
             <FileMapping Name="*(.dtors)"/>
-            <FileMapping Name="*(.text*)"/>
+            
             <FileMapping Name="*(i.*)"/>
             <FileMapping Name="*(.rodata*)"/>
             <FileMapping Name="*(rodata)"/>
+                        
+            
             <FileMapping Name="*(.constdata*)"/>
             <FileMapping Name="*(.conststring*)"/>
             <FileMapping Name="*(.glue*)"/>
-            <FileMapping Name="*" Options="(tinyclr_metadata)" />
-            <Include File="%SPOCLIENT%\Solutions\STM32F4DISCOVERY\scatterfile_gcc_missing_symbols.xml"/>
+            <FileMapping Name="*(tinyclr_metadata)" />            
+            
+            <FileMapping Name="KEEP(*(.eh_frame*))"/>
+            
+            <Include File="%SPOCLIENT%\Solutions\MCBSTM32F400\scatterfile_gcc_missing_symbols.xml"/>
         </ExecRegion>
+        
+        <ExecRegion Name=".ARM.extab" Options="&gt;LR_%TARGETLOCATION% ">
+            <FileMapping Name="*(.ARM.extab* .gnu.linkonce.armextab.*)"/>
+        </ExecRegion>  
+
+        <GlobalVariable Name="__exidx_start" Value="."/>
+
+        <ExecRegion Name=".ARM.exidx" Options="&gt;LR_%TARGETLOCATION% ">
+            <FileMapping Name="*(.ARM.exidx* .gnu.linkonce.armexidx.*)"/>
+        </ExecRegion> 
+        
+        <GlobalVariable Name="__exidx_end" Value="."/>
+
+        <GlobalVariable Name="__etext" Value="."/>
+        <GlobalVariable Name="_sidata" Value="."/>
+
 
         <!-- ========= INTERNAL RAM ============================================= -->
         <!-- Writeable Vector table -->
@@ -114,62 +155,99 @@
         <ExecRegion Name="ER_VECTORS" Options="&gt;IRAM">
             <FileMapping Name="*" Options="(VectorTable)" />
         </ExecRegion>
+      
+        <ExecRegion Name="ER_RAM_RW" Base="ADDR(ER_VECTORS) + SIZEOF(ER_VECTORS)" Options="&gt;IRAM AT&gt;LR_FLASH ">
+            <FileMapping Name="__data_start__ = .;"/>
+            <FileMapping Name="_sdata = .;"/>
 
-        <ExecRegion Name="ER_RAM_RW" Align="0x10" Base="ADDR(ER_VECTORS) + SIZEOF(ER_VECTORS)" Options="&gt;IRAM AT&gt;LR_FLASH ">
-            <FileMapping Name="*(rwdata)"/>
-            <FileMapping Name="*(.data*)"/>
+            <!--remove??-->        
+            <FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib)rwdata)"/>
+            <FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib).data)"/>
+            
             <FileMapping Name=". = ALIGN(4);"/>
-            <FileMapping Name="PROVIDE(__preinit_array_start = . );"/>
+            <FileMapping Name="PROVIDE_HIDDEN(__preinit_array_start = . );"/>
             <FileMapping Name="KEEP(*(.preinit_array))"/>
-            <FileMapping Name="PROVIDE(__preinit_array_end = . );"/>
+            <FileMapping Name="PROVIDE_HIDDEN(__preinit_array_end = . );"/>
 
             <FileMapping Name=". = ALIGN(4);"/>
-            <FileMapping Name="PROVIDE(__init_array_start = . );"/>
+            <FileMapping Name="PROVIDE_HIDDEN(__init_array_start = . );"/>
             <FileMapping Name="KEEP(*(SORT(.init_array)))"/>
             <FileMapping Name="KEEP(*(.init_array))"/>
-            <FileMapping Name="PROVIDE(__init_array_end = . );"/>
+            <FileMapping Name="PROVIDE_HIDDEN(__init_array_end = . );"/>
 
             <FileMapping Name=". = ALIGN(4);"/>
-            <FileMapping Name="PROVIDE(__fini_array_start = . );"/>
+            <FileMapping Name="PROVIDE_HIDDEN(__fini_array_start = . );"/>
             <FileMapping Name="KEEP(*(SORT(.fini_array)))"/>
             <FileMapping Name="KEEP(*(.fini_array))"/>
-            <FileMapping Name="PROVIDE(__fini_array_end = . );"/>
+            <FileMapping Name="PROVIDE_HIDDEN(__fini_array_end = . );"/>
 
             <FileMapping Name=". = ALIGN(4);"/>
+            <!-- All data end -->
             <FileMapping Name="__data_end__ = .;"/>
+            <FileMapping Name="_edata = .;"/>
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
-            <FileMapping Name="*(.bss*)" />
-            <FileMapping Name="*(.zidata*)" />
-            <FileMapping Name="PROVIDE(__exidx_start = .);" />
-            <FileMapping Name="PROVIDE(__exidx_end = .);" />
+        <ExecRegion Name="ER_LWIP_OS_RW" Options="&gt;IRAM AT&gt;LR_FLASH ">
+            <FileMapping Name=". = ALIGN(4);"/>
+
+            <!--<FileMapping Name="*sockets_hal_*_lwIP_os.lib (.rwdata*)" />-->
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib(rwdata)" />
+            <FileMapping Name="*sockets_hal_*_lwIP_os.lib(rwdata)" />
+            <!--<FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib (.rwdata*)" />-->
+            <!--<FileMapping Name="*sockets_hal_sockets_lwIP_os.lib *sockets_hal_dhcp_lwIP_os.lib *sockets_hal_tcp_lwIP_os.lib *sockets_hal_udp_lwIP_os.lib (.data.*)" />-->
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib(.data)" />
+            <FileMapping Name="*sockets_hal_*_lwIP_os.lib(.data)" />
+            <!--<FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib (.data.*)" />-->
+        </ExecRegion>
+        
+        <ExecRegion Name=".bss" Options="&gt;IRAM">
+            <FileMapping Name=". = ALIGN(4);"/>
+            
+            <FileMapping Name="__bss_start__ = .;"/>
+            <FileMapping Name="_sbss = .;"/>
+            
+            <FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib).bss)" />
+            <!--<FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib) .bss*)" />-->
+            <!--<FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib) .bss.*)" />-->
+            <FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib).zidata)" />
+            <!--<FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib) .zidata.*)" />-->
+            <!--<FileMapping Name="PROVIDE(__exidx_start = .);" />-->
+            <!--<FileMapping Name="PROVIDE(__exidx_end = .);" />-->
+            <FileMapping Name="*(EXCLUDE_FILE(*sockets_hal_*_lwIP_os.lib *lwip_1_4_1_os_CMSIS_RTOS.lib)COMMON)" />
             <FileMapping Name="*(g_SSL_SeedData)" />
-            <FileMapping Name="*(COMMON)" />
+            
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="__bss_end__ = .;"/>
+            <FileMapping Name="_ebss = .;"/>            
         </ExecRegion>
 
-        <!-- To enable re-initialization of the LWIP stack, which has no built-in support
-             for re-init, all RW and ZI data for the stack is placed into an isolated region
-             and the HAL soft reboot code handles re-initializing the data in this region.
-        -->
-        <ExecRegion Name="ER_LWIP_OS_RW" Options="&gt;IRAM">
-          <FileMapping Name="*sockets_hal_*_LWIP_os.lib(rwdata)" />
-          <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib(rwdata)" />
-        </ExecRegion>
 
         <ExecRegion Name="ER_LWIP_OS_ZI" Options="&gt;IRAM">
-            <FileMapping Name="*sockets_hal_*_LWIP_os.lib(.bss)" />
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!--<FileMapping Name="*sockets_hal_*_lwIP_os.lib (.bss.*)" />
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib (.bss.*)" />
+            <FileMapping Name="*sockets_hal_*_lwIP_os.lib (.zidata.*)" />
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib (.zidata.*)" />
+            <FileMapping Name="*sockets_hal_*_lwIP_os.lib (.bss.*)" />
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib (COMMON)" />-->
             <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib(.bss)" />
+            <FileMapping Name="*sockets_hal_*_lwIP_os.lib(.bss)" />
+            <!--<FileMapping Name="*sockets_hal_*_lwIP_os.lib(.bss*) *lwip_1_4_1_os_CMSIS_RTOS.lib(.bss*)" />-->
+            <FileMapping Name="**lwip_1_4_1_os_CMSIS_RTOS.lib(.zidata*)" />
+            <FileMapping Name="*sockets_hal_*_lwIP_os.lib(.zidata*)" />
+            <FileMapping Name="*lwip_1_4_1_os_CMSIS_RTOS.lib(COMMON)" />
+            <FileMapping Name="*sockets_hal_*_lwIP_os.lib(COMMON)" />
         </ExecRegion>
-
-
-        <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH">
+        
+        <ExecRegion Name="ER_RAM_RO" Options="&gt;IRAM">
             <!-- Flash programming from Flash is safe on STM32 -->
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
         <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="&gt;IRAM">
+            <FileMapping Name="__end__ = .;"/>
+            <FileMapping Name="end = __end__;"/>
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
         </ExecRegion>
 
@@ -177,6 +255,7 @@
 
         <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+            <FileMapping Name="__HeapLimit = .;"/>
         </ExecRegion>
 
         <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;IRAM" >
@@ -189,17 +268,24 @@
             <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
-        <ExecRegion Name="/DISCARD/">
-            <FileMapping Name="*(.ARM.exidx*)" />
-            <FileMapping Name="*(.ARM.extab*)" />
-        </ExecRegion>
-
+        <!--<ExecRegion Name="/DISCARD/">
+                <FileMapping Name="*" Options="(.ARM.exidx*)" />
+             <FileMapping Name="*" Options="(.ARM.extab*)" />
+       </ExecRegion>-->
 
         <!-- ========= Internal CCM ============================================ -->
         <!-- Stack allocation pools for the OS, Sizes are set in RTX_Conf_CM.c along with other OS configuration -->
-        <ExecRegion Name="ER_RT_STACK" Options="&gt;D_CCM">
+        <ExecRegion Name="ER_RT_STACK" Base="%Stack_Bottom%" Options="&gt;D_CCM">
             <FileMapping Name="*(rtx_stack)" />
         </ExecRegion>
+
+        <!--<ExecRegion Name="_user_heap_stack" Base="%Stack_Bottom% + SIZEOF(ER_RT_STACK) - 8" Options="&gt;D_CCM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="__heap_start__ = .;" />
+            <FileMapping Name=". = . + %User_Heap_Stack_Size%;" />
+            <FileMapping Name="__heap_end__ = .;" />
+            <FileMapping Name=". = ALIGN(8);" />
+        </ExecRegion>-->
 
         <!-- The rest of the CCM is used as a general stack during startup. This can't overlap with the ER_RT_STACK
              region as the kernel will zero that out during initialization, which would overwrite the stack of the
@@ -208,16 +294,25 @@
              actual physical CCM space. The CRT startup code will initialize the region and, if the aligned size
              puts the end outside of physical memory it will generate an imprecise abort.
         -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Align="8" Options="&gt;D_CCM">
+        <ExecRegion Name="ER_STACK_BOTTOM" Options="&gt;D_CCM">
+            <FileMapping Name="__StackLimit = %Stack_Bottom% + SIZEOF(ER_RT_STACK);"/> 
             <FileMapping Name="*(SectionForStackBottom)" />
         </ExecRegion>
 
         <!-- (-8) for the two 32bit values in the SectionForStack* sections, This keeps the region
              limit from exceeding the size of physical memory. -->
         <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - SIZEOF(ER_RT_STACK) - 8" Options="&gt;D_CCM">
+            <FileMapping Name="__StackTop = %Stack_Bottom% + %Stack_Size% - SIZEOF(ER_RT_STACK) - 8;"/>
+            <FileMapping Name="_estack = __StackTop;"/>  
             <FileMapping Name="*(SectionForStackTop)" />
         </ExecRegion>
-
+        
+        <!--<PROVIDE Name="(__stack = __StackTop)"/>  -->
+        <!---->
+        <!--<ExecRegion Name=".stack_dummy" Options="&gt;D_CCM">
+            <FileMapping Name="*(.stack)" />
+        </ExecRegion>-->
+        
         <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
             <FileMapping Name="*(SectionForConfig)" />
         </ExecRegion>
@@ -241,3 +336,4 @@
     <GlobalVariable Name="Image$$ER_LWIP_OS$$ZI$$Length"            Value="SIZEOF(ER_LWIP_OS_ZI)"/>
     <GlobalVariable Name="__use_no_semihosting_swi"                 Value="0"/>
 </ScatterFile>
+

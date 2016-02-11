@@ -17,8 +17,10 @@
         <TARGETCODEBASETYPE>Native</TARGETCODEBASETYPE>
     </PropertyGroup>
     <ItemGroup>
-        <CC_CPP_Defines Include="__CORTEX_M4F" />
+        <CC_CPP_Defines Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" Include="__CORTEX_M4F" />
+        <CC_CPP_Defines Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" Include="__CORTEX_M4" />
         <CC_CPP_Defines Include="CORTEX_M4" />
+        <CC_CPP_Defines Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" Include="__SOFTFP__" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">

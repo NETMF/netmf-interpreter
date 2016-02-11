@@ -3,8 +3,8 @@
 
 //--//
 
-#define ENC28J60_INT                   ((2 * 16) + 14) // ((2 * 16) + 14) PC14 // ((0 * 16) + 14) PA14 //GPIO_PIN_NONE   // Socket 5 | Socket 6
-#define ENC28J60_CS                    ((2 * 16) + 15) // ((2 * 16) + 15) PC13 // ((0 * 16) + 13) PA13 //GPIO_PIN_NONE   // Socket 5 | Socket 6
+#define ENC28J60_INT                   ((2 * 16) + 9) // PC09 // ((2 * 16) + 14) PC14 // ((0 * 16) + 14) PA14 //GPIO_PIN_NONE   // Socket 5 | Socket 6
+#define ENC28J60_CS                    ((2 * 16) + 8) // PC08 // ((2 * 16) + 15) PC13 // ((0 * 16) + 13) PA13 //GPIO_PIN_NONE   // Socket 5 | Socket 6
 #define ENC28J60_CS_ACTIVE             FALSE
 #define ENC28J60_MSK_IDLE              FALSE
 #define ENC28J60_MSK_SAMPLE_EDGE       TRUE
@@ -12,7 +12,7 @@
 #define ENC28J60_CLOCK_RATE_KHZ        8000 //25000
 #define ENC28J60_CS_SETUP_USEC         0
 #define ENC28J60_CS_HOLD_USEC          0
-#define ENC28J60_MODULE                0 //GPIO_PIN_NONE
+#define ENC28J60_MODULE                2 //GPIO_PIN_NONE
 #define ENC28J60_BUSYPIN               GPIO_PIN_NONE
 #define ENC28J60_BUSYPIN_ACTIVESTATE   FALSE
 

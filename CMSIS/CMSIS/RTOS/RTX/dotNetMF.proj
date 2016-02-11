@@ -77,7 +77,11 @@
          those have support specific to an architecture, a core, an
          SOC and a physical board. 
     -->
-    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4'">
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
+        <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM4.c" />
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM4.s" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" >
         <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM4.c" />
         <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM4.s" />
     </ItemGroup>

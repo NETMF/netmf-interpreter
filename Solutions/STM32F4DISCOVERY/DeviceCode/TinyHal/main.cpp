@@ -25,7 +25,7 @@
 #undef  DEBUG_TRACE
 #define DEBUG_TRACE (TRACE_ALWAYS)
 
-//void BootstrapCode_GPIO();
+void BootstrapCode_GPIO();
 
 #if PLATFORM_ARM_OS_PORT
 static osThreadId ClrThreadId;
@@ -34,17 +34,29 @@ osThreadId GetClrThreadId()
 {
     return ClrThreadId;
 }
+
+extern osStatus osKernelInitialize(void);
+extern osStatus osKernelStart(void);
+extern osThreadDef_t os_thread_def_main;
+
 #endif
 
 int main(void)
 {
-    //CPU_GPIO_EnableOutputPin(LED6, FALSE); 
-    CPU_GPIO_EnableOutputPin(LED5, TRUE); 
+    CPU_GPIO_EnableOutputPin(LED4, TRUE);
+
+        //osKernelInitialize();
+        //osThreadCreate(&os_thread_def_main, NULL);
+//CPU_GPIO_EnableOutputPin(LED5, TRUE);
+        //osKernelStart();
+//CPU_GPIO_EnableOutputPin(LED5, TRUE);
     
 #if PLATFORM_ARM_OS_PORT
-    //ClrThreadId = osThreadGetId();
+   ClrThreadId = osThreadGetId();
 #endif
-    //CPU_GPIO_EnableOutputPin(LED4, TRUE); 
+
+CPU_GPIO_EnableOutputPin(LED5, TRUE);
+
     //BootstrapCode_GPIO();
     HAL_Time_Initialize();
 
@@ -88,8 +100,7 @@ int main(void)
     Watchdog_GetSetBehavior( WATCHDOG_BEHAVIOR, TRUE );
     Watchdog_GetSetEnabled ( WATCHDOG_ENABLE, TRUE );
 
-CPU_GPIO_EnableOutputPin(LED3, TRUE); 
-
+ 
     // HAL initialization completed.  Interrupts are enabled.  Jump to the Application routine
     ApplicationEntryPoint();
 

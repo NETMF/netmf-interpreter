@@ -35,6 +35,7 @@
 
     .extern  SystemInit
     .extern  __main
+    .extern  _start
 
     @*************************************************************************
 
@@ -101,8 +102,7 @@ Reset_Handler:
     BLX     R0
     LDR     R0, =__main
     BX      R0
-    @bl  SystemInit
-    @b   __main
+    
 
     .pool
     .size    Reset_Handler, . - Reset_Handler
