@@ -16,11 +16,12 @@
     <TARGETCODEBASE>CMSIS_RTOS</TARGETCODEBASE>
     <TARGETCODEBASETYPE>OS</TARGETCODEBASETYPE>
     <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
-    <CMSIS_RequiredVersion>4.3.0</CMSIS_RequiredVersion>
+    <CMSIS_RequiredVersion>4.5.0</CMSIS_RequiredVersion>
   </PropertyGroup>
   <ItemGroup>
     <CC_CPP_Defines Include="__CMSIS_RTOS" />
     <CC_CPP_Defines Include="PLATFORM_ARM_OS_PORT" />
+    <CC_CPP_Defines Include="__FPU_PRESENT" />
   </ItemGroup>
   <ItemGroup>
     <IncludePaths Include="CMSIS\CMSIS\Include" />
