@@ -9,14 +9,14 @@
 #error "Unsupported CMSIS version: This header requires a CMSIS-RTOS API implementation with at least version 1.2"
 #endif
 
-#if !defined(osCMSIS_RTX) || osCMSIS_RTX != CMSIS_VERSION(4, 78)
+#if !defined(osCMSIS_RTX) || osCMSIS_RTX != CMSIS_VERSION(4, 80)
 // unfortunately the implementation of the osXxxxDef and other similar macros
 // are implementation defined and, at least for CMSIS-RTX cannot be used to
 // declare a C++ data member. Thus, this header is specific to a particular 
 // version of CMSIS-RTX and requires re-evaluation and verification on any
 // other versions. The structures can and have changed even on minor version
 // changes, so the check here is for an exact match on the supported version.
-#error "Unsupported CMSIS-RTOS implementation: This header requires the CMSIS-RTX v4.78 implementation of the CMSIS-RTOS API"
+#error "Unsupported CMSIS-RTOS implementation: This header requires the CMSIS-RTX v4.80 implementation of the CMSIS-RTOS API"
 #endif
 
 // The following two fields are culled from the CMSIS-RTX header implementation

@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="4.0" InitialTargets="CheckPreRquisitesInstalled" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" InitialTargets="CheckPreRquisitesInstalled" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Name>CMSIS_RTOS</Name>
     <DefaultISA>Thumb2</DefaultISA>
@@ -15,11 +16,12 @@
     <TARGETCODEBASE>CMSIS_RTOS</TARGETCODEBASE>
     <TARGETCODEBASETYPE>OS</TARGETCODEBASETYPE>
     <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
-    <CMSIS_RequiredVersion>4.3.0</CMSIS_RequiredVersion>
+    <CMSIS_RequiredVersion>4.5.0</CMSIS_RequiredVersion>
   </PropertyGroup>
   <ItemGroup>
     <CC_CPP_Defines Include="__CMSIS_RTOS" />
     <CC_CPP_Defines Include="PLATFORM_ARM_OS_PORT" />
+    <CC_CPP_Defines Include="__FPU_PRESENT" />
   </ItemGroup>
   <ItemGroup>
     <IncludePaths Include="CMSIS\CMSIS\Include" />
