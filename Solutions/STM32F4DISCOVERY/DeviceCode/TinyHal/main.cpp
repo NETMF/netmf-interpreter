@@ -45,14 +45,14 @@ int main(void)
 {
     CPU_GPIO_EnableOutputPin(LED4, TRUE);
 
-        //osKernelInitialize();
-        //osThreadCreate(&os_thread_def_main, NULL);
-//CPU_GPIO_EnableOutputPin(LED5, TRUE);
-        //osKernelStart();
+        osKernelInitialize();
+        osThreadCreate(&os_thread_def_main, NULL);
+CPU_GPIO_EnableOutputPin(LED5, TRUE);
+        osKernelStart();
 //CPU_GPIO_EnableOutputPin(LED5, TRUE);
     
 #if PLATFORM_ARM_OS_PORT
-   ClrThreadId = osThreadGetId();
+   //ClrThreadId = osThreadGetId();
 #endif
 
 CPU_GPIO_EnableOutputPin(LED5, TRUE);

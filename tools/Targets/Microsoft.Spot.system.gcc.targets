@@ -46,7 +46,7 @@
 
     <POS_DEPENDENT></POS_DEPENDENT>
     <POS_INDEPENDENT>-fpic</POS_INDEPENDENT>
-    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fdata-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -funsigned-char -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fdata-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics -funsigned-char -nostartfiles -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >$(CC_CPP_TARGETTYPE_FLAGS) -O3</CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >$(CC_CPP_TARGETTYPE_FLAGS) -O0 -femit-class-debug-always</CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(CC_CPP_TARGETTYPE_FLAGS) -O0</CC_CPP_TARGETTYPE_FLAGS>
@@ -215,10 +215,10 @@
 
     <!--Standard libraries -->
     <!-- NOTE: These are renamed by the "specs" provided to the command line-->
-    <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lgcc -lc  </GCCSTDLIBS> <!---lnosys -->
+    <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lnosys -lgcc -lc </GCCSTDLIBS> <!---lnosys -->
 
     <!-- Use newlib-nano (default) or newlib -->
-    <LINK_NANO_SPECS Condition="'$(NewlibNano)' != 'false'">-specs="$(GNU_LIBGCC_DIR)\nano.specs"</LINK_NANO_SPECS>
+    <LINK_NANO_SPECS Condition="'$(NewlibNano)' != 'false'">-specs="$(GNU_LIBGCC_DIR)\nosys.specs"</LINK_NANO_SPECS>
   </PropertyGroup>
 
   <!-- item group  -->

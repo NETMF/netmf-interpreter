@@ -523,15 +523,15 @@ extern "C"
     void __main()
     {
         // Copy writeable data and zero init BSS
-        //PrepareImageRegions();
+        PrepareImageRegions();
 
 //CPU_GPIO_EnableOutputPin(LED3, TRUE);
 
         // Call static constructors
-        __libc_init_array();
+        //__libc_init_array();
 //software_init_hook();
         //osKernelInitialize();
-CPU_GPIO_EnableOutputPin(LED3, TRUE);
+//CPU_GPIO_EnableOutputPin(LED3, TRUE);
         
         //osThreadCreate(&os_thread_def_main, NULL);
 
@@ -664,7 +664,7 @@ void BootstrapCode_GPIO();
 extern "C" void SystemInit()
 {
     STM32F4_BootstrapCode();
-    PrepareImageRegions();
+    //PrepareImageRegions();
     BootstrapCode_GPIO();
     CPU_Initialize();
     __enable_irq();

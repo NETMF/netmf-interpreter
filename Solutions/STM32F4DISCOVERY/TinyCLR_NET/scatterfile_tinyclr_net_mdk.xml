@@ -51,10 +51,10 @@
 
     <!-- Internal SRAM -->
     <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
-    <Set Name="Heap_BaseAddress"        Value="0x20008000"/>
-    <Set Name="Heap_Size"               Value="0x00017000"/><!-- 92K -->
+    <Set Name="Heap_BaseAddress"        Value="0x20010A00"/>
+    <Set Name="Heap_Size"               Value="0x0000F5F0"/><!-- 92K -->
 
-    <Set Name="CustomHeap_Size"         Value="0x00001000"/><!--  4K -->
+    <Set Name="CustomHeap_Size"         Value="0x00000000"/><!--  4K -->
 
 
     <If Name="TARGETLOCATION" Value="FLASH">
@@ -77,7 +77,7 @@
             <FileMapping Name="*" Options="(+RO-DATA)" />
 
             <!-- There is no special region section for DAT-->
-            <FileMapping Name="tinyclr_dat.obj" Options="(+RO, +LAST)" />
+            <FileMapping Name="tinyclr_net_dat.obj" Options="(+RO, +LAST)" />
         </ExecRegion>
 
         <!-- ========= INTERNAL RAM ============================================= -->

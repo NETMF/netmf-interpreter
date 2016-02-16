@@ -100,7 +100,7 @@ Reset_Handler:
     ldr     sp, =__initial_sp
     LDR     R0, =SystemInit
     BLX     R0
-    LDR     R0, =__main
+    LDR     R0, =_start
     BX      R0
     
 

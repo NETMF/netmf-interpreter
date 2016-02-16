@@ -64,5 +64,15 @@
         <HFile Include="OsHal.h" />
         <HFile Include="MasterConfig.h" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="_cxx.cpp" />
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="_exit.c"/>
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="_sbrk.c"/>
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="_startup.c"/>
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="_syscalls.c"/>
+        <HFile   Condition="$(AS_SUBDIR) == 'GNU_S'" Include="semihosting.h" />
+    </ItemGroup>
+    
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>
