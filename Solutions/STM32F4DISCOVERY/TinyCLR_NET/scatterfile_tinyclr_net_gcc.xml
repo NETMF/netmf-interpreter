@@ -54,9 +54,6 @@
     <!--<Set Name="Heap_Size"               Value="0x00017000"/>-->  <!-- 92K -->
 
     <Set Name="CustomHeap_Size"         Value="0x00000000"/><!--  4K -->
-
-    <Set Name="__stack"                 Value="%CCM_BaseAddress% + %CCM_Size%"/>
-    <Set Name="_estack"                 Value="__stack"/>
    
     <GlobalVariable Name="__stack"      Value="%Stack_Bottom% + %Stack_Size%"/>
     <GlobalVariable Name="_estack"      Value="__stack"/>
@@ -276,7 +273,7 @@
         <FileMapping Name="PROVIDE ( __end = _end_noinit );"/> 
         <FileMapping Name="PROVIDE ( __end__ = _end_noinit );"/> 
 
-        <ExecRegion Name="ER_HEAP_BEGIN" Base="(NOLOAD)" Options="&gt;IRAM">
+        <ExecRegion Name="ER_HEAP_BEGIN (NOLOAD)" Options="&gt;IRAM">
             <!--<FileMapping Name="_Heap_Begin = __end__;"/>-->
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
         </ExecRegion>
@@ -294,7 +291,7 @@
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="%IRAM_BaseAddress% + %IRAM_Size%" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="%IRAM_BaseAddress% + %IRAM_Size% - 8" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
