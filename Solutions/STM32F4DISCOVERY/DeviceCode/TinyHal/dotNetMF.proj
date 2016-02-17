@@ -57,6 +57,23 @@
         <Compile Include="$(AS_SUBDIR)\Interlocked.s" />
     </ItemGroup>
     <ItemGroup>
+        <IncludePaths Include="FreeRTOS\FreeRTOS\Source\include" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
+        <IncludePaths Condition="$(AS_SUBDIR) == 'RVD_S'" Include="FreeRTOS\FreeRTOS\Source\portable\RVDS\ARM_CM4F" />
+        <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM4F" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" >
+        <IncludePaths Condition="$(AS_SUBDIR) == 'RVD_S'" Include="FreeRTOS\FreeRTOS\Source\portable\RVDS\ARM_CM4F" />
+        <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM4F" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M3'">
+        <IncludePaths Condition="$(AS_SUBDIR) == 'RVD_S'" Include="FreeRTOS\FreeRTOS\Source\portable\RVDS\ARM_CM3" />
+        <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM3" />
+    </ItemGroup>    
+    
+    <ItemGroup>
         <Compile Include="Aborts.cpp" />
         <Compile Include="CpuPower.cpp"/>
         <Compile Include="Retarget.cpp"/>

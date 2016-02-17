@@ -446,14 +446,11 @@
         <PlatformIndependentLibs Include="SPOT_Net.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net\dotNetMF.proj" />
     </ItemGroup>
-    <!--<ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\CMSIS\CMSIS\RTOS\RTX\dotnetmf.proj" />
-        <DriverLibs Include="CMSIS_RTX.$(LIB_EXT)" />
-    </ItemGroup>-->
-    <!--<ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\CMSIS_RTX_Config\dotNetMF.proj" />
-        <DriverLibs Include="CMSIS_RTX_Config.$(LIB_EXT)" />
-    </ItemGroup>-->
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\FreeRTOS\FreeRTOS\Source\dotNetMF.proj" />
+        <DriverLibs Include="FreeRTOS.$(LIB_EXT)" />
+    </ItemGroup>
+
 
     <ItemGroup>
         <DriverLibs Include="sockets_pal_stubs.$(LIB_EXT)" />

@@ -47,3 +47,17 @@ License (Crypto).rtf
 PKCryptoWelcome.rtf
 REDIST_CRYPTO.TXT
 ReleaseNotesCrypto.txt
+
+# FreeRTOS
+FreeRTOS/FreeRTOS/Demo/
+FreeRTOS/FreeRTOS/License/
+FreeRTOS/FreeRTOS/Source/*
+FreeRTOS/FreeRTOS-Plus/*
+FreeRTOS/New - Direct to Task Notifications.url
+FreeRTOS/Quick_Start_Guide.url
+FreeRTOS/readme.txt
+FreeRTOS/ReadMe.md
+FreeRTOS/*.url
+FreeRTOS/FreeRTOS/*.url
+FreeRTOS/FreeRTOS/readme.txt
+!FreeRTOS/FreeRTOS/Source/dotNetMF.proj
