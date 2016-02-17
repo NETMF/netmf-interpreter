@@ -147,16 +147,6 @@
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="%IRAM_BaseAddress% + %IRAM_Size% - 8" Options="&gt;IRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
-        </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="%IRAM_BaseAddress% + %IRAM_Size% - 8" Options="&gt;IRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
-        </ExecRegion>
-
       <ExecRegion Name="/DISCARD/">
         <FileMapping Name="*" Options="(.ARM.exidx*)" />
         <FileMapping Name="*" Options="(.ARM.extab*)" />
@@ -166,7 +156,17 @@
       </ExecRegion>
 
       <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Base="%CCM_BaseAddress% + %UnamagedHeap_Size%" Options="&gt;D_CCM">
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;IRAM" >
+            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
+        </ExecRegion>
+
+        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
+
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="%CCM_BaseAddress% + %UnamagedHeap_Size%" Options="&gt;IRAM" >
+            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
+        </ExecRegion>
+
+        <ExecRegion Name="ER_STACK_BOTTOM"  Options="&gt;D_CCM">
             <FileMapping Name="*" Options="(SectionForStackBottom)" />
         </ExecRegion>
 
@@ -181,8 +181,8 @@
         <FileMapping Name="PROVIDE ( __end = %CCM_BaseAddress% );"/> 
         <FileMapping Name="PROVIDE ( __end__ = %CCM_BaseAddress% );"/> 
 
-        <FileMapping Name="PROVIDE ( _Heap_Begin = %CCM_BaseAddress% ) ;"/>
-        <FileMapping Name="PROVIDE ( _Heap_Limit = %CCM_BaseAddress% + ADDR(ER_STACK_BOTTOM) - 8) ;"/>
+        <FileMapping Name="PROVIDE ( _Heap_Begin = ADDR(ER_CUSTOM_HEAP_BEGIN) ) ;"/>
+        <FileMapping Name="PROVIDE ( _Heap_Limit = ADDR(ER_CUSTOM_HEAP_END)) ;"/>
 
         <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
             <FileMapping Name="*" Options="(SectionForConfig)" />
