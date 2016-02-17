@@ -61,7 +61,7 @@
         <Compile Include="CpuPower.cpp"/>
         <Compile Include="Retarget.cpp"/>
         <Compile Include="main.cpp" />
-        <HFile Include="OsHal.h" />
+        <!--<HFile Include="OsHal.h" />-->
         <HFile Include="MasterConfig.h" />
     </ItemGroup>
     

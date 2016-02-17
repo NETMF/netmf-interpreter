@@ -514,11 +514,11 @@ extern "C"
 {
 #if defined( __GNUC__ )
     extern "C++" int main(void);
-    extern void __libc_init_array();
-    extern void software_init_hook();
-    extern osStatus osKernelInitialize(void);
-    extern osStatus osKernelStart(void);
-    extern osThreadDef_t os_thread_def_main;
+    //extern void __libc_init_array();
+    //extern void software_init_hook();
+    //extern osStatus osKernelInitialize(void);
+    //extern osStatus osKernelStart(void);
+    //extern osThreadDef_t os_thread_def_main;
 
     void __main()
     {
@@ -642,7 +642,7 @@ void BootEntry()
 } // extern "C"
 
 
-#if defined(PLATFORM_ARM_OS_PORT)
+//#if defined(PLATFORM_ARM_OS_PORT)
 extern "C" void STM32F4_BootstrapCode();
 
 void BootstrapCode_GPIO();
@@ -670,7 +670,7 @@ extern "C" void SystemInit()
     __enable_irq();
 }
 
-#endif //PLATFORM_ARM_OS_PORT
+//#endif //PLATFORM_ARM_OS_PORT
 
 #if !defined(BUILD_RTM)
 

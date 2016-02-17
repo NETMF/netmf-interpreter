@@ -12,7 +12,7 @@
 // permissions and limitations under the License.
 // 
 #include <tinyhal.h>
-#include "OsHal.h"
+//#include "OsHal.h"
 
 #ifdef __CC_ARM
 // we include this to error at link time if any of the C semihosted support is imported
@@ -45,10 +45,10 @@ int main(void)
 {
     CPU_GPIO_EnableOutputPin(LED4, TRUE);
 
-        osKernelInitialize();
-        osThreadCreate(&os_thread_def_main, NULL);
+        //osKernelInitialize();
+        //osThreadCreate(&os_thread_def_main, NULL);
 CPU_GPIO_EnableOutputPin(LED5, TRUE);
-        osKernelStart();
+        //osKernelStart();
 //CPU_GPIO_EnableOutputPin(LED5, TRUE);
     
 #if PLATFORM_ARM_OS_PORT

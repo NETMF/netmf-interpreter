@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!--RequiredProjects Include="MicroBooter\MicroBooter.proj" />-->
-    <RequiredProjects Include="TinyBooter\TinyBooter.proj" />
+    <!--<RequiredProjects Include="TinyBooter\TinyBooter.proj" />-->
     <!--<RequiredProjects Include="TinyCLR\TinyCLR.proj" />-->
     <RequiredProjects Include="TinyCLR_NET\TinyCLR_NET.proj" />
   </ItemGroup>

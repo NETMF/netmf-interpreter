@@ -69,12 +69,12 @@
     <Import Condition="'$(SPI_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SPI.featureproj" />
     <Import Condition="'$(SERIALIZATION_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Serialization.featureproj" />
     <Import Condition="'$(WINDOWS_DEVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Windows_Devices.featureproj" />
-    <Import Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" />
-    <Import Condition="'$(STREAM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Stream.featureproj" />
-    <Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_lwip_os.featureproj" />
-    <Import Condition="'$(CRYPTO_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />
-    <Import Condition="'$(SSL_OPEN_LWIP_OS_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" />
-    <Import Condition="'$(XML_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\XML.featureproj" />
+    <!--<Import Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" />-->
+    <!--<Import Condition="'$(STREAM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Stream.featureproj" />-->
+    <!--<Import Condition="'$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_lwip_os.featureproj" />-->
+    <!--<Import Condition="'$(CRYPTO_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />-->
+    <!--<Import Condition="'$(SSL_OPEN_LWIP_OS_FEATUREPROJ)'=='' AND '$(USE_SSL)'=='true'" Project="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" />-->
+    <!--<Import Condition="'$(XML_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\XML.featureproj" />-->
     <!--<Import Project="$(SPOCLIENT)\Framework\Features\HTTP_lwip_os.featureproj" />-->
     <!--<Import Project="$(SPOCLIENT)\Framework\Features\TimeService.featureproj" />-->
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
@@ -142,10 +142,14 @@
         <DriverLibs Include="Crypto.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
     </ItemGroup>
-    <ItemGroup>
+    <!--<ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\GlobalLock\dotNetMF.proj" />
         <DriverLibs Include="GlobalLock_hal_RTOS.$(LIB_EXT)" />
-    </ItemGroup>
+    </ItemGroup>-->
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj" />
+        <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
+    </ItemGroup>    
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_PreStackInit\dotNetMF.proj" />
@@ -442,15 +446,28 @@
         <PlatformIndependentLibs Include="SPOT_Net.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net\dotNetMF.proj" />
     </ItemGroup>
-    <ItemGroup>
+    <!--<ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\CMSIS\CMSIS\RTOS\RTX\dotnetmf.proj" />
         <DriverLibs Include="CMSIS_RTX.$(LIB_EXT)" />
-    </ItemGroup>
-    <ItemGroup>
+    </ItemGroup>-->
+    <!--<ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\CMSIS_RTX_Config\dotNetMF.proj" />
         <DriverLibs Include="CMSIS_RTX_Config.$(LIB_EXT)" />
-    </ItemGroup>
+    </ItemGroup>-->
 
+    <ItemGroup>
+        <DriverLibs Include="sockets_pal_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\stubs\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="ssl_pal_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets\Ssl\stubs\dotNetMF.proj" />
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="TimeService_pal_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\TimeService\stubs\dotNetMF.proj" />
+    </ItemGroup>
+    
     <!-- lwIP STACK LIBRARIES -->
     <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
         <!--<RequiredProjects Include="$(SPOCLIENT)\devicecode\drivers\timeservice\stubs\dotNetMF.proj" />
@@ -503,12 +520,12 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Ethernet\Loopback_lwip\dotNetMF.proj" />  -->
     </ItemGroup>
     
-    <ItemGroup Condition="'$(USE_SSL)'!='true'">
+    <!--<ItemGroup Condition="'$(USE_SSL)'!='true'">
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\COM\sockets\openssl\stubs\dotnetmf.proj" />
         <DriverLibs Include="openssl_pal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net_security\dotNetMF_Stub.proj" />
         <PlatformIndependentLibs Include="SPOT_Net_Security_stub.$(LIB_EXT)" />
-    </ItemGroup>
+    </ItemGroup>-->
     <ItemGroup Condition="'$(USE_SSL)'=='true'">
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\Crypto\dotnetmf.proj" />
         <DriverLibs Include="Crypto_Config_STM32F4DISCOVERY.$(LIB_EXT)" />

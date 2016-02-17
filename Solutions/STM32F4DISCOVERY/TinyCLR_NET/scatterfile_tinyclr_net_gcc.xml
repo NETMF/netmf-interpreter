@@ -190,16 +190,16 @@
             <!-- region ER_LWIP_OS_RW -->
             <!--<FileMapping Name=". = ALIGN(4);"/>-->
             <FileMapping Name="Image$$ER_LWIP_OS$$RW$$Base = .;"/>
-            <FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (rwdata)" />
-            <FileMapping Name="sockets_hal_sockets_lwIP_os.lib (rwdata)" />
-            <FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (rwdata)" />
-            <FileMapping Name="sockets_hal_tcp_lwIP_os.lib (rwdata)" />
-            <FileMapping Name="sockets_hal_udp_lwIP_os.lib (rwdata)" />
-            <FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.data)" />
-            <FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.data)" />
-            <FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.data)" />
-            <FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.data)" />
-            <FileMapping Name="sockets_hal_udp_lwIP_os.lib (.data)" />
+            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (rwdata)" />-->
+            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (rwdata)" />-->
+            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (rwdata)" />-->
+            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (rwdata)" />-->
+            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (rwdata)" />-->
+            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.data)" />-->
+            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.data)" />-->
+            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.data)" />-->
+            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.data)" />-->
+            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (.data)" />-->
             <FileMapping Name=". = ALIGN(4);"/>            
             <FileMapping Name="Image$$ER_LWIP_OS$$RW$$End = .;"/>
             <GlobalVariable Name="Image$$ER_LWIP_OS$$RW$$Length" Value="Image$$ER_LWIP_OS$$RW$$End - Image$$ER_LWIP_OS$$RW$$Base"/>
@@ -227,21 +227,21 @@
             <!-- region ER_LWIP_OS_ZI -->
             <FileMapping Name=". = ALIGN(4);"/>
             <FileMapping Name="Image$$ER_LWIP_OS$$ZI$$Base = .;"/>
-            <FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.bss)" />
-            <FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.bss)" />
-            <FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.bss)" />
-            <FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.bss)" />
-            <FileMapping Name="sockets_hal_udp_lwIP_os.lib (.bss)" />
-            <FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.zidata)" />
-            <FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.zidata)" />
-            <FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.zidata)" />
-            <FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.zidata)" />
-            <FileMapping Name="sockets_hal_udp_lwIP_os.lib (.zidata)" />
-            <FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (COMMON)" />-->
-            <FileMapping Name="sockets_hal_sockets_lwIP_os.lib (COMMON)" />
-            <FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (COMMON)" />
-            <FileMapping Name="sockets_hal_tcp_lwIP_os.lib (COMMON)" />
-            <FileMapping Name="sockets_hal_udp_lwIP_os.lib (COMMON)" />
+            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.bss)" />-->
+            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.bss)" />-->
+            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.bss)" />-->
+            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.bss)" />-->
+            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (.bss)" />-->
+            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.zidata)" />-->
+            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.zidata)" />-->
+            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.zidata)" />-->
+            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.zidata)" />-->
+            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (.zidata)" />-->
+            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (COMMON)" />-->-->
+            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (COMMON)" />-->
+            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (COMMON)" />-->
+            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (COMMON)" />-->
+            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (COMMON)" />-->
             <FileMapping Name=". = ALIGN(4);"/>
             <FileMapping Name="Image$$ER_LWIP_OS$$ZI$$End = .;"/>
             <GlobalVariable Name="Image$$ER_LWIP_OS$$ZI$$Length" Value="Image$$ER_LWIP_OS$$ZI$$End - Image$$ER_LWIP_OS$$ZI$$Base"/>
