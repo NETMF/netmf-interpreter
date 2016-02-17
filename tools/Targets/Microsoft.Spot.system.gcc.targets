@@ -46,7 +46,7 @@
 
     <POS_DEPENDENT></POS_DEPENDENT>
     <POS_INDEPENDENT>-fpic</POS_INDEPENDENT>
-    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fdata-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics -funsigned-char -nostartfiles -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
+    <CC_CPP_COMMON_FLAGS>$(CC_CPP_COMMON_FLAGS) -mabi=aapcs -ffunction-sections -fdata-sections -fomit-frame-pointer -mlong-calls -fdollars-in-identifiers -fshort-wchar -funsigned-char -nostartfiles -mstructure-size-boundary=8</CC_CPP_COMMON_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >$(CC_CPP_TARGETTYPE_FLAGS) -O3</CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >$(CC_CPP_TARGETTYPE_FLAGS) -O0 -femit-class-debug-always</CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(CC_CPP_TARGETTYPE_FLAGS) -O0</CC_CPP_TARGETTYPE_FLAGS>
@@ -61,7 +61,7 @@
     NETMF already builds under two other compilers, so warnings from
     yet another compiler aren't really that valuable anyway.
     -->
-    <CPP_FLAGS>$(CPP_FLAGS)-xc++ -w -fcheck-new</CPP_FLAGS>
+    <CPP_FLAGS>$(CPP_FLAGS)-xc++ -w -fcheck-new -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics </CPP_FLAGS>
 
     <FLOATING_POINT_FLAG Condition="('$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true' and '$(DEVICE_TYPE)' == 'cortex-m4') or '$(INSTRUCTION_SET)'=='thumb2fp'">-mfloat-abi=hard -mfpu=fpv4-sp-d16</FLOATING_POINT_FLAG>
     <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'">-mfloat-abi=softfp -mfpu=fpv4-sp-d16</FLOATING_POINT_FLAG>
@@ -122,7 +122,7 @@
     <CPP_FLAGS Condition="'$(GCC_VERNUM)'!='' and $(GCC_VERNUM)&gt;=40400">$(CPP_FLAGS) -Wno-psabi </CPP_FLAGS>
 
     <CC_CPP_COMMON_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP'">$(CC_CPP_COMMON_FLAGS) -DTCPIP_LWIP</CC_CPP_COMMON_FLAGS>
-	  <CC_CPP_COMMON_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">$(CC_CPP_COMMON_FLAGS) -DTCPIP_LWIP_OS</CC_CPP_COMMON_FLAGS>
+	<CC_CPP_COMMON_FLAGS Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">$(CC_CPP_COMMON_FLAGS) -DTCPIP_LWIP_OS</CC_CPP_COMMON_FLAGS>
 
     <CC_CPP_COMMON_FLAGS Condition="'$(reducesize)'=='true'" >$(CC_CPP_COMMON_FLAGS) -DHAL_REDUCESIZE</CC_CPP_COMMON_FLAGS>
     <CC_CPP_COMMON_FLAGS Condition="'$(timewarp)'=='true'"   >$(CC_CPP_COMMON_FLAGS) -DHAL_TIMEWARP</CC_CPP_COMMON_FLAGS>
@@ -211,14 +211,13 @@
     <GNU_LIB_DIR   >$(GNU_TOOLS)\$(GNU_TARGET)\lib</GNU_LIB_DIR>
     <GNU_LIBGCC_DIR>$(GNU_LIB_DIR)\$(GCC_ARCH_DIR)</GNU_LIBGCC_DIR>
     <ExtraLibs       Condition="'$(INSTRUCTION_SET)'=='arm'"> </ExtraLibs>
-    <!--<ExtraLibs>-lRTX_CM3</ExtraLibs>-->
 
     <!--Standard libraries -->
     <!-- NOTE: These are renamed by the "specs" provided to the command line-->
-    <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lnosys -lgcc -lc </GCCSTDLIBS> <!---lnosys -->
+    <GCCSTDLIBS>-lstdc++ -lsupc++ -lm -lgcc -lc -lnosys -lgcc -lc </GCCSTDLIBS>
 
     <!-- Use newlib-nano (default) or newlib -->
-    <LINK_NANO_SPECS Condition="'$(NewlibNano)' != 'false'">-specs="$(GNU_LIBGCC_DIR)\nosys.specs"</LINK_NANO_SPECS>
+    <LINK_NANO_SPECS Condition="'$(NewlibNano)' != 'false'">-specs="$(GNU_LIBGCC_DIR)\nano.specs" -specs="$(GNU_LIBGCC_DIR)\nosys.specs"</LINK_NANO_SPECS>
   </PropertyGroup>
 
   <!-- item group  -->
