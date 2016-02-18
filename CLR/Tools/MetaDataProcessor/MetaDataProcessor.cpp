@@ -1571,7 +1571,7 @@ TinyCLR_Cleanup:
     {
         TINYCLR_HEADER();
 
-        CLR_RT_Buffer buf(RSA_BLOCK_SIZE_BYTES);
+        CLR_RT_Buffer buf;
         RSAKey        privateKey;
         CLR_RT_Buffer signature(RSA_BLOCK_SIZE_BYTES);
 
