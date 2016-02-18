@@ -282,21 +282,21 @@
     <MakeDir Directories="$(EXEName).hex" Condition="'$(MultipleOutputSections)'=='true' and !Exists('$(EXEName).hex')" />
 
     <Exec Command="$(FROMELF) -S -O binary @(EXEOutput) $(EXEName).bin"                      Condition="'$(MultipleOutputSections)'!='true'" />
-    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O binary @(EXEOutput) $(EXEName).bin\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT              -O binary @(EXEOutput) $(EXEName).bin\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O binary @(EXEOutput) $(EXEName).bin\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O binary @(EXEOutput) $(EXEName).bin\ER_$(TARGETLOCATION).bin" Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -j ER_DAT              -O binary @(EXEOutput) $(EXEName).bin\ER_DAT.bin"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
+    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O binary @(EXEOutput) $(EXEName).bin\ER_CONFIG.bin"            Condition="'$(MultipleOutputSections)'=='true'" />
 
     <Exec Command="$(FROMELF) -S -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex"                  Condition="'$(MultipleOutputSections)'!='true'" />
 
-    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_$(TARGETLOCATION)" Condition="'$(MultipleOutputSections)'=='true'" />
-    <Exec Command="$(FROMELF) -S -j ER_DAT              -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_DAT"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
-    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_CONFIG"            Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -R ER_DAT -R ER_CONFIG -O srec --gap-fill 0 --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_$(TARGETLOCATION).hex" Condition="'$(MultipleOutputSections)'=='true'" />
+    <Exec Command="$(FROMELF) -S -j ER_DAT              -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_DAT.hex"               Condition="'$(MultipleOutputSections)'=='true' and '$(ExcludeDatRegion)'!='true' and ('$(FLAVOR)'!='RTM')" />
+    <Exec Command="$(FROMELF) -S -j ER_CONFIG           -O srec              --srec-forceS3  @(EXEOutput) $(EXEName).hex\ER_CONFIG.hex"            Condition="'$(MultipleOutputSections)'=='true'" />
 
     <Exec Command="$(NM) $(EXEName).axf >> $(EXEName).dump"/>
     <Exec Command="$(CREATESYMDEF) $(EXEName).dump $(EXEName).symdefs" Condition="EXISTS('$(CREATESYMDEF)')" />
 
     <!--     echo adding LOAD_IMAGE_CRC value to $*.symdefs -->
-    <Exec Condition="'$(ADD_LOAD_IMAGE_CRC)'=='true'" Command="$(TOOLS_DIR)\BuildHelper -hashBuild $(EXEName).bin$(ImageLocation) $(EXEName).symdefs" />
+    <Exec Condition="'$(ADD_LOAD_IMAGE_CRC)'=='true'" Command="$(TOOLS_DIR)\BuildHelper -hashBuild $(EXEName).bin$(ImageLocation).bin $(EXEName).symdefs" />
   </Target>
 
   <Target Name="FindBinFilesForSig" >
