@@ -143,17 +143,17 @@
         </ExecRegion>
 
         <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;D_CCM" >
             <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="%CCM_BaseAddress% + %UnamagedHeap_Size%" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Align="8" Base="%CCM_BaseAddress% + %UnamagedHeap_Size%" Options="&gt;D_CCM" >
             <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_STACK_BOTTOM"  Options="&gt;D_CCM">
+        <ExecRegion Name="ER_STACK_BOTTOM" Align="8" Base="%CCM_BaseAddress% + %UnamagedHeap_Size% + 8" Options="&gt;D_CCM">
             <FileMapping Name="*" Options="(SectionForStackBottom)" />
         </ExecRegion>
 
