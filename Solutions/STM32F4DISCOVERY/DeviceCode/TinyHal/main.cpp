@@ -43,14 +43,107 @@ extern osThreadDef_t os_thread_def_main;
 
 #endif
 
-//extern void vTaskStartScheduler( void );
+static void prvCLRTask( void *pvParameters ) 
+{
+    
+        //osKernelInitialize();
+        //osThreadCreate(&os_thread_def_main, NULL);
+CPU_GPIO_EnableOutputPin(LED5, TRUE);
+        //osKernelStart();
+//CPU_GPIO_EnableOutputPin(LED5, TRUE);
+    
+#if PLATFORM_ARM_OS_PORT
+   //ClrThreadId = osThreadGetId();
+#endif
+
+CPU_GPIO_EnableOutputPin(LED5, TRUE);
+
+    //BootstrapCode_GPIO();
+    HAL_Time_Initialize();
+
+    HAL_Initialize();
+
+#if !defined(BUILD_RTM) 
+    DEBUG_TRACE4( STREAM_LCD, ".NetMF v%d.%d.%d.%d\r\n", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, VERSION_REVISION);
+    DEBUG_TRACE3(TRACE_ALWAYS, "%s, Build Date:\r\n\t%s %s\r\n", HalName, __DATE__, __TIME__);
+#if defined(__GNUC__)
+    DEBUG_TRACE1(TRACE_ALWAYS, "GNU Compiler version %d\r\n", __GNUC__);
+#else
+    DEBUG_TRACE1(TRACE_ALWAYS, "ARM Compiler version %d\r\n", __ARMCC_VERSION);
+#endif
+
+    UINT8* BaseAddress;
+    UINT32 SizeInBytes;
+
+    HeapLocation( BaseAddress,    SizeInBytes );
+    memset      ( BaseAddress, 0, SizeInBytes );
+
+    debug_printf("\f");
+
+    debug_printf("%-15s\r\n", HalName);
+    debug_printf("%-15s\r\n", "Build Date:");
+    debug_printf("  %-13s\r\n", __DATE__);
+    debug_printf("  %-13s\r\n", __TIME__);
+
+#endif  // !defined(BUILD_RTM)
+
+    /***********************************************************************************/
+
+    {
+#if defined(FIQ_SAMPLING_PROFILER)
+        FIQ_Profiler_Init();
+#endif
+    }
+
+    // the runtime is by default using a watchdog 
+   
+    Watchdog_GetSetTimeout ( WATCHDOG_TIMEOUT , TRUE );
+    Watchdog_GetSetBehavior( WATCHDOG_BEHAVIOR, TRUE );
+    Watchdog_GetSetEnabled ( WATCHDOG_ENABLE, TRUE );
+
+ 
+    // HAL initialization completed.  Interrupts are enabled.  Jump to the Application routine
+    ApplicationEntryPoint();
+
+    debug_printf("main exited!!???.  Halting CPU\r\n");
+
+#if defined(BUILD_RTM)
+    CPU_Reset();
+#else
+    CPU_Halt();
+#endif
+
+}
+
+static void prvTestTask( void *pvParameters ) 
+{
+    TickType_t xDelay = 500 / portTICK_PERIOD_MS;
+
+    for(;;)
+    {
+           CPU_GPIO_EnableOutputPin(LED6, TRUE);
+            
+            vTaskDelay( xDelay );
+    }
+}
 
 int main(void)
 {
+    BaseType_t res;
+
+    
     CPU_GPIO_EnableOutputPin(LED4, TRUE);
 
+    res = xTaskCreate( prvTestTask, "Test", configMINIMAL_STACK_SIZE, ( void * ) NULL, tskIDLE_PRIORITY + 2, NULL );
+    //assert(res == pdPASS);
+
+    /* Start the tasks and timer running. */
+    vTaskStartScheduler();
+
+    for( ;; );
+
 	/* Start the scheduler. */
-	vTaskStartScheduler();
+	//vTaskStartScheduler();
     
         //osKernelInitialize();
         //osThreadCreate(&os_thread_def_main, NULL);

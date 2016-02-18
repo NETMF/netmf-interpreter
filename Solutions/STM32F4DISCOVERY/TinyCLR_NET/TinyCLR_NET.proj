@@ -37,10 +37,10 @@
         <USE_RTC>false</USE_RTC>
     </PropertyGroup>
     <ItemGroup>
-        <CompressImageSymdef Include="$(BIN_DIR)\$(AssemblyName).symdefs" />
-        <CompressImageFlash Include="$(BIN_DIR)\$(AssemblyName).bin\ER_FLASH" />
+        <!--<CompressImageSymdef Include="$(BIN_DIR)\$(AssemblyName).symdefs" />-->
+        <!--<CompressImageFlash Include="$(BIN_DIR)\$(AssemblyName).bin\ER_FLASH" />-->
         <!--<CompressImageDat Include="$(BIN_DIR)\$(AssemblyName).bin\ER_DAT" />-->
-        <CompressImageCfg Include="$(BIN_DIR)\$(AssemblyName).bin\ER_CONFIG" />
+        <!--<CompressImageCfg Include="$(BIN_DIR)\$(AssemblyName).bin\ER_CONFIG" />-->
     </ItemGroup>
     <ItemGroup>
         <IncludePaths Include="DeviceCode\PAL" />
