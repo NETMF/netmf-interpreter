@@ -447,7 +447,7 @@
         <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\FreeRTOS\FreeRTOS\Source\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\FreeRTOS\dotNetMF.proj" />
         <DriverLibs Include="FreeRTOS.$(LIB_EXT)" />
     </ItemGroup>
 

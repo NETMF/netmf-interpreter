@@ -283,3 +283,35 @@ extern "C" void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTask
 	//taskDISABLE_INTERRUPTS();
 	for( ;; );
 }
+
+extern "C" void vAssertCalled( const char *pcFile, uint32_t ulLine )
+{
+    volatile uint32_t ulBlockVariable = 0UL;
+    volatile char *pcFileName = ( volatile char *  ) pcFile;
+    volatile uint32_t ulLineNumber = ulLine;
+
+	( void ) pcFileName;
+	( void ) ulLineNumber;
+
+	//FreeRTOS_debug_printf( ( "vAssertCalled( %s, %ld\n", pcFile, ulLine ) );
+
+	/* Setting ulBlockVariable to a non-zero value in the debugger will allow
+	this function to be exited. */
+	taskDISABLE_INTERRUPTS();
+	{
+		while( ulBlockVariable == 0UL )
+		{
+			__asm volatile( "NOP" );
+		}
+	}
+	taskENABLE_INTERRUPTS();
+}
+
+extern "C" uint32_t xGetRunTimeCounterValue( void )
+{
+    static uint64_t ullHiresTime = 0; /* Is always 0? */
+
+	return ( uint32_t ) ( HAL_Time_CurrentTicks() - ullHiresTime );
+}
+
+extern uint32_t SystemCoreClock = SYSTEM_CLOCK_HZ;
