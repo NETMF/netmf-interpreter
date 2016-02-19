@@ -6,11 +6,31 @@
     <AssemblyFoldersSuffix Condition=" '$(AssemblyFoldersSuffix)' == '' ">AssemblyFoldersEx</AssemblyFoldersSuffix>
     <GenerateManifests>true</GenerateManifests>
     <TargetCompactFramework>true</TargetCompactFramework>
-    <!-- override Roslyn compiler(s) as it doesn't support runtimes without generics-->
+    <!-- Force compiler specifcally to the .NET 4.x version as using newer Roslyn compiler requires 
+        additional work in NETMF to get the compiler to generate code supported by the runtime 
+    -->
     <VbcToolExe>vbc.exe</VbcToolExe>
     <VbcToolPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework', 'InstallRoot', null, RegistryView.Registry32))v4.0.30319</VbcToolPath>
   </PropertyGroup>
-  
+  <!-- This target sets up the VB Runtime support required to build against NETMF correctly -->
+  <Target Name="SetupVBRuntime" AfterTargets="GetFrameworkPaths">
+      <PropertyGroup>
+          <!-- Force the NETMF VB runtime DLL-->
+          <VBRuntime>$(TargetFrameworkDirectory)\Microsoft.VisualBasic.dll</VBRuntime>
+          <MyType Condition="'$(MyType)'==''">Empty</MyType>
+      </PropertyGroup>
+      <ItemGroup>
+          <!--
+          Add a reference to the VB DLL so that emulator deployment can see it
+          Emulator deployment works by examining the project's references to 
+          determine which assemblies to deploy, therfore a reference or project
+          reference must exist for all required dependencies.
+          -->
+          <Reference Include="Microsoft.VisualBasic">
+              <InProject>false</InProject>
+          </Reference>
+      </ItemGroup>
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="Device.targets" />
 </Project>
