@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Diagnostics;
 using CorDebugInterop;
 using System.Collections;
@@ -142,11 +143,24 @@ namespace Microsoft.SPOT.Debugger
                     AddDependencies( table, new string[] { this.m_startProgam } );
                     AddDependencies( table, this.m_startProgramReferences );
                 }
+                // if mscorlib isn't in the list of assemblies, add it as it's always required
+                // the build system in some versions of VS+MSBuild will assume that, while other
+                // versions will explicitly reference it with the InProject item property set to
+                // false so it won't show in the IDE. By testing for it and adding it if not found
+                // both cases are covered. 
+                var q = from path in table.OfType<string>( )
+                        where 0 == string.Compare( Path.GetFileName( path ), "mscorlib.dll", StringComparison.InvariantCultureIgnoreCase )
+                        select path;
+                if( !q.Any())
+                {
+                    PlatformInfo pi = new PlatformInfo(frameworkVersion);
+                    AddDependencies( table, new string[] { Path.Combine( pi.FrameworkAssembliesPath, "mscorlib.dll" ) } );
+                }
 
                 ArrayList deps = new ArrayList( table.Values );
 
                 string[] depsArray = (string[])deps.ToArray( typeof( string ) );
-
+               
                 if(fPE)
                 {
                     for(int iAssembly = 0; iAssembly < depsArray.Length; iAssembly++)
@@ -157,7 +171,6 @@ namespace Microsoft.SPOT.Debugger
 
                 return depsArray;
             }
-
 
             public string Assembly
             {

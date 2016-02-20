@@ -9,6 +9,8 @@ if "%1" == "-?" goto :ShowUsage
 if /i "%1" == "/h" goto :ShowUsage
 if /i "%1" == "-h" goto :ShowUsage
 
+if "%FLAVOR_SDK%" == "" FLAVOR_SDK=RTM
+
 if /i "%VSSDK140Install%"=="" goto :MissingVSSDK
 if NOT EXIST "%VSSDK140Install%" goto :MissingVSSDK
 
@@ -33,13 +35,13 @@ call setenv_vs.cmd 14
 SET PORT_BUILD=
 
 ECHO Building PreSDK ...
-call Msbuild sdk.dirproj /nr:false /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=RTM  /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdkpre.log
+call Msbuild sdk.dirproj /nr:false /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK%  /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdkpre.log
 
 ECHO Building SDK ...
-call Msbuild setup\ProductSDK\Product.wixproj /m /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=RTM /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdk.log
+call Msbuild setup\ProductSDK\Product.wixproj /m /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK% /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdk.log
 
 ECHO Building VSIX packages ...
-call Msbuild setup\ProductSDK\VsixPackages.dirproj /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=RTM /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=vsixpkg.log
+call Msbuild setup\ProductSDK\VsixPackages.dirproj /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK% /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=vsixpkg.log
 
 SET PORT_BUILD=
 
