@@ -9,7 +9,7 @@ if "%1" == "-?" goto :ShowUsage
 if /i "%1" == "/h" goto :ShowUsage
 if /i "%1" == "-h" goto :ShowUsage
 
-if "%FLAVOR_SDK%" == "" FLAVOR_SDK=RTM
+if "%FLAVOR_SDK%" == "" set FLAVOR_SDK=RTM
 
 if /i "%VSSDK140Install%"=="" goto :MissingVSSDK
 if NOT EXIST "%VSSDK140Install%" goto :MissingVSSDK
