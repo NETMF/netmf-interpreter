@@ -34,16 +34,21 @@
     <Set Name="BooterCode_BaseAddress"  Value="%IFLASH_BaseAddress%"/>
     <Set Name="BooterCode_Size"         Value="0x0000C000"/><!-- 48KB -->
 
+    <!-- Configuration section -->
+    <Set Name="Config_BaseAddress"      Value="%BooterCode_BaseAddress% + %BooterCode_Size%"/>
+    <Set Name="Config_Size"             Value="0x00004000"/><!-- 16KB -->
+
     <Set Name="Code_BaseAddress"        Value="%BooterCode_BaseAddress%"/>
     <Set Name="Code_Size"               Value="%BooterCode_Size%"/>
 
     <!-- Internal CCM (D-Bus) -->
     <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
-    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress% - 0x00004000"/>
-    <Set Name="Stack_Size"              Value="0x0000C000" />
 
     <Set Name="UnamagedHeap_BaseAddress"    Value="%CCM_BaseAddress%" />
     <Set Name="UnamagedHeap_Size"           Value="0x00004000" />
+
+    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress% - %UnamagedHeap_Size%"/>
+    <Set Name="Stack_Size"              Value="0x0000C000" />
 
     <!-- Internal SRAM -->
     <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
@@ -71,21 +76,74 @@
         <LoadRegion Name="LR_%TARGETLOCATION%" Base="%Code_BaseAddress%" Size="%Code_Size%" />
     </NamedGroup>
 
+    <FileMapping Name="__rom_start = ORIGIN(LR_%TARGETLOCATION%);"/>
+    <FileMapping Name="__rom_size = LENGTH(LR_%TARGETLOCATION%);"/>
+    <FileMapping Name="__rom_end = __rom_start + __rom_size;"/>
+    
+    <FileMapping Name="__ram_start = ORIGIN(IRAM);"/>
+    <FileMapping Name="__ram_size = LENGTH(IRAM);"/>
+    <FileMapping Name="__ram_end = __ram_start + __ram_size;"/>
+    
+    <FileMapping Name="__ccm_ram_start = ORIGIN(D_CCM);"/>
+    <FileMapping Name="__ccm_ram_size = LENGTH(D_CCM);"/>
+    <FileMapping Name="__ccm_ram_end = __ccm_ram_start + __ccm_ram_size;"/>
+    
+    <FileMapping Name="PROVIDE(__rom_start = __rom_start);"/>
+    <FileMapping Name="PROVIDE(__rom_size = __rom_size);"/>
+    <FileMapping Name="PROVIDE(__rom_end = __rom_end);"/>
+    
+    <FileMapping Name="PROVIDE(__ram_start = __ram_start);"/>
+    <FileMapping Name="PROVIDE(__ram_size = __ram_size);"/>
+    <FileMapping Name="PROVIDE(__ram_end = __ram_end);"/>
+    
+    <FileMapping Name="PROVIDE(__ccm_ram_start = __ccm_ram_start);"/>
+    <FileMapping Name="PROVIDE(__ccm_ram_size = __ccm_ram_size);"/>
+    <FileMapping Name="PROVIDE(__ccm_ram_end = __ccm_ram_end);"/>
+    
+    <!-- Handler mode (core exceptions / interrupts) can use only main stack -->
+    <!-- Thread mode can use main stack (default) or process stack - selected in CONTROL special register -->
+    <FileMapping Name="__main_stack_size = 0x8000;"/>
+    <FileMapping Name="__process_stack_size = 0x8000;"/>
+    
+    <FileMapping Name="PROVIDE(__main_stack_size = __main_stack_size);"/>
+    <FileMapping Name="PROVIDE(__process_stack_size = __process_stack_size);"/>
+
     <NamedGroup Name="SECTIONS">
         <!-- ========= INTERNAL FLASH ============================================ -->
         <ExecRegion Name="ER_%TARGETLOCATION%" Options="&gt;LR_%TARGETLOCATION%">
             <FileMapping Name="KEEP" Options="(*(SectionForPowerOnReset))" />
             <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
             <FileMapping Name="*" Options="(SectionForFlashOperations)"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="__text_start = .;"/>
+            <FileMapping Name="PROVIDE(__text_start = __text_start);"/>
+            
             <FileMapping Name="*" Options="(.text*)" />
             <FileMapping Name="*" Options="(.rodata*)" />
             <FileMapping Name="*" Options="(rodata)" />
             <FileMapping Name="*" Options="(.constdata*)" />
             <FileMapping Name="*" Options="(.conststring*)" />
             <FileMapping Name="*" Options="(.glue*)" />
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="__text_end = .;"/>
+            <FileMapping Name="PROVIDE(__text_end = __text_end);"/>            
             <!--<Include File="%SPOCLIENT%\Solutions\STM32F4DISCOVERY\scatterfile_gcc_missing_symbols.xml"/>-->
         </ExecRegion>
+        
+        <FileMapping Name=". = ALIGN(4);"/>
+        <FileMapping Name="__exidx_start = .;"/>
+        <FileMapping Name="PROVIDE(__exidx_start = __exidx_start);"/>
 
+        <ExecRegion Name=".ARM.exidx" Options="&gt;LR_%TARGETLOCATION% ">
+            <FileMapping Name="*(.ARM.exidx* .gnu.linkonce.armexidx.*)"/>
+        </ExecRegion> 
+
+        <FileMapping Name=". = ALIGN(4);"/>
+        <FileMapping Name="__exidx_end = .;"/>
+        <FileMapping Name="PROVIDE(__exidx_end = __exidx_end);"/>
+        
         <!-- ========= INTERNAL RAM ============================================= -->
         <!-- Writeable Vector table -->
         <!-- NOTE:
@@ -96,10 +154,21 @@
             (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
             Since this starts the SRAM block, it's aligned just fine for any size table.
         -->
-        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
+        <ExecRegion Name="ER_RAM_RW" Options="&gt;IRAM AT&gt;LR_FLASH ">
             <FileMapping Name="*" Options="(VectorTable)"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="__data_init_start = LOADADDR (ER_RAM_RW);"/>
+            <FileMapping Name="PROVIDE(__data_init_start = __data_init_start);"/>
+            <FileMapping Name="__data_start = .;"/>
+            <FileMapping Name="PROVIDE(__data_start = __data_start);"/>
+                        
             <FileMapping Name="*" Options="(rwdata)" />
             <FileMapping Name="*" Options="(.data*)" />
+            
+            <FileMapping Name=". = ALIGN(4);"/>     
+            <FileMapping Name="__data_end = .;"/>
+            <FileMapping Name="PROVIDE(__data_end = __data_end);"/>            
         </ExecRegion>
 
         <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM">
@@ -108,42 +177,52 @@
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
-            <FileMapping Name="__bss_start__ = .;"/>
-            <FileMapping Name="_sbss = .;"/>
-                    
+        <ExecRegion Name=".bss" Options="&gt;IRAM">
+            <FileMapping Name=". = ALIGN(4);"/>     
+            <FileMapping Name="__bss_start = .;"/>
+            <FileMapping Name="PROVIDE(__bss_start = __bss_start);"/>
+        
+            <FileMapping Name=". = ALIGN(4);"/>     
             <FileMapping Name="*" Options="(.bss*)" />
-            <FileMapping Name="PROVIDE(__exidx_start = .);" />
-            <FileMapping Name="PROVIDE(__exidx_end = .);" />
             <FileMapping Name="*" Options="(.zidata*)" />
             <FileMapping Name="*" Options="(COMMON)" />
             
             <FileMapping Name=". = ALIGN(4);"/>
-            <FileMapping Name="__bss_end__ = .;"/>
-            <FileMapping Name="_ebss = .;"/>  
-            <FileMapping Name="_end_noinit = .;"/>                           
+            <FileMapping Name="__bss_end = .;"/>
+            <FileMapping Name="PROVIDE(__bss_end = __bss_end);"/>                           
         </ExecRegion>
         
-        <ExecRegion Name="ER_HEAP_BEGIN (NOLOAD)" Options="&gt;IRAM"> 
+        <ExecRegion Name="ER_HEAP_BEGIN" Align="4" Options="&gt;IRAM">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+            <FileMapping Name=". += %Heap_Size%;"/>
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for a heap -->
 
-        <ExecRegion Name="ER_HEAP_END" Base="%IRAM_BaseAddress% + %IRAM_Size% - %CustomHeap_Size% - 8" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_HEAP_END" Align="4" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
         </ExecRegion>
         
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="%IRAM_BaseAddress% + %IRAM_Size% - %CustomHeap_Size%" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Align="4" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
+            <FileMapping Name=". += %CustomHeap_Size%;"/>
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Align="8" Base="%IRAM_BaseAddress% + %IRAM_Size% - 8" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Align="4" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
-
+                
+        <FileMapping Name=". = ALIGN(4);"/>
+        <FileMapping Name="__heap_start = .;"/>
+        <FileMapping Name="PROVIDE(__heap_start = __heap_start);"/>
+        <FileMapping Name="PROVIDE(end = __heap_start);"/>
+       
+        <FileMapping Name=". = ALIGN(4);"/>
+        <FileMapping Name="__heap_end = __ram_end;"/>
+        <FileMapping Name="PROVIDE(__heap_end = __heap_end);"/>
+        
         <ExecRegion Name="/DISCARD/">
             <FileMapping Name="*" Options="(.ARM.exidx*)" />
             <FileMapping Name="*" Options="(.ARM.extab*)" />
@@ -153,25 +232,56 @@
         </ExecRegion>
 
         <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Align="8" Base="%CCM_BaseAddress% + %UnamagedHeap_Size% + 8" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+
+       <ExecRegion Name=".stack" Options="&gt;D_CCM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="__stack_start = .;" />
+            <FileMapping Name="PROVIDE(__stack_start = __stack_start);" />
+            
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="__main_stack_start = .;" />
+            <FileMapping Name="PROVIDE(__main_stack_start = __main_stack_start);" />
+            
+            <FileMapping Name=". += __main_stack_size - 8;" />
+            
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="__main_stack_end = .;" />
+            <FileMapping Name="PROVIDE(__main_stack_end = __main_stack_end);" />
+            <FileMapping Name="*(SectionForStackBottom)" />
+            
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="__process_stack_start = .;" />
+            <FileMapping Name="PROVIDE(__process_stack_start = __process_stack_start);" />
+            
+            <FileMapping Name=". += __process_stack_size - 8;" />
+            
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="__process_stack_end = .;" />
+            <FileMapping Name="PROVIDE(__process_stack_end = __process_stack_end);" />
+            
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="__stack_end = .;" />
+            <FileMapping Name="PROVIDE(__stack_end = __stack_end);" />
+            <FileMapping Name="*(SectionForStackTop)" />
         </ExecRegion>
+                
+        <!--<ExecRegion Name="ER_STACK_BOTTOM" Align="8" Base="%CCM_BaseAddress% + %UnamagedHeap_Size% + 8" Options="&gt;D_CCM">
+            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+        </ExecRegion>-->
 
         <!--8 for the two 32bit values in the SectionForStack* sections, This keeps the region
              limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%CCM_BaseAddress% + %CCM_Size% - 8" Options="&gt;D_CCM">
+        <!--<ExecRegion Name="ER_STACK_TOP" Base="%CCM_BaseAddress% + %CCM_Size% - 8" Options="&gt;D_CCM">
             <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
-        </ExecRegion>
-       
-        <FileMapping Name="PROVIDE ( end = %CCM_BaseAddress% );"/> <!-- was _ebss -->
-        <FileMapping Name="PROVIDE ( _end = %CCM_BaseAddress% );"/> 
-        <FileMapping Name="PROVIDE ( __end = %CCM_BaseAddress% );"/> 
-        <FileMapping Name="PROVIDE ( __end__ = %CCM_BaseAddress% );"/> 
-
-        <FileMapping Name="PROVIDE ( _Heap_Begin = %CCM_BaseAddress% ) ;"/>
-        <FileMapping Name="PROVIDE ( _Heap_Limit = ADDR(ER_STACK_BOTTOM) - 8) ;"/>
-
+        </ExecRegion>-->
     </NamedGroup>
+       
+    <FileMapping Name="PROVIDE(__text_size = __text_end - __text_start);"/>
+    <FileMapping Name="PROVIDE(__exidx_size = __exidx_end - __exidx_start);"/>
+    <FileMapping Name="PROVIDE(__data_size = __data_end - __data_start);"/>
+    <FileMapping Name="PROVIDE(__bss_size = __bss_end - __bss_start);"/>
+    <FileMapping Name="PROVIDE(__stack_size = __stack_end - __stack_start);"/>
+    <FileMapping Name="PROVIDE(__heap_size = __heap_end - __heap_start);"/>
 
     <!-- The following variables are used to simulate the ones autogenerated by ARMCC -->
     <GlobalVariable Name="Load$$ER_%TARGETLOCATION%$$Base"          Value="LOADADDR(ER_%TARGETLOCATION%)"/>

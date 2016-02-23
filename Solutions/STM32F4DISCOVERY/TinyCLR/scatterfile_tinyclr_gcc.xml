@@ -40,13 +40,13 @@
 
     <!-- Native Code section -->
     <Set Name="Code_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Code_Size"               Value="0x00080000"/><!-- 512KB -->
+    <Set Name="Code_Size"               Value="0x00040000"/><!-- 512KB -->
 
     <!-- Deployment fills the rest of flash... --><!-- 384KB -->
 
     <!-- Internal CCM (D-Bus) -->
     <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
-    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress% - 0x00004000"/>
+    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress% - %UnamagedHeap_Size%"/>
     <Set Name="Stack_Size"              Value="0x0000C000" />
 
     <Set Name="UnamagedHeap_BaseAddress"    Value="%CCM_BaseAddress%" />
