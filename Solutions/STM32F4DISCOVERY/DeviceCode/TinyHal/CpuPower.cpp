@@ -13,8 +13,8 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include <tinyhal.h>
-// #include <cmsis_os.h>
-//#include "OsHal.h"
+#include <cmsis_os.h>
+#include "OsHal.h"
 
 extern volatile SLEEP_LEVEL SleepLevel = SLEEP_LEVEL__AWAKE;
 extern volatile UINT64 WakeEvents = 0;

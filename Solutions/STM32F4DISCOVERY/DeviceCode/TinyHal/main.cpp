@@ -12,10 +12,17 @@
 // permissions and limitations under the License.
 // 
 #include <tinyhal.h>
-//#include "OsHal.h"
-#include "FreeRTOS.h"
+#include "OsHal.h"
+#if (__FREE_RTOS)
+    #include "FreeRTOS.h"
+#include "core_cm4.h"
+#endif
 #include "task.h"
 
+// this was copied from stm32f4xx_hal_cortex.h
+#define NVIC_PRIORITYGROUP_4         ((uint32_t)0x00000003) /*!< 4 bits for pre-emption priority
+                                                                 0 bits for subpriority */
+                                                                 
 #ifdef __CC_ARM
 // we include this to error at link time if any of the C semihosted support is imported
 #pragma import(__use_no_semihosting_swi)
@@ -30,35 +37,35 @@
 void BootstrapCode_GPIO();
 
 #if PLATFORM_ARM_OS_PORT
+
 static osThreadId ClrThreadId;
 
 osThreadId GetClrThreadId()
 {
     return ClrThreadId;
 }
-
-extern osStatus osKernelInitialize(void);
-extern osStatus osKernelStart(void);
-extern osThreadDef_t os_thread_def_main;
-
+// 
+// extern osStatus osKernelInitialize(void);
+// extern osStatus osKernelStart(void);
+// extern osThreadDef_t os_thread_def_main;
 #endif
 
-static void prvCLRTask( void *pvParameters ) 
+#if (__FREE_RTOS)
+
+static void CLRThread(void const *argument);
+static void ToggleLEDsThread(void const *argument);
+
+// CLR thread
+static void CLRThread(void const *argument) 
 {
-    
-        //osKernelInitialize();
-        //osThreadCreate(&os_thread_def_main, NULL);
-CPU_GPIO_EnableOutputPin(LED5, TRUE);
-        //osKernelStart();
-//CPU_GPIO_EnableOutputPin(LED5, TRUE);
+	(void) argument;
+
+//CPU_GPIO_EnableOutputPin(LED3, TRUE);
     
 #if PLATFORM_ARM_OS_PORT
-   //ClrThreadId = osThreadGetId();
+   ClrThreadId = osThreadGetId();
 #endif
 
-CPU_GPIO_EnableOutputPin(LED5, TRUE);
-
-    //BootstrapCode_GPIO();
     HAL_Time_Initialize();
 
     HAL_Initialize();
@@ -75,8 +82,9 @@ CPU_GPIO_EnableOutputPin(LED5, TRUE);
     UINT8* BaseAddress;
     UINT32 SizeInBytes;
 
-    HeapLocation( BaseAddress,    SizeInBytes );
-    memset      ( BaseAddress, 0, SizeInBytes );
+    // CAN'T touch heap now!!
+    //HeapLocation( BaseAddress,    SizeInBytes );
+    //memset      ( BaseAddress, 0, SizeInBytes );
 
     debug_printf("\f");
 
@@ -115,41 +123,51 @@ CPU_GPIO_EnableOutputPin(LED5, TRUE);
 
 }
 
-static void prvTestTask( void *pvParameters ) 
+// dummy thread for testing
+static void ToggleLEDsThread(void const *argument) 
 {
-    TickType_t xDelay = 500 / portTICK_PERIOD_MS;
+	(void) argument;
 
-    for(;;)
+	for (;;) 
     {
-           CPU_GPIO_EnableOutputPin(LED6, TRUE);
-            
-            vTaskDelay( xDelay );
-    }
+		/* Toggle LED each 500ms */
+		CPU_GPIO_EnableOutputPin(LED6, TRUE);
+
+		osDelay(500);
+		CPU_GPIO_EnableOutputPin(LED6, FALSE);
+
+		osDelay(500);
+	}
 }
+
+
+int main()
+{
+    // need to set NVIC priority otherwise FreeRTOS won't run
+    // see http://www.freertos.org/RTOS-Cortex-M3-M4.html (Preempt Priority and Subpriority -> Relevance when using the RTOS)
+    // Set Interrupt Group Priority
+    NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
+
+	// Create LED Thread
+	osThreadDef(LEDThread, ToggleLEDsThread, osPriorityNormal, 0, configMINIMAL_STACK_SIZE);
+	osThreadCreate(osThread(LEDThread), NULL);
+
+	// Create CLR Thread
+    // TBD check stack size it's too big right now
+	osThreadDef(CLRThread, CLRThread, osPriorityNormal, 0, configMINIMAL_STACK_SIZE * 10);
+	osThreadCreate(osThread(CLRThread), NULL);
+
+	// Start scheduler
+	osKernelStart();
+
+    // never reaches here
+    for( ;; );
+}
+
+#else
 
 int main(void)
 {
-    BaseType_t res;
-
-    
-    CPU_GPIO_EnableOutputPin(LED4, TRUE);
-
-    res = xTaskCreate( prvTestTask, "Test", configMINIMAL_STACK_SIZE, ( void * ) NULL, tskIDLE_PRIORITY + 2, NULL );
-    //assert(res == pdPASS);
-
-    /* Start the tasks and timer running. */
-    vTaskStartScheduler();
-
-    for( ;; );
-
-	/* Start the scheduler. */
-	//vTaskStartScheduler();
-    
-        //osKernelInitialize();
-        //osThreadCreate(&os_thread_def_main, NULL);
-CPU_GPIO_EnableOutputPin(LED5, TRUE);
-        //osKernelStart();
-//CPU_GPIO_EnableOutputPin(LED5, TRUE);
     
 #if PLATFORM_ARM_OS_PORT
    //ClrThreadId = osThreadGetId();
@@ -213,6 +231,8 @@ CPU_GPIO_EnableOutputPin(LED5, TRUE);
 #endif
     return -1;
 }
+
+#endif
 
 extern "C" void vApplicationTickHook( void )
 {

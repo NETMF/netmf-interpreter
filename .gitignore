@@ -51,3 +51,4 @@ ReleaseNotesCrypto.txt
 # FreeRTOS
 FreeRTOS/*
 !FreeRTOS/dotNetMF.proj
+!FreeRTOS/CMSIS_RTOS

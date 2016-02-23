@@ -55,7 +55,7 @@
     <Compile Include="tinyhal.cpp" />
     <Compile Include="SystemState.cpp" />
     <IncludePaths Include="DeviceCode\Targets\Native\STM32F4\DeviceCode" />
-    <IncludePaths Include="DeviceCode\Cores\arm\CMSIS\Include" />
+    <IncludePaths Condition="'$(OS_FLAVOR)'=='FREE_RTOS'" Include="FreeRTOS\CMSIS_RTOS" />    
   </ItemGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>

@@ -16,6 +16,8 @@
 // version of CMSIS-RTX and requires re-evaluation and verification on any
 // other versions. The structures can and have changed even on minor version
 // changes, so the check here is for an exact match on the supported version.
+#elif !defined(tskKERNEL_VERSION_NUMBER) || osCMSIS_RTX != CMSIS_VERSION(4, 80)
+#else
 #error "Unsupported CMSIS-RTOS implementation: This header requires the CMSIS-RTX v4.80 implementation of the CMSIS-RTOS API"
 #endif
 

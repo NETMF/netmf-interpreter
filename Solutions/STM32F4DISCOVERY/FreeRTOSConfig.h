@@ -91,8 +91,8 @@ extern uint32_t SystemCoreClock;
 #define configUSE_TICKLESS_IDLE					0
 #define configTICK_RATE_HZ						( ( TickType_t ) 1000 )
 #define configUSE_PREEMPTION					1
-#define configUSE_IDLE_HOOK						1
-#define configUSE_TICK_HOOK						1
+#define configUSE_IDLE_HOOK						0
+#define configUSE_TICK_HOOK						0
 #define configMAX_PRIORITIES					( 7 )
 #define configMINIMAL_STACK_SIZE				( ( uint16_t ) 128 )
 #define configTOTAL_HEAP_SIZE					( ( size_t ) 15360 ) /* Not used as heap_5.c is being built, see http://www.freertos.org/a00111.html. */
@@ -193,11 +193,6 @@ standard names. */
 #define vPortSVCHandler		SVC_Handler
 #define xPortPendSVHandler	PendSV_Handler
 #define xPortSysTickHandler SysTick_Handler
-
-/* Defines the port and pin used to detect if an SD card is present.  The
-STM3240G-EVAL board uses pin H13 for card detection. */
-#define configSD_DETECT_PIN			GPIO_PIN_13
-#define configSD_DETECT_GPIO_PORT	GPIOH
 
 /* Default MAC address configuration. */
 #define configMAC_ADDR0		0x00

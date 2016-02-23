@@ -63,7 +63,8 @@ UINT32 LOAD_IMAGE_Start;
 UINT32 LOAD_IMAGE_Length;
 UINT32 LOAD_IMAGE_CalcCRC;
 
-#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
+#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS) && !defined(__FREE_RTOS)
+
 extern UINT32 Load$$ER_LWIP_OS$$RW$$Base; 
 extern UINT32 Image$$ER_LWIP_OS$$RW$$Base;
 extern UINT32 Image$$ER_LWIP_OS$$RW$$Length; 
@@ -512,30 +513,12 @@ void HAL_Uninitialize()
 
 extern "C"
 {
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined(__FREE_RTOS)
     extern "C++" int main(void);
-    //extern void __libc_init_array();
-    //extern void software_init_hook();
-    //extern osStatus osKernelInitialize(void);
-    //extern osStatus osKernelStart(void);
-    //extern osThreadDef_t os_thread_def_main;
-
     void __main()
     {
         // Copy writeable data and zero init BSS
         PrepareImageRegions();
-
-//CPU_GPIO_EnableOutputPin(LED3, TRUE);
-
-        // Call static constructors
-        //__libc_init_array();
-//software_init_hook();
-        //osKernelInitialize();
-//CPU_GPIO_EnableOutputPin(LED3, TRUE);
-        
-        //osThreadCreate(&os_thread_def_main, NULL);
-
-        //osKernelStart();
   
         // Call the application's entry point.
         main();
@@ -667,7 +650,7 @@ extern "C" void SystemInit()
     //PrepareImageRegions();
     BootstrapCode_GPIO();
     CPU_Initialize();
-    __enable_irq();
+    //__enable_irq();
 }
 
 //#endif //PLATFORM_ARM_OS_PORT

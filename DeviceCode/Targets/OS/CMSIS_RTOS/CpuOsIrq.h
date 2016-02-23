@@ -14,7 +14,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <OsIrqLock.h>
-#include <cmsis_os_cpp.h>
+//#include <cmsis_os_cpp.h>
+#include <cmsis_os.h>
 
 const uint32_t IrqsDisabledFlag = 1;
 
@@ -31,6 +32,7 @@ inline bool IrqsEnabled( uint32_t state )
 #if PLATFORM_ARM_OS_PORT
 static const osThreadId NoOwner = (osThreadId) 0xFFFFFFFF;
 
+#if (__CMSIS_RTOS)
 class CriticalSection
 {
 public:
@@ -83,6 +85,7 @@ private:
     osThreadId Owner;
     int RefCount;
 };
+#endif // __CMSIS_RTOS
 
 #endif
 

@@ -28,6 +28,7 @@
   <ItemGroup>
     <IncludePaths Include="DeviceCode\include" />
     <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS"/>
+    <IncludePaths Condition="'$(OS_FLAVOR)'=='FREE_RTOS'" Include="FreeRTOS\CMSIS_RTOS" />
   </ItemGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 </Project>

@@ -142,14 +142,10 @@
         <DriverLibs Include="Crypto.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
     </ItemGroup>
-    <!--<ItemGroup>
+    <ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\DeviceCode\GlobalLock\dotNetMF.proj" />
         <DriverLibs Include="GlobalLock_hal_RTOS.$(LIB_EXT)" />
-    </ItemGroup>-->
-    <ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\dotNetMF.proj" />
-        <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
-    </ItemGroup>    
+    </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="cpu_prestackinit_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_PreStackInit\dotNetMF.proj" />

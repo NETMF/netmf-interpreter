@@ -12,12 +12,17 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <tinyhal.h>
+#include "..\..\..\..\..\FreeRTOS\CMSIS_RTOS\cmsis_os.h"
 
 #ifdef STM32F4XX
 #include "..\stm32f4xx.h"
 #else
 #include "..\stm32f2xx.h"
 #endif
+
+extern "C" void PendSV_Handler( void );
+extern "C" void SysTick_Handler( void );
+extern "C" void SVC_Handler( void );
 
 extern UINT32 ARM_Vectors[84];  // the interrupt vector table
 extern UINT32 FAULT_SubHandler; // the standard fault handler
@@ -52,6 +57,22 @@ void CPU_INTC_Initialize()
     ARM_Vectors[15] = (UINT32)&FAULT_SubHandler; // Systick
     
     __DMB(); // ensure table is written
+#else
+
+#if (__FREE_RTOS)
+    // NETMF handles the int vectors and FreeRTOS requires that the following handlers are set so we need to set them by code 
+    void (*SVC_Handler_ptr)() = SVC_Handler;
+     ARM_Vectors[11] = (UINT32)SVC_Handler_ptr; // SVC
+
+    void (*PendSV_Handler_ptr)() = PendSV_Handler;
+    ARM_Vectors[14] = (UINT32)PendSV_Handler_ptr; // PendSV
+
+    void (*SysTick_Handler_ptr)() = SysTick_Handler;
+    ARM_Vectors[15] = (UINT32)SysTick_Handler_ptr; // Systick   
+    
+    __DMB(); // ensure table is written
+#endif // __FREE_RTOS
+     
 #endif        
 
     SCB->AIRCR = (0x5FA << SCB_AIRCR_VECTKEY_Pos) // unlock key
