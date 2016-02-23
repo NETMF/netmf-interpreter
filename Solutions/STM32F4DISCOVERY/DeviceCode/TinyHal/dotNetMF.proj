@@ -61,6 +61,7 @@
         <IncludePaths Include="CMSIS\CMSIS\Include" />
         <IncludePaths Include="FreeRTOS\CMSIS_RTOS" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\include" />
+        <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\protocols\include" />
         <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\Compiler\GCC" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\CMSIS\Device\ST\STM32F4xx\Include" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Inc" />
