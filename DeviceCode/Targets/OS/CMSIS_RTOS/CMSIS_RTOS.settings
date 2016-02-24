@@ -28,29 +28,25 @@
     <IncludePaths Include="CMSIS\CMSIS\Include" />
     <!--<IncludePaths Include="CMSIS\CMSIS\RTOS\RTX\INC" />-->
     
-    <!-- TBD FREERTOS-->
-    <IncludePaths Include="FreeRTOS\CMSI_RTOS" />
-    <!-- TBD FREERTOS-->
-
   </ItemGroup>
   
-    <ItemGroup>
+    <ItemGroup Condition="'$(OS_FLAVOR)'=='FREE_RTOS'" >
+        <IncludePaths Include="FreeRTOS\CMSI_RTOS" />
         <IncludePaths Include="FreeRTOS\FreeRTOS\Source\include" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\include" />
         <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\Compiler\GCC" />
-        <IncludePaths Include="FreeRTOS\CMSI_RTOS" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\CMSIS\Device\ST\STM32F4xx\Include" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Inc" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\Common\Utilities\include" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
+    <ItemGroup Condition="'$(OS_FLAVOR)'=='FREE_RTOS' AND '$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
         <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM4F" />
     </ItemGroup>
-    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" >
+    <ItemGroup Condition="'$(OS_FLAVOR)'=='FREE_RTOS' AND '$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" >
         <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM4F" />
     </ItemGroup>
-    <ItemGroup Condition="'$(CpuName)'=='Cortex-M3'">
+    <ItemGroup Condition="'$(OS_FLAVOR)'=='FREE_RTOS' AND '$(CpuName)'=='Cortex-M3'">
         <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM3" />
     </ItemGroup>
 
