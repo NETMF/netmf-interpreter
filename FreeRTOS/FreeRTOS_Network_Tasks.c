@@ -44,7 +44,7 @@ static uint16_t usUsedStackSize = 0;
 
 /*-----------------------------------------------------------*/
 
-void vStartSimpleTCPServerTasks( uint16_t usStackSize, UBaseType_t uxPriority )
+extern void vStartSimpleTCPServerTasks( uint16_t usStackSize, UBaseType_t uxPriority )
 {
 	/* Create the TCP echo server. */
 	xTaskCreate( prvConnectionListeningTask, "ServerListener", usStackSize, NULL, uxPriority + 1, NULL );
