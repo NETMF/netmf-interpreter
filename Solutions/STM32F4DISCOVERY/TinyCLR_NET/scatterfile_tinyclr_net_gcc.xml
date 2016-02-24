@@ -201,25 +201,7 @@
             <FileMapping Name="PROVIDE(__data_init_start = __data_init_start);"/>
             <FileMapping Name="__data_start = .;"/>
             <FileMapping Name="PROVIDE(__data_start = __data_start);"/>
-
-            <FileMapping Name=". = ALIGN(4);"/>
-            <!-- region ER_LWIP_OS_RW -->
-            <!--<FileMapping Name=". = ALIGN(4);"/>-->
-            <FileMapping Name="Image$$ER_LWIP_OS$$RW$$Base = .;"/>
-            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (rwdata)" />-->
-            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (rwdata)" />-->
-            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (rwdata)" />-->
-            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (rwdata)" />-->
-            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (rwdata)" />-->
-            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.data)" />-->
-            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.data)" />-->
-            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.data)" />-->
-            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.data)" />-->
-            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (.data)" />-->
-            <FileMapping Name=". = ALIGN(4);"/>            
-            <FileMapping Name="Image$$ER_LWIP_OS$$RW$$End = .;"/>
-            <FileMapping Name="PROVIDE(Image$$ER_LWIP_OS$$RW$$Length = Image$$ER_LWIP_OS$$RW$$End - Image$$ER_LWIP_OS$$RW$$Base);"/>
-
+            
             <FileMapping Name=". = ALIGN(4);"/>            
             <FileMapping Name="*(rwdata)"/>
             <FileMapping Name="*(.data .data.* .gnu.linkonce.d.*)"/>
@@ -233,29 +215,6 @@
             <FileMapping Name=". = ALIGN(4);"/>     
             <FileMapping Name="__bss_start = .;"/>
             <FileMapping Name="PROVIDE(__bss_start = __bss_start);"/>
-
-            <FileMapping Name=". = ALIGN(4);"/>     
-            <!-- region ER_LWIP_OS_ZI -->
-            <FileMapping Name=". = ALIGN(4);"/>
-            <FileMapping Name="Image$$ER_LWIP_OS$$ZI$$Base = .;"/>
-            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.bss)" />-->
-            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.bss)" />-->
-            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.bss)" />-->
-            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.bss)" />-->
-            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (.bss)" />-->
-            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (.zidata)" />-->
-            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (.zidata)" />-->
-            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (.zidata)" />-->
-            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (.zidata)" />-->
-            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (.zidata)" />-->
-            <!--<FileMapping Name="lwip_1_4_1_os_CMSIS_RTOS.lib (COMMON)" />-->-->
-            <!--<FileMapping Name="sockets_hal_sockets_lwIP_os.lib (COMMON)" />-->
-            <!--<FileMapping Name="sockets_hal_dhcp_lwIP_os.lib (COMMON)" />-->
-            <!--<FileMapping Name="sockets_hal_tcp_lwIP_os.lib (COMMON)" />-->
-            <!--<FileMapping Name="sockets_hal_udp_lwIP_os.lib (COMMON)" />-->
-            <FileMapping Name=". = ALIGN(4);"/>
-            <FileMapping Name="Image$$ER_LWIP_OS$$ZI$$End = .;"/>
-            <FileMapping Name="PROVIDE(Image$$ER_LWIP_OS$$ZI$$Length = Image$$ER_LWIP_OS$$ZI$$End - Image$$ER_LWIP_OS$$ZI$$Base);"/>
                          
             <FileMapping Name=". = ALIGN(4);"/>
             <FileMapping Name="*(.bss .bss.* .gnu.linkonce.b.*)" />
@@ -399,18 +358,18 @@
         <FileMapping Name=". = ALIGN(4);"/>
         <FileMapping Name="__heap_end = __ccm_ram_end - __process_stack_size;"/>
         <FileMapping Name="PROVIDE(__heap_end = __heap_end);"/>-->
+    
+        <FileMapping Name="PROVIDE(__text_size = __text_end - __text_start);"/>
+        <FileMapping Name="PROVIDE(__exidx_size = __exidx_end - __exidx_start);"/>
+        <FileMapping Name="PROVIDE(__data_size = __data_end - __data_start);"/>
+        <FileMapping Name="PROVIDE(__bss_size = __bss_end - __bss_start);"/>
+        <FileMapping Name="PROVIDE(__stack_size = __stack_end - __stack_start);"/>
+        <FileMapping Name="PROVIDE(__heap_size = __heap_end - __heap_start);"/>
 
         <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
             <FileMapping Name="*(SectionForConfig)" />
         </ExecRegion>
     </NamedGroup>
-    
-    <FileMapping Name="PROVIDE(__text_size = __text_end - __text_start);"/>
-    <FileMapping Name="PROVIDE(__exidx_size = __exidx_end - __exidx_start);"/>
-    <FileMapping Name="PROVIDE(__data_size = __data_end - __data_start);"/>
-    <FileMapping Name="PROVIDE(__bss_size = __bss_end - __bss_start);"/>
-    <FileMapping Name="PROVIDE(__stack_size = __stack_end - __stack_start);"/>
-    <FileMapping Name="PROVIDE(__heap_size = __heap_end - __heap_start);"/>
 
     <!-- The following variables are used to simulate the ones autogenerated by ARMCC -->
     <GlobalVariable Name="Load$$ER_%TARGETLOCATION%$$Base"          Value="LOADADDR(ER_%TARGETLOCATION%)"/>
@@ -423,10 +382,5 @@
     <GlobalVariable Name="Load$$ER_RAM_RW$$Base"                    Value="LOADADDR(ER_RAM_RW)"/>
     <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Base"               Value="ADDR(.bss)"/>
     <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Length"             Value="SIZEOF(.bss)"/>
-    <!--<GlobalVariable Name="Load$$ER_LWIP_OS$$RW$$Base"               Value="__etext"/>-->
-    <!--<GlobalVariable Name="Image$$ER_LWIP_OS$$RW$$Base"              Value="ADDR(ER_LWIP_OS_RW)" />-->
-    <!--<GlobalVariable Name="Image$$ER_LWIP_OS$$RW$$Length"            Value="SIZEOF(ER_LWIP_OS_RW)"/>-->
-    <!--<GlobalVariable Name="Image$$ER_LWIP_OS$$ZI$$Base"              Value="ADDR(ER_LWIP_OS_ZI)" />-->
-    <!--<GlobalVariable Name="Image$$ER_LWIP_OS$$ZI$$Length"            Value="SIZEOF(ER_LWIP_OS_ZI)"/>-->
     <GlobalVariable Name="__use_no_semihosting_swi"                 Value="0"/>
 </ScatterFile>
