@@ -54,3 +54,4 @@ FreeRTOS/*
 !FreeRTOS/CMSIS_RTOS
 !FreeRTOS/FreeRTOS_Hooks.c
 !FreeRTOS/FreeRTOS_Network_Hooks.c
+!FreeRTOS/FreeRTOS_Network_Tasks.c
