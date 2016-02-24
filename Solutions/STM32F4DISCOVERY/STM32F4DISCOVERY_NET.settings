@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Author>ECLO</Author>
+    <Description>
+      <!--
+        NETMF port to STM32F4DISCOVERY (STM32F407VGT6 Cortex-M4F) board from STMicroelectronics.
+        http://www.st.com/web/catalog/tools/FM116/SC959/SS1532/PF252419
+        Based on the STM32F4 port by Oberon Systems, CSA Engineering and, Mountaineering Group.
+		Also on DISCOVERY4 solution by CW2
+       -->
+    </Description>
+    <Documentation />
+    <PlatformGuid>{5DB3948E-BF45-4C50-BAA5-6A31962C163B}</PlatformGuid>
+    <TARGETPLATFORM>STM32F4DISCOVERY</TARGETPLATFORM>
+    <PLATFORM>STM32F4DISCOVERY</PLATFORM>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <ENDIANNESS>le</ENDIANNESS>
+    <NO_BOOTLOADER_COMPRESSION>true</NO_BOOTLOADER_COMPRESSION>
+	<!--<TCP_IP_STACK>LWIP_1_4_1_OS</TCP_IP_STACK>-->
+    <OS_FLAVOR>FREE_RTOS</OS_FLAVOR>
+    <PLATFORM_EMULATED_FLOATINGPOINT Condition="'$(COMPILER_TOOL)'=='GCC'">false</PLATFORM_EMULATED_FLOATINGPOINT>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OEMSystemInfoString>STM32F4DISCOVERY WITH NET by ECLO</OEMSystemInfoString>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="Solutions\STM32F4DISCOVERY" />
+    <IncludePaths Include="DeviceCode\Cores\arm\Processors\CortexMx" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\devicecode\Targets\Native\STM32F4\STM32F4.settings" />
+    <!-- This must be imported after the native build settings as it overrides the TARGETCODEBASE and Target type-->
+    <Import Project="$(SPOCLIENT)\devicecode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings" Condition="'$(reducesize)' == 'false' AND '$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'"/>
+    <Import Project="$(SPOCLIENT)\devicecode\Targets\OS\CMSIS_RTOS\CMSIS_RTOS.settings" Condition="'$(reducesize)' == 'false' "/>
+</Project>

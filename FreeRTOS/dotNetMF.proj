@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" InitialTargets="CheckPreRquisitesInstalled" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AssemblyName>FreeRTOS</AssemblyName>
+        <Size>
+        </Size>
+        <ProjectGuid>{85F52441-05BB-4D9F-BA18-D80D9D1CFFE5}</ProjectGuid>
+        <Description>FreeRTOS OS</Description>
+        <Level>HAL</Level>
+        <LibraryFile>FreeRTOS.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\FreeRTOS\dotNetMF.proj</ProjectPath>
+        <ManifestFile>FreeRTOS.$(LIB_EXT).manifest</ManifestFile>
+        <Groups>OS\FreeRTOS</Groups>
+        <LibraryCategory>
+            <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OS" Guid="{F0C31986-B463-437E-9814-EDAB2BE46109}" Conditional="" xmlns="">
+                <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
+            </MFComponent>
+        </LibraryCategory>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <CustomFilter>
+        </CustomFilter>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>False</IsStub>
+        <Directory>FreeRTOS</Directory>
+        <OutputType>Library</OutputType>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+    <ItemGroup>
+        <IncludePaths Include="FreeRTOS\FreeRTOS\Source\include" />
+        <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\include" />
+        <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\protocols\include" />
+        <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\Compiler\GCC" />
+        <IncludePaths Include="FreeRTOS\CMSI_RTOS" />
+        <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\CMSIS\Device\ST\STM32F4xx\Include" />
+        <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Inc" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
+        <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM4F" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" >
+        <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM4F" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M3'">
+        <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS\Source\portable\GCC\ARM_CM3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="FreeRTOS\Source\event_groups.c" />
+        <Compile Include="FreeRTOS\Source\list.c" />
+        <Compile Include="FreeRTOS\Source\queue.c" />
+        <Compile Include="FreeRTOS\Source\tasks.c" />
+        <Compile Include="FreeRTOS\Source\timers.c" />
+        <Compile Include="FreeRTOS\Source\portable\MemMang\heap_4.c" />
+        
+        <Compile Include="CMSIS_RTOS\cmsis_os.c" />
+        <Compile Include="FreeRTOS_Hooks.c" />
+        <Compile Include="FreeRTOS_Network_Hooks.c" />
+        <Compile Include="FreeRTOS_Network_Tasks.c" />
+        
+        <!--<Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_IP.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_ARP.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_DHCP.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_DNS.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_Sockets.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_TCP_IP.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_UDP_IP.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_TCP_WIN.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_Stream_Buffer.c" />-->
+        
+        <!--<Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" />
+        <Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_eth.c" />
+        <Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rng.c" />
+        <Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\NetworkInterface\STM32Fxx\NetworkInterface.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\BufferManagement\BufferAllocation_2.c" />-->
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\Source\portable\GCC\ARM_CM4F\port.c" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" >
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\Source\portable\GCC\ARM_CM4F\port.c" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M3'">
+        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\Source\portable\GCC\ARM_CM3\port.c" />
+    </ItemGroup>
+    
+    <Import Project="$(SPOCLIENT)\Framework\Features\FreeRTOS_Config.libcatproj" />
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+    <Target Name="CheckPreRquisitesInstalled">
+        <Error Code="NETMFBLD"
+               Condition="!EXISTS('$(SPOCLIENT)\FreeRTOS\readme.txt')"
+               Text="Missing FreeRTOS installation at: $(SPOCLIENT)\FreeRTOS\*"
+               />
+    </Target>
+</Project>

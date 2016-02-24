@@ -47,3 +47,11 @@ License (Crypto).rtf
 PKCryptoWelcome.rtf
 REDIST_CRYPTO.TXT
 ReleaseNotesCrypto.txt
+
+# FreeRTOS
+FreeRTOS/*
+!FreeRTOS/dotNetMF.proj
+!FreeRTOS/CMSIS_RTOS
+!FreeRTOS/FreeRTOS_Hooks.c
+!FreeRTOS/FreeRTOS_Network_Hooks.c
+!FreeRTOS/FreeRTOS_Network_Tasks.c

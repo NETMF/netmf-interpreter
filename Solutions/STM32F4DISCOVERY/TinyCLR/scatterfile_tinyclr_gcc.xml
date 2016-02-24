@@ -40,14 +40,17 @@
 
     <!-- Native Code section -->
     <Set Name="Code_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Code_Size"               Value="0x00080000"/><!-- 512KB -->
+    <Set Name="Code_Size"               Value="0x00040000"/><!-- 512KB -->
 
     <!-- Deployment fills the rest of flash... --><!-- 384KB -->
 
     <!-- Internal CCM (D-Bus) -->
     <!-- Put Stack in CCM for high speed access, reducing overhead of stack usage -->
-    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress%"/>
-    <Set Name="Stack_Size"              Value="%CCM_Size%" />
+    <Set Name="Stack_Bottom"            Value="%CCM_BaseAddress% - %UnamagedHeap_Size%"/>
+    <Set Name="Stack_Size"              Value="0x0000C000" />
+
+    <Set Name="UnamagedHeap_BaseAddress"    Value="%CCM_BaseAddress%" />
+    <Set Name="UnamagedHeap_Size"           Value="0x00004000" />
 
     <!-- Internal SRAM -->
     <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
@@ -89,8 +92,8 @@
             <FileMapping Name="*" Options="(.constdata*)" />
             <FileMapping Name="*" Options="(.conststring*)" />
             <FileMapping Name="*" Options="(.glue*)" />
-	    <FileMapping Name="*" Options="(tinyclr_metadata)" />
-            <Include File="%SPOCLIENT%\Solutions\STM32F4DISCOVERY\scatterfile_gcc_missing_symbols.xml"/>
+	        <FileMapping Name="*" Options="(tinyclr_metadata)" />
+            <!--<Include File="%SPOCLIENT%\Solutions\STM32F4DISCOVERY\scatterfile_gcc_missing_symbols.xml"/>-->
         </ExecRegion>
 
         <!-- ========= INTERNAL RAM ============================================= -->
@@ -113,11 +116,19 @@
         </ExecRegion>
 
         <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
+            <FileMapping Name="__bss_start__ = .;"/>
+            <FileMapping Name="_sbss = .;"/>
+
             <FileMapping Name="*" Options="(.bss*)" />
             <FileMapping Name="*" Options="(.zidata*)" />
             <FileMapping Name="PROVIDE(__exidx_start = .);" />
             <FileMapping Name="PROVIDE(__exidx_end = .);" />
             <FileMapping Name="*" Options="(COMMON)" />
+            
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="__bss_end__ = .;"/>
+            <FileMapping Name="_ebss = .;"/>  
+            <FileMapping Name="_end_noinit = .;"/>               
         </ExecRegion>
 
         <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH">
@@ -125,42 +136,53 @@
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
-
-        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="&gt;IRAM">
+        
+        <ExecRegion Name="ER_HEAP_BEGIN (NOLOAD)" Options="&gt;IRAM">
             <FileMapping Name="*" Options="(SectionForHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for a heap -->
 
-        <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_HEAP_END" Base="%IRAM_BaseAddress% + %IRAM_Size% - %CustomHeap_Size% - 8" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForHeapEnd)" />
         </ExecRegion>
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;IRAM" >
+        
+        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Base="%IRAM_BaseAddress% + %IRAM_Size% - %CustomHeap_Size%" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
         </ExecRegion>
 
         <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
 
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="ADDR(ER_CUSTOM_HEAP_BEGIN) + %CustomHeap_Size%" Options="&gt;IRAM" >
+        <ExecRegion Name="ER_CUSTOM_HEAP_END" Align="8" Base="%IRAM_BaseAddress% + %IRAM_Size% - 8" Options="&gt;IRAM" >
             <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
         </ExecRegion>
-
+        
       <ExecRegion Name="/DISCARD/">
         <FileMapping Name="*" Options="(.ARM.exidx*)" />
         <FileMapping Name="*" Options="(.ARM.extab*)" />
+        <FileMapping Name="libc.a ( * )" />
+        <FileMapping Name="libm.a ( * )" />
+        <FileMapping Name="libgcc.a ( * )" />        
       </ExecRegion>
 
       <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Options="&gt;D_CCM">
+        <ExecRegion Name="ER_STACK_BOTTOM" Align="8" Base="%CCM_BaseAddress% + %UnamagedHeap_Size% + 8" Options="&gt;D_CCM">
             <FileMapping Name="*" Options="(SectionForStackBottom)" />
         </ExecRegion>
 
         <!--8 for the two 32bit values in the SectionForStack* sections, This keeps the region
              limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - 8" Options="&gt;D_CCM">
+        <ExecRegion Name="ER_STACK_TOP" Base="%CCM_BaseAddress% + %CCM_Size% - 8" Options="&gt;D_CCM">
             <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
         </ExecRegion>
+       
+        <FileMapping Name="PROVIDE ( end = %CCM_BaseAddress% );"/> <!-- was _ebss -->
+        <FileMapping Name="PROVIDE ( _end = %CCM_BaseAddress% );"/> 
+        <FileMapping Name="PROVIDE ( __end = %CCM_BaseAddress% );"/> 
+        <FileMapping Name="PROVIDE ( __end__ = %CCM_BaseAddress% );"/> 
+
+        <FileMapping Name="PROVIDE ( _Heap_Begin = %CCM_BaseAddress% ) ;"/>
+        <FileMapping Name="PROVIDE ( _Heap_Limit = ADDR(ER_STACK_BOTTOM) - 8) ;"/>
 
         <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
             <FileMapping Name="*" Options="(SectionForConfig)" />
