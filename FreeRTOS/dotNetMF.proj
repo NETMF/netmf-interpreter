@@ -58,10 +58,11 @@
         <Compile Include="FreeRTOS\Source\tasks.c" />
         <Compile Include="FreeRTOS\Source\timers.c" />
         <Compile Include="FreeRTOS\Source\portable\MemMang\heap_4.c" />
+        <Compile Include="FreeRTOS-Plus\Demo\Common\Utilities\date_and_time.c" />
         
         <Compile Include="CMSIS_RTOS\cmsis_os.c" />
         
-        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_IP.c" />
+        <!--<Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_IP.c" />
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_ARP.c" />
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_DHCP.c" />
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_DNS.c" />
@@ -69,16 +70,14 @@
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_TCP_IP.c" />
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_UDP_IP.c" />
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_TCP_WIN.c" />
-        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_Stream_Buffer.c" />
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_Stream_Buffer.c" />-->
         
-        <Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" />
+        <!--<Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" />
         <Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_eth.c" />
         <Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rng.c" />
         <Compile Include="FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_rcc.c" />
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\NetworkInterface\STM32Fxx\NetworkInterface.c" />
-        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\BufferManagement\BufferAllocation_2.c" />
-        <Compile Include="FreeRTOS-Plus\Demo\Common\Utilities\date_and_time.c" />
-        <!--<Compile Include="FreeRTOS-Plus\Demo\Common\FreeRTOS_Plus_TCP_Demos\SimpleTCPEchoServer.c" />-->
+        <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\BufferManagement\BufferAllocation_2.c" />-->
     </ItemGroup>
 
     <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >

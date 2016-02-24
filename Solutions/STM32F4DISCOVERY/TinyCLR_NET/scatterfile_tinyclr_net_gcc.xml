@@ -167,7 +167,6 @@
             <FileMapping Name="__text_end = .;"/>
             <FileMapping Name="PROVIDE(__text_end = __text_end);"/>
             
-            <!--<Include File="%SPOCLIENT%\Solutions\STM32F4DISCOVERY\scatterfile_gcc_missing_symbols.xml"/>-->
         </ExecRegion>
 
         <FileMapping Name=". = ALIGN(4);"/>

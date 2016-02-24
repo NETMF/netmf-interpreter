@@ -66,7 +66,7 @@
 //#define HAL_I2S_MODULE_ENABLED   
 //#define HAL_IWDG_MODULE_ENABLED   
 //#define HAL_LTDC_MODULE_ENABLED   
-#define HAL_RNG_MODULE_ENABLED   
+//#define HAL_RNG_MODULE_ENABLED   
 //#define HAL_RTC_MODULE_ENABLED
 //#define HAL_SAI_MODULE_ENABLED   
 //#define HAL_SD_MODULE_ENABLED
@@ -81,10 +81,10 @@
 //#define HAL_HCD_MODULE_ENABLED   
 //#define HAL_GPIO_MODULE_ENABLED
 //#define HAL_DMA_MODULE_ENABLED
-#define HAL_RCC_MODULE_ENABLED
+//#define HAL_RCC_MODULE_ENABLED
 //#define HAL_FLASH_MODULE_ENABLED
 //#define HAL_PWR_MODULE_ENABLED
-#define HAL_CORTEX_MODULE_ENABLED
+//#define HAL_CORTEX_MODULE_ENABLED
 
 /* ########################## HSE/HSI Values adaptation ##################### */
 /**
@@ -144,9 +144,9 @@
 #define  VDD_VALUE					  ((uint32_t)3300) /*!< Value of VDD in mv */           
 #define  TICK_INT_PRIORITY            ((uint32_t)0)   /*!< tick interrupt priority */            
 #define  USE_RTOS                     0     
-#define  PREFETCH_ENABLE              0
-#define  INSTRUCTION_CACHE_ENABLE     0
-#define  DATA_CACHE_ENABLE            0
+#define  PREFETCH_ENABLE              1
+#define  INSTRUCTION_CACHE_ENABLE     1
+#define  DATA_CACHE_ENABLE            1
 
 /* ########################## Assert Selection ############################## */
 /**

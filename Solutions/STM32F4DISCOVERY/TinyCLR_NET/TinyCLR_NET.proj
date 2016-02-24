@@ -446,8 +446,6 @@
         <RequiredProjects Include="$(SPOCLIENT)\FreeRTOS\dotNetMF.proj" />
         <DriverLibs Include="FreeRTOS.$(LIB_EXT)" />
     </ItemGroup>
-
-
     <ItemGroup>
         <DriverLibs Include="sockets_pal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\stubs\dotNetMF.proj" />
