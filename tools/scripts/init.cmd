@@ -16,6 +16,10 @@ if /I "%FLAVOR_DAT%"   == "Debug"   set FLAVOR_DAT=Debug
 if /I "%FLAVOR_DAT%"   == "Release" set FLAVOR_DAT=Release
 if    "%FLAVOR_DAT%"   == ""        set FLAVOR_DAT=Release
 
+if /I "%FLAVOR_WIN%"   == "Debug"   set FLAVOR_WIN=Debug
+if /I "%FLAVOR_WIN%"   == "Release" set FLAVOR_WIN=Release
+if    "%FLAVOR_WIN%"   == ""        set FLAVOR_WIN=Release
+
 if "%FLAVOR_MEMORY%"   == "" set FLAVOR_MEMORY=Flash
 
 if "%OEM_NAME%"        == "" set OEM_NAME=Microsoft
@@ -30,14 +34,14 @@ if "%COMMON_BUILD_ROOT%"=="" set COMMON_BUILD_ROOT=%CLRROOT%
 set BUILD_ROOT_BASE=%COMMON_BUILD_ROOT%\BuildOutput
 
 IF "%COVERAGEBUILDID%" == "" (
-	set BUILD_ROOT=%BUILD_ROOT_BASE%\public
+	set BUILD_ROOT=%BUILD_ROOT_BASE%\Public
 ) ELSE (
 	set BUILD_ROOT=%BUILD_ROOT%\Coverage
 )
 
 set BUILD_TREE=%BUILD_ROOT%\%FLAVOR_DAT%
-set BUILD_TREE_CLIENT=%BUILD_TREE%\client
-set BUILD_TREE_SERVER=%BUILD_ROOT%\%FLAVOR_WIN%\server
+set BUILD_TREE_CLIENT=%BUILD_TREE%\Client
+set BUILD_TREE_SERVER=%BUILD_ROOT%\%FLAVOR_WIN%\Server
 set DEVPATH=%BUILD_TREE_SERVER%\dll
 
 set MDP_EXE=%BUILD_TREE_SERVER%\dll\MetadataProcessor.exe
