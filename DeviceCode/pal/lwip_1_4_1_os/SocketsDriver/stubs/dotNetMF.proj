@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectPath>$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_os\SocketsDriver\stubs\dotnetmf.proj</ProjectPath>
-    <AssemblyName>SocketsDriver_PAL_lwIP_os_stubs</AssemblyName>
+    <AssemblyName>SocketsDriver_PAL_LWIP_os_stubs</AssemblyName>
     <Size>
     </Size>
     <ProjectGuid>{7C8AD28D-7F94-4B75-B149-D6BF15C655CE}</ProjectGuid>
@@ -12,7 +12,7 @@
     <ManifestFile>socketsDriver_pal_lwip_os_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SocketDriver_PAL_lwIP" Guid="{9DB86889-471A-4743-9ACF-1AED838973FB}" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SocketDriver_PAL_LWIP" Guid="{9DB86889-471A-4743-9ACF-1AED838973FB}" Conditional="" xmlns="">
         <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
       </MFComponent>
     </LibraryCategory>

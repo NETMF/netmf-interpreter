@@ -49,6 +49,8 @@ osThreadId GetClrThreadId()
 
 #if (__FREE_RTOS)
 
+extern uint32_t SystemCoreClock = SYSTEM_CLOCK_HZ;
+
 static void CLRThread(void const *argument);
 static void ToggleLEDsThread(void const *argument);
 
@@ -222,5 +224,3 @@ int main(void)
 }
 
 #endif
-
-extern uint32_t SystemCoreClock = SYSTEM_CLOCK_HZ;

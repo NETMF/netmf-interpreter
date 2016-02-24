@@ -53,7 +53,7 @@
         <Compile Include="SRC\rt_Task.c" />
         <Compile Include="SRC\rt_Time.c" />
         <Compile Include="SRC\rt_Timer.c" />
-        
+      
         <HFiles Include="SRC\RTX_Config.h" />
         <HFiles Include="SRC\rt_Event.h" />
         <HFiles Include="SRC\rt_HAL_CM.h" />
@@ -65,7 +65,9 @@
         <HFiles Include="SRC\rt_Robin.h" />
         <HFiles Include="SRC\rt_Semaphore.h" />
         <HFiles Include="SRC\rt_System.h" />
+        <HFiles Include="SRC\rt_Task.c" />
         <HFiles Include="SRC\rt_Task.h" />
+        <HFiles Include="SRC\rt_Time.c" />
         <HFiles Include="SRC\rt_Time.h" />
         <HFiles Include="SRC\rt_Timer.h" />
         <HFiles Include="SRC\rt_TypeDef.h" />
@@ -77,11 +79,7 @@
          those have support specific to an architecture, a core, an
          SOC and a physical board. 
     -->
-    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
-        <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM4.c" />
-        <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM4.s" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'" >
+    <ItemGroup Condition="'$(CpuName)'=='Cortex-M4'">
         <Compile Condition="$(AS_SUBDIR) == 'RVD_S'" Include="SRC\ARM\HAL_CM4.c" />
         <Compile Condition="$(AS_SUBDIR) == 'GNU_S'" Include="SRC\GCC\HAL_CM4.s" />
     </ItemGroup>

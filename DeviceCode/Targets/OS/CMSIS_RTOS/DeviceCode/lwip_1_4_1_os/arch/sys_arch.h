@@ -52,6 +52,5 @@ typedef osThreadId sys_thread_t;
 typedef uint32_t sys_prot_t;
 
 void sys_timeouts_uninit(void);
-void sys_signal_sock_event();
 
 #endif /* __ARCH_SYS_ARCH_H__ */

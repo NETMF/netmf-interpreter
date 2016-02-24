@@ -184,6 +184,7 @@ BOOL LWIP_SOCKETS_Driver::Initialize()
     PostAddressChangedContinuation.InitializeCallback(PostAddressChanged, NULL);
     PostAvailabilityOnContinuation.InitializeCallback(PostAvailabilityOn, NULL);
     PostAvailabilityOffContinuation.InitializeCallback(PostAvailabilityOff, NULL);
+
     /* Initialize the lwIP stack */
     tcpip_init(TcpipInitDone, NULL);
     
