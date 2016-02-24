@@ -61,6 +61,7 @@
         <Compile Include="FreeRTOS-Plus\Demo\Common\Utilities\date_and_time.c" />
         
         <Compile Include="CMSIS_RTOS\cmsis_os.c" />
+        <Compile Include="FreeRTOS_Hooks.c" />
         
         <!--<Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_IP.c" />
         <Compile Include="FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\FreeRTOS_ARP.c" />
