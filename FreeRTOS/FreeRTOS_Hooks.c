@@ -6,6 +6,9 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+/* The trace macros are used to keep a count of seconds. */
+uint32_t ulSeconds, ulMsec;
+
 // prototypes
 void vApplicationTickHook( void ) __attribute__ (( weak ));
 void vApplicationMallocFailedHook( void ) __attribute__ (( weak ));
@@ -113,4 +116,3 @@ uint32_t xGetRunTimeCounterValue( void )
 
 	return ( uint32_t ) ( HAL_Time_CurrentTicks() - ullHiresTime );
 }
-

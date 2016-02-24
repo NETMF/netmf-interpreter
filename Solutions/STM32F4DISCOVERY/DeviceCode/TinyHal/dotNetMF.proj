@@ -65,7 +65,6 @@
         <IncludePaths Condition="$(AS_SUBDIR) == 'GNU_S'" Include="FreeRTOS\FreeRTOS-Plus\Source\FreeRTOS-Plus-TCP\portable\Compiler\GCC" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\CMSIS\Device\ST\STM32F4xx\Include" />
         <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\FreeRTOS_Plus_TCP_STM32F4xxx\src\Drivers\STM32F4xx_HAL_Driver\Inc" />
-        <IncludePaths Include="FreeRTOS\FreeRTOS-Plus\Demo\Common\Utilities\include" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(OS_FLAVOR)'=='FREE_RTOS' AND '$(CpuName)'=='Cortex-M4' AND '$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'" >
