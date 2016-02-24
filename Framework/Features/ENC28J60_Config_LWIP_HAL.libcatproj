@@ -2,19 +2,19 @@
   <PropertyGroup>
     <PKUI_LibraryCategory>
 <LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
-  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">ENC28J60_Config_lwIP_HAL</Name>
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">ENC28J60_Config_LWIP_HAL</Name>
   <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{DD104859-675B-41E8-9885-092EBEDE8309}</Guid>
   <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
   <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">HAL</Level>
   <Groups xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
   <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
-    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Network\Ethernet\ENC28J60_lwIP_Config\dotNetMF.proj</FilePath>
+    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Network\Ethernet\ENC28J60_LWIP_Config\dotNetMF.proj</FilePath>
   </Templates>
   <Templates xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
-    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Network\Ethernet\ENC28J60_lwIP_Config\enc28j60_lwIP_config_stubs.cpp</FilePath>
+    <FilePath>$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Network\Ethernet\ENC28J60_LWIP_Config\enc28j60_LWIP_config_stubs.cpp</FilePath>
   </Templates>
   <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
-  <StubLibrary Name="ENC28J60_lwIP_config_stubs" Guid="{72E65656-AA9C-4F13-919F-5FADAC901364}" ProjectPath="$(SPOCLIENT)\DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_lwIP_config\dotnetmf.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+  <StubLibrary Name="ENC28J60_LWIP_config_stubs" Guid="{72E65656-AA9C-4F13-919F-5FADAC901364}" ProjectPath="$(SPOCLIENT)\DeviceCode\Drivers\stubs\Network\Ethernet\ENC28J60_LWIP_config\dotnetmf.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <VersionDependency>
       <Major>4</Major>
       <Minor>0</Minor>
@@ -37,7 +37,7 @@
   </Version>
   <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
   <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
-  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\ENC28J60_Config_lwIP_HAL.libcatproj</ProjectPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\ENC28J60_Config_LWIP_HAL.libcatproj</ProjectPath>
   <FeatureAssociations Name="SOCKET" Guid="{2800E544-CA23-4b32-933A-E5C9EA48083E}" ProjectPath="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <VersionDependency>
       <Major>4</Major>

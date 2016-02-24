@@ -465,6 +465,7 @@ void
 tcpip_init(tcpip_init_done_fn initfunc, void *arg)
 {
   lwip_init();
+
   tcpip_init_done = initfunc;
   tcpip_init_done_arg = arg;
   if(sys_mbox_new(&mbox, TCPIP_MBOX_SIZE) != ERR_OK) {

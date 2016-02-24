@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PKUI_LibraryCategory>
 <LibraryCategory xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="">
-  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SocketDriver_PAL_lwIP</Name>
+  <Name xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">SocketDriver_PAL_LWIP</Name>
   <Guid xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">{9DB86889-471A-4743-9ACF-1AED838973FB}</Guid>
   <Description xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">Socket driver category</Description>
   <Level xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">PAL</Level>
@@ -14,7 +14,7 @@
     <FilePath>$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_os\SocketsDriver\stubs\SocketsDriver_stubs.cpp</FilePath>
   </Templates>
   <Documentation xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd" />
-  <StubLibrary Name="SocketsDriver_PAL_lwIP_os_stubs" Guid="{7C8AD28D-7F94-4B75-B149-D6BF15C655CE}" ProjectPath="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_os\SocketsDriver\stubs\dotnetmf.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
+  <StubLibrary Name="SocketsDriver_PAL_LWIP_os_stubs" Guid="{7C8AD28D-7F94-4B75-B149-D6BF15C655CE}" ProjectPath="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_os\SocketsDriver\stubs\dotnetmf.proj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <VersionDependency>
       <Major>4</Major>
       <Minor>0</Minor>
@@ -37,7 +37,7 @@
   </Version>
   <Required xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</Required>
   <IgnoreDefaultLibPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">false</IgnoreDefaultLibPath>
-  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\SocketDriver_lwIP_PAL.libcatproj</ProjectPath>
+  <ProjectPath xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">$(SPOCLIENT)\Framework\Features\SocketDriver_LWIP_PAL.libcatproj</ProjectPath>
   <FeatureAssociations Name="Network (LWIP OS)" Guid="{FC481D0B-784B-402B-8EE0-0BD1D29823A9}" ProjectPath="$(SPOCLIENT)\Framework\Features\Network_LWIP_OS.featureproj" Conditional="" xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
     <ComponentType>Feature</ComponentType>
   </FeatureAssociations>
