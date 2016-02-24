@@ -16,13 +16,39 @@
 #include <cmsis_os.h>
 #include "OsHal.h"
 
+extern void HAL_CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents );
+
+#if (__FREE_RTOS)
+
+// FreeRTOS implementation will be using standard CPU_Sleep for now
+// TBD evaluate if we should implement here the vApplicationIdleHook
+// TDB check how RTX implementation is using the ClrEventSignal to signal events to the CRL task 
+void CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents )
+{
+    HAL_CPU_Sleep( level, wakeEvents );
+}
+
+// void vApplicationIdleHook( void )
+// {
+// 	/* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
+// 	to 1 in FreeRTOSConfig.h.  It will be called on each iteration of the idle
+// 	task.  It is essential that code added to this hook function never attempts
+// 	to block in any way (for example, call xQueueReceive() with a block time
+// 	specified, or call vTaskDelay()).  If the application makes use of the
+// 	vTaskDelete() API function (as this demo application does) then it is also
+// 	important that vApplicationIdleHook() is permitted to return to its calling
+// 	function, because it is the responsibility of the idle task to clean up
+// 	memory allocated by the kernel to any task that has since been deleted. */
+// }
+
+#elif (__CMSIS_RTOS)
+
 extern volatile SLEEP_LEVEL SleepLevel = SLEEP_LEVEL__AWAKE;
 extern volatile UINT64 WakeEvents = 0;
 
 // used with debugger and HW trace to track sleep mode transitions
 volatile bool InSleep = false;
 
-extern void HAL_CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents );
 void CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents )
 {
     ASSERT_IRQ_MUST_BE_OFF();
@@ -46,6 +72,7 @@ void CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents )
 }
 
 #if PLATFORM_ARM_OS_PORT
+
 void SignalClr()
 {
     osSignalSet( ::GetClrThreadId(), ClrEventSignal );
@@ -63,6 +90,8 @@ extern "C" void os_idle_demon()
       SignalClr();
   }
 }
+#endif  // PLATFORM_ARM_OS_PORT
+
+#else
 
 #endif
-
