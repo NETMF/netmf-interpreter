@@ -63,7 +63,8 @@ UINT32 LOAD_IMAGE_Start;
 UINT32 LOAD_IMAGE_Length;
 UINT32 LOAD_IMAGE_CalcCRC;
 
-#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
+#if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS) && !defined(__FREE_RTOS)
+
 extern UINT32 Load$$ER_LWIP_OS$$RW$$Base; 
 extern UINT32 Image$$ER_LWIP_OS$$RW$$Base;
 extern UINT32 Image$$ER_LWIP_OS$$RW$$Length; 
@@ -512,17 +513,13 @@ void HAL_Uninitialize()
 
 extern "C"
 {
-#if defined( __GNUC__ )
+#if defined( __GNUC__ ) && !defined(__FREE_RTOS)
     extern "C++" int main(void);
-    extern void __libc_init_array();
     void __main()
     {
         // Copy writeable data and zero init BSS
         PrepareImageRegions();
-
-        // Call static constructors
-        __libc_init_array();
-
+  
         // Call the application's entry point.
         main();
     }
@@ -628,8 +625,10 @@ void BootEntry()
 } // extern "C"
 
 
-#if defined(PLATFORM_ARM_OS_PORT)
+//#if defined(PLATFORM_ARM_OS_PORT)
 extern "C" void STM32F4_BootstrapCode();
+
+void BootstrapCode_GPIO();
 
 // performs base level system initialization
 // This typically consists of setting up clocks
@@ -648,11 +647,13 @@ extern "C" void STM32F4_BootstrapCode();
 extern "C" void SystemInit()
 {
     STM32F4_BootstrapCode();
+    //PrepareImageRegions();
+    BootstrapCode_GPIO();
     CPU_Initialize();
-    __enable_irq();
+    //__enable_irq();
 }
 
-#endif //PLATFORM_ARM_OS_PORT
+//#endif //PLATFORM_ARM_OS_PORT
 
 #if !defined(BUILD_RTM)
 

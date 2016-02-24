@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <AssemblyName>STM32F4DISCOVERY_initialization_hal_loader</AssemblyName>
-    <ProjectGuid>{D0939448-2D69-42F3-99F1-221C5433823C}</ProjectGuid>
+    <ProjectGuid>{9D63B0F5-221B-4F6F-B804-A94ACC87E836}</ProjectGuid>
     <Size>
     </Size>
     <Description>System initialization library for STM32F4DISCOVERY (for boot loaders)</Description>

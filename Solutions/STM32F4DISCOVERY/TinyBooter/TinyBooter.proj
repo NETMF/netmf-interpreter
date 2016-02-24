@@ -23,6 +23,8 @@
         <ExtraTargets>$(ExtraTargets);CompressBin</ExtraTargets>
         <ScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</ScatterFileDefinition>
         <EXEScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">true</NewlibNano>        
+        <USE_RTC>false</USE_RTC>
     </PropertyGroup>
     <ItemGroup />
     <ItemGroup>
@@ -194,8 +196,16 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\palevent\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="Time_pal.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Time\dotNetMF.proj" />
+        <DriverLibs Include="Time_pal.$(LIB_EXT)" Condition="'$(USE_RTC)' == 'false'"/>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Time\dotNetMF.proj" Condition="'$(USE_RTC)' == 'false'"/>
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="Time_pal_rtc.$(LIB_EXT)" Condition="'$(USE_RTC)' == 'true'"/>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_RTC\Time_Pal_Rtc\dotNetMF.proj"  Condition="'$(USE_RTC)' == 'true'"/>        
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="STM32F4_RTC.$(LIB_EXT)" Condition="'$(USE_RTC)' == 'true'" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_RTC\dotNetMF.proj" Condition="'$(USE_RTC)' == 'true'"/>        
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="TimeService_pal_stubs.$(LIB_EXT)" />

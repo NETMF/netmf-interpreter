@@ -31,13 +31,14 @@
         <CompressImageDatSym>TinyClr_Dat_Start</CompressImageDatSym>
         <CompressImageCfgSym>g_ConfigurationSector</CompressImageCfgSym>
         <!-- newlib-nano does not support long-long and long-double formatting, use standard newlib instead -->
-        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">false</NewlibNano>
+        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">true</NewlibNano>
+        <USE_RTC>false</USE_RTC>
     </PropertyGroup>
     <ItemGroup>
-        <CompressImageSymdef Include="$(BIN_DIR)\$(AssemblyName).symdefs" />
-        <CompressImageFlash Include="$(BIN_DIR)\$(AssemblyName).bin\ER_FLASH" />
+        <!--<CompressImageSymdef Include="$(BIN_DIR)\$(AssemblyName).symdefs" />-->
+        <!--<CompressImageFlash Include="$(BIN_DIR)\$(AssemblyName).bin\ER_FLASH" />-->
         <!--<CompressImageDat Include="$(BIN_DIR)\$(AssemblyName).bin\ER_DAT" />-->
-        <CompressImageCfg Include="$(BIN_DIR)\$(AssemblyName).bin\ER_CONFIG" />
+        <!--<CompressImageCfg Include="$(BIN_DIR)\$(AssemblyName).bin\ER_CONFIG" />-->
     </ItemGroup>
     <ItemGroup>
         <IncludePaths Include="DeviceCode\PAL" />
@@ -217,8 +218,16 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\palevent\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="Time_pal.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Time\dotNetMF.proj" />
+        <DriverLibs Include="Time_pal.$(LIB_EXT)" Condition="'$(USE_RTC)' == 'false'"/>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Time\dotNetMF.proj" Condition="'$(USE_RTC)' == 'false'"/>
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="Time_pal_rtc.$(LIB_EXT)" Condition="'$(USE_RTC)' == 'true'"/>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_RTC\Time_Pal_Rtc\dotNetMF.proj"  Condition="'$(USE_RTC)' == 'true'"/>        
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="STM32F4_RTC.$(LIB_EXT)" Condition="'$(USE_RTC)' == 'true'" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_RTC\dotNetMF.proj" Condition="'$(USE_RTC)' == 'true'"/>        
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="FS_Config_stubs.$(LIB_EXT)" />
