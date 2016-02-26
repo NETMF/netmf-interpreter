@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\PAL">
+      <UniqueIdentifier>{750f05fa-ea2c-4076-9c33-b88737907233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CPU">
+      <UniqueIdentifier>{a96e1a3d-0039-4c25-8515-3b5efa991c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HAL">
+      <UniqueIdentifier>{cad0b4e4-b933-4c3a-b583-78ca3face984}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryMappedFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NamedPipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lwipopts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinPCAPDeviceList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputDebugStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScopeGuard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform_selector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cmsis_os.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Source Files\PAL</Filter>
+    </ClCompile>
+    <ClCompile Include="SmartPtr_IRQ.cpp">
+      <Filter>Source Files\PAL</Filter>
+    </ClCompile>
+    <ClCompile Include="RequiredCpuApis.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="RequiredHalApis.cpp">
+      <Filter>Source Files\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="Lcd.cpp">
+      <Filter>Source Files\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WatchDog.cpp">
+      <Filter>Source Files\PAL</Filter>
+    </ClCompile>
+    <ClCompile Include="DebuggerPort.cpp">
+      <Filter>Source Files\PAL</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockStorage.cpp">
+      <Filter>Source Files\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_I2C\stubs_functions_I2C.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_DA\stubs_functions_DA.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_USART\stubs_functions_USART.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_SPI\stubs_functions_SPI.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_gpio\stubs_functions_gpio.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_power\stubs_functions_power.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_analog\stubs_functions_analog.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\VirtualKey\virtualkey_stubs.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_PWM\stubs_functions_pwm.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\pal\COM\i2c\stubs\i2c_stubs.cpp">
+      <Filter>Source Files\PAL</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigSection.cpp">
+      <Filter>Source Files\PAL</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputDebugStream.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="CpuPower.cpp">
+      <Filter>Source Files\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemState.cpp">
+      <Filter>Source Files\HAL</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

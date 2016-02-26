@@ -736,13 +736,13 @@ void IDelayLoop2( int iterations );
 //--//
 
 #if !defined(PLATFORM_WINDOWS)
-extern "C" INT32 InterlockedIncrement( volatile INT32* lpAddend );
-extern "C" INT32 InterlockedDecrement( volatile INT32* lpAddend );
-extern "C" INT32 InterlockedExchange( volatile INT32* Target, INT32 Value );
-extern "C" INT32 InterlockedCompareExchange( INT32* Destination, INT32 Exchange, INT32 Comperand );
-extern "C" INT32 InterlockedExchangeAdd( volatile INT32* Addend, INT32 Value );
-extern "C" INT32 InterlockedOr( volatile INT32* Destination, INT32 Flag );
-extern "C" INT32 InterlockedAnd( volatile INT32* Destination, INT32 Flag );
+extern "C" INT32 InterlockedIncrement( volatile LONG* lpAddend );
+extern "C" INT32 InterlockedDecrement( volatile LONG* lpAddend );
+extern "C" INT32 InterlockedExchange( volatile LONG* Target, INT32 Value );
+extern "C" INT32 InterlockedCompareExchange( LONG* Destination, LONG Exchange, LONG Comperand );
+extern "C" INT32 InterlockedExchangeAdd( volatile LONG* Addend, LONG Value );
+extern "C" INT32 InterlockedOr( volatile LONG* Destination, LONG Flag );
+extern "C" INT32 InterlockedAnd( volatile LONG* Destination, LONG Flag );
 #endif // PLATFORM_WINDOWS
 
 struct OpaqueQueueNode

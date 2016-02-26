@@ -1,0 +1,11 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Directory>Solutions\Windows\TinyCLR\</Directory>
+    <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows\Windows.settings</MFSettingsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <SubDirectories Include="DeviceCode"/>
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

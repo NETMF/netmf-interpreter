@@ -26,7 +26,7 @@ BOOL Events_Initialize()
     NATIVE_PROFILE_PAL_EVENTS();
     g_Events_BoolTimerCompletion.Initialize();
 
-    InterlockedExchange( (INT32*)&SystemEvents, 0 );
+    InterlockedExchange( (LONG*)&SystemEvents, 0 );
     return TRUE;
 }
 
@@ -40,7 +40,7 @@ BOOL Events_Uninitialize()
 void Events_Set( UINT32 Events )
 {
     NATIVE_PROFILE_PAL_EVENTS();
-    InterlockedOr( (INT32*)&SystemEvents, Events );
+    InterlockedOr( (LONG*)&SystemEvents, Events );
     if( g_Event_Callback != NULL )
         g_Event_Callback( g_Event_Callback_Arg );
 }
@@ -52,7 +52,7 @@ UINT32 Events_Get( UINT32 EventsOfInterest )
     UINT32 mask = ~EventsOfInterest;
     
     // capture current event flags state and clear the requested flags atomically
-    UINT32 Events = InterlockedAnd( (INT32*)&SystemEvents, mask );
+    UINT32 Events = InterlockedAnd( (LONG*)&SystemEvents, mask );
 
     // give the caller notice of just the events they asked for ( and were cleared already )
     return Events & EventsOfInterest;
@@ -62,7 +62,7 @@ void Events_Clear( UINT32 Events )
 {
     NATIVE_PROFILE_PAL_EVENTS();
 
-    InterlockedAnd( (INT32*)&SystemEvents, ~Events );
+    InterlockedAnd( (LONG*)&SystemEvents, ~Events );
 }
 
 UINT32 Events_MaskedRead( UINT32 EventsOfInterest )
