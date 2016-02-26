@@ -13,7 +13,7 @@
 
 #include <tinyhal.h>
 #include "STM32F4_Flash.h"
-#include "..\stm32f4xx.h"
+#include "stm32f4xx_hal.h"
 
 #ifndef FLASH
 #define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)

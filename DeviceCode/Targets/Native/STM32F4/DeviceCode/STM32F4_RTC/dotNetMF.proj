@@ -68,9 +68,6 @@
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <PropertyGroup />
   <ItemGroup>
-    <HFiles Include="..\stm32f2xx.h" />
-    <HFiles Include="..\stm32f4xx.h" />
-    <HFiles Include="RTC_decl.h" />
     <Compile Include="STM32F4_RTC_functions.cpp" />
   </ItemGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />

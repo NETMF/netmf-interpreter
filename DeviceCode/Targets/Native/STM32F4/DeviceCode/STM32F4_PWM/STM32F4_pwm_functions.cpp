@@ -13,11 +13,7 @@
 
 #include <tinyhal.h>
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
 
 
 #if SYSTEM_APB1_CLOCK_HZ == SYSTEM_CYCLE_CLOCK_HZ
@@ -73,7 +69,7 @@ BOOL PWM_Initialize(PWM_CHANNEL channel)
 {
     if (channel >= STM32F4_PWM_CHANNELS) return FALSE;
     int timer = g_STM32F4_PWM_Timer[channel];
-    int tchnl = g_STM32F4_PWM_Channel[channel];
+    uint32_t tchnl = g_STM32F4_PWM_Channel[channel];
     ptr_TIM_TypeDef treg = g_STM32F4_PWM_Ports[timer - 1];
     
     // relevant RCC register & bit
@@ -95,7 +91,7 @@ BOOL PWM_Initialize(PWM_CHANNEL channel)
     // enable PWM channel
     UINT32 mode = TIM_CCMR1_OC1M_1 | TIM_CCMR1_OC1M_2 | TIM_CCMR1_OC1PE; // PWM1 mode, double buffered
     if (tchnl & 1) mode <<= 8; // 1 or 3
-    __IO uint16_t* reg = &treg->CCMR1;
+    __IO uint32_t* reg = &treg->CCMR1;
     if (tchnl & 2) reg = &treg->CCMR2; // 2 or 3
     *reg |= mode;
     
@@ -108,12 +104,12 @@ BOOL PWM_Initialize(PWM_CHANNEL channel)
 BOOL PWM_Uninitialize(PWM_CHANNEL channel)
 {
     int timer = g_STM32F4_PWM_Timer[channel];
-    int tchnl = g_STM32F4_PWM_Channel[channel];
+    uint32_t tchnl = g_STM32F4_PWM_Channel[channel];
     ptr_TIM_TypeDef treg = g_STM32F4_PWM_Ports[timer - 1];
     
     UINT32 mask = 0xFF; // disable PWM channel
     if (tchnl & 1) mask = 0xFF00; // 1 or 3
-    __IO uint16_t* reg = &treg->CCMR1;
+    __IO uint32_t* reg = &treg->CCMR1;
     if (tchnl & 2) reg = &treg->CCMR2; // 2 or 3
     *reg &= ~mask;
     

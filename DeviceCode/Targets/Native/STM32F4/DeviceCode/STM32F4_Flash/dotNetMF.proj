@@ -72,8 +72,6 @@
 
   <ItemGroup>
     <HFiles Include="STM32F4_Flash.h" />
-    <HFiles Include="..\stm32f2xx.h" />
-    <HFiles Include="..\stm32f4xx.h" />
     <Compile Include="STM32F4_Flash_driver.cpp" />
   </ItemGroup>
   <ItemGroup />

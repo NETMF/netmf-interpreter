@@ -37,6 +37,7 @@
     <ItemGroup>
         <IncludePaths Include="Devicecode\Targets\Native\STM32F4" />
         <IncludePaths Include="DeviceCode\Targets\Native\STM32F4\DeviceCode" />
+        <IncludePaths Include="DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4xx_HAL_Driver\Inc" />       
         <IncludePaths Include="CMSIS\CMSIS\Include" />
     </ItemGroup>
     <Target Name="CheckPreRquisitesInstalled">

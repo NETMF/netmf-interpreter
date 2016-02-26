@@ -13,11 +13,7 @@
 
 #include <tinyhal.h>
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
 
 extern UINT32 ARM_Vectors[84];  // the interrupt vector table
 extern UINT32 FAULT_SubHandler; // the standard fault handler

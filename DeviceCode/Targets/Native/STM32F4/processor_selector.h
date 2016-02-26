@@ -17,12 +17,12 @@
 
 #define PLATFORM_ARM_DEFINED
 
-#if defined(PLATFORM_ARM_STM32F2)
-#define STM32F2XX
-#elif defined(PLATFORM_ARM_STM32F4)
-#define STM32F4XX
-#else
-ERROR - WE SHOULD NOT INCLUDE THIS HEADER IF NOT BUILDING AN STM32F2/F4 PLATFORM
+#if !defined (STM32F405xx) && !defined (STM32F415xx) && !defined (STM32F407xx) && !defined (STM32F417xx) && \
+    !defined (STM32F427xx) && !defined (STM32F437xx) && !defined (STM32F429xx) && !defined (STM32F439xx) && \
+    !defined (STM32F401xC) && !defined (STM32F401xE) && !defined (STM32F410Tx) && !defined (STM32F410Cx) && \
+    !defined (STM32F410Rx) && !defined (STM32F411xE) && !defined (STM32F446xx) && !defined (STM32F469xx) && \
+    !defined (STM32F479xx)
+ERROR - STM32F4 VARIANT NOT DEFINED OR WE SHOULD NOT INCLUDE THIS HEADER IF NOT BUILDING AN STM32F2/F4 PLATFORM 
 #endif
 
 /////////////////////////////////////////////////////////

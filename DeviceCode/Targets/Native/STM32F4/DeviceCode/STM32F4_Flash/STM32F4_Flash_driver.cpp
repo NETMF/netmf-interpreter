@@ -14,11 +14,7 @@
 #include <tinyhal.h>
 #include "STM32F4_Flash.h"
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
 
 #ifndef FLASH
 #define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)

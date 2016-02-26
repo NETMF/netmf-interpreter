@@ -22,7 +22,23 @@
 #if defined(PLATFORM_ARM_<TEMPLATE>)
 #define HAL_SYSTEM_NAME                     "<TEMPLATE>"
 
-#define PLATFORM_ARM_STM32F4 // STM32F407 cpu
+// #defined (STM32F405xx) 
+// #defined (STM32F415xx) 
+// #defined (STM32F407xx) 
+// #defined (STM32F417xx) 
+// #defined (STM32F427xx) 
+// #defined (STM32F437xx) 
+// #defined (STM32F429xx) 
+// #defined (STM32F439xx) 
+// #defined (STM32F401xC) 
+// #defined (STM32F401xE) 
+// #defined (STM32F410Tx) 
+// #defined (STM32F410Cx) 
+// #defined (STM32F410Rx) 
+// #defined (STM32F411xE) 
+// #defined (STM32F446xx) 
+// #defined (STM32F469xx) 
+// #defined (STM32F479xx)
 
 //#define USB_ALLOW_CONFIGURATION_OVERRIDE  1
 
@@ -109,6 +125,7 @@
 #define STM32F4_PWM_PINS  {8,9,10,11,22,23,24,25} // PA8-PA11,PB6-PB9
 
 // SPI CHANNELS (SPI1 - SPIn)
+// check what SPI channels are available in the STM32F4 variant
 #define STM32F4_SPI_SCLK_PINS {19, 29, 42} // PB3, PB13, PC10
 #define STM32F4_SPI_MISO_PINS {20, 30, 43} // PB4, PB14, PC11
 #define STM32F4_SPI_MOSI_PINS {21, 31, 44} // PB5, PB15, PC12
@@ -119,6 +136,7 @@
 #define STM32F4_I2C_SDA_PIN  23 // PB7
 
 // UART PORTS (UART1 - UARTn)
+// check what USART/UART ports are available in the STM32F4 variant
 #define STM32F4_UART_RXD_PINS {10, 54, 57, 43, 50, 39} // A10, D6, D9, C11, D2, C7
 #define STM32F4_UART_TXD_PINS { 9, 53, 56, 42, 44, 38} // A9, D5, D8, C10, C12, C6
 #define STM32F4_UART_CTS_PINS {11, 51, 59} // A11, D3, D11

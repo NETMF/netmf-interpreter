@@ -13,16 +13,36 @@
 
 #include <tinyhal.h>
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
+
 
 typedef  USART_TypeDef* ptr_USART_TypeDef;
 
 // IO addresses
+// UART/USART ports availability according to STM32F4 variant
+
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F405xx) || \
+    defined (STM32F407xx) || defined (STM32F410Cx) || defined (STM32F410Rx) || \
+    defined (STM32F410Tx) || defined (STM32F411xE) || defined (STM32F415xx) || \
+    defined (STM32F417xx) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F446xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx) 
+    
+static const ptr_USART_TypeDef g_STM32F4_Uart_Ports[] = {USART1, USART2, USART6};
+
+#elif defined (STM32F405xx) || defined (STM32F407xx) || defined (STM32F415xx) || \
+    defined (STM32F417xx) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F446xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx) 
+    
+static const ptr_USART_TypeDef g_STM32F4_Uart_Ports[] = {USART1, USART2, USART3, UART4, UART5, USART6};
+    
+#elif defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+        defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
+
 static const ptr_USART_TypeDef g_STM32F4_Uart_Ports[] = {USART1, USART2, USART3, UART4, UART5, USART6, UART7, UART8};
+
+#endif
 
 // Pins
 static const BYTE g_STM32F4_Uart_RxD_Pins[] = STM32F4_UART_RXD_PINS;
@@ -115,7 +135,7 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
     GLOBAL_LOCK(irq);
     
     ptr_USART_TypeDef uart = g_STM32F4_Uart_Ports[ComPortNum];
-    UINT32 clk;
+    UINT32 clk;   
     
     // enable UART clock
     if (ComPortNum == 5)
@@ -128,15 +148,34 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
         RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
         clk = SYSTEM_APB2_CLOCK_HZ;
     }
-    else if (ComPortNum < 5)
-    { // COM2-5 on APB1
+    else if (ComPortNum == 2)
+    { // COM2 on APB1
         RCC->APB1ENR |= RCC_APB1ENR_USART2EN >> 1 << ComPortNum;
         clk = SYSTEM_APB1_CLOCK_HZ;
     }
+    else if (ComPortNum < 5)
+    { // COM3-5 on APB1
+#if defined (STM32F405xx) || defined (STM32F407xx) || defined (STM32F415xx) || \
+    defined (STM32F417xx) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F446xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx) || defined (STM32F427xx) || \
+    defined (STM32F429xx) || defined (STM32F437xx) || defined (STM32F439xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx)
+
+        RCC->APB1ENR |= RCC_APB1ENR_USART2EN >> 1 << ComPortNum;
+        clk = SYSTEM_APB1_CLOCK_HZ;
+        
+#endif        
+    }
     else
     { // COM7-8 on APB1
+#if defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+        defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
+    
         RCC->APB1ENR |= RCC_APB1ENR_UART7EN >> 6 << ComPortNum;
         clk = SYSTEM_APB1_CLOCK_HZ;
+
+#endif        
     }
     
     //  baudrate
@@ -212,6 +251,13 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
         CPU_INTC_ActivateInterrupt(USART2_IRQn, STM32F4_USART_Interrupt1, 0);
         break;
 
+#if defined (STM32F405xx) || defined (STM32F407xx) || defined (STM32F415xx) || \
+    defined (STM32F417xx) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F446xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx) || defined (STM32F427xx) || \
+    defined (STM32F429xx) || defined (STM32F437xx) || defined (STM32F439xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx)
+
     case 2:
         CPU_INTC_ActivateInterrupt(USART3_IRQn, STM32F4_USART_Interrupt2, 0);
         break;
@@ -223,13 +269,16 @@ BOOL CPU_USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBit
     case 4:
         CPU_INTC_ActivateInterrupt(UART5_IRQn, STM32F4_USART_Interrupt4, 0);
         break;
+        
+#endif
 
     case 5:
         CPU_INTC_ActivateInterrupt(USART6_IRQn, STM32F4_USART_Interrupt5, 0);
         break;
 
-// some SoCS have more UARTs (default is 6 )
-#if TOTAL_USART_PORT > 6 
+#if defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+        defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
+
     case 6:
         CPU_INTC_ActivateInterrupt(UART7_IRQn, STM32F4_USART_Interrupt4, 0);
         break;
@@ -261,6 +310,13 @@ BOOL CPU_USART_Uninitialize( int ComPortNum )
         CPU_INTC_DeactivateInterrupt(USART2_IRQn);
         break;
 
+#if defined (STM32F405xx) || defined (STM32F407xx) || defined (STM32F415xx) || \
+    defined (STM32F417xx) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F446xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx) || defined (STM32F427xx) || \
+    defined (STM32F429xx) || defined (STM32F437xx) || defined (STM32F439xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx)
+
     case 2:
         CPU_INTC_DeactivateInterrupt(USART3_IRQn);
         break;
@@ -273,12 +329,15 @@ BOOL CPU_USART_Uninitialize( int ComPortNum )
         CPU_INTC_DeactivateInterrupt(UART5_IRQn);
         break;
 
+#endif
+
     case 5:
         CPU_INTC_DeactivateInterrupt(USART6_IRQn);
         break;
 
-// some SoCS have more UARTs (default is 6 )
-#if TOTAL_USART_PORT > 6 
+#if defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+        defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
+
     case 6:
         CPU_INTC_DeactivateInterrupt(UART7_IRQn);
         break;
@@ -286,6 +345,7 @@ BOOL CPU_USART_Uninitialize( int ComPortNum )
     case 7:
         CPU_INTC_DeactivateInterrupt(UART8_IRQn);
         break;
+        
 #endif
     }
 
@@ -300,13 +360,30 @@ BOOL CPU_USART_Uninitialize( int ComPortNum )
     { // COM1 on APB2
         RCC->APB2ENR &= ~RCC_APB2ENR_USART1EN;
     }
-    else if (ComPortNum < 5) 
-    { // COM2-5 on APB1
+    else if (ComPortNum == 1) 
+    { // COM2 on APB1
         RCC->APB1ENR &= ~(RCC_APB1ENR_USART2EN >> 1 << ComPortNum);
+    } 
+    else if (ComPortNum < 5) 
+    { // COM3-5 on APB1
+#if defined (STM32F405xx) || defined (STM32F407xx) || defined (STM32F415xx) || \
+    defined (STM32F417xx) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F446xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx) || defined (STM32F427xx) || \
+    defined (STM32F429xx) || defined (STM32F437xx) || defined (STM32F439xx) || \
+    defined (STM32F469xx) || defined (STM32F479xx)
+    
+        RCC->APB1ENR &= ~(RCC_APB1ENR_USART2EN >> 1 << ComPortNum);
+
+#endif
     } 
     else 
     { // COM7-8 on APB1
+#if defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+        defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
+    
         RCC->APB1ENR &= ~(RCC_APB1ENR_UART7EN >> 6 << ComPortNum);
+#endif
     }
 
     return TRUE;

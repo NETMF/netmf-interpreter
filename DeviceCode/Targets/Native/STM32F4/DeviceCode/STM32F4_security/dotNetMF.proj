@@ -71,7 +71,6 @@
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <PropertyGroup />
   <ItemGroup>
-    <HFiles Include="..\stm32f2xx.h" />
     <Compile Include="STM32F4_Security_functions.cpp" />
   </ItemGroup>
   <ItemGroup />

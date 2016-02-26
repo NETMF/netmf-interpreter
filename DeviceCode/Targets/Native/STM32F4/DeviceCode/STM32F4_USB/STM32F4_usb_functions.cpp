@@ -15,11 +15,7 @@
 #include <tinyhal.h>
 #include <pal\com\usb\USB.h>
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
 
 #include "usb_def.h"
 

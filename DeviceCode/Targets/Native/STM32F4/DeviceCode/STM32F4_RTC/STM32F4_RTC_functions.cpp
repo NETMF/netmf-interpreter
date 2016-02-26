@@ -15,11 +15,7 @@
 #include <tinyhal.h>
 #include "RTC_decl.h"
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
 
 
 BOOL RTC_Initialize()

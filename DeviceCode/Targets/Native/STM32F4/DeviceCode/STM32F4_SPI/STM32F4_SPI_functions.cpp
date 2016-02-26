@@ -13,11 +13,7 @@
 
 #include <tinyhal.h>
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
 
 /*
 struct SPI_CONFIGURATION
@@ -38,7 +34,29 @@ struct SPI_CONFIGURATION
 typedef  SPI_TypeDef* ptr_SPI_TypeDef;
 
 // IO addresses
+// SPI channels availability according to STM32F4 variant
+
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F446xx) 
+static const ptr_SPI_TypeDef g_STM32_Spi_Port[] = {SPI1, SPI2, SPI3, SPI4};
+
+#elif defined (STM32F411xE)
+static const ptr_SPI_TypeDef g_STM32_Spi_Port[] = {SPI1, SPI2, SPI3, SPI4, SPI5};
+
+#elif defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+        defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
 static const ptr_SPI_TypeDef g_STM32_Spi_Port[] = {SPI1, SPI2, SPI3, SPI4, SPI5, SPI6};
+
+#elif defined (STM32F405xx) || defined (STM32F407xx) || defined (STM32F415xx) || \
+        defined (STM32F417xx) 
+static const ptr_SPI_TypeDef g_STM32_Spi_Port[] = {SPI1, SPI2, SPI3};
+
+#elif defined (STM32F410Cx) || defined (STM32F410Rx)
+static const ptr_SPI_TypeDef g_STM32_Spi_Port[] = {SPI1, SPI2, SPI5};
+
+#elif defined (STM32F410Tx)
+static const ptr_SPI_TypeDef g_STM32_Spi_Port[] = {SPI1};
+
+#endif
 
 // Pins
 static const BYTE g_STM32F4_Spi_Sclk_Pins[] = STM32F4_SPI_SCLK_PINS;
@@ -115,25 +133,57 @@ BOOL CPU_SPI_Xaction_Start( const SPI_CONFIGURATION& Configuration )
         RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;
         break; // enable SPI1 clock
 
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F446xx) || \
+    defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F405xx) || defined (STM32F407xx) || \
+    defined (STM32F415xx) || defined (STM32F417xx) || defined (STM32F410Cx) || \
+    defined (STM32F410Rx)
+
     case 1:
         RCC->APB1ENR |= RCC_APB1ENR_SPI2EN;
         break; // enable SPI2 clock
+#endif 
+
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F446xx) || \
+    defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F405xx) || defined (STM32F407xx) || \
+    defined (STM32F415xx) || defined (STM32F417xx) || defined (STM32F410Cx) || \
+    defined (STM32F410Rx)
 
     case 2:
         RCC->APB1ENR |= RCC_APB1ENR_SPI3EN;
         break; // enable SPI3 clock
+#endif
 
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F446xx) || \
+    defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F405xx) 
+    
     case 3:
         RCC->APB2ENR |= RCC_APB2ENR_SPI4EN;
         break; // enable SPI4 clock
+#endif
 
+#if defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F410Cx) || defined (STM32F410Rx)   
+    
     case 4:
         RCC->APB2ENR |= RCC_APB2ENR_SPI5EN;
         break; // enable SPI5 clock
+#endif
 
+#if defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+    defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
+     
     case 5:
         RCC->APB2ENR |= RCC_APB2ENR_SPI6EN;
         break; // enable SPI6 clock
+#endif
+
     }
     
     ptr_SPI_TypeDef spi = g_STM32_Spi_Port[Configuration.SPI_mod];
@@ -235,25 +285,57 @@ BOOL CPU_SPI_Xaction_Stop( const SPI_CONFIGURATION& Configuration )
         RCC->APB2ENR &= ~RCC_APB2ENR_SPI1EN;
         break; // disable SPI1 clock
 
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F446xx) || \
+    defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F405xx) || defined (STM32F407xx) || \
+    defined (STM32F415xx) || defined (STM32F417xx) || defined (STM32F410Cx) || \
+    defined (STM32F410Rx)
+
     case 1: 
         RCC->APB1ENR &= ~RCC_APB1ENR_SPI2EN;
         break; // disable SPI2 clock
+#endif 
+
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F446xx) || \
+    defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F405xx) || defined (STM32F407xx) || \
+    defined (STM32F415xx) || defined (STM32F417xx) || defined (STM32F410Cx) || \
+    defined (STM32F410Rx)
 
     case 2:
         RCC->APB1ENR &= ~RCC_APB1ENR_SPI3EN;
         break; // disable SPI3 clock
+#endif
 
+#if defined (STM32F401xC) || defined (STM32F401xE) || defined (STM32F446xx) || \
+    defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F405xx) 
+    
     case 3:
         RCC->APB2ENR &= ~RCC_APB2ENR_SPI4EN;
         break; // disable SPI4 clock
+#endif
 
+#if defined (STM32F411xE) || defined (STM32F427xx) || defined (STM32F429xx) || \
+    defined (STM32F437xx) || defined (STM32F439xx) || defined (STM32F469xx) || \
+    defined (STM32F479xx) || defined (STM32F410Cx) || defined (STM32F410Rx)   
+    
     case 4:
         RCC->APB2ENR &= ~RCC_APB2ENR_SPI5EN;
         break; // disable SPI5 clock
+#endif
 
+#if defined (STM32F427xx) || defined (STM32F429xx) || defined (STM32F437xx) || \
+    defined (STM32F439xx) || defined (STM32F469xx) || defined (STM32F479xx)
+     
     case 5:
         RCC->APB2ENR &= ~RCC_APB2ENR_SPI6EN;
         break; // disable SPI6 clock
+#endif
+
     }
 
     return TRUE;

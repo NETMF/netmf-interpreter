@@ -13,11 +13,7 @@
 
 #include <tinyhal.h>
 
-#ifdef STM32F4XX
-#include "..\stm32f4xx.h"
-#else
-#include "..\stm32f2xx.h"
-#endif
+#include "stm32f4xx_hal.h"
 
 #define STM32F4_Gpio_MaxPins (TOTAL_GPIO_PORT * 16)
 #define STM32F4_Gpio_MaxInt 16
@@ -416,9 +412,9 @@ void CPU_GPIO_SetPinState( GPIO_PIN pin, BOOL pinState )
         GPIO_TypeDef* port = Port( pin >> 4 ); // pointer to the actual port registers 
         UINT16 bit = 1 << ( pin & 0x0F );
         if( pinState )
-            port->BSRRL = bit; // set bit
+            port->BSRR = bit; // set bit
         else
-            port->BSRRH = bit; // reset bit
+            port->BSRR = (uint32_t)bit << 16U; // reset bit
     }
 }
 
