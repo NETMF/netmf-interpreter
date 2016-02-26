@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Diagnostics;
 using CorDebugInterop;
 using System.Collections;
@@ -87,7 +88,7 @@ namespace Microsoft.SPOT.Debugger
             public const string c_RESOLVE_RUNTIME_DEPENDENCIES_TARGETBE = "ResolveRuntimeDependenciesBE";
             public const string c_RESOLVE_RUNTIME_DEPENDENCIES_TASK = "ResolveRuntimeDependencies";
             public const string c_RESOLVE_REFERENCES_TARGET = "ResolveReferences";
-                
+
             private string[] m_assemblyReferences;
             private string m_assembly;
             private string m_startProgam;
@@ -132,7 +133,7 @@ namespace Microsoft.SPOT.Debugger
             public string[] GetDependencies( bool fIncludeStartProgram, bool fPE, bool fTargetIsBigEndian, string frameworkVersion )
             {
                 Hashtable table = new Hashtable();
-                
+
                 //Make sure this runs even for RunWithoutBuilding....how to do that???
                 AddDependencies( table, new string[] { this.m_assembly } );
                 AddDependencies( table, this.m_assemblyReferences );
@@ -141,6 +142,19 @@ namespace Microsoft.SPOT.Debugger
                 {
                     AddDependencies( table, new string[] { this.m_startProgam } );
                     AddDependencies( table, this.m_startProgramReferences );
+                }
+                // if mscorlib isn't in the list of assemblies, add it as it's always required
+                // the build system in some versions of VS+MSBuild will assume that, while other
+                // versions will explicitly reference it with the InProject item property set to
+                // false so it won't show in the IDE. By testing for it and adding it if not found
+                // both cases are covered.
+                var q = from path in table.OfType<string>( )
+                        where string.Equals( Path.GetFileName( path ), "mscorlib.dll", StringComparison.OrdinalIgnoreCase )
+                        select path;
+                if( !q.Any())
+                {
+                    PlatformInfo pi = new PlatformInfo(frameworkVersion);
+                    AddDependencies( table, new string[] { Path.Combine( pi.FrameworkAssembliesPath, "mscorlib.dll" ) } );
                 }
 
                 ArrayList deps = new ArrayList( table.Values );
@@ -157,7 +171,6 @@ namespace Microsoft.SPOT.Debugger
 
                 return depsArray;
             }
-
 
             public string Assembly
             {
@@ -426,7 +439,7 @@ namespace Microsoft.SPOT.Debugger
         private string FilterProjectPropertyPages(string property, PropPageSubset subset)
         {
             Utility.CLSIDList clsidList = new Utility.CLSIDList((string)property);
-            
+
             //Signing tab does not work for two reasons.  One, our cfg does not implement IVsPublishableProjectCfg
             //The designer fails in this case.
             //Secondly, we are not currently signing our assemblies.  So trying to sign an applicaiton assembly
@@ -612,11 +625,11 @@ namespace Microsoft.SPOT.Debugger
 
         protected override void SetInnerProject(IntPtr innerIUnknown)
         {
-            // 
+            //
             // This was changed to support VS2012 - The FlavoredProject base class we were using
             // was throwing a COM exception, so we switched to use the newer FlavoredProjectBase class
             // which uses an IntPtr instead of a managed object for this class.  The following method
-            // converts the IUnknown IntPtr into a managed object from which we can convert into the 
+            // converts the IUnknown IntPtr into a managed object from which we can convert into the
             // following interfaces.
             //
             object inner = Marshal.GetUniqueObjectForIUnknown(innerIUnknown);
@@ -913,10 +926,10 @@ namespace Microsoft.SPOT.Debugger
 
         internal static bool TargetFrameworkExactMatch( Debugger.WireProtocol.Commands.Debugging_Resolve_Assembly.Version left, Version right)
         {
-            if(left.iMajorVersion   == right.Major         && 
-               left.iMinorVersion   == right.Minor         && 
+            if(left.iMajorVersion   == right.Major         &&
+               left.iMinorVersion   == right.Minor         &&
                left.iBuildNumber    == right.Build         &&
-               left.iRevisionNumber == right.Revision 
+               left.iRevisionNumber == right.Revision
                )
             {
                 return true;
@@ -945,7 +958,7 @@ namespace Microsoft.SPOT.Debugger
         public int CreateProjectFlavorCfg( IVsCfg pBaseProjectCfg, out IVsProjectFlavorCfg ppFlavorCfg )
         {
             InitBuildHost();
-            
+
             ppFlavorCfg = new VsProjectFlavorCfg( this, pBaseProjectCfg );
 
             return Utility.COM_HResults.S_OK;
