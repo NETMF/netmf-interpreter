@@ -382,12 +382,12 @@
 
     <Target Name="CompressImage" Inputs="@(CompressImageFlash);@(CompressImageDat);@(CompressImageCfg);@(CompressImageSymdef)" Outputs="$(BIN_DIR)\$(EXEName).nmf')" Condition="'$(MEMORY)'!='RAM'" >
         <Message Text="Compressing @(CompressImages)"/>
-        <Exec Command="$(TOOLS_DIR)\buildhelper -symdef &quot;@(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs')&quot; $(CompressImageFlashSym) -compress @(CompressImageFlash) &quot;@(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf')&quot;"/>
-        <Exec Command="$(TOOLS_DIR)\buildhelper -symdef &quot;@(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs')&quot; $(CompressImageDatSym) -compress @(CompressImageDat) &quot;@(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf')&quot;" Condition="EXISTS('@(CompressImageDat)')"/>
-        <Exec Command="$(TOOLS_DIR)\buildhelper -symdef &quot;@(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs')&quot; $(CompressImageCfgSym) -compress @(CompressImageCfg) &quot;@(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf')&quot;"/>
+        <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageFlashSym) -compress @(CompressImageFlash) @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf')"/>
+        <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageDatSym) -compress @(CompressImageDat) @(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf')" Condition="EXISTS('@(CompressImageDat)')"/>
+        <Exec Command="$(TOOLS_DIR)\buildhelper -symdef @(CompressImageSymdef->'%(RootDir)%(Directory)%(FileName).symdefs') $(CompressImageCfgSym) -compress @(CompressImageCfg) @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf')"/>
 
-        <Exec Command="Copy /b &quot;@(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf')&quot; + &quot;@(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf')&quot; + @(CompressImageCfg->&quot;%(RootDir)%(Directory)%(FileName).nmf')&quot; &quot;$(BIN_DIR)\$(AssemblyName).nmf&quot;" Condition="EXISTS('@(CompressImageDat)')"/>
-        <Exec Command="Copy /b &quot;@(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf')&quot; + &quot;@(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf')&quot; &quot;$(BIN_DIR)\$(AssemblyName).nmf&quot;" Condition="!EXISTS('@(CompressImageDat)')"/>
+        <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageDat->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\$(AssemblyName).nmf" Condition="EXISTS('@(CompressImageDat)')"/>
+        <Exec Command="Copy /b @(CompressImageFlash->'%(RootDir)%(Directory)%(FileName).nmf') + @(CompressImageCfg->'%(RootDir)%(Directory)%(FileName).nmf') $(BIN_DIR)\$(AssemblyName).nmf" Condition="!EXISTS('@(CompressImageDat)')"/>
     </Target>
 
     <PropertyGroup>

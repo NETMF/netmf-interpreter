@@ -16,10 +16,6 @@ if /I "%FLAVOR_DAT%"   == "Debug"   set FLAVOR_DAT=Debug
 if /I "%FLAVOR_DAT%"   == "Release" set FLAVOR_DAT=Release
 if    "%FLAVOR_DAT%"   == ""        set FLAVOR_DAT=Release
 
-if /I "%FLAVOR_WIN%"   == "Debug"   set FLAVOR_WIN=Debug
-if /I "%FLAVOR_WIN%"   == "Release" set FLAVOR_WIN=Release
-if    "%FLAVOR_WIN%"   == ""        set FLAVOR_WIN=Release
-
 if "%FLAVOR_MEMORY%"   == "" set FLAVOR_MEMORY=Flash
 
 if "%OEM_NAME%"        == "" set OEM_NAME=Microsoft
