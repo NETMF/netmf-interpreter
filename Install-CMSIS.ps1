@@ -8,7 +8,7 @@ Retrieves and extracts the CMSIS pack supported by NETMF from the official GitHu
 Get-CMSIS
 #>
 
-Import-Module ..\tools\scripts\Build-netmf.psm1
+Import-Module .\tools\scripts\Build-netmf.psm1
 
 # current officially supported version
 $packVersion = "4.3.0"
@@ -20,4 +20,5 @@ $packFileName = "ARM.CMSIS.$packVersion.pack"
 $packSourceURLBase = "https://github.com/ARM-software/CMSIS/releases/download/v$packVersion"
 
 # download the pack and extract the files into the curent directory 
-Invoke-WebRequest -Uri "$packSourceURLBase/$packFileName" | Expand-Stream
+$dstPath = [System.IO.Path]::Combine( $SPOCLIENT, "CMSIS" )
+Invoke-WebRequest -Uri "$packSourceURLBase/$packFileName" | Expand-Stream -Destination $dstPath
