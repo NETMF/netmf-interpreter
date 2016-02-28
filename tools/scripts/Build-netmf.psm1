@@ -7,7 +7,7 @@ Function to extract the files contained in a zip file provided as a stream typic
 
 Invoke-WebRequest -Uri "$packSourceURLBase/$packFileName" | Expand-Stream
 #>
-# 
+
 Function Expand-Stream
 {
     [CmdletBinding()]
@@ -24,7 +24,13 @@ Function Expand-Stream
         }
         else
         {
-            $rootPath = $Destination
+            $rootPath = [System.IO.Path]::GetFullPath( $Destination )
+        }
+        
+        #ensure the root directory for extraction exists
+        if( -not [System.IO.Directory]::Exists( $rootPath ) )
+        {
+            [System.IO.Directory]::CreateDirectory( $rootPath )
         }
     } 
     Process
@@ -37,6 +43,7 @@ Function Expand-Stream
             $targetDir = [System.IO.Path]::GetDirectoryName( $targetPath )
             if( $entry.FullName.EndsWith('/') )
             {
+                # ensure the destination directory exists
                 if( -not [System.IO.Directory]::Exists( $targetDir ) )
                 {
                     [System.IO.Directory]::CreateDirectory( $targetDir )
@@ -53,4 +60,8 @@ Function Expand-Stream
     }
 }
 
-export-modulemember -function Expand-Stream
+$SPOCLIENT = [System.IO.Path]::GetFullPath( [System.IO.Path]::Combine( $PSScriptRoot, "..","..") )
+$SPOROOT = [System.IO.Path]::GetFullPath( [System.IO.Path]::Combine( $SPOCLIENT, "..") )
+
+Export-ModuleMember -function Expand-Stream
+Export-ModuleMember -Variable ("SPOCLIENT","SPOROOT")
