@@ -21,4 +21,4 @@ $packSourceURLBase = "https://github.com/ARM-software/CMSIS/releases/download/v$
 
 # download the pack and extract the files into the curent directory 
 $dstPath = [System.IO.Path]::Combine( $SPOCLIENT, "CMSIS" )
-Invoke-WebRequest -Uri "$packSourceURLBase/$packFileName" | Expand-Stream -Destination $dstPath
+Invoke-WebRequest -UseBasicParsing -Uri "$packSourceURLBase/$packFileName" | Expand-Stream -Destination $dstPath
