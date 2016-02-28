@@ -1,23 +1,37 @@
 ﻿<#
 .SYNOPSIS
 
-Retrieves and extracts the CMSIS pack supported by NETMF from the official GitHub release.
+Function to extract the files contained in a zip file provided as a stream typically from an Invoke-WebRequest
 
 .EXAMPLE
 
-Get-CMSIS
+Invoke-WebRequest -Uri "$packSourceURLBase/$packFileName" | Expand-Stream
 #>
 
-# Function to extract the files contained in a zip file provided as a stream
-Function Extract-PackStream
+Function Expand-Stream
 {
     [CmdletBinding()]
-    Param ( [parameter(ValueFromPipeline=$True,Mandatory=$True,ValueFromPipelineByPropertyName=$True)] [System.IO.Stream]$RawContentStream )
+    Param ( [parameter(ValueFromPipeline=$True,Mandatory=$True,ValueFromPipelineByPropertyName=$True)] [System.IO.Stream]$RawContentStream
+          , [parameter(Mandatory=$False)] [String]$Destination
+          )
     Begin
     {
         [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression") | Out-Null
         [System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null
-        $rootPath = Get-Location
+        if( [String]::IsNullOrWhiteSpace( $Destination ) )
+        {
+            $rootPath = Get-Location
+        }
+        else
+        {
+            $rootPath = [System.IO.Path]::GetFullPath( $Destination )
+        }
+        
+        #ensure the root directory for extraction exists
+        if( -not [System.IO.Directory]::Exists( $rootPath ) )
+        {
+            [System.IO.Directory]::CreateDirectory( $rootPath )
+        }
     } 
     Process
     {
@@ -29,6 +43,7 @@ Function Extract-PackStream
             $targetDir = [System.IO.Path]::GetDirectoryName( $targetPath )
             if( $entry.FullName.EndsWith('/') )
             {
+                # ensure the destination directory exists
                 if( -not [System.IO.Directory]::Exists( $targetDir ) )
                 {
                     [System.IO.Directory]::CreateDirectory( $targetDir )
@@ -45,14 +60,8 @@ Function Extract-PackStream
     }
 }
 
-# officially supported version
-$packVersion = "4.3.0"
+$SPOCLIENT = [System.IO.Path]::GetFullPath( [System.IO.Path]::Combine( $PSScriptRoot, "..","..") )
+$SPOROOT = [System.IO.Path]::GetFullPath( [System.IO.Path]::Combine( $SPOCLIENT, "..") )
 
-# FUll versioned pack file name to download
-$packFileName = "ARM.CMSIS.$packVersion.pack"
-
-# base URL to download the pack file from
-$packSourceURLBase = "https://github.com/ARM-software/CMSIS/releases/download/v$packVersion"
-
-# download the pack and extract the files into the curent directory 
-Invoke-WebRequest -Uri "$packSourceURLBase/$packFileName" | Extract-PackStream
+Export-ModuleMember -function Expand-Stream
+Export-ModuleMember -Variable ("SPOCLIENT","SPOROOT")
