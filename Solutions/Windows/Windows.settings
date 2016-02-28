@@ -1,0 +1,19 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PlatformGuid>{34b78a1a-c16a-406e-a968-ad7845823c12}</PlatformGuid>
+    <TARGETPLATFORM>Win32</TARGETPLATFORM>
+    <PLATFORM>Windows</PLATFORM>
+    <Description>Native Windows Solution</Description>
+    <Documentation>
+    </Documentation>
+    <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
+    <ENDIANNESS>le</ENDIANNESS>
+    <MEMORY>RAM</MEMORY>
+    <FLAVOR Condition="'$(FLAVOR)'==''">Debug</FLAVOR>
+    <TCP_IP_STACK Condition="'$(TCP_IP_STACK)'==''">LWIP_1_4_1_OS</TCP_IP_STACK>      
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="Solutions\Windows" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\devicecode\Targets\OS\Win32\Win32.settings" />
+</Project>
