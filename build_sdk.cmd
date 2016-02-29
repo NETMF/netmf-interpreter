@@ -36,12 +36,15 @@ SET PORT_BUILD=
 
 ECHO Building PreSDK ...
 call Msbuild sdk.dirproj /nr:false /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK%  /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdkpre.log
+if %ERRORLEVEL% LSS 0 exit /B %ERRORLEVEL%
 
 ECHO Building SDK ...
 call Msbuild setup\ProductSDK\Product.wixproj /m /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK% /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdk.log
+if %ERRORLEVEL% LSS 0 exit /B %ERRORLEVEL%
 
 ECHO Building VSIX packages ...
 call Msbuild setup\ProductSDK\VsixPackages.dirproj /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK% /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=vsixpkg.log
+if %ERRORLEVEL% LSS 0 exit /B %ERRORLEVEL%
 
 SET PORT_BUILD=
 
