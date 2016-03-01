@@ -1,6 +1,6 @@
 @echo off
 setlocal
-setenv_%1 %2
+call setenv_%1 %2
 cd Solutions\%3
 msbuild /flp:verbosity=detailed /clp:verbosity=minimal
 endlocal
