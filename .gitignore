@@ -52,3 +52,6 @@ ReleaseNotesCrypto.txt
 /Solutions/Windows/TinyCLR/FLASH_MEMORY.bin
 *.opendb
 *.dbgconf
+/tools/DisAsmPE/Debug
+/tools/DisAsmPE/DisAsmPE/Debug
+/tools/DisAsmPE/NETMF.PE.Metadata/Debug
