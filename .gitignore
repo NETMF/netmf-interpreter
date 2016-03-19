@@ -55,3 +55,4 @@ ReleaseNotesCrypto.txt
 /tools/DisAsmPE/Debug
 /tools/DisAsmPE/DisAsmPE/Debug
 /tools/DisAsmPE/NETMF.PE.Metadata/Debug
+/tools/DisAsmPE/DisAsmPE/*.txt
