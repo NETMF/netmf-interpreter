@@ -88,6 +88,7 @@
     <ClInclude Include="..\Include\EnumFlags.h" />
     <ClInclude Include="..\Include\MetadataTables.h" />
     <ClInclude Include="..\Include\ScopeGuard.h" />
+    <ClInclude Include="..\Include\UnalignedAccess.h" />
     <ClInclude Include="..\Include\Utilities.h" />
     <ClInclude Include="CommonFormatting.h" />
     <ClInclude Include="MemoryMappedFile.h" />
@@ -98,7 +99,10 @@
     <ClInclude Include="Win32Handles.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommonFormatting.cpp" />
     <ClCompile Include="DisAsmPE.cpp" />
+    <ClCompile Include="DumpIlOpCodes.cpp" />
+    <ClCompile Include="DumpSignatures.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
