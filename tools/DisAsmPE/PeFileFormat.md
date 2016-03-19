@@ -134,6 +134,6 @@ Some of these tables will, therefore, have no padding, and all will have values 
 isn't the most compact form to hold this information, but it only costs 16 bytes/assembly. Trying to only
 align some of the tables is just much more hassle than it's worth. This field itself must also be aligned
 on a 32 bit boundary. This padding is used to compute the size of a given table (including the blob data)
-using the following formula:
+using the following formula:  
 `TableSize = StartOfTables[ tableindex + 1 ] - StartOfTables[ tableindex ] - PaddingOfTables[ tableindex ]`
 
