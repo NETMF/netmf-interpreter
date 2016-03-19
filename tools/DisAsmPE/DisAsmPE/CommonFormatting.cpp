@@ -20,6 +20,7 @@
 #include "CommonFormatting.h"
 
 using namespace NETMF::Metadata;
+using namespace NETMF::Graphics;
 
 std::ios_base& HEX( std::ios_base& strm )
 {
@@ -130,119 +131,156 @@ std::ostream& operator<<( std::ostream& strm, ResourceKind kind )
 
 std::ostream& operator<<( std::ostream& strm, AssemblyHeaderFlags flags )
 {
-    OutputEnumFlags( strm
-                   , flags
-                   , { { AssemblyHeaderFlags::None, "None" },
-                       { AssemblyHeaderFlags::NeedReboot, "NeedReboot"},
-                       { AssemblyHeaderFlags::Patch, "Patch"},
-                       { AssemblyHeaderFlags::NeedReboot, "NeedReboot" }
-                     }
-                   );
+    static std::map< AssemblyHeaderFlags, char const*> const flagNamesMap =
+    { 
+        { AssemblyHeaderFlags::None      , "None" },
+        { AssemblyHeaderFlags::NeedReboot, "NeedReboot" },
+        { AssemblyHeaderFlags::Patch     , "Patch" },
+        { AssemblyHeaderFlags::NeedReboot, "NeedReboot" }
+    };
+
+    OutputEnumFlags( strm, flags, flagNamesMap );
     return strm;
 }
 
 std::ostream& operator<<( std::ostream& strm, TypeDefFlags flags )
 {
-    OutputEnumFlags( strm
-                   , flags
-                   , { 
-                        { TypeDefFlags::None                ,"None"},
-                        { TypeDefFlags::ScopeMask           ,"ScopeMask"},
-                        { TypeDefFlags::NotPublic           ,"NotPublic"},
-                        { TypeDefFlags::Public              ,"Public"},
-                        { TypeDefFlags::NestedPublic        ,"NestedPublic"},
-                        { TypeDefFlags::NestedPrivate       ,"NestedPrivate"},
-                        { TypeDefFlags::NestedFamily        ,"NestedFamily"},
-                        { TypeDefFlags::NestedAssembly      ,"NestedAssembly"},
-                        { TypeDefFlags::NestedFamANDAssem   ,"NestedFamANDAssem"},
-                        { TypeDefFlags::NestedFamORAssem    ,"NestedFamORAssem"},
-                        { TypeDefFlags::Serializable        ,"Serializable"},
-                        { TypeDefFlags::SemanticsMask       ,"SemanticsMask"},
-                        { TypeDefFlags::Class               ,"Class"},
-                        { TypeDefFlags::ValueType           ,"ValueType"},
-                        { TypeDefFlags::Interface           ,"Interface"},
-                        { TypeDefFlags::Enum                ,"Enum"},
-                        { TypeDefFlags::Abstract            ,"Abstract"},
-                        { TypeDefFlags::Sealed              ,"Sealed"},
-                        { TypeDefFlags::SpecialName         ,"SpecialName"},
-                        { TypeDefFlags::Delegate            ,"Delegate"},
-                        { TypeDefFlags::MulticastDelegate   ,"MulticastDelegate"},
-                        { TypeDefFlags::Patched             ,"Patched"},
-                        { TypeDefFlags::BeforeFieldInit     ,"BeforeFieldInit"},
-                        { TypeDefFlags::HasSecurity         ,"HasSecurity"},
-                        { TypeDefFlags::HasFinalizer        ,"HasFinalizer"},
-                        { TypeDefFlags::HasAttributes       ,"HasAttributes"},
-                     }
-                   );
+    static std::map< TypeDefFlags, char const*> const flagNamesMap =
+    {
+        { TypeDefFlags::None                ,"None" },
+        { TypeDefFlags::ScopeMask           ,"ScopeMask" },
+        { TypeDefFlags::NotPublic           ,"NotPublic" },
+        { TypeDefFlags::Public              ,"Public" },
+        { TypeDefFlags::NestedPublic        ,"NestedPublic" },
+        { TypeDefFlags::NestedPrivate       ,"NestedPrivate" },
+        { TypeDefFlags::NestedFamily        ,"NestedFamily" },
+        { TypeDefFlags::NestedAssembly      ,"NestedAssembly" },
+        { TypeDefFlags::NestedFamANDAssem   ,"NestedFamANDAssem" },
+        { TypeDefFlags::NestedFamORAssem    ,"NestedFamORAssem" },
+        { TypeDefFlags::Serializable        ,"Serializable" },
+        { TypeDefFlags::SemanticsMask       ,"SemanticsMask" },
+        { TypeDefFlags::Class               ,"Class" },
+        { TypeDefFlags::ValueType           ,"ValueType" },
+        { TypeDefFlags::Interface           ,"Interface" },
+        { TypeDefFlags::Enum                ,"Enum" },
+        { TypeDefFlags::Abstract            ,"Abstract" },
+        { TypeDefFlags::Sealed              ,"Sealed" },
+        { TypeDefFlags::SpecialName         ,"SpecialName" },
+        { TypeDefFlags::Delegate            ,"Delegate" },
+        { TypeDefFlags::MulticastDelegate   ,"MulticastDelegate" },
+        { TypeDefFlags::Patched             ,"Patched" },
+        { TypeDefFlags::BeforeFieldInit     ,"BeforeFieldInit" },
+        { TypeDefFlags::HasSecurity         ,"HasSecurity" },
+        { TypeDefFlags::HasFinalizer        ,"HasFinalizer" },
+        { TypeDefFlags::HasAttributes       ,"HasAttributes" },
+    };
+
+    OutputEnumFlags( strm, flags, flagNamesMap );
     return strm;
 }
 
 std::ostream& operator<<( std::ostream& strm, MethodDefFlags flags )
 {
-    OutputEnumFlags( strm
-                   , flags
-                   , {
-                         { MethodDefFlags::ScopeMask            ,"ScopeMask"},
-                         { MethodDefFlags::PrivateScope         ,"PrivateScope"},
-                         { MethodDefFlags::Private              ,"Private"},
-                         { MethodDefFlags::FamANDAssem          ,"FamANDAssem"},
-                         { MethodDefFlags::Assem                ,"Assem"},
-                         { MethodDefFlags::Family               ,"Family"},
-                         { MethodDefFlags::FamORAssem           ,"FamORAssem"},
-                         { MethodDefFlags::Public               ,"Public"},
-                         { MethodDefFlags::Static               ,"Static"},
-                         { MethodDefFlags::Final                ,"Final"},
-                         { MethodDefFlags::Virtual              ,"Virtual"},
-                         { MethodDefFlags::HideBySig            ,"HideBySig"},
-                         { MethodDefFlags::VtableLayoutMask     ,"VtableLayoutMask"},
-                         { MethodDefFlags::ReuseSlot            ,"ReuseSlot"},
-                         { MethodDefFlags::NewSlot              ,"NewSlot"},
-                         { MethodDefFlags::Abstract             ,"Abstract"},
-                         { MethodDefFlags::SpecialName          ,"SpecialName"},
-                         { MethodDefFlags::NativeProfiled       ,"NativeProfiled"},
-                         { MethodDefFlags::Constructor          ,"Constructor"},
-                         { MethodDefFlags::StaticConstructor    ,"StaticConstructor"},
-                         { MethodDefFlags::Finalizer            ,"Finalizer"},
-                         { MethodDefFlags::DelegateConstructor  ,"DelegateConstructor"},
-                         { MethodDefFlags::DelegateInvoke       ,"DelegateInvoke"},
-                         { MethodDefFlags::DelegateBeginInvoke  ,"DelegateBeginInvoke"},
-                         { MethodDefFlags::DelegateEndInvoke    ,"DelegateEndInvoke"},
-                         { MethodDefFlags::Synchronized         ,"Synchronized"},
-                         { MethodDefFlags::GloballySynchronized ,"GloballySynchronized"},
-                         { MethodDefFlags::Patched              ,"Patched"},
-                         { MethodDefFlags::EntryPoint           ,"EntryPoint"},
-                         { MethodDefFlags::RequireSecObject     ,"RequireSecObject"},
-                         { MethodDefFlags::HasSecurity          ,"HasSecurity"},
-                         { MethodDefFlags::HasExceptionHandlers ,"HasExceptionHandlers"},
-                         { MethodDefFlags::HasAttributes        ,"HasAttributes"}
-                     }
-                   );
+    static std::map< MethodDefFlags, char const*> const flagNamesMap =
+    {
+        { MethodDefFlags::ScopeMask            ,"ScopeMask" },
+        { MethodDefFlags::PrivateScope         ,"PrivateScope" },
+        { MethodDefFlags::Private              ,"Private" },
+        { MethodDefFlags::FamANDAssem          ,"FamANDAssem" },
+        { MethodDefFlags::Assem                ,"Assem" },
+        { MethodDefFlags::Family               ,"Family" },
+        { MethodDefFlags::FamORAssem           ,"FamORAssem" },
+        { MethodDefFlags::Public               ,"Public" },
+        { MethodDefFlags::Static               ,"Static" },
+        { MethodDefFlags::Final                ,"Final" },
+        { MethodDefFlags::Virtual              ,"Virtual" },
+        { MethodDefFlags::HideBySig            ,"HideBySig" },
+        { MethodDefFlags::VtableLayoutMask     ,"VtableLayoutMask" },
+        { MethodDefFlags::ReuseSlot            ,"ReuseSlot" },
+        { MethodDefFlags::NewSlot              ,"NewSlot" },
+        { MethodDefFlags::Abstract             ,"Abstract" },
+        { MethodDefFlags::SpecialName          ,"SpecialName" },
+        { MethodDefFlags::NativeProfiled       ,"NativeProfiled" },
+        { MethodDefFlags::Constructor          ,"Constructor" },
+        { MethodDefFlags::StaticConstructor    ,"StaticConstructor" },
+        { MethodDefFlags::Finalizer            ,"Finalizer" },
+        { MethodDefFlags::DelegateConstructor  ,"DelegateConstructor" },
+        { MethodDefFlags::DelegateInvoke       ,"DelegateInvoke" },
+        { MethodDefFlags::DelegateBeginInvoke  ,"DelegateBeginInvoke" },
+        { MethodDefFlags::DelegateEndInvoke    ,"DelegateEndInvoke" },
+        { MethodDefFlags::Synchronized         ,"Synchronized" },
+        { MethodDefFlags::GloballySynchronized ,"GloballySynchronized" },
+        { MethodDefFlags::Patched              ,"Patched" },
+        { MethodDefFlags::EntryPoint           ,"EntryPoint" },
+        { MethodDefFlags::RequireSecObject     ,"RequireSecObject" },
+        { MethodDefFlags::HasSecurity          ,"HasSecurity" },
+        { MethodDefFlags::HasExceptionHandlers ,"HasExceptionHandlers" },
+        { MethodDefFlags::HasAttributes        ,"HasAttributes" }
+    };
+    
+    OutputEnumFlags( strm, flags, flagNamesMap );
     return strm;
 }
 
 std::ostream& operator<<( std::ostream& strm, FieldDefFlags flags )
 {
-    OutputEnumFlags( strm
-                   , flags
-                   , {
-                        { FieldDefFlags::None          ,"None"},
-                        { FieldDefFlags::ScopeMask     ,"ScopeMask"},
-                        { FieldDefFlags::Private       ,"Private"},
-                        { FieldDefFlags::FamANDAssem   ,"FamANDAssem"},
-                        { FieldDefFlags::Assembly      ,"Assembly"},
-                        { FieldDefFlags::Family        ,"Family"},
-                        { FieldDefFlags::FamORAssem    ,"FamORAssem"},
-                        { FieldDefFlags::Public        ,"Public"},
-                        { FieldDefFlags::NotSerialized ,"NotSerialized"},
-                        { FieldDefFlags::Static        ,"Static"},
-                        { FieldDefFlags::InitOnly      ,"InitOnly"},
-                        { FieldDefFlags::Literal       ,"Literal"},
-                        { FieldDefFlags::SpecialName   ,"SpecialName"},
-                        { FieldDefFlags::HasDefault    ,"HasDefault"},
-                        { FieldDefFlags::HasFieldRVA   ,"HasFieldRVA"},
-                        { FieldDefFlags::NoReflection  ,"NoReflection"},
-                        { FieldDefFlags::HasAttributes ,"HasAttributes"}
-                     }
-                  );
+    std::map<FieldDefFlags, char const*> const flagNamesMap =
+    {
+       { FieldDefFlags::None          , "None" },
+       { FieldDefFlags::ScopeMask     , "ScopeMask" },
+       { FieldDefFlags::Private       , "Private" },
+       { FieldDefFlags::FamANDAssem   , "FamANDAssem" },
+       { FieldDefFlags::Assembly      , "Assembly" },
+       { FieldDefFlags::Family        , "Family" },
+       { FieldDefFlags::FamORAssem    , "FamORAssem" },
+       { FieldDefFlags::Public        , "Public" },
+       { FieldDefFlags::NotSerialized , "NotSerialized" },
+       { FieldDefFlags::Static        , "Static" },
+       { FieldDefFlags::InitOnly      , "InitOnly" },
+       { FieldDefFlags::Literal       , "Literal" },
+       { FieldDefFlags::SpecialName   , "SpecialName" },
+       { FieldDefFlags::HasDefault    , "HasDefault" },
+       { FieldDefFlags::HasFieldRVA   , "HasFieldRVA" },
+       { FieldDefFlags::NoReflection  , "NoReflection" },
+       { FieldDefFlags::HasAttributes , "HasAttributes" }
+    };
+
+    OutputEnumFlags( strm, flags, flagNamesMap );
     return strm;
 }
+
+std::ostream& operator<<( std::ostream& strm, NETMF::Graphics::BitmapDescriptorFlags flags )
+{
+    static std::map< BitmapDescriptorFlags, char const*> flagNamesMap = 
+    {
+       { BitmapDescriptorFlags::None      , "None" },
+       { BitmapDescriptorFlags::ReadOnly  , "ReadOnly" },
+       { BitmapDescriptorFlags::Compressed, "Compressed" }
+    };
+
+    OutputEnumFlags( strm, flags, flagNamesMap );
+    return strm;
+}
+
+std::ostream& operator<<( std::ostream& strm, NETMF::Graphics::BitmapImageType kind )
+{
+    switch( kind )
+    {
+    case NETMF::Graphics::BitmapImageType::TinyCLRBitmap:
+        strm << "TinyCLRBitmap";
+        break;
+    case NETMF::Graphics::BitmapImageType::Gif:
+        strm << "Gif";
+        break;
+    case NETMF::Graphics::BitmapImageType::JPeg:
+        strm << "JPeg";
+        break;
+    case NETMF::Graphics::BitmapImageType::Bmp:
+        strm << "Bmp";
+        break;
+    default:
+        break;
+    }
+    return strm;
+}
+

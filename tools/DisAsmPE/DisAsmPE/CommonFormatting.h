@@ -17,6 +17,12 @@
 #include <map>
 #include <iostream>
 #include "MetadataTables.h"
+#include "Graphics.h"
+
+
+// This module defines basic formating for enums and simple structures that otherwise
+// consume vertical code space without contributing to the overall comprehension of
+// the core PE data format
 
 // Description:
 //   Equivalent to using std::uppercase << std::hex
@@ -31,6 +37,9 @@ std::ostream& operator<<( std::ostream& strm, NETMF::Metadata::MethodDefFlags fl
 std::ostream& operator<<( std::ostream& strm, NETMF::Metadata::FieldDefFlags flags );
 std::ostream& operator<<( std::ostream& strm, NETMF::Metadata::TableKind kind );
 std::ostream& operator<<( std::ostream& strm, NETMF::Metadata::ResourceKind kind );
+
+std::ostream& operator<<( std::ostream& strm, NETMF::Graphics::BitmapDescriptorFlags flags );
+std::ostream& operator<<( std::ostream& strm, NETMF::Graphics::BitmapImageType kind );
 
 // create an std::string with whitespace control chars replaced as standard C++ char escape style
 std::string FormatString( const char* peString );
@@ -52,7 +61,7 @@ std::string FormatString( const char* peString );
 template< typename T>
 void OutputEnumFlagIfSet( std::ostream& strm, T value, T flag, char const* name, bool& outputSep )
 {
-    if( !EnumFlags::HasFlags( value, flag ) )
+    if( !Microsoft::Utilities::EnumFlags::HasFlags( value, flag ) )
         return;
 
     if( outputSep )
@@ -62,8 +71,23 @@ void OutputEnumFlagIfSet( std::ostream& strm, T value, T flag, char const* name,
     outputSep = true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Description:
+//   Function template to format the flags of a flags enumerated value
+//
+// Template parameters:
+//   T enumeration type, must have ENUM_FLAGS(T) applied.
+// 
+// Input:
+//    strm - stream to output the formated data to
+//   value - flags value to format
+//   names - map of flag enumerations to string names
+//
+// Remarks:
+//    Generates a string of the form "flag1 | flag2 | flag3"
+//
 template<typename T>
-void OutputEnumFlags( std::ostream& strm, T value, std::map< T, char const*> names )
+void OutputEnumFlags( std::ostream& strm, T value, std::map< T, char const*> const names )
 {
     T allKnownFlags;
     for( auto const entry : names )
@@ -74,7 +98,7 @@ void OutputEnumFlags( std::ostream& strm, T value, std::map< T, char const*> nam
     auto unknownFlags = ( value & ~allKnownFlags );
     bool hasUnknownFlags = static_cast<T>(0) != unknownFlags;
     if( value == static_cast<T>(0) )
-        strm << names[static_cast<T>(0)];
+        strm << names.at(static_cast<T>(0));
     else
     {
         bool outputSep = false;
@@ -131,8 +155,6 @@ struct AssemblyTableRef
     T const& Entry;
     uint16_t const Index;
 };
-
-extern void DecodeIlOpcodes( std::ostream& strm, AssemblyTableRef<NETMF::Metadata::MethodDefTableEntry> ref );
 
 void DumpSignatureDataType( std::ostream& strm, NETMF::Metadata::MetadataPtr& p );
 void DumpSignatureTypeSequence( std::ostream& strm, NETMF::Metadata::MetadataPtr& p, size_t len );

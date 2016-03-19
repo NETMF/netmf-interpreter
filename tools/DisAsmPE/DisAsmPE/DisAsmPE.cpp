@@ -20,6 +20,7 @@
 #include "CommonFormatting.h"
 #include "UnalignedAccess.h"
 #include "MetadataModel.h"
+#include "Graphics.h"
 
 #define SHOW_IL_OPCODES 1
 
@@ -30,6 +31,7 @@ using namespace Microsoft::Utilities;
 using namespace std::tr2::sys;
 
 int ParseOneAssemblyFile( std::ostream& strm, path peFilePath );
+extern void DecodeIlOpcodes( std::ostream& strm, AssemblyTableRef<NETMF::Metadata::MethodDefTableEntry> ref );
 
 int wmain( int argc, wchar_t const* argv[ ] )
 {
@@ -215,6 +217,50 @@ std::ostream& operator<<( std::ostream& strm, AssemblyTableRef<FieldDefTableEntr
     return strm;
 }
 
+// While the bitmap and font formats are not technically part of the PE format
+// they are NETMF defined standard resource types so this app dumps the basic
+// header structures to verify the PE resource data is accessible.
+
+std::ostream& operator<<( std::ostream& strm, NETMF::Graphics::BitmapDescriptor const& descriptor )
+{
+    strm << std::dec;
+    strm << "    BitmapDescriptor:" << std::endl;
+    strm << "        Width: " << descriptor.Width << std::endl;
+    strm << "       Height: " << descriptor.Height << std::endl;
+    strm << "        Flags: " << descriptor.Flags << std::endl;
+    strm << "  BitPerPixel: " << descriptor.BitsPerPixel << std::endl;
+    strm << "    ImageType: " << descriptor.ImageType << std::endl;
+    strm << HEX;
+    return strm;
+}
+
+void DumpFontMetrics( std::ostream& strm, NETMF::Graphics::FontMetrics const& metrics, std::string indent )
+{
+    strm << std::dec;
+    strm << indent << "FontMetrics:" << std::endl;
+    strm << indent << "          Height: " << metrics.Height << std::endl;
+    strm << indent << "          Offset: " << metrics.Offset << std::endl;
+    strm << indent << "          Ascent: " << metrics.Ascent << std::endl;
+    strm << indent << "         Descent: " << metrics.Descent << std::endl;
+    strm << indent << " InternalLeading: " << metrics.InternalLeading << std::endl;
+    strm << indent << " ExternalLeading: " << metrics.ExternalLeading << std::endl;
+    strm << indent << "    AvgCharWidth: " << metrics.AvgCharWidth << std::endl;
+    strm << indent << "    MaxCharWidth: " << metrics.MaxCharWidth << std::endl;
+    strm << HEX;
+}
+
+std::ostream& operator<<( std::ostream& strm, NETMF::Graphics::FontDescriptor const& descriptor )
+{
+    strm << "    FontDescriptor:" << std::endl;
+    DumpFontMetrics( strm, descriptor.Metrics, "        ");
+    strm << std::dec;
+    strm << "        Ranges: " << descriptor.Ranges << std::endl;
+    strm << "    Characters: " << descriptor.Characters << std::endl;
+    strm << "         Flags: " << descriptor.Flags << std::endl;
+    strm << HEX;
+    return strm;
+}
+
 std::ostream& operator<<( std::ostream& strm, AssemblyTableRef<ResourcesTableEntry> const& ref )
 {
     strm << "ResourcesTableEntry[0x" << ref.Index << "]:" << std::endl;
@@ -237,7 +283,11 @@ std::ostream& operator<<( std::ostream& strm, AssemblyTableRef<ResourcesTableEnt
         strm << '\"' << reinterpret_cast< char const* >( pData ) << '\"' << std::endl;
         break;
     case ResourceKind::Bitmap:
+        strm << *reinterpret_cast< NETMF::Graphics::BitmapDescriptor const* >( pData ) << std::endl;
+        break;
     case ResourceKind::Font:
+        strm << *reinterpret_cast< NETMF::Graphics::FontDescriptor const* >( pData ) << std::endl;
+        break;
     case ResourceKind::Binary:
         strm << " byte[ " << std::dec << size << HEX << " ] " << std::endl;
         break;
