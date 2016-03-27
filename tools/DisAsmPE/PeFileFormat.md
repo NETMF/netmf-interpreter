@@ -108,5 +108,32 @@ one version of an assembly can be loaded at a time. Thus assembly references in 
 Fixed array of offsets to the table data for each of the 16 different tables. The entries in this array are offsets from the start
 of the assembly header itself (e.g. the file seek offset if the PE image is from a file)
 
+| Name                                         | Description
+|----------------------------------------------|------------
+| [AssemblyRef](AssemblyRefTableEntry.md)      | Table of Assembly references
+| [TypeRef](TypeRefTableEntry.md)              | Reference to a type in another assembly
+| [FieldRef](FieldRefTableEntry.md)            | Reference to a field of a type in another assembly
+| [MethodRef](MethodRefTableEntry.md)          | Reference to a method of a type in another assembly
+| [TypeDef](TypeDefTableEntry.md)              | Type definition for a type in this assembly
+| [FieldDef](FieldDefTableEntry.md)            | Field definition for a type in this assembly
+| [MethodDef](MethodDefTableEntry.md)          | Method definition for a type in this assembly
+| [Attributes](AttributesTableEntry.md)        | Attribute types defined in this assembly
+| [TypeSpec](TypeSpecTableEntry.md)            | TypeSpecifications (signatures) used in this assembly
+| [Resources](ResourcesTableEntry.md)          | Resource items in a resource file bound to this assembly
+| [ResourcesData](ResourcesDataBlob.md)        | Blob table data for the resources
+| [Strings](StringsBlob.md)                    | Blob table data for the strings
+| [Signatures](SignaturesBlob.md)              | Blob table data for the metadata signatures
+| [ByteCode](ByteCodeBlob.md)                  | Blob table data for the IL byte code instructions
+| [ResourcesFiles](ResourcesFilesTableEntry.md)| Resource files descriptors for resource files bound to this assembly
+| [EndOfAssembly](EndOfAssembly.md)            | Technically, this is not a table. Instead this entry contains the offset to the end of the assembly, which is useful for finding the next assembly in a DAT region
+
 ###### PaddingOfTables
-todo: blah blah
+For every table, a number of bytes that were padded to the end of the table to align the next table to a
+32bit boundary. The start of each table is aligned to a 32bit boundary, and ends at a 32bit boundary.
+Some of these tables will, therefore, have no padding, and all will have values in the range [0-3]. This
+isn't the most compact form to hold this information, but it only costs 16 bytes/assembly. Trying to only
+align some of the tables is just much more hassle than it's worth. This field itself must also be aligned
+on a 32 bit boundary. This padding is used to compute the size of a given table (including the blob data)
+using the following formula:  
+`TableSize = StartOfTables[ tableindex + 1 ] - StartOfTables[ tableindex ] - PaddingOfTables[ tableindex ]`
+

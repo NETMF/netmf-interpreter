@@ -56,7 +56,7 @@ namespace Microsoft
             ip += sizeof(uint8_t);
             retVal |= (uint32_t)(*(const uint8_t *)ip) << 16;
             ip += sizeof(uint8_t);
-            retVal |= (uint32_t)(*(const uint8_t *)ip) <<  8;
+            retVal |= (uint32_t)(*(const uint8_t *)ip) << 8;
             ip += sizeof(uint8_t);
             retVal |= (uint32_t)(*(const uint8_t *)ip);
             ip += sizeof(uint8_t);
@@ -64,7 +64,7 @@ namespace Microsoft
             return retVal;
         }
 
-        uint64_t ReadUnalignedUInt64( uint8_t const*& ip) 
+        inline uint64_t ReadUnalignedUInt64( uint8_t const*& ip) 
         {
             uint64_t retVal;
         #if !defined(BIG_ENDIAN)

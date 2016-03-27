@@ -18,6 +18,7 @@
 
 using namespace std;
 using namespace NETMF::Metadata;
+using namespace Microsoft::Utilities;
 
 bool AssemblyHeader::FindMethodBoundaries( MethodDefTableEntry const& methodDef
                                          , MethodDefTableIndex i

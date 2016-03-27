@@ -28,17 +28,6 @@ namespace NETMF
 {
     namespace Metadata
     {
-        // macro to generate a compile time error if the given structure is not a proper C++ POD type
-        // POD types are essential for ensuring binary compatibility with the memory layout generated
-        // by the NETMF tools. Since this code is intended for use on the desktop and on devices it
-        // must remain portable so that the raw PE images are accessible directly in memory as-is.
-        #define ASSERT_METADATA_STRUCT_IS_POD( t ) \
-        static_assert( std::is_pod<t>::value \
-                     , "Metadata structure " #t " MUST always remain a POD structure for portability" \
-                     );
-
-        using Microsoft::Utilities::EnumFlags;
-
         constexpr uint16_t MakeOpcode( uint8_t msb, uint8_t lsb )
         {
             return ( msb << 8 ) + lsb;
@@ -99,7 +88,7 @@ namespace NETMF
         struct table_kind;
 
         #define DECLARE_TABLEKIND( t, k )\
-        ASSERT_METADATA_STRUCT_IS_POD( t ) \
+        ASSERT_STRUCT_IS_POD( t ) \
         template<> \
         struct table_kind<t> \
         {\
@@ -168,7 +157,7 @@ namespace NETMF
             uint16_t BuildNumber;
             uint16_t RevisionNumber;
         };
-        ASSERT_METADATA_STRUCT_IS_POD( VersionInfo )
+        ASSERT_STRUCT_IS_POD( VersionInfo )
 
         struct AssemblyRefTableEntry
         {
@@ -461,7 +450,7 @@ namespace NETMF
             //bool InFilter( MetadataPtr pByteCodeStream, MetadataPtr p )
 
         };
-        ASSERT_METADATA_STRUCT_IS_POD( ExceptionHandlerTableEntry )
+        ASSERT_STRUCT_IS_POD( ExceptionHandlerTableEntry )
 
         static_assert( sizeof( ExceptionHandlerTableEntry ) == 12, "Record size mismatch!" );
 
@@ -655,7 +644,6 @@ namespace NETMF
             // most compact form to hold this information, but it only costs 16 bytes/assembly.
             // Trying to only align some of the tables is just much more hassle than it's worth.
             // This field itself must also be aligned on a 32 bit boundary.
-            //uint8_t PaddingOfTables[ ( ( TableMax - 1 ) + 3 ) / 4 * 4 ];
             uint8_t PaddingOfTables[ TableMax ];
 
             uint32_t SizeOfTable( TableKind index ) const
@@ -711,7 +699,7 @@ namespace NETMF
             static uint16_t const StringTableIndexToBlobOffsetMap[ ];
             static char const WellKnownStringTableBlob[ ];
         };
-        ASSERT_METADATA_STRUCT_IS_POD( AssemblyHeader )
+        ASSERT_STRUCT_IS_POD( AssemblyHeader )
         static_assert( 0 == ( offsetof( AssemblyHeader, StartOfTables ) & 0x03 ), "StartOfTables not aligned on 32bit boundary" );
         static_assert( 0 == ( offsetof( AssemblyHeader, PaddingOfTables ) & 0x03 ), "PaddingOfTables not aligned on 32bit boundary" );
 
