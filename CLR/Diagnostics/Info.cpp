@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS) 
+#if defined(_WIN32) 
 
 static std::string* s_redirectedString = NULL;
 
@@ -16,10 +16,6 @@ void CLR_Debug::RedirectToString( std::string* str )
     NATIVE_PROFILE_CLR_DIAGNOSTICS();
     s_redirectedString = str;
 }
-
-#endif
-
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
 
 HRESULT TINYCLR_DEBUG_PROCESS_EXCEPTION( HRESULT hr, LPCSTR szFunc, LPCSTR szFile, int line )
 {
@@ -118,7 +114,7 @@ void CLR_Debug::Emit( const char *text, int len )
 
     if(len == -1) len = (int)hal_strlen_s( text );
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     if(s_redirectedString)
     {
         s_redirectedString->append( text, len );
@@ -196,7 +192,7 @@ void CLR_Debug::Emit( const char *text, int len )
         {
             ::Watchdog_ResetCounter();
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(PLATFORM_WINDOWS_EMULATOR)
             HAL_Windows_Debug_Print( s_buffer );
 #endif
 
@@ -207,7 +203,7 @@ void CLR_Debug::Emit( const char *text, int len )
 
             if(!CLR_EE_DBG_IS( Enabled ) || HalSystemConfig.DebugTextPort != HalSystemConfig.DebuggerPorts[ 0 ])
             {
-#if !defined(PLATFORM_WINDOWS) && !defined(PLATFORM_WINCE)
+#if !defined(PLATFORM_TOOLS)
                 DebuggerPort_Write( HalSystemConfig.DebugTextPort, s_buffer, s_chars, 0 ); // skip null terminator and don't bother retrying
                 DebuggerPort_Flush( HalSystemConfig.DebugTextPort );                    // skip null terminator
 #endif
@@ -255,7 +251,7 @@ int CLR_Debug::Printf( const char *format, ... )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 
 const CLR_UINT8 c_CLR_opParamSize[] =
 {
@@ -368,7 +364,7 @@ const CLR_UINT8* CLR_SkipBodyOfOpcodeCompressed( const CLR_UINT8* ip, CLR_OPCODE
     return ip;
 }
 
-#endif // defined(PLATFORM_WINDOWS)
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #define LOOKUP_ELEMENT(idx,tblName,tblNameUC) \

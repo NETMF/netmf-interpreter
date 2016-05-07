@@ -24,7 +24,9 @@ void CPU_Reset() {}
 
 unsigned int Events_MaskedRead( unsigned int ) { return 0; }
 
+#if defined(PLATFORM_WINDOWS_EMULATOR)
 void CLR_RT_EmulatorHooks::Notify_ExecutionStateChanged( void ) {}
+#endif
 
 unsigned int Events_WaitForEvents( unsigned int powerLevel, unsigned int,unsigned int ) { return 0; }
 

@@ -140,7 +140,7 @@ void InkDriver::DrawInk(void *arg)
         /// bliting to emulator screen does necessarily mean
         /// it will shown on desktop monitor right away, hence
         /// this extra step.
-#ifdef PLATFORM_WINDOWS
+#ifdef PLATFORM_WINDOWS_EMULATOR
         LCD_BitBltEx(
                     m_InkRegionInfo.X1, 
                     m_InkRegionInfo.Y1, 

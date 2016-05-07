@@ -6,10 +6,6 @@
 #include <TinyCLR_Debugging.h>
 #include <MFUpdate_decl.h>
 
-#if defined(PLATFORM_WINDOWS)
-#pragma comment(lib,"crypto")
-#endif
-
 #include <crypto.h>
 
 #if 0
@@ -696,7 +692,7 @@ bool CLR_DBG_Debugger::AccessMemory( CLR_UINT32 location, UINT32 lengthInBytes, 
     //--// RAM write
         ByteAddress sectAddr = location;
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 
         bool proceed = false;
         void * temp;
@@ -2950,7 +2946,7 @@ bool CLR_DBG_Debugger::Debugging_Resolve_Assembly( WP_Message* msg, void* owner 
 
     if(assm)
     {
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
         //append path
         if(assm->m_strPath != NULL)
         {

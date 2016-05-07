@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #pragma pack(push, SUPPORT_WIREPROTOCOL_H_, 4)
 #endif
 
@@ -177,7 +177,7 @@ struct WP_CompileCheck
 
 //--//
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #pragma pack(pop, SUPPORT_WIREPROTOCOL_H_)
 #endif
 

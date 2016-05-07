@@ -15,7 +15,7 @@
 WINPCAP_ETH_LWIP_DEVICE_CONFIG g_WINPCAP_ETH_LWIP_Config =
 {
     {
-		// GUID for network adapter that we want to use
+        // GUID for network adapter that we want to use
         "{FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF}"
     }
 };

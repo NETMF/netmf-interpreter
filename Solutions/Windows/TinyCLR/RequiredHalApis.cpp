@@ -77,7 +77,15 @@ void HAL_EnterBooterMode(void)
 {
 }
 
-#ifdef PLATFORM_WINDOWS
+// TODO: Rename and move this to a PAL level service for an OS
+// This is used to indicate an external OS request to shutdown
+// (e.g. clicked the close button on the window's title bar etc...
+BOOL HAL_Windows_IsShutdownPending()
+{
+    return FALSE;
+}
+
+#ifdef PLATFORM_WINDOWS_EMULATOR
 HAL_Configuration_Windows g_HAL_Configuration_Windows;
 
 // This thing is in fact intended to slow down the execution of code on the emulator!
@@ -112,7 +120,7 @@ void HAL_Windows_FastSleep(INT64 ticks)
     //}
 }
 
-// unfortunately the NETMF build system and code assume x86 == PLATFORM_WINDOWS == MSVC
+// unfortunately the NETMF build system and code assume x86 == PLATFORM_WINDOWS_EMULATOR == MSVC
 // so when the tools binaries are built many x86 binary libs are built but the build for
 // them is not set to go to a platform specific output. Thus, building this project gets
 // the libraries built when the tools were built, which are based on the windows2 headers
@@ -123,32 +131,26 @@ BOOL HAL_Windows_HasGlobalLock()
 {
     return !SmartPtr_IRQ::GetState();
 }
+#endif
 
-// required by profiling APIs in Debugger component when PLATFORM_WINDOWS defined
+// required by profiling APIs in Debugger component when WIN32 defined
+// longer term this should be moved out to allow any platform with a
+// high resolution performance counter to use it.
 UINT64 HAL_Windows_GetPerformanceTicks()
 {
     return 0;
 }
 
-BOOL HAL_Windows_IsShutdownPending()
-{
-    return FALSE;
-}
-
+// TODO: remove dependency on this from the CLR - it's a silly dependency
 void BackLight_Set(BOOL On)
 {
 }
 
+// TODO: remove dependency on this from the CLR - it's a silly dependency
 BOOL Piezo_Tone(UINT32 Frequency_Hertz, UINT32 Duration_Milliseconds)
 {
     return TRUE;
 }
-
-void CLR_RT_EmulatorHooks::Notify_ExecutionStateChanged()
-{    
-}
-
-#endif
 
 int hal_vfprintf( COM_HANDLE stream, const char* format, va_list arg )
 {

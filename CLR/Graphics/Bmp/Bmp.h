@@ -26,7 +26,7 @@
 #define __gnu_packed
 #endif
 
-#if !defined(PLATFORM_WINDOWS) && !defined(PLATFORM_WINCE)
+#if !defined(_WIN32)
 // For non-windows build, we need to define the Bitmap header structures.
 // (These are defined in wingdi.h which is indirectly linked in windows build.)
 
@@ -61,7 +61,7 @@ __packed struct __gnu_packed BITMAPINFOHEADER {
 
 typedef UINT32 COLORREF;
 
-#endif //#if !defined(PLATFORM_WINDOWS)
+#endif //#if !defined(PLATFORM_WINDOWS_EMULATOR)
 
 enum BmpEncodingType
 {

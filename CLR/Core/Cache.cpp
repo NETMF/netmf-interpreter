@@ -219,7 +219,7 @@ bool CLR_RT_EventCache::VirtualMethodTable::FindVirtualMethod( const CLR_RT_Type
     CLR_UINT32   clsData       = cls      .m_data;
     CLR_UINT32   mdVirtualData = mdVirtual.m_data;
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     bool fVerify = false;
 
     {
@@ -251,7 +251,7 @@ bool CLR_RT_EventCache::VirtualMethodTable::FindVirtualMethod( const CLR_RT_Type
 
         if(cls.Type() == owner)
         {
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
             if(fVerify != true)
             {
                 CLR_Debug::Printf( "INTERNAL ERROR: Shortcut for terminal virtual methods failed: CLS:%08x:%08x => %08x\r\n", cls.m_data, mdVirtual.m_data, md.m_data );
@@ -265,7 +265,7 @@ bool CLR_RT_EventCache::VirtualMethodTable::FindVirtualMethod( const CLR_RT_Type
         }
     }
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     if(fVerify != false)
     {
         CLR_Debug::Printf( "INTERNAL ERROR: Shortcut for terminal virtual methods failed: CLS:%08x:%08x\r\n", cls.m_data, mdVirtual.m_data );
