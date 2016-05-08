@@ -203,7 +203,19 @@ void CLR_Debug::Emit( const char *text, int len )
 
             if(!CLR_EE_DBG_IS( Enabled ) || HalSystemConfig.DebugTextPort != HalSystemConfig.DebuggerPorts[ 0 ])
             {
-#if !defined(PLATFORM_TOOLS)
+//#if !defined(PLATFORM_TOOLS)
+// TODO: Fix the build so that PLATFORM_TOOLS can work here
+// (or eliminate the use of native code from the CLR in the tools by converting them all to managed)
+// This entire function could be moved to info_win32.cpp to help.
+// The problem is that the build doesn't distinguish between building the diagnostics lib for
+// desktop tools, X86, WIN32 or the emulator platforms. And this code was written to assume 
+// an equivalence for all - as the idea of a non-win32 emulator port to an x86 device wasn't
+// considered a reality. However, for testing and development purposes a pure non-emulator x86
+// build is useful, not to mention the potential of Quark and Edison x86 family of chip sets
+// targeting IoT. Thus, this needs some re-thinking as DebuggerPort_Write etc... aren't available
+// when building the desktop tools, but should be available when building a WIN32 based test
+// platform
+#if !defined(_WIN32)
                 DebuggerPort_Write( HalSystemConfig.DebugTextPort, s_buffer, s_chars, 0 ); // skip null terminator and don't bother retrying
                 DebuggerPort_Flush( HalSystemConfig.DebugTextPort );                    // skip null terminator
 #endif

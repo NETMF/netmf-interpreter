@@ -615,21 +615,6 @@ HRESULT ClrLoadDAT( LPCWSTR szDatFilePath )
     
     return s_ClrSettings.ProcessOptions(vec);
 }
-
-#ifdef PLATFORM_WINDOWS_EMULATOR
-void ClrSetLcdDimensions( INT32 width, INT32 height, INT32 bitsPerPixel )
-{
-    g_HAL_Configuration_Windows.LCD_Width = width;
-    g_HAL_Configuration_Windows.LCD_Height = height;
-    g_HAL_Configuration_Windows.LCD_BitsPerPixel = bitsPerPixel;
-}
-
-bool ClrIsDebuggerStopped()
-{
-    return CLR_EE_DBG_IS( Stopped );
-}
-#endif
-
 #endif
 
 

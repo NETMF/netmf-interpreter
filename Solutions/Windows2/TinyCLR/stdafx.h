@@ -27,11 +27,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+#include <tinyhal.h>
 #include <TinyCLR_Application.h>
 #include <TinyCLR_Win32.h>
 #include <TinyCLR_ErrorCodes.h>
 #include <TinyCLR_Interop.h>
+#include <TinyCLR_Runtime.h>
 
 #include "EmulatorNative.h"
 
@@ -39,4 +40,3 @@
 
 #define BOOL_TO_INT(f) ((f) ? 1 : 0)
 #define INT_TO_BOOL(f) ((f) ? true : false)
-

@@ -31,18 +31,18 @@ struct CLR_RT_EmulatorHooks
 };
 
 extern void ClrStartup( CLR_SETTINGS params );
+
 #if defined(_WIN32)
 extern HRESULT ClrLoadPE( LPCWSTR szPeFilePath );
 extern HRESULT ClrLoadDAT( LPCWSTR szDatFilePath );
-#endif
-#if defined(PLATFORM_WINDOWS_EMULATOR)
-void ClrSetLcdDimensions( INT32 width, INT32 height, INT32 bitsPerPixel );
-bool ClrIsDebuggerStopped();
 #endif
 
 extern void ClrExit();
 
 #if defined(PLATFORM_WINDOWS_EMULATOR)
+
+void ClrSetLcdDimensions( INT32 width, INT32 height, INT32 bitsPerPixel );
+bool ClrIsDebuggerStopped();
 
 struct HAL_Configuration_Windows
 {    
