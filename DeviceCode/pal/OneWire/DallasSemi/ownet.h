@@ -375,10 +375,10 @@ SMALLINT  owVerify(int portnum, SMALLINT alarm_only);
 SMALLINT  owOverdriveAccess(int portnum);
 
 
-// external One Wire functions defined in owsesu.c
- SMALLINT owAcquire(int portnum, char *port_zstr);
- int      owAcquireEx(char *port_zstr);
- void     owRelease(int portnum);
+// external One Wire functions defined in OneWireLinkLevelSession.cpp
+SMALLINT owAcquire(int portnum, int pin);
+//int      owAcquireEx(char *port_zstr);
+void     owRelease(int portnum);
 
 // external One Wire functions defined in findtype.c
 // SMALLINT FindDevices(int,uchar FamilySN[][8],SMALLINT,int);
@@ -432,5 +432,7 @@ void setcrc16(int portnum, ushort reset);
 ushort docrc16(int portnum, ushort cdata);
 void setcrc8(int portnum, uchar reset);
 uchar docrc8(int portnum, uchar x);
+
+extern SMALLINT owPortPin[MAX_PORTNUM];
 
 #endif //OWNET_H
