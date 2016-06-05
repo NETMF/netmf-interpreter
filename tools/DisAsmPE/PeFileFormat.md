@@ -16,7 +16,7 @@ The Assembly header is the top level structure of every NETMF PE file. On disk t
 the .PE file. On the device the AssemblyHeader is aligned at a 32 bit boundary within a well known FLASH region ( the DAT region
 or the Deployment region) with the first assembly at offset 0 of the region. 
 
-##### AssemblyHeader strucutre
+##### AssemblyHeader strucutre (CLR_RECORD_ASSEMBLY)
 The AssemblyHeader structure contains a number of verification markers and CRCs to validate the legitimacy of the assembly at
 runtime. Additionally, the Assembly header contains the location information for the MetadataTables and BLOB storage areas. 
 
