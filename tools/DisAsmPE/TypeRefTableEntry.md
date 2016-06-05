@@ -1,4 +1,4 @@
-##### TypeRef Table Entry
+##### TypeRef Table Entry (CLR_RECORD_TYPEREF)
 The TypeRef Table consists of the following columns:
 
 | Name      | Type                 | Description  
