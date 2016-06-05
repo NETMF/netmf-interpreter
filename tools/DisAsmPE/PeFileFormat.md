@@ -108,24 +108,24 @@ one version of an assembly can be loaded at a time. Thus assembly references in 
 Fixed array of offsets to the table data for each of the 16 different tables. The entries in this array are offsets from the start
 of the assembly header itself (e.g. the file seek offset if the PE image is from a file)
 
-| Name                                         | Description
-|----------------------------------------------|------------
-| [AssemblyRef](AssemblyRefTableEntry.md)      | Table of Assembly references
-| [TypeRef](TypeRefTableEntry.md)              | Reference to a type in another assembly
-| [FieldRef](FieldRefTableEntry.md)            | Reference to a field of a type in another assembly
-| [MethodRef](MethodRefTableEntry.md)          | Reference to a method of a type in another assembly
-| [TypeDef](TypeDefTableEntry.md)              | Type definition for a type in this assembly
-| [FieldDef](FieldDefTableEntry.md)            | Field definition for a type in this assembly
-| [MethodDef](MethodDefTableEntry.md)          | Method definition for a type in this assembly
-| [Attributes](AttributesTableEntry.md)        | Attribute types defined in this assembly
-| [TypeSpec](TypeSpecTableEntry.md)            | TypeSpecifications (signatures) used in this assembly
-| [Resources](ResourcesTableEntry.md)          | Resource items in a resource file bound to this assembly
-| [ResourcesData](ResourcesDataBlob.md)        | Blob table data for the resources
-| [Strings](StringsBlob.md)                    | Blob table data for the strings
-| [Signatures](SignaturesBlob.md)              | Blob table data for the metadata signatures
-| [ByteCode](ByteCodeBlob.md)                  | Blob table data for the IL byte code instructions
-| [ResourcesFiles](ResourcesFilesTableEntry.md)| Resource files descriptors for resource files bound to this assembly
-| [EndOfAssembly](EndOfAssembly.md)            | Technically, this is not a table. Instead this entry contains the offset to the end of the assembly, which is useful for finding the next assembly in a DAT region
+| Name                                         | NETMF Source Element Name |Description
+|----------------------------------------------|---------------------------|-----------
+| [AssemblyRef](AssemblyRefTableEntry.md)      | CLR_RECORD_ASSEMBLYREF    | Table of Assembly references
+| [TypeRef](TypeRefTableEntry.md)              | CLR_RECORD_TYPEREF        | Reference to a type in another assembly
+| [FieldRef](FieldRefTableEntry.md)            | CLR_RECORD_FIELDREF       | Reference to a field of a type in another assembly
+| [MethodRef](MethodRefTableEntry.md)          | CLR_RECORD_METHODREF      | Reference to a method of a type in another assembly
+| [TypeDef](TypeDefTableEntry.md)              | CLR_RECORD_TYPEDEF        | Type definition for a type in this assembly
+| [FieldDef](FieldDefTableEntry.md)            | CLR_RECORD_FIELDDEF       | Field definition for a type in this assembly
+| [MethodDef](MethodDefTableEntry.md)          | CLR_RECORD_METHODDEF      | Method definition for a type in this assembly
+| [Attributes](AttributesTableEntry.md)        | CLR_RECORD_ATTRIBUTE      | Attribute types defined in this assembly
+| [TypeSpec](TypeSpecTableEntry.md)            | CLR_RECORD_TYPESPEC       | TypeSpecifications (signatures) used in this assembly
+| [Resources](ResourcesTableEntry.md)          | CLR_RECORD_RESOURCE       | Resource items in a resource file bound to this assembly
+| [ResourcesData](ResourcesDataBlob.md)        | \<blob>                   | Blob table data for the resources
+| [Strings](StringsBlob.md)                    | \<blob>                   | Blob table data for the strings
+| [Signatures](SignaturesBlob.md)              | \<blob>                   | Blob table data for the metadata signatures
+| [ByteCode](ByteCodeBlob.md)                  | \<blob>                   | Blob table data for the IL byte code instructions
+| [ResourcesFiles](ResourcesFilesTableEntry.md)| CLR_RECORD_RESOURCE_FILE  | Resource files descriptors for resource files bound to this assembly
+| [EndOfAssembly](EndOfAssembly.md)            | \<N/A>                    | Technically, this is not a table. Instead this entry contains the offset to the end of the assembly, which is useful for finding the next assembly in a DAT region
 
 ###### PaddingOfTables
 For every table, a number of bytes that were padded to the end of the table to align the next table to a
