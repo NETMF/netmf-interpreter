@@ -1,4 +1,4 @@
-##### AssemblyRefTableEntry
+##### AssemblyRefTableEntry (CLR_RECORD_ASSEMBLYREF)
 The assembly Reference table contains references to other assemblies. The runtime will lookup the assembly by name and version
 when resolving the reference to an assembly header.
 
