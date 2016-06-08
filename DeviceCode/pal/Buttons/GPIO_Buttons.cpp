@@ -205,7 +205,7 @@ BOOL GPIO_BUTTON_Driver::RegisterStateChange( UINT32 ButtonPressed, UINT32 Butto
 
             if(ButtonReleased & BUTTON_B4) // Select == ARM
             {
-                s_timewarp_lastButton = Time_TicksToTime( Time_CurrentTicks() );
+				s_timewarp_lastButton = HAL_Time_TicksToTime(Time_CurrentTicks());
             }
 
             s_timewarp_armingState = 0;
