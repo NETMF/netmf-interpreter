@@ -6,7 +6,7 @@
   <?undef ProdVer ?>
   <?endif ?>
 
-  <?define ProdVerMajorMinor = "4.3"?>
+  <?define ProdVerMajorMinor = "4.4"?>
   <?define ProdVer = "$(var.ProdVerMajorMinor).$(var.ProdVerBuild)" ?>
   <?define ProdName = "Microsoft .NET Micro Framework Test Kit SDK $(var.ProdVerMajorMinor)"?>
   <?define ProdUrl = "http://www.microsoft.com" ?>
