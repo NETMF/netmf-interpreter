@@ -28,6 +28,9 @@ using namespace NETMF;
 using namespace NETMF::Metadata;
 using namespace Microsoft::Win32;
 using namespace Microsoft::Utilities;
+
+// file namespace not officially included in C++ library yet
+// expected to be ratified pretty much 'as-is' into C++17
 using namespace std::tr2::sys;
 
 int ParseOneAssemblyFile( std::ostream& strm, path peFilePath );
@@ -76,7 +79,7 @@ void DumpTable( std::ostream& strm, AssemblyHeader const& header, std::string ti
 
 void OutputAssemblyTableDetails( std::ostream& strm, AssemblyHeader const& header, std::string name, TableKind kind )
 {
-    // "ResourcesFiles" is the longest name (14 chars) so use that for alignment padding
+    // "ResourcesFiles" is the longest table name (14 chars) so use that for alignment padding
     strm << std::string( 14 - name.length( ), ' ' );
     strm << "        [" << name << "] 0x";
     strm << std::setw( 8 ) << header.StartOfTables[ ( int )kind ];
