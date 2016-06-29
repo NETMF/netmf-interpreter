@@ -76,10 +76,16 @@ volatile CLR_UINT64        CLR_PROF_Handler::s_time_adjusted;
 
 //--//
 
+
+// TODO: roll this entire function into the HAL so that
+// hardware with a HighRes counter can be used, this
+// implementation is easy enough to move to the HAL as
+// a support function for systems with only a lowres
+// counter
 static CLR_UINT64 GetPerformanceCounter()
 {
     NATIVE_PROFILE_CLR_DIAGNOSTICS();
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
     return HAL_Windows_GetPerformanceTicks();
 #else
     static CLR_UINT32 rollover  = 0;

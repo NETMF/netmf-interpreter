@@ -535,7 +535,7 @@ void Sockets_LWIP_Driver::MulticastDiscoveryRespond(void* arg)
 
     if(len > 0)
     {
-        UINT32 idx = 0;
+        INT32 idx = 0;
         BOOL fFound = FALSE;
         const char* c_Signature = SOCK_DISCOVERY_MULTICAST_TOKEN;
         INT32 sigLen = hal_strlen_s(c_Signature);

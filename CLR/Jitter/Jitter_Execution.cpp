@@ -10,7 +10,7 @@
 
 #define TINYCLR_JITTER_CODECOVERAGE
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 #undef TINYCLR_JITTER_CODECOVERAGE
 #endif
 
@@ -73,7 +73,7 @@ HRESULT CLR_RT_ExecutionEngine::Compile( const CLR_RT_MethodDef_Index& md, CLR_U
     CLR_UINT64     stats_start;
 #endif
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     g_CLR_RT_ArmEmulator.InitializeExternalCalls();
 #endif
 
@@ -172,7 +172,7 @@ HRESULT CLR_RT_ExecutionEngine::Compile( const CLR_RT_MethodDef_Index& md, CLR_U
                 CLR_Debug::Printf( "Jitter: no space for thunk table!\r\n" );
             }
         }
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
         else
         {
             size_t len = mc.m_Arm_Opcodes.Size() * sizeof(CLR_UINT32);
@@ -280,7 +280,7 @@ HRESULT CLR_RT_ExecutionEngine::Compile( const CLR_RT_MethodDef_Index& md, CLR_U
                 CLR_Debug::Printf( "Jitter: cannot allocate method table!\r\n" );
             }
         }
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
         else
         {
             size_t len = mc.m_Arm_Opcodes.Size() * sizeof(CLR_UINT32);

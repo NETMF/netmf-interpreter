@@ -20,7 +20,7 @@ extern NETWORK_CONFIG           g_NetworkConfig;
 
 #if defined(__RENESAS__)
 volatile int errno;
-#else
+#elif !( defined(_MSC_VER) && defined(_WIN32) && defined(_DLL) )
 int errno;
 #endif
 
@@ -462,7 +462,7 @@ static int MARSHAL_SOCK_FDSET_TO_FDSET(SOCK_fd_set *sf, fd_set *f)
     { 
         FD_ZERO(f);
         
-        for(int i=0; i<sf->fd_count; i++) 
+        for(unsigned int i=0; i < sf->fd_count; i++) 
         { 
             FD_SET(sf->fd_array[i], f); 
         } 

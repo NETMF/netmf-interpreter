@@ -29,6 +29,7 @@
 [Bb]in/
 [Oo]bj/
 ipch/
+*.VC.db
 
 !/tools/bin/
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NETMF.PE.Metadata", "NETMF.PE.Metadata\NETMF.PE.Metadata.vcxproj", "{D9366B12-F36F-4263-8B80-FEA1DC9A6AE6}"
 EndProject
@@ -9,10 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DisAsmPE", "DisAsmPE\DisAsm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3C6516C-47F7-4675-8934-9264C513CC96}"
 	ProjectSection(SolutionItems) = preProject
-		AssemblyRefTableEntry.md = AssemblyRefTableEntry.md
-		PeFileFormat.md = PeFileFormat.md
 		readme.md = readme.md
-		TypeRefTableEntry.md = TypeRefTableEntry.md
 	EndProjectSection
 EndProject
 Global

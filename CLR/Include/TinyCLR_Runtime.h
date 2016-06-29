@@ -26,7 +26,7 @@ extern const CLR_RADIAN c_CLR_radians[];
 
 //--//
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
 
 #include <set>
 #include <map>
@@ -50,9 +50,13 @@ typedef CLR_RT_SymbolToAddressMap::iterator  CLR_RT_SymbolToAddressMapIter;
 
 typedef std::map< CLR_UINT32, std::wstring > CLR_RT_AddressToSymbolMap;
 typedef CLR_RT_AddressToSymbolMap::iterator  CLR_RT_AddressToSymbolMapIter;
+#endif
 
+#if defined(_MSC_VER)
 #pragma pack(push, TINYCLR_RUNTIME_H, 4)
+#endif
 
+#if defined(_WIN32)
 //--//
 
 #define _COM_SMRT_PTR(i)     typedef _com_ptr_t<_com_IIID<i, &__uuidof(i)>> i ## Ptr
@@ -420,7 +424,7 @@ extern int  s_CLR_RT_fJitter_Trace_Compile;
 extern int  s_CLR_RT_fJitter_Trace_Invoke;
 extern int  s_CLR_RT_fJitter_Trace_Execution;
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 extern int          s_CLR_RT_fTrace_ARM_Execution;
 
 extern int          s_CLR_RT_fTrace_RedirectLinesPerFile;
@@ -676,7 +680,7 @@ private:
 #include <TinyCLR_Runtime__HeapBlock.h>
 
 //TODO: Change this to an extern method that is defined in the HAL
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(PLATFORM_WINDOWS_EMULATOR)
     #define SYSTEM_CLOCK_HZ        g_HAL_Configuration_Windows.SystemClock
     #define SLOW_CLOCKS_PER_SECOND g_HAL_Configuration_Windows.SlowClockPerSecond
 #endif
@@ -723,7 +727,7 @@ struct CLR_RT_UnicodeHelper
     bool ConvertFromUTF8( int iMaxChars, bool fJustMove, int iMaxBytes = -1 );
     bool ConvertToUTF8  ( int iMaxChars, bool fJustMove                     );
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
     static void ConvertToUTF8  ( const std::wstring& src, std:: string& dst );
     static void ConvertFromUTF8( const std:: string& src, std::wstring& dst );
 #endif
@@ -941,13 +945,13 @@ struct CLR_RT_Assembly : public CLR_RT_HeapBlock_Node // EVENT HEAP - NO RELOCAT
     CLR_RT_MethodDef_DebuggingInfo  * m_pDebuggingInfo_MethodDef   ; //EVENT HEAP - NO RELOCATION - (but the data they point to has to be relocated)
 #endif //#if defined(TINYCLR_ENABLE_SOURCELEVELDEBUGGING)
 
-#if defined(TINYCLR_TRACE_STACK_HEAVY) && defined(PLATFORM_WINDOWS)
+#if defined(TINYCLR_TRACE_STACK_HEAVY) && defined(_WIN32)
     int                                m_maxOpcodes;
     int*                               m_stackDepth;
 #endif
 
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
     std::string*                      m_strPath;
 #endif
 
@@ -957,7 +961,7 @@ struct CLR_RT_Assembly : public CLR_RT_HeapBlock_Node // EVENT HEAP - NO RELOCAT
 
     bool IsSameAssembly( const CLR_RT_Assembly& assm ) const;
     
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 
     static void InitString( std::map<std::string,CLR_OFFSET>& map );
     static HRESULT CreateInstance ( const CLR_RECORD_ASSEMBLY* data, CLR_RT_Assembly*& assm, LPCWSTR szName );
@@ -1048,7 +1052,7 @@ private:
 
     //--//
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     static FILE* s_output;
     static FILE* s_toclose;
 
@@ -1088,7 +1092,7 @@ public:
 #endif
 private:
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     void Dump_Token         ( CLR_UINT32     tk  );
     void Dump_FieldOwner    ( CLR_UINT32     idx );
     void Dump_MethodOwner   ( CLR_UINT32     idx );
@@ -1352,7 +1356,7 @@ struct CLR_RT_DataTypeLookup
     CLR_RT_TypeDef_Index*    m_cls;
     CLR_RT_HeapBlockRelocate m_relocate;
 
-#if defined(PLATFORM_WINDOWS) || defined(TINYCLR_TRACE_MEMORY_STATS)
+#if defined(_WIN32) || defined(TINYCLR_TRACE_MEMORY_STATS)
     LPCSTR                   m_name;
 #endif   
 };
@@ -1523,7 +1527,7 @@ struct CLR_RT_TypeSystem // EVENT HEAP - NO RELOCATION -
     static CLR_DataType MapElementTypeToDataType( CLR_UINT32   et );
     static CLR_UINT32   MapDataTypeToElementType( CLR_DataType dt );
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     void Dump( LPCWSTR szFileName, bool fNoByteCode );
 #endif
 
@@ -2144,7 +2148,7 @@ struct CLR_RT_GarbageCollector
 
     bool                  m_fOutOfStackSpaceForGC;
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
     CLR_UINT32            m_events;
 #endif
 
@@ -2655,7 +2659,7 @@ struct CLR_RT_EventCache
 
         //--//
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
         void DumpTree        (                               );
         bool ConsistencyCheck(                               );
         bool ConsistencyCheck( LookupEntry* node, int& depth );
@@ -2879,7 +2883,7 @@ struct CLR_RT_ExecutionEngine
     size_t                                               m_breakpointsActiveNum;
 #endif //#if defined(TINYCLR_ENABLE_SOURCELEVELDEBUGGING)
 
-#if !defined(BUILD_RTM) || defined(PLATFORM_WINDOWS)
+#if !defined(BUILD_RTM) || defined(_WIN32)
     bool m_fPerformGarbageCollection;   //Should the EE do a GC every context switch
     bool m_fPerformHeapCompaction;      //Should the EE do a Compaction following every GC
 #endif
@@ -3221,7 +3225,7 @@ private:
     
     CLR_UINT32 WaitSystemEvents( CLR_UINT32 powerLevel, CLR_UINT32 events, CLR_INT64 timeExpire );
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
     HRESULT CreateEntryPointArgs( CLR_RT_HeapBlock& args, LPWSTR szCommandLineArgs );
 #endif
 
@@ -3275,7 +3279,7 @@ CT_ASSERT( sizeof(CLR_RT_HeapBlock_Raw)  == sizeof(CLR_RT_HeapBlock) )
 #elif defined(PLATFORM_SH)  // SH.compiler uses 12 bytes for a function pointer
     CT_ASSERT( sizeof(CLR_RT_DataTypeLookup) == 24 + TINYCLR_TRACE_MEMORY_STATS_EXTRA_SIZE )
 
-#elif defined(PLATFORM_WINDOWS) || defined(TINYCLR_TRACE_MEMORY_STATS) 
+#elif defined(PLATFORM_WINDOWS_EMULATOR) || defined(TINYCLR_TRACE_MEMORY_STATS) 
     CT_ASSERT( sizeof(CLR_RT_DataTypeLookup) == 16 + 4 )
 
 #elif defined(PLATFORM_WINCE)
@@ -3290,7 +3294,7 @@ CT_ASSERT( sizeof(CLR_RT_HeapBlock_Raw)  == sizeof(CLR_RT_HeapBlock) )
 
 //--//
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_MSC_VER)
 #pragma pack(pop, TINYCLR_RUNTIME_H)
 #endif
 

@@ -18,7 +18,7 @@ static UINT32* g_FrameBuffer = NULL;
 static UINT32 g_FrameBufferSize = 0;
 static bool   g_LcdInitialized = false;
 
-// required by core only if PLATFORM_WINDOWS is defined
+// required by core only if PLATFORM_WINDOWS_EMULATOR is defined
 // see: CLR_HW_Hardware::Hardware_Initialize() in Hardware.cpp
 BOOL LCD_Initialize()
 {

@@ -26,8 +26,9 @@ namespace NETMF
 
     // macro to generate a compile time error if the given structure is not a proper C++ POD type
     // POD types are essential for ensuring binary compatibility with the memory layout generated
-    // by the NETMF tools. Since this code is intended for use on the desktop and on devices it
-    // must remain portable so that the raw PE images are accessible directly in memory as-is.
+    // by the NETMF tools. Since the NETMF CLR code is intended for use on the desktop and on
+    // devices it must remain portable so that the raw PE images are accessible directly in memory
+    // as-is.
     #define ASSERT_STRUCT_IS_POD( t ) \
     static_assert( std::is_pod<t>::value \
                     , "Data structure " #t " MUST always remain a POD structure for portability" \

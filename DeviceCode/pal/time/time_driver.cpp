@@ -39,7 +39,7 @@ HRESULT TimeDriver::Initialize()
 
         m_timezoneOffset = 0; 
 
-#ifdef PLATFORM_WINDOWS
+#ifdef PLATFORM_WINDOWS_EMULATOR
 
         TIME_ZONE_INFORMATION tzi;
         SYSTEMTIME st;

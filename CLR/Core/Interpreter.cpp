@@ -6,7 +6,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(TINYCLR_TRACE_EXCEPTIONS) && defined(PLATFORM_WINDOWS)
+#if defined(TINYCLR_TRACE_EXCEPTIONS) && defined(_WIN32)
 
 struct BackTrackExecution
 {
@@ -562,7 +562,7 @@ HRESULT CLR_RT_Thread::Execute()
             stack = CurrentFrame();
             if(stack->Prev() != NULL)
             {           
-#if defined(TINYCLR_TRACE_INSTRUCTIONS) && defined(PLATFORM_WINDOWS)
+#if defined(TINYCLR_TRACE_INSTRUCTIONS) && defined(PLATFORM_WINDOWS_EMULATOR)
                 for(int i = 0; i < ARRAYSIZE(s_track); i++)
                 {
                     BackTrackExecution& track = s_track[ (s_trackPos+i) % ARRAYSIZE(s_track) ];
@@ -899,7 +899,7 @@ HRESULT CLR_RT_Thread::Execute_IL( CLR_RT_StackFrame* stack )
         }
 #endif //#if defined(TINYCLR_ENABLE_SOURCELEVELDEBUGGING)
 
-#if defined(TINYCLR_TRACE_EXCEPTIONS) && defined(PLATFORM_WINDOWS)
+#if defined(TINYCLR_TRACE_EXCEPTIONS) && defined(_WIN32)
         if(s_CLR_RT_fTrace_Exceptions >= c_CLR_RT_Trace_Annoying)
         {
             CLR_PROF_HANDLER_SUSPEND_TIME();
@@ -941,7 +941,7 @@ Execute_RestartDecoding:
             ////////////////////////
             //
             //
-#if defined(PLATFORM_WINDOWS)
+#if defined(PLATFORM_WINDOWS_EMULATOR)
             if(s_CLR_RT_fTrace_SimulateSpeed > c_CLR_RT_Trace_None)
             {
                 CLR_PROF_Handler::SuspendTime();

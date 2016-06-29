@@ -6,6 +6,19 @@
 
 using namespace Microsoft::SPOT::Emulator;
 
+void ClrSetLcdDimensions( INT32 width, INT32 height, INT32 bitsPerPixel )
+{
+    g_HAL_Configuration_Windows.LCD_Width = width;
+    g_HAL_Configuration_Windows.LCD_Height = height;
+    g_HAL_Configuration_Windows.LCD_BitsPerPixel = bitsPerPixel;
+}
+
+bool ClrIsDebuggerStopped()
+{
+    return CLR_EE_DBG_IS( Stopped );
+}
+
+
 /// NOTE: 06/18/2008-munirula:
 /// There's no true framebuffer for LCD in emulator. Unfortunately DirectDrawing for perf in Touch based inking
 /// requires framebuffer access, so it can respond to user activties right away, without requiring round trip into

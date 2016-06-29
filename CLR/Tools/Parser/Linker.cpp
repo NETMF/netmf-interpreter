@@ -5,10 +5,6 @@
 #include "stdafx.h"
 #include <TinyCLR_Endian.h>
 
-#if defined(PLATFORM_WINDOWS)
-#pragma comment(lib,"crypto")
-#endif
-
 #include <crypto.h>
 
 //--//
