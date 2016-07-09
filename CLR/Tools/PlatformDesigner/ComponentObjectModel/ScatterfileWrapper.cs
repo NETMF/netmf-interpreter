@@ -1,13 +1,13 @@
 using System;
-using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using System.IO;
-using System.Xml;
-using System.Xml.XPath;
-using System.Xml.Serialization;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.XPath;
 using XsdInventoryFormatObject;
 using XsdScatterfileSchemaObject;
 
@@ -22,22 +22,22 @@ namespace ComponentObjectModel
 
         const string ScatterfileNamespace = "http://schemas.microsoft.com/netmf/ScatterfileSchema.xsd";
 
-        const string IfInFormat    = "If Name=\"{0}\" In=\"{1}\"";
-        const string IfEqFormat    = "If Name=\"{0}\" Value=\"{1}\"";
-        const string IfDefFormat   = "IfDefined Name=\"{0}\"";
-        const string IfNotDefFormat= "IfNotDefined Name=\"{0}\"";
+        const string IfInFormat = "If Name=\"{0}\" In=\"{1}\"";
+        const string IfEqFormat = "If Name=\"{0}\" Value=\"{1}\"";
+        const string IfDefFormat = "IfDefined Name=\"{0}\"";
+        const string IfNotDefFormat = "IfNotDefined Name=\"{0}\"";
 
-        const string RegExIfIn     = "If\\s+Name\\s*=\\s*\"(\\S+)\"\\s+In\\s*=\\s*\"([\\S\\s]*)\"";
-        const string RegExIfEq     = "If\\s+Name\\s*=\\s*\"(\\S+)\"\\s+Value\\s*=\\s*\"([\\S\\s]*)\"";
-        const string RegExIfDef    = "IfDefined\\s+Name\\s*=\\s*\"(\\S+)\"";
+        const string RegExIfIn = "If\\s+Name\\s*=\\s*\"(\\S+)\"\\s+In\\s*=\\s*\"([\\S\\s]*)\"";
+        const string RegExIfEq = "If\\s+Name\\s*=\\s*\"(\\S+)\"\\s+Value\\s*=\\s*\"([\\S\\s]*)\"";
+        const string RegExIfDef = "IfDefined\\s+Name\\s*=\\s*\"(\\S+)\"";
         const string RegExIfNotDef = "IfNotDefined\\s+Name\\s*=\\s*\"(\\S+)\"";
 
-        Regex m_expIfIn     = new Regex(RegExIfIn,     RegexOptions.IgnoreCase);
-        Regex m_expIfEq     = new Regex(RegExIfEq,     RegexOptions.IgnoreCase);
-        Regex m_expIfDef    = new Regex(RegExIfDef,    RegexOptions.IgnoreCase);
+        Regex m_expIfIn = new Regex(RegExIfIn, RegexOptions.IgnoreCase);
+        Regex m_expIfEq = new Regex(RegExIfEq, RegexOptions.IgnoreCase);
+        Regex m_expIfDef = new Regex(RegExIfDef, RegexOptions.IgnoreCase);
         Regex m_expIfNotDef = new Regex(RegExIfNotDef, RegexOptions.IgnoreCase);
 
-        Hashtable m_execRegionOrderMap   = new Hashtable();
+        Hashtable m_execRegionOrderMap = new Hashtable();
         Hashtable m_execRegionsToNavNode = new Hashtable();
 
         //Hashtable m_symOrderMap  = new Hashtable();
@@ -64,7 +64,7 @@ namespace ComponentObjectModel
                 cond.Value = m.Groups[2].Value;
 
                 (owner.GetType().GetProperty(typeof(List<If>).Name).GetValue(owner, null) as IList).Add(cond);
-                
+
                 ret = cond;
             }
             else if (m_expIfIn.IsMatch(conditional))
@@ -113,7 +113,7 @@ namespace ComponentObjectModel
             {
                 int order = 0;
                 object val = o.GetType().GetProperty("Order").GetValue(o, null);
-                if(val != null)
+                if (val != null)
                 {
                     order = (int)val;
                 }
@@ -142,7 +142,7 @@ namespace ComponentObjectModel
 
         private IList GetCollectionFromObject(object o, Type collectionType)
         {
-            foreach(PropertyInfo pi in o.GetType().GetProperties())
+            foreach (PropertyInfo pi in o.GetType().GetProperties())
             {
                 if (pi.PropertyType == collectionType)
                 {
@@ -384,12 +384,12 @@ namespace ComponentObjectModel
 
         enum MemberPrecidence : int
         {
-            Unknown     = -1,
+            Unknown = -1,
             ErrorMember = 0,
-            EnvMember   = 1,
-            SetMember   = 2,
-            LoadRegion  = 3,
-            ExecRegion  = 3,
+            EnvMember = 1,
+            SetMember = 2,
+            LoadRegion = 3,
+            ExecRegion = 3,
             FileMapping = 3,
         };
 
@@ -411,17 +411,17 @@ namespace ComponentObjectModel
         {
             string ret = "";
 
-            If ifCond             = cond as If;
-            IfDefined ifDef       = cond as IfDefined;
+            If ifCond = cond as If;
+            IfDefined ifDef = cond as IfDefined;
             IfNotDefined ifNotDef = cond as IfNotDefined;
 
             if (ifCond != null)
             {
-                if(ifCond.In != null)
+                if (ifCond.In != null)
                 {
                     ret = string.Format(IfInFormat, ifCond.Name, ifCond.In);
                 }
-                else if(ifCond.Value != null)
+                else if (ifCond.Value != null)
                 {
                     ret = string.Format(IfEqFormat, ifCond.Name, ifCond.Value);
                 }
@@ -498,7 +498,7 @@ namespace ComponentObjectModel
                     region.Address = lr.Base;
                     region.Options = lr.Options;
                     region.Size = lr.Size;
-//                    region.Order = regionSet.Count;
+                    //                    region.Order = regionSet.Count;
                     region.Conditional = GetConditionalValue(conditional);
 
                     regionSet.Add(region);
@@ -517,11 +517,11 @@ namespace ComponentObjectModel
                 foreach (ExecRegion er in erCollection)
                 {
                     MemorySection section = new MemorySection();
-                    section.Name        = er.Name;
-                    section.Address     = er.Base;
-                    section.Options     = er.Options;
-                    section.Size        = er.Size;
-                    section.Order       = (int)m_execRegionOrderMap[(owner as MemoryRegion).Name + ":" + er.Name];
+                    section.Name = er.Name;
+                    section.Address = er.Base;
+                    section.Options = er.Options;
+                    section.Size = er.Size;
+                    section.Order = (int)m_execRegionOrderMap[(owner as MemoryRegion).Name + ":" + er.Name];
                     section.Conditional = GetConditionalValue(conditional);
 
                     sectionSet.Add(section);
@@ -541,8 +541,8 @@ namespace ComponentObjectModel
                 foreach (FileMapping fm in fileCollection)
                 {
                     MemorySymbol sym = new MemorySymbol();
-                    sym.Name       = fm.Name;
-                    sym.Options    = fm.Options;
+                    sym.Name = fm.Name;
+                    sym.Options = fm.Options;
                     sym.Conditional = GetConditionalValue(conditional);
 
                     symSet.Add(sym);
@@ -562,7 +562,7 @@ namespace ComponentObjectModel
                 EnvVars envSet = null;
 
                 // conditional belongs to the map if we have a load region in this conditional
-                if(conditionalStack.Count == 0)
+                if (conditionalStack.Count == 0)
                 {
                     envSet = FindMatchingSet(envSets, "Global");
 
@@ -579,9 +579,9 @@ namespace ComponentObjectModel
                     {
                         object cond = conditionalStack[i];
 
-                        if (i == (conditionalStack.Count-1) && owner is MemoryMap && ret >= MemberPrecidence.LoadRegion)
+                        if (i == (conditionalStack.Count - 1) && owner is MemoryMap && ret >= MemberPrecidence.LoadRegion)
                         {
-                            ((MemoryMap)owner).Name        = GetConditionalName(conditional);
+                            ((MemoryMap)owner).Name = GetConditionalName(conditional);
                             ((MemoryMap)owner).Conditional = GetConditionalValue(conditional);
                         }
                         else
