@@ -45,10 +45,11 @@
 SMALLINT bitacc(SMALLINT,SMALLINT,SMALLINT,uchar *);
 
 // global variables for this module to hold search state information
-static SMALLINT LastDiscrepancy[MAX_PORTNUM];
-static SMALLINT LastFamilyDiscrepancy[MAX_PORTNUM];
-static SMALLINT LastDevice[MAX_PORTNUM];
-uchar SerialNum[MAX_PORTNUM][8];
+static SMALLINT LastDiscrepancy[MAX_PORTNUM] = { 0 };
+static SMALLINT LastFamilyDiscrepancy[MAX_PORTNUM] = { 0 };
+static SMALLINT LastDevice[MAX_PORTNUM] = { 0 };
+SMALLINT owPortPin[MAX_PORTNUM] = { 0 };
+uchar SerialNum[MAX_PORTNUM][8] = { 0 };
 
 //--------------------------------------------------------------------------
 // The 'owFirst' finds the first device on the 1-Wire Net  This function
@@ -109,6 +110,8 @@ SMALLINT owNext(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
   uchar serial_byte_mask;
   uchar lastcrc8;
 
+  if((portnum >= MAX_PORTNUM) || (portnum < 0) || (owPortPin[portnum] ==0)) return 0;
+	 
   // initialize for search
   lastcrc8=0;
   bit_number = 1;
@@ -262,7 +265,11 @@ SMALLINT owNext(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
 void owSerialNum(int portnum, uchar *serialnum_buf, SMALLINT do_read)
 {
   uchar i;
-
+   if((portnum >= MAX_PORTNUM) || (portnum < 0) || (owPortPin[portnum] ==0)) 
+   {
+		if (serialnum_buf != NULL) *serialnum_buf=0;
+		return;
+   }
   // read the internal buffer and place in 'serialnum_buf'
   if (do_read)
   {
@@ -289,6 +296,8 @@ void owSerialNum(int portnum, uchar *serialnum_buf, SMALLINT do_read)
 void owFamilySearchSetup(int portnum, SMALLINT search_family)
 {
   uchar i;
+   if((portnum >= MAX_PORTNUM) || (portnum < 0) || (owPortPin[portnum] ==0)) return;
+
 
   // set the search state to find SearchFamily type devices
   SerialNum[portnum][0] = search_family;
@@ -306,6 +315,8 @@ void owFamilySearchSetup(int portnum, SMALLINT search_family)
 //
 void owSkipFamily(int portnum)
 {
+   if((portnum >= MAX_PORTNUM) || (portnum < 0) || (owPortPin[portnum] ==0)) return;
+
   // set the Last discrepancy to last family discrepancy
   LastDiscrepancy[portnum] = LastFamilyDiscrepancy[portnum];
   LastFamilyDiscrepancy[portnum] = 0;
@@ -333,6 +344,7 @@ SMALLINT owAccess(int portnum)
 {
   uchar sendpacket[9];
   uchar i;
+   if((portnum >= MAX_PORTNUM) || (portnum < 0) || (owPortPin[portnum] ==0)) return FALSE;
 
   // reset the 1-wire
   if (owTouchReset(portnum))
@@ -396,7 +408,7 @@ SMALLINT owVerify(int portnum, SMALLINT alarm_only)
 {
   uchar i,sendlen=0,goodbits=0,cnt=0,s,tst;
   uchar sendpacket[50];
-
+   if((portnum >= MAX_PORTNUM) || (portnum < 0) || (owPortPin[portnum] ==0)) return FALSE;
   // construct the search
   if (alarm_only)
     sendpacket[sendlen++] = 0xEC; // issue the alarming search command
@@ -460,7 +472,7 @@ SMALLINT owOverdriveAccess(int portnum)
 {
   uchar sendpacket[8];
   uchar i, bad_echo = FALSE;
-
+   if((portnum >= MAX_PORTNUM) || (portnum < 0) || (owPortPin[portnum] ==0)) return FALSE;
   // make sure normal level
   owLevel(portnum,MODE_NORMAL);
 
