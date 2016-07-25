@@ -14,7 +14,8 @@ namespace Microsoft
              struct OneWire
              {
                  // Helper Functions to access fields of managed object
-                     static UINT32& Get__pin( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UINT32( pMngObj, Library_spot_hardware_onewire_native_Microsoft_SPOT_Hardware_OneWire::FIELD___pin ); }
+                 static UINT32& Get__pin( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UINT32( pMngObj, Library_spot_hardware_onewire_native_Microsoft_SPOT_Hardware_OneWire::FIELD___pin ); }
+                 static UINT32& Get__logicalPort( CLR_RT_HeapBlock* pMngObj )    { return Interop_Marshal_GetField_UINT32( pMngObj, Library_spot_hardware_onewire_native_Microsoft_SPOT_Hardware_OneWire::FIELD___logicalPort ); }
      
                  // Declaration of stubs. These functions are implemented by Interop code developers
                  static INT32 TouchReset( CLR_RT_HeapBlock* pMngObj, HRESULT &hr );
