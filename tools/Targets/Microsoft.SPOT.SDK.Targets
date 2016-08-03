@@ -807,6 +807,7 @@
   <PropertyGroup>
     <LightCmdLine>-nologo -wx -sw1076 -sw1079 -sw1056 -sw1055 -sice:ICE03 -sice:ICE18 -sice:ICE20 -sice:ICE30 -sice:ICE31 -sice:ICE38 -sice:ICE43 -sice:ICE57 -sice:ICE64 -sice:ICE69 -b $(SPOCLIENT)\Setup -out $(OUTPUT_MSM) </LightCmdLine>
     <LightCmdLine Condition=" $(WiXLocalization) != '' ">$(LightCmdLine) -loc $(WiXLocalization) </LightCmdLine>
+    <LightCmdLine Condition="'$(SuppressMSIValidation)'=='true'">-sval $(LightCmdLine)</LightCmdLine>
   </PropertyGroup>
 
   <Target

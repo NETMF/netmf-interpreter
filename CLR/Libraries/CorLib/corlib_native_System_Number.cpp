@@ -48,7 +48,7 @@ HRESULT Library_corlib_native_System_Number::FormatNative___STATIC__STRING__OBJE
         case DATATYPE_U4: 
             hal_snprintf( result, ARRAYSIZE(result), "%.*X", precision, (CLR_UINT32)value->NumericByRef().u4 ); 
             break;
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
         case DATATYPE_I8: 
             hal_snprintf( result, ARRAYSIZE(result), "%I64X",(CLR_INT64_TEMP_CAST)value->NumericByRef().s8 ); 
             break;
@@ -96,7 +96,7 @@ HRESULT Library_corlib_native_System_Number::FormatNative___STATIC__STRING__OBJE
         case DATATYPE_U4: 
             hal_snprintf( result, ARRAYSIZE(result), "%.*u", precision, value->NumericByRef().u4 ); 
             break;
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
         case DATATYPE_I8: 
             hal_snprintf( result, ARRAYSIZE(result), "%I64d",(CLR_INT64_TEMP_CAST)value->NumericByRef().s8 ); 
             break;

@@ -5,6 +5,8 @@
 #ifndef _PLATFORM_WINDOWS_SELECTOR_H_
 #define _PLATFORM_WINDOWS_SELECTOR_H_ 1
 
+#define PLATFORM_WINDOWS_EMULATOR 1
+
 /////////////////////////////////////////////////////////
 //
 // macros

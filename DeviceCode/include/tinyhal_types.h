@@ -63,6 +63,9 @@ typedef signed   short int INT16;
 typedef unsigned int       UINT32;
 typedef signed   int       INT32;
 
+typedef unsigned int       ULONG;
+typedef signed   int       LONG;
+
 typedef unsigned __int64   UINT64;
 typedef signed   __int64   INT64;
 

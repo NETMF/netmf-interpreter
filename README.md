@@ -1,5 +1,7 @@
 #.NET Micro Framework Interpreter  
 
+[![Join the chat at https://gitter.im/NETMF/netmf-interpreter](https://badges.gitter.im/NETMF/netmf-interpreter.svg)](https://gitter.im/NETMF/netmf-interpreter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build status](http://netmfbuildstatus.cloudapp.net/BuildStatus.svc/Badge)](http://netmfbuildstatus.cloudapp.net/BuildStatus.svc/Report)
 
 Welcome to the .NET Micro Framework interpreter GitHub repository. 

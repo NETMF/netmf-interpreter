@@ -420,7 +420,7 @@ Exit:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
 
 void CLR_RT_UnicodeHelper::ConvertToUTF8( const std::wstring& src ,
                                           std::string&        dst )

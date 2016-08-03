@@ -58,27 +58,14 @@
 
 #endif
 
-#if defined(_WIN32_WCE)
+#if defined(_MSC_VER)
 
-#define PLATFORM_WINCE
 #define ADS_PACKED
 #define GNU_PACKED
 #define __section(x)
 #define __irq
 
 #define FORCEINLINE __forceinline
-
-
-#elif defined(_WIN32) || defined(WIN32)
-
-#define PLATFORM_WINDOWS
-#define ADS_PACKED
-#define GNU_PACKED
-#define __section(x)
-#define __irq
-
-#define FORCEINLINE __forceinline
-
 
 #elif defined(__GNUC__)
 
@@ -211,12 +198,12 @@ struct GPIO_FLAG
 //    NULL_PORT => T==0 && p == 0
 //
 // GENERIC_TRANSPORT is any custom port that isn't one of the above, they 
-// are implemneted for the DebugPort_xxxx apis and the port number is 
-// and index into a const global table of port interfaces (structure of
+// are implemented for the DebugPort_xxxx APIs and the port number is 
+// an index into a const global table of port interfaces (structure of
 // function pointers) These allow custom extensions to the normal transports
-// without needing to continue defining additional transport types and modifiying
+// without needing to continue defining additional transport types and modifying
 // switch on transport code. To keep compatibility high and code churn low, the
-// previous legacy transports remain. 
+// previous legacy transports remain though they should be considered deprecated.
 typedef INT32 COM_HANDLE;
 
 #define TRANSPORT_SHIFT             8
@@ -226,7 +213,7 @@ typedef INT32 COM_HANDLE;
 // Macro to extract the transport type from a COM_HANDLE
 #define ExtractTransport(x)         ((UINT32)(x) & TRANSPORT_MASK)
 
-// Macro to extract wellknown system event flag ids from a COM_HANDLE
+// Macro to extract well-known system event flag ids from a COM_HANDLE
 #define ExtractEventFromTransport(x) (ExtractTransport(x) == USART_TRANSPORT     ? SYSTEM_EVENT_FLAG_COM_IN: \
                                       ExtractTransport(x) == USB_TRANSPORT       ? SYSTEM_EVENT_FLAG_USB_IN: \
                                       ExtractTransport(x) == SOCKET_TRANSPORT    ? SYSTEM_EVENT_FLAG_SOCKET: \
@@ -405,7 +392,7 @@ struct HAL_SYSTEM_CONFIG
     COM_HANDLE               DebugTextPort;
 
     UINT32                   USART_DefaultBaudRate;
-    // internal HAL/PAL debug/tracing channel, this is seperate
+    // internal HAL/PAL debug/tracing channel, this is separate
     // to allow tracing messages in the driver that implements
     // the transport for the Debugger and DebugTextPort. This
     // channel is accessed via hal_printf() in the HAL/PAL
@@ -719,7 +706,7 @@ void IDelayLoop( int iterations );
 void IDelayLoop2( int iterations );
 }
 
-// this costs a minimun of 12 cycles when called from 0 wait-state RAM, 34 cycles when
+// this costs a minimum of 12 cycles when called from 0 wait-state RAM, 34 cycles when
 // called from 2 wait-state FLASH
 #define CYCLE_DELAY_LOOP(d) IDelayLoop(d)
 
@@ -735,15 +722,15 @@ void IDelayLoop2( int iterations );
 
 //--//
 
-#if !defined(PLATFORM_WINDOWS)
-extern "C" INT32 InterlockedIncrement( volatile INT32* lpAddend );
-extern "C" INT32 InterlockedDecrement( volatile INT32* lpAddend );
-extern "C" INT32 InterlockedExchange( volatile INT32* Target, INT32 Value );
-extern "C" INT32 InterlockedCompareExchange( INT32* Destination, INT32 Exchange, INT32 Comperand );
-extern "C" INT32 InterlockedExchangeAdd( volatile INT32* Addend, INT32 Value );
-extern "C" INT32 InterlockedOr( volatile INT32* Destination, INT32 Flag );
-extern "C" INT32 InterlockedAnd( volatile INT32* Destination, INT32 Flag );
-#endif // PLATFORM_WINDOWS
+#if !defined(_WIN32)
+extern "C" INT32 InterlockedIncrement( volatile LONG* lpAddend );
+extern "C" INT32 InterlockedDecrement( volatile LONG* lpAddend );
+extern "C" INT32 InterlockedExchange( volatile LONG* Target, INT32 Value );
+extern "C" INT32 InterlockedCompareExchange( LONG* Destination, LONG Exchange, LONG Comperand );
+extern "C" INT32 InterlockedExchangeAdd( volatile LONG* Addend, LONG Value );
+extern "C" INT32 InterlockedOr( volatile LONG* Destination, LONG Flag );
+extern "C" INT32 InterlockedAnd( volatile LONG* Destination, LONG Flag );
+#endif
 
 struct OpaqueQueueNode
 {
@@ -1452,8 +1439,6 @@ extern const ConfigurationSector g_ConfigurationSector;
 #endif 
 //--//
 
-#if defined(PLATFORM_ARM) || defined(PLATFORM_BLACKFIN) || defined(PLATFORM_WINDOWS) ||defined(PLATFORM_SH)
-
 #if !defined(BUILD_RTM)
 
 #define DEBUG_TRACE0(t, s)                              if(((t) & DEBUG_TRACE) != 0) hal_printf( (s)                                               )
@@ -1481,8 +1466,6 @@ extern const ConfigurationSector g_ConfigurationSector;
 #define DEBUG_TRACE9(t, s, p1,p2,p3,p4,p5,p6,p7,p8,p9)
 
 #endif  // defined(_DEBUG)
-
-#endif
 
 //--//
 

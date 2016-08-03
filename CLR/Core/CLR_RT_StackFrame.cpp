@@ -21,7 +21,7 @@ HRESULT CLR_RT_StackFrame::Push( CLR_RT_Thread* th, const CLR_RT_MethodDef_Insta
     CLR_UINT32                       sizeLocals;
     CLR_UINT32                       sizeEvalStack;
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(PLATFORM_WINDOWS_EMULATOR)
     if(s_CLR_RT_fTrace_SimulateSpeed > c_CLR_RT_Trace_None)
     {
         CLR_PROF_Handler::SuspendTime();
@@ -264,7 +264,7 @@ HRESULT CLR_RT_StackFrame::Push( CLR_RT_Thread* th, const CLR_RT_MethodDef_Insta
     //
     if(extraBlocks < 0)
     {
-#if defined(PLATFORM_WINDOWS) || (defined(PLATFORM_WINCE) && defined(_DEBUG))
+#if defined(_WIN32) || (defined(PLATFORM_WINCE) && defined(_DEBUG))
         if(caller->m_evalStackPos > caller->m_evalStackEnd)
         {
             TINYCLR_SET_AND_LEAVE(CLR_E_STACK_OVERFLOW);
@@ -278,7 +278,7 @@ HRESULT CLR_RT_StackFrame::Push( CLR_RT_Thread* th, const CLR_RT_MethodDef_Insta
 
         caller->m_evalStackPos = stack->m_arguments;
 
-#if defined(PLATFORM_WINDOWS) || (defined(PLATFORM_WINCE) && defined(_DEBUG))
+#if defined(_WIN32) || (defined(PLATFORM_WINCE) && defined(_DEBUG))
         if(stack->m_arguments < caller->m_evalStack)
         {
             TINYCLR_SET_AND_LEAVE(CLR_E_STACK_UNDERFLOW);
@@ -315,7 +315,7 @@ bool CLR_RT_StackFrame::PushInline( CLR_PMETADATA& ip, CLR_RT_Assembly*& assm, C
     
     CLR_PMETADATA ipTmp = calleeInst.m_assm->GetByteCode( md->RVA );
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(PLATFORM_WINDOWS_EMULATOR)
         if(s_CLR_RT_fTrace_SimulateSpeed > c_CLR_RT_Trace_None)
         {
             CLR_PROF_Handler::SuspendTime();
@@ -382,7 +382,8 @@ bool CLR_RT_StackFrame::PushInline( CLR_PMETADATA& ip, CLR_RT_Assembly*& assm, C
 }
 
 void CLR_RT_StackFrame::PopInline()
-{
+{
+
     CLR_RT_HeapBlock& src = m_evalStackPos[0];
 
     RestoreFromInlineStack();

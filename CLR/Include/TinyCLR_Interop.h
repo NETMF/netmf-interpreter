@@ -15,7 +15,7 @@
 
 extern HRESULT TINYCLR_DEBUG_PROCESS_EXCEPTION( HRESULT hr, LPCSTR szFunc, LPCSTR szFile, int line );
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
 
 #define TINYCLR_LEAVE()  { if(FAILED(hr)) TINYCLR_DEBUG_PROCESS_EXCEPTION( hr, NULL, NULL, 0 ); goto TinyCLR_Cleanup; }
 #define TINYCLR_RETURN() return hr

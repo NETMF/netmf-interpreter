@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>WinPcap_Eth_lwIP_driver_config</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{E95B5A38-B39A-466B-B88F-923B15DC61F1}</ProjectGuid>
+    <Description>WinPcap Ethernet Driver Configuration</Description>
+    <Level>HAL</Level>
+    <LibraryFile>WinPcap_Eth_lwIP_driver_config.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\Solutions\Windows\TinyCLR\DeviceCode\Network\WinPcap_Eth_lwIP\dotNetMF.proj</ProjectPath>
+    <ManifestFile>WinPcap_Eth_lwIP_driver_config.$(LIB_EXT).manifest</ManifestFile>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>Solutions\Windows\TinyCLR\DeviceCode\Network\WinPcap_Eth_lwIP</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+	<IncludePaths Include="DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth" />
+	<Compile Include="WinPcap_Eth_lwIP_driver_config.cpp" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
