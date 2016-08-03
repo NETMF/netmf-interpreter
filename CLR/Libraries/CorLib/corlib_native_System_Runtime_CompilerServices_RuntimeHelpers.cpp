@@ -37,7 +37,7 @@ HRESULT Library_corlib_native_System_Runtime_CompilerServices_RuntimeHelpers::In
         CLR_UINT32    sizeDst = array->m_sizeOfElement;
 
         lenSrc /= sizeDst; if(lenSrc > lenDst) lenSrc = lenDst;
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
         memcpy( ptrDst, ptrSrc, lenSrc * sizeDst );
 
 #if defined(TINYCLR_EMULATED_FLOATINGPOINT)
@@ -165,7 +165,7 @@ HRESULT Library_corlib_native_System_Runtime_CompilerServices_RuntimeHelpers::In
             break;
         }
 #endif        
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
     }
 
     TINYCLR_NOCLEANUP();

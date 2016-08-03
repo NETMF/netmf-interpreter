@@ -979,7 +979,7 @@ bool Loader_Engine::ProcessPayload( WP_Message* msg )
     LOADER_ENGINE_SETFLAG( this, c_LoaderEngineFlag_ValidConnection );
 
     //--//
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     SwapEndian( msg, msg->m_payload, msg->m_header.m_size, false );
 #endif
     size_t                      num;
@@ -1120,7 +1120,7 @@ bool Loader_Engine::TransmitMessage( const WP_Message* msg, bool fQueue )
     UINT32 payloadSize;
     UINT32 flags;
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     payloadSize = msg->m_header.m_size;
     flags       = msg->m_header.m_flags;
 #else
@@ -1178,7 +1178,7 @@ void Loader_Engine::ReplyToCommand( WP_Message* msg, bool fSuccess, bool fCritic
 
     msgReply.Initialize( &m_controller );
 
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     SwapEndian( msg, ptr, size, true );
 #endif
     msgReply.PrepareReply( msg->m_header, flags, size, (UINT8*)ptr );
@@ -1203,7 +1203,7 @@ bool Loader_Engine::Monitor_Ping( WP_Message* msg )
         CLR_DBG_Commands::Monitor_Ping::Reply cmdReply;
         cmdReply.m_source = CLR_DBG_Commands::Monitor_Ping::c_Ping_Source_TinyBooter;
 
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
         cmdReply.m_dbg_flags  = CLR_DBG_Commands::Monitor_Ping::c_Ping_DbgFlag_BigEndian;
 #endif
 
@@ -1587,7 +1587,7 @@ bool Loader_Engine::Monitor_FlashSectorMap( WP_Message* msg )
     return true;
 }
 
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
 
 UINT32 Loader_Engine::SwapEndianPattern( UINT8* &buffer, UINT32 size, UINT32 count )
 {

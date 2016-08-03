@@ -11,7 +11,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
 
 #define CLR_RT_HEAPBLOCK_RAW_ID( dataType, flags, size ) ( (dataType & 0x000000FF) | ((flags & 0x000000FF) << 8) | ((size & 0x0000FFFF) << 16))
 #define CLR_RT_HEAPBLOCK_ASSIGN_INTEGER32_SIGNED( dataType, num ) { m_id.raw = CLR_RT_HEAPBLOCK_RAW_ID( dataType, 0, 1 ); m_data.numeric.s4 = (CLR_INT32)num; }
@@ -23,7 +23,7 @@
 #define CLR_RT_HEAPBLOCK_ASSIGN_FLOAT32(dataType,num) { m_id.raw = CLR_RT_HEAPBLOCK_RAW_ID( dataType, 0, 1 ); m_data.numeric.r4 = num; }
 #define CLR_RT_HEAPBLOCK_ASSIGN_FLOAT64(dataType,num) { m_id.raw = CLR_RT_HEAPBLOCK_RAW_ID( dataType, 0, 1 ); m_data.numeric.r8 = num; }
 
-#else // BIG_ENDIAN
+#else // NETMF_TARGET_BIG_ENDIAN
 
 #define CLR_RT_HEAPBLOCK_RAW_ID( dataType, flags, size ) ( (size & 0x0000FFFF) | ((flags & 0x000000FF) << 16) | ((dataType & 0x000000FF) << 24))
 #define CLR_RT_HEAPBLOCK_ASSIGN_INTEGER32_SIGNED( dataType, num ) { m_id.raw = CLR_RT_HEAPBLOCK_RAW_ID( dataType, 0, 1 );   m_data.numeric.padS4 = 0;  m_data.numeric.s4 = (CLR_INT32)num; }
@@ -35,7 +35,7 @@
 #define CLR_RT_HEAPBLOCK_ASSIGN_FLOAT32( dataType, num ) { m_id.raw = CLR_RT_HEAPBLOCK_RAW_ID( dataType, 0, 1 );            m_data.numeric.padR4 = 0; m_data.numeric.r4 =             num; }
 #define CLR_RT_HEAPBLOCK_ASSIGN_FLOAT64( dataType, num ) { m_id.raw = CLR_RT_HEAPBLOCK_RAW_ID( dataType, 0, 1 );                                      m_data.numeric.r8 =             num; }
 
-#endif // BIG_ENDIAN
+#endif // NETMF_TARGET_BIG_ENDIAN
 
 ////////////////////////////////////////////////////////////
 
@@ -147,7 +147,7 @@ private:
         
         union Numeric
         {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
             CLR_UINT8  u1;
             CLR_UINT16 u2;
             CLR_UINT32 u4;            
@@ -158,7 +158,7 @@ private:
 #endif
             struct U8
             {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
                 CLR_UINT32 _L;
                 CLR_UINT32 _H;
                 //--//                
@@ -293,7 +293,7 @@ private:
                 
             } u8;
             //
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
             CLR_INT8  s1;
             CLR_INT16 s2;
             CLR_INT32 s4;
@@ -304,7 +304,7 @@ private:
 #endif
             struct S8
             {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
                 CLR_UINT32 _L;
                 CLR_UINT32 _H;
                 //--//                
@@ -445,14 +445,14 @@ private:
 
 #if !defined(TINYCLR_EMULATED_FLOATINGPOINT)
             
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
             float      r4;
 #else
             struct { CLR_UINT32 padR4; float      r4; };
 #endif
             struct R8
             {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
                 CLR_UINT32 _L;
                 CLR_UINT32 _H;
 #else
@@ -464,7 +464,7 @@ private:
                 {
                     double ret_val;
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
 #if defined(__GNUC__)
 ///
 /// This code fixes an optimization problem with the gcc compiler.
@@ -525,7 +525,7 @@ private:
 
                 R8& operator=( const double num )
                 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
 #if defined(__GNUC__)
 ///
 /// This code fixes an optimization problem with the gcc compiler.
@@ -649,7 +649,7 @@ private:
 #else  
  /// not using floating point lib, emulated one
 
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
             CLR_UINT32 padR4; 
 #endif
  
@@ -705,7 +705,7 @@ private:
 
             struct R8
             {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
                 CLR_UINT32 _L;
                 CLR_UINT32 _H;
                 //--//                
@@ -833,7 +833,7 @@ private:
         // MemLE: DDCCBBAA
         // So for LE DD,Addr 00 is the low byte. 
         // For BE it is certainly not true, hence this check will not work. Will Interop? FIXME GJS - verify interop
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
         CT_ASSERT_UNIQUE_NAME( offsetof( Numeric, s1 ) == 0, s1 )
         CT_ASSERT_UNIQUE_NAME( offsetof( Numeric, s2 ) == 0, s2 )
         CT_ASSERT_UNIQUE_NAME( offsetof( Numeric, s4 ) == 0, s4 )
@@ -1078,7 +1078,7 @@ public:
     }
 
     //--//
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     const CLR_RT_HeapBlock_AtomicData& DataByRefConst() const { return m_data; }
 #else
     const CLR_RT_HeapBlock_AtomicData& DataByRefConst() const 

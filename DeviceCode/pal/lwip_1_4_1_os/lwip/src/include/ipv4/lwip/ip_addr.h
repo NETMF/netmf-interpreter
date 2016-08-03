@@ -134,7 +134,7 @@ extern const ip_addr_t ip_addr_broadcast;
 #define IP_LOOPBACKNET      127                 /* official! */
 
 
-#if BYTE_ORDER == BIG_ENDIAN
+#if BYTE_ORDER == NETMF_TARGET_BIG_ENDIAN
 /** Set an IP address given by the four byte-parts */
 #define IP4_ADDR(ipaddr, a,b,c,d) \
         (ipaddr)->addr = ((u32_t)((a) & 0xff) << 24) | \

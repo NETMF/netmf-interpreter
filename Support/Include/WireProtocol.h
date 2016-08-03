@@ -127,7 +127,7 @@ public:
     void PrepareReply    ( const WP_Packet& req, UINT32 flags, UINT32 payloadSize, UINT8* payload );
     void SetPayload      (                                                         UINT8* payload );
     void Release         (                                                                        );
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     void SwapEndian      (                                                                        );
 #endif
 

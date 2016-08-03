@@ -1342,7 +1342,7 @@ bool CLR_RECORD_ASSEMBLY::GoodHeader() const
     NATIVE_PROFILE_CLR_CORE();
     CLR_RECORD_ASSEMBLY header = *this; header.headerCRC = 0;
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     if ( (header.flags & CLR_RECORD_ASSEMBLY::c_Flags_BigEndian) == CLR_RECORD_ASSEMBLY::c_Flags_BigEndian)
 #else
     if ( (header.flags & CLR_RECORD_ASSEMBLY::c_Flags_BigEndian) != CLR_RECORD_ASSEMBLY::c_Flags_BigEndian)
@@ -4430,7 +4430,7 @@ HRESULT CLR_RT_AttributeParser::Next( Value*& res )
             CLR_UINT32 size = (dtl.m_sizeInBits + 7) / 8;
 
 // FIXME GJS - the numeric values, what is their endiannes??? In the MSTV code there is a BIG endian fix but it looks like it will not work, so was it ever used?
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
             memcpy( &m_lastValue.m_value.NumericByRef(), m_blob, size ); m_blob += size;
 #else
             switch(size)

@@ -370,7 +370,7 @@ bool CLR_DBG_Debugger::Monitor_Ping( WP_Message* msg, void* owner )
 
         cmdReply.m_source    = CLR_DBG_Commands::Monitor_Ping::c_Ping_Source_TinyCLR;
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
         cmdReply.m_dbg_flags = CLR_EE_DBG_IS(State_ProgramExited) != 0 ? CLR_DBG_Commands::Monitor_Ping::c_Ping_DbgFlag_AppExit : 0;
 #else
         cmdReply.m_dbg_flags  = CLR_DBG_Commands::Monitor_Ping::c_Ping_DbgFlag_BigEndian;
@@ -1432,7 +1432,7 @@ static bool FillValues( CLR_RT_HeapBlock* ptr, CLR_DBG_Commands::Debugging_Value
         // Primitives or optimized value types.
         //
         
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
         memcpy( dst->m_builtinValue, (void*)&ptr->NumericByRefConst().u1, 8 );
 #else
         {
