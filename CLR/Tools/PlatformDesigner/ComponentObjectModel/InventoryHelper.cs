@@ -1,11 +1,9 @@
 using System;
-using System.IO;
-using System.Collections.Generic;
 using System.Collections;
-using System.Text;
-using XsdInventoryFormatObject;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
-using Microsoft.Build.Evaluation;
+using XsdInventoryFormatObject;
 
 namespace ComponentObjectModel
 {
@@ -26,11 +24,18 @@ namespace ComponentObjectModel
         };
 
         List<Inventory> m_invs;
-        Dictionary<string, object> m_guidToObjectHash = new Dictionary<string,object>();
+        Dictionary<string, object> m_guidToObjectHash = new Dictionary<string, object>();
         Dictionary<IList, Dictionary<string, object>> m_nameToObjectHash = new Dictionary<IList, Dictionary<string, object>>();
         Dictionary<string, object> m_fileToObjectHash = new Dictionary<string, object>();
         Dictionary<string, object> m_projToObjectHash = new Dictionary<string, object>();
         Dictionary<string, BuildParameter> m_nameToBuildParam = new Dictionary<string, BuildParameter>();
+        static bool s_exhaustiveLibrarySearch = false;
+
+        public static bool ExhaustiveLibrarySearch
+        {
+            get { return s_exhaustiveLibrarySearch; }
+            set { s_exhaustiveLibrarySearch = value; }
+        }
 
         public InventoryHelper(params Inventory[] inventories) : this(new List<Inventory>(inventories))
         {
@@ -67,7 +72,7 @@ namespace ComponentObjectModel
                 return o;
             }
 
-            if (!(list is IList<Library>))
+            if (s_exhaustiveLibrarySearch || !(list is IList<Library>))
             {
                 foreach (object o in list)
                 {
@@ -141,9 +146,9 @@ namespace ComponentObjectModel
             {
                 nameToObjectHash = m_nameToObjectHash[list];
             }
-            else 
+            else
             {
-                nameToObjectHash = new Dictionary<string,object>();
+                nameToObjectHash = new Dictionary<string, object>();
 
                 m_nameToObjectHash[list] = nameToObjectHash;
             }
@@ -185,7 +190,7 @@ namespace ComponentObjectModel
                 return o;
             }
 
-            if (!(list is List<Library>))
+            if (s_exhaustiveLibrarySearch || !(list is List<Library>))
             {
                 foreach (object o in list)
                 {
@@ -213,7 +218,7 @@ namespace ComponentObjectModel
             bool bRet = true;
             object o = null;
 
-            if(component == null) return true;
+            if (component == null) return true;
 
             PropertyInfo pi = component.GetType().GetProperty("Guid");
 
@@ -227,8 +232,8 @@ namespace ComponentObjectModel
             {
                 PropertyInfo piNew = o.GetType().GetProperty("Name");
                 pi = component.GetType().GetProperty("Name");
-                string newName = piNew.GetValue(o,null) as string;
-                string oldName = pi.GetValue(component,null) as string;
+                string newName = piNew.GetValue(o, null) as string;
+                string oldName = pi.GetValue(component, null) as string;
                 if (pi != null && piNew != null)
                 {
                     if (0 != string.Compare(newName, oldName))
@@ -272,7 +277,7 @@ namespace ComponentObjectModel
                 */
                 foreach (Processor proc in inv.Processors)
                 {
-                    List< MFComponent > removeISAs = new List<MFComponent>();
+                    List<MFComponent> removeISAs = new List<MFComponent>();
 
                     foreach (MFComponent isa in proc.SupportedISAs)
                     {
@@ -322,20 +327,20 @@ namespace ComponentObjectModel
                     {
                         lib.Dependencies.Remove(o as MFComponent);
                     }
-/*
-                    removeList.Clear();
-                    foreach (MFComponent comp in lib.SoftDependencies)
-                    {
-                        if (!ValidateComponent(comp))
-                        {
-                            removeList.Add(comp);
-                        }
-                    }
-                    foreach (object o in removeList)
-                    {
-                        lib.SoftDependencies.Remove(o as MFComponent);
-                    }
-*/
+                    /*
+                                        removeList.Clear();
+                                        foreach (MFComponent comp in lib.SoftDependencies)
+                                        {
+                                            if (!ValidateComponent(comp))
+                                            {
+                                                removeList.Add(comp);
+                                            }
+                                        }
+                                        foreach (object o in removeList)
+                                        {
+                                            lib.SoftDependencies.Remove(o as MFComponent);
+                                        }
+                    */
                 }
 
                 foreach (Feature feat in inv.Features)
@@ -353,7 +358,7 @@ namespace ComponentObjectModel
                     {
                         feat.FeatureDependencies.Remove(c);
                     }
-                    
+
                     removeList.Clear();
                     foreach (MFComponent comp in feat.ComponentDependencies)
                     {
@@ -395,7 +400,7 @@ namespace ComponentObjectModel
             }
         }
 
-        public ComponentType GetComponentTypeByGuid( string guid, out object component )
+        public ComponentType GetComponentTypeByGuid(string guid, out object component)
         {
             component = null;
 
@@ -460,6 +465,18 @@ namespace ComponentObjectModel
                 BuildTool bt = FindObjectByGuid(buildToolGuid, inv.BuildTools) as BuildTool;
 
                 if (bt != null) return bt;
+            }
+
+            return null;
+        }
+
+        public BuildTool FindBuildToolByName(string buildToolName)
+        {
+            foreach (Inventory inv in m_invs)
+            {
+                BuildTool buildToo = FindObjectByName(buildToolName, inv.BuildTools) as BuildTool;
+
+                if (buildToo != null) return buildToo;
             }
 
             return null;
@@ -820,7 +837,7 @@ namespace ComponentObjectModel
             get
             {
                 List<MFSolution> ret = new List<MFSolution>();
-                
+
                 foreach (Inventory inv in m_invs)
                 {
                     ret.AddRange(inv.Solutions);

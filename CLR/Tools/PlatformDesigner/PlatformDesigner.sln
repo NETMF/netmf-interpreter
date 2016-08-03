@@ -1,5 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComponentBuilder", "ComponentBuilder\ComponentBuilder.csproj", "{AB5C04D8-DDE9-4AAA-831E-C51F5EACB612}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E0580777-E882-46C9-82B5-947D7A69586A} = {E0580777-E882-46C9-82B5-947D7A69586A}

@@ -1356,7 +1356,7 @@ struct CLR_RT_DataTypeLookup
     CLR_RT_TypeDef_Index*    m_cls;
     CLR_RT_HeapBlockRelocate m_relocate;
 
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(TINYCLR_TRACE_MEMORY_STATS)
     LPCSTR                   m_name;
 #endif   
 };

@@ -134,7 +134,7 @@ BOOL ssl_parse_certificate_internal(void * bytes, size_t size, void* pwd, void* 
 #if defined(DEBUG) || defined(_DEBUG)
     TINYCLR_SSL_PRINTF("\n        Issuer: ");
     TINYCLR_SSL_PRINTF(name);
-    TINYCLR_SSL_PRINTF("\n",1);
+    TINYCLR_SSL_PRINTF("\n");
     TINYCLR_SSL_PRINTF("        Validity\n");
     TINYCLR_SSL_PRINTF("            Not Before: ");
     TINYCLR_SSL_PRINTF("%s %2d %02d:%02d:%02d %d%s",

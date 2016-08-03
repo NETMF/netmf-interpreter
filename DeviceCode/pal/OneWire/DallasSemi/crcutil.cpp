@@ -59,7 +59,7 @@ static uchar dscrc_table[] = {
 //
 void setcrc16(int portnum, ushort reset)
 {
-   utilcrc16[portnum&0x0FF] = reset;
+	if((portnum < MAX_PORTNUM) && (portnum >= 0) ) utilcrc16[portnum&0x0FF] = reset;
    return;
 }
 
@@ -72,7 +72,7 @@ void setcrc16(int portnum, ushort reset)
 //
 void setcrc8(int portnum, uchar reset)
 {
-   utilcrc8[portnum&0x0FF] = reset;
+   if((portnum < MAX_PORTNUM) && (portnum >= 0) ) utilcrc8[portnum&0x0FF] = reset;
    return;
 }
 
@@ -88,6 +88,8 @@ void setcrc8(int portnum, uchar reset)
 //
 ushort docrc16(int portnum, ushort cdata)
 {
+   if((portnum >= MAX_PORTNUM) || (portnum < 0)) return 0;
+  
    cdata = (cdata ^ (utilcrc16[portnum&0x0FF] & 0xff)) & 0xff;
    utilcrc16[portnum&0x0FF] >>= 8;
 
@@ -114,6 +116,8 @@ ushort docrc16(int portnum, ushort cdata)
 //
 uchar docrc8(int portnum, uchar x)
 {
+	if((portnum >= MAX_PORTNUM) || (portnum < 0)) return 0;
+	
    utilcrc8[portnum&0x0FF] = dscrc_table[utilcrc8[portnum&0x0FF] ^ x];
    return utilcrc8[portnum&0x0FF];
 }

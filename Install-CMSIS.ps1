@@ -20,5 +20,23 @@ $packFileName = "ARM.CMSIS.$packVersion.pack"
 $packSourceURLBase = "https://github.com/ARM-software/CMSIS/releases/download/v$packVersion"
 
 # download the pack and extract the files into the curent directory 
-$dstPath = [System.IO.Path]::Combine( $SPOCLIENT, "CMSIS" )
+$dstPath = Join-Path $SPOCLIENT "CMSIS"
+
+$packDescriptionPath = Join-Path $dstPath ARM.CMSIS.pdsc
+if( Test-Path -PathType Leaf $packDescriptionPath )
+{
+    # check for the correct version
+    [System.Xml.XmlDocument] $pdsc = New-Object System.Xml.XmlDocument
+    $pdsc.Load( $packDescriptionPath )
+    $releases = $pdsc.SelectNodes("/package/releases/release[@version='$packVersion']")
+    if( $releases.Count -ne 1 )
+    {
+        Write-Error "ERROR: Detected existing but Incompatible CMSIS version installed"
+        return
+    }
+
+    Write-Host "Existing installation of CMSIS found"
+    return
+}
+
 Invoke-WebRequest -UseBasicParsing -Uri "$packSourceURLBase/$packFileName" | Expand-Stream -Destination $dstPath

@@ -1,11 +1,10 @@
-using System.Reflection;
 using System;
 using System.Collections;
-using System.Text.RegularExpressions;
-using Microsoft.Build.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using ComponentObjectModel;
-using Microsoft.Build.Execution;
 using Microsoft.Build.Construction;
 
 namespace XsdInventoryFormatObject
@@ -35,7 +34,7 @@ namespace XsdInventoryFormatObject
             return ret;
         }
 
-        internal static string ReplaceText(string text, Dictionary<string,string> nameChanges)
+        internal static string ReplaceText(string text, Dictionary<string, string> nameChanges)
         {
             if (nameChanges != null)
             {
@@ -48,11 +47,11 @@ namespace XsdInventoryFormatObject
             return text;
         }
 
-        internal static void CopyTo(object from, object to, Dictionary<string,string> nameChanges)
+        internal static void CopyTo(object from, object to, Dictionary<string, string> nameChanges)
         {
-            Type toType = to.GetType();            
+            Type toType = to.GetType();
 
-            foreach(PropertyInfo fi in from.GetType().GetProperties())
+            foreach (PropertyInfo fi in from.GetType().GetProperties())
             {
                 object val = fi.GetValue(from, null);
 
@@ -60,12 +59,12 @@ namespace XsdInventoryFormatObject
                 {
                     if (fi.Name.ToUpper().Contains("GUID") && !(from is MFComponent) && !(from is BuildToolRef))
                     {
-                        fi.SetValue(to, System.Guid.NewGuid().ToString("B"), null);
+                        fi.SetValue(to, Guid.NewGuid().ToString("B"), null);
                     }
-                    else if (fi.PropertyType.FullName.ToUpper().Contains("SYSTEM.COLLECTIONS.GENERIC.LIST" ))
+                    else if (fi.PropertyType.FullName.ToUpper().Contains("SYSTEM.COLLECTIONS.GENERIC.LIST"))
                     {
-                        System.Collections.IList list = (System.Collections.IList)fi.PropertyType.GetConstructor(new Type[] { }).Invoke(null);
-                        System.Collections.IList listFrom = (System.Collections.IList)val;
+                        IList list = (IList)fi.PropertyType.GetConstructor(new Type[] { }).Invoke(null);
+                        IList listFrom = (IList)val;
 
                         foreach (object o in listFrom)
                         {
@@ -77,7 +76,7 @@ namespace XsdInventoryFormatObject
                             {
                                 list.Add(o);
                             }
-                            else if(o.GetType() == typeof(ProjectTargetElement))
+                            else if (o.GetType() == typeof(ProjectTargetElement))
                             {
                                 list.Add(o);
                             }
@@ -114,7 +113,7 @@ namespace XsdInventoryFormatObject
                     {
                         toType.GetProperty(fi.Name).SetValue(to, val, null);
                     }
-                    else if(fi.Name != "m_cloneSolution")
+                    else if (fi.Name != "m_cloneSolution")
                     {
                         object o = fi.PropertyType.GetConstructor(new Type[] { }).Invoke(null);
 
@@ -137,7 +136,7 @@ namespace XsdInventoryFormatObject
                 {
                     if (fi.PropertyType.FullName.ToUpper().Contains("SYSTEM.COLLECTIONS.GENERIC.LIST"))
                     {
-                        System.Collections.IList list = (System.Collections.IList)val;
+                        IList list = (IList)val;
                         ArrayList rem = new ArrayList();
                         ArrayList add = new ArrayList();
 
@@ -192,18 +191,18 @@ namespace XsdInventoryFormatObject
         public Inventory()
         {
             //this.bSPsField = new System.Collections.Generic.List<BSP>();
-            this.buildParametersField = new System.Collections.Generic.List<BuildParameter>();
-            this.buildToolsField = new System.Collections.Generic.List<BuildTool>();
-            this.featuresField = new System.Collections.Generic.List<Feature>();
+            this.buildParametersField = new List<BuildParameter>();
+            this.buildToolsField = new List<BuildTool>();
+            this.featuresField = new List<Feature>();
             this.fileField = "";
-            this.librariesField = new System.Collections.Generic.List<Library>();
-            this.libraryCategoriesField = new System.Collections.Generic.List<LibraryCategory>();
+            this.librariesField = new List<Library>();
+            this.libraryCategoriesField = new List<LibraryCategory>();
             this.nameField = "";
-            this.solutionsField = new System.Collections.Generic.List<MFSolution>();
-            this.processorsField = new System.Collections.Generic.List<Processor>();
+            this.solutionsField = new List<MFSolution>();
+            this.processorsField = new List<Processor>();
             this.versionField = new Version();
-            this.assembliesField = new System.Collections.Generic.List<MFAssembly>();
-            this.projectTemplatesField = new System.Collections.Generic.List<MFProject>();
+            this.assembliesField = new List<MFAssembly>();
+            this.projectTemplatesField = new List<MFProject>();
         }
         public void CopyTo(Inventory dest)
         {
@@ -214,10 +213,10 @@ namespace XsdInventoryFormatObject
     public partial class MFComponent : object
     {
         public MFComponent() : this(MFComponentType.Unknown) { }
-        public MFComponent(MFComponentType type) 
-        { 
-            componentTypeField = type; 
-            refCountField = 0; 
+        public MFComponent(MFComponentType type)
+        {
+            componentTypeField = type;
+            refCountField = 0;
             conditionalField = "";
             projectPathField = "";
             conditionalField = "";
@@ -230,7 +229,7 @@ namespace XsdInventoryFormatObject
             this.nameField = name;
             this.projectPathField = projectPath;
             this.conditionalField = conditional;
-            this.guidField = string.IsNullOrEmpty(guid) ? System.Guid.NewGuid().ToString("B"): guid.ToUpper();
+            this.guidField = string.IsNullOrEmpty(guid) ? System.Guid.NewGuid().ToString("B") : guid.ToUpper();
             this.componentTypeField = type;
             this.refCountField = 0;
         }
@@ -266,7 +265,7 @@ namespace XsdInventoryFormatObject
             this.groupsField = "";
             this.guidField = System.Guid.NewGuid().ToString("B");
             this.nameField = "";
-            this.referencesField = new System.Collections.Generic.List<MFComponent>();
+            this.referencesField = new List<MFComponent>();
             this.isSolutionWizardVisibleField = true;
         }
         public void CopyTo(MFAssembly dest)
@@ -279,15 +278,15 @@ namespace XsdInventoryFormatObject
     {
         public Feature()
         {
-            this.componentDependenciesField = new System.Collections.Generic.List<MFComponent>();
+            this.componentDependenciesField = new List<MFComponent>();
             this.descriptionField = "";
             this.documentationField = "";
-            this.featureDependenciesField = new System.Collections.Generic.List<MFComponent>();
+            this.featureDependenciesField = new List<MFComponent>();
             this.groupsField = "";
             this.nameField = "";
             this.guidField = System.Guid.NewGuid().ToString("B");
             this.projectPathField = "";
-            this.assembliesField = new System.Collections.Generic.List<MFComponent>();
+            this.assembliesField = new List<MFComponent>();
             this.IsSolutionWizardVisible = true;
         }
         public void CopyTo(Feature dest)
@@ -318,7 +317,7 @@ namespace XsdInventoryFormatObject
     public partial class MFProject : object
     {
         internal MFProject m_cloneProj = null;
-        System.Collections.Generic.List<ProjectTargetElement> targetsField;
+        List<ProjectTargetElement> targetsField;
 
         public MFProject()
         {
@@ -327,21 +326,21 @@ namespace XsdInventoryFormatObject
             this.descriptionField = "";
             this.documentationField = "";
             this.directoryField = "";
-            this.featuresField = new System.Collections.Generic.List<MFComponent>();
+            this.featuresField = new List<MFComponent>();
             this.guidField = System.Guid.NewGuid().ToString("B");
-            this.librariesField = new System.Collections.Generic.List<MFComponent>();
+            this.librariesField = new List<MFComponent>();
             this.memoryMapField = new MemoryMap();
             this.nameField = "";
             this.versionField = new Version();
-            this.propertiesField = new System.Collections.Generic.List<MFProperty>();
-            this.interopFeaturesField = new System.Collections.Generic.List<string>();
-            this.extraAssembliesField = new System.Collections.Generic.List<string>();
-            this.sourceFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.headerFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.includePathsField = new System.Collections.Generic.List<MFBuildFile>();
-            this.otherFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.fastCompileFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.libraryCategoriesField = new System.Collections.Generic.List<MFComponent>();
+            this.propertiesField = new List<MFProperty>();
+            this.interopFeaturesField = new List<string>();
+            this.extraAssembliesField = new List<string>();
+            this.sourceFilesField = new List<MFBuildFile>();
+            this.headerFilesField = new List<MFBuildFile>();
+            this.includePathsField = new List<MFBuildFile>();
+            this.otherFilesField = new List<MFBuildFile>();
+            this.fastCompileFilesField = new List<MFBuildFile>();
+            this.libraryCategoriesField = new List<MFComponent>();
             this.isClrProjectField = false;
             this.isSolutionWizardVisibleField = true;
         }
@@ -432,7 +431,7 @@ namespace XsdInventoryFormatObject
 
             Feature feat = helper.FindFeature(cmpFeat.Guid);
 
-            if(feat != null)
+            if (feat != null)
             {
                 foreach (MFComponent depFeat in feat.FeatureDependencies)
                 {
@@ -526,11 +525,11 @@ namespace XsdInventoryFormatObject
                         if (!OK)
                         {
                             MFProject defProj = null;
-                            foreach(MFProject proj in solution.Projects)
+                            foreach (MFProject proj in solution.Projects)
                             {
-                                if(proj.IsClrProject)
+                                if (proj.IsClrProject)
                                 {
-                                    defProj = proj; 
+                                    defProj = proj;
                                     break;
                                 }
                             }
@@ -538,7 +537,7 @@ namespace XsdInventoryFormatObject
                             foreach (MFComponent feat in defProj.Features)
                             {
                                 Feature f = helper.FindFeature(feat.Guid);
-                                
+
                                 if (f != null && 0 == string.Compare(f.Filter, libFilter, true))
                                 {
                                     OK = true;
@@ -581,7 +580,7 @@ namespace XsdInventoryFormatObject
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine("Exception validating solution libraries: " + e.ToString());
+                Debug.WriteLine("Exception validating solution libraries: " + e.ToString());
                 return false;
             }
 
@@ -642,7 +641,7 @@ namespace XsdInventoryFormatObject
                 }
             }
         }
-        
+
 
         public void AnalyzeLibraries(InventoryHelper helper, MFSolution solution, List<LibraryCategory> unresolved, List<LibraryCategory> removed)
         {
@@ -650,7 +649,7 @@ namespace XsdInventoryFormatObject
             Dictionary<string, MFComponent> unresolvedTypes = new Dictionary<string, MFComponent>();
             List<MFComponent> features = new List<MFComponent>();
             Dictionary<string, MFComponent> preferredLibrary = new Dictionary<string, MFComponent>();
-            
+
             Processor proc = helper.FindProcessor(solution.Processor.Guid);
 
             libraryCategoriesField.Clear();
@@ -816,7 +815,7 @@ namespace XsdInventoryFormatObject
                     }
                 }
             }
-            else if(solution.m_solRequiredLibCats != null)
+            else if (solution.m_solRequiredLibCats != null)
             {
                 foreach (MFComponent cmp in solution.m_solRequiredLibCats.Values)
                 {
@@ -935,7 +934,7 @@ namespace XsdInventoryFormatObject
                                 if (libDep != null && libDep.HasLibraryCategory)
                                 {
                                     string key = libDep.LibraryCategory.Guid.ToLower();
-                                    if(!unresolvedTypes.ContainsKey(key) && !resolvedTypes.ContainsKey(key) && !newUnresolvedTypes.ContainsKey(key))
+                                    if (!unresolvedTypes.ContainsKey(key) && !resolvedTypes.ContainsKey(key) && !newUnresolvedTypes.ContainsKey(key))
                                     {
                                         newUnresolvedTypes[key] = libDep.LibraryCategory;
                                     }
@@ -1045,15 +1044,15 @@ namespace XsdInventoryFormatObject
         public MFSolution()
         {
             this.m_cloneSolution = null;
-            this.m_solRequiredLibCats = new Dictionary<string,MFComponent>();
+            this.m_solRequiredLibCats = new Dictionary<string, MFComponent>();
             this.m_clonedLibraryMap = new Dictionary<string, Library>();
             this.descriptionField = "";
             this.documentationField = "";
             this.guidField = System.Guid.NewGuid().ToString("B");
             this.nameField = "";
-            this.projectsField = new System.Collections.Generic.List<MFProject>(); 
+            this.projectsField = new List<MFProject>();
             this.versionField = new Version();
-            this.propertiesField = new System.Collections.Generic.List<MFProperty>();
+            this.propertiesField = new List<MFProperty>();
             this.isSolutionWizardVisibleField = true;
             this.authorField = "";
             this.itemsField = new List<MFBuildFile>();
@@ -1073,7 +1072,7 @@ namespace XsdInventoryFormatObject
             Dictionary<string, string> hash = new Dictionary<string, string>();
 
             dest.m_cloneSolution = this;
-            
+
             hash[this.nameField] = newName;
             hash[@"\$\(PLATFORM\)"] = newName;
             hash[@"\$\(TARGETPLATFORM\)"] = newName;
@@ -1086,7 +1085,7 @@ namespace XsdInventoryFormatObject
             if (m_cloneSolution == null)
             {
                 MFSolution sol = new MFSolution();
-                
+
                 CopyHelper.CopyTo(this, sol);
 
                 m_cloneSolution = sol;
@@ -1112,17 +1111,21 @@ namespace XsdInventoryFormatObject
             this.guidField = System.Guid.NewGuid().ToString("B");
             this.libExtField = "lib";
             this.linkerField = new BuildToolDefine();
-            this.miscToolsField = new System.Collections.Generic.List<MiscBuildTool>();
+            this.miscToolsField = new List<MiscBuildTool>();
             this.nameField = "";
             this.objExtField = "obj";
-            this.supportedISAsField = new System.Collections.Generic.List<ISA>();
+            this.supportedISAsField = new List<ISA>();
             this.toolPathField = "";
             this.versionField = new Version();
-            this.supportedCpuNamesField = new System.Collections.Generic.List<string>();
-            this.propertiesField = new System.Collections.Generic.List<MFProperty>();
-            this.itemsField = new System.Collections.Generic.List<MFProperty>();
+            this.supportedCpuNamesField = new List<string>();
+            this.propertiesField = new List<MFProperty>();
+            this.itemsField = new List<MFProperty>();
             this.isSolutionWizardVisibleField = true;
         }
+
+        /// <remarks/>
+        public string ScatterExt { get; set; }
+
         public void CopyTo(BuildTool dest)
         {
             CopyHelper.CopyTo(this, dest);
@@ -1167,12 +1170,12 @@ namespace XsdInventoryFormatObject
     {
         public Processor()
         {
-            this.buildToolOptionsField = new System.Collections.Generic.List<BuildToolRef>();
+            this.buildToolOptionsField = new List<BuildToolRef>();
             this.descriptionField = "";
             this.documentationField = "";
             this.guidField = System.Guid.NewGuid().ToString("B");
             this.nameField = "";
-            this.supportedISAsField = new System.Collections.Generic.List<MFComponent>();
+            this.supportedISAsField = new List<MFComponent>();
             this.versionField = new Version();
             this.isSolutionWizardVisibleField = true;
             this.customFilterField = "";
@@ -1188,11 +1191,11 @@ namespace XsdInventoryFormatObject
         {
             this.archiverFlagsField = new ToolOptions();
             this.asmFlagsField = new ToolOptions();
-            this.c_CppFlagsField = new System.Collections.Generic.List<ToolFlag>();
+            this.c_CppFlagsField = new List<ToolFlag>();
             this.cFlagsField = new ToolOptions();
-            this.commonFlagsField = new System.Collections.Generic.List<ToolFlag>();
+            this.commonFlagsField = new List<ToolFlag>();
             this.cppFlagsField = new ToolOptions();
-            this.environmentVariablesField = new System.Collections.Generic.List<EnvVar>();
+            this.environmentVariablesField = new List<EnvVar>();
             this.linkerFlagsField = new ToolOptions();
         }
         public void CopyTo(ToolChainOptions dest)
@@ -1208,7 +1211,7 @@ namespace XsdInventoryFormatObject
             this.descriptionField = "";
             this.environmentVariablesField = new EnvVars();
             this.nameField = "";
-            this.regionsField = new System.Collections.Generic.List<MemoryRegion>();
+            this.regionsField = new List<MemoryRegion>();
         }
         public void CopyTo(MemoryMap dest)
         {
@@ -1239,7 +1242,7 @@ namespace XsdInventoryFormatObject
             this.descriptionField = "";
             this.nameField = "";
             this.optionsField = "";
-            this.sectionsField = new System.Collections.Generic.List<MemorySection>();
+            this.sectionsField = new List<MemorySection>();
             this.sizeField = "";
         }
         public void CopyTo(MemoryRegion dest)
@@ -1258,7 +1261,7 @@ namespace XsdInventoryFormatObject
             this.optionsField = "";
             this.orderField = 0;
             this.sizeField = "";
-            this.symbolsField = new System.Collections.Generic.List<MemorySymbol>();
+            this.symbolsField = new List<MemorySymbol>();
         }
         public void CopyTo(MemorySection dest)
         {
@@ -1270,8 +1273,8 @@ namespace XsdInventoryFormatObject
         public EnvVars()
         {
             this.conditionalField = "";
-            this.envVarCollectionField = new System.Collections.Generic.List<EnvVar>();
-            this.envVarsCollectionField = new System.Collections.Generic.List<EnvVars>();
+            this.envVarCollectionField = new List<EnvVar>();
+            this.envVarsCollectionField = new List<EnvVars>();
             this.nameField = "";
         }
         public void CopyTo(EnvVars dest)
@@ -1307,12 +1310,12 @@ namespace XsdInventoryFormatObject
     }
     public partial class Library : object
     {
-        System.Collections.Generic.List<ProjectTargetElement> targetsField;
+        List<ProjectTargetElement> targetsField;
 
         public Library()
         {
-            this.targetsField = new System.Collections.Generic.List<ProjectTargetElement>();
-            this.dependenciesField = new System.Collections.Generic.List<MFComponent>();
+            this.targetsField = new List<ProjectTargetElement>();
+            this.dependenciesField = new List<MFComponent>();
             this.descriptionField = "";
             this.documentationField = "";
             this.groupsField = "";
@@ -1330,12 +1333,12 @@ namespace XsdInventoryFormatObject
             this.sizeField = "";
             //this.softDependenciesField = new System.Collections.Generic.List<MFComponent>();
             this.versionField = new Version();
-            this.propertiesField = new System.Collections.Generic.List<MFProperty>();
-            this.sourceFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.headerFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.fastCompileFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.otherFilesField = new System.Collections.Generic.List<MFBuildFile>();
-            this.includePathsField = new System.Collections.Generic.List<MFBuildFile>();
+            this.propertiesField = new List<MFProperty>();
+            this.sourceFilesField = new List<MFBuildFile>();
+            this.headerFilesField = new List<MFBuildFile>();
+            this.fastCompileFilesField = new List<MFBuildFile>();
+            this.otherFilesField = new List<MFBuildFile>();
+            this.includePathsField = new List<MFBuildFile>();
             this.manifestFileField = "";
             this.projectPathField = "";
             this.isSolutionWizardVisibleField = true;
@@ -1343,11 +1346,17 @@ namespace XsdInventoryFormatObject
 
         public bool HasLibraryCategory
         {
-            get { return !string.IsNullOrEmpty(libraryCategoryField.Guid); }
+            get
+            {
+                if (libraryCategoryField != null)
+                    return !string.IsNullOrEmpty(libraryCategoryField.Guid);
+                else
+                    return false;
+            }
             set { }
         }
 
-        public System.Collections.Generic.List<ProjectTargetElement> Targets
+        public List<ProjectTargetElement> Targets
         {
             get
             {
@@ -1394,10 +1403,10 @@ namespace XsdInventoryFormatObject
             this.nameField = "";
             this.requiredField = false;
             this.stubLibraryField = null;
-            this.templatesField = new System.Collections.Generic.List<ApiTemplate>();
+            this.templatesField = new List<ApiTemplate>();
             this.versionField = new Version();
             this.projectPathField = "";
-            this.libraryProjCacheField = new System.Collections.Generic.List<string>();
+            this.libraryProjCacheField = new List<string>();
             this.featureAssociationsField = new List<MFComponent>();
             this.IsTransport = false;
         }
@@ -1426,9 +1435,9 @@ namespace XsdInventoryFormatObject
     {
         public BuildToolParameters()
         {
-            this.parametersField = new System.Collections.Generic.List<BuildScript>();
-            this.postBuildField = new System.Collections.Generic.List<BuildScript>();
-            this.preBuildField = new System.Collections.Generic.List<BuildScript>();
+            this.parametersField = new List<BuildScript>();
+            this.postBuildField = new List<BuildScript>();
+            this.preBuildField = new List<BuildScript>();
         }
         public void CopyTo(BuildToolParameters dest)
         {
@@ -1440,7 +1449,7 @@ namespace XsdInventoryFormatObject
         public ToolOptions()
         {
             this.buildToolParametersField = new BuildToolParameters();
-            this.toolFlagsField = new System.Collections.Generic.List<ToolFlag>();
+            this.toolFlagsField = new List<ToolFlag>();
         }
         public void CopyTo(ToolOptions dest)
         {
@@ -1454,7 +1463,7 @@ namespace XsdInventoryFormatObject
             this.buildToolField = new BuildToolDefine();
             this.buildToolOptionsField = new ToolOptions();
             this.buildToolWrapperField = "";
-            this.environmentVariablesField = new System.Collections.Generic.List<EnvVar>();
+            this.environmentVariablesField = new List<EnvVar>();
             this.guidField = System.Guid.NewGuid().ToString("B");
             this.nameField = "";
             this.toolPathField = "";
@@ -1482,7 +1491,7 @@ namespace XsdInventoryFormatObject
     {
         public InventoryCollection()
         {
-            this.inventoriesField = new System.Collections.Generic.List<Inventory>();
+            this.inventoriesField = new List<Inventory>();
         }
     }
     public partial class Version : object
@@ -1490,7 +1499,7 @@ namespace XsdInventoryFormatObject
         public Version()
         {
             this.buildField = "0";
-            this.dateField = System.DateTime.Now;
+            this.dateField = DateTime.Now;
             this.extraField = "";
             this.majorField = "4";
             this.minorField = "0";

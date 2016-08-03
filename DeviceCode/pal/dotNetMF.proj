@@ -29,6 +29,7 @@
     <SubDirectories Include="timeservice"/>
     <SubDirectories Include="tinycrt"/>
     <SubDirectories Include="TouchPanel"/>
+    <SubDirectories Include="OneWire"/>    
   </ItemGroup>
 
   <ItemGroup>

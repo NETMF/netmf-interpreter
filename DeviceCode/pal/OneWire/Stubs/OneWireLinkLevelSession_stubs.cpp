@@ -47,7 +47,7 @@
 //
 // Returns: FALSE - failed
 //
-SMALLINT owAcquire(int portnum, char *port_zstr)
+SMALLINT owAcquire(int portnum, int pin)
 {
   return (FALSE);
 }

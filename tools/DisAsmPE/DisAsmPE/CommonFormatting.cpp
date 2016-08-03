@@ -34,6 +34,8 @@ std::ostream& operator<<( std::ostream& strm, NETMF::Metadata::VersionInfo const
 }
 
 // create an std::string with whitespace control chars replaced as standard C++ char escape style
+// That is, a newline, carriage return or tab will appear as a two character sequence (i.e. "\n" )
+// in the resulting string
 std::string FormatString( const char* peString )
 {
     std::string retVal( peString );

@@ -1,432 +1,443 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <!-- Product code and product version must be changed for every release, so major upgrades work "automagically." -->
+    <!-- Product code and product version must be changed for every release, so major upgrades work "automagically." -->
 
-  <?include ProductVersion.wxs?>
-  <?define ProdCode        = "0998A41F-D85A-427C-83C9-0BAE5FAC0FA7" ?>
-  <?define ProdUpgradeCode = "44BFE49E-5089-4638-A851-EC75093A38B0" ?>  
+    <?include ProductVersion.wxs?>
+    <?define ProdCode        = "*" ?>
+    <?define ProdUpgradeCode = "44BFE49E-5089-4638-A851-EC75093A38B0" ?>
 
-  <Product
-    Id="$(var.ProdCode)"
-    UpgradeCode="$(var.ProdUpgradeCode)"
-    Name="$(var.ProdName)"
-    Language="1033"
-    Codepage="1252"
-    Version="$(var.ProdVer)"
-    Manufacturer="Microsoft Corporation">
+    <Product
+      Id="$(var.ProdCode)"
+      UpgradeCode="$(var.ProdUpgradeCode)"
+      Name="$(var.ProdName)"
+      Language="1033"
+      Codepage="1252"
+      Version="$(var.ProdVer)"
+      Manufacturer="Microsoft Corporation">
 
-    <Package
-      Id="*"
-      Keywords="Installer"
-      Description="$(var.ProdName) $(var.ProdVer)"
-      Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved."
-      Manufacturer="Microsoft Corporation"
-      InstallerVersion="200"
-      Languages="1033"
-      SummaryCodepage="1252"
-      Compressed="yes"
+        <Package
+          Id="*"
+          Keywords="Installer"
+          Description="$(var.ProdName) $(var.ProdVer)"
+          Comments=" enu; Copyright (C) Microsoft Corporation, All rights reserved."
+          Manufacturer="Microsoft Corporation"
+          InstallerVersion="405"
+          Languages="1033"
+          SummaryCodepage="1252"
+          Compressed="yes"
        />
 
-    <Property Id="NETMFTOOLSPATH">
-      <RegistrySearch 
-        Id="Search_DotNetMF" 
-        Root="HKLM" 
-        Key="SOFTWARE\Microsoft\.NETMicroFramework\v$(var.ProdVerMajorMinor)" 
-        Name="InstallRoot" 
-        Type="raw" />
-    </Property>
-    <Condition Message="[ProductName] requires Microsoft .NET Micro Framework SDK $(var.ProdVerMajorMinor) to be installed. ">NETMFTOOLSPATH OR ProductState &lt;&gt; -1</Condition>
- 
-    <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
+        <Upgrade Id="$(var.ProdUpgradeCode)">
+            <UpgradeVersion OnlyDetect="yes" Property="NEWERVERSIONDETECTED" Maximum="$(var.ProdVer)" IncludeMaximum="no" />
+            <UpgradeVersion OnlyDetect="no" Property="PREVIOUSFOUND" Minimum="4.4.0" IncludeMinimum="yes" Maximum="$(var.ProdVer)" IncludeMaximum="yes" />
+        </Upgrade>
 
-    <Property Id="ALLUSERS"><![CDATA[2]]></Property>
-    <Property Id='CMD_PROMPT'>cmd.exe</Property>      
-    <Property Id="WINDOWSDIRPATH">
-      <RegistrySearch Id='GetWinDirPath' Type='raw'
-        Root='HKLM' Key='SOFTWARE\Microsoft\Windows NT\CurrentVersion' Name='SystemRoot' />
-    </Property>
+        <Property Id="NETMFTOOLSPATH">
+            <RegistrySearch
+              Id="Search_DotNetMF"
+              Root="HKLM"
+              Key="SOFTWARE\Microsoft\.NETMicroFramework\v$(var.ProdVerMajorMinor)"
+              Name="InstallRoot"
+              Type="raw" />
+        </Property>
+        <Condition Message="[ProductName] requires Microsoft .NET Micro Framework SDK $(var.ProdVerMajorMinor) to be installed. ">NETMFTOOLSPATH OR ProductState &lt;&gt; -1</Condition>
 
-    <UI>
-      <TextStyle Id="TimesFont" FaceName="Times" Size="9" />
-      <Dialog Id="SetupProgress" Width="320" Height="90" Title="[ProductName] - Setup" Modeless="yes">
-        <Control Id="ActionText" Type="Text" X="15" Y="65" Width="275" Height="12">
-          <Text><![CDATA[{&TimesFont}1]]></Text>
-          <Subscribe Event="ActionText" Attribute="Text" />
-        </Control>
-        <Control Id="DlgText" Type="Text" X="15" Y="15" Width="300" Height="50" Transparent="yes" TabSkip="no">
-          <Text><![CDATA[{&TimesFont}Installing [ProductName].]]></Text>
-          <Condition Action="show"><![CDATA[ProgressType2="installs"]]></Condition>
-        </Control>
-        <Control Id="ActionProgress95" Type="ProgressBar" X="15" Y="40" Width="275" Height="12" ProgressBlocks="yes" TabSkip="no">
-          <Subscribe Event="InstallFiles" Attribute="Progress" />
-          <Subscribe Event="MoveFiles" Attribute="Progress" />
-          <Subscribe Event="RemoveFiles" Attribute="Progress" />
-          <Subscribe Event="RemoveRegistryValues" Attribute="Progress" />
-          <Subscribe Event="UnmoveFiles" Attribute="Progress" />
-          <Subscribe Event="WriteIniValues" Attribute="Progress" />
-          <Subscribe Event="WriteRegistryValues" Attribute="Progress" />
-          <Subscribe Event="AdminInstallFinalize" Attribute="Progress" />
-          <Subscribe Event="SetProgress" Attribute="Progress" />
-        </Control>
-      </Dialog>
-      <Dialog Id="SetupCompleteSuccess" Width="270" Height="60" Title="Setup" NoMinimize="no">
-        <Control Id="TextTime" Type="Text" X="7" Y="10" Width="300" Height="20" TabSkip="yes">
-          <Text><![CDATA[{&TimesFont}[ProductName] setup completed.]]></Text>
-        </Control>
-        <Control Id="OK" Type="PushButton" X="115" Y="35" Width="50" Height="20" Default="yes" Cancel="yes" TabSkip="no">
-          <Text><![CDATA[{&TimesFont}OK]]></Text>
-          <Publish Event="EndDialog" Value="Exit"><![CDATA[1]]></Publish>          
-        </Control>
-      </Dialog>
-      <InstallUISequence>
-        <Show Dialog="SetupProgress" After="CostFinalize"/>
-        <Show Dialog="SetupCompleteSuccess" OnExit="success" />
-      </InstallUISequence>
-    </UI>
+        <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_GraphicsTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\GraphicsTests.msm"/>
-    </DirectoryRef>
+        <Property Id="ALLUSERS"><![CDATA[2]]></Property>
+        <Property Id='CMD_PROMPT'>cmd.exe</Property>
+        <Property Id="WINDOWSDIRPATH">
+            <RegistrySearch Id='GetWinDirPath' Type='raw'
+              Root='HKLM' Key='SOFTWARE\Microsoft\Windows NT\CurrentVersion' Name='SystemRoot' />
+        </Property>
+        
+        <UI>
+            <TextStyle Id="TimesFont" FaceName="Times" Size="9" />
+            <Dialog Id="SetupProgress" Width="320" Height="90" Title="[ProductName] - Setup" Modeless="yes">
+                <Control Id="ActionText" Type="Text" X="15" Y="65" Width="275" Height="12">
+                    <Text><![CDATA[{&TimesFont}1]]></Text>
+                    <Subscribe Event="ActionText" Attribute="Text" />
+                </Control>
+                <Control Id="DlgText" Type="Text" X="15" Y="15" Width="300" Height="50" Transparent="yes" TabSkip="no">
+                    <Text><![CDATA[{&TimesFont}Installing [ProductName].]]></Text>
+                    <Condition Action="show"><![CDATA[ProgressType2="installs"]]></Condition>
+                </Control>
+                <Control Id="ActionProgress95" Type="ProgressBar" X="15" Y="40" Width="275" Height="12" ProgressBlocks="yes" TabSkip="no">
+                    <Subscribe Event="InstallFiles" Attribute="Progress" />
+                    <Subscribe Event="MoveFiles" Attribute="Progress" />
+                    <Subscribe Event="RemoveFiles" Attribute="Progress" />
+                    <Subscribe Event="RemoveRegistryValues" Attribute="Progress" />
+                    <Subscribe Event="UnmoveFiles" Attribute="Progress" />
+                    <Subscribe Event="WriteIniValues" Attribute="Progress" />
+                    <Subscribe Event="WriteRegistryValues" Attribute="Progress" />
+                    <Subscribe Event="AdminInstallFinalize" Attribute="Progress" />
+                    <Subscribe Event="SetProgress" Attribute="Progress" />
+                </Control>
+            </Dialog>
+            <Dialog Id="SetupCompleteSuccess" Width="270" Height="60" Title="Setup" NoMinimize="no">
+                <Control Id="TextTime" Type="Text" X="7" Y="10" Width="300" Height="20" TabSkip="yes">
+                    <Text><![CDATA[{&TimesFont}[ProductName] setup completed.]]></Text>
+                </Control>
+                <Control Id="OK" Type="PushButton" X="115" Y="35" Width="50" Height="20" Default="yes" Cancel="yes" TabSkip="no">
+                    <Text><![CDATA[{&TimesFont}OK]]></Text>
+                    <Publish Event="EndDialog" Value="Exit"><![CDATA[1]]></Publish>
+                </Control>
+            </Dialog>
+            <InstallUISequence>
+                <Show Dialog="SetupProgress" After="CostFinalize"/>
+                <Show Dialog="SetupCompleteSuccess" OnExit="success" />
+            </InstallUISequence>
+        </UI>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_HardwareTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\HardwareTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_GraphicsTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\GraphicsTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_InteropTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\InteropTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_HardwareTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\HardwareTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_NetTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\NetTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_InteropTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\InteropTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_NetSecurityTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\NetSecurityTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_NetTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\NetTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_TimeServiceTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\TimeServiceTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_NetSecurityTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\NetSecurityTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_TinyCoreTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\TinyCoreTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_TimeServiceTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\TimeServiceTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_mscorlibTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\mscorlibTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_TinyCoreTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\TinyCoreTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_SystemTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\SystemTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_mscorlibTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\mscorlibTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_ProfilerTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\ProfilerTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_SystemTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\SystemTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_StressTests"
-             DiskId="1"
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\StressTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_ProfilerTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\ProfilerTests.msm"/>
+        </DirectoryRef>
 
-    <DirectoryRef Id="SamplesDir">
-      <Merge Id="Merge_MFDeployTests"
-             DiskId="1"
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_StressTests"
+                   DiskId="1"
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\StressTests.msm"/>
+        </DirectoryRef>
 
-             Language="1033"
-             SourceFile="$(var.BuildTreeServerTest)\msm\MFDeployTests.msm"/>
-    </DirectoryRef>
+        <DirectoryRef Id="SamplesDir">
+            <Merge Id="Merge_MFDeployTests"
+                   DiskId="1"
 
-    <?include Directories.wxs?>
-    
-    <Feature
-      Id='ToolsAndTests'
-      Title='$(var.ProdName)'
-      Description='Tools and Tests'
-      Level='1'
-      ConfigurableDirectory='INSTALLDIR'
-      Display='expand'
-      Absent='disallow'
-      AllowAdvertise='no'
-      InstallDefault='local'
-      TypicalDefault='install'
+                   Language="1033"
+                   SourceFile="$(var.BuildTreeServerTest)\msm\MFDeployTests.msm"/>
+        </DirectoryRef>
+
+        <?include Directories.wxs?>
+        <InstallExecuteSequence>
+            <RemoveExistingProducts Before="InstallInitialize"/>
+        </InstallExecuteSequence>
+
+        <Property Id="ARPPRODUCTICON">ProductIcon</Property>
+        <Icon Id="ProductIcon" SourceFile="$(env.SPOCLIENT)\setup\include\setup.ico"/>
+
+        <Feature
+        Id='ToolsAndTests'
+        Title='$(var.ProdName)'
+        Description='Tools and Tests'
+        Level='1'
+        ConfigurableDirectory='INSTALLDIR'
+        Display='expand'
+        Absent='disallow'
+        AllowAdvertise='no'
+        InstallDefault='local'
+        TypicalDefault='install'
       >
 
-      <ComponentRef Id='Component_Device' />
-      <ComponentRef Id='Component_Desktop' />
-      <ComponentRef Id='Component_Microsoft.SPOT.Emulator.Sample.TestEmulator' />
-      <ComponentRef Id='Component_RunTests' />
-      <ComponentRef Id='Component_AssembliesReg' />
-      <ComponentRef Id='Component_ToolsReg' />
-      <ComponentRef Id='Component_RunTestsReg' />      
-      <ComponentRef Id='Component_EmulatorReg' />
-      <ComponentRef Id='Component_InstallRoot' />     
-      <ComponentRef Id='Component_ToolsTransform' />
-      <ComponentRef Id='Component_ResultsTransform' />
-      <ComponentRef Id='Component_TransformImages' />
-      <ComponentRef Id='Component_ReadMeFile' />
-      <ComponentRef Id='Component_CommonAssemblies' />
+            <ComponentRef Id='Component_Device' />
+            <ComponentRef Id='Component_Desktop' />
+            <ComponentRef Id='Component_Microsoft.SPOT.Emulator.Sample.TestEmulator' />
+            <ComponentRef Id='Component_RunTests' />
+            <ComponentRef Id='Component_AssembliesReg' />
+            <ComponentRef Id='Component_ToolsReg' />
+            <ComponentRef Id='Component_RunTestsReg' />
+            <ComponentRef Id='Component_EmulatorReg' />
+            <ComponentRef Id='Component_InstallRoot' />
+            <ComponentRef Id='Component_ToolsTransform' />
+            <ComponentRef Id='Component_ResultsTransform' />
+            <ComponentRef Id='Component_TransformImages' />
+            <ComponentRef Id='Component_ReadMeFile' />
+            <ComponentRef Id='Component_CommonAssemblies' />
 
-      <FeatureRef Id="EndianFeatures" />
+            <FeatureRef Id="EndianFeatures" />
 
-     <Feature Id="Feature_GraphicsTests" 
-               Title=".NET Micro Framework Graphics Tests" 
-               Description="Graphics Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_GraphicsTests"/>
-      </Feature>
+            <Feature Id="Feature_GraphicsTests"
+                      Title=".NET Micro Framework Graphics Tests"
+                      Description="Graphics Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_GraphicsTests"/>
+            </Feature>
 
-     <Feature Id="Feature_HardwareTests" 
-               Title=".NET Micro Framework Hardware Tests" 
-               Description="Hardware Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_HardwareTests"/>
-      </Feature>
+            <Feature Id="Feature_HardwareTests"
+                      Title=".NET Micro Framework Hardware Tests"
+                      Description="Hardware Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_HardwareTests"/>
+            </Feature>
 
-     <Feature Id="Feature_InteropTests" 
-               Title=".NET Micro Framework Interop Tests" 
-               Description="Interop Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_InteropTests"/>
-      </Feature>
+            <Feature Id="Feature_InteropTests"
+                      Title=".NET Micro Framework Interop Tests"
+                      Description="Interop Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_InteropTests"/>
+            </Feature>
 
-     <Feature Id="Feature_NetTests" 
-               Title=".NET Micro Framework Net Tests" 
-               Description="Net Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_NetTests"/>
-      </Feature>
+            <Feature Id="Feature_NetTests"
+                      Title=".NET Micro Framework Net Tests"
+                      Description="Net Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_NetTests"/>
+            </Feature>
 
-     <Feature Id="Feature_NetSecurityTests" 
-               Title=".NET Micro Framework Net Security Tests" 
-               Description="Net Security Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_NetSecurityTests"/>
-      </Feature>
+            <Feature Id="Feature_NetSecurityTests"
+                      Title=".NET Micro Framework Net Security Tests"
+                      Description="Net Security Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_NetSecurityTests"/>
+            </Feature>
 
-     <Feature Id="Feature_TimeServiceTests" 
-               Title=".NET Micro Framework Time Tests" 
-               Description="Time Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_TimeServiceTests"/>
-      </Feature>
+            <Feature Id="Feature_TimeServiceTests"
+                      Title=".NET Micro Framework Time Tests"
+                      Description="Time Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_TimeServiceTests"/>
+            </Feature>
 
-     <Feature Id="Feature_TinyCoreTests" 
-               Title=".NET Micro Framework TinyCore Tests" 
-               Description="Net TinyCore Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_TinyCoreTests"/>
-      </Feature>
+            <Feature Id="Feature_TinyCoreTests"
+                      Title=".NET Micro Framework TinyCore Tests"
+                      Description="Net TinyCore Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_TinyCoreTests"/>
+            </Feature>
 
-     <Feature Id="Feature_mscorlibTests" 
-               Title=".NET Micro Framework mscorlib Tests" 
-               Description="Net mscorlib Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_mscorlibTests"/>
-      </Feature>
+            <Feature Id="Feature_mscorlibTests"
+                      Title=".NET Micro Framework mscorlib Tests"
+                      Description="Net mscorlib Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_mscorlibTests"/>
+            </Feature>
 
-     <Feature Id="Feature_SystemTests" 
-               Title=".NET Micro Framework System Tests" 
-               Description="Net System Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_SystemTests"/>
-      </Feature>
-     <Feature Id="Feature_ProfilerTests" 
-               Title=".NET Micro Framework Profiler Tests" 
-               Description="Net Profiler Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_ProfilerTests"/>
-      </Feature>
+            <Feature Id="Feature_SystemTests"
+                      Title=".NET Micro Framework System Tests"
+                      Description="Net System Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_SystemTests"/>
+            </Feature>
+            <Feature Id="Feature_ProfilerTests"
+                      Title=".NET Micro Framework Profiler Tests"
+                      Description="Net Profiler Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_ProfilerTests"/>
+            </Feature>
 
-     <Feature Id="Feature_StressTests" 
-               Title=".NET Micro Framework Stress Tests" 
-               Description="Net Stress Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_StressTests"/>
-      </Feature>      
+            <Feature Id="Feature_StressTests"
+                      Title=".NET Micro Framework Stress Tests"
+                      Description="Net Stress Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_StressTests"/>
+            </Feature>
 
-     <Feature Id="Feature_MFDeployTests" 
-               Title=".NET Micro Framework MFDeploy Tests" 
-               Description="Net MFDeploy Tests" 
-               Display="hidden" 
-               Level="1">
-          <MergeRef Id="Merge_MFDeployTests"/>
-      </Feature>      
-    </Feature>
-    
-    <DirectoryRef Id='TESTSDIR'>
-      <Component Id="Component_ReadMeFile" Guid="76cceada-a65f-456f-b3a1-eac9c8440d94">
+            <Feature Id="Feature_MFDeployTests"
+                      Title=".NET Micro Framework MFDeploy Tests"
+                      Description="Net MFDeploy Tests"
+                      Display="hidden"
+                      Level="1">
+                <MergeRef Id="Merge_MFDeployTests"/>
+            </Feature>
+        </Feature>
 
-        <!--Add readme link to start menu item-->
-        <File Id="File_ReadmeTxt" Name="Readme.txt" Source="$(var.MSBuildProjectDirectory)\Readme.txt" DiskId="1">
-          <Shortcut Id='startMenuReadme'
-                    Directory='PLATFORMTESTSDIR'
-                    Name='Micro Framework Test SDK Release Notes'/>
-        </File>
+        <DirectoryRef Id='TESTSDIR'>
+            <Component Id="Component_ReadMeFile" Guid="76cceada-a65f-456f-b3a1-eac9c8440d94">
 
-        <!--Add cmd link to start menu item-->
-        <Shortcut Id='startMenuTestsCmd'
-                  WorkingDirectory="ToolsDir"
-                  Directory="PLATFORMTESTSDIR"
-                  Target="[CMD_PROMPT]"
-                  Name="Micro Framework Test SDK Command Prompt"/>
+                <!--Add readme link to start menu item-->
+                <File Id="File_ReadmeTxt" Name="Readme.txt" Source="$(var.MSBuildProjectDirectory)\Readme.txt" DiskId="1">
+                    <Shortcut Id='startMenuReadme'
+                              Directory='PLATFORMTESTSDIR'
+                              Name='Micro Framework Test SDK Release Notes'/>
+                </File>
 
-        <!--Add a link to test cases folder-->
-        <Shortcut Id='testcaseslink'
-                  Directory='PLATFORMTESTSDIR'
-                  Target="[SamplesDir]"
-                  Name='Test Cases'/>
+                <!--Add cmd link to start menu item-->
+                <Shortcut Id='startMenuTestsCmd'
+                          WorkingDirectory="ToolsDir"
+                          Directory="PLATFORMTESTSDIR"
+                          Target="[CMD_PROMPT]"
+                          Name="Micro Framework Test SDK Command Prompt"/>
 
-      </Component>
+                <!--Add a link to test cases folder-->
+                <Shortcut Id='testcaseslink'
+                          Directory='PLATFORMTESTSDIR'
+                          Target="[SamplesDir]"
+                          Name='Test Cases'/>
 
-      <Component Id="Component_InstallRoot" Guid="52d9141f-ba20-475e-bea9-055f1c8a23d0">
-        <RegistryKey
-          Root="HKLM"
-          Key="Software\Microsoft\.NETMicroFramework\TestSystem $(var.ProdVerMajorMinor)"
-          Id="Registry_ProductRegKey"
-          Action="createAndRemoveOnUninstall">
-          <RegistryValue
-            Name="InstallRoot"
-            Type="string"
-            Value="[TESTSDIR]"
-            Id="Registry_InstallRootVal"/>
-        </RegistryKey>
-      </Component>
+            </Component>
 
-      <Component Id="Component_RunTestsReg" Guid="9facd2e4-9101-4043-858f-44df346c5fca">
-        <RegistryKey
-          Root="HKLM"
-          Key="SYSTEM\CurrentControlSet\Services\EventLog\.NET MF Build Tool\TestSystem"
-          Id="Registry_RunTestsRegKey"
-          Action="createAndRemoveOnUninstall">
-          <RegistryValue
-            Name="EventMessageFile"
-            Type="expandable"
-            Value="[WINDOWSDIRPATH]\Microsoft.NET\Framework\v2.0.50727\EventLogMessages.dll"
-            Id="Registry_RunTestsRegVal"/>
-        </RegistryKey>
-      </Component>
+            <Component Id="Component_InstallRoot" Guid="52d9141f-ba20-475e-bea9-055f1c8a23d0">
+                <RegistryKey
+                  Root="HKLM"
+                  Key="Software\Microsoft\.NETMicroFramework\TestSystem $(var.ProdVerMajorMinor)"
+                  Id="Registry_ProductRegKey"
+                  Action="createAndRemoveOnUninstall">
+                    <RegistryValue
+                      Name="InstallRoot"
+                      Type="string"
+                      Value="[TESTSDIR]"
+                      Id="Registry_InstallRootVal"/>
+                </RegistryKey>
+            </Component>
 
-      <Component Id="Component_AssembliesReg" Guid="2de08445-a671-4359-8213-bb3fadd9881b">
-        <RegistryKey
-          Root="HKLM"
-          Key="Software\Microsoft\.NETMicroFramework\v$(var.ProdVerMajorMinor)\AssemblyFoldersEx\PlatformTests"
-          Id="Registry_AssembliesRegKey"
-          Action="createAndRemoveOnUninstall">
-          <RegistryValue
-          Id="Registry_AssembliesRegValue"
-          Value="[AssembliesDir]"
-          Type="string">
-          </RegistryValue>
-        </RegistryKey>
-      </Component>
+            <Component Id="Component_RunTestsReg" Guid="9facd2e4-9101-4043-858f-44df346c5fca">
+                <RegistryKey
+                  Root="HKLM"
+                  Key="SYSTEM\CurrentControlSet\Services\EventLog\.NET MF Build Tool\TestSystem"
+                  Id="Registry_RunTestsRegKey"
+                  Action="createAndRemoveOnUninstall">
+                    <RegistryValue
+                      Name="EventMessageFile"
+                      Type="expandable"
+                      Value="[WINDOWSDIRPATH]\Microsoft.NET\Framework\v2.0.50727\EventLogMessages.dll"
+                      Id="Registry_RunTestsRegVal"/>
+                </RegistryKey>
+            </Component>
 
-      <Component Id="Component_ToolsReg" Guid="CA55D10A-4010-4FEA-9D84-817CA651A8E3">
-        <RegistryKey
-          Root="HKLM"
-          Key="Software\Microsoft\.NETFramework\AssemblyFolders\.Net Micro Framework PlatformTests"
-          Id="Registry_ToolsRegKey"
-          Action="createAndRemoveOnUninstall">
-          <RegistryValue
-          Id="Registry_ToolsRegValue"
-          Value="[ToolsDir]"
-          Type="string">
-          </RegistryValue>
-        </RegistryKey>
-      </Component>
+            <Component Id="Component_AssembliesReg" Guid="2de08445-a671-4359-8213-bb3fadd9881b">
+                <RegistryKey
+                  Root="HKLM"
+                  Key="Software\Microsoft\.NETMicroFramework\v$(var.ProdVerMajorMinor)\AssemblyFoldersEx\PlatformTests"
+                  Id="Registry_AssembliesRegKey"
+                  Action="createAndRemoveOnUninstall">
+                    <RegistryValue
+                    Id="Registry_AssembliesRegValue"
+                    Value="[AssembliesDir]"
+                    Type="string">
+                    </RegistryValue>
+                </RegistryKey>
+            </Component>
 
-      <Component Id="Component_EmulatorReg" Guid="f080b78f-90e7-4333-8556-12156047638d">
-        <RegistryKey
-          Root="HKLM"
-          Id="Registry_MicrosoftEmulatorKey"
-          Key="Software\Microsoft\.NETMicroFramework\v$(var.ProdVerMajorMinor)\Emulators\Microsoft Test"
-          Action="createAndRemoveOnUninstall">
-          <RegistryValue
-            Name="Name"
-            Type="string"
-            Value="Microsoft Test Emulator"
-            Id="Registry_MicrosoftEmulatorNameValue"/>
-          <RegistryValue
-            Name="Path"
-            Type="string"
-            Value="[TESTSDIR]\Tools\Microsoft.SPOT.Emulator.Sample.TestEmulator.exe"
-            Id="Registry_MicrosoftTestEmulatorPathValue"/>
-        </RegistryKey>
-      </Component>
-    </DirectoryRef>
-    
-    <DirectoryRef Id="AssembliesDir">
-      <Component Id="Component_CommonAssemblies" Guid="3e9f00a4-0c4e-46db-a196-5712db65885A">
-        <File Id="File_MFTestRunner" Name="Microsoft.SPOT.Platform.Test.MFTestRunner.dll"   Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Test.MFTestRunner.dll" DiskId="1"/>
-        <File Id="File_MFUtil"       Name="Microsoft.SPOT.Platform.Test.MFUtility.dll"      Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Test.MFUtility.dll" DiskId="1"/>
-        <File Id="File_IOTestHelper" Name="Microsoft.SPOT.Platform.Tests.IOTestsHelper.dll" Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Tests.IOTestsHelper.dll" DiskId="1"/>
-      </Component>
-    </DirectoryRef>
+            <Component Id="Component_ToolsReg" Guid="CA55D10A-4010-4FEA-9D84-817CA651A8E3">
+                <RegistryKey
+                  Root="HKLM"
+                  Key="Software\Microsoft\.NETFramework\AssemblyFolders\.Net Micro Framework PlatformTests"
+                  Id="Registry_ToolsRegKey"
+                  Action="createAndRemoveOnUninstall">
+                    <RegistryValue
+                    Id="Registry_ToolsRegValue"
+                    Value="[ToolsDir]"
+                    Type="string">
+                    </RegistryValue>
+                </RegistryKey>
+            </Component>
 
-    <DirectoryRef Id="ToolsDir">
-      <Component Id="Component_ToolsTransform" Guid="3e9f00a4-0c4e-46db-a196-5712db658850">
-        <File Id="File_CfgTransform" Name="RunTests.exe.config" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\App.config" DiskId="1"/>
-        <File Id="File_MfpTransform" Name="MFProfiler.exe" Source="$(var.BuildTreeServer)\dll\MFProfiler.exe" DiskId="1"/>
-        <File Id="File_SpotDebugger" Name="Microsoft.SPOT.Debugger.dll" Source="$(var.BuildTreeServer)\dll\Microsoft.SPOT.Debugger.dll" DiskId="1"/>
-        <File Id="File_Tasks"        Name="Microsoft.SPOT.Tasks.dll" Source="$(var.BuildTreeServer)\dll\Microsoft.SPOT.Tasks.dll" DiskId="1"/>
-        <File Id="File_MFDeploy"     Name="MFDeployEngine.dll" Source="$(var.BuildTreeServer)\dll\MFDeployEngine.dll" DiskId="1"/>
-      </Component>
-    </DirectoryRef>
-    
-    <DirectoryRef Id="ResultsDir">
-      <Component Id="Component_ResultsTransform" Guid="aeb7513c-f86e-41dc-bf8f-d7ceaa7b2b0f">
-        <File Id="File_ResultsTransform" Name="Results.xsl" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\Results\Results.xsl" DiskId="1"/>
-      </Component>
-    </DirectoryRef>
+            <Component Id="Component_EmulatorReg" Guid="f080b78f-90e7-4333-8556-12156047638d">
+                <RegistryKey
+                  Root="HKLM"
+                  Id="Registry_MicrosoftEmulatorKey"
+                  Key="Software\Microsoft\.NETMicroFramework\v$(var.ProdVerMajorMinor)\Emulators\Microsoft Test"
+                  Action="createAndRemoveOnUninstall">
+                    <RegistryValue
+                      Name="Name"
+                      Type="string"
+                      Value="Microsoft Test Emulator"
+                      Id="Registry_MicrosoftEmulatorNameValue"/>
+                    <RegistryValue
+                      Name="Path"
+                      Type="string"
+                      Value="[TESTSDIR]\Tools\Microsoft.SPOT.Emulator.Sample.TestEmulator.exe"
+                      Id="Registry_MicrosoftTestEmulatorPathValue"/>
+                </RegistryKey>
+            </Component>
+        </DirectoryRef>
 
-    <DirectoryRef Id="ImagesDir">
-      <Component Id="Component_TransformImages" Guid="0a3cdcd0-31a2-40ed-bfd3-d29b95ffd2a3">
-        <File Id="File_Collapse.gif" Name="collapse.gif" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\Results\Images\collapse.gif" DiskId="1"/>
-        <File Id="File_Expand.gif" Name="expand.gif" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\Results\Images\expand.gif" DiskId="1"/>
-      </Component>
-    </DirectoryRef>
+        <DirectoryRef Id="AssembliesDir">
+            <Component Id="Component_CommonAssemblies" Guid="3e9f00a4-0c4e-46db-a196-5712db65885A">
+                <File Id="File_MFTestRunner" Name="Microsoft.SPOT.Platform.Test.MFTestRunner.dll"   Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Test.MFTestRunner.dll" DiskId="1"/>
+                <File Id="File_MFUtil"       Name="Microsoft.SPOT.Platform.Test.MFUtility.dll"      Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Test.MFUtility.dll" DiskId="1"/>
+                <File Id="File_IOTestHelper" Name="Microsoft.SPOT.Platform.Tests.IOTestsHelper.dll" Source="$(var.BuildTreeClientTest)\dll\Microsoft.SPOT.Platform.Tests.IOTestsHelper.dll" DiskId="1"/>
+            </Component>
+        </DirectoryRef>
 
-  </Product>
+        <DirectoryRef Id="ToolsDir">
+            <Component Id="Component_ToolsTransform" Guid="3e9f00a4-0c4e-46db-a196-5712db658850">
+                <File Id="File_CfgTransform" Name="RunTests.exe.config" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\App.config" DiskId="1"/>
+                <File Id="File_MfpTransform" Name="MFProfiler.exe" Source="$(var.BuildTreeServer)\dll\MFProfiler.exe" DiskId="1"/>
+                <File Id="File_SpotDebugger" Name="Microsoft.SPOT.Debugger.dll" Source="$(var.BuildTreeServer)\dll\Microsoft.SPOT.Debugger.dll" DiskId="1"/>
+                <File Id="File_Tasks"        Name="Microsoft.SPOT.Tasks.dll" Source="$(var.BuildTreeServer)\dll\Microsoft.SPOT.Tasks.dll" DiskId="1"/>
+                <File Id="File_MFDeploy"     Name="MFDeployEngine.dll" Source="$(var.BuildTreeServer)\dll\MFDeployEngine.dll" DiskId="1"/>
+            </Component>
+        </DirectoryRef>
+
+        <DirectoryRef Id="ResultsDir">
+            <Component Id="Component_ResultsTransform" Guid="aeb7513c-f86e-41dc-bf8f-d7ceaa7b2b0f">
+                <File Id="File_ResultsTransform" Name="Results.xsl" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\Results\Results.xsl" DiskId="1"/>
+            </Component>
+        </DirectoryRef>
+
+        <DirectoryRef Id="ImagesDir">
+            <Component Id="Component_TransformImages" Guid="0a3cdcd0-31a2-40ed-bfd3-d29b95ffd2a3">
+                <File Id="File_Collapse.gif" Name="collapse.gif" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\Results\Images\collapse.gif" DiskId="1"/>
+                <File Id="File_Expand.gif" Name="expand.gif" Source="$(env.SPOCLIENT)\Test\Platform\Tools\MFTestSystem\Results\Images\expand.gif" DiskId="1"/>
+            </Component>
+        </DirectoryRef>
+
+    </Product>
 </Wix>
