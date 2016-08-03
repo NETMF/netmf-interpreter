@@ -3,7 +3,7 @@
 //  <No description>
 //
 //  Microsoft dotNetMF Project
-//  Copyright ©2001,2002,2009 Microsoft Corporation
+//  Copyright ï¿½2001,2002,2009 Microsoft Corporation
 //  One Microsoft Way, Redmond, Washington 98052-6399 U.S.A.
 //  All rights reserved.
 //  MICROSOFT CONFIDENTIAL
@@ -73,7 +73,7 @@ __inline INT64 SwapEndian( INT64 u )
 }
 
 // These macros only swap the Endiannes on BIG Endian machines
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
 #define SwapEndianIfBE( a ) a
 #define SwapEndianIfBEc32( a ) a
 #define SwapEndianIfBEc16( a ) a

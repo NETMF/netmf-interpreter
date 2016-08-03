@@ -1144,7 +1144,7 @@ UINT32* Graphics_Driver::ComputePosition( const PAL_GFX_Bitmap& bitmap, int x, i
 {
     NATIVE_PROFILE_PAL_GRAPHICS();
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     shift = (x % 2) * 16;
     mask = 0x0000FFFF << shift;
 #else

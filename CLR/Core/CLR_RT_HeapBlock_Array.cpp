@@ -206,7 +206,7 @@ HRESULT CLR_RT_HeapBlock_Array::IndexOf( CLR_RT_HeapBlock_Array* array, CLR_RT_H
 
                 while(true)
                 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
                     if(memcmp( data, &matchPtr->NumericByRef(), sizeElem ) == 0)
                     {
                         index = pos;
