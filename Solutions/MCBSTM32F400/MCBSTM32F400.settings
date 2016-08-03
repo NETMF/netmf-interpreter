@@ -21,6 +21,7 @@
 
     <ItemGroup>
         <IncludePaths Include="Solutions\MCBSTM32F400" />
+        <IncludePaths Include="DeviceCode\Cores\arm\Processors\CortexMx" />
     </ItemGroup>
     <Import Project="$(SPOCLIENT)\devicecode\Targets\Native\STM32F4\STM32F4.settings" />
     <!-- This must be imported after the native build settings as it overrides the TARGETCODEBASE and Target type-->

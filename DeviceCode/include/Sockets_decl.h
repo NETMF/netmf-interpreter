@@ -419,7 +419,7 @@ extern const ConfigurationSector g_ConfigurationSector;
 
 //--//
 
-#if defined(LITTLE_ENDIAN) || defined(PLATFORM_WINDOWS)
+#if defined(NETMF_TARGET_LITTLE_ENDIAN)
 #define SOCK_htons(x) ( (((x) & 0x000000FFUL) <<  8) | (((x) & 0x0000FF00UL) >>  8) )
 #define SOCK_htonl(x) ( (((x) & 0x000000FFUL) << 24) | (((x) & 0x0000FF00UL) << 8) | (((x) & 0x00FF0000UL) >> 8) | (((x) & 0xFF000000UL) >> 24) )
 #define SOCK_ntohs(x) SOCK_htons(x)

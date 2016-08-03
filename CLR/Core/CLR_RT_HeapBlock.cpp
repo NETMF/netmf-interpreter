@@ -389,7 +389,7 @@ HRESULT CLR_RT_HeapBlock::LoadFromReference( CLR_RT_HeapBlock& ref )
             else if(size == 1) { first = ((CLR_UINT8 *)src)[ 0 ];                                   }
             else               { first = ((CLR_UINT16*)src)[ 0 ];                                   }
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
             ((CLR_UINT32*)&NumericByRef())[ 0 ] = first;
             ((CLR_UINT32*)&NumericByRef())[ 1 ] = second;
 #else
@@ -403,7 +403,7 @@ HRESULT CLR_RT_HeapBlock::LoadFromReference( CLR_RT_HeapBlock& ref )
                 ((CLR_UINT32*)&NumericByRef())[ 0 ] = second;
                 ((CLR_UINT32*)&NumericByRef())[ 1 ] = first;
             }
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
 
             TINYCLR_SET_AND_LEAVE(S_OK);
         }
@@ -531,7 +531,7 @@ HRESULT CLR_RT_HeapBlock::StoreToReference( CLR_RT_HeapBlock& ref, int size )
                 }
             }
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
             CLR_UINT32 first  = ((CLR_UINT32*)&obj->NumericByRef())[ 0 ];
             CLR_UINT32 second = ((CLR_UINT32*)&obj->NumericByRef())[ 1 ];
 #else
@@ -548,7 +548,7 @@ HRESULT CLR_RT_HeapBlock::StoreToReference( CLR_RT_HeapBlock& ref, int size )
                 first   = ((CLR_UINT32*)&obj->NumericByRef())[ 1 ];
                 second  = ((CLR_UINT32*)&obj->NumericByRef())[ 0 ];
             }
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
 
             if     (sizeArray == 4) { ((CLR_UINT32*)dst)[ 0 ] = (CLR_UINT32)first;                                               }
             else if(sizeArray == 8) { ((CLR_UINT32*)dst)[ 0 ] = (CLR_UINT32)first; ((CLR_UINT32*)dst)[ 1 ] = (CLR_UINT32)second; }

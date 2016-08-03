@@ -8,7 +8,7 @@
         <Description>CMSIS-RTX OS</Description>
         <Level>HAL</Level>
         <LibraryFile>CMSIS_RTX.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\CMSIS\CMSIS_RTX\dotNetMF.proj</ProjectPath>
+        <ProjectPath>$(SPOCLIENT)\CMSIS\CMSIS\RTOS\RTX\dotNetMF.proj</ProjectPath>
         <ManifestFile>CMSIS_RTX.$(LIB_EXT).manifest</ManifestFile>
         <Groups>OS\CMSIS_RTOS</Groups>
         <LibraryCategory>
@@ -31,8 +31,8 @@
     </PropertyGroup>
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
     <ItemGroup>
-        <IncludePaths Include="CMSIS\CMSIS_RTX\INC" />
-        <IncludePaths Include="CMSIS\CMSIS_RTX\SRC" />
+        <IncludePaths Include="CMSIS\CMSIS\RTOS\RTX\INC" />
+        <IncludePaths Include="CMSIS\CMSIS\RTOS\RTX\SRC" />
         <IncludePaths Include="CMSIS\CMSIS\Include" />
         <IncludePaths Include="CMSIS\CMSIS\Driver\Include" />
     </ItemGroup>

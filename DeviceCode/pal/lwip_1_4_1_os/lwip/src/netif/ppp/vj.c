@@ -568,7 +568,7 @@ vj_uncompress_tcp(struct pbuf **nb, struct vjcompress *comp)
     goto bad;
   }
 
-#if BYTE_ORDER == LITTLE_ENDIAN
+#if BYTE_ORDER == NETMF_TARGET_LITTLE_ENDIAN
   tmp = n0->tot_len - vjlen + cs->cs_hlen;
   IPH_LEN_SET(&cs->cs_ip, htons((u_short)tmp));
 #else
