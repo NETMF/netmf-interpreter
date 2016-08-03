@@ -288,6 +288,39 @@ namespace Microsoft.SPOT.Emulator.Sockets
             }
         }
 
+        internal void SignalSocketEvent(int socket, bool fRead)
+        {
+            SocketData sd;
+            if (_isInitialized)
+            {
+                if (GetSocketData(socket, out sd))
+                {
+                    if (fRead)
+                    {
+                        lock (m_read)
+                        {
+                            if (!m_read.Contains(sd.Socket))
+                            {
+                                m_read.Add(sd.Socket);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        lock (m_write)
+                        {
+                            if (!m_write.Contains(sd.Socket))
+                            {
+                                m_write.Add(sd.Socket);
+                            }
+                        }
+                    }
+                }
+
+                SignalThread();
+            }
+        }
+
         bool _socketsShuttingDown = false;
 
         List<Socket> m_read = new List<Socket>();
@@ -430,7 +463,7 @@ namespace Microsoft.SPOT.Emulator.Sockets
                 this.Emulator.SetSystemEvents(Events.SystemEvents.SOCKET);
             }
         }
-        
+
         [MethodImplAttribute(MethodImplOptions.Synchronized)]
         void EnsureInitialized()
         {

@@ -12,7 +12,7 @@
     <ManifestFile>sockets_hal_udp_lwIP_os.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Sockets_udp_PAL" Guid="{F3CFF2CB-AF06-4F82-B3B9-D743FC8F248D}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Sockets_udp_PAL" Guid="{F3CFF2CB-AF06-4F82-B3B9-D743FC8F248D}" Conditional="" xmlns="">
         <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
       </MFComponent>
     </LibraryCategory>

@@ -12,7 +12,7 @@
     <ManifestFile>HeapPersistence.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Storage</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="HeapPersistence_CLR" Guid="{D6BC8826-87C6-4213-9B02-EA60E6CC693E}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="HeapPersistence_CLR" Guid="{D6BC8826-87C6-4213-9B02-EA60E6CC693E}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

@@ -7,11 +7,10 @@
     <Description>MCBSTM32F400 tinyhal library loader</Description>
     <Level>HAL</Level>
         <LibraryFile>MCBSTM32F400_tinyhal_loader.$(LIB_EXT)</LibraryFile>
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\TinyHal\dotNetMF_loader.proj</ProjectPath>
         <ManifestFile>MCBSTM32F400_tinyhal.$(LIB_EXT).manifest_loader</ManifestFile>
     <Groups>system</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TinyHal_HAL_Cortex" Guid="{37C37BC0-3CA6-4C1C-A26F-4761A7BA3C05}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TinyHal_HAL_Cortex" Guid="{37C37BC0-3CA6-4C1C-A26F-4761A7BA3C05}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

@@ -12,7 +12,7 @@
     <ManifestFile>sockets_hal_sockets_lwIP_os.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="NetworkStack_PAL" Guid="{53634488-41DF-4696-8186-5EA5F846BA14}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="NetworkStack_PAL" Guid="{53634488-41DF-4696-8186-5EA5F846BA14}" Conditional="" xmlns="">
         <ComponentType xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">LibraryCategory</ComponentType>
       </MFComponent>
     </LibraryCategory>

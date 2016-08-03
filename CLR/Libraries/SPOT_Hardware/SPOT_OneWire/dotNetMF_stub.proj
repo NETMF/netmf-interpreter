@@ -11,7 +11,7 @@
     <ManifestFile>SPOT_Hardware_OneWire_stub.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Hardware</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_OneWire_CLR" Guid="{49949C30-83BE-4812-B689-130A6D43A4A3}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_OneWire_CLR" Guid="{49949C30-83BE-4812-B689-130A6D43A4A3}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
@@ -31,8 +31,6 @@
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>True</IsStub>
     <HasLibraryCategory>True</HasLibraryCategory>
-    <CustomSpecific>
-    </CustomSpecific>
     <Directory>CLR\Libraries\SPOT_Hardware\SPOT_OneWire</Directory>
     <OutputType>Library</OutputType>
     <VCProjName>Lib_SPOT_Hardware_OneWire</VCProjName>

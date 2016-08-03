@@ -9,7 +9,6 @@
         <IsClrProject>True</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\TinyCLR_NONET\TinyCLR_NONET.proj</ProjectPath>
         <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400_NONET.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>false</reducesize>

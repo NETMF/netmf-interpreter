@@ -11,7 +11,7 @@
     <ProjectPath>$(SPOCLIENT)\DeviceCode\Drivers\Blockstorage\SD\stubs\dotNetMF.proj</ProjectPath>
     <Groups>BlockStorage</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SDConfig_HAL" Guid="{55D65695-3439-42fc-A727-15802883E1CC}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SDConfig_HAL" Guid="{55D65695-3439-42fc-A727-15802883E1CC}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

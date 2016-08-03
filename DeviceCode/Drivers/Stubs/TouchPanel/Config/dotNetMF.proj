@@ -12,7 +12,7 @@
     <ManifestFile>TouchPanel_Config_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Touch</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TouchScreen_Config_HAL" Guid="{757A56B0-8619-4BDB-97FB-C6EFB2338BA8}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="TouchScreen_Config_HAL" Guid="{757A56B0-8619-4BDB-97FB-C6EFB2338BA8}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
