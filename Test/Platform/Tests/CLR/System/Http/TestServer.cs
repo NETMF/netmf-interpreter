@@ -45,6 +45,8 @@ namespace Microsoft.SPOT.Platform.Tests
                 s_CurrentPort++;
                 throw new Exception("Unable to start server");
             }
+
+            s_CurrentPort++;
         }
 
         public void StopServer()

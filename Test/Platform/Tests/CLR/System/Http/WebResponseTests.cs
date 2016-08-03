@@ -24,7 +24,6 @@ namespace Microsoft.SPOT.Platform.Tests
                 return InitializeResult.Skip;
             }
 
-
             return InitializeResult.ReadyToGo;
         }
 
@@ -43,7 +42,7 @@ namespace Microsoft.SPOT.Platform.Tests
             try
             {
                 Log.Comment("WebResponse Test");
-                HttpWebRequest wrStr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+                HttpWebRequest wrStr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
 
                 HttpServer server = new HttpServer("http", ref result)
                 {

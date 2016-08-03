@@ -45,7 +45,7 @@ namespace Microsoft.SPOT.Platform.Tests
             {
                 Log.Comment("Small web page - redirect");
                 // Print for now, Parse later
-                string data = new string(Encoding.UTF8.GetChars(GetRequested("http://www.microsoft.com", "IIS")));
+                string data = new string(Encoding.UTF8.GetChars(GetRequested("http://www.microsoft.com", "APACHE")));
             }
             catch (Exception ex)
             {
@@ -197,9 +197,6 @@ namespace Microsoft.SPOT.Platform.Tests
 
             // Create request.
             HttpWebRequest request = HttpWebRequest.Create(uri) as HttpWebRequest;
-            // Set proxy information
-            WebProxy itgProxy = new WebProxy(HttpTests.Proxy, true);
-            request.Proxy = itgProxy;
             // Get response from server.
             WebResponse resp = null;
             try

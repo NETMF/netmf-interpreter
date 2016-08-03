@@ -293,7 +293,7 @@ void CLR_RT_ParseOptions::Usage()
 
         if(m_commands.size() > 1)
         {
-            wprintf( L"    %s\n", option.c_str(), cmd->m_szDescription );
+            wprintf( L"    %s\n", option.c_str());
         }
 
         for(it2 = cmd->m_params.begin(); it2 != cmd->m_params.end(); it2++)

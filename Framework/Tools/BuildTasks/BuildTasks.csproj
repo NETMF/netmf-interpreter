@@ -1,87 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-    <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
-    <PropertyGroup>
-        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-        <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
-        <SccProjectName>SAK</SccProjectName>
-        <SccLocalPath>SAK</SccLocalPath>
-        <SccAuxPath>SAK</SccAuxPath>
-        <SccProvider>SAK</SccProvider>
-    </PropertyGroup>
-    <PropertyGroup>
-        <AssemblyName>Microsoft.SPOT.Tasks</AssemblyName>
-        <OutputType>Library</OutputType>
-        <RootNamespace>Microsoft.SPOT.Tasks</RootNamespace>
-        <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <ProjectGuid>{9B3D156D-B9D2-4F9C-BFDF-91FC42EE1280}</ProjectGuid>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ComponentGuid>{3f32ca8e-2457-4a72-b076-63ce714022ee}</ComponentGuid>
-        <DirectoryRef>ToolsDir</DirectoryRef>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <!--    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet> -->
-    </PropertyGroup>
-    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
-    <ItemGroup>
-        <Compile Include="BuildTaskResources.Designer.cs">
-            <AutoGen>True</AutoGen>
-            <DesignTime>True</DesignTime>
-            <DependentUpon>BuildTaskResources.resx</DependentUpon>
-        </Compile>
-        <Compile Include="CreateInteropFeatureProj.cs" />
-        <Compile Include="GenerateAssemblyInfoFile.cs" />
-        <Compile Include="GenerateReleaseInfo.cs" />
-        <Compile Include="GenerateResource.cs" />
-        <Compile Include="GetDeviceFrameworkPath.cs" />
-        <Compile Include="MetaDataProcessor.cs" />
-        <Compile Include="RegisterEmulator.cs" />
-        <Compile Include="ResolveRuntimeDependencies.cs" />
-        <Compile Include="ScatterFile.cs" />
-        <Compile Include="ProcessScatterFile.cs" />
-        <Compile Include="RVDSLinkerScript.cs" />
-        <Compile Include="GCCLinkerScript.cs" />
-        <Compile Include="CreateLibManifest.cs" />
-        <Compile Include="SetEnvironmentVariable.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="Microsoft.Build" />
-        <Reference Include="Microsoft.Build.Engine" />
-        <Reference Include="Microsoft.Build.Framework" />
-        <Reference Include="Microsoft.Build.Tasks.v4.0" />
-        <Reference Include="Microsoft.Build.Utilities.v4.0" />
-        <Reference Include="System" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
-        <Reference Include="System.Drawing" />
-        <Reference Include="System.Windows.Forms" />
-    </ItemGroup>
-    <ItemGroup>
-        <AppDesigner Include="Properties\" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="Microsoft.SPOT.Tasks.Internal">
-            <HintPath Condition="!EXISTS('$(BUILD_TREE_SERVER)\DLL\Microsoft.SPOT.Tasks.Internal.dll')">$(SPOCLIENT)\tools\build\Microsoft.SPOT.Tasks.Internal.dll</HintPath>
-            <HintPath Condition=" EXISTS('$(BUILD_TREE_SERVER)\DLL\Microsoft.SPOT.Tasks.Internal.dll')">$(BUILD_TREE_SERVER)\DLL\Microsoft.SPOT.Tasks.Internal.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Include="BuildTaskResources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>BuildTaskResources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="CsAssemblyInfoTemplate.txt" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="VisualBasicAssemblyInfoTemplate.txt" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="ResourceAssemblyInfoTemplate.txt" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Properties\" />
-    </ItemGroup>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>Microsoft.SPOT.Tasks</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Microsoft.SPOT.Tasks</RootNamespace>
+    <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{9B3D156D-B9D2-4F9C-BFDF-91FC42EE1280}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ComponentGuid>{3f32ca8e-2457-4a72-b076-63ce714022ee}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1668,1762</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;,DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1668,1762</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
+  <ItemGroup>
+    <Compile Include="BuildTaskResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BuildTaskResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="CreateInteropFeatureProj.cs" />
+    <Compile Include="GenerateAssemblyInfoFile.cs" />
+    <Compile Include="GenerateReleaseInfo.cs" />
+    <Compile Include="GenerateResource.cs" />
+    <Compile Include="GetDeviceFrameworkPath.cs" />
+    <Compile Include="MetaDataProcessor.cs" />
+    <Compile Include="RegisterEmulator.cs" />
+    <Compile Include="ResolveRuntimeDependencies.cs" />
+    <Compile Include="ScatterFile.cs" />
+    <Compile Include="ProcessScatterFile.cs" />
+    <Compile Include="RVDSLinkerScript.cs" />
+    <Compile Include="GCCLinkerScript.cs" />
+    <Compile Include="CreateLibManifest.cs" />
+    <Compile Include="SetEnvironmentVariable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Tasks.v4.0" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BuildTaskResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BuildTaskResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CsAssemblyInfoTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VisualBasicAssemblyInfoTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ResourceAssemblyInfoTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BuildTasksInternal\InternalBuildTasks.csproj">
+      <Project>{04903c08-f89b-4cf0-a25f-e3d541542146}</Project>
+      <Name>InternalBuildTasks</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

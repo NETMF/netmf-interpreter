@@ -4,14 +4,9 @@
 
 #include "CryptoInterface.h"
 #include "ConfigurationManager.h"
-//--//
 
 extern UINT8* g_ConfigBuffer;
-extern int    g_ConfigBufferLength;
-
-
-//--//
-
+extern int g_ConfigBufferLength;
 
 CryptoState::CryptoState( UINT32 dataAddress, UINT32 dataLength, BYTE* sig, UINT32 sigLength, UINT32 sectorType ) : 
 #if defined(ARM_V1_2)
@@ -43,14 +38,16 @@ bool CryptoState::VerifySignature( UINT32 keyIndex )
     // IF THERE IS NO CONFIG SECTOR IN THE FLASH SECTOR TABLE, THEN WE DON'T HAVE KEYS, 
     // THEREFORE WE WILL NOT PERFORM SIGNATURE CHECKING.
     // 
-    if(g_PrimaryConfigManager.m_device == NULL) return true;
+    if(g_PrimaryConfigManager.m_device == NULL)
+        return true;
 
 
     switch(m_sectorType)
     {
     case BlockRange::BLOCKTYPE_DEPLOYMENT:
         // backwards compatibility
-        if(g_PrimaryConfigManager.GetTinyBooterVersion() != ConfigurationSector::c_CurrentVersionTinyBooter) return true;
+        if(g_PrimaryConfigManager.GetTinyBooterVersion() != ConfigurationSector::c_CurrentVersionTinyBooter)
+            return true;
 
         // if there is no key then we do not need to check the signature for the deployment sectors ONLY
         if(g_PrimaryConfigManager.CheckSignatureKeyEmpty( ConfigurationSector::c_DeployKeyDeployment ))
@@ -73,10 +70,11 @@ bool CryptoState::VerifySignature( UINT32 keyIndex )
             ASSERT(g_ConfigBufferLength > 0);
             ASSERT(g_ConfigBuffer != NULL);
 
-            if(g_ConfigBuffer == NULL || g_ConfigBufferLength <= 0) return false;
+            if(g_ConfigBuffer == NULL || g_ConfigBufferLength <= 0)
+                return false;
 
             // the g_ConfigBuffer contains the new configuration data
-            const ConfigurationSector* pNewCfg    = (const ConfigurationSector*)g_ConfigBuffer;
+            const ConfigurationSector* pNewCfg = (const ConfigurationSector*)g_ConfigBuffer;
 
             bool fCanWrite = false;
             bool fRet      = false;
@@ -125,7 +123,8 @@ bool CryptoState::VerifySignature( UINT32 keyIndex )
         // backwards compatibility
 
 
-        if(g_PrimaryConfigManager.GetTinyBooterVersion() != ConfigurationSector::c_CurrentVersionTinyBooter) return true;
+        if(g_PrimaryConfigManager.GetTinyBooterVersion() != ConfigurationSector::c_CurrentVersionTinyBooter)
+            return true;
 
         // if there is no key then we do not need to check the signature for the deployment sectors ONLY
         if (g_PrimaryConfigManager.CheckSignatureKeyEmpty( keyIndex ))
@@ -136,7 +135,6 @@ bool CryptoState::VerifySignature( UINT32 keyIndex )
         key = (RSAKey*)g_PrimaryConfigManager.GetDeploymentKeys( keyIndex );
 
         break;
-            
     };
 
     if(key == NULL)
@@ -151,7 +149,7 @@ bool CryptoState::VerifySignature( UINT32 keyIndex )
     {
         m_res = ::Crypto_StepRSAOperation( &m_handle );
     }
-    
+
     return m_res == CRYPTO_SUCCESS;
 }
 

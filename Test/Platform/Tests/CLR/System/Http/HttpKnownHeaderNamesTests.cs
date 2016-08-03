@@ -15,7 +15,14 @@ namespace Microsoft.SPOT.Platform.Tests
         public InitializeResult Initialize()
         {
             Log.Comment("Adding set up for the tests.");
-            // Add your functionality here.   
+            try
+            {
+                Microsoft.SPOT.Net.NetworkInformation.NetworkInterface[] nis = Microsoft.SPOT.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+            }
+            catch
+            {
+                return InitializeResult.Skip;
+            }
 
             return InitializeResult.ReadyToGo;
         }
@@ -83,7 +90,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults TestSetHTTPRequestHeaderAfterCreateHTTP1_1()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -121,7 +128,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults ValidateAbleToSetPropertiesValueHTTP1_1()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -217,7 +224,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults TestSetHTTPRequestHeaderAfterCreateHTTP1_0()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1
@@ -256,7 +263,7 @@ namespace Microsoft.SPOT.Platform.Tests
         public MFTestResults ValidateAbleToSetPropertiesValueHTTP1_0()
         {
             MFTestResults result = MFTestResults.Pass;
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + HttpServer.s_CurrentPort.ToString() + "/");
+            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create("http://"+ Utilities.GetLocalIpAddress() + ":" + HttpServer.s_CurrentPort.ToString() + "/");
             wr.UserAgent = ".Net Micro Framwork Device/4.0";
 
             Log.Comment("Initial version: " + wr.ProtocolVersion);  //Default version is 1.1

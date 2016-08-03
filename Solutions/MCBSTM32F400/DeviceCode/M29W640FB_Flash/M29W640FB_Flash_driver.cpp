@@ -154,7 +154,7 @@ BOOL M29W640FB_Flash_Driver::Write(void* context, ByteAddress Address, UINT32 Nu
     {
         return FALSE;
     }
-    
+    M29W640FB_WaitReady();
     return TRUE;
 }
 
@@ -259,6 +259,7 @@ BOOL M29W640FB_Flash_Driver::EraseBlock( void* context, ByteAddress Sector )
 
     M29W640FB_WaitReady();
     Driver_Flash0.EraseSector(Sector);
+    M29W640FB_WaitReady();
 
     return TRUE;
 }
