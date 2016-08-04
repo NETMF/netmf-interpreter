@@ -11,7 +11,7 @@
     <ManifestFile>onewire_pal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Library</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OneWire_PAL" Guid="{8B4E8B4B-774D-4F2F-AA52-085848AA8D70}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="OneWire_PAL" Guid="{8B4E8B4B-774D-4F2F-AA52-085848AA8D70}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

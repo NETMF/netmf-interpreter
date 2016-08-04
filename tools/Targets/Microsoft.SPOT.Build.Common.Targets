@@ -93,7 +93,10 @@
   </Target>
 
   <Target Name="BuildChildren_Build" Condition="'@(Project)'!=''">
+    <Message Importance="high" Text="++$(MSBuildProjectFullPath) Building child projects:"/>
+    <Message Importance="high" Text="    %(Project.Identity)" />
     <MSBuild Projects="@(Project)" Targets="Build" Properties="$(MainProps)" />
+    <Message Importance="high" Text="--$(MSBuildProjectFullPath) Done building child projects"/>
   </Target>
 
   <Target Name="BuildChildren_Disasm" Condition="'@(Project)'!=''">

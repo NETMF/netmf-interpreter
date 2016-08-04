@@ -9,7 +9,6 @@
     <IsClrProject>False</IsClrProject>
     <InteropFeatures />
     <ExtraAssemblies />
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\MicroBooter\MicroBooter.proj</ProjectPath>
     <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
   </PropertyGroup>
@@ -17,10 +16,8 @@
   <PropertyGroup>
     <Size />
     <Level />
-    <ProjectPath>$(SPOCLIENT)\ProjectTemplates\MicroBooter\MicroBooter.proj</ProjectPath>
     <ManifestFile />
     <Groups />
-    <CustomSpecific />
     <IsStub>False</IsStub>
     <reducesize>true</reducesize>
     <OutputType>Executable</OutputType>

@@ -921,8 +921,8 @@ void Graphics_Driver::RotateImage( INT16 degree, const PAL_GFX_Bitmap& dst, cons
         {
             float dx = (x - xCenterDst);
 
-            int xSrc = (int)(xCenterSrc + ((dx * cos) + sinY) + 0.5); 
-            int ySrc = (int)(yCenterSrc + (cosY - (dx * sin)) + 0.5); 
+            int xSrc = (int)(xCenterSrc + ((dx * cos) + sinY) + 0.5f); 
+            int ySrc = (int)(yCenterSrc + (cosY - (dx * sin)) + 0.5f); 
             
             if(xSrc <= srcRect.right && srcRect.left <= xSrc && ySrc <= srcRect.bottom && srcRect.top <= ySrc && ySrc > 0 && xSrc > 0)
             {

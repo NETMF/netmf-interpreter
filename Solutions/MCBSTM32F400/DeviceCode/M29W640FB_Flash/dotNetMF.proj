@@ -1,6 +1,5 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\M29W640FB_Flash\dotNetMF.proj</ProjectPath>
     <ProjectGuid>{ADD1DC98-CBE4-494B-92E7-F982B9E01A4B}</ProjectGuid>
     <AssemblyName>M29W640FB_Flash</AssemblyName>
     <Size>
@@ -19,7 +18,7 @@
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>False</IsStub>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorage_HAL" Guid="{B87F1565-3D64-4531-A84B-2F9C2B221D1D}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorage_HAL" Guid="{B87F1565-3D64-4531-A84B-2F9C2B221D1D}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

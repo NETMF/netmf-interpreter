@@ -127,19 +127,28 @@ namespace Microsoft.SPOT.Platform.Tests
             return result;
         }
 
-        private void UpdateTimeNow()
+        private IPAddress GetTimeServiceAddress()
         {
-            for (int i = 0; i < 10; i++)
+            IPHostEntry entry = Dns.GetHostEntry("time.nist.gov");
+            if (entry == null || entry.AddressList == null)
             {
-                TimeServiceStatus status = TimeService.UpdateNow(new byte[] { 192, 43, 244, 18 }, 10);
-
-                if (status.Flags == TimeServiceStatus.TimeServiceStatusFlags.SyncSucceeded)
-                {
-                    break;
-                }
-
-                Thread.Sleep(100);
+                throw new ApplicationException("Get time service ip failed"); ;
             }
+
+            IPAddress timeServiceAddress = null;
+            for (int i = 0; i < entry.AddressList.Length; ++i)
+            {
+                timeServiceAddress = entry.AddressList[i];
+                if (timeServiceAddress != null)
+                    break;
+            }
+
+            if (timeServiceAddress == null)
+            {
+                throw new ApplicationException("Get time service ip failed"); ;
+            }
+
+            return timeServiceAddress;
         }
 
         [TestMethod]
@@ -149,7 +158,7 @@ namespace Microsoft.SPOT.Platform.Tests
             try
             {
                 /// Now call UpdateNow this should set the time back to correct one.
-                UpdateTimeNow();
+                TimeService.UpdateNow(GetTimeServiceAddress().GetAddressBytes(), 10);
 
                 DateTime now = DateTime.Now;
                 DateTime nowEbs = now;
@@ -166,9 +175,9 @@ namespace Microsoft.SPOT.Platform.Tests
                 TimeService.SetUtcTime(119600064000000000); /// 1/1/1980.
                                                             /// 
                 DateTime old = DateTime.Now;
-                                                            
+
                 /// Now call UpdateNow this should set the time back to correct one.
-                UpdateTimeNow();                
+                TimeService.UpdateNow(GetTimeServiceAddress().GetAddressBytes(), 10);
 
                 DateTime end = DateTime.Now;
 
@@ -201,7 +210,7 @@ namespace Microsoft.SPOT.Platform.Tests
                 timerEvent.Reset();
 
                 TimeService.SystemTimeChanged += handler;
-                UpdateTimeNow();
+                TimeService.UpdateNow(GetTimeServiceAddress().GetAddressBytes(), 10);
                 if (!timerEvent.WaitOne(60 * 1000, false)) /// Wait some time for the event to be fired.
                 {
                     result = MFTestResults.Fail;
@@ -226,14 +235,13 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             /// This failure only happens in device. Skipping it for now.
             MFTestResults result = MFTestResults.Skip;
-
             TimeSyncFailedEventHandler handler = new TimeSyncFailedEventHandler(TimeService_TimeSyncFailed);
             try
             {
                 syncEvent.Reset();
 
                 TimeService.TimeSyncFailed += handler;
-                UpdateTimeNow();
+                TimeService.UpdateNow(GetTimeServiceAddress().GetAddressBytes(), 10);
                 if (!syncEvent.WaitOne(5 * 1000, false)) /// Wait some time for the event to be fired.
                 {
                     result = MFTestResults.Skip;
@@ -322,11 +330,8 @@ namespace Microsoft.SPOT.Platform.Tests
 
                 TimeService.SystemTimeChanged += handler;
 
-                byte[] primaryServer = new byte[] { 192, 43, 244, 18 };
-                byte[] alternateServer = new byte[] { 129, 6, 15, 28 };
                 TimeServiceSettings settings = new TimeServiceSettings();
-                settings.PrimaryServer = primaryServer;
-                settings.AlternateServer = alternateServer;
+                settings.PrimaryServer = GetTimeServiceAddress().GetAddressBytes();
                 settings.Tolerance = 100;
                 settings.RefreshTime = 60;
 
@@ -368,11 +373,8 @@ namespace Microsoft.SPOT.Platform.Tests
 
                 TimeService.SetUtcTime(119600064000000000); /// 1/1/1980.
                 /// 
-                byte[] primaryServer = new byte[] { 192, 43, 244, 18 };
-                byte[] alternateServer = new byte[] { 129, 6, 15, 28 };
                 TimeServiceSettings settings = new TimeServiceSettings();
-                settings.PrimaryServer = primaryServer;
-                settings.AlternateServer = alternateServer;
+                settings.PrimaryServer = GetTimeServiceAddress().GetAddressBytes();
                 settings.Tolerance = 100;
                 settings.RefreshTime = 60;                
 
@@ -415,11 +417,8 @@ namespace Microsoft.SPOT.Platform.Tests
 
                 TimeService.SetUtcTime(119600064000000000); /// 1/1/1980.
                 /// 
-                byte[] primaryServer = new byte[] { 192, 43, 244, 18 };
-                byte[] alternateServer = new byte[] { 129, 6, 15, 28 };
                 TimeServiceSettings settings = new TimeServiceSettings();
-                settings.PrimaryServer = primaryServer;
-                settings.AlternateServer = alternateServer;
+                settings.PrimaryServer = GetTimeServiceAddress().GetAddressBytes();
                 settings.Tolerance = 100;
                 settings.RefreshTime = 60;
                 TimeServiceStatus status = null;

@@ -12,7 +12,7 @@
     <Groups>
     </Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Crypto" Guid="{997AE9B5-A4A7-4540-AACA-6D8D2110E19F}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Crypto" Guid="{997AE9B5-A4A7-4540-AACA-6D8D2110E19F}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
@@ -27,8 +27,6 @@
     <Documentation>
     </Documentation>
     <PlatformIndependent>False</PlatformIndependent>
-    <CustomSpecific>
-    </CustomSpecific>
     <Required>False</Required>
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>False</IsStub>
@@ -52,39 +50,46 @@
     <CryptoStub Condition="'$(PLATFORM_FAMILY)'=='SHC'"     >true</CryptoStub>
     <CryptoStub Condition="'$(COMPILER_TOOL)'  =='GCCOP'"   >true</CryptoStub>
 
+    <!--
+    Force thumb2fp to use the same lib as thumb2 (There's no floating point code in the crypto libs)
+    so this saves replicating the libs into another directory for the instruction set and then again
+    for the tool chain.
+    -->
+    <CryptoInstructionSet Condition="'$(INSTRUCTION_SET)'=='thumb2fp'">thumb2</CryptoInstructionSet>
+    <CryptoInstructionSet Condition="'$(INSTRUCTION_SET)'!='thumb2fp'">$(INSTRUCTION_SET)</CryptoInstructionSet>
     <CustomTargets Condition="'$(CryptoStub)'=='false'">CryptoLib</CustomTargets>
-    <CustomTargets Condition="'$(INSTRUCTION_SET)'=='x86'">CryptoLibX86</CustomTargets>
+    <CustomTargets Condition="'$(CryptoInstructionSet)'=='x86'">CryptoLibX86</CustomTargets>
   </PropertyGroup>
 
 
-  <PropertyGroup Condition="'$(INSTRUCTION_SET)'!='x86'">
-    <LibSrc                                                                >lib\$(INSTRUCTION_SET)\$(DOTNETMF_COMPILER)\crypto.$(LIB_EXT)</LibSrc>
-    <LibSrc Condition="'$(COMPILER_TOOL)'=='ARM' AND !EXISTS('$(LibSrc)')" >lib\$(INSTRUCTION_SET)\RVDS4.0\crypto.$(LIB_EXT)</LibSrc>
-    <LibSrc Condition="'$(COMPILER_TOOL)'=='GCC'"                          >lib\$(INSTRUCTION_SET)\RVDS3.1\crypto.$(LIB_EXT)</LibSrc>
-    <LibSrc Condition="'$(COMPILER_TOOL)'=='ARC'"                          >lib\$(INSTRUCTION_SET)\MTWR8.0\crypto.$(LIB_EXT)</LibSrc>
+  <PropertyGroup Condition="'$(CryptoInstructionSet)'!='x86'">
+    <LibSrc                                                                >lib\$(CryptoInstructionSet)\$(DOTNETMF_COMPILER)\crypto.$(LIB_EXT)</LibSrc>
+    <LibSrc Condition="'$(COMPILER_TOOL)'=='ARM' AND !EXISTS('$(LibSrc)')" >lib\$(CryptoInstructionSet)\RVDS4.0\crypto.$(LIB_EXT)</LibSrc>
+    <LibSrc Condition="'$(COMPILER_TOOL)'=='GCC' OR '$(COMPILER_TOOL)'=='MDK'">lib\$(CryptoInstructionSet)\RVDS3.1\crypto.$(LIB_EXT)</LibSrc>
+    <LibSrc Condition="'$(COMPILER_TOOL)'=='ARC'"                          >lib\$(CryptoInstructionSet)\MTWR8.0\crypto.$(LIB_EXT)</LibSrc>
     <LibSrc Condition="!EXISTS('$(LibSrc)')"                               >$(LIB_DIR)\crypto_stub.$(LIB_EXT)</LibSrc>
     <LibTo>crypto.$(LIB_EXT)</LibTo>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(INSTRUCTION_SET)'=='x86'">
-    <LibFiles Include="lib\$(INSTRUCTION_SET)\crypto.lib" Condition="EXISTS('lib\$(INSTRUCTION_SET)\crypto.lib')">
+  <ItemGroup Condition="'$(CryptoInstructionSet)'=='x86'">
+    <LibFiles Include="lib\$(CryptoInstructionSet)\crypto.lib" Condition="EXISTS('lib\$(CryptoInstructionSet)\crypto.lib')">
         <DestFile>crypto.lib</DestFile>
     </LibFiles>
-    <LibFiles Include="lib\$(INSTRUCTION_SET)\crypto.pdb" Condition="Exists('lib\$(INSTRUCTION_SET)\crypto.pdb')">
+    <LibFiles Include="lib\$(CryptoInstructionSet)\crypto.pdb" Condition="Exists('lib\$(CryptoInstructionSet)\crypto.pdb')">
         <DestFile>crypto.pdb</DestFile>
     </LibFiles>
-    <LibFiles Include="$(LIB_DIR)\crypto_stub.lib"        Condition="!Exists('lib\$(INSTRUCTION_SET)\crypto.lib')">
+    <LibFiles Include="$(LIB_DIR)\crypto_stub.lib"        Condition="!Exists('lib\$(CryptoInstructionSet)\crypto.lib')">
         <DestFile>crypto.lib</DestFile>
     </LibFiles>
   </ItemGroup>
 
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
 
-  <ItemGroup Condition="'$(INSTRUCTION_SET)'!='x86'">
+  <ItemGroup Condition="'$(CryptoInstructionSet)'!='x86'">
     <ExtraCleanFiles Include="$(LIB_DIR)\$(LibTo)"/>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(INSTRUCTION_SET)'=='x86'">
+  <ItemGroup Condition="'$(CryptoInstructionSet)'=='x86'">
     <ExtraCleanFiles Include="@(LibFiles -> '$(LIB_DIR)\%(Filename)%(Extension)')" />
   </ItemGroup>
 

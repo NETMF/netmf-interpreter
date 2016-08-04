@@ -4,7 +4,7 @@
 
 #include "CLRStartup.h"
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 
 #include<TinyCLR_ParseOptions.h>
 
@@ -13,12 +13,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 struct Settings
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 : CLR_RT_ParseOptions
 #endif
 {
     CLR_SETTINGS m_clrOptions;
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     CLR_RT_ParseOptions::BufferMap m_assemblies;
 #endif
     bool m_fInitialized;
@@ -31,7 +31,7 @@ struct Settings
 
         m_clrOptions = params;
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(PLATFORM_WINDOWS_EMULATOR)
         g_CLR_RT_ExecutionEngine.m_fPerformGarbageCollection = params.PerformGarbageCollection;
         g_CLR_RT_ExecutionEngine.m_fPerformHeapCompaction    = params.PerformHeapCompaction;
 
@@ -59,7 +59,7 @@ struct Settings
 #if !defined(BUILD_RTM)
         if(params.WaitForDebugger)
         {
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
             CLR_EE_DBG_SET( Enabled );
 #endif
             CLR_EE_DBG_SET( Stopped );
@@ -125,7 +125,7 @@ struct Settings
     {
         TINYCLR_HEADER();
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
         CLR_RT_StringVector vec;
 
         WCHAR* pContext = NULL;
@@ -158,7 +158,7 @@ struct Settings
 
         TINYCLR_CHECK_HRESULT(LoadKnownAssemblies( TinyClr_Dat_Start, TinyClr_Dat_End ));
 
-#endif // defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#endif // defined(PLATFORM_WINDOWS_EMULATOR) || defined(PLATFORM_WINCE)
 
 #if !defined(BUILD_RTM)
         CLR_Debug::Printf( "Loading Deployment Assemblies.\r\n" );
@@ -362,7 +362,7 @@ struct Settings
 
         CLR_RT_ExecutionEngine::DeleteInstance();
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
         memset( &g_CLR_RT_Persistence_Manager, 0, sizeof(g_CLR_RT_Persistence_Manager) );
         memset( &g_CLR_RT_ExecutionEngine, 0, sizeof(g_CLR_RT_ExecutionEngine));
         memset( &g_CLR_RT_WellKnownTypes, 0, sizeof(g_CLR_RT_WellKnownTypes));
@@ -380,12 +380,12 @@ struct Settings
     Settings()
     {
         m_fInitialized = false;
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
         BuildOptions();
 #endif
     }
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
     ~Settings()
     {
         for(CLR_RT_ParseOptions::BufferMapIter it = m_assemblies.begin(); it != m_assemblies.end(); it++)
@@ -403,7 +403,8 @@ struct Settings
         Settings& m_parent;
         FPN       m_call;
 
-        Command_Call( Settings& parent, FPN call, LPCWSTR szName, LPCWSTR szDescription ) : CLR_RT_ParseOptions::Command( szName, szDescription ), m_parent(parent), m_call(call)
+        Command_Call( Settings& parent, FPN call, LPCWSTR szName, LPCWSTR szDescription ) 
+            : CLR_RT_ParseOptions::Command( szName, szDescription ), m_parent(parent), m_call(call)
         {
         }
 
@@ -570,7 +571,7 @@ struct Settings
 
         TINYCLR_NOCLEANUP();
     }
-#endif //#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#endif //#if defined(_WIN32)
 
 };
 
@@ -592,7 +593,7 @@ void ClrReboot()
 }
 
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
 HRESULT ClrLoadPE( LPCWSTR szPeFilePath )
 {
     CLR_RT_StringVector vec;
@@ -614,19 +615,6 @@ HRESULT ClrLoadDAT( LPCWSTR szDatFilePath )
     
     return s_ClrSettings.ProcessOptions(vec);
 }
-
-void ClrSetLcdDimensions( INT32 width, INT32 height, INT32 bitsPerPixel )
-{
-    g_HAL_Configuration_Windows.LCD_Width = width;
-    g_HAL_Configuration_Windows.LCD_Height = height;
-    g_HAL_Configuration_Windows.LCD_BitsPerPixel = bitsPerPixel;
-}
-
-bool ClrIsDebuggerStopped()
-{
-    return CLR_EE_DBG_IS( Stopped );
-}
-
 #endif
 
 
@@ -660,7 +648,7 @@ void ClrStartup( CLR_SETTINGS params )
                 CLR_Debug::Printf( "Ready.\r\n" );
 #endif
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
                 (void)g_CLR_RT_ExecutionEngine.Execute( params.EmulatorArgs, params.MaxContextSwitches );
 #else
                 (void)g_CLR_RT_ExecutionEngine.Execute( NULL, params.MaxContextSwitches );

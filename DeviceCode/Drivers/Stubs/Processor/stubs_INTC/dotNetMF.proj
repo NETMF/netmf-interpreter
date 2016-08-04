@@ -12,7 +12,7 @@
     <ManifestFile>cpu_intc_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Processor\stubs</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="InterruptController_HAL" Guid="{08148BEE-6B1F-4050-AA21-510CA7F2FF98}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="InterruptController_HAL" Guid="{08148BEE-6B1F-4050-AA21-510CA7F2FF98}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

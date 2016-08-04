@@ -17,8 +17,6 @@
     </Groups>
     <Documentation>
     </Documentation>
-    <CustomSpecific>
-    </CustomSpecific>
     <IsStub>False</IsStub>
     <Directory>Solutions\$(PLATFORM)\MicroBooter</Directory>
     <IsClrProject>False</IsClrProject>

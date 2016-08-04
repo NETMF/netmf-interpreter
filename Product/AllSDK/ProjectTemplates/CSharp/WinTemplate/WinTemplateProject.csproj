@@ -19,8 +19,8 @@
     <ProjectGuid>{D300D44B-0B0F-450F-B4A1-D4DCE9590F88}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>$(NetMFTemplateName)</RootNamespace>
-    <AssemblyName>$(NetMFTemplateName)</AssemblyName>
+    <RootNamespace>CSMFWindowApplication</RootNamespace>
+    <AssemblyName>CSMFWindowApplication</AssemblyName>
     <PlatformTarget>x86</PlatformTarget>
     <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>

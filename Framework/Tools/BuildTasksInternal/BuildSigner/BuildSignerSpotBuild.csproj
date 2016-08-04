@@ -1,4 +1,6 @@
-﻿<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
   <PropertyGroup>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -8,10 +10,31 @@
     <AssemblyName>Microsoft.SPOT.AutomatedBuild.BuildSigner</AssemblyName>
     <ProjectTypeGuids>{FAE04EC0-301F-11d3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1668,1762</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;,DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1668,1762</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.CSharp.Host.Targets" />
   <ItemGroup>
-    <Reference Include="CODESIGN.Submitter">
+    <Reference Include="CODESIGN.Submitter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=3d8252bd1272440d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(MSBuildProgramFiles32)\Microsoft Internal\Codesign.Submitter\CODESIGN.Submitter.dll</HintPath>
       <HintPath>$(SPOROOT)\tools\x86\CODESIGN\CODESIGN.Submitter.dll</HintPath>
     </Reference>
     <Reference Include="System" />

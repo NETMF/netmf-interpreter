@@ -88,7 +88,7 @@ BOOL STM32F4_ETH_LWIP_open(Netif_t *const pNetif)
     if ( !initEthernet(pNetif) )
     {
         #ifdef _DEBUG_TRACE
-        debug_printf("Ethernet driver cannot be opened\r\n");
+        hal_printf("Ethernet driver cannot be opened\r\n");
         #endif
         
         // Set flag as closed and abort
@@ -107,7 +107,7 @@ BOOL STM32F4_ETH_LWIP_open(Netif_t *const pNetif)
     s_isDriverOpened = TRUE;
     
     #ifdef _DEBUG_TRACE
-    debug_printf("Ethernet driver opened\r\n");
+    hal_printf("Ethernet driver opened\r\n");
     #endif
     
     return TRUE;
@@ -135,7 +135,7 @@ void STM32F4_ETH_LWIP_close(const BOOL disableClocks)
     }
     
     #ifdef _DEBUG_TRACE
-    debug_printf("Ethernet driver closed\r\n");
+    hal_printf("Ethernet driver closed\r\n");
     #endif
 }
 
@@ -177,7 +177,7 @@ static uint32_t processFrame(Netif_t *const pNetif)
     if (frameLength == 0)
     {
         #ifdef _DEBUG_TRACE
-        debug_printf("%s: erroneous frame\r\n", __func__);
+        hal_printf("%s: erroneous frame\r\n", __func__);
         #endif
     
         return releaseRxDescUntilNextFrame();
@@ -188,7 +188,7 @@ static uint32_t processFrame(Netif_t *const pNetif)
     if (!pbuf)
     {
         #ifdef _DEBUG_TRACE
-        debug_printf("%s: pbuf_alloc failed, discard current frame\r\n", __func__);
+        hal_printf("%s: pbuf_alloc failed, discard current frame\r\n", __func__);
         #endif
         
         return releaseFrame();
@@ -218,7 +218,7 @@ static uint32_t copyFrameToPbuf(Pbuf_t *pbuf)
     while (!eth_isRxDescOwnedByDma() && !isLastDescProcessed)
     {
         #if DEBUG_RX_DESC
-        debug_printf("----- Before processing RX -----\r\n");
+        hal_printf("----- Before processing RX -----\r\n");
         eth_displayRxDescStatus();
         #endif
     
@@ -237,7 +237,7 @@ static uint32_t copyFrameToPbuf(Pbuf_t *pbuf)
         nRxDesc++;
     
         #if DEBUG_RX_DESC
-        debug_printf("----- After processing RX -----\r\n");
+        hal_printf("----- After processing RX -----\r\n");
         eth_displayRxDescStatus();
         #endif
     }
@@ -400,7 +400,7 @@ static BOOL waitForTxDescriptor(uint32_t timeout)
     if (nWait == timeout)
     {
         //#ifdef _DEBUG
-        //debug_printf("%s: TX descriptor owned by DMA\r\n", __func__);
+        //hal_printf("%s: TX descriptor owned by DMA\r\n", __func__);
         //#endif
     
         return FALSE;
@@ -426,7 +426,7 @@ static BOOL copyFrameFromPbuf(const Pbuf_t *pbuf)
     if (frameLength > TX_BUFFER_LENGTH)
     {
         #ifdef _DEBUG_TRACE
-        debug_printf("%s: Frame larger than TX buffer (%d)\r\n", __func__, frameLength);
+        hal_printf("%s: Frame larger than TX buffer (%d)\r\n", __func__, frameLength);
         #endif
 
         return FALSE;

@@ -12,7 +12,7 @@
     <ManifestFile>SPOT_Net.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Net_CLR" Guid="{CC7F14B8-899B-4952-9447-567FB1276F55}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Net_CLR" Guid="{CC7F14B8-899B-4952-9447-567FB1276F55}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

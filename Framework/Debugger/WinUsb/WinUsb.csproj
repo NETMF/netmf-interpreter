@@ -1,26 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
   <PropertyGroup>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <Configuration Condition="'$(FLAVOR_WIN)'!=''">$(FLAVOR_WIN)</Configuration>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyName>WinUsbInvoke</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WinUsb</RootNamespace>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DAEB83A4-5868-4725-A15D-85F75DB87EAC}</ProjectGuid>
+    <ComponentGuid>{aa03c31f-e697-4668-9206-3b2cc39e8a44}</ComponentGuid>
+    <DirectoryRef>ToolsDir</DirectoryRef>
+    <AssemblyType>Library</AssemblyType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <OutDir>$(BUILD_TREE_SERVER)\DLL\</OutDir>
   </PropertyGroup>
-  <PropertyGroup>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DAEB83A4-5868-4725-A15D-85F75DB87EAC}</ProjectGuid>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ComponentGuid>{aa03c31f-e697-4668-9206-3b2cc39e8a44}</ComponentGuid>
-    <DirectoryRef>ToolsDir</DirectoryRef>
-    <OutputType>Library</OutputType>
-    <AssemblyType>Library</AssemblyType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WinUsb</RootNamespace>
-    <AssemblyName>WinUsbInvoke</AssemblyName>
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <RunCodeAnalysis>false</RunCodeAnalysis>
+        <CodeAnalysisRuleSet>Debugger.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>,DEBUG,TRACE,TINYCLR_BUILD_SERVER,TINYCLR_USESTRONGNAMES</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>,1668,1762</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

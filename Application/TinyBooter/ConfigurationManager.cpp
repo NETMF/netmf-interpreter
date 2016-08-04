@@ -68,7 +68,9 @@ void ConfigurationSectorManager::LocateConfigurationSector( UINT32 BlockUsage )
 
 void ConfigurationSectorManager::LoadConfiguration()
 {
-    if (m_device ==NULL) return;
+    if (m_device ==NULL)
+            return;
+        
     if (m_fSupportsXIP)
     {
         // Get the real address 
@@ -91,7 +93,8 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
     BOOL eraseWrite = FALSE;
     UINT32 writeLengthInBytes ;
 
-    if (m_device ==NULL) return ;
+    if (m_device ==NULL)
+            return ;
 
     LoadConfiguration();
 
@@ -110,7 +113,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
     // Validity  write 
     if (checkWrite)
     {
-        for (int i = 0; i<size; i++)
+        for (UINT32 i = 0; i<size; i++)
         {
             if ((~configurationInBytes[ i + writeOffset ]) & data[ i ])
             { 
@@ -134,7 +137,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
         {
             m_device->Read( m_cfgPhysicalAddress, writeLengthInBytes, configurationInBytes );
             // copy the new data to the configdata.
-            for (int i = 0; i<size; i++)
+            for (UINT32 i = 0; i<size; i++)
             {
                 configurationInBytes[ i + writeOffset ] = data[ i ];
 
@@ -179,9 +182,10 @@ void ConfigurationSectorManager::EraseWriteConfigBlock( BYTE * data, UINT32 size
 
 BOOL ConfigurationSectorManager::IsBootLoaderRequired( INT32 &bootModeTimeout )
 {
-    const UINT32                c_Empty      = 0xFFFFFFFF;
+    const UINT32 c_Empty = 0xFFFFFFFF;
 
-    if(m_device == NULL) return FALSE;
+    if(m_device == NULL)
+            return FALSE;
 
     volatile UINT32* data = (volatile UINT32*)&m_configurationSector->BooterFlagArray[ 0 ];
 

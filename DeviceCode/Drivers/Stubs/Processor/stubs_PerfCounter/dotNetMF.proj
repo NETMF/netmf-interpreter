@@ -12,7 +12,7 @@
     <ManifestFile>cpu_performancecounter_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Processor\stubs</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PerformanceCounter_HAL" Guid="{B5F79C0F-4657-47CE-B4CC-91EB1BFE4BDC}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PerformanceCounter_HAL" Guid="{B5F79C0F-4657-47CE-B4CC-91EB1BFE4BDC}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

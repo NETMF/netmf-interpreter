@@ -1,0 +1,40 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>Win32</Name>
+    <CpuName/>
+    <DefaultISA>x86</DefaultISA>
+    <Guid>{92CE1849-DBE0-4393-9717-E7054B21E644}</Guid>
+    <Description>
+    </Description>
+    <Documentation>Windows Win32 support</Documentation>
+    <ProjectPath>$(SPOCLIENT)\devicecode\Targets\OS\Win32\Win32.settings</ProjectPath>
+    <PLATFORM_FAMILY>x86</PLATFORM_FAMILY>
+    <CustomFilter>
+    </CustomFilter>
+    <INSTRUCTION_SET Condition="'$(INSTRUCTION_SET)'==''">x86</INSTRUCTION_SET>
+    <TARGETPROCESSOR>x86</TARGETPROCESSOR>
+    <TARGETCODEBASE>Win32</TARGETCODEBASE>
+    <TARGETCODEBASETYPE>OS</TARGETCODEBASETYPE>
+    <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
+  </PropertyGroup>
+  <ItemGroup>
+    <IncludePaths Include="devicecode\Targets\OS\Win32" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
+    <IncludePaths Include="devicecode\Targets\OS\Win32\lwip_1_4_1_os" />
+    
+    <!--
+    TODO: these are really compiler specific support files and not OS specific
+    we should figure out how to keep these separate based on the compiler.
+    One option is to have a central canonical location that then uses various
+    preprocessor macro tests to include the actual one. But we may be able to
+    do better than that at the msbuild project level...
+    -->
+    <HFiles Include="$(SPOCLIENT)\devicecode\Targets\OS\Win32\lwip_1_4_1_os\bpstruct.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\Targets\OS\Win32\lwip_1_4_1_os\cc.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\Targets\OS\Win32\lwip_1_4_1_os\epstruct.h" />
+    <!-- OS platform header files -->
+    <HFiles Include="$(SPOCLIENT)\devicecode\Targets\OS\Win32\lwip_1_4_1_os\perf.h" />
+    <HFiles Include="$(SPOCLIENT)\devicecode\Targets\OS\Win32\lwip_1_4_1_os\sys_arch.h" />
+  </ItemGroup> 
+</Project>

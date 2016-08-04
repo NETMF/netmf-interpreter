@@ -8,11 +8,10 @@
     <Description>Network configuration MCBSTM32F400 library</Description>
     <Level>HAL</Level>
     <LibraryFile>Network_Config_HAL_MCBSTM32F400.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Network_Config_HAL\dotNetMF.proj</ProjectPath>
     <ManifestFile>Network_Config_HAL_MCBSTM32F400.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Network_Config_HAL" Guid="{14DA2330-C44D-4F5B-AE85-534E24AEC5B2}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Network_Config_HAL" Guid="{14DA2330-C44D-4F5B-AE85-534E24AEC5B2}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

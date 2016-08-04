@@ -9,7 +9,6 @@
         <IsClrProject>False</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\TinyBooter\TinyBooter.proj</ProjectPath>
         <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>true</reducesize>
@@ -29,6 +28,10 @@
     <ItemGroup>
         <Compile Include="$(SRC_DIR)\Allocator.cpp" />
         <Compile Include="$(SRC_DIR)\TinyBooterEntry.cpp" />
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="CortexMx_ItmPort.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\ItmPort\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <PlatformIndependentLibs Include="TinybooterLib.$(LIB_EXT)" />

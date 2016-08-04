@@ -49,7 +49,7 @@
 
     <!-- DAT region goes into external NOR Flash -->
     <Set Name="Data_BaseAddress"        Value="%Config_BaseAddress% + %Config_Size%"/>
-    <Set Name="Data_Size"               Value="0x00030000"/><!-- 192KB -->
+    <Set Name="Data_Size"               Value="0x00040000"/><!-- 256KB -->
 
     <!-- [Deployment fills the rest of external NOR flash...] -->
 
@@ -114,7 +114,7 @@
             <FileMapping Name="*" Options="(VectorTable +FIRST)" />
         </ExecRegion>
         
-        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE" Size="">
+        <ExecRegion Name="ER_RAM_RW" Base="+0" Options="ABSOLUTE NOCOMPRESS" Size="">
             <FileMapping Name="*" Options="(+RW-DATA, +ZI)" />
         </ExecRegion>
 

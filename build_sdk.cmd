@@ -9,14 +9,16 @@ if "%1" == "-?" goto :ShowUsage
 if /i "%1" == "/h" goto :ShowUsage
 if /i "%1" == "-h" goto :ShowUsage
 
+if "%FLAVOR_SDK%" == "" set FLAVOR_SDK=RTM
+
 if /i "%VSSDK140Install%"=="" goto :MissingVSSDK
 if NOT EXIST "%VSSDK140Install%" goto :MissingVSSDK
 
 SET BUILD_VERSION=%1
 if "%BUILD_VERSION%"=="" set BUILD_VERSION=0
-SET BUILD_SHARE=%2
+SET BUILD_SHARE=%~2
 if "%BUILD_SHARE%"=="" set BUILD_SHARE=%SPOCLIENT%
-SET BUILD_BRANCH=%3
+SET BUILD_BRANCH=%~3
 SET RELEASENAME=%4
 if "%RELEASENAME%"=="" set RELEASENAME="(%USERNAME%)"
 SET WixMsiBuildNumberOverride=%5
@@ -33,13 +35,16 @@ call setenv_vs.cmd 14
 SET PORT_BUILD=
 
 ECHO Building PreSDK ...
-call Msbuild sdk.dirproj /nr:false /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=RTM  /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdkpre.log
+call Msbuild sdk.dirproj /nr:false /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK%  /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdkpre.log
+if %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
 
 ECHO Building SDK ...
-call Msbuild setup\ProductSDK\Product.wixproj /m /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=RTM /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdk.log
+call Msbuild setup\ProductSDK\Product.wixproj /m /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK% /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=sdk.log
+if %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
 
 ECHO Building VSIX packages ...
-call Msbuild setup\ProductSDK\VsixPackages.dirproj /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=RTM /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=vsixpkg.log
+call Msbuild setup\ProductSDK\VsixPackages.dirproj /t:Build /p:BuildNumber=%BUILD_VERSION% /p:FLAVOR=%FLAVOR_SDK% /clp:verbosity=minimal /flp:verbosity=detailed;LogFile=vsixpkg.log
+if %ERRORLEVEL% NEQ 0 exit /B %ERRORLEVEL%
 
 SET PORT_BUILD=
 

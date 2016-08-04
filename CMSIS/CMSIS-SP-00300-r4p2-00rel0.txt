@@ -1,2 +1,0 @@
-The CMSIS version this code is based on is:
-CMSIS-SP-00300-r4p2-00rel0

@@ -5,7 +5,7 @@
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
 
   <ItemGroup>
-    <SubDirectories Include="$(TARGETCODEBASE)"           Condition="EXISTS($(TARGETCODEBASE))" />
+    <SubDirectories Include="$(TARGETCODEBASE)" Condition="EXISTS($(TARGETCODEBASE))" />
   </ItemGroup>
 
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />

@@ -9,7 +9,6 @@
         <IsClrProject>False</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\TinyBooter\TinyBooter.proj</ProjectPath>
         <MFSettingsFile>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\STM32F4DISCOVERY.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>true</reducesize>
@@ -29,6 +28,10 @@
     <ItemGroup>
         <Compile Include="$(SRC_DIR)\Allocator.cpp" />
         <Compile Include="$(SRC_DIR)\TinyBooterEntry.cpp" />
+    </ItemGroup>
+    <ItemGroup>
+        <DriverLibs Include="CortexMx_ItmPort.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\ItmPort\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <PlatformIndependentLibs Include="TinybooterLib.$(LIB_EXT)" />
@@ -87,8 +90,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_SPI\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="STM32F4_USART.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_USART\dotNetMF.proj" />
+        <DriverLibs Include="cpu_usart_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\processor\stubs_USART\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="STM32F4_USB.$(LIB_EXT)" />
@@ -131,8 +134,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\I2C\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="usart_pal.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\USART\dotNetMF.proj" />
+        <DriverLibs Include="usart_pal_stubs.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\USART\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="usb_pal.$(LIB_EXT)" />

@@ -15,15 +15,15 @@
     <TARGETCODEBASE>CMSIS_RTOS</TARGETCODEBASE>
     <TARGETCODEBASETYPE>OS</TARGETCODEBASETYPE>
     <IsSolutionWizardVisible>false</IsSolutionWizardVisible>
+    <CMSIS_RequiredVersion>4.3.0</CMSIS_RequiredVersion>
   </PropertyGroup>
   <ItemGroup>
     <CC_CPP_Defines Include="__CMSIS_RTOS" />
-	<CC_CPP_Defines Include="PLATFORM_ARM_OS_PORT" />
+    <CC_CPP_Defines Include="PLATFORM_ARM_OS_PORT" />
   </ItemGroup>
   <ItemGroup>
     <IncludePaths Include="CMSIS\CMSIS\Include" />
-    <IncludePaths Include="CMSIS\CMSIS_RTX" />
-    <IncludePaths Include="CMSIS\CMSIS_RTX\INC" />
+    <IncludePaths Include="CMSIS\CMSIS\RTOS\RTX\INC" />
   </ItemGroup>
   <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
     <IncludePaths Include="DeviceCode\Targets\OS\CMSIS_RTOS\DeviceCode\lwip_1_4_1_os"/>
@@ -32,6 +32,16 @@
         <Error Code="NETMFBLD"
                Condition="!EXISTS('$(SPOCLIENT)\CMSIS\ARM.CMSIS.pdsc')"
                Text="Missing CMSIS installation at: $(SPOCLIENT)\CMSIS\*"
+               />
+        <!-- Check CMSIS version -->
+        <XmlPeek XmlInputPath="$(SPOCLIENT)\CMSIS\ARM.CMSIS.pdsc"
+                 Query="/package/releases/release[1]/@version"
+                >
+          <Output TaskParameter="Result" PropertyName="CMSIS_CurrentVersion" />
+        </XmlPeek>
+        <Error Code="NETMFBLD"
+               Condition="'$(CMSIS_RequiredVersion)'!='$(CMSIS_CurrentVersion)'"
+               Text="Required CMSIS version $(CMSIS_RequiredVersion) (detected $(CMSIS_CurrentVersion))"
                />
     </Target>
 </Project>

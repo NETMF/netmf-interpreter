@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{93809AEC-600B-451B-A9BF-318E08143FEA}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>TinyCLR</RootNamespace>
+    <SPOCLIENT Condition="'$(SPOCLIENT)'==''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), std_vcxproj.props))</SPOCLIENT>
+    <OEMInfoString>Microsoft Open Technologies - Raw Win32 OS port</OEMInfoString>
+    <SccProjectName>SAK</SccProjectName>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+    <ProjectName>MinMFWin32</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SPOCLIENT)\std_vcxproj.props" Condition="exists('$(SPOCLIENT)\std_vcxproj.props')" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SPOCLIENT)\std_vcxproj.props" Condition="exists('$(SPOCLIENT)\std_vcxproj.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>STATIC_ASSERT_SUPPORTED=1;WIN32;_ASSERT_SUPPORTED=1;_DEBUG;_CONSOLE;_LIB;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32;$(SPOCLIENT)\BuildOutput\Windows\le\ANY_MEDIA\$(Configuration)\lib\;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\Dependencies\WpdPack\Include\;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SPOCLIENT)\Crypto\lib\x86;$(SPOCLIENT)\BuildOutput\Windows\le\ANY_MEDIA\$(Configuration)\lib;$(SPOCLIENT)\BuildOutput\Windows\le\RAM\$(Configuration)\Win32\lib;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\Dependencies\WpdPack\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>clrstartup.lib;Core.lib;IOPort.lib;Serialization_stub.lib;SPOT_Serialization_stub.lib;Time_pal.lib;InterruptHandler.lib;SPOT.lib;CorLib.lib;native_double_pal.lib;CRC.lib;Diagnostics.lib;HeapPersistence_stub.lib;RPC_stub.lib;Messaging_stub.lib;SPOT_Messaging.lib;Debugger_stub.lib;Hardware.lib;I2C_stub.lib;watchdog_pal.lib;ssl_pal_stubs.lib;Graphics_stub.lib;InteropAssembliesTable.lib;blockstorage_pal.lib;spot_hardware.lib;spot_net.lib;sockets_pal_lwip_os.lib;SocketsDriver_PAL_LWIP_os.lib;sockets_hal_sockets_lwIP_os.lib;sockets_hal_udp_lwIP_os.lib;sockets_hal_tcp_lwIP_os.lib;sockets_hal_dhcp_lwIP_os.lib;lwip_1_4_1_os_win32.lib;WinPcap_Eth.lib;Packet.lib;wpcap.lib;LargeBuffer_hal_stubs.lib;SimpleHeap_stubs.lib;batterymeasurement_hal_stubs.lib;batterycharger_hal_stubs.lib;batterymodel_hal_stubs.lib;asyncproccall_pal.lib;WinPcap_Eth_lwIP_driver_config.lib;Rpcrt4.lib;config_pal.lib;SPOT_IO.lib;FS_Config_stubs.lib;fs_pal_stubs.lib;Stream.lib;SPOT_Net_Security.lib;Crypto_stub.lib;Events_pal.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateMapFile>true</GenerateMapFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>STATIC_ASSERT_SUPPORTED=1;WIN32;_ASSERT_SUPPORTED=1;WIN32;_ASSERT_SUPPORTED=1;WIN32;_ASSERT_SUPPORTED=1;WIN32;_ASSERT_SUPPORTED=1;WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32;$(SPOCLIENT)\BuildOutput\Windows\le\ANY_MEDIA\$(Configuration)\lib\;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\Dependencies\WpdPack\Include\;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <ExceptionHandling>Async</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SPOCLIENT)\Crypto\lib\x86;$(SPOCLIENT)\BuildOutput\Windows\le\ANY_MEDIA\$(Configuration)\lib;$(SPOCLIENT)\BuildOutput\Windows\le\RAM\$(Configuration)\Win32\lib;$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\Dependencies\WpdPack\Lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>clrstartup.lib;Core.lib;IOPort.lib;Serialization_stub.lib;SPOT_Serialization_stub.lib;Time_pal.lib;InterruptHandler.lib;SPOT.lib;CorLib.lib;native_double_pal.lib;CRC.lib;Diagnostics.lib;HeapPersistence_stub.lib;RPC_stub.lib;Messaging_stub.lib;SPOT_Messaging.lib;Debugger_stub.lib;Hardware.lib;I2C_stub.lib;watchdog_pal.lib;ssl_pal_stubs.lib;Graphics_stub.lib;InteropAssembliesTable.lib;blockstorage_pal.lib;spot_hardware.lib;spot_net.lib;sockets_pal_lwip_os.lib;SocketsDriver_PAL_LWIP_os.lib;sockets_hal_sockets_lwIP_os.lib;sockets_hal_udp_lwIP_os.lib;sockets_hal_tcp_lwIP_os.lib;sockets_hal_dhcp_lwIP_os.lib;lwip_1_4_1_os_win32.lib;WinPcap_Eth.lib;Packet.lib;wpcap.lib;LargeBuffer_hal_stubs.lib;SimpleHeap_stubs.lib;batterymeasurement_hal_stubs.lib;batterycharger_hal_stubs.lib;batterymodel_hal_stubs.lib;asyncproccall_pal.lib;WinPcap_Eth_lwIP_driver_config.lib;Rpcrt4.lib;config_pal.lib;SPOT_IO.lib;FS_Config_stubs.lib;fs_pal_stubs.lib;Stream.lib;SPOT_Net_Security.lib;Crypto_stub.lib;Events_pal.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateMapFile>true</GenerateMapFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lwipopts.h" />
+    <ClInclude Include="..\platform_selector.h" />
+    <ClInclude Include="cmsis_os.h" />
+    <ClInclude Include="MemoryMappedFile.h" />
+    <ClInclude Include="NamedPipe.h" />
+    <ClInclude Include="OutputDebugStream.h" />
+    <ClInclude Include="ScopeGuard.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="WinPCAPDeviceList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_analog\stubs_functions_analog.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_DA\stubs_functions_DA.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_gpio\stubs_functions_gpio.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_I2C\stubs_functions_I2C.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_power\stubs_functions_power.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_PWM\stubs_functions_pwm.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_SPI\stubs_functions_SPI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\Processor\stubs_USART\stubs_functions_USART.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\Drivers\Stubs\VirtualKey\virtualkey_stubs.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\DeviceCode\pal\COM\i2c\stubs\i2c_stubs.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="BlockStorage.cpp" />
+    <ClCompile Include="ConfigSection.cpp" />
+    <ClCompile Include="CpuPower.cpp" />
+    <ClCompile Include="DebuggerPort.cpp" />
+    <ClCompile Include="Lcd.cpp" />
+    <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="OutputDebugStream.cpp" />
+    <ClCompile Include="RequiredCpuApis.cpp" />
+    <ClCompile Include="RequiredHalApis.cpp" />
+    <ClCompile Include="SmartPtr_IRQ.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SystemState.cpp" />
+    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="WatchDog.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Win32Settings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="ClrDependencies\ClrDependencies.vcxproj">
+      <Project>{ba36b9e0-9d5f-4b66-bce7-d98bdb3810b5}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

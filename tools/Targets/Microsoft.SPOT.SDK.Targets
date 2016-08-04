@@ -13,13 +13,11 @@
     <OUTPUT_WIXOBJ_DIR_LE>$(OutputWiXObjRoot)Fragments\le\$(MSBuildProjectName)\</OUTPUT_WIXOBJ_DIR_LE>
     <OUTPUT_WIXOBJ_DIR_BE>$(OutputWiXObjRoot)Fragments\be\$(MSBuildProjectName)\</OUTPUT_WIXOBJ_DIR_BE>
     <DO_NOT_BUILD_DOCS>True</DO_NOT_BUILD_DOCS>
-    <CodeSignAuthenticodeCert>100040133</CodeSignAuthenticodeCert>
-    <!-- Temp using Corp cert for VSIX packages until MSOT obtains it's own cert
-         (Cleared with LCA so long as the contained binaries are signed with an MSOT publisher cert)
-    -->
-    <CodeSignOpcCert>160</CodeSignOpcCert>
-    <CodeSignStrangNameCert>150</CodeSignStrangNameCert>
-    <CodeSignApprovers>gokulk;richh</CodeSignApprovers>
+    <CodeSignAuthenticodeCert>400</CodeSignAuthenticodeCert>
+    <CodeSignOpcCert>100040160</CodeSignOpcCert>
+    <CodeSignStrongNameCert>272</CodeSignStrongNameCert>
+    <CodeSignApprovers>colina;mortezag;lorenzte</CodeSignApprovers>
+      
     <!--
     <VSIPInstalled>false</VSIPInstalled>
     <XBUILD_OUTDIR>$(SPOCLIENT)\UE\Public\Docs\Built</XBUILD_OUTDIR>
@@ -809,6 +807,7 @@
   <PropertyGroup>
     <LightCmdLine>-nologo -wx -sw1076 -sw1079 -sw1056 -sw1055 -sice:ICE03 -sice:ICE18 -sice:ICE20 -sice:ICE30 -sice:ICE31 -sice:ICE38 -sice:ICE43 -sice:ICE57 -sice:ICE64 -sice:ICE69 -b $(SPOCLIENT)\Setup -out $(OUTPUT_MSM) </LightCmdLine>
     <LightCmdLine Condition=" $(WiXLocalization) != '' ">$(LightCmdLine) -loc $(WiXLocalization) </LightCmdLine>
+    <LightCmdLine Condition="'$(SuppressMSIValidation)'=='true'">-sval $(LightCmdLine)</LightCmdLine>
   </PropertyGroup>
 
   <Target

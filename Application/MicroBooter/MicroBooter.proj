@@ -13,8 +13,6 @@
     <Groups>MicroBooter</Groups>
     <Documentation>
     </Documentation>
-    <CustomSpecific>
-    </CustomSpecific>
     <Required>False</Required>
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>False</IsStub>

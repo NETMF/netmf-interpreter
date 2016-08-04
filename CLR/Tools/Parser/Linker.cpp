@@ -5,10 +5,6 @@
 #include "stdafx.h"
 #include <TinyCLR_Endian.h>
 
-#if defined(PLATFORM_WINDOWS)
-#pragma comment(lib,"crypto")
-#endif
-
 #include <crypto.h>
 
 //--//
@@ -334,7 +330,13 @@ bool WatchAssemblyBuilder::Linker::AllocString( const std::string& str, CLR_STRI
 {
     if(fUser == false)
     {
-        m_collectUniqueStrings.insert( str );
+        // Don't collect generated strings
+        if((str.find("$$method0x") != 0) &&
+           (str.find("<PrivateImplementationDetails>{") != 0) &&
+           (str.find("__StaticArrayInitTypeSize=") != 0))
+        {
+          m_collectUniqueStrings.insert( str );
+        }
 
         if(m_lookupStringsConst.find( str ) != m_lookupStringsConst.end())
         {

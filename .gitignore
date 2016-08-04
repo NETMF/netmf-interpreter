@@ -7,10 +7,9 @@
 
 # CMSIS and CMSIS_RTX
 /CMSIS/CMSIS/
-/CMSIS/CMSIS_RTX/*
 /CMSIS/Device/*
 /CMSIS/ARM.CMSIS.pdsc
-!/CMSIS/CMSIS_RTX/dotNetMF.proj
+!/CMSIS/CMSIS/RTOS/RTX/dotNetMF.proj
 
 # Visual Studio
 *.aps
@@ -30,6 +29,9 @@
 [Bb]in/
 [Oo]bj/
 ipch/
+*.VC.db
+
+!/tools/bin/
 
 #uVision
 *.uvguix*
@@ -40,3 +42,18 @@ Listings/
 /DeviceCode/Targets/OS/Win32/DeviceCode/WinPcap_Eth/Dependencies/WpdPack/
 
 *.axfdump
+/crypto/lib
+Firmware License (Crypto).rtf
+License (Crypto).rtf
+PKCryptoWelcome.rtf
+REDIST_CRYPTO.TXT
+ReleaseNotesCrypto.txt
+*.tlog
+/Solutions/Windows/TinyCLR/Debug
+/Solutions/Windows/TinyCLR/FLASH_MEMORY.bin
+*.opendb
+*.dbgconf
+/tools/DisAsmPE/Debug
+/tools/DisAsmPE/DisAsmPE/Debug
+/tools/DisAsmPE/NETMF.PE.Metadata/Debug
+/tools/DisAsmPE/DisAsmPE/*.txt

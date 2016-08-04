@@ -40,22 +40,13 @@ namespace Microsoft.SPOT.Platform.Tests
         {
             MFTestResults result = MFTestResults.Pass;
 
-            // Assign Proxy
-            Request.Proxy = new WebProxy(HttpTests.Proxy, true);
-
             HttpWebResponse myResponse = (HttpWebResponse)Request.GetResponse();
             Log.Comment("Version after assignment:" + Request.ProtocolVersion);
             Log.Comment("Response version:" + myResponse.ProtocolVersion);
 
-            if (Request.ProtocolVersion.Major != ExpectedVersion.Major && Request.ProtocolVersion.Minor != ExpectedVersion.Major)
+            if (Request.ProtocolVersion.Major != ExpectedVersion.Major || Request.ProtocolVersion.Minor != ExpectedVersion.Minor)
             {
                 Log.Exception("Expected Request Version " + ExpectedVersion);
-                result = MFTestResults.Fail;
-            }
-
-            if (myResponse.ProtocolVersion != HttpVersion.Version11)
-            {
-                Log.Exception("Expected Response Version 1.1");
                 result = MFTestResults.Fail;
             }
 
@@ -73,11 +64,6 @@ namespace Microsoft.SPOT.Platform.Tests
             try
             {
                 HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create("http://www.microsoft.com");
-                if (myRequest.ProtocolVersion != HttpVersion.Version11)
-                {
-                    Log.Exception("Expected Version 1.1, but got " + myRequest.ProtocolVersion);
-                    return MFTestResults.Fail;
-                }
                 result = Verify(myRequest, HttpVersion.Version11);
             }
             catch (Exception ex)

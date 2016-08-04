@@ -58,27 +58,14 @@
 
 #endif
 
-#if defined(_WIN32_WCE)
+#if defined(_MSC_VER)
 
-#define PLATFORM_WINCE
 #define ADS_PACKED
 #define GNU_PACKED
 #define __section(x)
 #define __irq
 
 #define FORCEINLINE __forceinline
-
-
-#elif defined(_WIN32) || defined(WIN32)
-
-#define PLATFORM_WINDOWS
-#define ADS_PACKED
-#define GNU_PACKED
-#define __section(x)
-#define __irq
-
-#define FORCEINLINE __forceinline
-
 
 #elif defined(__GNUC__)
 
@@ -183,11 +170,11 @@ struct GPIO_FLAG
 #define STANDARD_USART_MIN_BAUDRATE  75
 #define STANDARD_USART_MAX_BAUDRATE  2304000
 
-// Defines a type representing both a port type or "transport" and a port number
+// COM_HANDLE Defines a type representing both a port type or "transport" and a port number
 // The COM_HANDLE is a multi bit field value with the following bit fields usage
 //    |--------+--------+--------+--------|
 //    |33222222|22221111|111111  |        |
-//    |10987654|32109876|54321098|76543210|
+//    |10987654|32109876|54321098|76543210| bit position
 //    |--------+--------+--------+--------|
 //    |00000000|00000000|TTTTTTTT|pppppppp| ( transport != USB_TRANSPORT )
 //    |--------+--------+--------+--------|
@@ -203,12 +190,20 @@ struct GPIO_FLAG
 //                LCD_TRANSPORT => 5
 //        FLASH_WRITE_TRANSPORT => 6
 //          MESSAGING_TRANSPORT => 7
+//            GENERIC_TRANSPORT => 8
 //    p => port instance number 
-//        Port instances in the handle are 1 based. (e.g. p == 0 is invalid )
+//        Port instances in the handle are 1 based. (e.g. p == 0 is invalid except when T == 0 )
 //    c -> Controller instance number ( USB_TRANSPORT only )
 //
-//    NULL_PORT => T==0 && p == 0 
-// 
+//    NULL_PORT => T==0 && p == 0
+//
+// GENERIC_TRANSPORT is any custom port that isn't one of the above, they 
+// are implemented for the DebugPort_xxxx APIs and the port number is 
+// an index into a const global table of port interfaces (structure of
+// function pointers) These allow custom extensions to the normal transports
+// without needing to continue defining additional transport types and modifying
+// switch on transport code. To keep compatibility high and code churn low, the
+// previous legacy transports remain though they should be considered deprecated.
 typedef INT32 COM_HANDLE;
 
 #define TRANSPORT_SHIFT             8
@@ -218,10 +213,11 @@ typedef INT32 COM_HANDLE;
 // Macro to extract the transport type from a COM_HANDLE
 #define ExtractTransport(x)         ((UINT32)(x) & TRANSPORT_MASK)
 
-// Macro to extract wellknown system event flag ids from a COM_HANDLE
+// Macro to extract well-known system event flag ids from a COM_HANDLE
 #define ExtractEventFromTransport(x) (ExtractTransport(x) == USART_TRANSPORT     ? SYSTEM_EVENT_FLAG_COM_IN: \
                                       ExtractTransport(x) == USB_TRANSPORT       ? SYSTEM_EVENT_FLAG_USB_IN: \
                                       ExtractTransport(x) == SOCKET_TRANSPORT    ? SYSTEM_EVENT_FLAG_SOCKET: \
+                                      ExtractTransport(x) == GENERIC_TRANSPORT   ? SYSTEM_EVENT_FLAG_GENERIC_PORT: \
                                       ExtractTransport(x) == DEBUG_TRANSPORT     ? SYSTEM_EVENT_FLAG_DEBUGGER_ACTIVITY: \
                                       ExtractTransport(x) == MESSAGING_TRANSPORT ? SYSTEM_EVENT_FLAG_MESSAGING_ACTIVITY: \
                                       0) \
@@ -248,11 +244,14 @@ typedef INT32 COM_HANDLE;
 
 #define MESSAGING_TRANSPORT         (7 << TRANSPORT_SHIFT)
 
+#define GENERIC_TRANSPORT           (8 << TRANSPORT_SHIFT)
+
 #define COM_IsSerial(x)             (((x) & TRANSPORT_MASK) == USART_TRANSPORT)
 #define COM_IsUsb(x)                (((x) & TRANSPORT_MASK) == USB_TRANSPORT)
 #define COM_IsSock(x)               (((x) & TRANSPORT_MASK) == SOCKET_TRANSPORT)
 #define COM_IsDebug(x)              (((x) & TRANSPORT_MASK) == DEBUG_TRANSPORT)
 #define COM_IsMessaging(x)          (((x) & TRANSPORT_MASK) == MESSAGING_TRANSPORT)
+#define COM_IsGeneric(x)            (((x) & TRANSPORT_MASK) == GENERIC_TRANSPORT)
 
 // Extracts a USART port number from a USART COM_HANDLE
 #define ConvertCOM_ComPort(x)       (((x) & PORT_NUMBER_MASK) - 1)
@@ -272,8 +271,11 @@ typedef INT32 COM_HANDLE;
 // Extracts a Debug transport port id from a DEBUG_TRANSPORT COM_HANDLE
 #define ConvertCOM_DebugPort(x)     (((x) & PORT_NUMBER_MASK) - 1)
 
-// Extracts a messaging transport port id from a MESSAGING_TRASNPORT COM_HANDLE
+// Extracts a messaging transport port id from a MESSAGING_TRANSPORT COM_HANDLE
 #define ConvertCOM_MessagingPort(x) (((x) & PORT_NUMBER_MASK) - 1)
+
+// Extracts a generic transport port id from a GENERIC_TRANSPORT COM_HANDLE
+#define ConvertCOM_GenericPort(x) (((x) & PORT_NUMBER_MASK) - 1)
 
 // Creates a COM_HANDLE value for a platform specific USART port number
 #define ConvertCOM_ComHandle(x)      ((COM_HANDLE)((x) + USART_TRANSPORT     + 1))
@@ -289,10 +291,11 @@ typedef INT32 COM_HANDLE;
 // Creates a COM_HANDLE value for a platform specific port number
 #define ConvertCOM_DebugHandle(x)    ((COM_HANDLE)((x) + DEBUG_TRANSPORT     + 1))
 
-// Creates a COM_HANDLE value for a platform specific MESsAGING port number
+// Creates a COM_HANDLE value for a platform specific MESSAGING port number
 #define ConvertCOM_MessagingHandle(x)((COM_HANDLE)((x) + MESSAGING_TRANSPORT + 1))
 
-//--//
+// Creates a COM_HANDLE value for a platform specific GENERIC port number
+#define ConvertCOM_GenericHandle(x)((COM_HANDLE)((x) + GENERIC_TRANSPORT + 1))
 
 typedef UINT32 FLASH_WORD;
 
@@ -382,10 +385,17 @@ struct HAL_SYSTEM_CONFIG
 
     COM_HANDLE               DebuggerPorts[c_MaxDebuggers];
     COM_HANDLE               MessagingPorts[c_MaxMessaging];
-
+    // communication channel for debug messages in the debugger
+    // which may be VS, MFDEPLOY, etc... Accessed via debug_printf
+    // in the HAL/PAL and System.Diagnostics.Debug.Print() in managed
+    // applications
     COM_HANDLE               DebugTextPort;
 
     UINT32                   USART_DefaultBaudRate;
+    // internal HAL/PAL debug/tracing channel, this is separate
+    // to allow tracing messages in the driver that implements
+    // the transport for the Debugger and DebugTextPort. This
+    // channel is accessed via hal_printf() in the HAL/PAL
     COM_HANDLE               stdio;
 
     HAL_SYSTEM_MEMORY_CONFIG RAM1;
@@ -638,7 +648,7 @@ void ApplicationEntryPoint();
 #define SYSTEM_EVENT_FLAG_TIMER1                    0x00000020
 #define SYSTEM_EVENT_FLAG_TIMER2                    0x00000040
 #define SYSTEM_EVENT_FLAG_BUTTON                    0x00000080
-#define SYSTEM_EVENT_FLAG_UNUSED_0x00000100         0x00000100
+#define SYSTEM_EVENT_FLAG_GENERIC_PORT              0x00000100
 #define SYSTEM_EVENT_FLAG_UNUSED_0x00000200         0x00000200
 #define SYSTEM_EVENT_FLAG_UNUSED_0x00000400         0x00000400
 #define SYSTEM_EVENT_FLAG_NETWORK                   0x00000800
@@ -696,7 +706,7 @@ void IDelayLoop( int iterations );
 void IDelayLoop2( int iterations );
 }
 
-// this costs a minimun of 12 cycles when called from 0 wait-state RAM, 34 cycles when
+// this costs a minimum of 12 cycles when called from 0 wait-state RAM, 34 cycles when
 // called from 2 wait-state FLASH
 #define CYCLE_DELAY_LOOP(d) IDelayLoop(d)
 
@@ -712,15 +722,15 @@ void IDelayLoop2( int iterations );
 
 //--//
 
-#if !defined(PLATFORM_WINDOWS)
-extern "C" INT32 InterlockedIncrement( volatile INT32* lpAddend );
-extern "C" INT32 InterlockedDecrement( volatile INT32* lpAddend );
-extern "C" INT32 InterlockedExchange( volatile INT32* Target, INT32 Value );
-extern "C" INT32 InterlockedCompareExchange( INT32* Destination, INT32 Exchange, INT32 Comperand );
-extern "C" INT32 InterlockedExchangeAdd( volatile INT32* Addend, INT32 Value );
-extern "C" INT32 InterlockedOr( volatile INT32* Destination, INT32 Flag );
-extern "C" INT32 InterlockedAnd( volatile INT32* Destination, INT32 Flag );
-#endif // PLATFORM_WINDOWS
+#if !defined(_WIN32)
+extern "C" INT32 InterlockedIncrement( volatile LONG* lpAddend );
+extern "C" INT32 InterlockedDecrement( volatile LONG* lpAddend );
+extern "C" INT32 InterlockedExchange( volatile LONG* Target, INT32 Value );
+extern "C" INT32 InterlockedCompareExchange( LONG* Destination, LONG Exchange, LONG Comperand );
+extern "C" INT32 InterlockedExchangeAdd( volatile LONG* Addend, LONG Value );
+extern "C" INT32 InterlockedOr( volatile LONG* Destination, LONG Flag );
+extern "C" INT32 InterlockedAnd( volatile LONG* Destination, LONG Flag );
+#endif
 
 struct OpaqueQueueNode
 {
@@ -1429,8 +1439,6 @@ extern const ConfigurationSector g_ConfigurationSector;
 #endif 
 //--//
 
-#if defined(PLATFORM_ARM) || defined(PLATFORM_BLACKFIN) || defined(PLATFORM_WINDOWS) ||defined(PLATFORM_SH)
-
 #if !defined(BUILD_RTM)
 
 #define DEBUG_TRACE0(t, s)                              if(((t) & DEBUG_TRACE) != 0) hal_printf( (s)                                               )
@@ -1458,8 +1466,6 @@ extern const ConfigurationSector g_ConfigurationSector;
 #define DEBUG_TRACE9(t, s, p1,p2,p3,p4,p5,p6,p7,p8,p9)
 
 #endif  // defined(_DEBUG)
-
-#endif
 
 //--//
 

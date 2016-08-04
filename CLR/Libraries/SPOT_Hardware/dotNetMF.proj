@@ -12,7 +12,7 @@
     <ManifestFile>SPOT_Hardware.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Hardware</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_CLR" Guid="{0403BA1B-73CE-45F8-8C65-0BBA5E1F7176}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_CLR" Guid="{0403BA1B-73CE-45F8-8C65-0BBA5E1F7176}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

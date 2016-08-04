@@ -9,7 +9,6 @@
         <IsClrProject>True</IsClrProject>
         <InteropFeatures />
         <ExtraAssemblies />
-        <ProjectPath>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\TinyCLR\TinyCLR.proj</ProjectPath>
         <MFSettingsFile>$(SPOCLIENT)\Solutions\STM32F4DISCOVERY\STM32F4DISCOVERY.settings</MFSettingsFile>
         <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
         <reducesize>false</reducesize>
@@ -26,8 +25,8 @@
         <ImageLocation Condition="'$(MEMORY)'=='FLASH'">\ER_FLASH</ImageLocation>
         <LINK_FLAGS Condition="'$(COMPILER_TOOL)'!='GCC'">$(LINK_FLAGS) --verbose $(SWTC)keep *(.init_array)</LINK_FLAGS>
         <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
-        <MMP_DAT_CreateDatabaseFile>$(BIN_DIR)\tinyclr.dat</MMP_DAT_CreateDatabaseFile>
-        <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_tinyclr_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+        <MMP_DAT_CreateDatabaseFile>$(BIN_DIR)\$(AssemblyName).dat</MMP_DAT_CreateDatabaseFile>
+        <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_$(AssemblyName)_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
         <CompressImageFlashSym>EntryPoint</CompressImageFlashSym>
         <CompressImageDatSym>TinyClr_Dat_Start</CompressImageDatSym>
         <CompressImageCfgSym>g_ConfigurationSector</CompressImageCfgSym>
@@ -35,18 +34,18 @@
         <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">false</NewlibNano>
     </PropertyGroup>
     <ItemGroup>
-        <CompressImageSymdef Include="$(BIN_DIR)\TinyCLR.symdefs" />
-        <CompressImageFlash Include="$(BIN_DIR)\TinyCLR.bin\ER_FLASH" />
-        <!--<CompressImageDat Include="$(BIN_DIR)\TinyCLR.bin\ER_DAT" />-->
-        <CompressImageCfg Include="$(BIN_DIR)\TinyCLR.bin\ER_CONFIG" />
+        <CompressImageSymdef Include="$(BIN_DIR)\$(AssemblyName).symdefs" />
+        <CompressImageFlash Include="$(BIN_DIR)\$(AssemblyName).bin\ER_FLASH" />
+        <!--<CompressImageDat Include="$(BIN_DIR)\$(AssemblyName).bin\ER_DAT" />-->
+        <CompressImageCfg Include="$(BIN_DIR)\$(AssemblyName).bin\ER_CONFIG" />
     </ItemGroup>
     <ItemGroup>
         <IncludePaths Include="DeviceCode\PAL" />
         <Compile Include="allocator.cpp" />
         <Compile Include="tinyclr.cpp" />
         <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
-        <ObjFiles Include="$(OBJ_DIR)\tinyclr_dat.$(OBJ_EXT)" />
-        <ScatterFileReferences Include="$(SRC_DIR)\scatterfile_tinyclr_$(COMPILER_TOOL).$(SCATTER_EXT)" />
+        <ObjFiles Include="$(OBJ_DIR)\$(AssemblyName)_dat.$(OBJ_EXT)" />
+        <ScatterFileReferences Include="$(SRC_DIR)\scatterfile_$(AssemblyName)_$(COMPILER_TOOL).$(SCATTER_EXT)" />
     </ItemGroup>
     <Import Condition="'$(CORE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
     <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
@@ -65,6 +64,10 @@
     <Import Condition="'$(SERIALIZATION_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Serialization.featureproj" />
     <Import Condition="'$(WINDOWS_DEVICES_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Windows_Devices.featureproj" />
     <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
+    <ItemGroup>
+        <DriverLibs Include="CortexMx_ItmPort.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\ItmPort\dotNetMF.proj" />
+    </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\stubs\dotnetmf.proj" />
