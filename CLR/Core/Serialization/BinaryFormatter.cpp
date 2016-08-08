@@ -1635,7 +1635,7 @@ HRESULT CLR_RT_BinaryFormatter::State::AdvanceToTheNextElement()
             {
                 TINYCLR_CHECK_HRESULT(m_parent->ReadBits( val, bits ));
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
                 memcpy( ptr, &val, size );
 #else
                 memcpy( ptr, ((unsigned char*)&val)+(sizeof(val)-size), size );

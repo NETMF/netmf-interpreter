@@ -8,7 +8,7 @@
 #include <CLR_Defines.h>
 
 #ifdef _WIN32
-#define LITTLE_ENDIAN
+#define NETMF_TARGET_LITTLE_ENDIAN
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@
 #endif
 
 #if !defined(PLATFORM_WINDOWS_EMULATOR) && !defined(PLATFORM_WINCE)
-#if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_LITTLE_ENDIAN) && !defined(NETMF_TARGET_BIG_ENDIAN)
 #error ENDIANNESS NOT DEFINED
 #endif
 #endif

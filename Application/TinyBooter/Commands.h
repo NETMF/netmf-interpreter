@@ -147,7 +147,7 @@ public:
     bool Monitor_SignatureKeyUpdate( WP_Message* msg );
     bool EnumerateAndLaunch        (                 );
 
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
 public:     
     void    SwapDebuggingValue ( UINT8* &msg, UINT32 size                          );
     void    SwapEndian         ( WP_Message* msg, void* ptr, int size, bool fReply );

@@ -175,7 +175,7 @@ public:
     static bool Messaging_Send__Reply         ( WP_Message* msg, void* owner );
     static bool Messaging_Reply               ( WP_Message* msg, void* owner );
     static bool Messaging_Reply__Reply        ( WP_Message* msg, void* owner );
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
 public:     
     static void    SwapDebuggingValue ( UINT8* &msg, UINT32 size                          );
     static void    SwapEndian         ( WP_Message* msg, void* ptr, int size, bool fReply );

@@ -320,7 +320,7 @@ static bool DeserializeIntrinsicType(CLR_RT_HeapBlock* pObj, CLR_UINT8* serData,
     
     while(size--)
     {
-#ifndef BIG_ENDIAN
+#ifndef NETMF_TARGET_BIG_ENDIAN
         tmp[i++ ] = serData[serOffset++];
 #else
         tmp[size] = serData[serOffset++];
@@ -379,7 +379,7 @@ static bool DeserializeObject(CLR_RT_HeapBlock* pObj, CLR_UINT8* serData, CLR_IN
                         
                         while(size--)
                         {
-#ifndef BIG_ENDIAN
+#ifndef NETMF_TARGET_BIG_ENDIAN
                             pData[i++ ] = serData[serOffset++];
 #else
                             pData[size] = serData[serOffset++];
@@ -438,7 +438,7 @@ static bool SerializeIntrinsicType(CLR_DataType type, CLR_UINT8* data, CLR_UINT8
 
         while(size--)
         {
-#ifndef BIG_ENDIAN
+#ifndef NETMF_TARGET_BIG_ENDIAN
             serData[serOffset++] = *tmp++;
 #else
             serData[serOffset++] = tmp[size];

@@ -3067,7 +3067,7 @@ void CLR_RT_ExecutionEngine::StopOnBreakpoint( CLR_DBG_Commands::Debugging_Execu
 
             if(m_breakpointsActiveNum == 1)
             {
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
                 static CLR_DBG_Commands::Debugging_Execution_BreakpointDef s_breakpoint;
                 CLR_UINT8* data;
 

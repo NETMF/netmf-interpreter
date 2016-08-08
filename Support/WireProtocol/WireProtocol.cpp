@@ -57,11 +57,11 @@ void WP_Message::PrepareRequest( UINT32 cmd, UINT32 flags, UINT32 payloadSize, U
     // The CRC for the header is computed setting the CRC field to zero and then running the CRC algorithm.
     //
     m_header.m_crcHeader = 0;
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     SwapEndian();
 #endif
     m_header.m_crcHeader = SUPPORT_ComputeCRC( (UINT8*)&m_header, sizeof(m_header), 0 );
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     m_header.m_crcHeader = ::SwapEndian( m_header.m_crcHeader );
 #endif
 
@@ -84,11 +84,11 @@ void WP_Message::PrepareReply( const WP_Packet& req, UINT32 flags, UINT32 payloa
     // The CRC for the header is computed setting the CRC field to zero and then running the CRC algorithm.
     //
     m_header.m_crcHeader = 0;
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     SwapEndian();
 #endif
     m_header.m_crcHeader = SUPPORT_ComputeCRC( (UINT8*)&m_header, sizeof(m_header), 0 );
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     m_header.m_crcHeader = ::SwapEndian( m_header.m_crcHeader );
 #endif
 }
@@ -113,7 +113,7 @@ bool WP_Message::VerifyHeader()
 {    
     bool   fRes;
     
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     UINT32 crc = m_header.m_crcHeader;
 #else
     UINT32 crc = ::SwapEndian( m_header.m_crcHeader );
@@ -226,7 +226,7 @@ bool WP_Message::Process()
                 bool fBadPacket=true;
                 if( VerifyHeader() )
                 {
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
                     SwapEndian();
 #endif
                     TRACE( TRACE_HEADERS, "RXMSG: 0x%08X, 0x%08X, 0x%08X\n", m_header.m_cmd, m_header.m_flags, m_header.m_size );
@@ -320,7 +320,7 @@ bool WP_Message::Process()
     }
 }
 
-#if defined (BIG_ENDIAN)
+#if defined (NETMF_TARGET_BIG_ENDIAN)
 void WP_Message::SwapEndian()
 {
     m_header.m_crcHeader = ::SwapEndian( m_header.m_crcHeader     );

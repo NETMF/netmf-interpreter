@@ -165,7 +165,7 @@ HRESULT CLR_RT_HeapBlock_MemoryStream::ReadBits( CLR_UINT64& res, CLR_UINT32 bit
 
     CLR_UINT32* ptr = (CLR_UINT32*)&res;
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     if(bits > 32) { TINYCLR_CHECK_HRESULT(ReadBits( ptr[ 1 ], bits - 32 )); bits = 32; }
     else          {                                 ptr[ 1 ] = 0;                      }
 
