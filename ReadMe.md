@@ -34,9 +34,9 @@ The build infrastructure for the next generation of NETMF will build off of the
 [Common Project System](https://github.com/Microsoft/VSProjectSystem) (CPS) for both C++ and
 .NET code bases. With the upcoming Visual Studio "15" the
 [Roslyn project System](https://github.com/dotnet/roslyn-project-system) is scheduled to
-replace the previous project system. The Roslyn system is based on CPS so both managed and
+replace the previous managed code project system. The Roslyn system is based on CPS so both managed and
 native code are built from a common infrastructure and extensibility model. This allows the
-NETMF build support to eliminate a large part of it's onw proprietary build system, including
+NETMF build support to eliminate a large part of it's own proprietary build system, including
 the replacement of "dotnetmf.proj" files with a sensibly named project that can actually load
 into Visual Studio.
 
