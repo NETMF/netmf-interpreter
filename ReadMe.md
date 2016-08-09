@@ -1,5 +1,5 @@
 # About this branch
-This branch is new clean branch for the development work on the next major release of the 
+This branch is a new clean branch for the development work on the next major release of the 
 .NET Micro Framework. The next version of NETMF is starting with a clean slate and building
 up from there with a completely new build infrastrucutre.
 
