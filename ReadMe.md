@@ -24,7 +24,7 @@ one piece at a time, starting with the boot loader and working up from there to 
     and enhancement of the core framework as well as help users better understand the trade-offs that were made and
     why they were made.
 
-See the [Docs](Docs\Index.md) for more details and to monitor progress of formalizing the plans for the next
+See the [Docs](Docs/Index.md) for more details and to monitor progress of formalizing the plans for the next
 generation of the .NET Micro Framework.
 
 ## License
