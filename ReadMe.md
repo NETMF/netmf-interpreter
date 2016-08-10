@@ -15,7 +15,7 @@ one piece at a time, starting with the boot loader and working up from there to 
 * Easier to manage components used to create a working NETMF runtime
 * Greater portability of apps from NETMF to UWP
   * This includes runtime support such as Generics and Base class library support.
-    * It would be ideal if NETMF was either fully .NET Standard library compliant or at least compliant
+    * It would be ideal if NETMF was either fully [.NET Standard library](https://docs.microsoft.com/en-us/dotnet/articles/standard/library) compliant or at least compliant
       with a strict subset of the Standard library.
 * Everything is documented directly in the repository.
   * While SDK API documentation will still be generated from code and conceptual topic content the documentation
