@@ -31,7 +31,7 @@
         <CompressImageDatSym>TinyClr_Dat_Start</CompressImageDatSym>
         <CompressImageCfgSym>g_ConfigurationSector</CompressImageCfgSym>
         <!-- newlib-nano does not support long-long and long-double formatting, use standard newlib instead -->
-        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">true</NewlibNano>
+        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">false</NewlibNano>
     </PropertyGroup>
     <ItemGroup>
         <CompressImageSymdef Include="$(BIN_DIR)\$(AssemblyName).symdefs" />

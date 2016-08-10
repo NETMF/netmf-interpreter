@@ -89,7 +89,7 @@
             <FileMapping Name="*" Options="(.constdata*)" />
             <FileMapping Name="*" Options="(.conststring*)" />
             <FileMapping Name="*" Options="(.glue*)" />
-	        <FileMapping Name="*" Options="(tinyclr_metadata)" />
+	    <FileMapping Name="*" Options="(tinyclr_metadata)" />
             <Include File="%SPOCLIENT%\Solutions\STM32F4DISCOVERY\scatterfile_gcc_missing_symbols.xml"/>
         </ExecRegion>
 

@@ -52,7 +52,7 @@
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Instrumented'" >$(CC_CPP_TARGETTYPE_FLAGS) -O0</CC_CPP_TARGETTYPE_FLAGS>
     <CC_CPP_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Release'"      >$(CC_CPP_TARGETTYPE_FLAGS) -Os</CC_CPP_TARGETTYPE_FLAGS>
 
-    <CC_FLAGS>$(CC_FLAGS)-std=c11 -xc</CC_FLAGS>
+    <CC_FLAGS>$(CC_FLAGS)-xc</CC_FLAGS>
     
     <ARCH_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='RTM'"          >-O3</ARCH_TARGETTYPE_FLAGS>
     <ARCH_TARGETTYPE_FLAGS Condition="'$(FLAVOR)'=='Debug'"        >-Og -femit-class-debug-always -g3 -ggdb</ARCH_TARGETTYPE_FLAGS>
@@ -67,7 +67,7 @@
     NETMF already builds under two other compilers, so warnings from
     yet another compiler aren't really that valuable anyway.
     -->
-    <CPP_FLAGS>$(CPP_FLAGS)-std=c++11 -xc++ -w -fcheck-new -fabi-version=0 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics </CPP_FLAGS>
+    <CPP_FLAGS>$(CPP_FLAGS)-xc++ -w -fcheck-new -fabi-version=0 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics </CPP_FLAGS>
 
     <FLOATING_POINT_FLAG Condition="('$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true' and '$(DEVICE_TYPE)' == 'cortex-m4') or '$(INSTRUCTION_SET)'=='thumb2fp'">-mfloat-abi=hard -mfpu=fpv4-sp-d16</FLOATING_POINT_FLAG>
     <FLOATING_POINT_FLAG Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'=='true'">-mfloat-abi=softfp -mfpu=fpv4-sp-d16</FLOATING_POINT_FLAG>
