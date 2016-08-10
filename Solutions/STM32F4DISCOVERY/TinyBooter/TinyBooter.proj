@@ -23,6 +23,8 @@
         <ExtraTargets>$(ExtraTargets);CompressBin</ExtraTargets>
         <ScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</ScatterFileDefinition>
         <EXEScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+        <!-- newlib-nano does not support long-long and long-double formatting, use standard newlib instead -->
+        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">true</NewlibNano>  
     </PropertyGroup>
     <ItemGroup />
     <ItemGroup>
