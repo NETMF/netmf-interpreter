@@ -5,6 +5,10 @@ of contents not every detail is linked from here, rather this covers the top lay
 containing further details (and potentially their own table of contents to more details)
 
 1. [Coding standards]()
+  2. Build Sysem
+  3. Common source code
+  4. Managed Code
+  4. Native Code
 2. [Architecture]() ( Overview of the architecture of the Micro Framework )
 3. [Build System]() ( Guide to how the NETMF build system works )
 4. [Porting .NET Micro Framework to new hardware]() ( guide to porting to new hardware )
