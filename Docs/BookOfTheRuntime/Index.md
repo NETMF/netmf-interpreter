@@ -8,8 +8,8 @@ of the framework, paying special attention to those factors that no longer exist
 1. Major constraints on the original design
 2. Tools and File Formats
     1. [Metadata Processor](MetadataProcessor.md)
-        1. [Commands](MetadataProcessor.md#Command-Line-Options)
-        2. [Parsing](MetadataProcessor.md#Parsing)
+        1. [Commands](MetadataProcessor.md#command-line-options)
+        2. [Parsing](MetadataProcessor.md#parsing)
     2. [Common Data types and enumerations](Common-PE-Types-and-Enumerations.md)
     3. [PE File Format](PeFileFormat.md)
         1. [CLR_RECORD_ASSEMBLY](AssemblyHeader.md)
