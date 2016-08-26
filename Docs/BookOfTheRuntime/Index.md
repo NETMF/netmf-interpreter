@@ -5,7 +5,7 @@ different in later releases. It covers some historical constraints and factors i
 of the framework, paying special attention to those factors that no longer exist.
 
 ## Table of Contents
-1. Major constraints on the original design
+1. [Major constraints on the original design](OriginalConstraints.md)
 2. Tools and File Formats
     1. [Metadata Processor](MetadataProcessor.md)
         1. [Commands](MetadataProcessor.md#command-line-options)
