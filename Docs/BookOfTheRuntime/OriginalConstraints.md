@@ -8,8 +8,9 @@ target a product different from what ultimately shipped and carried that into sh
 the runtime as a platform.
 
 The original product was supposed to have 512KB of ROM and 32KB of serial EEPROM.
-This meant that fixing any problem in the code couldn’t be done in place. Every
+This meant that fixing any problem in the code couldnâ€™t be done in place. Every
 single function call had to go through an explicit indirection table because:
+
 1. The HAL was written in C, which meant no classes and thus no virtual tables.
 2. The compiler had to generate code compatible across position-dependent and  
 position-independent blocks, leading to virtual tables based on relative offsets,  
@@ -21,6 +22,7 @@ rebuilt at runtime. This led to lots of special casing, which translated into in
 code coverage that shows up even today as bugs under new configurations.
 
 Additional constraints based on the micro-controller space at the time included:
+
 1. Limited or no C++ compiler language support
     1. Little or no support for exceptions
     2. Standard C++ Runtime Libraries not optimized for embedded use increased bloat
