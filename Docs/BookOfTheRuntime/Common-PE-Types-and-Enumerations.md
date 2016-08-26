@@ -70,3 +70,33 @@ Major    | unsigned 16 bit integer | Major component of the common version quad
 Minor    | unsigned 16 bit integer | Minor component of the common version quad
 Build    | unsigned 16 bit integer | Build component of the common version quad
 Revision | unsigned 16 bit integer | Revision component of the common version quad
+
+## DataType
+The `DataType` enumeration corresponds to the ECMA ELEMENT_TYPE_xxxx, however the
+actual numeric values are not the same as the interpreter uses only a reduced
+sub-set of the standard values.
+
+Name     | Description
+---------|------------
+Void     | 0 byte void value
+Boolean  | 1 byte boolean value
+I1       | 8 bit signed integer
+U1       | 8 bit unsigned integer
+CHAR     | 16 bit UTF-16 character
+I2       | 16 bit signed integer
+U2       | 16 bit unsigned integer
+I4       | 32 bit signed integer
+U4       | 32 bit unsigned integer
+R4       | 32 bit IEEE-754 floating point value
+I8       | 64 bit signed integer
+U8       | 64 bit unsigned integer
+R8       | 64 bit IEEE-754 floating point value
+DateTime | 8 bytes - Shortcut for System.DateTime
+TimeSpan | 8 bytes - Shortcut for System.TimeSpan
+String   | 4 bytes - short cut for reference to System.String
+Object   | 4 bytes - Shortcut for reference to System.Object
+Class    | CLASS `<class Token>`
+ValueType| VALUETYPE `<class Token>`
+SZArray  | Shortcut for single dimension zero lower bound array SZARRAY `<type>`
+ByRef    | BYREF `<type>`
+

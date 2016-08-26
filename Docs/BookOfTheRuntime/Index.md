@@ -15,8 +15,10 @@ of the framework, paying special attention to those factors that no longer exist
         1. [CLR_RECORD_ASSEMBLY](AssemblyHeader.md)
         2. [CLR_RECORD_ASSEMBLYREF](AssemblyRefTableEntry.md)
         3. [CLR_RECORD_TYPEREF](TypeRefTableEntry.md)
+        4. [CLR_RECORD_TYPEDEF](TypeDefTableEntry.md)
         4. [CLR_RECORD_FILEDREF](FieldRefTableEntry.md)
-        5. CLR_RECORD_METHODREF
+        5. [CLR_RECORD_METHODREF](MethodRefTableEntry.md)
+        6. [CLR_RECORD_METHODDEF](MethodDefTableEntry.md)
         6. CLR_RECORD_ATTRIBUTE
         7. CLR_RECORD_TYPESPEC
         8. CLR_RECORD_EH
