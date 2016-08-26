@@ -19,10 +19,10 @@ of the framework, paying special attention to those factors that no longer exist
         4. [CLR_RECORD_FILEDREF](FieldRefTableEntry.md)
         5. [CLR_RECORD_METHODREF](MethodRefTableEntry.md)
         6. [CLR_RECORD_METHODDEF](MethodDefTableEntry.md)
-        6. CLR_RECORD_ATTRIBUTE
-        7. CLR_RECORD_TYPESPEC
-        8. CLR_RECORD_EH
-        9. CLR_RECORD_RESOURCE
+        6. [CLR_RECORD_ATTRIBUTE](AttributeTableEntry.md)
+        7. [CLR_RECORD_TYPESPEC](TypeSpecTableEntry.md)
+        8. [CLR_RECORD_EH](ExceptionHandlerTableEntry.md)
+        9. [CLR_RECORD_RESOURCE](ResourcesTableEntry.md)
 3. Internal Design of the Interpreter
     1. Heaps and the Heap data structures
         1. Uses of the heaps
