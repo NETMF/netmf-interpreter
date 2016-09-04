@@ -39,8 +39,8 @@
         <RequiredProjects Include="$(SPOCLIENT)\Application\TinyBooter\TinyBooterLib.proj" />
     </ItemGroup>
     <ItemGroup>
-        <DriverLibs Include="Crypto.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
+        <DriverLibs Include="Crypto_stub.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Crypto\stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="GlobalLock_hal_Cortex.$(LIB_EXT)" />
