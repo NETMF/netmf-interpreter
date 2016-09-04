@@ -48,7 +48,7 @@
 
 /* Define platform endianness (might already be defined) */
 #ifndef BYTE_ORDER
-#define BYTE_ORDER LITTLE_ENDIAN
+#define BYTE_ORDER NETMF_TARGET_LITTLE_ENDIAN
 #endif /* BYTE_ORDER */
 
 /* Define generic types used in lwIP */
