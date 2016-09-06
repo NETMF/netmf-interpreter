@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/NETMF/netmf-interpreter](https://badges.gitter.im/NETMF/netmf-interpreter.svg)](https://gitter.im/NETMF/netmf-interpreter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build status](http://netmfbuildstatus.cloudapp.net/BuildStatus.svc/Badge)](http://netmfbuildstatus.cloudapp.net/BuildStatus.svc/Report)
+![Build status](https://telliam.visualstudio.com/_apis/public/build/definitions/caf56893-c82e-4675-8737-fa3d32a60a24/5/badge)
 
 Welcome to the .NET Micro Framework interpreter GitHub repository. 
 
