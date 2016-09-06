@@ -1,5 +1,5 @@
 # TypeDefTableEntry (CLR_RECORD_TYPEDEF)
-The MethodRef table contains entries with the following structure
+The MethodRef table contains entries with the following structure:
 
 | Name          | Type                 | Description  
 |---------------|----------------------|------------  
@@ -18,11 +18,12 @@ The MethodRef table contains entries with the following structure
 | Flags         | [TypeDefFlags](#TypeDefFLags) | Flags defining intrinsic attributes and access modifiers for the type
 
 ##### TypeDefFlags
-The TypeDefFfags enumeration provides a set of flag values for various instrinsic attributes 
-and accessibility traits of a type definition. 
+The TypeDefFlags enumeration provides a set of flag values for various instrinsic attributes 
+and accessibility traits of a type definition.
 
-| Name               | Value  | Description
----------------------|----------------------
+
+| Name               | Value  | Description  
+|--------------------|--------|------------
 |               None | 0      | No special attributes or semantics
 |          ScopeMask | 0x0007 | Mask to extract the accesibility scope values
 |          NotPublic | 0x0000 | Class is not public scope.
