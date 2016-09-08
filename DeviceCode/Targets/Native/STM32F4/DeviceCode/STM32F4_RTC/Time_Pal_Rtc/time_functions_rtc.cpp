@@ -24,11 +24,32 @@ HRESULT Time_Initialize()
     RTC_Initialize();
     HRESULT res = g_TimeDriver.Initialize();
     INT64 time = RTC_GetTime();
+    
+#ifndef STM32F4_RTC_ENABLE
+
     if (time != 0) {
         g_TimeDriver.SetUtcTime(time, FALSE);
         INT32 offset = RTC_GetOffset();
         g_TimeDriver.SetTimeZoneOffset(offset);
     }
+    
+#else
+
+    if (time >= 0x10000000) 
+    {
+        // RCT value seems to be valid 
+        // set time driver value with time from RCT
+        g_TimeDriver.SetUtcTime(time, FALSE);
+    }
+    else
+    {
+        // invalid time from RCT probably because it hasn't been initialized yet
+        // set RTC with time driver value 
+        RTC_SetTime(g_TimeDriver.GetUtcTime());
+    }
+
+#endif
+   
     return res;
 }
 
@@ -41,7 +62,9 @@ INT64 Time_SetUtcTime( INT64 UtcTime, bool calibrate )
 INT32 Time_SetTimeZoneOffset(INT32 offset)
 {
     // offset in minutes
+#ifndef STM32F4_RTC_ENABLE
     RTC_SetOffset(offset);
+#endif    
     return g_TimeDriver.SetTimeZoneOffset(offset);
 }
 
@@ -55,12 +78,21 @@ HRESULT Time_Uninitialize()
 
 INT64 Time_GetUtcTime()
 {
+#ifndef STM32F4_RTC_ENABLE
     return g_TimeDriver.GetUtcTime();
+#else
+    return RTC_GetTime();
+#endif    
 }
 
 INT64 Time_GetLocalTime()
 {
+#ifndef STM32F4_RTC_ENABLE
     return g_TimeDriver.GetLocalTime();
+#else
+    // GetTimeZoneOffset() returns the offset in minutes so we need to convert it back to TIMEUNIT_TO_MINUTES
+    return RTC_GetTime() + (g_TimeDriver.GetTimeZoneOffset() * 600000000); 
+#endif    
 }
 
 INT32 Time_GetTimeZoneOffset()
@@ -137,6 +169,3 @@ LPCSTR Time_CurrentDateTimeToString()
 {
     return g_TimeDriver.DateTimeToString(Time_GetLocalTime());
 }
-
-
-

@@ -10,9 +10,10 @@
 BOOL    RTC_Initialize  ( );
 INT64   RTC_GetTime     ( );
 void    RTC_SetTime     ( INT64 time );
+#ifndef STM32F4_RTC_ENABLE
 INT32   RTC_GetOffset   ( );
 void    RTC_SetOffset   ( INT32 offset );
-
+#endif
 //--//
 
 #endif // _DRIVERS_RTC_DECL_H_

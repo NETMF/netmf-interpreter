@@ -19,6 +19,8 @@
 #include "..\stm32f2xx.h"
 #endif
 
+#include "..\..\..\..\..\pal\time\Time_driver.h"
+
 #ifndef FLASH
 #define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
 #endif
@@ -276,8 +278,9 @@ void __section("SectionForBootstrapOperations") STM32F4_BootstrapCode()
     // remove Flash remap to Boot area to avoid problems with Monitor_Execute
     SYSCFG->MEMRMP = 1; // map System memory to Boot area
     
-#ifdef STM32F4_Enable_RTC
-    STM32F4_RTC_Initialize(); // enable RTC
+#ifdef STM32F4_RTC_ENABLE
+    Time_Uninitialize();
+    Time_Initialize(); 
 #endif
 
 }

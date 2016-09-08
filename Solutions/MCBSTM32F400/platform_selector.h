@@ -66,6 +66,12 @@
 #define SLOW_CLOCKS_TEN_MHZ_GCD         1000000    // GCD(SLOW_CLOCKS_PER_SECOND, 10M)
 #define SLOW_CLOCKS_MILLISECOND_GCD     1000       // GCD(SLOW_CLOCKS_PER_SECOND, 1k)
 
+// RTC clock selection, required when solution has USE_RTC property set to TRUE
+//#define STM32F4_RTC_ENABLE              // STM32F4 RTC enabled
+//#define STM32F4_RTC_LSE                 // STM32F4 RTC clocked by external low power oscilator
+//#define STM32F4_RTC_LSE_BYPASS          // STM32F4 RTC bypass LSE oscilator
+//#define STM32F4_RTC_LSI                 // STM32F4 RTC clocked by internal low-speed internal RC 
+
 #define FLASH_MEMORY_Base               0x08000000
 #define FLASH_MEMORY_Size               0x00100000
 #define SRAM1_MEMORY_Base               0x68000000
