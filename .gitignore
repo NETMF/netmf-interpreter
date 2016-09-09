@@ -31,6 +31,9 @@
 ipch/
 *.VC.db
 
+# Visual Studio Code
+.vscode/*
+
 !/tools/bin/
 
 #uVision
