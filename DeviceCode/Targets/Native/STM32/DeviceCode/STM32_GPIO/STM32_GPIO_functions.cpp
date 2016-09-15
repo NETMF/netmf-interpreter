@@ -277,7 +277,7 @@ UINT32 CPU_GPIO_Attributes( GPIO_PIN pin )
 }
 
 
-void CPU_GPIO_DisablePin( GPIO_PIN pin, GPIO_RESISTOR resistor, UINT32 output, GPIO_ALT_MODE alternate )
+void CPU_GPIO_DisablePin( GPIO_PIN pin, GPIO_RESISTOR resistor, UINT32 output, UINT32 alternate )
 {
     NATIVE_PROFILE_HAL_PROCESSOR_GPIO();
     if (pin < STM32_Gpio_MaxPins) {

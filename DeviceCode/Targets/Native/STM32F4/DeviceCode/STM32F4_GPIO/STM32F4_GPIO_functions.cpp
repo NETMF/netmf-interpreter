@@ -342,7 +342,7 @@ UINT32 CPU_GPIO_Attributes( GPIO_PIN pin )
  * GPIO_ALT_MODE_3 | AF << 4 | speed << 8: Alternate Function with open drain
  * speed: 0: 2MHZ, 1: 25MHz, 2: 50MHz, 3: 100MHz
  */
-void CPU_GPIO_DisablePin( GPIO_PIN pin, GPIO_RESISTOR resistor, UINT32 output, GPIO_ALT_MODE alternate )
+void CPU_GPIO_DisablePin( GPIO_PIN pin, GPIO_RESISTOR resistor, UINT32 output, UINT32 alternate )
 {
     NATIVE_PROFILE_HAL_PROCESSOR_GPIO( );
     if( pin < STM32F4_Gpio_MaxPins )
@@ -355,7 +355,7 @@ void CPU_GPIO_DisablePin( GPIO_PIN pin, GPIO_RESISTOR resistor, UINT32 output, G
         else if( altMode )
             mode = 2; // alternate pin function
 
-        STM32F4_GPIO_Pin_Config( pin, mode, resistor, ( UINT32 )alternate );
+        STM32F4_GPIO_Pin_Config( pin, mode, resistor, alternate );
         STM32F4_GPIO_Set_Interrupt( pin, NULL, 0, GPIO_INT_NONE, FALSE ); // disable interrupt
     }
 }

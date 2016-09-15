@@ -57,7 +57,7 @@ typedef void (*GPIO_INTERRUPT_SERVICE_ROUTINE)( GPIO_PIN Pin, BOOL PinState, voi
 BOOL   CPU_GPIO_Initialize     ();
 BOOL   CPU_GPIO_Uninitialize   ();
 UINT32 CPU_GPIO_Attributes     ( GPIO_PIN Pin );
-void   CPU_GPIO_DisablePin     ( GPIO_PIN Pin, GPIO_RESISTOR ResistorState, UINT32 Direction, GPIO_ALT_MODE AltFunction );
+void   CPU_GPIO_DisablePin     ( GPIO_PIN Pin, GPIO_RESISTOR ResistorState, UINT32 Direction, UINT32 AltFunction );
 void   CPU_GPIO_EnableOutputPin( GPIO_PIN Pin, BOOL InitialState );
 BOOL   CPU_GPIO_EnableInputPin ( GPIO_PIN Pin, BOOL GlitchFilterEnable, GPIO_INTERRUPT_SERVICE_ROUTINE PIN_ISR, GPIO_INT_EDGE IntEdge, GPIO_RESISTOR ResistorState );
 BOOL   CPU_GPIO_EnableInputPin2( GPIO_PIN Pin, BOOL GlitchFilterEnable, GPIO_INTERRUPT_SERVICE_ROUTINE PIN_ISR, void* ISR_Param, GPIO_INT_EDGE IntEdge, GPIO_RESISTOR ResistorState );
@@ -74,6 +74,12 @@ UINT8  CPU_GPIO_GetSupportedInterruptModes(GPIO_PIN pin );
 
 UINT32 CPU_GPIO_GetPinDebounce( GPIO_PIN Pin );
 BOOL   CPU_GPIO_SetPinDebounce( GPIO_PIN Pin, INT64 debounceTimeMilliseconds );
+
+// For backward compatibility
+inline void CPU_GPIO_DisablePin(GPIO_PIN Pin, GPIO_RESISTOR ResistorState, UINT32 Direction, GPIO_ALT_MODE AltFunction)
+{
+    return CPU_GPIO_DisablePin(Pin, ResistorState, Direction, (UINT32)AltFunction);
+}
 
 #endif // _DRIVERS_GPIO_DECL_H_
 

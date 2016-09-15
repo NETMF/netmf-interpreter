@@ -24,7 +24,7 @@ UINT32 CPU_GPIO_Attributes( GPIO_PIN Pin )
     return EmulatorNative::GetIGpioDriver()->Attributes( Pin );
 }
 
-void CPU_GPIO_DisablePin( GPIO_PIN Pin, GPIO_RESISTOR ResistorState, UINT32 Direction, GPIO_ALT_MODE AltFunction )
+void CPU_GPIO_DisablePin( GPIO_PIN Pin, GPIO_RESISTOR ResistorState, UINT32 Direction, UINT32 AltFunction )
 {
     EmulatorNative::GetIGpioDriver()->DisablePin( Pin, ResistorState, Direction, AltFunction );
 }

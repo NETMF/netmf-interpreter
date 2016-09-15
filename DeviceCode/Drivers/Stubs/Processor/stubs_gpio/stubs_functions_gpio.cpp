@@ -20,7 +20,7 @@ UINT32 CPU_GPIO_Attributes( GPIO_PIN Pin )
     return GPIO_ATTRIBUTE_NONE;
 }
 
-void CPU_GPIO_DisablePin( GPIO_PIN Pin, GPIO_RESISTOR ResistorState, UINT32 Direction, GPIO_ALT_MODE AltFunction )
+void CPU_GPIO_DisablePin( GPIO_PIN Pin, GPIO_RESISTOR ResistorState, UINT32 Direction, UINT32 AltFunction )
 {
 }
 
