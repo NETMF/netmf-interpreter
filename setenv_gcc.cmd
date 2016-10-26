@@ -16,3 +16,7 @@ GOTO :EOF
 @echo USAGE: setenv_gcc.cmd GCC_VERSION [GCC_TOOL_PATH]
 @echo        where GCC_VERSION is (4.2.1, 4.5.2, 4.6.1, ...)
 @echo.
+@echo NOTE: If you need to set GCC_TOOL_PATH use the following (mind the double quotes):
+@echo        setenv_gcc.cmd "GCC_VERSION GCC_TOOL_PATH"
+@echo        setenv_gcc.cmd "4.2.1 c:\programs\gcc\4.2.1"
+@echo.
