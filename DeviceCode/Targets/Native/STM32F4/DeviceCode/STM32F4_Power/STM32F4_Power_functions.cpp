@@ -36,6 +36,12 @@ BOOL CPU_Initialize()
 {
     NATIVE_PROFILE_HAL_PROCESSOR_POWER();
     CPU_INTC_Initialize();
+
+#if !defined(BUILD_RTM)
+    // enable debug on any low power mode 
+    DBGMCU->CR |= DBGMCU_CR_DBG_SLEEP + DBGMCU_CR_DBG_STOP + DBGMCU_CR_DBG_STANDBY;
+#endif    
+    
     return TRUE;
 }
 

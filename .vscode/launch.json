@@ -1,0 +1,179 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "STM32F4DISCOVERY TinyCLR",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "E:/GNU_Tools_ARM_Embedded/5_4_2016q3/bin/arm-none-eabi-gdb.exe",
+            "targetArchitecture": "ARM",
+            "program": "E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F4DISCOVERY/bin/tinyclr.axf",
+
+            "setupCommands": [
+                {"text": "target extended-remote localhost:3333"},
+				{"text": "monitor reset halt"},
+				{"text": "monitor flash write_image erase \"E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F4DISCOVERY/bin/tinyclr.hex/ER_FLASH.hex\" "},
+				{"text": "file E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F4DISCOVERY/bin/tinyclr.axf"},
+				{"text": "monitor reset halt"}
+            ],
+
+            "customLaunchSetupCommands": [
+			    {"text": "monitor reset halt"}
+            ],
+
+            "launchCompleteCommand": "exec-continue",
+			"debugServerPath": "C:/Program Files (x86)/openocd-0.10.0/bin/openocd.exe",
+			"debugServerArgs": "-s \"C:/Program Files (x86)/openocd-0.10.0/bin/scripts/\" -f interface/stlink-v2-1.cfg -f board/stm32f4discovery.cfg",
+			"serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+            "filterStderr": true,
+            "externalConsole": true,
+            "cwd": "${cwd}"
+        },
+        {
+            "name": "STM32F4DISCOVERY TinyBooter",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "E:/GNU_Tools_ARM_Embedded/5_4_2016q3/bin/arm-none-eabi-gdb.exe",
+            "targetArchitecture": "ARM",
+            "program": "E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F4DISCOVERY/bin/tinybooter.axf",
+
+            "setupCommands": [
+                {"text": "target extended-remote localhost:3333"},
+				{"text": "monitor reset halt"},
+				{"text": "monitor flash write_image erase \"E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F4DISCOVERY/bin/tinybooter.hex\" "},
+				{"text": "file E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F4DISCOVERY/bin/tinybooter.axf"},
+				{"text": "monitor reset halt"}
+            ],
+
+            "customLaunchSetupCommands": [
+			    {"text": "monitor reset halt"}
+            ],
+
+            "launchCompleteCommand": "exec-continue",
+			"debugServerPath": "C:/Program Files (x86)/openocd-0.10.0/bin/openocd.exe",
+			"debugServerArgs": "-s \"C:/Program Files (x86)/openocd-0.10.0/bin/scripts/\" -f interface/stlink-v2-1.cfg -f board/stm32f4discovery.cfg",
+			"serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+            "filterStderr": true,
+            "externalConsole": true,
+            "cwd": "${cwd}"
+        },        
+        {
+            "name": "STM32F429IDISCOVERY TinyCLR",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "E:/GNU_Tools_ARM_Embedded/5_4_2016q3/bin/arm-none-eabi-gdb.exe",
+            "targetArchitecture": "ARM",
+            "program": "E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F429IDISCOVERY/bin/tinyclr.axf",
+
+            "setupCommands": [
+                {"text": "target extended-remote localhost:3333"},
+				{"text": "monitor reset halt"},
+				{"text": "monitor flash write_image erase \"E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F429IDISCOVERY/bin/tinyclr.hex/ER_FLASH.hex\" "},
+				{"text": "file E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F429IDISCOVERY/bin/tinyclr.axf"},
+				{"text": "monitor reset halt"}
+            ],
+
+            "customLaunchSetupCommands": [
+			    {"text": "monitor reset init"}
+            ],
+
+            "launchCompleteCommand": "exec-continue",
+			"debugServerPath": "C:/Program Files (x86)/openocd-0.10.0/bin/openocd.exe",
+			"debugServerArgs": "-s \"C:/Program Files (x86)/openocd-0.10.0/bin/scripts/\" -f interface/stlink-v2-1.cfg -f board/stm32f429discovery.cfg",
+			"serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+            "filterStderr": true,
+            "externalConsole": true,
+            "cwd": "${cwd}"
+        },
+        {
+            "name": "STM32F429IDISCOVERY TinyBooter",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "E:/GNU_Tools_ARM_Embedded/5_4_2016q3/bin/arm-none-eabi-gdb.exe",
+            "targetArchitecture": "ARM",
+            "program": "E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F429IDISCOVERY/bin/tinybooter.axf",
+
+            "setupCommands": [
+                {"text": "target extended-remote localhost:3333"},
+				{"text": "monitor reset halt"},
+				{"text": "monitor flash write_image erase \"E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F429IDISCOVERY/bin/tinybooter.hex\" "},
+				{"text": "file E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/STM32F429IDISCOVERY/bin/tinybooter.axf"},
+				{"text": "monitor reset halt"}
+            ],
+
+            "customLaunchSetupCommands": [
+			    {"text": "monitor reset init"}
+            ],
+
+            "launchCompleteCommand": "exec-continue",
+			"debugServerPath": "C:/Program Files (x86)/openocd-0.10.0/bin/openocd.exe",
+			"debugServerArgs": "-s \"C:/Program Files (x86)/openocd-0.10.0/bin/scripts/\" -f interface/stlink-v2-1.cfg -f board/stm32f429discovery.cfg",
+			"serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+            "filterStderr": true,
+            "externalConsole": true,
+            "cwd": "${cwd}"
+        },        
+        {
+            "name": "MCBSTM32F400 TinyCLR",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "E:/GNU_Tools_ARM_Embedded/5_4_2016q3/bin/arm-none-eabi-gdb.exe",
+            "targetArchitecture": "ARM",
+            "program": "E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/MCBSTM32F400/bin/tinyclr.axf",
+
+            "setupCommands": [
+                {"text": "target extended-remote localhost:3333"},
+				{"text": "monitor reset halt"},
+				{"text": "monitor flash write_image erase \"E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/MCBSTM32F400/bin/tinyclr.hex/ER_FLASH.hex\" "},
+				{"text": "file E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/MCBSTM32F400/bin/tinyclr.axf"},
+				{"text": "monitor reset halt"}
+            ],
+
+            "customLaunchSetupCommands": [
+			    {"text": "monitor reset init"}
+            ],
+
+            "launchCompleteCommand": "exec-continue",
+			"debugServerPath": "C:/Program Files (x86)/openocd-0.10.0/bin/openocd.exe",
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //REPLACE interface & board support configuration files bellow
+            "debugServerArgs": "-s \"C:/Program Files (x86)/openocd-0.10.0/bin/scripts/\" -f interface/stlink-v2-1.cfg -f board/stm32f429discovery.cfg",
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			"serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+            "filterStderr": true,
+            "externalConsole": true,
+            "cwd": "${cwd}"
+        },
+        {
+            "name": "MCBSTM32F400 TinyBooter",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "E:/GNU_Tools_ARM_Embedded/5_4_2016q3/bin/arm-none-eabi-gdb.exe",
+            "targetArchitecture": "ARM",
+            "program": "E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/MCBSTM32F400/bin/tinybooter.axf",
+
+            "setupCommands": [
+                {"text": "target extended-remote localhost:3333"},
+				{"text": "monitor reset halt"},
+				{"text": "monitor flash write_image erase \"E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/MCBSTM32F400/bin/tinybooter.hex\" "},
+				{"text": "file E:/GitHub/netmf-interpreter/BuildOutput/THUMB2FP/GCC5.4/le/FLASH/release/MCBSTM32F400/bin/tinybooter.axf"},
+				{"text": "monitor reset halt"}
+            ],
+
+            "customLaunchSetupCommands": [
+			    {"text": "monitor reset init"}
+            ],
+
+            "launchCompleteCommand": "exec-continue",
+			"debugServerPath": "C:/Program Files (x86)/openocd-0.10.0/bin/openocd.exe",
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //REPLACE INTERFACE AND BOARD SUPPORT CONFIGURATION FILES BELLOW
+			"debugServerArgs": "-s \"C:/Program Files (x86)/openocd-0.10.0/bin/scripts/\" -f interface/stlink-v2-1.cfg -f board/stm32f429discovery.cfg",
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			"serverStarted": "Info\\ :\\ [\\w\\d\\.]*:\\ hardware",
+            "filterStderr": true,
+            "externalConsole": true,
+            "cwd": "${cwd}"
+        }        
+    ]
+}

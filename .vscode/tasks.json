@@ -1,0 +1,29 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "cmd",
+    "args": ["/C"],
+    "isShellCommand": true,
+    "showOutput": "always",
+    "tasks": [
+        {
+            "taskName": "Build STM32F4DISCOVERY",
+            "suppressTaskName": true,
+            "isBuildCommand": true,
+            "args": ["${workspaceRoot}\\Solutions\\STM32F4DISCOVERY\\build_vscode.cmd"]
+        },
+        {
+            "taskName": "Build STM32F429IDISCOVERY",
+            "suppressTaskName": true,
+            "isBuildCommand": true,
+            "args": ["${workspaceRoot}\\Solutions\\STM32F429IDISCOVERY\\build_vscode.cmd"]
+        },
+        {
+            "taskName": "Build MCBSTM32F400",
+            "suppressTaskName": true,
+            "isBuildCommand": true,
+            "args": ["${workspaceRoot}\\Solutions\\MCBSTM32F400\\build_vscode.cmd"]
+        }        
+    ]
+}
