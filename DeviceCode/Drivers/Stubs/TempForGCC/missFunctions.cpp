@@ -54,7 +54,8 @@ double pow(double x, double y)
 }
 
 double floor(double x)
-{
+{
+
     if (x >0)
         return 1;
     else
@@ -63,7 +64,8 @@ double floor(double x)
 
 
 double fmod(double x, double y)
-{
+{
+
     if (x >0)
         return 1;
     else
@@ -87,11 +89,6 @@ void longjmp (jmp_buf env, int val)
 }
 #endif
 
-////////////////////////
-
-#define malloc(y) private_malloc(y)
-
-#define free(x) private_free((void*)x)
 ////////////////////
 
 
@@ -120,7 +117,8 @@ void * memset ( void * dst, int value, size_t len )
     return dst;
 }
 
-void * memmove ( void * dst, const void * src, size_t num )
+void * memmove ( void * dst, const void * src, size_t num )
+
 {
 
     if (dst==NULL)

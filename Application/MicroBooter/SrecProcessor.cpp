@@ -55,7 +55,7 @@ BOOL SREC_Handler::Process( char c )
 
                         if(!m_Stream.IsXIP())
                         {
-                            dstExec = (UINT32)private_malloc(m_ImageLength);
+                            dstExec = (UINT32)malloc(m_ImageLength);
                         
                             MemStreamSeekBlockAddress( m_Stream, m_ImageStart );
                                 

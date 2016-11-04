@@ -16,47 +16,33 @@
     .thumb
 
     .global  EntryPoint
-    .global  __initial_sp
     .global Reset_Handler
-    .global StackBottom
-    .global StackTop
     .global HeapBegin
     .global HeapEnd
-    .global CustomHeapBegin
-    .global CustomHeapEnd
+    .global _end
     .global PowerOnReset
-    .extern  PreStackInit
 
-
-    .extern BootEntry
-    .extern BootstrapCode
+    .extern SystemInit
 
     @*************************************************************************
 
-    .section SectionForStackBottom, "w", %nobits
-StackBottom:
-    .word 0
+    /* start address for the initialization values of the .data section. 
+    defined in linker script */
+    .word  _sidata
+    /* start address for the .data section. defined in linker script */  
+    .word  _sdata
+    /* end address for the .data section. defined in linker script */
+    .word  _edata
+    /* start address for the .bss section. defined in linker script */
+    .word  _sbss
+    /* end address for the .bss section. defined in linker script */
+    .word  _ebss
+    /* stack used for SystemInit_ExtMemCtl; always internal RAM used */
 
-    .section SectionForStackTop, "w", %nobits
-__initial_sp:
-StackTop:
-    .word 0
-    
-    .section SectionForHeapBegin, "w", %nobits
-HeapBegin:
-    .word 0
-
-    .section SectionForHeapEnd, "w", %nobits
-HeapEnd:
-    .word 0
-
-    .section SectionForCustomHeapBegin, "w", %nobits
-CustomHeapBegin:
-    .word 0
-
-    .section SectionForCustomHeapEnd, "w", %nobits
-CustomHeapEnd:
-    .word 0
+    /* start address of managed heap */
+    .word HeapBegin
+    /* end  address of managed heap */
+    .word HeapEnd
 
     @ Power On Reset vector table for the device
     @ This is placed at physical address 0 by the
@@ -68,7 +54,7 @@ CustomHeapEnd:
 
     .section SectionForPowerOnReset, "x", %progbits
 PowerOnReset:
-    .word    __initial_sp
+    .word     _estack
     .word     Reset_Handler @ Reset
     .word     Fault_Handler @ NMI
     .word     Fault_Handler @ Hard Fault
@@ -86,8 +72,45 @@ PowerOnReset:
     .section i.EntryPoint, "ax", %progbits
 EntryPoint:
 Reset_Handler:
-    bl  BootstrapCode
-    b   BootEntry
+    ldr   sp, =_estack     /* set stack pointer */
+
+    /* Copy the data segment initializers from flash to SRAM */  
+    movs  r1, #0
+    b  LoopCopyDataInit
+
+CopyDataInit:
+    ldr  r3, =_sidata
+    ldr  r3, [r3, r1]
+    str  r3, [r0, r1]
+    adds  r1, r1, #4
+        
+LoopCopyDataInit:
+    ldr  r0, =_sdata
+    ldr  r3, =_edata
+    adds  r2, r0, r1
+    cmp  r2, r3
+    bcc  CopyDataInit
+    ldr  r2, =_sbss
+    b  LoopFillZerobss
+/* Zero fill the bss segment. */  
+FillZerobss:
+    movs  r3, #0
+    str  r3, [r2], #4
+        
+LoopFillZerobss:
+    ldr  r3, = _ebss
+    cmp  r2, r3
+    bcc  FillZerobss
+
+    /* Call the clock system intitialization function.*/
+    bl  SystemInit   
+    
+    /* Call static constructors */
+    bl __libc_init_array
+    
+    /* Call the application's entry point.*/
+    bl  main
+    bx  lr 
 
     .pool
     .size    Reset_Handler, . - Reset_Handler

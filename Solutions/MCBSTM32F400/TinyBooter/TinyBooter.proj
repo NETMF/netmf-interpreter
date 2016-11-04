@@ -23,6 +23,8 @@
         <ExtraTargets>$(ExtraTargets);CompressBin</ExtraTargets>
         <ScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</ScatterFileDefinition>
         <EXEScatterFileDefinition>scatterfile_bootloader_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+        <!-- newlib-nano does not support long-long and long-double formatting, use standard newlib instead -->
+        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">true</NewlibNano>        
     </PropertyGroup>
     <ItemGroup />
     <ItemGroup>
@@ -144,14 +146,6 @@
     <ItemGroup>
         <DriverLibs Include="config_pal_loader.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Configuration\dotNetMF_loader.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <DriverLibs Include="SimpleHeap.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <DriverLibs Include="SimpleHeap_config.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap_config\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="heap_pal.$(LIB_EXT)" />

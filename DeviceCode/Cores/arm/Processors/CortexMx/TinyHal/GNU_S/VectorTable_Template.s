@@ -25,7 +25,7 @@
     .thumb
 
     @ Initial Stack pointer for power on reset
-    .extern __initial_sp
+    .extern _estack 
 
     @ Import standard Cortex-M handlers
     .extern Reset_Handler
@@ -145,7 +145,7 @@
 
 ; The first 16 entries are all architecturally defined by ARM
 ARM_Vectors:
-    .long     __initial_sp                      @ Top of Stack
+    .long     _estack                           @ Top of Stack
     .long     Reset_Handler                     @ Reset Handler
     .long     NMI_Handler                       @ NMI Handler
     .long     HardFault_Handler                 @ Hard Fault Handler

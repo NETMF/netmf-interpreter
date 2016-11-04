@@ -120,14 +120,6 @@
     <DriverLibs Include="Watchdog_pal_stubs.$(LIB_EXT)" />
   </ItemGroup>
   <ItemGroup>
-    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\dotNetMF.proj" />
-    <DriverLibs Include="SimpleHeap.$(LIB_EXT)" />
-  </ItemGroup>
-  <ItemGroup>
-    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap_config\dotNetMF.proj" />
-    <DriverLibs Include="SimpleHeap_config.$(LIB_EXT)" />
-  </ItemGroup>
-  <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\AsyncProcCall\dotNetMF.proj" />
     <DriverLibs Include="asyncproccall_pal.$(LIB_EXT)" />
   </ItemGroup>

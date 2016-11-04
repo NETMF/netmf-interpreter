@@ -210,7 +210,7 @@ BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Write(void* con
         ByteAddress addrEnd         = Address + NumBytes;
         UINT32      index           = 0;
 
-        pBuf = (BYTE*)private_malloc(bytesPerBlock);
+        pBuf = (BYTE*)malloc(bytesPerBlock);
 
         if(pBuf == NULL)
         {
@@ -262,9 +262,9 @@ BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Write(void* con
                     regionEnd       = deviceInfo->Regions[region].Start + deviceInfo->Regions[region].Size();
                     bytesPerBlock   = deviceInfo->Regions[region].BytesPerBlock;
 
-                    private_free(pBuf);
+                    free(pBuf);
 
-                    pBuf = (BYTE*)private_malloc(bytesPerBlock);
+                    pBuf = (BYTE*)malloc(bytesPerBlock);
 
                     if(pBuf == NULL)
                     {
@@ -277,7 +277,7 @@ BOOL __section("SectionForFlashOperations") AM29DL_16_BS_Driver::Write(void* con
 
         if(pBuf != NULL)
         {
-            private_free(pBuf);
+            free(pBuf);
         }
 
         return fRet;            

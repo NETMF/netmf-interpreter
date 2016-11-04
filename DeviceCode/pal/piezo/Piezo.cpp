@@ -153,7 +153,7 @@ BOOL Piezo_Driver::Tone( UINT32 Frequency_Hertz, UINT32 Duration_Milliseconds )
                 //
                 irq.Release();
 
-                Tone = (PIEZO_TONE*)private_malloc( sizeof(PIEZO_TONE) );
+                Tone = (PIEZO_TONE*)malloc( sizeof(PIEZO_TONE) );
 
                 Tone->Initialize();
 
@@ -254,7 +254,7 @@ void Piezo_Driver::ToneRelease( void* Param )
         //
         irq.Release();
 
-        private_free( Tone );
+        free( Tone );
 
         irq.Acquire();
     }
@@ -338,7 +338,7 @@ BOOL PolyphonicPiezo_Driver::Tone( const PIEZO_POLY_TONE& ToneRef )
                 //
                 irq.Release();
 
-                Tone = (PIEZO_POLY_TONE*)private_malloc( sizeof(PIEZO_POLY_TONE) );
+                Tone = (PIEZO_POLY_TONE*)malloc( sizeof(PIEZO_POLY_TONE) );
 
                 irq.Acquire();
             }
@@ -440,7 +440,7 @@ void PolyphonicPiezo_Driver::ToneRelease( void* Param )
         //
         irq.Release();
 
-        private_free( Tone );
+        free( Tone );
 
         irq.Acquire();
     }

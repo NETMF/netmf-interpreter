@@ -875,8 +875,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
     TINYCLR_CHECK_HRESULT(HAL_Windows::Memory_Resize( 64 * 1024 * 1024 ));
 
-    HAL_Init_Custom_Heap();
-
     CLR_RT_Memory::Reset         ();    
 
     st.PushArguments( argc-1, argv+1, vec );

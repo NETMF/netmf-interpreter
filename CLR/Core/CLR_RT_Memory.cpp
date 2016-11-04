@@ -16,8 +16,6 @@ static int s_PreHeapInitIndex = 0;
 
 ////////////////////////////////////////////////////////////
 
-HAL_DECLARE_CUSTOM_HEAP( CLR_RT_Memory::Allocate, CLR_RT_Memory::Release, CLR_RT_Memory::ReAllocate );
-
 //--//
 
 void CLR_RT_Memory::Reset()

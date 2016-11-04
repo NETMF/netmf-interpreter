@@ -263,7 +263,7 @@ BOOL __section("SectionForFlashOperations")I28F_16_BS_Driver::Write(void* contex
         ByteAddress addrEnd         = Address + NumBytes;
         UINT32      index           = 0;
 
-        pBuf = (BYTE*)private_malloc(bytesPerBlock);
+        pBuf = (BYTE*)malloc(bytesPerBlock);
 
         if(pBuf == NULL) return FALSE;
 
@@ -312,9 +312,9 @@ BOOL __section("SectionForFlashOperations")I28F_16_BS_Driver::Write(void* contex
                     regionEnd       = deviceInfo->Regions[region].Start + deviceInfo->Regions[region].Size();
                     bytesPerBlock   = deviceInfo->Regions[region].BytesPerBlock;
 
-                    private_free(pBuf);
+                    free(pBuf);
 
-                    pBuf = (BYTE*)private_malloc(bytesPerBlock);
+                    pBuf = (BYTE*)malloc(bytesPerBlock);
 
                     if(pBuf == NULL) fRet = FALSE;
                 }
@@ -324,7 +324,7 @@ BOOL __section("SectionForFlashOperations")I28F_16_BS_Driver::Write(void* contex
 
         if(pBuf != NULL)
         {
-            private_free(pBuf);
+            free(pBuf);
         }
 
         return fRet;            

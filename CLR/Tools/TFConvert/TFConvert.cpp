@@ -192,7 +192,6 @@ int _tmain(int argc, _TCHAR* argv[])
     TINYCLR_CHECK_HRESULT(::CoInitialize( 0 ));
 
     TINYCLR_CHECK_HRESULT(HAL_Windows::Memory_Resize( 16 * 1024 * 1024 ));
-    HAL_Init_Custom_Heap();
 
     CLR_RT_Memory::Reset         ();    
 

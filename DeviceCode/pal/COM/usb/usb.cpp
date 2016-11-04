@@ -330,13 +330,13 @@ int USB_Driver::Configure( int Controller, const USB_DYNAMIC_CONFIGURATION* Conf
         //
         if(State->Configuration != &UsbDefaultConfiguration)
         {
-            private_free((void*)State->Configuration);
+            free((void*)State->Configuration);
         }
 
         //
         // Make sure that we allocate the native configuration buffer, the one passed in will be garbage collected
         //
-        State->Configuration = (USB_DYNAMIC_CONFIGURATION*)private_malloc(Length);
+        State->Configuration = (USB_DYNAMIC_CONFIGURATION*)malloc(Length);
 
         //
 

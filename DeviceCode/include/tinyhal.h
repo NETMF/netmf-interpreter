@@ -1155,118 +1155,8 @@ extern INT64 s_timewarp_compensate;
 
 extern int HeapBegin;
 extern int HeapEnd;
-extern int CustomHeapBegin;
-extern int CustomHeapEnd;
-extern int StackBottom;
-extern int StackTop;
-
-#if !defined(BUILD_RTM)
-
-// Registers[n] == Rn in ARM terms, R13=sp, R14=lr, R15=pc
-typedef void (*AbortHandlerFunc)(UINT32 cpsr, UINT32 Registers[16]);
-
-extern "C"
-{
-void StackOverflow( UINT32 sp );
-
-void NULL_Pointer_Write();
-}
-
-UINT32 Stack_MaxUsed();
-
-#endif
 
 #endif  // defined(PLATFORM_ARM)
-
-//--//
-
-// Simple Heap is for use by Porting Kit users who need private memory allocation.
-/*************************************************************************************
-**
-** Function: SimpleHeap_Allocate
-**
-** Synopsis: Initializes simple heap from supplied buffer.
-** Pointer to buffer is saved in global variable.
-** Later is used for allocation of blocks by SimpleHeap_Allocate
-**
-** Arguments: [pHeapBuffer] - Pointer to heap buffer. This pointer is saved in global variable,
-**                            later used by SimpleHeap_* function.
-**            [pHeapBuffer] - Size of memory block pointed by pHeapBuffer
-**
-**************************************************************************************/
-void SimpleHeap_Initialize( void* pHeapBuffer, UINT32 heapBuufferSize );
-
-/**********************************************************************
-**
-** Function: SimpleHeap_Allocate
-**
-** Synopsis: Allocates block of memory from heap buffer initialized by SimpleHeap_Initialize
-**
-**
-** Arguments: [len]                  - Size of block to allocate.
-**
-** Returns:   Pointer to newly allocated memory
-              or NULL if there is no free memory to accomodate block of size len
-**********************************************************************/
-void* SimpleHeap_Allocate   ( size_t len );
-
-/**********************************************************************
-**
-** Function: SimpleHeap_Release
-**
-** Synopsis: Releases memory block allocated by SimpleHeap_Allocate
-**
-**
-** Arguments: [pHeapBlock] - Memory block to release.
-**
-**********************************************************************/
-void  SimpleHeap_Release    ( void*  pHeapBlock );
-
-
-/**********************************************************************
-**
-** Function: SimpleHeap_ReAllocate
-**
-** Synopsis: Reallocates memory on an existing pointer and copies bck the
-** data
-**
-** Arguments: [pHeapBlock] - Memory block to reallocate.
-** Arguments: [len]        - Size of block to allocate.
-**
-**********************************************************************/
-void* SimpleHeap_ReAllocate( void*  pHeapBlock, size_t len );
-
-/**********************************************************************
-**
-** Function: SimpleHeap_IsAllocated
-**
-** Synopsis: Checks if pHeapBlock points to memory block allocated by SimpleHeap_Allocate
-**
-** Arguments: [pHeapBlock] - Memory block to release.
-**
-** Returns:   TRUE if pHeapBlock points to memory allocated, FALSE otherwise.
-**********************************************************************/
-BOOL  SimpleHeap_IsAllocated( void*  pHeapBlock );
-
-/**********************************************************************
-**
-** Function: HAL_Init_Custom_Heap
-**
-** Synopsis: Initializes simple heap with memory buffer provided by CustomHeapLocation function.
-**
-**********************************************************************/
-inline void HAL_Init_Custom_Heap()
-{
-    UINT8* BaseAddress = 0;
-    UINT32 SizeInBytes = 0;
-
-    // Retrieve location for Custom Heap. The location is defined in scatter file.
-    CustomHeapLocation( BaseAddress, SizeInBytes );
-
-    // Initialize custom heap with heap block returned from CustomHeapLocation
-    SimpleHeap_Initialize( BaseAddress, SizeInBytes );
-}
-
 
 //--//
 
@@ -1303,32 +1193,13 @@ template <typename T> __inline void private_release( T& ref )
     {
         ref = NULL;
 
-        private_free( ptr );
+        free( ptr );
     }
 }
 
 //--//
 
 __inline void* ReAllocate_NotImplemented( void * ptr, size_t len ) { ASSERT(FALSE); return NULL; }
-
-//--//
-
-#define HAL_DECLARE_CUSTOM_HEAP(allocFtn,freeFtn,reallocFtn)                           \
-    extern "C" {                                                                       \
-    void* private_malloc ( size_t len             ) { return allocFtn  ( len      ); } \
-    void  private_free   ( void*  ptr             ) {        freeFtn   ( ptr      ); } \
-    void* private_realloc( void*  ptr, size_t len ) { return reallocFtn( ptr, len ); } \
-    }
-
-#define HAL_DECLARE_NULL_HEAP()                                      \
-    extern "C" {                                                     \
-    void* private_malloc ( size_t len             ) { return NULL; } \
-    void  private_free   ( void*  ptr             ) {              } \
-    void* private_realloc( void * ptr, size_t len ) { return NULL; } \
-    }
-
-
-//--//
 
 extern UINT32 LOAD_IMAGE_Start;
 extern UINT32 LOAD_IMAGE_Length;

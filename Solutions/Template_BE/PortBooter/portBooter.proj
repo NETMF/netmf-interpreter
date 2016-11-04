@@ -90,14 +90,6 @@
     <DriverLibs Include="heap_pal.$(LIB_EXT)" />
   </ItemGroup>
   <ItemGroup>
-    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\stubs\dotNetMF.proj" />
-    <DriverLibs Include="SimpleHeap_stubs.$(LIB_EXT)" />
-  </ItemGroup>
-  <ItemGroup>
-    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap_config\Stubs\dotNetMF.proj" />
-    <DriverLibs Include="SimpleHeap_config_stubs.$(LIB_EXT)" />
-  </ItemGroup>
-  <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Common\GlobalLock\dotNetMF.proj" />
     <DriverLibs Include="GlobalLock_hal.$(LIB_EXT)" />
   </ItemGroup>

@@ -314,7 +314,7 @@ namespace Microsoft.SPOT.Platform.Tests
                         // the CLR's limit of allocation in the managed heap is sizeof(CLR_RT_HeapBlock) * (2^16) = 768432 bytes. 
                         // To that one needs to subtract the size of an heap cluster (sizeof(CLR_RT_heapCluster)) and 
                         // round to the number of heap blocks in the remaining amount, since the CLR allocated in heap blocks units. 
-                        // Thus some allocation (e.g. 800x600) must go in the unmanaged SimpleHeap if supported.
+                        // Thus some allocation (e.g. 800x600) must go in the unmanaged heap if supported.
 
                         bmp = new Bitmap(p.width, p.height);
                     }

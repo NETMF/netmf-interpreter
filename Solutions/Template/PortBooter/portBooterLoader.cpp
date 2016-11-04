@@ -13,8 +13,6 @@ typedef unsigned char UINT8;
 
 int LZ77_Decompress( UINT8* inBuf, int inSize, UINT8* outBuf, int outSize );
 
-HAL_DECLARE_NULL_HEAP();
-
 extern "C"
 {
 void BootEntryLoader()

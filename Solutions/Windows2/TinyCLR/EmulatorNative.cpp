@@ -85,8 +85,6 @@ HRESULT Settings::System_Start()
 {
     TINYCLR_HEADER();
 
-    HAL_Init_Custom_Heap();
-
     Time_Initialize();
 
     if(!CPU_GPIO_Initialize()) TINYCLR_SET_AND_LEAVE(CLR_E_FAIL);

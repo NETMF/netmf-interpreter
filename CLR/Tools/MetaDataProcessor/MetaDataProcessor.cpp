@@ -1784,7 +1784,6 @@ int _tmain(int argc, _TCHAR* argv[])
     ::CoInitialize( 0 );
 
     TINYCLR_CHECK_HRESULT(HAL_Windows::Memory_Resize( 64 * 1024 * 1024 ));
-    HAL_Init_Custom_Heap();
 
     // do not display assembly load information
     s_CLR_RT_fTrace_AssemblyOverhead = 0;

@@ -22,8 +22,6 @@ BOOL MemStreamSeekBlockAddress( BlockStorageStream &stream, UINT32 address );
 static SREC_Handler g_SREC;
 #endif
 
-HAL_DECLARE_CUSTOM_HEAP( SimpleHeap_Allocate, SimpleHeap_Release, SimpleHeap_ReAllocate );
-
 #pragma arm section zidata = "s_SystemStates"
 static INT32 s_SystemStates[SYSTEM_STATE_TOTAL_STATES];
 #pragma arm section zidata
@@ -265,7 +263,7 @@ static BOOL Memory_Read( UINT32 address, UINT32 length, BYTE* data )
     
     if(s_ReadBuffer == NULL)
     {
-        s_ReadBuffer = (UINT8*)private_malloc(readBufferSize);
+        s_ReadBuffer = (UINT8*)malloc(readBufferSize);
 
         ASSERT(s_ReadBuffer != NULL);
         if(s_ReadBuffer == NULL) return FALSE;
@@ -432,14 +430,6 @@ void BootEntryLoader()
     HAL_COMPLETION  ::InitializeList();
 
     Events_Initialize();
-
-    UINT8* BaseAddress;
-    UINT32 SizeInBytes;
-
-    HeapLocation( BaseAddress, SizeInBytes );
-
-    // Initialize custom heap with heap block returned from CustomHeapLocation
-    SimpleHeap_Initialize( BaseAddress, SizeInBytes );
 
     // this is the place where interrupts are enabled after boot for the first time after boot
     ENABLE_INTERRUPTS();

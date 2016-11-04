@@ -118,7 +118,7 @@ BOOL MicroBooterUpdateProvider::InstallUpdate( MFUpdate* pUpdate, UINT8* pValida
                         
                         if(!isXIP)
                         {
-                            headerBuffer = (BYTE*)private_malloc( headerInBytes );  if(!headerBuffer) return FALSE;
+                            headerBuffer = (BYTE*)malloc( headerInBytes );  if(!headerBuffer) return FALSE;
                             memset( headerBuffer, 0,  headerInBytes );
                         }
                         
@@ -157,7 +157,7 @@ BOOL MicroBooterUpdateProvider::InstallUpdate( MFUpdate* pUpdate, UINT8* pValida
                         
                             stream.Seek( AssemblySizeInByte );
                         }
-                        if(!isXIP) private_free( headerBuffer );
+                        if(!isXIP) free( headerBuffer );
                     
                     }
                     while(stream.NextStream());

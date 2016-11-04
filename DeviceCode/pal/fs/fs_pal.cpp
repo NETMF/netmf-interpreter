@@ -118,7 +118,7 @@ void FS_MountVolume( LPCSTR nameSpace, UINT32 serialNumber, UINT32 deviceFlags, 
         {
             current->Unlink();
 
-            private_free( current );
+            free( current );
         }
 
         current = next;
@@ -146,7 +146,7 @@ void FS_MountVolume( LPCSTR nameSpace, UINT32 serialNumber, UINT32 deviceFlags, 
     for (i = 0; i < numVolumes; i++)
     {
         // Allocate the memory for this FileSystemVolume
-        volume = (FileSystemVolume*)private_malloc( sizeof(FileSystemVolume) );
+        volume = (FileSystemVolume*)malloc( sizeof(FileSystemVolume) );
 
         if(!volume) // allocation failed
         {
@@ -160,7 +160,7 @@ void FS_MountVolume( LPCSTR nameSpace, UINT32 serialNumber, UINT32 deviceFlags, 
                                             streamDriver, fsDriver, blockStorageDevice, i, (fsDriver) ? TRUE : FALSE )) // init only when we have a valid fsDriver
         {
             // If for some reason, AddVolume fails, we'll keep trying other volumes
-            private_free( volume );
+            free( volume );
             continue;
         }
 

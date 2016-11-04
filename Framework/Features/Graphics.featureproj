@@ -14,7 +14,6 @@
   <Import Project="$(SPOCLIENT)\Framework\Features\SPOT_Graphics_CLR.libcatproj" />
   <Import Project="$(SPOCLIENT)\Framework\Features\LCDController_HAL.libcatproj" />
   <Import Project="$(SPOCLIENT)\Framework\Features\LCD_HAL.libcatproj" />
-  <Import Project="$(SPOCLIENT)\Framework\Features\SimpleHeap_PAL.libcatproj" />
   <PropertyGroup>
     <Description>Core graphics functionality</Description>
     <Guid>{af24014a-d92b-44dd-a6d0-d46d14d553cc}</Guid>

@@ -70,7 +70,7 @@ void FAT_SectorCache::Uninitialize()
         {
             FlushSector( cacheLine );
 
-            private_free( cacheLine->m_buffer );
+            free( cacheLine->m_buffer );
 
             cacheLine->m_buffer = NULL;
             cacheLine->m_flags  = 0;
@@ -101,7 +101,7 @@ BYTE* FAT_SectorCache::GetSector( UINT32 sectorIndex, BOOL useLRU, BOOL forWrite
 
         if(!cacheLine->m_buffer)
         {
-            cacheLine->m_buffer = (BYTE*)private_malloc( SECTORCACHE_LINESIZE );
+            cacheLine->m_buffer = (BYTE*)malloc( SECTORCACHE_LINESIZE );
 
             if(!cacheLine->m_buffer) return NULL;
         }
@@ -113,7 +113,7 @@ BYTE* FAT_SectorCache::GetSector( UINT32 sectorIndex, BOOL useLRU, BOOL forWrite
 
         if(!m_blockStorageDevice->Read( cacheLine->m_bsByteAddress, SECTORCACHE_LINESIZE, cacheLine->m_buffer ))
         {
-            private_free( cacheLine->m_buffer );
+            free( cacheLine->m_buffer );
             
             cacheLine->m_buffer = NULL;
             

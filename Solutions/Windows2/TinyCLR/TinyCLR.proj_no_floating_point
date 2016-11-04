@@ -267,10 +267,6 @@
     <DriverLibs Include="config_pal.$(LIB_EXT)" />
   </ItemGroup>
   <ItemGroup>
-    <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\dotNetMF.proj" />
-    <DriverLibs Include="SimpleHeap.$(LIB_EXT)" />
-  </ItemGroup>
-  <ItemGroup>
     <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Time\dotNetMF.proj" />
     <DriverLibs Include="Time_pal.$(LIB_EXT)" />
   </ItemGroup>

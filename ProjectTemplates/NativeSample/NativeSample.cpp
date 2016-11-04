@@ -7,9 +7,6 @@
 #include <Tests.h>
 #include "nativesample.h"
 
-
-HAL_DECLARE_NULL_HEAP();
-
 void PostManagedEvent( UINT8 category, UINT8 subCategory, UINT16 data1, UINT32 data2 )
 {
 }

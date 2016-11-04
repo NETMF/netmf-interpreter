@@ -8,8 +8,6 @@
 
 //--//
 
-HAL_DECLARE_NULL_HEAP();
-
 void ApplicationEntryPoint()
 {
     BOOL result;

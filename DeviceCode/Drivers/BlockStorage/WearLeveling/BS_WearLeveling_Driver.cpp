@@ -107,12 +107,6 @@ BOOL BS_WearLeveling_Driver::InitializeDevice(void *context)
     
     config->BlockIndexMask = 0x80000000;
 
-    // verify that we have simple heap support
-    void* tmp = SimpleHeap_Allocate(4); 
-
-    if(NULL == tmp) { _WEAR_LEVEL_ASSERT(FALSE); return FALSE; }
-    else            { SimpleHeap_Release(tmp);                 }
-
     // 
     // Block index mas is used to determine block map addressing
     //
@@ -1777,7 +1771,8 @@ BOOL BS_WearLeveling_Driver::WriteToSector(BS_WearLeveling_Config* config, ByteA
     //
     // we only need a new sector if we are moving any bits from 0 -> 1 
     // 
-    //if(origPhyMeta.IsSectorDirty())
+    //if(origPhyMeta.IsSectorDirty())
+
     //{
     //    fReadModifyNeeded = TRUE;
     //}

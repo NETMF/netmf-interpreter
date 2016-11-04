@@ -710,8 +710,6 @@ XREC_Handler g_XREC;
 
 //--//
 
-HAL_DECLARE_NULL_HEAP();
-
 void ApplicationEntryPoint()
 {
     UINT32 ComEvent;

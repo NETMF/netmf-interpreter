@@ -109,8 +109,8 @@ HRESULT CLR_GFX_Bitmap::CreateInstance( CLR_RT_HeapBlock& ref, const CLR_GFX_Bit
     }
     else
     {
-        //The bitmap is too big to fit on the managed heap, so put it on the SimpleHeap
-        bitmap = (CLR_GFX_Bitmap*)SimpleHeap_Allocate(size);
+        //The bitmap is too big to fit on the managed heap, so put it on the heap
+        bitmap = (CLR_GFX_Bitmap*)malloc(size);
 
         ref.SetInteger((CLR_UINT32)bitmap);
         ref.PerformBoxingIfNeeded();
@@ -195,7 +195,7 @@ HRESULT CLR_GFX_Bitmap::CreateInstance( CLR_RT_HeapBlock& ref, const CLR_UINT8* 
         /* When loading a Windows BMP, GIF, or JPEG file, it is converted in-place to the native BPP.
          * When loading a compressed TinyCLR Bitmap from a resource file, two bitmaps are needed to decompress, then convert.
          * This fragments the heap and wastes space until the next garbage collection is done.
-         * When using the SimpleHeap, there is no relocation, so decompressing into a temp bitmap into the simpleheap wastes
+         * When using the heap, there is no relocation, so decompressing into a temp bitmap into the heap wastes
          * memory 6.25% the size of the 16bpp bitmap that's saved.
          */
 
@@ -310,7 +310,7 @@ HRESULT CLR_GFX_Bitmap::DeleteInstance( CLR_RT_HeapBlock& ref )
             if (blob->IsBoxed() && blob[ 1 ].DataType() == DATATYPE_U4)
             {
                 bitmap = (CLR_GFX_Bitmap*)(blob[ 1 ].NumericByRefConst().u4);
-                SimpleHeap_Release (bitmap);
+                free(bitmap);
             }
             else
             {

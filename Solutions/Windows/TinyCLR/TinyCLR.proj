@@ -311,11 +311,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\stubs\dotNetMF.proj" />
-        <DriverLibs Include="SimpleHeap_stubs.$(LIB_EXT)" />
-    </ItemGroup>
-
-    <ItemGroup>
       <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\BatteryMeasurement\stubs\dotNetMF.proj" />
       <DriverLibs Include="batterymeasurement_hal_stubs.$(LIB_EXT)" />
     </ItemGroup>
@@ -475,10 +470,6 @@
     <!--<ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\tools\scripts\port\Sample\InteropSample\InteropNativeCode\dotNetMF.proj" />
         <DriverLibs Include="SPOT_InteropSample.$(LIB_EXT)" />
-    </ItemGroup>-->
-    <!--<ItemGroup>
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\dotNetMF.proj" />
-        <DriverLibs Include="SimpleHeap.$(LIB_EXT)" />
     </ItemGroup>-->
     <!--<ItemGroup>
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\TimeService\dotNetMF.proj" />

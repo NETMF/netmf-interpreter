@@ -80,7 +80,7 @@ struct BitFieldManager
         {
             const BlockDeviceInfo* deviceInfo = m_blockDevice->GetDeviceInfo();
             
-            data = (BYTE*)private_malloc( m_region->BytesPerBlock );
+            data = (BYTE*)malloc( m_region->BytesPerBlock );
 
             if(data != NULL)
             {
@@ -99,7 +99,7 @@ struct BitFieldManager
                 ConfigurationSector *pCfg = (ConfigurationSector*)data;
                 memset( (void*)&pCfg->SignatureCheck[ 0 ], 0xFF, sizeof(pCfg->SignatureCheck) );
                 m_blockDevice->Write( m_cfgPhysicalAddress, m_region->BytesPerBlock,data, FALSE );
-                private_free(data);
+                free(data);
             }
             else
             {
@@ -150,7 +150,7 @@ struct BitFieldManager
         else
         {
             UINT32 length  = m_region->BytesPerBlock;
-            BYTE*  dataptr = (BYTE*)private_malloc(length);
+            BYTE*  dataptr = (BYTE*)malloc(length);
             
             if(dataptr != NULL)
             {
@@ -174,7 +174,7 @@ struct BitFieldManager
 
                 // write back to sector, as we only change one bit from 0 to 1, no need to erase sector
                 m_blockDevice->Write( m_cfgPhysicalAddress, length, dataptr, FALSE );
-                private_free(dataptr);
+                free(dataptr);
             }
 
         }     
@@ -227,7 +227,7 @@ struct BitFieldManager
                 UINT32 length = sizeof(ConfigurationSector);
                 
                 memset( &m_skipCfgSectorCheck, 0xff, sizeof(m_skipCfgSectorCheck) );
-                data         = (BYTE*)private_malloc(length);
+                data         = (BYTE*)malloc(length);
                 stream.Device->Read( m_cfgPhysicalAddress, length, (BYTE *)data );
                 configSector = (ConfigurationSector*)data;
                 m_signatureCheck = NULL;
@@ -253,7 +253,7 @@ struct BitFieldManager
                     m_signatureCheck = &m_skipCfgSectorCheck;
                 }
 
-                private_free(data);
+                free(data);
 
             }
             else // XIP device
@@ -476,7 +476,7 @@ static bool AccessMemory( UINT32 location, UINT32 lengthInBytes, BYTE* buf, int 
                     {
                         if (mode == AccessMemory_Check)
                         {
-                            bufPtr = (BYTE*) private_malloc(NumOfBytes);
+                            bufPtr = (BYTE*) malloc(NumOfBytes);
                             if(!bufPtr) return false;
                         }
 
@@ -486,7 +486,7 @@ static bool AccessMemory( UINT32 location, UINT32 lengthInBytes, BYTE* buf, int 
                         {
                             if (mode == AccessMemory_Check)
                             {
-                                private_free(bufPtr);
+                                free(bufPtr);
                             }
                                 
                             break;
@@ -495,7 +495,7 @@ static bool AccessMemory( UINT32 location, UINT32 lengthInBytes, BYTE* buf, int 
                         if (mode == AccessMemory_Check)  
                         {
                             *(UINT32*)buf = SUPPORT_ComputeCRC( bufPtr, NumOfBytes, *(UINT32*)buf );
-                            private_free(bufPtr);
+                            free(bufPtr);
                         }
                     }
                     break;
@@ -525,18 +525,18 @@ static bool AccessMemory( UINT32 location, UINT32 lengthInBytes, BYTE* buf, int 
                             {
                                  if(g_ConfigBuffer != NULL)
                                  {
-                                     private_free(g_ConfigBuffer);
+                                     free(g_ConfigBuffer);
                                  }
                                  g_ConfigBufferLength = 0;
                                  
-                                 // g_ConfigBuffer = (UINT8*)private_malloc(pRegion->BytesPerBlock);
+                                 // g_ConfigBuffer = (UINT8*)malloc(pRegion->BytesPerBlock);
                                  // Just allocate the configuration Sector size, configuration block can be large and not necessary to have that buffer.
-                                 g_ConfigBuffer = (UINT8*)private_malloc(g_ConfigBufferTotalSize);
+                                 g_ConfigBuffer = (UINT8*)malloc(g_ConfigBufferTotalSize);
 
                             }
                             else if(g_ConfigBufferTotalSize < ( g_ConfigBufferLength + lengthInBytes))
                             {
-                                UINT8* tmp = (UINT8*)private_malloc(g_ConfigBufferLength + lengthInBytes);
+                                UINT8* tmp = (UINT8*)malloc(g_ConfigBufferLength + lengthInBytes);
 
                                 if(tmp == NULL)
                                 {
@@ -545,7 +545,7 @@ static bool AccessMemory( UINT32 location, UINT32 lengthInBytes, BYTE* buf, int 
 
                                 memcpy( tmp, g_ConfigBuffer, g_ConfigBufferLength );
 
-                                private_free(g_ConfigBuffer);
+                                free(g_ConfigBuffer);
 
                                 g_ConfigBuffer = tmp;
                             }
@@ -754,7 +754,7 @@ bool Loader_Engine::SignedDataState::VerifySignature( UINT8* signature, UINT32 l
     const BlockDeviceInfo* deviceInfo = m_pDevice->GetDeviceInfo();
     if(!deviceInfo->Attribute.SupportsXIP)
     {
-        signCheckedAddr = (BYTE*)private_malloc(m_dataLength);
+        signCheckedAddr = (BYTE*)malloc(m_dataLength);
         if (signCheckedAddr == NULL)
         {    
             EraseMemoryAndReset();
@@ -764,7 +764,7 @@ bool Loader_Engine::SignedDataState::VerifySignature( UINT8* signature, UINT32 l
         if(!m_pDevice->Read( m_dataAddress, m_dataLength, signCheckedAddr ))
         {    
             EraseMemoryAndReset();
-            private_free(signCheckedAddr);
+            free(signCheckedAddr);
 
             return false;
         }
@@ -791,7 +791,7 @@ bool Loader_Engine::SignedDataState::VerifySignature( UINT8* signature, UINT32 l
     
     if(!deviceInfo->Attribute.SupportsXIP)
     {
-        private_free(signCheckedAddr);
+        free(signCheckedAddr);
     }
 
     return fret;
@@ -1542,7 +1542,7 @@ bool Loader_Engine::Monitor_FlashSectorMap( WP_Message* msg )
 
         if(cnt == 1)
         {
-            pData = (struct Flash_Sector*)private_malloc(rangeCount * sizeof(struct Flash_Sector));
+            pData = (struct Flash_Sector*)malloc(rangeCount * sizeof(struct Flash_Sector));
 
             if(pData == NULL)
             {
@@ -1582,7 +1582,7 @@ bool Loader_Engine::Monitor_FlashSectorMap( WP_Message* msg )
 
     ReplyToCommand(msg, true, false, (void*)pData, rangeCount * sizeof (struct Flash_Sector) );
 
-    private_free(pData);
+    free(pData);
 
     return true;
 }

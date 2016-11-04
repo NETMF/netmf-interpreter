@@ -193,7 +193,7 @@ BOOL HAL_CONFIG_BLOCK::CompactBlock(HAL_CONFIG_BLOCK_STORAGE_DATA& blData, const
     int saveLength = (UINT32)cfgEnd - blData.ConfigAddress;
     
     //
-    UINT8 *pBackup = (UINT8*)private_malloc( saveLength );
+    UINT8 *pBackup = (UINT8*)malloc( saveLength );
 
     if(pBackup)
     {
@@ -228,7 +228,7 @@ BOOL HAL_CONFIG_BLOCK::CompactBlock(HAL_CONFIG_BLOCK_STORAGE_DATA& blData, const
         fRet = blData.Device->Write((UINT32)blData.ConfigAddress, writeLength, pBackup, FALSE);
 
         // if the heap is not yet initialized this does nothing
-        private_free( pBackup );
+        free( pBackup );
     }
 
     return fRet;
@@ -305,7 +305,7 @@ BOOL HAL_CONFIG_BLOCK::UpdateBlockWithName( const char* Name, void* Data, size_t
     }
     else
     {
-        pXipConfigBuf = (BYTE*)private_malloc(blData.BlockLength);
+        pXipConfigBuf = (BYTE*)malloc(blData.BlockLength);
 
         if(pXipConfigBuf != NULL)
         {
@@ -349,7 +349,7 @@ BOOL HAL_CONFIG_BLOCK::UpdateBlockWithName( const char* Name, void* Data, size_t
                     physAddr = (const void*)(blData.ConfigAddress + ((size_t)pConfig - (size_t)pXipConfigBuf));
                     physEnd  = (const void*)(blData.ConfigAddress + ((size_t)pLastConfig - (size_t)pXipConfigBuf));
 
-                    private_free(pXipConfigBuf);
+                    free(pXipConfigBuf);
                     pXipConfigBuf = NULL;
                 }
 
@@ -395,7 +395,7 @@ BOOL HAL_CONFIG_BLOCK::UpdateBlockWithName( const char* Name, void* Data, size_t
 
     if(pXipConfigBuf != NULL)
     {
-        private_free(pXipConfigBuf);
+        free(pXipConfigBuf);
     }
 
     return fRet;
@@ -428,7 +428,7 @@ BOOL HAL_CONFIG_BLOCK::ApplyConfig( const char* Name, void* Address, size_t Leng
     }
     else
     {
-        pXipConfigBuf = (BYTE*)private_malloc(blData.BlockLength);
+        pXipConfigBuf = (BYTE*)malloc(blData.BlockLength);
 
         if(pXipConfigBuf != NULL)
 
@@ -448,7 +448,7 @@ BOOL HAL_CONFIG_BLOCK::ApplyConfig( const char* Name, void* Address, size_t Leng
     {
         if(newAlloc != NULL)
         {
-            *newAlloc = private_malloc(header->Size);
+            *newAlloc = malloc(header->Size);
 
             if(*newAlloc)
             {
@@ -470,7 +470,7 @@ BOOL HAL_CONFIG_BLOCK::ApplyConfig( const char* Name, void* Address, size_t Leng
 
     if(pXipConfigBuf != NULL)
     {
-        private_free(pXipConfigBuf);
+        free(pXipConfigBuf);
     }
 
     return FALSE;

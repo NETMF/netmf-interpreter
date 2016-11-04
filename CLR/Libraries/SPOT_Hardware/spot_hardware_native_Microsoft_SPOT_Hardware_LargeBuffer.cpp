@@ -17,7 +17,7 @@ HRESULT Library_spot_hardware_native_Microsoft_SPOT_Hardware_LargeBuffer::Create
     reflex.m_levels      = 1;
     reflex.m_data.m_type = g_CLR_RT_WellKnownTypes.m_UInt8;
 
-    CLR_RT_HeapBlock_Array* pData   = (CLR_RT_HeapBlock_Array*)SimpleHeap_Allocate(size + sizeof(CLR_RT_HeapBlock_Array)); CHECK_ALLOCATION(pData);
+    CLR_RT_HeapBlock_Array* pData   = (CLR_RT_HeapBlock_Array*)malloc(size + sizeof(CLR_RT_HeapBlock_Array)); CHECK_ALLOCATION(pData);
 
     CLR_RT_Memory::ZeroFill(pData, size + sizeof(CLR_RT_HeapBlock_Array));
 
@@ -57,7 +57,7 @@ HRESULT Library_spot_hardware_native_Microsoft_SPOT_Hardware_LargeBuffer::Intern
 
     CLR_RT_HeapBlock_Array* hbRef = hbBytes.DereferenceArray(); FAULT_ON_NULL(hbRef);
 
-    SimpleHeap_Release(hbRef);
+    free(hbRef);
 
     hbBytes.SetObjectReference( NULL );
 
@@ -112,7 +112,7 @@ HRESULT Library_spot_hardware_native_Microsoft_SPOT_Hardware_LargeBufferMarshall
 
     if(array->m_numOfElements != size)
     {
-        SimpleHeap_Release(array);       
+        free(array);       
 
         TINYCLR_CHECK_HRESULT(Library_spot_hardware_native_Microsoft_SPOT_Hardware_LargeBuffer::CreateBufferHelper( pLB[Library_spot_hardware_native_Microsoft_SPOT_Hardware_LargeBuffer::FIELD__m_bytes], size ));
 

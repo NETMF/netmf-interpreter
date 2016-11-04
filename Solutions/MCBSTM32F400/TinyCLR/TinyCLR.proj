@@ -27,6 +27,8 @@
         <MMP_DAT_SKIP>false</MMP_DAT_SKIP>
         <MMP_DAT_CreateDatabaseFile>$(BIN_DIR)\$(AssemblyName).dat</MMP_DAT_CreateDatabaseFile>
         <EXEScatterFileDefinition>$(SRC_DIR)\scatterfile_$(AssemblyName)_$(COMPILER_TOOL).$(SCATTER_EXT)</EXEScatterFileDefinition>
+        <!-- newlib-nano does not support long-long and long-double formatting, use standard newlib instead -->
+        <NewlibNano Condition="'$(COMPILER_TOOL)'=='GCC'">true</NewlibNano>        
         <CompressImageFlashSym>EntryPoint</CompressImageFlashSym>
         <CompressImageDatSym>TinyClr_Dat_Start</CompressImageDatSym>
         <CompressImageCfgSym>g_ConfigurationSector</CompressImageCfgSym>
@@ -209,14 +211,6 @@
     <ItemGroup>
         <DriverLibs Include="piezo_pal_stubs.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Piezo\stubs\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <DriverLibs Include="SimpleHeap_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\stubs\dotNetMF.proj" />
-    </ItemGroup>
-    <ItemGroup>
-        <DriverLibs Include="SimpleHeap_config_stubs.$(LIB_EXT)" />
-        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap_config\Stubs\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <DriverLibs Include="tinycrt_pal.$(LIB_EXT)" />

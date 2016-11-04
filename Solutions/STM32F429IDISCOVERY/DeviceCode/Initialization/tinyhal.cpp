@@ -24,44 +24,6 @@
 
 #undef  DEBUG_TRACE
 #define DEBUG_TRACE (TRACE_ALWAYS)
-// these define the region to zero initialize
-extern UINT32 Image$$ER_RAM_RW$$ZI$$Base;
-extern UINT32 Image$$ER_RAM_RW$$ZI$$Length;
-
-// here is the execution address/length of code to move from FLASH to RAM
-#define IMAGE_RAM_RO_BASE   Image$$ER_RAM_RO$$Base
-#define IMAGE_RAM_RO_LENGTH Image$$ER_RAM_RO$$Length
-
-extern UINT32 IMAGE_RAM_RO_BASE;
-extern UINT32 IMAGE_RAM_RO_LENGTH;
-
-// here is the execution address/length of data to move from FLASH to RAM
-extern UINT32 Image$$ER_RAM_RW$$Base;
-extern UINT32 Image$$ER_RAM_RW$$Length;
-
-// here is the load address of the RAM code/data
-#define LOAD_RAM_RO_BASE Load$$ER_RAM_RO$$Base
-
-extern UINT32 LOAD_RAM_RO_BASE;
-extern UINT32 Load$$ER_RAM_RW$$Base;
-
-#if defined(TARGETLOCATION_RAM)
-
-extern UINT32 Load$$ER_RAM$$Base;
-extern UINT32 Image$$ER_RAM$$Length;
-
-#elif defined(TARGETLOCATION_FLASH)
-
-extern UINT32 Load$$ER_FLASH$$Base;
-extern UINT32 Image$$ER_FLASH$$Length;
-
-#else
-    !ERROR
-#endif
-
-UINT32 LOAD_IMAGE_Start;
-UINT32 LOAD_IMAGE_Length;
-UINT32 LOAD_IMAGE_CalcCRC;
 
 #if defined(PLATFORM_ARM_OS_PORT) && defined(TCPIP_LWIP_OS)
 extern UINT32 Load$$ER_LWIP_OS$$RW$$Base; 
@@ -123,56 +85,6 @@ static void __section("SectionForBootstrapOperations") Prepare_Zero( UINT32* dst
         extraLen--;
     }
 }
-
-#if !defined(PLATFORM_ARM_OS_PORT) || defined(__GNUC__)
-void __section("SectionForBootstrapOperations") PrepareImageRegions()
-{
-    //
-    // Copy RAM RO regions into proper location.
-    //
-    {
-        UINT32* src = (UINT32*)&LOAD_RAM_RO_BASE; 
-        UINT32* dst = (UINT32*)&IMAGE_RAM_RO_BASE;
-        UINT32  len = (UINT32 )&IMAGE_RAM_RO_LENGTH; 
-
-        Prepare_Copy( src, dst, len );
-    }
-
-    //
-    // Copy RAM RW regions into proper location.
-    //
-    {
-        UINT32* src = (UINT32*)&Load$$ER_RAM_RW$$Base; 
-        UINT32* dst = (UINT32*)&Image$$ER_RAM_RW$$Base;
-        UINT32  len =  (UINT32)&Image$$ER_RAM_RW$$Length; 
-
-        Prepare_Copy( src, dst, len );
-    }
-
-    //
-    // Initialize RAM ZI regions.
-    //
-    {
-        UINT32* dst = (UINT32*)&Image$$ER_RAM_RW$$ZI$$Base;
-        UINT32  len = (UINT32 )&Image$$ER_RAM_RW$$ZI$$Length;
-
-        Prepare_Zero( dst, len );
-    }
-}
-#else
-extern "C" void PrepareImageRegions()
-{
-    // This space intentionally left blank... 8^)
-    //
-    // The OS boot of CLR on CMSIS-RTX doesn't
-    // use this as it relies on the C/C++ runtime
-    // to handle initialization. However, to keep
-    // from adding more libraries or #if checks
-    // in code this is defined to allow normal
-    // linking with the same HAL libs used in a 
-    // boot loader.
-}
-#endif
 
 #pragma arm section code
 
@@ -276,7 +188,7 @@ void HAL_EnterBooterMode()
 
             ::Watchdog_ResetCounter();
 
-            BYTE *data  = (BYTE*)  private_malloc(pBlockRegionInfo->BytesPerBlock);
+            BYTE *data  = (BYTE*)  malloc(pBlockRegionInfo->BytesPerBlock);
 
             if(data != NULL)
             {
@@ -305,7 +217,7 @@ void HAL_EnterBooterMode()
                 // write back to sector, as we only change one bit from 0 to 1, no need to erase sector
                 bRet = (TRUE == pBlockDevice->Write( configSectAddress, pBlockRegionInfo->BytesPerBlock, data, FALSE ));
 
-                private_free(data);
+                free(data);
             }
         }
 
@@ -330,8 +242,6 @@ void HAL_Initialize()
 
     HAL_CONTINUATION::InitializeList();
     HAL_COMPLETION  ::InitializeList();
-
-    HAL_Init_Custom_Heap();
 
     Time_Initialize();
     Events_Initialize();
@@ -512,55 +422,10 @@ void HAL_Uninitialize()
 
 extern "C"
 {
-#if defined( __GNUC__ )
-    extern "C++" int main(void);
-    extern void __libc_init_array();
-    void __main()
-    {
-        // Copy writeable data and zero init BSS
-        PrepareImageRegions();
-
-        // Call static constructors
-        __libc_init_array();
-
-        // Call the application's entry point.
-        main();
-    }
-#endif
 
 #if !defined(PLATFORM_ARM_OS_PORT)
 void BootEntry()
 {
-#if !defined(BUILD_RTM)
-    {
-        int  marker;
-        int* ptr = &marker - 1; // This will point to the current top of the stack.
-        int* end = &StackBottom;
-
-        while(ptr >= end)
-        {
-            *ptr-- = 0xBAADF00D;
-        }
-    }
-#endif
-
-    // these are needed for patch access
-
-#if defined(TARGETLOCATION_RAM)
-
-    LOAD_IMAGE_Start  = (UINT32)&Load$$ER_RAM$$Base;
-    LOAD_IMAGE_Length = (UINT32)&Image$$ER_RAM$$Length;
-
-#elif defined(TARGETLOCATION_FLASH)
-
-    LOAD_IMAGE_Start  = (UINT32)&Load$$ER_FLASH$$Base;
-    LOAD_IMAGE_Length = (UINT32)&Image$$ER_FLASH$$Length;
-
-#else
-    !ERROR
-#endif
-
-    LOAD_IMAGE_Length += (UINT32)&IMAGE_RAM_RO_LENGTH + (UINT32)&Image$$ER_RAM_RW$$Length;
 
 #if !defined(BUILD_RTM)
     g_Boot_RAMConstants_CRC = Checksum_RAMConstants();
@@ -581,12 +446,6 @@ void BootEntry()
 #else
     DEBUG_TRACE1(TRACE_ALWAYS, "ARM Compiler version %d\r\n", __ARMCC_VERSION);
 #endif
-
-    UINT8* BaseAddress;
-    UINT32 SizeInBytes;
-
-    HeapLocation( BaseAddress,    SizeInBytes );
-    memset      ( BaseAddress, 0, SizeInBytes );
 
     debug_printf("\f");
 
@@ -629,7 +488,7 @@ void BootEntry()
 
 
 #if defined(PLATFORM_ARM_OS_PORT)
-extern "C" void STM32F4_BootstrapCode();
+extern "C" void BootstrapCode();
 
 // performs base level system initialization
 // This typically consists of setting up clocks
@@ -647,7 +506,7 @@ extern "C" void STM32F4_BootstrapCode();
 // as the kernel isn't initialized yet either.
 extern "C" void SystemInit()
 {
-    STM32F4_BootstrapCode();
+    BootstrapCode();
     CPU_Initialize();
     __enable_irq();
 }
@@ -682,79 +541,6 @@ void lcd_printf( const char* format, ... )
     va_start( arg_ptr, format );
 
     hal_vfprintf( STREAM_LCD, format, arg_ptr );
-}
-
-#endif  // !defined(BUILD_RTM)
-
-#if !defined(BUILD_RTM)
-
-UINT32 Checksum_RAMConstants()
-{
-    UINT32* RAMConstants = (UINT32*)&IMAGE_RAM_RO_BASE; 
-    UINT32  Length       = (UINT32 )&IMAGE_RAM_RO_LENGTH; 
-
-    UINT32 crc;
-
-    // start with Vector area CRC
-    crc = SUPPORT_ComputeCRC(NULL, 0x00000020, 0);
-
-    // add the big block of RAM constants to CRC
-    crc = SUPPORT_ComputeCRC(RAMConstants, Length, crc);
-
-    return crc;
-}
-
-void Verify_RAMConstants( void* arg )
-{
-    BOOL BreakpointOnError = (BOOL)arg;
-
-    //debug_printf("RAMC\r\n");
-
-    UINT32 crc = Checksum_RAMConstants();
-
-    if (crc != g_Boot_RAMConstants_CRC)
-    {
-        hal_printf("RAMC CRC:%08x!=%08x\r\n", crc, g_Boot_RAMConstants_CRC);
-
-        UINT32* ROMConstants  = (UINT32*)&LOAD_RAM_RO_BASE;
-        UINT32* RAMConstants  = (UINT32*)&IMAGE_RAM_RO_BASE;
-        UINT32  Length        = (UINT32 )&IMAGE_RAM_RO_LENGTH;
-        BOOL    FoundMismatch = FALSE;
-
-        for(int i = 0; i < Length; i += 4)
-        {
-            if(*RAMConstants != *ROMConstants)
-            {
-                hal_printf( "RAMC %08x:%08x!=%08x\r\n", (UINT32) RAMConstants, *RAMConstants, *ROMConstants );
-
-                if(!FoundMismatch) lcd_printf( "\fRAMC:%08x\r\n", (UINT32)RAMConstants );  // first one only to LCD
-                FoundMismatch = TRUE;
-            }
-
-            RAMConstants++;
-            ROMConstants++;
-        }
-
-        if(!FoundMismatch)
-        {
-            // the vector area must have been trashed
-            lcd_printf("\fRAMC:%08x\r\n", (UINT32) NULL);
-            RAMConstants = (UINT32*)NULL;
-
-            for(int i = 0; i < 32; i += 4)
-            {
-                hal_printf( "RAMC %02x:%08x\r\n", i, *RAMConstants   );
-                lcd_printf( "%02x:%08x\r\n"     , i, *RAMConstants++ );
-            }
-        }
-
-        DebuggerPort_Flush( HalSystemConfig.DebugTextPort );
-
-        if(BreakpointOnError)
-        {
-            HARD_BREAKPOINT();
-        }
-    }
 }
 
 #endif  // !defined(BUILD_RTM)

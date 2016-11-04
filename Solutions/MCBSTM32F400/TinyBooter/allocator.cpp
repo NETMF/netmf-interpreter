@@ -41,3 +41,16 @@ void operator delete[] (void*)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// the following remapping seems to be required by the crypto libs, as soon as those are reworked this should be removed
+// remap private_malloc to standard C malloc
+void *private_malloc(size_t size)
+{
+    return  malloc(size); 
+}
+
+// remap private_free to standard C free
+void private_free(void *ptr)
+{
+    free(ptr);
+}

@@ -130,7 +130,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
     // Copy the whole block to a buffer, for NonXIP or need to erase block
     if ((eraseWrite) || (!m_fSupportsXIP))
     {        
-        configurationInBytes =(BYTE*)private_malloc(writeLengthInBytes);
+        configurationInBytes =(BYTE*)malloc(writeLengthInBytes);
 
         // load data to the local buffer.
         if (configurationInBytes)
@@ -154,7 +154,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
         // rewrite from the start of block
         m_device->Write( m_cfgPhysicalAddress, writeLengthInBytes, configurationInBytes, FALSE ); 
 
-        private_free(configurationInBytes);
+        free(configurationInBytes);
 
 
     }

@@ -31,11 +31,6 @@
     <PlatformIndependentLibs Include="Diagnostics.$(LIB_EXT)"/>
   </ItemGroup>
 
-  <ItemGroup> <!-- SimpleHeap is used by graphics to store data for bitmaps -->
-    <RequiredProjects        Include="$(SPOCLIENT)\DeviceCode\pal\SimpleHeap\dotNetMF.proj"/>
-    <DriverLibs              Include="SimpleHeap.$(LIB_EXT)"/>
-  </ItemGroup>
-
   <ItemGroup> <!-- graphics libs needed by BuildHelper (for munging bitmaps) and TFConvert (for compressing font files) -->
     <RequiredProjects        Include="$(SPOCLIENT)\CLR\Graphics\dotNetMF.proj" />
     <PlatformIndependentLibs Include="graphics.$(LIB_EXT)"/>

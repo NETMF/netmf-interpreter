@@ -18,21 +18,10 @@ Loader_Engine g_eng;
 
 //--//
 
-HAL_DECLARE_CUSTOM_HEAP( SimpleHeap_Allocate, SimpleHeap_Release, SimpleHeap_ReAllocate );
-
-//--//
-
 void ApplicationEntryPoint()
 {
     INT32 timeout       = 20000; // 20 second timeout
     bool  enterBootMode = false;
-
-    // crypto API needs to allocate memory. Initialize simple heap for it. 
-    UINT8* BaseAddress;                                 
-    UINT32 SizeInBytes;                                 
-                                                        
-    HeapLocation         ( BaseAddress, SizeInBytes );  
-    SimpleHeap_Initialize( BaseAddress, SizeInBytes );  
 
     g_eng.Initialize( HalSystemConfig.DebuggerPorts[ 0 ] );
 

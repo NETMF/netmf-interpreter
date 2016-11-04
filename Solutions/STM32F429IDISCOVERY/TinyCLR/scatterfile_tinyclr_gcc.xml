@@ -50,12 +50,9 @@
     <Set Name="Stack_Size"              Value="%CCM_Size%" />
 
     <!-- Internal SRAM -->
-    <!-- FIXME: Dynamically after RAM_RW region, properly aligned. -->
-    <Set Name="Heap_BaseAddress"        Value="0x20008000"/>
-    <Set Name="Heap_Size"               Value="0x00027000"/><!-- 156K -->
-
-    <Set Name="CustomHeap_Size"         Value="0x00001000"/><!--  4K -->
-
+    <!-- Heap base address will be dynamically placed after RAM_RW region, properly aligned and filling the remain available RAM. -->
+    <Set Name="Heap_BaseAddress"        Value=""/>
+    <Set Name="Heap_Size"               Value="0x000"/> <!--set this to 0 to fill all available RAM-->
 
     <If Name="TARGETLOCATION" Value="FLASH">
         <Set Name="Valid"               Value="true"/>
@@ -79,19 +76,60 @@
     <NamedGroup Name="SECTIONS">
         <!-- ========= INTERNAL FLASH ============================================ -->
         <ExecRegion Name="ER_%TARGETLOCATION%" Options="&gt;LR_%TARGETLOCATION%">
-            <FileMapping Name="*" Options="(i.EntryPoint)" />
-            <FileMapping Name="*" Options="(SectionForBootstrapOperations)" />
-            <FileMapping Name="*" Options="(SectionForFlashOperations)"/>
-            <FileMapping Name="*" Options="(.text*)" />
-            <FileMapping Name="*" Options="(i.*)" />
-            <FileMapping Name="*" Options="(.rodata*)" />
-            <FileMapping Name="*" Options="(rodata)" />
-            <FileMapping Name="*" Options="(.constdata*)" />
-            <FileMapping Name="*" Options="(.conststring*)" />
-            <FileMapping Name="*" Options="(.glue*)" />
-	    <FileMapping Name="*" Options="(tinyclr_metadata)" />
-            <Include File="%SPOCLIENT%\Solutions\STM32F429IDISCOVERY\scatterfile_gcc_missing_symbols.xml"/>
+            <FileMapping Name="*(i.EntryPoint)"/>
+            <FileMapping Name="*(SectionForBootstrapOperations)"/>
+            <FileMapping Name="*(SectionForFlashOperations)"/>
+
+            <FileMapping Name="*(.text .text.* .gnu.linkonce.t.*);"/>
+            <FileMapping Name="*(i.*)"/>
+            <FileMapping Name="*(.glue_7t .glue_7);"/>
+            <FileMapping Name="*(.eh_frame);"/>
+            <FileMapping Name="*(.eh_frame_hdr);"/>
+            <FileMapping Name="*(.gcc_except_table);"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="KEEP(*(.init))"/>
+            <FileMapping Name="KEEP(*(.fini))"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="*(.rodata .rodata.* .constdata .constdata.* .conststring .conststring* .gnu.linkonce.r.*)"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="*(.ARM.extab* .gnu.linkonce.armextab.*)"/>
+
+            <!-- preinit_array -->
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="PROVIDE_HIDDEN (__preinit_array_start = .);"/>
+            <FileMapping Name="KEEP(*(.preinit_array .preinit_array.*))"/>
+            <FileMapping Name="PROVIDE_HIDDEN (__preinit_array_end = .);"/>
+            
+            <!-- init_array -->
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="PROVIDE_HIDDEN (__init_array_start = .);"/>
+            <FileMapping Name="KEEP(*(SORT(.init_array.*)))"/>
+            <FileMapping Name="KEEP(*(.init_array))"/>
+            <FileMapping Name="PROVIDE_HIDDEN (__init_array_end = .);"/>
+
+            <!-- fini_array -->
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="PROVIDE_HIDDEN (__fini_array_start = .);"/>
+            <FileMapping Name="KEEP(*(SORT(.fini_array.*)))"/>
+            <FileMapping Name="KEEP(*(.fini_array))"/>
+            <FileMapping Name="PROVIDE_HIDDEN (__fini_array_end = .);"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>
+            <FileMapping Name="*(tinyclr_metadata)" />     
         </ExecRegion>
+
+        <FileMapping Name=". = ALIGN(4);"/>
+        <FileMapping Name="__exidx_start = .;"/>
+
+        <ExecRegion Name=".ARM.exidx" Options="&gt;LR_%TARGETLOCATION% ">
+            <FileMapping Name="*(.ARM.exidx* .gnu.linkonce.armexidx.*)"/>
+        </ExecRegion> 
+
+        <FileMapping Name=". = ALIGN(4);"/>
+        <FileMapping Name="__exidx_end = .;"/>
 
         <!-- ========= INTERNAL RAM ============================================= -->
         <!-- Writeable Vector table -->
@@ -104,20 +142,49 @@
             Since this starts the SRAM block, it's aligned just fine for any size table.
         -->
         <ExecRegion Name="ER_VECTORS" Options="&gt;IRAM">
+            <FileMapping Name=". = ALIGN(4);"/>
             <FileMapping Name="*" Options="(VectorTable)" />
+            <FileMapping Name=". = ALIGN(4);"/>
         </ExecRegion>
+        
+        <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM">
+            <!-- Flash programming from Flash is safe on STM32 -->
+            <!-- No need to place Flash programming code in RAM -->
+            <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
+        </ExecRegion>
+
+        <!-- used by the startup to initialize data -->
+        <FileMapping Name="_sidata = LOADADDR (ER_RAM_RW);"/>
 
         <ExecRegion Name="ER_RAM_RW" Align="0x10" Base="ADDR(ER_VECTORS) + SIZEOF(ER_VECTORS)" Options="&gt;IRAM AT&gt;LR_FLASH ">
-            <FileMapping Name="*" Options="(rwdata)" />
-            <FileMapping Name="*" Options="(.data*)" />
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- create a global symbol at data start -->
+            <FileMapping Name="_sdata = .;"/>
+            <FileMapping Name="*(rwdata)"/>
+            <FileMapping Name="*(.data .data.* .gnu.linkonce.d.*)"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>     
+            <!-- define a global symbol at data end -->
+            <FileMapping Name="_edata = .;"/>
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
-            <FileMapping Name="*" Options="(.bss*)" />
-            <FileMapping Name="*" Options="(.zidata*)" />
-            <FileMapping Name="PROVIDE(__exidx_start = .);" />
-            <FileMapping Name="PROVIDE(__exidx_end = .);" />
-            <FileMapping Name="*" Options="(COMMON)" />
+        <!-- Uninitialized data section -->
+        <FileMapping Name=". = ALIGN(4);"/>
+
+        <ExecRegion Name=".bss" Options="&gt;IRAM AT&gt;IRAM">
+            <!-- This is used by the startup in order to initialize the .bss secion -->
+            <!-- define a global symbol at bss start -->
+            <FileMapping Name="_sbss = .;"/>
+            <FileMapping Name="__bss_start__ = _sbss;"/>
+
+            <FileMapping Name="*(.bss .bss.* .gnu.linkonce.b.*)" />
+            <FileMapping Name="*(.zidata)" />
+            <FileMapping Name="*(COMMON)" />
+            
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- define a global symbol at bss end -->
+            <FileMapping Name="_ebss = .;"/>
+            <FileMapping Name="__bss_end__ = _ebss;"/>
         </ExecRegion>
 
         <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH">
@@ -126,40 +193,49 @@
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
-        <ExecRegion Name="ER_HEAP_BEGIN" Base="%Heap_BaseAddress%" Options="&gt;IRAM">
-            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        <!-- Managed heap region -->
+        <!-- Managed heap takes all available RAM up to the last RAM address -->
+        <ExecRegion Name="ER_MANAGED_HEAP" Options="&gt;IRAM">
+            <FileMapping Name=". = ALIGN(4);"/> 
+            <FileMapping Name="HeapBegin = .;"/>
+
+            <!-- CONFIG MANAGED HEAP SIZE *** CHOSE ONLY ONE *** -->
+            <!-- too make managed heap fill all available RAM use the line bellow -->
+            <FileMapping Name=". = %IRAM_Size% - SIZEOF(ER_VECTORS) - SIZEOF(.bss) - SIZEOF(ER_RAM_RW) - 8;"/>
+            <!-- too make managed heap fill the requested size use the line bellow -->
+            <!--<FileMapping Name=". = %Heap_Size%;"/>-->
+            
+            <FileMapping Name="HeapEnd = .;"/>
         </ExecRegion>
 
-        <!-- everything between heapbegin and heapend will be allocated for a heap -->
-
-        <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;IRAM" >
-            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        <ExecRegion Name="/DISCARD/">
+            <!--<FileMapping Name="*(.ARM.exidx*)" />-->
+            <!--<FileMapping Name="*(.ARM.extab*)" />-->
+            <FileMapping Name="libc.a ( * )" />
+            <FileMapping Name="libm.a ( * )" />
+            <FileMapping Name="libgcc.a ( * )" />
         </ExecRegion>
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;IRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
-        </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="ADDR(ER_CUSTOM_HEAP_BEGIN) + %CustomHeap_Size%" Options="&gt;IRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
-        </ExecRegion>
-
-      <ExecRegion Name="/DISCARD/">
-        <FileMapping Name="*" Options="(.ARM.exidx*)" />
-        <FileMapping Name="*" Options="(.ARM.extab*)" />
-      </ExecRegion>
 
       <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackBottom)" />
-        </ExecRegion>
+ 
+        <!-- heap and stack goes into CCM for faster access
+            heap starts at CCM initial address and grows up
+            stack pointer is at CCM last address and grows downward 
+        -->
 
-        <!--8 for the two 32bit values in the SectionForStack* sections, This keeps the region
-             limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - 8" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
+        <!-- ======== NOTE WHEN USING THE GRAPHICS LIBRARY =======  -->
+        <!--
+            The use of the Graphics library may require a substantial amount of heap RAM (because of bitmap manipulation and such)
+            Make sure that the heap bellow has enough room for your requirements. If not make sure to realocate it to a suitable RAM section. 
+        -->
+
+        <!-- Highest address of the user mode stack -->
+        <FileMapping Name="_estack = %CCM_BaseAddress% + %CCM_Size% - 8;"/>
+
+        <ExecRegion Name="._user_heap_stack" Options="&gt;D_CCM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="PROVIDE ( end = . );" />
+            <FileMapping Name="PROVIDE ( _end = . );" />
         </ExecRegion>
 
         <ExecRegion Name="ER_CONFIG" Options="&gt;LR_CONFIG">
@@ -167,17 +243,6 @@
         </ExecRegion>
     </NamedGroup>
 
-    <!-- The following variables are used to simulate the ones autogenerated by ARMCC -->
-    <GlobalVariable Name="Load$$ER_%TARGETLOCATION%$$Base"          Value="LOADADDR(ER_%TARGETLOCATION%)"/>
-    <GlobalVariable Name="Image$$ER_%TARGETLOCATION%$$Length"       Value="SIZEOF(ER_%TARGETLOCATION%)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Base"                   Value="ADDR(ER_RAM_RO)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Length"                 Value="SIZEOF(ER_RAM_RO)"/>
-    <GlobalVariable Name="Load$$ER_RAM_RO$$Base"                    Value="LOADADDR(ER_RAM_RO)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$Base"                   Value="ADDR(ER_RAM_RW)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$Length"                 Value="SIZEOF(ER_RAM_RW)"/>
-    <GlobalVariable Name="Load$$ER_RAM_RW$$Base"                    Value="LOADADDR(ER_RAM_RW)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Base"               Value="ADDR(.bss)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RW$$ZI$$Length"             Value="SIZEOF(.bss)"/>
     <GlobalVariable Name="__use_no_semihosting_swi"                 Value="0"/>
 </ScatterFile>
 

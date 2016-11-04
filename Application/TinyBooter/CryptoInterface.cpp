@@ -111,7 +111,7 @@ bool CryptoState::VerifySignature( UINT32 keyIndex )
             }
 
             // free RAM buffer
-            private_free(g_ConfigBuffer);
+            free(g_ConfigBuffer);
             g_ConfigBuffer = NULL;
 
             return fRet;

@@ -299,9 +299,9 @@ extern int hal_fprintf_ssl(OPENSSL_TYPE__FILE* x, const char* format, ... );
 #define TINYCLR_SSL_QSORT               qsort
 #define TINYCLR_SSL_EXIT(x)             if (x==0) return else TINYCLR_SSL_ASSERT(x)
 #define TINYCLR_SSL_ABORT()             {TINYCLR_SSL_PRINTF("%s:%d",__FILE__,__LINE__);TINYCLR_SSL_ASSERT(1);}
-#define TINYCLR_SSL_MALLOC              private_malloc 
-#define TINYCLR_SSL_FREE                private_free
-#define TINYCLR_SSL_REALLOC             private_realloc
+#define TINYCLR_SSL_MALLOC              malloc 
+#define TINYCLR_SSL_FREE                free
+#define TINYCLR_SSL_REALLOC             realloc
 #define TINYCLR_SSL_GETENV(x)           (NULL)
 #else
 #define TINYCLR_SSL_STRCAT              strcat

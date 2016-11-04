@@ -31,10 +31,6 @@
     <SubDirectories Include="TouchPanel"/>
     <SubDirectories Include="OneWire"/>    
   </ItemGroup>
-
-  <ItemGroup>
-    <SubDirectories Include="SimpleHeap"/>
-  </ItemGroup>
  
   <ItemGroup Condition="'$(PLATFORM_EMULATED_FLOATINGPOINT)'!='true'"> 
     <SubDirectories Include="Double" />    <!-- Support Double precison floating point -->

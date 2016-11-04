@@ -9,8 +9,6 @@
 
 #include "tinyhal.h"
 
-HAL_DECLARE_NULL_HEAP();
-
 void ApplicationEntryPoint()
 {
     int nSects = 0;

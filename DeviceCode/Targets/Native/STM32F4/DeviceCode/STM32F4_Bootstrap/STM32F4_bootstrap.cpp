@@ -285,9 +285,7 @@ void __section("SectionForBootstrapOperations") STM32F4_BootstrapCode()
 __section("SectionForBootstrapOperations") void BootstrapCode()
 {
     STM32F4_BootstrapCode();
-    
-    PrepareImageRegions();
-    
+       
     BootstrapCode_GPIO();
 
 }
