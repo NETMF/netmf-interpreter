@@ -103,4 +103,3 @@ LPCSTR Time_CurrentDateTimeToString()
 {
     return NULL;
 }
-

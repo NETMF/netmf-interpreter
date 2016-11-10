@@ -242,7 +242,11 @@ void HAL_EnterBooterMode()
                     {
 
                         // will be either directly read from  NOR
+#ifdef FEATURE_CPUCACHE            
                         dataAddress = (volatile UINT32*)CPU_GetUncachableAddress(&pAddr[i]);
+#else
+                        dataAddress = (volatile UINT32*)&pAddr[i];
+#endif 
 
                         // write directly
                         bRet = (TRUE == pBlockDevice->Write( (UINT32)dataAddress, sizeof(UINT32), (PBYTE)&c_Key, FALSE ));
@@ -460,7 +464,9 @@ void HAL_Uninitialize()
         }
     }    
 
-    //LCD_Uninitialize();
+    #ifdef FEATURE_LCD
+    LCD_Uninitialize();
+    #endif
 
     I2C_Uninitialize();
 

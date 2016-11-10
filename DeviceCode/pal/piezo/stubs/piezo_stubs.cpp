@@ -6,21 +6,20 @@
 
 //--//
 
-void Piezo_Initialize()
+__weak void Piezo_Initialize()
 {
 }
 
-void Piezo_Uninitialize()
+__weak void Piezo_Uninitialize()
 {
 }
 
-BOOL Piezo_Tone( UINT32 Frequency_Hertz, UINT32 Duration_Milliseconds )
+__weak BOOL Piezo_Tone( UINT32 Frequency_Hertz, UINT32 Duration_Milliseconds )
 {
     return TRUE;
 }
 
-BOOL Piezo_IsEnabled()
+__weak BOOL Piezo_IsEnabled()
 {
     return FALSE;
 }
-

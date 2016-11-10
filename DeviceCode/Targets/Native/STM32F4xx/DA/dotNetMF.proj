@@ -1,0 +1,33 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>CMSIS_DA</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{DC611111-BDE0-479C-A1A4-AC76DE4F96B6}</ProjectGuid>
+    <Description>CMSIS DA driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>CMSIS_DA.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\DA\dotNetMF.proj</ProjectPath>
+    <ManifestFile>CMSIS_DA.$(LIB_EXT).manifest</ManifestFile>
+    <Groups></Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Targets\Native\STM32F4xx\DA</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="DA_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

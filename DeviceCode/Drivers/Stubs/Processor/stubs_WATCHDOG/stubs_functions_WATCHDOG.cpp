@@ -6,20 +6,19 @@
 
 //--//
 
-HRESULT Watchdog_Enable( UINT32 TimeoutMilliseconds, WATCHDOG_INTERRUPT_CALLBACK isr, void* context )
+__weak HRESULT Watchdog_Enable( UINT32 TimeoutMilliseconds, WATCHDOG_INTERRUPT_CALLBACK isr, void* context )
 {
     return CLR_E_FAIL;
 }
 
-void Watchdog_Disable()
+__weak void Watchdog_Disable()
 {
 }
 
-void Watchdog_ResetCpu()
+__weak void Watchdog_ResetCpu()
 {
 }
 
-void Watchdog_ResetCounter()
+__weak void Watchdog_ResetCounter()
 {
 }
-

@@ -2,27 +2,28 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <tinyhal.h>
 #include <stdio.h>
 
 //--//
 
-void CPU_FlushCaches()
+__weak void CPU_FlushCaches()
 {
 }
 
-void CPU_DrainWriteBuffers()
+__weak void CPU_DrainWriteBuffers()
 {
 }
 
-void CPU_InvalidateCaches()
+__weak void CPU_InvalidateCaches()
 {
 }
 
-void CPU_EnableCaches()
+__weak void CPU_EnableCaches()
 {
 }
 
-void CPU_DisableCaches()
+__weak void CPU_DisableCaches()
 {
 }
 
@@ -38,15 +39,14 @@ template <typename T> void CPU_InvalidateAddress( volatile T* address )
 
 //--//
 
-size_t CPU_GetCachableAddress( size_t address )
+__weak size_t CPU_GetCachableAddress( size_t address )
 {
     return address;
 }
 
 //--//
 
-size_t CPU_GetUncachableAddress( size_t address )
+__weak size_t CPU_GetUncachableAddress( size_t address )
 {
     return address;
 }
-

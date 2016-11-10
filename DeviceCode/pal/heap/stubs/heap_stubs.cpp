@@ -6,7 +6,7 @@
 
 //--//
 
-void HeapLocation( UINT8*& BaseAddress, UINT32& SizeInBytes )
+__weak void HeapLocation( UINT8*& BaseAddress, UINT32& SizeInBytes )
 {
     NATIVE_PROFILE_PAL_HEAP();
     BaseAddress = 0;

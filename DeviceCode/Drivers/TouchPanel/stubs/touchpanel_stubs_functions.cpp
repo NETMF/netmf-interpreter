@@ -6,21 +6,21 @@
 
 //--//
 
-BOOL HAL_TOUCH_PANEL_Enable(GPIO_INTERRUPT_SERVICE_ROUTINE touchIsrProc)
+__weak BOOL HAL_TOUCH_PANEL_Enable(GPIO_INTERRUPT_SERVICE_ROUTINE touchIsrProc)
 {
     return FALSE;
 }
 
-BOOL HAL_TOUCH_PANEL_Disable()
+__weak BOOL HAL_TOUCH_PANEL_Disable()
 {
     return FALSE;
 }
 
-void HAL_TOUCH_PANEL_GetPoint( TOUCH_PANEL_SAMPLE_FLAGS* pTipState, int* pSource, int* pUnCalX, int* pUnCalY)
+__weak void HAL_TOUCH_PANEL_GetPoint( TOUCH_PANEL_SAMPLE_FLAGS* pTipState, int* pSource, int* pUnCalX, int* pUnCalY)
 {
 }
 
-HRESULT HAL_TOUCH_PANEL_GetDeviceCaps(unsigned int iIndex, void* lpOutput)
+__weak HRESULT HAL_TOUCH_PANEL_GetDeviceCaps(unsigned int iIndex, void* lpOutput)
 {
     return 0;
     // return CLR_E_NOTIMPL;

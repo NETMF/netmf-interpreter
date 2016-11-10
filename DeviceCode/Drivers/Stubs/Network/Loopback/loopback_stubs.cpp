@@ -24,21 +24,21 @@ LOOPBACK_Driver g_LOOPBACK_Driver;
 
 INIT_FNCS RTP_FAR loop_fnc;
 
-void init_loopback(void)
+__weak void init_loopback(void)
 {
 }
 
-int LOOPBACK_Driver::Open( )
+__weak int LOOPBACK_Driver::Open( )
 {
     return 0;
 }
 
-BOOL LOOPBACK_Driver::Close( )
+__weak BOOL LOOPBACK_Driver::Close( )
 {
     return FALSE;
 }
 
-BOOL  LOOPBACK_Driver::Bind  ( )
+__weak BOOL  LOOPBACK_Driver::Bind  ( )
 {
     return FALSE;
 }

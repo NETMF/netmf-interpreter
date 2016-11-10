@@ -1,7 +1,5 @@
 #include <tinyhal.h>
 
-#include "cmsis_generic.h"
-
 // only one "generic" port supported for ITM tracing messages to hardware debugger
 // so pInstance is ignored
 static int ItmPort_Write( void* pInstance, const char* Data, size_t size )

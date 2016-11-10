@@ -26,6 +26,9 @@
 #if defined(PLATFORM_ARM_STM32F4DISCOVERY)
 #define HAL_SYSTEM_NAME "STM32F4DISCOVERY"
 
+// FIXME
+// the following can be removed after complete migration to CMSIS HAL/PAL 
+#define STM32F4XX 1
 #define PLATFORM_ARM_STM32F4 1 // STM32F407 cpu
 #define USB_ALLOW_CONFIGURATION_OVERRIDE 1
 
@@ -39,15 +42,7 @@
 // constants
 //
 
-#define GPIO_PORTA 0
-#define GPIO_PORTB 1
-#define GPIO_PORTC 2
-#define GPIO_PORTD 3
-#define GPIO_PORTE 4
-// The remaining ports are not broken out - except PH0 and PH1,
-// which are deliberately omitted to keep the range continuous.
-
-#define PORT_PIN(port,pin) ( ( (int)port) * 16 + ( pin ) )
+#define GPIO_PINS {GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2,GPIO_PIN_3,GPIO_PIN_4,GPIO_PIN_5,GPIO_PIN_6,GPIO_PIN_7,GPIO_PIN_8,GPIO_PIN_9,GPIO_PIN_10,GPIO_PIN_11,GPIO_PIN_12,GPIO_PIN_13,GPIO_PIN_14,GPIO_PIN_15}
 
 // System clock
 #define SYSTEM_CLOCK_HZ                 168000000   // 168 MHz
@@ -55,15 +50,7 @@
 #define SYSTEM_APB1_CLOCK_HZ             42000000   //  42 MHz
 #define SYSTEM_APB2_CLOCK_HZ             84000000   //  84 MHz
 
-#define SYSTEM_CRYSTAL_CLOCK_HZ           8000000   // 8 MHz external clock
-
-#define SUPPLY_VOLTAGE_MV                    3300   // 3.3V supply
-
-#define CLOCK_COMMON_FACTOR               1000000   // GCD(SYSTEM_CLOCK_HZ, 1M)
-
 #define SLOW_CLOCKS_PER_SECOND            1000000   // 1 MHz
-#define SLOW_CLOCKS_TEN_MHZ_GCD           1000000   // GCD(SLOW_CLOCKS_PER_SECOND, 10M)
-#define SLOW_CLOCKS_MILLISECOND_GCD          1000   // GCD(SLOW_CLOCKS_PER_SECOND, 1k)
 
 #define FLASH_MEMORY_Base               0x08000000
 #define FLASH_MEMORY_Size               0x00100000
@@ -97,38 +84,80 @@
 #define USB_MAX_QUEUES                  4  // 4 endpoints (EP0 + 3)
 
 // System Timer Configuration
-#define STM32F4_32B_TIMER 2
-#define STM32F4_16B_TIMER 3
+// #define HAL_32B_TIMER 2
+// #define HAL_16B_TIMER 3
 
+/* Choose if wake-up from STOP mode is in fast mode or not.
+This selects which regulator is on during stop mode.
+By keeping the internal regulator ON during Stop mode, the consumption 
+is higher although the startup time is reduced.  
+When the voltage regulator operates in low power mode, an additional 
+startup delay is incurred when waking up from Stop mode. */
+//#define FAST_WAKEUP_FROM_STOP
+
+/* GPIOs */
+// PA.0  'User' button
+// PD.13 LED3 (orange)
+// PD.12 LED4 (green)
+// PD.14 LED5 (red)
+// PD.15 LED6 (blue)
+    
+#define GPIO_PORT_PINS \
+{\
+    {GPIOA, GPIO_PIN_0},\
+    {GPIOD, GPIO_PIN_13},\
+    {GPIOD, GPIO_PIN_12},\
+    {GPIOD, GPIO_PIN_14},\
+    {GPIOD, GPIO_PIN_15},\
+}
+
+/* ADC */
 // Pin Configuration
-#define STM32F4_ADC 3
-#define STM32F4_AD_CHANNELS {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
+#define USER_ADC 3
+// choose a maximum of 8 channels and a minimum of one
+// ** IMPORTANT ** internal channels 16 and 17 are not available in ADC3
+#define AD_CHANNELS {0,1,2,3,4,5,6,7}//,8,9,10,11,12,13,14,15,16,17}
 
-#define STM32F4_PWM_TIMER {4,4,4,4}
-#define STM32F4_PWM_CHNL  {0,1,2,3}
-#define STM32F4_PWM_PINS  {60,61,62,63} // PD12-PD15
+/* DAC */
+// Uncomment only one of the following defines for DAC
+//#define USE_DAC_CHANNEL_1
+//#define USE_DAC_CHANNEL_2
+#define USE_BOTH_DAC_CHANNEL
 
-#define STM32F4_SPI_SCLK_PINS {5, 29, 42} // PA5, PB13, PC10
-#define STM32F4_SPI_MISO_PINS {6, 30, 43} // PA6, PB14, PC11
-#define STM32F4_SPI_MOSI_PINS {7, 31, 44} // PA7, PB15, PC12
+#define PWM_TIMER {4,4,4,4}
+#define PWM_CHNL  {0,1,2,3}
+#define PWM_PINS  {60,61,62,63} // PD12-PD15
 
-#define STM32F4_I2C_PORT     1
-#define STM32F4_I2C_SCL_PIN  PORT_PIN( GPIO_PORTB, 8 ) // PB8
-#define STM32F4_I2C_SDA_PIN  PORT_PIN( GPIO_PORTB, 9 ) // PB9
+/* SPI */
+// add to SPI_PORTS array the SPI ports that are available in the solution 
+// please check which SPI ports are available in the device datasheet
+// uncomment the following define and leave the SPI ports that are available in your hardware
+#define SPI_PORTS   {SPI1, SPI2, SPI3}
+
+/* USART/UART */
+// add to USART_PORTS array the USART ports that are available in the solution 
+// please check which USART ports are available in the device datasheet
+// uncomment the following define and leave the USART ports that are available in your hardware and you intend to use
+// NOTE: UART5 is not supported because TX and RX are handled in different ports
+#define USART_PORTS                 {USART1, USART2, USART6}
+#define USART_PORTS_TX_RX           {GPIOA, GPIOD, GPIOC}
+// to use flow control, uncomment below define and leave the USART ports that are available in your hardware and you intend to use
+#define GPIO_NO_PORT                0
+#define USART_PORTS_FLOW_CONTROL    {GPIO_NO_PORT, GPIO_NO_PORT, GPIO_NO_PORT}
 
 #define STM32F4_UART_RXD_PINS {23, 54, 43} // PB7, D6, C11
 #define STM32F4_UART_TXD_PINS {22, 53, 42} // PB6, D5, C10
 #define STM32F4_UART_CTS_PINS {(BYTE)GPIO_PIN_NONE, 51, 59} // GPIO_PIN_NONE, D3, D11
 #define STM32F4_UART_RTS_PINS {(BYTE)GPIO_PIN_NONE, 52, 60} // GPIO_PIN_NONE, D4, D12
 
-// User LEDs
-#define LED3 PORT_PIN(GPIO_PORTD, 13) // PD.13 (orange)
-#define LED4 PORT_PIN(GPIO_PORTD, 12) // PD.12 (green)
-#define LED5 PORT_PIN(GPIO_PORTD, 14) // PD.14 (red)
-#define LED6 PORT_PIN(GPIO_PORTD, 15) // PD.15 (blue)
+// User LEDs are defined as GPIO ports above in GPIO_PORT_PINS @ the following indexes
+#define LED3 1  // (orange)
+#define LED4 2  // (green)
+#define LED5 3  // (red)
+#define LED6 4  // (blue)
 
 // TinyBooter entry using GPIO
-#define TINYBOOTER_ENTRY_GPIO_PIN       PORT_PIN(GPIO_PORTA, 0) // 'User' button
+#define TINYBOOTER_ENTRY_GPIO_PIN       0                       // 'User' button being GPIO port @ index 0 above in GPIO_PORT_PINS
 #define TINYBOOTER_ENTRY_GPIO_STATE     TRUE                    // Active high
 #define TINYBOOTER_ENTRY_GPIO_RESISTOR  RESISTOR_DISABLED       // No internal resistor, there is external pull-down (R39)
 
@@ -136,7 +165,7 @@
 // constants
 /////////////////////////////////////////////////////////
 
-#include <processor_selector.h>
+#include "processor_selector.h"
 
 #endif // PLATFORM_ARM_STM32F4DISCOVERY
 

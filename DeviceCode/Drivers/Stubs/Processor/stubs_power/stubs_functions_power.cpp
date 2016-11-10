@@ -6,7 +6,7 @@
 
 //--//
 
-void HAL_AssertEx()
+__weak void HAL_AssertEx()
 {
     // cause an abort and let the abort handler take over
     //*((char*)0xFFFFFFFF) = 'a';
@@ -14,7 +14,7 @@ void HAL_AssertEx()
 
 //--//
 
-BOOL CPU_Initialize()
+__weak BOOL CPU_Initialize()
 {
     return TRUE;
 }
@@ -27,18 +27,15 @@ BOOL CPU_Initialize()
 //{
 //}
 
-void CPU_ChangePowerLevel(POWER_LEVEL level)
+__weak void CPU_ChangePowerLevel(POWER_LEVEL level)
 {
 }
 
-BOOL CPU_IsSoftRebootSupported ()
+__weak BOOL CPU_IsSoftRebootSupported ()
 {
     return FALSE;
 }
 
-
-void CPU_Halt()
+__weak void CPU_Halt()
 {
 }
-
-

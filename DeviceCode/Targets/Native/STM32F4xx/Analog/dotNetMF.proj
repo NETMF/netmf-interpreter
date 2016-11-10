@@ -1,0 +1,33 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>CMSIS_Analog</AssemblyName>
+    <ProjectGuid>{BAF21A91-C7D1-43F3-A9D0-8098D48E2D29}</ProjectGuid>
+    <Size>
+    </Size>
+    <Description>CMSIS Analog driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>CMSIS_Analog.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Analog\dotNetMF.proj</ProjectPath>
+    <ManifestFile>CMSIS_Analog.$(LIB_EXT).manifest</ManifestFile>
+    <Groups></Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Targets\Native\STM32F4xx\DeviceCode\CMSIS_Analog</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="AD_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

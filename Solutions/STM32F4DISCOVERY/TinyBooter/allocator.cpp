@@ -41,3 +41,15 @@ void operator delete[] (void*)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// remap private_malloc to standard C malloc
+void *private_malloc(size_t size)
+{
+    return  malloc(size); 
+}
+
+// remap private_free to standard C free
+void private_free(void *ptr)
+{
+    free(ptr);
+}

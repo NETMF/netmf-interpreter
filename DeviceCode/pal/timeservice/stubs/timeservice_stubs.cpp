@@ -4,42 +4,42 @@
 
 #include <tinyhal.h>
 
-HRESULT TimeService_Initialize()
+__weak HRESULT TimeService_Initialize()
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT TimeService_UnInitialize()
+__weak HRESULT TimeService_UnInitialize()
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT TimeService_Start()
+__weak HRESULT TimeService_Start()
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT TimeService_Stop()
+__weak HRESULT TimeService_Stop()
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT TimeService_Update(UINT32 serverIP, UINT32 tolerance, TimeService_Status* status)
+__weak HRESULT TimeService_Update(UINT32 serverIP, UINT32 tolerance, TimeService_Status* status)
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT TimeService_GetLastSyncStatus(TimeService_Status* status)
+__weak HRESULT TimeService_GetLastSyncStatus(TimeService_Status* status)
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT TimeService_LoadSettings(TimeService_Settings* settings)
+__weak HRESULT TimeService_LoadSettings(TimeService_Settings* settings)
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT TimeService_SaveSettings(TimeService_Settings* settings)
+__weak HRESULT TimeService_SaveSettings(TimeService_Settings* settings)
 {
     return CLR_E_NOTIMPL;
 }

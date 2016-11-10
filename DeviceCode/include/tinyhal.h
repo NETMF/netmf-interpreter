@@ -399,7 +399,7 @@ struct HAL_SYSTEM_CONFIG
     COM_HANDLE               stdio;
 
     HAL_SYSTEM_MEMORY_CONFIG RAM1;
-    HAL_SYSTEM_MEMORY_CONFIG FLASH;
+    HAL_SYSTEM_MEMORY_CONFIG FLASH1;
 
     //--//
 
@@ -1268,7 +1268,7 @@ inline void HAL_Init_Custom_Heap()
 }
 
 
-//--//
+// //--//
 
 // hal cleanup for CLR reboot
 
@@ -1520,6 +1520,22 @@ extern bool g_fDoNotUninitializeDebuggerPort;
 #include <tinypal.h>
 #include <drivers.h>
 #include <tinybooterentry.h>
+
+//--//
+
+// HAL includes for CMSIS vendor implementations
+
+// STM32F4 series
+#if defined STM32F405xx|| defined STM32F415xx|| defined STM32F407xx|| defined STM32F417xx|| \
+    defined STM32F427xx|| defined STM32F437xx|| defined STM32F429xx|| defined STM32F439xx|| \
+    defined STM32F401xC|| defined STM32F401xE|| defined STM32F410Tx|| defined STM32F410Cx|| \
+    defined STM32F410Rx|| defined STM32F411xE|| defined STM32F446xx|| defined STM32F469xx|| \
+    defined STM32F479xx
+
+#include "stm32f4xx_hal.h"
+
+#endif
+
 
 //--//
 

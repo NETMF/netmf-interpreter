@@ -7,77 +7,77 @@
 //--//
 
 
-int USB_GetControllerCount()
+__weak int USB_GetControllerCount()
 {
     return 0;
 }
 
-BOOL USB_Initialize( int Controller )
+__weak BOOL USB_Initialize( int Controller )
 {
     return TRUE;
 }
 
-int USB_Configure( int Controller, const USB_DYNAMIC_CONFIGURATION *config )
+__weak int USB_Configure( int Controller, const USB_DYNAMIC_CONFIGURATION *config )
 {
     return 0;
 }
 
-const USB_DYNAMIC_CONFIGURATION * USB_GetConfiguration( int Controller )
+__weak const USB_DYNAMIC_CONFIGURATION * USB_GetConfiguration( int Controller )
 {
     return NULL;
 }
 
-BOOL USB_Uninitialize( int Controller )
+__weak BOOL USB_Uninitialize( int Controller )
 {
     return TRUE;
 }
 
-BOOL USB_OpenStream( int UsbStream, int writeEP, int readEP )
+__weak BOOL USB_OpenStream( int UsbStream, int writeEP, int readEP )
 {
     return TRUE;
 }
 
-BOOL USB_CloseStream( int UsbStream )
+__weak BOOL USB_CloseStream( int UsbStream )
 {
     return TRUE;
 }
 
-int USB_Write( int UsbStream, const char* Data, size_t size )
+__weak int USB_Write( int UsbStream, const char* Data, size_t size )
 {
     return 0;
 }
 
-int USB_Read( int UsbStream, char* Data, size_t size )
+__weak int USB_Read( int UsbStream, char* Data, size_t size )
 {
     return 0;
 }
 
-BOOL USB_Flush( int UsbStream )
+__weak BOOL USB_Flush( int UsbStream )
 {
     return TRUE;
 }
 
-UINT32 USB_GetEvent( int Controller, UINT32 Mask )
+__weak UINT32 USB_GetEvent( int Controller, UINT32 Mask )
 {
     return 0;
 }
 
-UINT32 USB_SetEvent( int Controller, UINT32 Event )
+__weak UINT32 USB_SetEvent( int Controller, UINT32 Event )
 {
     return 0;
 }
 
-UINT32 USB_ClearEvent( int Controller, UINT32 Event )
+__weak UINT32 USB_ClearEvent( int Controller, UINT32 Event )
 {
     return 0;
 }
 
-UINT8 USB_GetStatus( int Controller )
+__weak UINT8 USB_GetStatus( int Controller )
 {
     return USB_DEVICE_STATE_NO_CONTROLLER;
 }
 
-void USB_DiscardData( int UsbStream, BOOL fTx )
+__weak void USB_DiscardData( int UsbStream, BOOL fTx )
 {
 }
 

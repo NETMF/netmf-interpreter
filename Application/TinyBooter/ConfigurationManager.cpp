@@ -38,7 +38,11 @@ void ConfigurationSectorManager::LocateConfigurationSector( UINT32 BlockUsage )
             m_fSupportsXIP = TRUE;
             m_fUsingRAM = FALSE;
             // Get the real address 
+#ifdef FEATURE_CPUCACHE            
             m_configurationSector = (ConfigurationSector *)CPU_GetUncachableAddress( m_cfgPhysicalAddress );
+#else
+            m_configurationSector = (ConfigurationSector *)m_cfgPhysicalAddress;
+#endif            
         }
         else
         {
@@ -74,7 +78,11 @@ void ConfigurationSectorManager::LoadConfiguration()
     if (m_fSupportsXIP)
     {
         // Get the real address 
+#ifdef FEATURE_CPUCACHE            
         m_configurationSector = (ConfigurationSector *)CPU_GetUncachableAddress( m_cfgPhysicalAddress );
+#else
+        m_configurationSector = (ConfigurationSector *)m_cfgPhysicalAddress;
+#endif        
         return ;
 
     }
@@ -130,7 +138,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
     // Copy the whole block to a buffer, for NonXIP or need to erase block
     if ((eraseWrite) || (!m_fSupportsXIP))
     {        
-        configurationInBytes =(BYTE*)private_malloc(writeLengthInBytes);
+        configurationInBytes =(BYTE*)malloc(writeLengthInBytes);
 
         // load data to the local buffer.
         if (configurationInBytes)
@@ -154,7 +162,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
         // rewrite from the start of block
         m_device->Write( m_cfgPhysicalAddress, writeLengthInBytes, configurationInBytes, FALSE ); 
 
-        private_free(configurationInBytes);
+        free(configurationInBytes);
 
 
     }

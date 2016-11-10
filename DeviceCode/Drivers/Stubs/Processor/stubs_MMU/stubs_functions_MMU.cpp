@@ -5,21 +5,19 @@
 #include <tinyhal.h>
 
 //--//
-void CPU_InvalidateTLBs()
+__weak void CPU_InvalidateTLBs()
 {
 }
 
-void CPU_EnableMMU( void* TTB )
+__weak void CPU_EnableMMU( void* TTB )
 {
 }
 
-void CPU_DisableMMU()
+__weak void CPU_DisableMMU()
 {
 }
 
-BOOL CPU_IsMMUEnabled()
+__weak BOOL CPU_IsMMUEnabled()
 {
     return FALSE;
 }
-
-

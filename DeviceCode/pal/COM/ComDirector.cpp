@@ -9,21 +9,34 @@ BOOL DebuggerPort_Initialize( COM_HANDLE ComPortNum )
     NATIVE_PROFILE_PAL_COM();
     switch(ExtractTransport(ComPortNum))
     {
+    #ifdef FEATURE_USART
         case USART_TRANSPORT:
             return USART_Initialize( ConvertCOM_ComPort(ComPortNum), HalSystemConfig.USART_DefaultBaudRate, USART_PARITY_NONE, 8, USART_STOP_BITS_ONE, USART_FLOW_NONE );
+    #endif
 
+#ifdef FEATURE_USB_DEBUG
         case USB_TRANSPORT:
             if(USB_CONFIG_ERR_OK != USB_Configure( ConvertCOM_UsbController(ComPortNum), NULL ))
                 return FALSE;
 
-            if(!USB_Initialize( ConvertCOM_UsbController(ComPortNum) ))
-                return FALSE;
-
-            return USB_OpenStream( ConvertCOM_UsbStream(ComPortNum), USB_DEBUG_EP_WRITE, USB_DEBUG_EP_READ );
-        
+            if(USB_Initialize(ConvertCOM_UsbController(ComPortNum)))
+            {
+#if defined(USB_ALLOW_CONFIGURATION_OVERRIDE)
+                // because the call is from a debugger port USB_Initialize has already opened the USB stream  
+                return TRUE;
+#else
+                return USB_OpenStream( ConvertCOM_UsbStream(HalSystemConfig.DebuggerPorts[0]), USB_DEBUG_EP_WRITE, USB_DEBUG_EP_READ );    
+#endif
+                
+            }
+            break;
+#endif
+            
+    #ifdef FEATURE_SOCKETS        
         case SOCKET_TRANSPORT:
             return SOCKETS_Initialize(ConvertCOM_SockPort(ComPortNum));
-
+    #endif
+        
         case GENERIC_TRANSPORT:
             return GenericPort_Initialize( ConvertCOM_GenericPort( ComPortNum ) );
     }
@@ -36,16 +49,22 @@ BOOL DebuggerPort_Uninitialize( COM_HANDLE ComPortNum )
     NATIVE_PROFILE_PAL_COM();
     switch(ExtractTransport(ComPortNum))
     {
+    #ifdef FEATURE_USART        
         case USART_TRANSPORT:
             return USART_Uninitialize( ConvertCOM_ComPort(ComPortNum) );
+    #endif
 
+#ifdef FEATURE_USB_DEBUG
         case USB_TRANSPORT:
             USB_CloseStream( ConvertCOM_UsbStream(ComPortNum) );
             return USB_Uninitialize( ConvertCOM_UsbController(ComPortNum) );
+#endif
 
+    #ifdef FEATURE_SOCKET
         case SOCKET_TRANSPORT:
             return SOCKETS_Uninitialize(ConvertCOM_SockPort(ComPortNum));
-
+    #endif
+    
         case GENERIC_TRANSPORT:
             return GenericPort_Uninitialize( ConvertCOM_GenericPort( ComPortNum ) );
     }
@@ -68,18 +87,26 @@ int DebuggerPort_Write( COM_HANDLE ComPortNum, const char* Data, size_t size, in
         
         switch(transport)
         {
-        case USART_TRANSPORT:
-            ret = USART_Write( ConvertCOM_ComPort( ComPortNum ), dataTmp, size );
-            break;
-        case USB_TRANSPORT:
-            ret = USB_Write( ConvertCOM_UsbStream( ComPortNum ), dataTmp, size );
-            break;
-        case SOCKET_TRANSPORT:
-            ret = SOCKETS_Write( ConvertCOM_SockPort(ComPortNum), dataTmp, size );
-            break;
+        #ifdef FEATURE_USART            
+            case USART_TRANSPORT:
+                ret = USART_Write( ConvertCOM_ComPort( ComPortNum ), dataTmp, size );
+                break;
+        #endif        
 
-        case GENERIC_TRANSPORT:
-            return GenericPort_Write( ConvertCOM_GenericPort( ComPortNum ), dataTmp, size );
+#ifdef FEATURE_USB_DEBUG
+            case USB_TRANSPORT:
+                ret = USB_Write( ConvertCOM_UsbStream( ComPortNum ), dataTmp, size );
+                break;
+#endif
+
+        #ifdef FEATURE_SOCKET
+            case SOCKET_TRANSPORT:
+                ret = SOCKETS_Write( ConvertCOM_SockPort(ComPortNum), dataTmp, size );
+                break;
+        #endif
+        
+            case GENERIC_TRANSPORT:
+                return GenericPort_Write( ConvertCOM_GenericPort( ComPortNum ), dataTmp, size );
         }
 
         if(ret < 0)
@@ -117,20 +144,26 @@ int DebuggerPort_Read( COM_HANDLE ComPortNum, char* Data, size_t size )
 
     switch(ExtractTransport(ComPortNum))
     {
-    case USART_TRANSPORT:
-        ret = USART_Read( ConvertCOM_ComPort( ComPortNum ), Data, size );
-        break;
+    #ifdef FEATURE_USART        
+        case USART_TRANSPORT:
+            ret = USART_Read( ConvertCOM_ComPort( ComPortNum ), Data, size );
+            break;
+    #endif
 
-    case USB_TRANSPORT:
-        ret = USB_Read( ConvertCOM_UsbStream( ComPortNum ), Data, size );
-        break;
+#ifdef FEATURE_USB_DEBUG
+        case USB_TRANSPORT:
+            ret = USB_Read( ConvertCOM_UsbStream( ComPortNum ), Data, size );
+            break;
+#endif
 
-    case SOCKET_TRANSPORT:
-        ret = SOCKETS_Read( ConvertCOM_SockPort(ComPortNum), Data, size );
-        break;
+    #ifdef FEATURE_SOCKET            
+        case SOCKET_TRANSPORT:
+            ret = SOCKETS_Read( ConvertCOM_SockPort(ComPortNum), Data, size );
+            break;
+    #endif
 
-    case GENERIC_TRANSPORT:
-        return GenericPort_Read( ConvertCOM_GenericPort( ComPortNum ), Data, size );
+        case GENERIC_TRANSPORT:
+            return GenericPort_Read( ConvertCOM_GenericPort( ComPortNum ), Data, size );
     }
 
     return ret;
@@ -142,17 +175,23 @@ BOOL DebuggerPort_Flush( COM_HANDLE ComPortNum )
     NATIVE_PROFILE_PAL_COM();
     switch( ExtractTransport( ComPortNum ) )
     {
-    case USART_TRANSPORT:
-        return USART_Flush( ConvertCOM_ComPort( ComPortNum ) );
+    #ifdef FEATURE_USART        
+        case USART_TRANSPORT:
+            return USART_Flush( ConvertCOM_ComPort( ComPortNum ) );
+    #endif
 
-    case USB_TRANSPORT:
-        return USB_Flush( ConvertCOM_UsbStream( ComPortNum ) );
+#ifdef FEATURE_USB_DEBUG
+        case USB_TRANSPORT:
+            return USB_Flush( ConvertCOM_UsbStream( ComPortNum ) );
+#endif
 
-    case SOCKET_TRANSPORT:
-        return SOCKETS_Flush( ConvertCOM_SockPort( ComPortNum ) );
+    #ifdef FEATURE_SOCKET
+        case SOCKET_TRANSPORT:
+            return SOCKETS_Flush( ConvertCOM_SockPort( ComPortNum ) );
+    #endif
 
-    case GENERIC_TRANSPORT:
-        return GenericPort_Flush( ConvertCOM_GenericPort( ComPortNum ) );
+        case GENERIC_TRANSPORT:
+            return GenericPort_Flush( ConvertCOM_GenericPort( ComPortNum ) );
     }
 
     return FALSE;
@@ -163,15 +202,24 @@ BOOL DebuggerPort_IsSslSupported( COM_HANDLE ComPortNum )
     NATIVE_PROFILE_PAL_COM();
     switch(ExtractTransport(ComPortNum))
     {
-    case SOCKET_TRANSPORT:
-        return g_DebuggerPortSslConfig.GetCertificateAuthority != NULL;
+    #ifdef FEATURE_SOCKET        
+        case SOCKET_TRANSPORT:
+            return g_DebuggerPortSslConfig.GetCertificateAuthority != NULL;
+    #endif
 
-    case GENERIC_TRANSPORT:
-        return GenericPort_IsSslSupported( ConvertCOM_GenericPort( ComPortNum ) );
-    case USART_TRANSPORT:
-    case USB_TRANSPORT:
-    default:
-        break;
+        case GENERIC_TRANSPORT:
+            return GenericPort_IsSslSupported( ConvertCOM_GenericPort( ComPortNum ) );
+
+    #ifdef FEATURE_USART            
+        case USART_TRANSPORT:
+    #endif  
+
+#ifdef FEATURE_USB_DEBUG
+        case USB_TRANSPORT:
+#endif
+
+        default:
+            break;
     }
 
     return FALSE;
@@ -202,11 +250,13 @@ BOOL DebuggerPort_UpgradeToSsl( COM_HANDLE ComPortNum, UINT32 flags )
 
     switch(ExtractTransport(ComPortNum))
     {
-    case SOCKET_TRANSPORT:
-            return SOCKETS_UpgradeToSsl(ConvertCOM_ComPort(ComPortNum), pCACert, caCertLen, pDeviceCert, deviceCertLen, szTargetHost);
+    #ifdef FEATURE_SOCKET
+        case SOCKET_TRANSPORT:
+                return SOCKETS_UpgradeToSsl(ConvertCOM_ComPort(ComPortNum), pCACert, caCertLen, pDeviceCert, deviceCertLen, szTargetHost);
+    #endif
 
-    case GENERIC_TRANSPORT:
-        return GenericPort_UpgradeToSsl( ComPortNum, pCACert, caCertLen, pDeviceCert, deviceCertLen, szTargetHost );
+        case GENERIC_TRANSPORT:
+            return GenericPort_UpgradeToSsl( ComPortNum, pCACert, caCertLen, pDeviceCert, deviceCertLen, szTargetHost );
     }
 
     return FALSE;
@@ -216,11 +266,13 @@ BOOL DebuggerPort_IsUsingSsl( COM_HANDLE ComPortNum )
 {
     switch(ExtractTransport(ComPortNum))
     {
-    case SOCKET_TRANSPORT:
-        return SOCKETS_IsUsingSsl(ConvertCOM_ComPort(ComPortNum));
+    #ifdef FEATURE_SOCKET        
+        case SOCKET_TRANSPORT:
+            return SOCKETS_IsUsingSsl(ConvertCOM_ComPort(ComPortNum));
+    #endif
 
-    case GENERIC_TRANSPORT:
-        return GenericPort_IsUsingSsl( ConvertCOM_GenericPort( ComPortNum ) );
+        case GENERIC_TRANSPORT:
+            return GenericPort_IsUsingSsl( ConvertCOM_GenericPort( ComPortNum ) );
     }
     return FALSE;
 }
@@ -230,21 +282,27 @@ void InitializePort( COM_HANDLE ComPortNum )
 {
     switch(ExtractTransport(ComPortNum))
     {
-    case USART_TRANSPORT:
-        USART_Initialize( ConvertCOM_ComPort( ComPortNum ), HalSystemConfig.USART_DefaultBaudRate, USART_PARITY_NONE, 8, USART_STOP_BITS_ONE, USART_FLOW_NONE );
-        break;
+    #ifdef FEATURE_USART        
+        case USART_TRANSPORT:
+            USART_Initialize( ConvertCOM_ComPort( ComPortNum ), HalSystemConfig.USART_DefaultBaudRate, USART_PARITY_NONE, 8, USART_STOP_BITS_ONE, USART_FLOW_NONE );
+            break;
+    #endif
 
-    case USB_TRANSPORT:
-        USB_Initialize( ConvertCOM_UsbStream( ComPortNum ) );
-        break;
+#ifdef FEATURE_USB_DEBUG
+        case USB_TRANSPORT:
+            USB_Initialize( ConvertCOM_UsbStream( ComPortNum ) );
+            break;
+#endif
 
-    case SOCKET_TRANSPORT:
-        SOCKETS_Initialize( ConvertCOM_SockPort(ComPortNum) );
-        break;
+    #ifdef FEATURE_SOCKET
+        case SOCKET_TRANSPORT:
+            SOCKETS_Initialize( ConvertCOM_SockPort(ComPortNum) );
+            break;
+    #endif
 
-    case GENERIC_TRANSPORT:
-         GenericPort_Initialize( ConvertCOM_GenericPort( ComPortNum ) );
-         break;
+        case GENERIC_TRANSPORT:
+            GenericPort_Initialize( ConvertCOM_GenericPort( ComPortNum ) );
+            break;
     }
 }
 
@@ -252,25 +310,31 @@ void UninitializePort( COM_HANDLE ComPortNum )
 {
     switch(ExtractTransport(ComPortNum))
     {
-    case USART_TRANSPORT:
-        USART_Uninitialize( ConvertCOM_ComPort( ComPortNum ) );
-        break;
+    #ifdef FEATURE_USART        
+        case USART_TRANSPORT:
+            USART_Uninitialize( ConvertCOM_ComPort( ComPortNum ) );
+            break;
+    #endif
 
-    case USB_TRANSPORT:
-        if(USB_CONFIG_ERR_OK == USB_Configure( ConvertCOM_UsbController(ComPortNum), NULL ))
-        {
-            USB_Initialize( ConvertCOM_UsbController(ComPortNum) );
-            USB_OpenStream( ConvertCOM_UsbStream(ComPortNum), USB_DEBUG_EP_WRITE, USB_DEBUG_EP_READ );
-        }
-        break;
+#ifdef FEATURE_USB_DEBUG
+        case USB_TRANSPORT:
+            if(USB_CONFIG_ERR_OK == USB_Configure( ConvertCOM_UsbController(ComPortNum), NULL ))
+            {
+                USB_Initialize( ConvertCOM_UsbController(ComPortNum) );
+                USB_OpenStream( ConvertCOM_UsbStream(ComPortNum), USB_DEBUG_EP_WRITE, USB_DEBUG_EP_READ );
+            }
+            break;
+#endif
 
-    case SOCKET_TRANSPORT:
-        SOCKETS_Uninitialize( ConvertCOM_SockPort(ComPortNum) );
-        break;
+    #ifdef FEATURE_SOCKET
+        case SOCKET_TRANSPORT:
+            SOCKETS_Uninitialize( ConvertCOM_SockPort(ComPortNum) );
+            break;
+    #endif
 
-    case GENERIC_TRANSPORT:
-         GenericPort_Uninitialize( ConvertCOM_GenericPort( ComPortNum ) );
-         break;
+        case GENERIC_TRANSPORT:
+            GenericPort_Uninitialize( ConvertCOM_GenericPort( ComPortNum ) );
+            break;
     }
 }
 
@@ -281,7 +345,9 @@ void CPU_InitializeCommunication()
     // do these first so we can print out messages
     InitializePort( HalSystemConfig.DebugTextPort );
     InitializePort( HalSystemConfig.stdio );
+#ifdef FEATURE_SOCKET    
     Network_Initialize();
+#endif    
 }
 
 void CPU_UninitializeCommunication()
@@ -292,6 +358,7 @@ void CPU_UninitializeCommunication()
     UninitializePort( HalSystemConfig.DebugTextPort );
     UninitializePort( HalSystemConfig.stdio );
 
+#ifdef FEATURE_USB_DEBUG
     // if USB is not defined, the STUB_USB will be set
     // Do not uninitialize the USB on soft reboot if USB is our debugger link
     // Close all streams on USB controller 0 except debugger (if it uses a USB stream)
@@ -306,8 +373,11 @@ void CPU_UninitializeCommunication()
         }
     }
     USB_Uninitialize(0);        // USB_Uninitialize will only stop USB controller 0 if it has no open streams
+#endif
     
-    Network_Uninitialize();
+    #ifdef FEATURE_SOCKET    
+        Network_Uninitialize();
+    #endif
 }
 
 
@@ -317,18 +387,22 @@ void CPU_ProtectCommunicationGPIOs( BOOL On )
 
     switch(ExtractTransport(HalSystemConfig.DebugTextPort))
     {
-    case USART_TRANSPORT:
-        CPU_USART_ProtectPins( ConvertCOM_ComPort(HalSystemConfig.DebugTextPort), On );
-        return ;
+    #ifdef FEATURE_USART        
+        case USART_TRANSPORT:
+            CPU_USART_ProtectPins( ConvertCOM_ComPort(HalSystemConfig.DebugTextPort), On );
+            return ;
+    #endif
 
-    case USB_TRANSPORT:
-        CPU_USB_ProtectPins( ConvertCOM_UsbController(HalSystemConfig.DebugTextPort), On );
-        return;
+#ifdef FEATURE_USB_DEBUG    
+        case USB_TRANSPORT:
+            CPU_USB_ProtectPins( ConvertCOM_UsbController(HalSystemConfig.DebugTextPort), On );
+            return;
+#endif
 
-    case GENERIC_TRANSPORT:
-        GenericPort_ProtectPins( ConvertCOM_GenericPort(HalSystemConfig.DebugTextPort), On );
+        case GENERIC_TRANSPORT:
+            GenericPort_ProtectPins( ConvertCOM_GenericPort(HalSystemConfig.DebugTextPort), On );
 
-    default:
-        return;
+        default:
+            return;
     }
 }

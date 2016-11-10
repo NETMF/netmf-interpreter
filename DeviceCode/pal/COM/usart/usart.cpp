@@ -12,6 +12,8 @@ static const INT8 XOFF_CLOCK_HALT = 0x02;
 
 //--//
 
+extern uint32_t GetUSARTInterruptEnableState(int comPortNum);
+
 
 BOOL USART_Initialize( int ComPortNum, int BaudRate, int Parity, int DataBits, int StopBits, int FlowValue )
 {
@@ -416,9 +418,6 @@ BOOL USART_Driver::Flush( int ComPortNum )
 
     if ( IS_POWERSAVE_ENABLED(State) || (!IS_USART_INITIALIZED(State))) return TRUE;
 
-
-    UINT32 IrqId = USART_TX_IRQ_INDEX(ComPortNum);
-
     if ((USART_FLAG_STATE(State, HAL_USART_STATE::c_TX_SWFLOW_CTRL) && (!USART_FLAG_STATE(State, HAL_USART_STATE::c_TX_XON_STATE)))
         || !CPU_USART_TxHandshakeEnabledState(ComPortNum))
     {
@@ -431,7 +430,7 @@ BOOL USART_Driver::Flush( int ComPortNum )
     {
         GLOBAL_LOCK(irq);
 
-        if(irq.WasDisabled() || !CPU_USART_TxBufferEmptyInterruptState( ComPortNum ) || 0 == CPU_INTC_InterruptEnableState( IrqId ))
+        if(irq.WasDisabled() || !CPU_USART_TxBufferEmptyInterruptState( ComPortNum ) || 0 == GetUSARTInterruptEnableState(ComPortNum))
         {
             while(State.TxQueue.IsEmpty() == false)
             {
@@ -557,7 +556,9 @@ BOOL USART_Driver::AddCharToRxBuffer( int ComPortNum, char c )
             SetEvent( ComPortNum, USART_EVENT_ERROR_RXOVER );
                 
 #if !defined(BUILD_RTM)
+#ifdef FEATURE_LCD
             lcd_printf("\fBuffer OVFLW\r\n");
+#endif            
             hal_printf("Buffer OVFLW\r\n");
 #endif
             return FALSE;

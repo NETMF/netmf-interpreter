@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AssemblyName>CMSIS_power</AssemblyName>
+        <ProjectGuid>{1FC7E0E0-C703-4571-8BF8-1398DD8B8821}</ProjectGuid>
+        <Size>
+        </Size>
+        <Description>CMSIS CPU power library</Description>
+        <Level>HAL</Level>
+        <LibraryFile>CMSIS_power.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Power\dotNetMF.proj</ProjectPath>
+        <ManifestFile>CMSIS_power.$(LIB_EXT).manifest</ManifestFile>
+        <Groups></Groups>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <CustomFilter>
+        </CustomFilter>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>True</IsStub>
+        <Directory>DeviceCode\Targets\Native\STM32F4xx\Power</Directory>
+        <OutputType>Library</OutputType>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+    <PropertyGroup />
+
+    <ItemGroup>
+        <Compile Include="Power_functions.cpp" />
+    </ItemGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

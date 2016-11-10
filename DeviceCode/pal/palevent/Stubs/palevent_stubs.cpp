@@ -4,24 +4,22 @@
 
 #include <tinyhal.h>
 
-HRESULT PalEvent_Initialize()
+__weak HRESULT PalEvent_Initialize()
 {
     return CLR_E_NOT_SUPPORTED;
 }
 
-HRESULT PalEvent_Uninitialize()
+__weak HRESULT PalEvent_Uninitialize()
 {
     return CLR_E_NOT_SUPPORTED;
 }
 
-HRESULT PalEvent_Post(unsigned int e, unsigned int param)
+__weak HRESULT PalEvent_Post(unsigned int e, unsigned int param)
 {
     return CLR_E_NOT_SUPPORTED;
 }
 
-HRESULT PalEvent_Enlist(PalEventListener* listener)
+__weak HRESULT PalEvent_Enlist(PalEventListener* listener)
 {
     return CLR_E_NOT_SUPPORTED;
 }
-
-

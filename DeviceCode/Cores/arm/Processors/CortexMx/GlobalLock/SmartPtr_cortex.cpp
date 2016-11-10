@@ -11,11 +11,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include <tinyhal.h>
 
+#include "processor_selector.h"
+
 #define __CMSIS_GENERIC              /* disable NVIC and Systick functions */
 
 #if defined (CORTEX_M7)
     #include "core_cm7.h"
 #elif defined (CORTEX_M4)
+    #define __FPU_PRESENT  1
     #include "core_cm4.h"
 #elif defined (CORTEX_M3)
     #include "core_cm3.h"

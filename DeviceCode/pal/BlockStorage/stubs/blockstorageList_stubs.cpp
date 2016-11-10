@@ -10,98 +10,98 @@ BlockStorageDevice*                   BlockStorageList::s_primaryDevice = NULL;
 
 //--//
 
-void BlockStorageList::Initialize()
+__weak void BlockStorageList::Initialize()
 {
 }
 
-BOOL BlockStorageList::InitializeDevices()
-{
-    return TRUE;        
-}
-
-BOOL BlockStorageList::UnInitializeDevices()
+__weak BOOL BlockStorageList::InitializeDevices()
 {
     return TRUE;        
 }
 
-BOOL BlockStorageList::AddDevice( BlockStorageDevice* pBSD, IBlockStorageDevice* vtable, void* config, BOOL Init)
+__weak BOOL BlockStorageList::UnInitializeDevices()
 {
     return TRUE;        
 }
 
-BOOL BlockStorageList::RemoveDevice( BlockStorageDevice* pBSD, BOOL UnInit)
+__weak BOOL BlockStorageList::AddDevice( BlockStorageDevice* pBSD, IBlockStorageDevice* vtable, void* config, BOOL Init)
 {
     return TRUE;        
 }
 
-BlockStorageDevice* BlockStorageList::GetFirstDevice()
+__weak BOOL BlockStorageList::RemoveDevice( BlockStorageDevice* pBSD, BOOL UnInit)
+{
+    return TRUE;        
+}
+
+__weak BlockStorageDevice* BlockStorageList::GetFirstDevice()
 { 
     return NULL; 
 }
 
-BlockStorageDevice* BlockStorageList::GetNextDevice( BlockStorageDevice& device )
+__weak BlockStorageDevice* BlockStorageList::GetNextDevice( BlockStorageDevice& device )
 { 
     return NULL; 
 }
 
-UINT32 BlockStorageList::GetNumDevices()            
+__weak UINT32 BlockStorageList::GetNumDevices()            
 { 
     return 0;  
 }
 
-BOOL BlockStorageList::FindDeviceForPhysicalAddress( BlockStorageDevice** pBSD, UINT32 PhysicalAddress, ByteAddress &SectAddress)
+__weak BOOL BlockStorageList::FindDeviceForPhysicalAddress( BlockStorageDevice** pBSD, UINT32 PhysicalAddress, ByteAddress &SectAddress)
 {
     *pBSD = NULL;
     return FALSE;
 }
 
-BOOL BlockStorageStream::Initialize(UINT32 blockUsage)
+__weak BOOL BlockStorageStream::Initialize(UINT32 blockUsage)
 {
     return FALSE;
 }
 
-BOOL BlockStorageStream::Initialize(UINT32 usage, BlockStorageDevice* pDevice)
+__weak BOOL BlockStorageStream::Initialize(UINT32 usage, BlockStorageDevice* pDevice)
 {
     return FALSE;
 }
 
 
-UINT32 BlockStorageStream::CurrentAddress() 
+__weak UINT32 BlockStorageStream::CurrentAddress() 
 {
     return 0xFFFFFFFF;
 }
 
-BOOL BlockStorageStream::PrevStream()
+__weak BOOL BlockStorageStream::PrevStream()
 {
     return FALSE;
 }
 
-BOOL BlockStorageStream::NextStream()
+__weak BOOL BlockStorageStream::NextStream()
 {
     return FALSE;
 }
 
-BOOL BlockStorageStream::Seek( INT32 offset, SeekOrigin origin )
+__weak BOOL BlockStorageStream::Seek( INT32 offset, SeekOrigin origin )
 {
     return TRUE;
 }
 
-BOOL BlockStorageStream::Erase( UINT32 length )
+__weak BOOL BlockStorageStream::Erase( UINT32 length )
 {
     return TRUE;
 }
 
-BOOL BlockStorageStream::Write( UINT8* data  , UINT32 length )
+__weak BOOL BlockStorageStream::Write( UINT8* data  , UINT32 length )
 {
     return TRUE;
 }
 
-BOOL BlockStorageStream::ReadIntoBuffer( UINT8* pBuffer, UINT32 length )
+__weak BOOL BlockStorageStream::ReadIntoBuffer( UINT8* pBuffer, UINT32 length )
 {
     return TRUE;
 }
 
-BOOL BlockStorageStream::Read( UINT8** ppBuffer, UINT32 length )
+__weak BOOL BlockStorageStream::Read( UINT8** ppBuffer, UINT32 length )
 {
     return TRUE;
 }
@@ -109,22 +109,22 @@ BOOL BlockStorageStream::Read( UINT8** ppBuffer, UINT32 length )
 
 //--// 
 
-SectorAddress BlockDeviceInfo::PhysicalToSectorAddress( const BlockRegionInfo* pRegion, ByteAddress phyAddress ) const
+__weak SectorAddress BlockDeviceInfo::PhysicalToSectorAddress( const BlockRegionInfo* pRegion, ByteAddress phyAddress ) const
 {
     return phyAddress;
 }
 
-BOOL BlockDeviceInfo::FindRegionFromAddress(ByteAddress Address, UINT32 &BlockRegionIndex, UINT32 &BlockRangeIndex ) const
+__weak BOOL BlockDeviceInfo::FindRegionFromAddress(ByteAddress Address, UINT32 &BlockRegionIndex, UINT32 &BlockRangeIndex ) const
 {
     return FALSE;        
 }
 
-BOOL BlockDeviceInfo::FindNextUsageBlock(UINT32 BlockUsage, ByteAddress &Address, UINT32 &BlockRegionIndex, UINT32 &BlockRangeIndex ) const
+__weak BOOL BlockDeviceInfo::FindNextUsageBlock(UINT32 BlockUsage, ByteAddress &Address, UINT32 &BlockRegionIndex, UINT32 &BlockRangeIndex ) const
 {
     return FALSE;
 }
 
-BOOL BlockDeviceInfo::FindForBlockUsage(UINT32 BlockUsage, ByteAddress &Address, UINT32 &BlockRegionIndex, UINT32 &BlockRangeIndex ) const
+__weak BOOL BlockDeviceInfo::FindForBlockUsage(UINT32 BlockUsage, ByteAddress &Address, UINT32 &BlockRegionIndex, UINT32 &BlockRangeIndex ) const
 {
     return FALSE;
 }

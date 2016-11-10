@@ -6,32 +6,31 @@
 
 //--//
 
-BOOL AD_Initialize( ANALOG_CHANNEL channel, INT32 precisionInBits )
+__weak BOOL AD_Initialize( ANALOG_CHANNEL channel, INT32 precisionInBits )
 {
     return FALSE;
 }
 
-void AD_Uninitialize( ANALOG_CHANNEL channel )
+__weak void AD_Uninitialize( ANALOG_CHANNEL channel )
 {
 }
 
-INT32 AD_Read( ANALOG_CHANNEL channel )
-{
-    return 0;
-}
-
-UINT32 AD_ADChannels()
+__weak INT32 AD_Read( ANALOG_CHANNEL channel )
 {
     return 0;
 }
 
-GPIO_PIN AD_GetPinForChannel( ANALOG_CHANNEL channel )
+__weak UINT32 AD_ADChannels()
+{
+    return 0;
+}
+
+__weak GPIO_PIN AD_GetPinForChannel( ANALOG_CHANNEL channel )
 {
     return GPIO_PIN_NONE;
 }
 
-BOOL AD_GetAvailablePrecisionsForChannel( ANALOG_CHANNEL channel, INT32* precisions, UINT32& size )
+__weak BOOL AD_GetAvailablePrecisionsForChannel( ANALOG_CHANNEL channel, INT32* precisions, UINT32& size )
 {
     size = 0; return FALSE;
 }
-

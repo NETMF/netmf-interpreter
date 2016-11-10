@@ -26,6 +26,9 @@
 #if defined(PLATFORM_ARM_MCBSTM32F400)
 #define HAL_SYSTEM_NAME "MCBSTM32F400"
 
+// FIXME
+// the following can be removed after complete migration to CMSIS HAL/PAL 
+#define STM32F4XX 1 
 #define PLATFORM_ARM_STM32F4 1 // STM32F407 cpu
 #define STM32F4_ETH_PHY_RMII 1
 #define USB_ALLOW_CONFIGURATION_OVERRIDE 1
@@ -100,6 +103,29 @@
 #define STM32F4_32B_TIMER 2
 #define STM32F4_16B_TIMER 3
 
+/* GPIOs */
+// User button PG.15
+// LED1 PG.6
+// LED2 PG.7
+// LED3 PG.8
+// LED4 PH.2
+// LED5 PH.3
+// LED6 PH.6
+// LED7 PH.7
+// LED8 PI.10
+    
+#define GPIO_PORT_PINS \
+{\
+    {GPIOG, GPIO_PIN_15},\
+    {GPIOG, GPIO_PIN_6},\
+    {GPIOG, GPIO_PIN_7},\
+    {GPIOG, GPIO_PIN_8},\
+    {GPIOH, GPIO_PIN_2},\
+    {GPIOH, GPIO_PIN_3},\
+    {GPIOH, GPIO_PIN_6},\
+    {GPIOH, GPIO_PIN_7},\
+}
+
 // Pin Configuration
 #define STM32F4_ADC 3
 #define STM32F4_AD_CHANNELS {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
@@ -131,16 +157,17 @@
         { 0, BUTTON_NONE }, /* Enter */   \
         { PORT_PIN( GPIO_PORTG, 15 ), BUTTON_B5 }, /* User */
 
-#define LED1 PORT_PIN( GPIO_PORTG, 6 ) // PG.6
-#define LED2 PORT_PIN( GPIO_PORTG, 7 ) // PG.7
-#define LED3 PORT_PIN( GPIO_PORTG, 8 ) // PG.8
+// User LEDs are defined as GPIO ports above in GPIO_PORT_PINS @ the following indexes
+#define LED1 1
+#define LED2 2
+#define LED3 3
 
-#define LED4 PORT_PIN( GPIO_PORTH, 2 ) // PH.2
-#define LED5 PORT_PIN( GPIO_PORTH, 3 ) // PH.3
-#define LED6 PORT_PIN( GPIO_PORTH, 6 ) // PH.6
-#define LED7 PORT_PIN( GPIO_PORTH, 7 ) // PH.7
+#define LED4 4
+#define LED5 5
+#define LED6 6
+#define LED7 7
 
-#define LED8 PORT_PIN( GPIO_PORTI, 10 ) // PI.10
+#define LED8 8
 
 //
 // constants

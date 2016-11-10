@@ -1,15 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
-  <PropertyGroup>
-    <Directory>Solutions\MCBSTM32F400</Directory>
-    <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
-  </PropertyGroup>
-  <ItemGroup>
-      <!--RequiredProjects Include="MicroBooter\MicroBooter.proj" /-->
-    <RequiredProjects Include="TinyBooter\TinyBooter.proj" />
-    <RequiredProjects Include="TinyCLR\TinyCLR.proj" />
-    <RequiredProjects Include="TinyCLR_NONET\TinyCLR_NONET.proj" />
-  </ItemGroup>
-  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
-  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="BeforeBuild" DefaultTargets="Build">
+    <PropertyGroup>
+        <Directory>Solutions\MCBSTM32F400</Directory>
+        <SolutionRoot>$(SPOCLIENT)\Solutions\MCBSTM32F400</SolutionRoot>
+        <MFSettingsFile>$(SPOCLIENT)\Solutions\MCBSTM32F400\MCBSTM32F400.settings</MFSettingsFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <!--RequiredProjects Include="MicroBooter\MicroBooter.proj" /-->
+        <RequiredProjects Include="TinyBooter\TinyBooter.proj" />
+        <RequiredProjects Include="TinyCLR\TinyCLR.proj" />
+        <RequiredProjects Include="TinyCLR_NONET\TinyCLR_NONET.proj" />
+    </ItemGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+
+    <Target Name="BeforeBuild">
+        <exec command="powershell.exe -command &quot;&amp; { ..\..\Install-CMSIS-STM32.ps1 $(DEVICE_SERIES) $(CMSIS_PACK_VER) }&quot;  -Debug"></exec>
+    </Target>
+
 </Project>

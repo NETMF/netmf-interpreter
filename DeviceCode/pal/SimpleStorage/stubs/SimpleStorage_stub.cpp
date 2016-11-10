@@ -12,7 +12,7 @@ BlockStorageStream  SimpleStorage::s_BsStreamB;
 
 //--//
 
-BOOL SimpleStorage::Initialize()
+__weak BOOL SimpleStorage::Initialize()
 {
     BOOL retVal = s_IsInitialized;
     
@@ -57,7 +57,7 @@ BOOL SimpleStorage::Initialize()
     return retVal;
 }
 
-BOOL SimpleStorage::ReadToNextFile(SIMPLESTORAGE_FILE_HEADER& header)
+__weak BOOL SimpleStorage::ReadToNextFile(SIMPLESTORAGE_FILE_HEADER& header)
 {
     UINT32 crc = 0;
 
@@ -101,7 +101,7 @@ BOOL SimpleStorage::ReadToNextFile(SIMPLESTORAGE_FILE_HEADER& header)
     return FALSE;
 }
 
-BOOL SimpleStorage::Compact()
+__weak BOOL SimpleStorage::Compact()
 {
     GLOBAL_LOCK(irq);
     BlockStorageStream* pFreeBlock = (s_pCurrentStream == &s_BsStreamA) ? &s_BsStreamB : &s_BsStreamA;
@@ -153,7 +153,7 @@ BOOL SimpleStorage::Compact()
     return TRUE;
 }
 
-BOOL SimpleStorage::SeekToFile(LPCSTR fileName, LPCSTR groupName, SIMPLESTORAGE_FILE_HEADER& header, BOOL createNew)
+__weak BOOL SimpleStorage::SeekToFile(LPCSTR fileName, LPCSTR groupName, SIMPLESTORAGE_FILE_HEADER& header, BOOL createNew)
 {
     s_pCurrentStream->Seek(sizeof(SIMPLESTORAGE_BLOCK_HEADER), BlockStorageStream::SeekBegin);
 
@@ -184,7 +184,7 @@ BOOL SimpleStorage::SeekToFile(LPCSTR fileName, LPCSTR groupName, SIMPLESTORAGE_
 	return FALSE;
 }
 
-BOOL SimpleStorage::Create( LPCSTR fileName, LPCSTR groupName, UINT32 fileType, UINT8* data, UINT32 dataLength )
+__weak BOOL SimpleStorage::Create( LPCSTR fileName, LPCSTR groupName, UINT32 fileType, UINT8* data, UINT32 dataLength )
 {
     BOOL retVal = FALSE;
     SIMPLESTORAGE_FILE_HEADER header;
@@ -232,7 +232,7 @@ BOOL SimpleStorage::Create( LPCSTR fileName, LPCSTR groupName, UINT32 fileType, 
     return retVal;
 }
 
-BOOL SimpleStorage::Read   ( LPCSTR fileName, LPCSTR groupName, UINT32& fileType, UINT8* data, UINT32& dataLength )
+__weak BOOL SimpleStorage::Read   ( LPCSTR fileName, LPCSTR groupName, UINT32& fileType, UINT8* data, UINT32& dataLength )
 {
     SIMPLESTORAGE_FILE_HEADER header;
     
@@ -262,7 +262,7 @@ BOOL SimpleStorage::Read   ( LPCSTR fileName, LPCSTR groupName, UINT32& fileType
 }
 
 
-BOOL SimpleStorage::GetFileEnum( LPCSTR groupName, UINT32 fileType , FileEnumCtx& enumCtx )
+__weak BOOL SimpleStorage::GetFileEnum( LPCSTR groupName, UINT32 fileType , FileEnumCtx& enumCtx )
 {
     if(groupName == NULL) return FALSE;
 
@@ -273,7 +273,7 @@ BOOL SimpleStorage::GetFileEnum( LPCSTR groupName, UINT32 fileType , FileEnumCtx
     return TRUE;
 }
 
-BOOL SimpleStorage::GetNextFile( FileEnumCtx& enumCtx, CHAR* fileName, UINT32 fileNameLen )
+__weak BOOL SimpleStorage::GetNextFile( FileEnumCtx& enumCtx, CHAR* fileName, UINT32 fileNameLen )
 {
     BOOL fRes = FALSE;
     SIMPLESTORAGE_FILE_HEADER header;
@@ -306,7 +306,7 @@ BOOL SimpleStorage::GetNextFile( FileEnumCtx& enumCtx, CHAR* fileName, UINT32 fi
     return fRes;
 }
 
-BOOL SimpleStorage::Delete ( LPCSTR fileName, LPCSTR groupName )
+__weak BOOL SimpleStorage::Delete ( LPCSTR fileName, LPCSTR groupName )
 {
     SIMPLESTORAGE_FILE_HEADER header;
 
@@ -320,4 +320,3 @@ BOOL SimpleStorage::Delete ( LPCSTR fileName, LPCSTR groupName )
 
     return s_pCurrentStream->Write((UINT8*)&header, sizeof(header));
 }
-

@@ -7,12 +7,12 @@
 
 //--//
 
-INT32 HAL_TIMESERVICE_GetTimeFromSNTPServer(UINT8* serverIP, SYSTEMTIME* systemTime)
+__weak INT32 HAL_TIMESERVICE_GetTimeFromSNTPServer(UINT8* serverIP, SYSTEMTIME* systemTime)
 {
     return -1;
 }
 
-INT32 HAL_TIMESERVICE_GetTimeFromSNTPServerList(UINT8* serverIP, INT32 serverNum, SYSTEMTIME* systemTime)
+__weak INT32 HAL_TIMESERVICE_GetTimeFromSNTPServerList(UINT8* serverIP, INT32 serverNum, SYSTEMTIME* systemTime)
 {
     return -1;
 }

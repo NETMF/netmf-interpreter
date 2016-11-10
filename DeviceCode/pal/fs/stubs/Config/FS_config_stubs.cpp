@@ -8,11 +8,11 @@
 #pragma arm section rwdata = "g_AvailableFSInterfaces"
 #endif
 
-void FS_AddVolumes()
+__weak void FS_AddVolumes()
 {
 }
 
-void FS_MountRemovableVolumes()
+__weak void FS_MountRemovableVolumes()
 {
 }
 

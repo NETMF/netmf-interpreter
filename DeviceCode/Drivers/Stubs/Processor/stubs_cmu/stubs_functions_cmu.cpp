@@ -5,17 +5,15 @@
 #include <tinyhal.h>
 
 //--//
-UINT32 CPU_CMU_ReadPeripheralClock()
+__weak UINT32 CPU_CMU_ReadPeripheralClock()
 {
     return 0;
 }
 
-void CPU_CMU_ClockDivisor( UINT32 Divisor )
+__weak void CPU_CMU_ClockDivisor( UINT32 Divisor )
 {
 }
 
-void CPU_CMU_PeripheralClock( UINT32 Peripheral, BOOL On )
+__weak void CPU_CMU_PeripheralClock( UINT32 Peripheral, BOOL On )
 {
 }
-
-

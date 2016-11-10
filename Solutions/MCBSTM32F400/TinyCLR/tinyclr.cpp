@@ -5,6 +5,9 @@
 #include <tinyclr_application.h>
 #include <tinyhal.h>
 
+extern GenericPortTableEntry const Itm0GenericPort;
+extern GenericPortTableEntry const* const g_GenericPorts[TOTAL_GENERIC_PORTS] = { &Itm0GenericPort };
+
 ////////////////////////////////////////////////////////////////////////////////
 void ApplicationEntryPoint()
 {

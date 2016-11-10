@@ -47,7 +47,7 @@
 // Returns: TRUE(1):  presense pulse(s) detected, device(s) reset
 //          FALSE(0): no presense pulses detected
 //
-SMALLINT owTouchReset(int portnum)
+__weak SMALLINT owTouchReset(int portnum)
 {
    return FALSE; //no presense pulses detected 
 }
@@ -65,7 +65,7 @@ SMALLINT owTouchReset(int portnum)
 // Returns: 0:   0 bit read from sendbit
 //          1:   1 bit read from sendbit
 //
-SMALLINT owTouchBit(int portnum, SMALLINT sendbit)
+__weak SMALLINT owTouchBit(int portnum, SMALLINT sendbit)
 {
    return 0;
 }
@@ -82,7 +82,7 @@ SMALLINT owTouchBit(int portnum, SMALLINT sendbit)
 //
 // Returns:  8 bits read from sendbyte
 //
-SMALLINT owTouchByte(int portnum, SMALLINT sendbyte)
+__weak SMALLINT owTouchByte(int portnum, SMALLINT sendbyte)
 {
    return 0;
 }
@@ -99,7 +99,7 @@ SMALLINT owTouchByte(int portnum, SMALLINT sendbyte)
 // Returns:  TRUE: bytes written and echo was the same
 //           FALSE: echo was not the same
 //
-SMALLINT owWriteByte(int portnum, SMALLINT sendbyte)
+__weak SMALLINT owWriteByte(int portnum, SMALLINT sendbyte)
 {
    return FALSE;
 }
@@ -113,7 +113,7 @@ SMALLINT owWriteByte(int portnum, SMALLINT sendbyte)
 //
 // Returns:  8 bytes read from 1-Wire Net
 //
-SMALLINT owReadByte(int portnum)
+__weak SMALLINT owReadByte(int portnum)
 {
    return 0;
 }
@@ -129,7 +129,7 @@ SMALLINT owReadByte(int portnum)
 //
 // Returns:  current 1-Wire Net speed
 //
-SMALLINT owSpeed(int portnum, SMALLINT new_speed)
+__weak SMALLINT owSpeed(int portnum, SMALLINT new_speed)
 {
    return 0;
 }
@@ -149,7 +149,7 @@ SMALLINT owSpeed(int portnum, SMALLINT new_speed)
 // Returns:  current 1-Wire Net level
 //
 // Note: Strong and Program not supported on 520 target.
-SMALLINT owLevel(int portnum, SMALLINT new_level)
+__weak SMALLINT owLevel(int portnum, SMALLINT new_level)
 {
    return 0x00;
 }
@@ -164,7 +164,7 @@ SMALLINT owLevel(int portnum, SMALLINT new_level)
 // Returns:  TRUE  successful
 //           FALSE program voltage not available
 //
-SMALLINT owProgramPulse(int portnum)
+__weak SMALLINT owProgramPulse(int portnum)
 {
    return 0;
 }
@@ -183,7 +183,7 @@ SMALLINT owProgramPulse(int portnum)
 // Returns:  TRUE: bytes written and echo was the same
 //           FALSE: echo was not the same 
 //
-SMALLINT owWriteBytePower(int portnum, SMALLINT sendbyte)
+__weak SMALLINT owWriteBytePower(int portnum, SMALLINT sendbyte)
 {	
 	// not supported on the by the DS520
 	return FALSE;
@@ -203,7 +203,7 @@ SMALLINT owWriteBytePower(int portnum, SMALLINT sendbyte)
 // Returns:  TRUE: bit written and response correct, strong pullup now on
 //           FALSE: response incorrect
 //
-SMALLINT owReadBitPower(int portnum, SMALLINT applyPowerResponse)
+__weak SMALLINT owReadBitPower(int portnum, SMALLINT applyPowerResponse)
 {
 	// not supported on the by the DS520
 	return FALSE;
@@ -217,7 +217,7 @@ SMALLINT owReadBitPower(int portnum, SMALLINT applyPowerResponse)
 //
 // Returns:  TRUE  if adapter is capable of delivering power. 
 //
-SMALLINT owHasPowerDelivery(int portnum)
+__weak SMALLINT owHasPowerDelivery(int portnum)
 {
    // add adapter specific code here
    return FALSE;
@@ -231,7 +231,7 @@ SMALLINT owHasPowerDelivery(int portnum)
 //
 // Returns:  TRUE  if adapter is capable of over drive. 
 //
-SMALLINT owHasOverDrive(int portnum)
+__weak SMALLINT owHasOverDrive(int portnum)
 {
    // add adapter specific code here
    return FALSE;
@@ -245,7 +245,7 @@ SMALLINT owHasOverDrive(int portnum)
 //
 // Returns:  TRUE  program volatage available
 //           FALSE program voltage not available  
-SMALLINT owHasProgramPulse(int portnum)
+__weak SMALLINT owHasProgramPulse(int portnum)
 {
    // add adapter specific code here
    return FALSE;

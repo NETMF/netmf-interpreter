@@ -6,18 +6,17 @@
 
 //--//
 
-BOOL LCD_Controller_Initialize( DISPLAY_CONTROLLER_CONFIG& config )
+__weak BOOL LCD_Controller_Initialize( DISPLAY_CONTROLLER_CONFIG& config )
 {
     return FALSE;
 }
 
-BOOL LCD_Controller_Uninitialize()
+__weak BOOL LCD_Controller_Uninitialize()
 {
     return TRUE;
 }
 
-BOOL LCD_Controller_Enable( BOOL fEnable )
+__weak BOOL LCD_Controller_Enable( BOOL fEnable )
 {
     return TRUE;
 }
-

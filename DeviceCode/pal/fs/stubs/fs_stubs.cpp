@@ -5,73 +5,73 @@
 
 //--//
 
-void FS_MountVolume( LPCSTR nameSpace, UINT32 serialNumber, UINT32 deviceFlags, BlockStorageDevice* blockStorageDevice )
+__weak void FS_MountVolume( LPCSTR nameSpace, UINT32 serialNumber, UINT32 deviceFlags, BlockStorageDevice* blockStorageDevice )
 {
 }
 
-void FS_UnmountVolume( BlockStorageDevice* blockStorageDevice )
-{
-}
-
-//--//
-
-void FS_Initialize()
+__weak void FS_UnmountVolume( BlockStorageDevice* blockStorageDevice )
 {
 }
 
 //--//
 
-HAL_DblLinkedList<FileSystemVolume> FileSystemVolumeList::s_volumeList;
-
-//--//
-
-void FileSystemVolumeList::Initialize()
+__weak void FS_Initialize()
 {
 }
 
-BOOL FileSystemVolumeList::InitializeVolumes()
+//--//
+
+__weak HAL_DblLinkedList<FileSystemVolume> FileSystemVolumeList::s_volumeList;
+
+//--//
+
+__weak void FileSystemVolumeList::Initialize()
+{
+}
+
+__weak BOOL FileSystemVolumeList::InitializeVolumes()
 {
     return TRUE;
 }
 
-BOOL FileSystemVolumeList::UninitializeVolumes()
+__weak BOOL FileSystemVolumeList::UninitializeVolumes()
 {
     return TRUE;
 }
 
-BOOL FileSystemVolumeList::AddVolume( FileSystemVolume* fsv, LPCSTR nameSpace, UINT32 serialNumber, UINT32 deviceFlags,
+__weak BOOL FileSystemVolumeList::AddVolume( FileSystemVolume* fsv, LPCSTR nameSpace, UINT32 serialNumber, UINT32 deviceFlags,
                                       STREAM_DRIVER_INTERFACE* streamDriver, FILESYSTEM_DRIVER_INTERFACE* fsDriver,
                                       BlockStorageDevice* blockStorageDevice, UINT32 volumeId, BOOL init )
 {
     return TRUE;
 }
 
-BOOL FileSystemVolumeList::RemoveVolume( FileSystemVolume* fsv, BOOL uninit )
+__weak BOOL FileSystemVolumeList::RemoveVolume( FileSystemVolume* fsv, BOOL uninit )
 {
     return TRUE;
 }
 
-FileSystemVolume* FileSystemVolumeList::GetFirstVolume()
+__weak FileSystemVolume* FileSystemVolumeList::GetFirstVolume()
 { 
     return NULL;
 }
 
-FileSystemVolume* FileSystemVolumeList::GetNextVolume( FileSystemVolume& volume )
+__weak FileSystemVolume* FileSystemVolumeList::GetNextVolume( FileSystemVolume& volume )
 { 
     return NULL;
 }
 
-UINT32 FileSystemVolumeList::GetNumVolumes()
+__weak UINT32 FileSystemVolumeList::GetNumVolumes()
 {
     return 0;
 }
 
-FileSystemVolume* FileSystemVolumeList::FindVolume( LPCSTR nameSpace, UINT32 nameSpaceLength )
+__weak FileSystemVolume* FileSystemVolumeList::FindVolume( LPCSTR nameSpace, UINT32 nameSpaceLength )
 {
     return NULL;
 }
 
-BOOL FileSystemVolumeList::Contains( FileSystemVolume* fsv )
+__weak BOOL FileSystemVolumeList::Contains( FileSystemVolume* fsv )
 {
     return FALSE;
 }

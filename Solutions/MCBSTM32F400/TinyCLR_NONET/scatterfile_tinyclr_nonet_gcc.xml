@@ -132,17 +132,35 @@
             <FileMapping Name="*" Options="(VectorTable)" />
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
+        <ExecRegion Name="ER_RAM_RW" Options="&gt;IRAM AT&gt;LR_FLASH ">
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- create a global symbol at data start -->
+            <FileMapping Name="_sdata = .;"/>
+            
             <FileMapping Name="*" Options="(rwdata)" />
             <FileMapping Name="*" Options="(.data*)" />
+
+            <FileMapping Name=". = ALIGN(4);"/>     
+            <!-- define a global symbol at data end -->
+            <FileMapping Name="_edata = .;"/>            
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
+        <ExecRegion Name=".bss" Base="(NOLOAD)" Options="&gt;IRAM">
+            <!-- This is used by the startup in order to initialize the .bss secion -->
+            <!-- define a global symbol at bss start -->
+            <FileMapping Name="_sbss = .;"/>
+            <FileMapping Name="__bss_start__ = _sbss;"/>
+                    
             <FileMapping Name="*" Options="(.bss*)" />
             <FileMapping Name="*" Options="(.zidata*)" />
             <FileMapping Name="PROVIDE(__exidx_start = .);" />
             <FileMapping Name="PROVIDE(__exidx_end = .);" />
             <FileMapping Name="*" Options="(COMMON)" />
+            
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- define a global symbol at bss end -->
+            <FileMapping Name="_ebss = .;"/>
+            <FileMapping Name="__bss_end__ = _ebss;"/>               
         </ExecRegion>
 
         <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM">
@@ -157,35 +175,29 @@
         </ExecRegion>
 
         <!--========= EXTERNAL RAM =============================================--> 
-        <ExecRegion Name="ER_HEAP_BEGIN" Options="&gt;EXTRAM">
-            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        <!-- Managed heap region -->
+        <ExecRegion Name="ER_MANAGED_HEAP" Options="&gt;EXTRAM">
+            <FileMapping Name=". = ALIGN(4);"/> 
+            <FileMapping Name="HeapBegin = .;"/>
+            <!--<FileMapping Name="*" Options="(SectionForHeapBegin)" />-->
+            <!--<FileMapping Name=". += %Managed_Heap_Size%;"/>-->
+            <FileMapping Name=". = %EXTRAM% - SIZEOF(EXTRAM) - %CustomHeap_Size% - 8;"/>
+            <FileMapping Name="HeapEnd = .;"/>
         </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for a heap -->
-
-        <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
-        </ExecRegion>
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
-        </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="ADDR(ER_CUSTOM_HEAP_BEGIN) + %CustomHeap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
+        
+        <ExecRegion Name="._user_heap" Options="&gt;EXTRAM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="PROVIDE ( end = . );" />
+            <FileMapping Name="PROVIDE ( _end = . );" />
         </ExecRegion>
 
         <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackBottom)" />
-        </ExecRegion>
+       <FileMapping Name="_estack = %CCM_BaseAddress% + %CCM_Size% - 8;"/>
 
-        <!-- (-8) for the two 32bit values in the SectionForStack* sections, This keeps the region
-             limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - 8" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackTop)" />
+        <ExecRegion Name="._user_stack" Options="&gt;D_CCM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="PROVIDE ( end = . );" />
+            <FileMapping Name="PROVIDE ( _end = . );" />
         </ExecRegion>
 
         <ExecRegion Name="ER_DAT" Options="&gt;LR_DAT">

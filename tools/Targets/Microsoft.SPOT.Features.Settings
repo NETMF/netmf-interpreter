@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="Default">
+
+    <Target Name="Default">
+
+        <!-- GPIO -->
+        <ItemGroup >
+            <CC_CPP_Defines Condition="'$(FEATURE_GPIO)' == 'True'" Include="FEATURE_GPIO" />
+        </ItemGroup>
+
+        <!-- SPI -->
+        <ItemGroup Condition="'$(FEATURE_SPI)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_SPI" />
+        </ItemGroup>
+
+        <!-- I2C -->
+        <ItemGroup Condition="'$(FEATURE_I2C)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_I2C" />
+        </ItemGroup>
+
+        <!-- USART -->
+        <ItemGroup Condition="'$(FEATURE_USART)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_USART" />
+        </ItemGroup>
+
+        <!-- Analog (ADC) -->
+        <ItemGroup Condition="'$(FEATURE_ANALOG)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_ANALOG" />
+        </ItemGroup>
+
+        <!-- PWM -->
+        <ItemGroup Condition="'$(FEATURE_PWM)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_PWM" />
+        </ItemGroup>
+
+        <!-- DA -->
+        <ItemGroup Condition="'$(FEATURE_DA)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_DA" />
+        </ItemGroup>        
+                        
+        <!-- Cortex-M internal FLASH -->
+        <ItemGroup Condition="'$(FEATURE_CORTEX_FLASH)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_CORTEX_FLASH" />
+        </ItemGroup>
+
+        <!-- CPU Cache -->
+        <ItemGroup Condition="'$(FEATURE_CPUCACHE)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_CPUCACHE" />
+        </ItemGroup>        
+
+        <!-- Watchdog -->
+        <ItemGroup Condition="'$(FEATURE_WATCHDOG)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_WATCHDOG" />
+        </ItemGroup>
+
+        <!-- Sockets -->
+        <ItemGroup Condition="'$(FEATURE_SOCKETS)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_SOCKETS" />
+        </ItemGroup>
+
+        <!-- Time Service -->
+        <ItemGroup Condition="'$(FEATURE_TIMESERVICE)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_TIMESERVICE" />
+        </ItemGroup>
+
+        <!-- PAL event -->
+        <ItemGroup Condition="'$(FEATURE_PALEVENT)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_PALEVENT" />
+        </ItemGroup>
+                        
+        <!-- Cortex-M CRC -->
+        <ItemGroup Condition="'$(FEATURE_HARDWARE_CRC)' == 'True' AND '$(FEATURE_SOFTWARE_CRC)' != 'True'">
+            <CC_CPP_Defines Include="FEATURE_HARDWARE_CRC" />
+        </ItemGroup>
+                                
+        <!-- Software CRC -->
+        <ItemGroup Condition="'$(FEATURE_SOFTWARE_CRC)' == 'True' AND '$(FEATURE_HARDWARE_CRC)' != 'True'">
+            <CC_CPP_Defines Include="FEATURE_SOFTWARE_CRC" />
+        </ItemGroup>
+
+        <!-- USB Debug -->
+        <ItemGroup Condition="'$(FEATURE_USB_DEBUG)' == 'True'">
+            <CC_CPP_Defines Include="FEATURE_USB_DEBUG" />
+        </ItemGroup>
+
+    </Target>
+    
+</Project>

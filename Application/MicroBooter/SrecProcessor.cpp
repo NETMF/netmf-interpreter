@@ -75,7 +75,9 @@ BOOL SREC_Handler::Process( char c )
                         {
                             ApplicationStartAddress str = (ApplicationStartAddress)m_ImageStart;
 
+                            #ifdef FEATURE_LCD
                             LCD_Clear();
+                            #endif
                             
                             DebuggerPort_Uninitialize( HalSystemConfig.DebuggerPorts[0] );
                             
@@ -83,7 +85,9 @@ BOOL SREC_Handler::Process( char c )
                             
                             LCD_Uninitialize();
                             
+                            #ifdef FEATURE_CPUCACHE            
                             CPU_DisableCaches();
+                            #endif
 
                             (*str)();
                         }

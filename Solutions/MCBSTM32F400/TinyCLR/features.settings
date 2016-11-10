@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+    <PropertyGroup>
+        <Author>Eclo Solutions</Author>
+        <Description>
+        <!-- Configuration file to select which features are to be added/enabled -->
+        </Description>
+        <Documentation />
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <FEATURE_GPIO>True</FEATURE_GPIO>
+        <FEATURE_SPI>True</FEATURE_SPI>
+        <FEATURE_I2C>False</FEATURE_I2C>
+        <FEATURE_USART>False</FEATURE_USART>
+        <FEATURE_ANALOG>False</FEATURE_ANALOG>
+        <FEATURE_PWM>False</FEATURE_PWM>
+        <FEATURE_DA>False</FEATURE_DA>
+                
+        <FEATURE_CORTEX_FLASH>True</FEATURE_CORTEX_FLASH>
+        <FEATURE_CPUCACHE>False</FEATURE_CPUCACHE>
+        <FEATURE_WATCHDOG>False</FEATURE_WATCHDOG>
+        <FEATURE_SOCKETS>False</FEATURE_SOCKETS>
+        <FEATURE_TIMESERVICE>False</FEATURE_TIMESERVICE>
+        <FEATURE_PALEVENT>False</FEATURE_PALEVENT>
+        <FEATURE_HARDWARE_CRC>True</FEATURE_HARDWARE_CRC>
+        <FEATURE_SOFTWARE_CRC>False</FEATURE_SOFTWARE_CRC>
+        <FEATURE_USB_DEBUG>True</FEATURE_USB_DEBUG>
+
+        <FEATURE_LCD>False</FEATURE_LCD>
+        <FEATURE_BACKLIGHT>False</FEATURE_BACKLIGHT>
+        <FEATURE_PIEZO>False</FEATURE_PIEZO>
+        <FEATURE_BATTERY>False</FEATURE_BATTERY>
+        <FEATURE_CHARGER>False</FEATURE_CHARGER>
+        <FEATURE_GESTURE>False</FEATURE_GESTURE>
+        <FEATURE_INK>False</FEATURE_INK>
+        <FEATURE_FS>False</FEATURE_FS>        
+        <FEATURE_BUTTONS>False</FEATURE_BUTTONS>
+    </PropertyGroup>
+</Project>

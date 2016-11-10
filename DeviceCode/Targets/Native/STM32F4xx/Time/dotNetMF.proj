@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AssemblyName>CMSIS_time</AssemblyName>
+        <Size>
+        </Size>
+        <ProjectGuid>{21D7B547-C341-4DAC-8F5D-3CA47C2AF70F}</ProjectGuid>
+        <Description>CMSIS time driver</Description>
+        <Level>HAL</Level>
+        <LibraryFile>CMSIS_time.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Time\dotNetMF.proj</ProjectPath>
+        <ManifestFile>CMSIS_time.$(LIB_EXT).manifest</ManifestFile>
+        <Groups></Groups>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <CustomFilter>
+        </CustomFilter>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>False</IsStub>
+        <Directory>DeviceCode\Targets\Native\STM32F4xx\Time</Directory>
+        <OutputType>Library</OutputType>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+    <ItemGroup>
+        <Compile Include="Time_functions.cpp" />
+    </ItemGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

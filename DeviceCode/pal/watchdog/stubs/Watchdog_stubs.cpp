@@ -6,27 +6,27 @@
 
 //--//
 
-BOOL Watchdog_GetSetEnabled( BOOL enabled, BOOL fSet )
+__weak BOOL Watchdog_GetSetEnabled( BOOL enabled, BOOL fSet )
 {
     return FALSE;
 }
 
-UINT32 Watchdog_GetSetTimeout( INT32 timeout_ms , BOOL fSet )
+__weak UINT32 Watchdog_GetSetTimeout( INT32 timeout_ms , BOOL fSet )
 {
     return 0;
 }
 
-Watchdog_Behavior Watchdog_GetSetBehavior( Watchdog_Behavior behavior, BOOL fSet )
+__weak Watchdog_Behavior Watchdog_GetSetBehavior( Watchdog_Behavior behavior, BOOL fSet )
 {
     return Watchdog_Behavior__None;
 }
 
-BOOL Watchdog_LastOccurence( INT64& time, INT64& timeout, UINT32& assembly, UINT32& method, BOOL fSet )
+__weak BOOL Watchdog_LastOccurence( INT64& time, INT64& timeout, UINT32& assembly, UINT32& method, BOOL fSet )
 {
     return FALSE;
 }
 
 
-void EmulatorHook__Watchdog_Callback()
+__weak void EmulatorHook__Watchdog_Callback()
 {
 }

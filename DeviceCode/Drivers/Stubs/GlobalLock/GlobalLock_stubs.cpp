@@ -6,54 +6,53 @@
 
 #if !defined(ARM_V1_2)
 
-SmartPtr_IRQ::SmartPtr_IRQ(void* context)
+__weak SmartPtr_IRQ::SmartPtr_IRQ(void* context)
 { 
 }
 
-SmartPtr_IRQ::~SmartPtr_IRQ() 
+__weak SmartPtr_IRQ::~SmartPtr_IRQ() 
 { 
 }
 
 #endif
 
-BOOL SmartPtr_IRQ::WasDisabled()
+__weak BOOL SmartPtr_IRQ::WasDisabled()
 {
     return TRUE;
     
 }
 
-void SmartPtr_IRQ::Acquire()
+__weak void SmartPtr_IRQ::Acquire()
 {
 }
 
-void SmartPtr_IRQ::Release()
+__weak void SmartPtr_IRQ::Release()
 {
 }
 
-void SmartPtr_IRQ::Probe()
+__weak void SmartPtr_IRQ::Probe()
 {
 }
 
-BOOL SmartPtr_IRQ::GetState(void* context)
+__weak BOOL SmartPtr_IRQ::GetState(void* context)
 {
     return TRUE;
 }
 
-BOOL SmartPtr_IRQ::ForceDisabled(void* context)
+__weak BOOL SmartPtr_IRQ::ForceDisabled(void* context)
 {
     return TRUE;    
 }
 
-BOOL SmartPtr_IRQ::ForceEnabled(void* context)
+__weak BOOL SmartPtr_IRQ::ForceEnabled(void* context)
 {
     return TRUE; 
 }
 
-void SmartPtr_IRQ::Disable()
+__weak void SmartPtr_IRQ::Disable()
 {
 }
 
-void SmartPtr_IRQ::Restore()
+__weak void SmartPtr_IRQ::Restore()
 {
 }
-

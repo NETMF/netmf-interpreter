@@ -60,7 +60,7 @@
 //                        Serial Number placed in the global SerialNum[portnum]
 //            FALSE (0): There are no devices on the 1-Wire Net.
 //
-SMALLINT owFirst(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
+__weak SMALLINT owFirst(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
 {
 
   return FALSE;
@@ -89,7 +89,7 @@ SMALLINT owFirst(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
 //                       last search was the last device or there
 //                       are no devices on the 1-Wire Net.
 //
-SMALLINT owNext(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
+__weak SMALLINT owNext(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
 { 
   return FALSE;
 }
@@ -112,6 +112,6 @@ SMALLINT owNext(int portnum, SMALLINT do_reset, SMALLINT alarm_only)
 // 'do_read'       - flag to indicate reading (1) or setting (0) the current
 //                   serial number.
 //
-void owSerialNum(int portnum, uchar *serialnum_buf, SMALLINT do_read)
+__weak void owSerialNum(int portnum, uchar *serialnum_buf, SMALLINT do_read)
 {
 }

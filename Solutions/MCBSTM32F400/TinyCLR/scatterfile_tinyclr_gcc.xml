@@ -143,6 +143,9 @@
         </ExecRegion>
 
         <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- create a global symbol at data start -->
+            <FileMapping Name="_sdata = .;"/>
             <FileMapping Name="*(rwdata)"/>
             <FileMapping Name="*(.data*)"/>
             <FileMapping Name=". = ALIGN(4);"/>
@@ -162,17 +165,28 @@
             <FileMapping Name="KEEP(*(.fini_array))"/>
             <FileMapping Name="PROVIDE(__fini_array_end = . );"/>
 
-            <FileMapping Name=". = ALIGN(4);"/>
-            <FileMapping Name="__data_end__ = .;"/>
+            <FileMapping Name=". = ALIGN(4);"/>     
+            <!-- define a global symbol at data end -->
+            <FileMapping Name="_edata = .;"/>
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
+        <ExecRegion Name=".bss" Base="(NOLOAD)" Options="&gt;IRAM">
+            <!-- This is used by the startup in order to initialize the .bss secion -->
+            <!-- define a global symbol at bss start -->
+            <FileMapping Name="_sbss = .;"/>
+            <FileMapping Name="__bss_start__ = _sbss;"/>
+                    
             <FileMapping Name="*(.bss*)" />
             <FileMapping Name="*(.zidata*)" />
             <FileMapping Name="PROVIDE(__exidx_start = .);" />
             <FileMapping Name="PROVIDE(__exidx_end = .);" />
             <FileMapping Name="*(g_SSL_SeedData)" />
             <FileMapping Name="*(COMMON)" />
+            
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- define a global symbol at bss end -->
+            <FileMapping Name="_ebss = .;"/>
+            <FileMapping Name="__bss_end__ = _ebss;"/>            
         </ExecRegion>
 
         <!-- To enable re-initialization of the LWIP stack, which has no built-in support
@@ -203,49 +217,36 @@
         </ExecRegion>
 
         <!--========= EXTERNAL RAM =============================================--> 
-        <ExecRegion Name="ER_HEAP_BEGIN" Options="&gt;EXTRAM">
-            <FileMapping Name="*(SectionForHeapBegin)" />
+        <!-- Managed heap region -->
+        <ExecRegion Name="ER_MANAGED_HEAP" Options="&gt;EXTRAM">
+            <FileMapping Name=". = ALIGN(4);"/> 
+            <FileMapping Name="HeapBegin = .;"/>
+            <!--<FileMapping Name="*" Options="(SectionForHeapBegin)" />-->
+            <!--<FileMapping Name=". += %Managed_Heap_Size%;"/>-->
+            <FileMapping Name=". = %EXTRAM% - SIZEOF(EXTRAM) - %CustomHeap_Size% - 8;"/>
+            <FileMapping Name="HeapEnd = .;"/>
         </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for a heap -->
-
-        <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*(SectionForHeapEnd)" />
+        
+        <ExecRegion Name="._user_heap" Options="&gt;EXTRAM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="PROVIDE ( end = . );" />
+            <FileMapping Name="PROVIDE ( _end = . );" />
         </ExecRegion>
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;EXTRAM" >
-            <FileMapping Name="*(SectionForCustomHeapBegin)" />
-        </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="ADDR(ER_CUSTOM_HEAP_BEGIN) + %CustomHeap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*(SectionForCustomHeapEnd)" />
-        </ExecRegion>
-
+        
         <!-- ========= Internal CCM ============================================ -->
         <!-- Stack allocation pools for the OS, Sizes are set in RTX_Conf_CM.c along with other OS configuration -->
         <ExecRegion Name="ER_RT_STACK" Options="&gt;D_CCM">
             <FileMapping Name="*(rtx_stack)" />
         </ExecRegion>
+        
+       <FileMapping Name="_estack = %CCM_BaseAddress% + %CCM_Size% - 8;"/>
 
-        <!-- The rest of the CCM is used as a general stack during startup. This can't overlap with the ER_RT_STACK
-             region as the kernel will zero that out during initialization, which would overwrite the stack of the
-             code running the initialization, causing an early FAULT. Size and alignment are critical here. The stack
-             must be aligned on an 8 byte boundary AND the size of this region must not extend it past the end of the
-             actual physical CCM space. The CRT startup code will initialize the region and, if the aligned size
-             puts the end outside of physical memory it will generate an imprecise abort.
-        -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Align="8" Options="&gt;D_CCM">
-            <FileMapping Name="*(SectionForStackBottom)" />
+        <ExecRegion Name="._user_stack" Options="&gt;D_CCM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="PROVIDE ( end = . );" />
+            <FileMapping Name="PROVIDE ( _end = . );" />
         </ExecRegion>
-
-        <!-- (-8) for the two 32bit values in the SectionForStack* sections, This keeps the region
-             limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - SIZEOF(ER_RT_STACK) - 8" Options="&gt;D_CCM">
-            <FileMapping Name="*(SectionForStackTop)" />
-        </ExecRegion>
-
+        
         <ExecRegion Name="ER_DAT" Options="&gt;LR_DAT">
             <FileMapping Name="*(tinyclr_metadata)" />
         </ExecRegion>
@@ -258,9 +259,9 @@
     <!-- The following variables are used to simulate the ones autogenerated by ARMCC -->
     <GlobalVariable Name="Load$$ER_%TARGETLOCATION%$$Base"          Value="LOADADDR(ER_%TARGETLOCATION%)"/>
     <GlobalVariable Name="Image$$ER_%TARGETLOCATION%$$Length"       Value="SIZEOF(ER_%TARGETLOCATION%)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Base"                   Value="ADDR(ER_RAM_RO)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Length"                 Value="SIZEOF(ER_RAM_RO)"/>
-    <GlobalVariable Name="Load$$ER_RAM_RO$$Base"                    Value="LOADADDR(ER_RAM_RO)"/>
+    <!--<GlobalVariable Name="Image$$ER_RAM_RO$$Base"                   Value="ADDR(ER_RAM_RO)"/>-->
+    <!--<GlobalVariable Name="Image$$ER_RAM_RO$$Length"                 Value="SIZEOF(ER_RAM_RO)"/>-->
+    <!--<GlobalVariable Name="Load$$ER_RAM_RO$$Base"                    Value="LOADADDR(ER_RAM_RO)"/>-->
     <GlobalVariable Name="Image$$ER_RAM_RW$$Base"                   Value="ADDR(ER_RAM_RW)"/>
     <GlobalVariable Name="Image$$ER_RAM_RW$$Length"                 Value="SIZEOF(ER_RAM_RW)"/>
     <GlobalVariable Name="Load$$ER_RAM_RW$$Base"                    Value="LOADADDR(ER_RAM_RW)"/>

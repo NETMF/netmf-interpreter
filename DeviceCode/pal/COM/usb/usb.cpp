@@ -330,13 +330,13 @@ int USB_Driver::Configure( int Controller, const USB_DYNAMIC_CONFIGURATION* Conf
         //
         if(State->Configuration != &UsbDefaultConfiguration)
         {
-            private_free((void*)State->Configuration);
+            free((void*)State->Configuration);
         }
 
         //
         // Make sure that we allocate the native configuration buffer, the one passed in will be garbage collected
         //
-        State->Configuration = (USB_DYNAMIC_CONFIGURATION*)private_malloc(Length);
+        State->Configuration = (USB_DYNAMIC_CONFIGURATION*)malloc(Length);
 
         //
 
@@ -355,7 +355,7 @@ int USB_Driver::Configure( int Controller, const USB_DYNAMIC_CONFIGURATION* Conf
 
 //
 // The GetConfiguration method will attempt to load the configurate from the config sector in flash
-// Since the USB configuration is of variable size, this method may use private_malloc, therefore,
+// Since the USB configuration is of variable size, this method may use malloc, therefore,
 // this method should not be called prior to the heap initialization.
 //
 const USB_DYNAMIC_CONFIGURATION * USB_Driver::GetConfiguration( int Controller )
@@ -385,7 +385,7 @@ const USB_DYNAMIC_CONFIGURATION * USB_Driver::GetConfiguration( int Controller )
     // If the requested USB configuration was not found in the Flash configuration sector
     void *pConfig = NULL;
 
-    // this calls private_malloc
+    // this calls malloc
     if(HAL_CONFIG_BLOCK::ApplyConfig( configName, NULL, 0, (void**)&pConfig ) && pConfig != NULL)
     {
         State->Configuration = (const USB_DYNAMIC_CONFIGURATION *)pConfig;

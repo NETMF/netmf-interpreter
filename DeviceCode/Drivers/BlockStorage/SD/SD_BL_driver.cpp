@@ -364,10 +364,10 @@ BOOL SD_BS_Driver::ChipInitialize(void *context)
         
         // send CMD16, set block length to 512
 #ifdef SD_DEBUG
-        debug_printf" SD SendCmdWithR1Resp: SD_SET_BLOCKLEN[512] -> R1_IN_READY_STATUS\r\n");
+        debug_printf" SD SendCmdWithR1Resp: SD_CMD_SET_BLOCKLEN[512] -> R1_IN_READY_STATUS\r\n");
 #endif
 
-        response = SD_SendCmdWithR1Resp(SD_SET_BLOCKLEN, 512, 0xFF, R1_IN_READY_STATUS);
+        response = SD_SendCmdWithR1Resp(SD_CMD_SET_BLOCKLEN, 512, 0xFF, R1_IN_READY_STATUS);
 
         if(response != R1_IN_READY_STATUS)
         {
@@ -391,10 +391,10 @@ BOOL SD_BS_Driver::ChipInitialize(void *context)
         
 
 #ifdef SD_DEBUG
-	    debug_printf(" SD SendCmdWithR1Resp: SD_SEND_CSD[0] -> SD_START_DATA_BLOCK_TOKEN=%02X\r\n",SD_START_DATA_BLOCK_TOKEN);
+	    debug_printf(" SD SendCmdWithR1Resp: SD_CMD_SEND_CSD[0] -> SD_START_DATA_BLOCK_TOKEN=%02X\r\n",SD_START_DATA_BLOCK_TOKEN);
 #endif
 
-        response = SD_SendCmdWithR1Resp(SD_SEND_CSD, 0, 0xFF, SD_START_DATA_BLOCK_TOKEN);
+        response = SD_SendCmdWithR1Resp(SD_CMD_SEND_CSD, 0, 0xFF, SD_START_DATA_BLOCK_TOKEN);
     
         if(response != SD_START_DATA_BLOCK_TOKEN)
         {
@@ -412,7 +412,7 @@ BOOL SD_BS_Driver::ChipInitialize(void *context)
     
             //Table 5-5: TAAC Access Time Definition	
             //TAAC bit position code
-            //2:0 time unit   0=1ns, 1=10ns, 2=100ns, 3=1µs, 4=10µs,5=100µs, 6=1ms, 7=10ms
+            //2:0 time unit   0=1ns, 1=10ns, 2=100ns, 3=1ï¿½s, 4=10ï¿½s,5=100ï¿½s, 6=1ms, 7=10ms
             //6:3 time value  0=reserved, 1=1.0, 2=1.2, 3=1.3, 4=1.5, 5=2.0, 6=2.5, 7=3.0, 
             //                8=3.5,      9=4.0, A=4.5, B=5.0, C=5.5, D=6.0, E=7.0, F=8.0
             //  7 reserved
@@ -543,8 +543,8 @@ BOOL SD_BS_Driver::ChipInitialize(void *context)
         //CMD55+ACMD51 to get SCR register
         BYTE regSCR[8];
     
-        SD_SendCmdWithR1Resp(SD_APP_CMD, 0, 0xFF, R1_IN_READY_STATUS);
-        response = SD_SendCmdWithR1Resp(SD_SEND_SCR, 0, 0xFF, SD_START_DATA_BLOCK_TOKEN);
+        SD_SendCmdWithR1Resp(SD_CMD_APP_CMD, 0, 0xFF, R1_IN_READY_STATUS);
+        response = SD_SendCmdWithR1Resp(SD_CMD_SEND_SCR, 0, 0xFF, SD_START_DATA_BLOCK_TOKEN);
     
         if(response != SD_START_DATA_BLOCK_TOKEN)
         {
@@ -582,7 +582,7 @@ BOOL SD_BS_Driver::ChipInitialize(void *context)
 
         BYTE ProductName[5];
 	       
-        response = SD_SendCmdWithR1Resp(SD_SEND_CID, 0, 0xFF, SD_START_DATA_BLOCK_TOKEN);
+        response = SD_SendCmdWithR1Resp(SD_CMD_SEND_CID, 0, 0xFF, SD_START_DATA_BLOCK_TOKEN);
 
         if(response != SD_START_DATA_BLOCK_TOKEN)
         {
@@ -652,7 +652,7 @@ BYTE SD_BS_Driver::SD_Cmd_GO_IDLE_STATE()
     // send CMD0, card should enter IDLE state
     for(i = 0; i < 10; i++)
     {
-        response = SD_SendCmdWithR1Resp(SD_GO_IDLE_STATE, 0, 0x95, R1_IN_IDLE_STATUS);
+        response = SD_SendCmdWithR1Resp(SD_CMD_GO_IDLE_STATE, 0, 0x95, R1_IN_IDLE_STATUS);
         if(response == R1_IN_IDLE_STATUS)
             break;
     }
@@ -687,7 +687,7 @@ BYTE SD_BS_Driver::ReadOCR_R3(UINT32* pOCR)
     *pOCR=0;
      
     // SD_SEND_OCR
-    BYTE R3response = SD_SendCmdWithR3Resp(SD_READ_OCR, 0, pOCR);
+    BYTE R3response = SD_SendCmdWithR3Resp(SD_CMD_READ_OCR, 0, pOCR);
     
 #ifdef SD_DEBUG
     debug_printf(" SD %s OCR=%08X : BUSY=%d CCS=%d\r\n",(Get_OCR_CCS() ? "HC/XC" : "SC"),
@@ -725,7 +725,7 @@ BOOL SD_BS_Driver::SD_Cmd_SEND_IF_COND(BOOL isLowVoltageRequired, BOOL *pIs_SD_v
         supply_voltage = 1;
    
     CMD8_Arg |= (supply_voltage << 8);
-    BYTE R7response = SD_SendCmdWithR7Resp(SD_SEND_IF_COND, CMD8_Arg, &support_voltage);
+    BYTE R7response = SD_SendCmdWithR7Resp(SD_CMD_SEND_IF_COND, CMD8_Arg, &support_voltage);
     // check if command was successful?
     if(R7response == R7_ILLEGAL_COOMMAND)
     {
@@ -765,9 +765,9 @@ BOOL SD_BS_Driver::SD_Set_In_READY_STATUS(BOOL isHC_XC_Supported)
     for(i=0; i<0x7fff; i++)
     {
         //send CMD55 + ACMD41 until return 0x00 for type 1 cards
-        SD_SendCmdWithR1Resp(SD_APP_CMD, 0, 0xFF, R1_IN_IDLE_STATUS);
+        SD_SendCmdWithR1Resp(SD_CMD_APP_CMD, 0, 0xFF, R1_IN_IDLE_STATUS);
 
-        response = SD_SendCmdWithR1Resp(SD_SEND_OP_COND, (isHC_XC_Supported ? CMD41_HCS_PATTERN : 0), 0xFF, R1_IN_READY_STATUS);
+        response = SD_SendCmdWithR1Resp(SD_CMD_SEND_OP_COND, (isHC_XC_Supported ? CMD41_HCS_PATTERN : 0), 0xFF, R1_IN_READY_STATUS);
 
         if(response == R1_IN_READY_STATUS)
         {
@@ -778,7 +778,7 @@ BOOL SD_BS_Driver::SD_Set_In_READY_STATUS(BOOL isHC_XC_Supported)
         if (isHC_XC_Supported)
         {
             // use v2.0 command
-            response = SD_SendCmdWithR1Resp(SD_V2_SEND_OP_COND, 0, 0xFF, R1_IN_READY_STATUS);
+            response = SD_SendCmdWithR1Resp(SD_CMD_V2_SEND_OP_COND, 0, 0xFF, R1_IN_READY_STATUS);
             if(response == R1_IN_READY_STATUS)
             {
                 return TRUE;
@@ -890,7 +890,7 @@ BOOL SD_BS_Driver::ReadSector(SectorAddress sectorAddress, UINT32 Offset, UINT32
         SD_CsSetLow();
 
         // send CMD17 and wait for DATA_BLOCK_TOKEN
-        response = SD_SendCmdWithR1Resp(SD_READ_SINGLE_BLOCK, sectorAddress << 9, 0xff, SD_START_DATA_BLOCK_TOKEN, 10000);
+        response = SD_SendCmdWithR1Resp(SD_CMD_READ_SINGLE_BLOCK, sectorAddress << 9, 0xff, SD_START_DATA_BLOCK_TOKEN, 10000);
 
         if(response == SD_START_DATA_BLOCK_TOKEN)
         {
@@ -1109,7 +1109,7 @@ BOOL SD_BS_Driver::WriteX(void *context, ByteAddress phyAddr, UINT32 NumBytes, B
         SD_CsSetLow();
         
         // send CMD24 --read single block data
-        response = SD_SendCmdWithR1Resp(SD_WRITE_SINGLE_BLOCK, StartSector << 9, 0xff, R1_IN_READY_STATUS);
+        response = SD_SendCmdWithR1Resp(SD_CMD_WRITE_SINGLE_BLOCK, StartSector << 9, 0xff, R1_IN_READY_STATUS);
 
         if(response == R1_IN_READY_STATUS)
         {
@@ -1207,7 +1207,7 @@ BOOL SD_BS_Driver::EraseSectors(SectorAddress Address, INT32 SectorCount)
     SD_CsSetLow(); // cs low
 
     //send ERASE_WR_BLK_START command
-    response = SD_SendCmdWithR1Resp(SD_ERASE_WR_BLK_START, Address << 9, 0xff, R1_IN_READY_STATUS);
+    response = SD_SendCmdWithR1Resp(SD_CMD_ERASE_WR_BLK_START, Address << 9, 0xff, R1_IN_READY_STATUS);
 
     if(response != R1_IN_READY_STATUS)
     {
@@ -1216,7 +1216,7 @@ BOOL SD_BS_Driver::EraseSectors(SectorAddress Address, INT32 SectorCount)
     }
 
     //send ERASE_WR_BLK_END command
-    response = SD_SendCmdWithR1Resp(SD_ERASE_WR_BLK_END, (Address + SectorCount - 1) << 9, 0xff, R1_IN_READY_STATUS);
+    response = SD_SendCmdWithR1Resp(SD_CMD_ERASE_WR_BLK_END, (Address + SectorCount - 1) << 9, 0xff, R1_IN_READY_STATUS);
 
     if(response != R1_IN_READY_STATUS)
     {
@@ -1225,7 +1225,7 @@ BOOL SD_BS_Driver::EraseSectors(SectorAddress Address, INT32 SectorCount)
     }
 
     // send erase command
-    response = SD_SendCmdWithR1Resp(SD_ERASE, 0xffffffff, 0xff, R1_IN_READY_STATUS);
+    response = SD_SendCmdWithR1Resp(SD_CMD_ERASE, 0xffffffff, 0xff, R1_IN_READY_STATUS);
 
     if(response != R1_IN_READY_STATUS)
     {

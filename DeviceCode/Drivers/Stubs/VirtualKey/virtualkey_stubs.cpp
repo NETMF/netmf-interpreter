@@ -4,8 +4,7 @@
 
 #include <tinyhal.h>
 
-GPIO_PIN VirtualKey_GetPins( UINT32 virtualKey)
+__weak GPIO_PIN VirtualKey_GetPins( UINT32 virtualKey)
 {
    return GPIO_PIN_NONE; 
 }
-

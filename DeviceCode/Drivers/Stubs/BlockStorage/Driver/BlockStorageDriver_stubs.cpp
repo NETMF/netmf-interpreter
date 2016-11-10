@@ -7,68 +7,68 @@
 
 //--//
 
-BOOL STUB_BlockStorage_Driver::ChipInitialize( void* context )
+__weak BOOL STUB_BlockStorage_Driver::ChipInitialize( void* context )
 {
     return TRUE;
 }
 
-BOOL STUB_BlockStorage_Driver::ChipUnInitialize( void* context )
+__weak BOOL STUB_BlockStorage_Driver::ChipUnInitialize( void* context )
 {
     return TRUE;
 }
 
-const BlockDeviceInfo* STUB_BlockStorage_Driver::GetDeviceInfo( void* context )
+__weak const BlockDeviceInfo* STUB_BlockStorage_Driver::GetDeviceInfo( void* context )
 {
     return NULL;    
 }
 
-BOOL  STUB_BlockStorage_Driver::ChipReadOnly( void* context, BOOL On, UINT32 ProtectionKey )
+__weak BOOL  STUB_BlockStorage_Driver::ChipReadOnly( void* context, BOOL On, UINT32 ProtectionKey )
 {
     return TRUE;
 }
 
 
-BOOL  STUB_BlockStorage_Driver::Read( void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff)
+__weak BOOL  STUB_BlockStorage_Driver::Read( void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff)
 {
     return TRUE;
 
 }
 
 
-BOOL STUB_BlockStorage_Driver::Write(void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite)
+__weak BOOL STUB_BlockStorage_Driver::Write(void* context, ByteAddress Address, UINT32 NumBytes, BYTE * pSectorBuff, BOOL ReadModifyWrite)
 {
     return TRUE;
 }
 
-BOOL STUB_BlockStorage_Driver::Memset(void* context, ByteAddress Address, UINT8 Data, UINT32 NumBytes)
+__weak BOOL STUB_BlockStorage_Driver::Memset(void* context, ByteAddress Address, UINT8 Data, UINT32 NumBytes)
 {
     return TRUE;
 }
 
-BOOL STUB_BlockStorage_Driver::GetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
+__weak BOOL STUB_BlockStorage_Driver::GetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
 {
     return TRUE;
 }
 
-BOOL STUB_BlockStorage_Driver::SetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
-{
-    return TRUE;
-}
-
-
-
-BOOL STUB_BlockStorage_Driver::IsBlockErased( void* context, ByteAddress Address, UINT32 BlockLength )
+__weak BOOL STUB_BlockStorage_Driver::SetSectorMetadata(void* context, ByteAddress SectorStart, SectorMetadata* pSectorMetadata)
 {
     return TRUE;
 }
 
 
-BOOL STUB_BlockStorage_Driver::EraseBlock( void* context, ByteAddress Sector )
+
+__weak BOOL STUB_BlockStorage_Driver::IsBlockErased( void* context, ByteAddress Address, UINT32 BlockLength )
 {
     return TRUE;
 }
 
-void  STUB_BlockStorage_Driver::SetPowerState( void* context, UINT32 State )
+
+__weak BOOL STUB_BlockStorage_Driver::EraseBlock( void* context, ByteAddress Sector )
+{
+    return TRUE;
+}
+
+__weak void  STUB_BlockStorage_Driver::SetPowerState( void* context, UINT32 State )
 {
     return;
 }
@@ -77,7 +77,7 @@ void  STUB_BlockStorage_Driver::SetPowerState( void* context, UINT32 State )
 
 // Public functions
 
-BOOL STUB_BlockStorage_Driver::ReadProductID( void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
+__weak BOOL STUB_BlockStorage_Driver::ReadProductID( void* context, FLASH_WORD& ManufacturerCode, FLASH_WORD& DeviceCode )
 {
     return TRUE;
 }
@@ -90,13 +90,13 @@ BOOL STUB_BlockStorage_Driver::ReadProductID( void* context, FLASH_WORD& Manufac
 #pragma arm section code = "SectionForFlashOperations"
 #endif
 
-UINT32 STUB_BlockStorage_Driver::MaxSectorWrite_uSec( void* context )
+__weak UINT32 STUB_BlockStorage_Driver::MaxSectorWrite_uSec( void* context )
 {
     return 1;
 }
 
 
-UINT32 STUB_BlockStorage_Driver::MaxBlockErase_uSec( void* context )
+__weak UINT32 STUB_BlockStorage_Driver::MaxBlockErase_uSec( void* context )
 {
     return 1;
     
@@ -133,6 +133,3 @@ struct IBlockStorageDevice g_I28F_16_BS_DeviceTable =
 #if defined(ADS_LINKER_BUG__NOT_ALL_UNUSED_VARIABLES_ARE_REMOVED)
 #pragma arm section rodata 
 #endif 
-
-
-

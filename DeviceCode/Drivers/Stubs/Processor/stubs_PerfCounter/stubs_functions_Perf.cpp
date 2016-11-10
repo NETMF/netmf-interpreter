@@ -7,16 +7,15 @@
 //--//
 
 
-void Time_PerformanceCounter_Initialize()
+__weak void Time_PerformanceCounter_Initialize()
 {
 }
 
-void Time_PerformanceCounter_Uninitialize()
+__weak void Time_PerformanceCounter_Uninitialize()
 {
 }
 
-UINT32 Time_PerformanceCounter()
+__weak UINT32 Time_PerformanceCounter()
 {
     return 0;
 }
-

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <AssemblyName>CMSIS_power_loader</AssemblyName>
+        <ProjectGuid>{F4BDE754-B128-4335-AE34-3FE2B253E026}</ProjectGuid>
+        <Size>
+        </Size>
+        <Description>CMSIS CPU power library for bootloader</Description>
+        <Level>HAL</Level>
+        <LibraryFile>CMSIS_power_loader.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Power\dotNetMF_loader.proj</ProjectPath>
+        <ManifestFile>CMSIS_power_loader.$(LIB_EXT).manifest</ManifestFile>
+        <Groups></Groups>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <CustomFilter>
+        </CustomFilter>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>True</IsStub>
+        <Directory>DeviceCode\Targets\Native\STM32F4xx\Power</Directory>
+        <OutputType>Library</OutputType>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+
+    <PropertyGroup />
+
+    <ItemGroup>
+        <Compile Include="Power_functions_loader.cpp" />
+    </ItemGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

@@ -14,51 +14,51 @@
 #include <tinyhal.h>
 
 //--//
-BOOL CPU_SPI_Initialize()
+__weak BOOL CPU_SPI_Initialize()
 {
     return TRUE;
 }
 
-void CPU_SPI_Uninitialize()
+__weak void CPU_SPI_Uninitialize()
 {
 }
 
-BOOL CPU_SPI_nWrite16_nRead16( const SPI_CONFIGURATION& Configuration, UINT16* Write16, INT32 WriteCount, UINT16* Read16, INT32 ReadCount, INT32 ReadStartOffset )
-{
-    return FALSE;
-}
-
-BOOL CPU_SPI_nWrite8_nRead8( const SPI_CONFIGURATION& Configuration, UINT8* Write8, INT32 WriteCount, UINT8* Read8, INT32 ReadCount, INT32 ReadStartOffset )
+__weak BOOL CPU_SPI_nWrite16_nRead16( const SPI_CONFIGURATION& Configuration, UINT16* Write16, INT32 WriteCount, UINT16* Read16, INT32 ReadCount, INT32 ReadStartOffset )
 {
     return FALSE;
 }
 
-BOOL CPU_SPI_Xaction_Start( const SPI_CONFIGURATION& Configuration )
+__weak BOOL CPU_SPI_nWrite8_nRead8( const SPI_CONFIGURATION& Configuration, UINT8* Write8, INT32 WriteCount, UINT8* Read8, INT32 ReadCount, INT32 ReadStartOffset )
 {
     return FALSE;
 }
 
-BOOL CPU_SPI_Xaction_Stop( const SPI_CONFIGURATION& Configuration )
+__weak BOOL CPU_SPI_Xaction_Start( const SPI_CONFIGURATION& Configuration )
 {
     return FALSE;
 }
 
-BOOL CPU_SPI_Xaction_nWrite16_nRead16( SPI_XACTION_16& Transaction )
+__weak BOOL CPU_SPI_Xaction_Stop( const SPI_CONFIGURATION& Configuration )
 {
     return FALSE;
 }
 
-BOOL CPU_SPI_Xaction_nWrite8_nRead8( SPI_XACTION_8& Transaction )
+__weak BOOL CPU_SPI_Xaction_nWrite16_nRead16( SPI_XACTION_16& Transaction )
 {
     return FALSE;
 }
 
-UINT32 CPU_SPI_PortsCount()
+__weak BOOL CPU_SPI_Xaction_nWrite8_nRead8( SPI_XACTION_8& Transaction )
+{
+    return FALSE;
+}
+
+__weak UINT32 CPU_SPI_PortsCount()
 {
     return 0;
 }
 
-void CPU_SPI_GetPins( UINT32 spi_mod, GPIO_PIN& msk, GPIO_PIN& miso, GPIO_PIN& mosi )
+__weak void CPU_SPI_GetPins( UINT32 spi_mod, GPIO_PIN& msk, GPIO_PIN& miso, GPIO_PIN& mosi )
 {
     msk  = GPIO_PIN_NONE;
     miso = GPIO_PIN_NONE;
@@ -66,17 +66,17 @@ void CPU_SPI_GetPins( UINT32 spi_mod, GPIO_PIN& msk, GPIO_PIN& miso, GPIO_PIN& m
     return;
 }
 
-UINT32 CPU_SPI_MinClockFrequency( UINT32 spi_mod )
+__weak UINT32 CPU_SPI_MinClockFrequency( UINT32 spi_mod )
 {
     return 0;
 }
 
-UINT32 CPU_SPI_MaxClockFrequency( UINT32 spi_mod )
+__weak UINT32 CPU_SPI_MaxClockFrequency( UINT32 spi_mod )
 {
     return 0;
 }
 
-UINT32 CPU_SPI_ChipSelectLineCount( UINT32 spi_mod )
+__weak UINT32 CPU_SPI_ChipSelectLineCount( UINT32 spi_mod )
 {
     return 0;
 }

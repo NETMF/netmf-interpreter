@@ -8,24 +8,36 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-void *operator new( size_t n )
-{
-    return private_malloc( n );
-}
+// void *operator new( size_t n )
+// {
+//     return private_malloc( n );
+// }
 
-void *operator new[]( size_t n )
-{
-    return private_malloc( n );
-}
+// void *operator new[]( size_t n )
+// {
+//     return private_malloc( n );
+// }
 
-void operator delete( void* p )
-{
-    return private_free( p );
-}
+// void operator delete( void* p )
+// {
+//     return private_free( p );
+// }
 
-void operator delete[]( void* p )
-{
-    return private_free( p );
+// void operator delete[]( void* p )
+// {
+//     return private_free( p );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+// remap private_malloc to standard C malloc
+void *private_malloc(size_t size)
+{
+    return  malloc(size); 
+}
+
+// remap private_free to standard C free
+void private_free(void *ptr)
+{
+    free(ptr);
+}

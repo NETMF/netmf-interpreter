@@ -1,0 +1,36 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>CMSIS_SPI</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{A6C6B6D5-2B03-497F-97DA-108BFBA2E8AC}</ProjectGuid>
+    <Description>CMSIS SPI driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>CMSIS_SPI.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\SPI\dotNetMF.proj</ProjectPath>
+    <ManifestFile>CMSIS_SPI.$(LIB_EXT).manifest</ManifestFile>
+    <Groups></Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Targets\Native\STM32F4xx\SPI</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ARMBUILD_ONLY>true</ARMBUILD_ONLY>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="SPI_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

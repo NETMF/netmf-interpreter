@@ -6,7 +6,6 @@
 
 //--//
 
-void BootstrapCode()
+__weak void BootstrapCode()
 {
 }
-

@@ -127,24 +127,38 @@
             (See Section 4.4.4 of the ARM Cortex-M4 Generic User Guide [ ARM DUI 0553A (ID121610) ] )
             Since this starts the SRAM block, it's aligned just fine for any size table.
         -->
-        <ExecRegion Name="ER_RAM_RW" Align="0x10" Options="&gt;IRAM AT&gt;LR_FLASH ">
-            <FileMapping Name="*" Options="(VectorTable)"/>
-            <FileMapping Name="*" Options="(rwdata)" />
-            <FileMapping Name="*" Options="(.data*)" />
+        <ExecRegion Name="ER_RAM_RW" Options="&gt;IRAM AT&gt;LR_FLASH ">
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- create a global symbol at data start -->
+            <FileMapping Name="_sdata = .;"/>
+            <FileMapping Name="*(rwdata)"/>
+            <FileMapping Name="*(.data .data.* .gnu.linkonce.d.*)"/>
+
+            <FileMapping Name=". = ALIGN(4);"/>     
+            <!-- define a global symbol at data end -->
+            <FileMapping Name="_edata = .;"/>
         </ExecRegion>
 
-        <ExecRegion Name="ER_RAM_RO" Align="0x10" Options="&gt;IRAM">
+        <ExecRegion Name="ER_RAM_RO" Options="&gt;IRAM">
             <!-- Flash programming from Flash is safe on STM32 -->
             <!-- No need to place Flash programming code in RAM -->
             <!-- <FileMapping Name="*" Options="(SectionForFlashOperations)" /> -->
         </ExecRegion>
 
-        <ExecRegion Name=".bss" Align="0x10" Base="(NOLOAD)" Options="&gt;IRAM">
-            <FileMapping Name="*" Options="(.bss*)" />
-            <FileMapping Name="PROVIDE(__exidx_start = .);" />
-            <FileMapping Name="PROVIDE(__exidx_end = .);" />
-            <FileMapping Name="*" Options="(.zidata*)" />
-            <FileMapping Name="*" Options="(COMMON)" />
+        <ExecRegion Name=".bss" Base="(NOLOAD)" Options="&gt;IRAM">
+            <!-- This is used by the startup in order to initialize the .bss secion -->
+            <!-- define a global symbol at bss start -->
+            <FileMapping Name="_sbss = .;"/>
+            <FileMapping Name="__bss_start__ = _sbss;"/>
+
+            <FileMapping Name="*(.bss .bss.* .gnu.linkonce.b.*)" />
+            <FileMapping Name="*(.zidata)" />
+            <FileMapping Name="*(COMMON)" />
+            
+            <FileMapping Name=". = ALIGN(4);"/>
+            <!-- define a global symbol at bss end -->
+            <FileMapping Name="_ebss = .;"/>
+            <FileMapping Name="__bss_end__ = _ebss;"/>
         </ExecRegion>
 
         <ExecRegion Name="/DISCARD/">
@@ -153,44 +167,40 @@
         </ExecRegion>
 
         <!--========= EXTERNAL RAM =============================================--> 
-        <ExecRegion Name="ER_HEAP_BEGIN" Options="&gt;EXTRAM">
-            <FileMapping Name="*" Options="(SectionForHeapBegin)" />
+        <!-- Managed heap region -->
+        <ExecRegion Name="ER_MANAGED_HEAP" Options="&gt;EXTRAM">
+            <FileMapping Name=". = ALIGN(4);"/> 
+            <FileMapping Name="HeapBegin = .;"/>
+            <!--<FileMapping Name="*" Options="(SectionForHeapBegin)" />-->
+            <!--<FileMapping Name=". += %Managed_Heap_Size%;"/>-->
+            <FileMapping Name=". = %EXTRAM% - SIZEOF(EXTRAM) - %CustomHeap_Size% - 8;"/>
+            <FileMapping Name="HeapEnd = .;"/>
         </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for a heap -->
-
-        <ExecRegion Name="ER_HEAP_END" Base="ADDR(ER_HEAP_BEGIN) + %Heap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForHeapEnd)" />
+        
+        <ExecRegion Name="._user_heap" Options="&gt;EXTRAM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="PROVIDE ( end = . );" />
+            <FileMapping Name="PROVIDE ( _end = . );" />
         </ExecRegion>
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_BEGIN" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapBegin)" />
-        </ExecRegion>
-
-        <!-- everything between heapbegin and heapend will be allocated for the unmanaged SimpleHeap -->
-
-        <ExecRegion Name="ER_CUSTOM_HEAP_END" Base="ADDR(ER_CUSTOM_HEAP_BEGIN) + %CustomHeap_Size%" Options="&gt;EXTRAM" >
-            <FileMapping Name="*" Options="(SectionForCustomHeapEnd)" />
-        </ExecRegion>
-
+        
         <!-- ========= Internal CCM ============================================ -->
-        <ExecRegion Name="ER_STACK_BOTTOM" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackBottom)" />
+
+        <FileMapping Name="_estack = %CCM_BaseAddress% + %CCM_Size% - 8;"/>
+
+        <ExecRegion Name="._user_stack" Options="&gt;D_CCM">
+            <FileMapping Name=". = ALIGN(8);" />
+            <FileMapping Name="PROVIDE ( end = . );" />
+            <FileMapping Name="PROVIDE ( _end = . );" />
         </ExecRegion>
 
-        <!--8 for the two 32bit values in the SectionForStack* sections, This keeps the region
-             limit from exceeding the size of physical memory. -->
-        <ExecRegion Name="ER_STACK_TOP" Base="%Stack_Bottom% + %Stack_Size% - 8" Options="&gt;D_CCM">
-            <FileMapping Name="*" Options="(SectionForStackTop +LAST)" />
-        </ExecRegion>
     </NamedGroup>
 
     <!-- The following variables are used to simulate the ones autogenerated by ARMCC -->
     <GlobalVariable Name="Load$$ER_%TARGETLOCATION%$$Base"          Value="LOADADDR(ER_%TARGETLOCATION%)"/>
     <GlobalVariable Name="Image$$ER_%TARGETLOCATION%$$Length"       Value="SIZEOF(ER_%TARGETLOCATION%)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Base"                   Value="ADDR(ER_RAM_RO)"/>
-    <GlobalVariable Name="Image$$ER_RAM_RO$$Length"                 Value="SIZEOF(ER_RAM_RO)"/>
-    <GlobalVariable Name="Load$$ER_RAM_RO$$Base"                    Value="LOADADDR(ER_RAM_RO)"/>
+    <!--<GlobalVariable Name="Image$$ER_RAM_RO$$Base"                   Value="ADDR(ER_RAM_RO)"/>-->
+    <!--<GlobalVariable Name="Image$$ER_RAM_RO$$Length"                 Value="SIZEOF(ER_RAM_RO)"/>-->
+    <!--<GlobalVariable Name="Load$$ER_RAM_RO$$Base"                    Value="LOADADDR(ER_RAM_RO)"/>-->
     <GlobalVariable Name="Image$$ER_RAM_RW$$Base"                   Value="ADDR(ER_RAM_RW)"/>
     <GlobalVariable Name="Image$$ER_RAM_RW$$Length"                 Value="SIZEOF(ER_RAM_RW)"/>
     <GlobalVariable Name="Load$$ER_RAM_RW$$Base"                    Value="LOADADDR(ER_RAM_RW)"/>

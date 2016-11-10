@@ -6,14 +6,14 @@
 
 /***************************************************************************/
 
-void HAL_STATE_DEBOUNCE::Initialize( UINT32 debounce_uSec, HAL_CALLBACK_FPN isr )
+__weak void HAL_STATE_DEBOUNCE::Initialize( UINT32 debounce_uSec, HAL_CALLBACK_FPN isr )
 {
 }
 
-void HAL_STATE_DEBOUNCE::Change( UINT32 state )
+__weak void HAL_STATE_DEBOUNCE::Change( UINT32 state )
 {
 }
 
-void HAL_STATE_DEBOUNCE::Abort()
+__weak void HAL_STATE_DEBOUNCE::Abort()
 {
 }

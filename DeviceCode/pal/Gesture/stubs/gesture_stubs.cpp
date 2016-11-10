@@ -4,17 +4,17 @@
 
 #include <tinyhal.h>
 
-HRESULT Gesture_Initialize()
+__weak HRESULT Gesture_Initialize()
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT Gesture_Uninitialize()
+__weak HRESULT Gesture_Uninitialize()
 {
     return CLR_E_NOTIMPL; 
 }
 
-void Gesture_ProcessPoint(UINT32 flags, UINT16 source, UINT16 x, UINT16 y, INT64 time)
+__weak void Gesture_ProcessPoint(UINT32 flags, UINT16 source, UINT16 x, UINT16 y, INT64 time)
 {
 }
 

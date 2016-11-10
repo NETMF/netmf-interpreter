@@ -4,22 +4,22 @@
 
 #include <tinyhal.h>
 
-HRESULT Ink_Initialize()
+__weak HRESULT Ink_Initialize()
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT Ink_Uninitialize()
+__weak HRESULT Ink_Uninitialize()
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT Ink_SetRegion(InkRegionInfo* inkRegionInfo)
+__weak HRESULT Ink_SetRegion(InkRegionInfo* inkRegionInfo)
 {
     return CLR_E_NOTIMPL;
 }
 
-HRESULT Ink_ResetRegion()
+__weak HRESULT Ink_ResetRegion()
 {
     return CLR_E_NOTIMPL;
 }

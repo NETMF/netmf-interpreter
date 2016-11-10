@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="BeforeBuild">
+    <PropertyGroup>
+        <AssemblyName>TinyHal_loader_STM32F4xx</AssemblyName>
+        <ProjectGuid>{004F0043-0024-0097-95A3-64C26394C72A}</ProjectGuid>
+        <Size>
+        </Size>
+        <Description>STM32F4xx HAL library (for boot loaders)</Description>
+        <Level>HAL</Level>
+        <LibraryFile>TinyHAL_loader_STM32F4xx.$(LIB_EXT)</LibraryFile>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\dotNetMF_loader.proj</ProjectPath>
+        <ManifestFile>TinyHAL_loader_STM32F4xx.$(LIB_EXT).manifest</ManifestFile>
+        <Groups>HAL</Groups>
+        <Documentation>
+        </Documentation>
+        <PlatformIndependent>False</PlatformIndependent>
+        <CustomFilter>
+        </CustomFilter>
+        <Required>False</Required>
+        <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+        <IsStub>False</IsStub>
+        <Directory>DeviceCode\Targets\Native\STM32F4xx</Directory>
+        <reducesize>true</reducesize>
+        <PlatformIndependentBuild>false</PlatformIndependentBuild>
+        <Version>4.0.0.0</Version>
+    </PropertyGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+    <Import Project="$(SPOCLIENT)\Framework\Features\PreStackInit_HAL.libcatproj" />
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\Aborts.cpp" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Initialization\tinyhal.cpp" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Initialization\SystemState.cpp" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Initialization\OEM_Model_SKU_NetworkID.cpp" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\ItmPort\ItmPort.cpp" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\GlobalLock\SmartPtr_cortex.cpp" />
+    </ItemGroup>
+  
+    <ItemGroup>
+        <Compile Include="stm32f4xx_hal_msp.c" />
+        <Compile Include="system_stm32f4xx.c" />
+        <Compile Include="Int_Handlers.c" />
+        <Compile Include="SystemClock_Config.c" />
+    </ItemGroup>  
+  
+    <ItemGroup>  
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_adc.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_can.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_cortex.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_crc.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_cryp.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_dac.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_dma.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_eth.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_flash.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_flash_ex.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_gpio.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_hash.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_hcd.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_i2c.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_pcd.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_pcd_ex.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_pwr.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_pwr_ex.c" />        
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_rcc.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_rng.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_rtc.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_spi.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_tim.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_tim_ex.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_uart.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_hal_usart.c" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Src\stm32f4xx_ll_usb.c" />  
+    </ItemGroup>
+
+    <!-- FIXME replace with correct file first entry is not anymore -->
+    <ItemGroup Condition="'$(OS_PLATFORM)'!='true' AND '$(COMPILER_TOOL)'=='MDK'">
+        <LIB_FIRSTENTRY_OBJ Include="$(OBJ_DIR)\FirstEntry.$(OBJ_EXT)"/>
+    </ItemGroup>
+
+    <Target Name="BeforeBuild">
+        <!-- GPIO -->
+        <Message Condition="'$(FEATURE_GPIO)' == 'True'" Text="HAL GPIO: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_GPIO)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\GPIO\dotNetMF.proj" />
+        </ItemGroup>
+        
+        <!-- SPI -->
+        <Message Condition="'$(FEATURE_SPI)' == 'True'" Text="HAL SPI: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_SPI)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\SPI\dotNetMF.proj" />
+        </ItemGroup>
+        
+        <!-- I2C -->
+        <Message Condition="'$(FEATURE_I2C)' == 'True'" Text="HAL I2C: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_I2C)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\I2C\dotNetMF.proj" />
+        </ItemGroup>
+        
+        <!-- USART -->
+        <Message Condition="'$(FEATURE_USART)' == 'True'" Text="HAL USART: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_USART)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\USART\dotNetMF.proj" />
+        </ItemGroup>
+        
+        <!-- Analog (ADC) -->
+        <Message Condition="'$(FEATURE_ANALOG)' == 'True'" Text="HAL Analog (ADC): included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_ANALOG)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Analog\dotNetMF.proj" />
+        </ItemGroup>
+        
+        <!-- PWM -->
+        <Message Condition="'$(FEATURE_PWM)' == 'True'" Text="HAL PWM: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_PWM)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\PWM\dotNetMF.proj" />
+        </ItemGroup>
+        
+        <!-- DA -->
+        <Message Condition="'$(FEATURE_DA)' == 'True'" Text="HAL DA: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_DA)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\DA\dotNetMF.proj" />
+        </ItemGroup>        
+                      
+        <!-- Cortex-M internal FLASH -->
+        <Message Condition="'$(FEATURE_CORTEX_FLASH)' == 'True'" Text="Cortex-M Flash: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_CORTEX_FLASH)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Flash\dotNetMF.proj" />
+        </ItemGroup>
+        
+        <!-- CPU Cache -->
+        <Message Condition="'$(FEATURE_CPUCACHE)' == 'True'" Text="HAL SPI: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_CPUCACHE)' == 'True'">
+        </ItemGroup>        
+        
+        <!-- Watchdog -->
+        <Message Condition="'$(FEATURE_WATCHDOG)' == 'True'" Text="Watchdog: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_WATCHDOG)' == 'True'">
+        </ItemGroup>
+
+        <!-- Sockets -->
+        <Message Condition="'$(FEATURE_SOCKETS)' == 'True'" Text="Sockets: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_SOCKETS)' == 'True'">
+        </ItemGroup>
+        
+        <!-- Time Service -->
+        <Message Condition="'$(FEATURE_TIMESERVICE)' == 'True'" Text="Time service: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_TIMESERVICE)' == 'True'">
+        </ItemGroup>
+
+        <!-- PAL event -->
+        <Message Condition="'$(FEATURE_PALEVENT)' == 'True'" Text="PAL event: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_PALEVENT)' == 'True'">
+        </ItemGroup>
+                      
+        <!-- Cortex-M CRC -->
+        <Message Condition="'$(FEATURE_HARDWARE_CRC)' == 'True' AND '$(FEATURE_SOFTWARE_CRC)' != 'True'" Text="Cortex-M CRC Unit: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_HARDWARE_CRC)' == 'True' AND '$(FEATURE_SOFTWARE_CRC)' != 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\CRC\dotNetMF.proj" />
+        </ItemGroup>
+                              
+        <!-- Software CRC -->
+        <Message Condition="'$(FEATURE_SOFTWARE_CRC)' == 'True' AND '$(FEATURE_HARDWARE_CRC)' != 'True'" Text="Software CRC: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_SOFTWARE_CRC)' == 'True' AND '$(FEATURE_HARDWARE_CRC)' != 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\Support\CRC\dotNetMF.proj" />            
+        </ItemGroup>
+
+        <Error Condition="'$(FEATURE_SOFTWARE_CRC)' == 'True' AND '$(FEATURE_HARDWARE_CRC)' == 'True'" Text="Can't have both Cortex-M CRC Unit and Software CRC selected. Check 'features.settings' file for TinyBooter."/>
+
+        <!-- USB Debug -->
+        <Message Condition="'$(FEATURE_USB_DEBUG)' == 'True'" Text="USB Debug: included" Importance="High"/>
+        <ItemGroup Condition="'$(FEATURE_USB_DEBUG)' == 'True'">
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\USB\dotNetMF.proj" />
+            <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\USB_CMSIS\dotNetMF.proj" />
+        </ItemGroup>
+
+    </Target>
+
+    <!-- HAL mandatory features -->
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Power\dotNetMF_loader.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\Time\dotNetMF.proj" />
+    </ItemGroup>
+    
+    <!-- All HAL stubs go here -->
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_GPIO\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_SPI\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_I2C\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\processor\stubs_USART\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_analog\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_PWM\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Processor\stubs_DA\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_cache\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Display\stubs\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_lcd\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Backlight\stubs\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\BatteryCharger\stubs\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\BatteryMeasurement\stubs\dotNetMF.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\Processor\stubs_watchdog\dotNetMF.proj" />
+    </ItemGroup>
+    
+    <!-- All PAL and Core stubs go here -->
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\I2C\dotNetMF_stub.proj" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\I2C\stubs\dotNetMF.proj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\$(AS_SUBDIR)\IDelayLoop.s" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\$(AS_SUBDIR)\Interlocked.s" />
+        <Compile Include="$(SPOCLIENT)\DeviceCode\Cores\arm\Processors\CortexMx\TinyHal\$(AS_SUBDIR)\OtherHandlers.s" />
+    </ItemGroup>
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

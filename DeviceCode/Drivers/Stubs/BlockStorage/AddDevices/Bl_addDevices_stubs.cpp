@@ -6,7 +6,6 @@
 
 //--//
 
-void BlockStorage_AddDevices()
+__weak void BlockStorage_AddDevices()
 {
 }
-

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" InitialTargets="CheckPreRquisitesInstalled" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+    <PropertyGroup>
+        <Name>STM32F4xx</Name>
+        <CpuName>Cortex-M4</CpuName>
+        <DefaultISA>THUMB2FP</DefaultISA>
+        <Guid>{AA5A88E3-BA72-4B26-9603-72516BBABAE3}</Guid>
+        <Description>
+        </Description>
+        <Documentation>
+        </Documentation>
+        <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\STM32F4xx.settings</ProjectPath>
+        <PLATFORM_FAMILY>ARM</PLATFORM_FAMILY>
+        <CustomFilter>Cortex</CustomFilter>
+        <INSTRUCTION_SET>THUMB2FP</INSTRUCTION_SET>
+        <TARGETCODEBASETYPE>Native</TARGETCODEBASETYPE>
+    </PropertyGroup>
+    <ItemGroup>
+        <CC_CPP_Defines Include="__CORTEX_M4F" />
+        <CC_CPP_Defines Include="CORTEX_M4" />
+        <CC_CPP_Defines Include="USE_HAL_DRIVER" />
+    </ItemGroup>
+
+    <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
+        <BUILD_TOOL_GUID>{40DBF35F-0EBE-46A7-BC9E-AC26FC7F739A}</BUILD_TOOL_GUID>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(COMPILER_TOOL)'=='MDK'">
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
+        <BUILD_TOOL_GUID>{5C2FD367-F42C-4AF9-96F6-AAD40F45EFCD}</BUILD_TOOL_GUID>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'">
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">cortex-m4</DEVICE_TYPE>
+        <BUILD_TOOL_GUID>{64411CEA-8E47-452D-84C5-B980E16A953B}</BUILD_TOOL_GUID>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <IncludePaths Include="DeviceCode\Targets\Native\STM32F4xx" />
+        <IncludePaths Include="DeviceCode\Targets\Native\STM32F4xx\HAL_Driver\Inc" />
+        <IncludePaths Include="CMSIS\CMSIS\Include" />
+        <IncludePaths Include="CMSIS\Device\ST\STM32F4xx\Include" />
+    </ItemGroup>
+    
+    <Target Name="CheckPreRquisitesInstalled">
+        <Error Code="NETMFBLD"
+               Condition="!EXISTS('$(SPOCLIENT)\CMSIS\ARM.CMSIS.pdsc')"
+               Text="Missing CMSIS installation at: $(SPOCLIENT)\CMSIS\*"
+               />
+    </Target>
+</Project>

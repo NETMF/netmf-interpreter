@@ -3,7 +3,7 @@
 //  <No description>
 //
 //  Microsoft dotNetMF Project
-//  Copyright ©2004 Microsoft Corporation
+//  Copyright ï¿½2004 Microsoft Corporation
 //  One Microsoft Way, Redmond, Washington 98052-6399 U.S.A.
 //  All rights reserved.
 //  MICROSOFT CONFIDENTIAL
@@ -22,7 +22,7 @@ BOOL MemStreamSeekBlockAddress( BlockStorageStream &stream, UINT32 address );
 static SREC_Handler g_SREC;
 #endif
 
-HAL_DECLARE_CUSTOM_HEAP( SimpleHeap_Allocate, SimpleHeap_Release, SimpleHeap_ReAllocate );
+//HAL_DECLARE_CUSTOM_HEAP( SimpleHeap_Allocate, SimpleHeap_Release, SimpleHeap_ReAllocate );
 
 #pragma arm section zidata = "s_SystemStates"
 static INT32 s_SystemStates[SYSTEM_STATE_TOTAL_STATES];
@@ -438,8 +438,8 @@ void BootEntryLoader()
 
     HeapLocation( BaseAddress, SizeInBytes );
 
-    // Initialize custom heap with heap block returned from CustomHeapLocation
-    SimpleHeap_Initialize( BaseAddress, SizeInBytes );
+    //// Initialize custom heap with heap block returned from CustomHeapLocation
+    //SimpleHeap_Initialize( BaseAddress, SizeInBytes );
 
     // this is the place where interrupts are enabled after boot for the first time after boot
     ENABLE_INTERRUPTS();

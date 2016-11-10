@@ -5,15 +5,17 @@
 #include <tinyhal.h>
 
 
-BOOL Network_Interface_Bind(int index)
+__weak BOOL Network_Interface_Bind(int index)
 {
     return FALSE;
 }
-int  Network_Interface_Open(int index)
+
+__weak int  Network_Interface_Open(int index)
 {
     return 0;
 }
-BOOL Network_Interface_Close(int index)
+
+__weak BOOL Network_Interface_Close(int index)
 {
     return FALSE;
 }

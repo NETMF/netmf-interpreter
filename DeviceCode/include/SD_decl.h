@@ -54,21 +54,21 @@ struct SD_BS_Driver
 	  #define OCR_BUSY_BIT          0x80000000
 	  #define OCR_CCS_BIT           0x40000000
 
-    #define SD_GO_IDLE_STATE      0x00            // CMD0
-    #define SD_V2_SEND_OP_COND    0x01            // CMD1
-    #define SD_SEND_IF_COND       0x08            // CMD8
-    #define SD_SEND_CSD           0x09            // CMD9
-    #define SD_SEND_CID           0x0A            // CMD10
-    #define SD_READ_SINGLE_BLOCK  0x11            // CMD17
-    #define SD_SET_BLOCKLEN       0x10            // CMD16
-    #define SD_WRITE_SINGLE_BLOCK 0x18            // CMD24
-    #define SD_ERASE_WR_BLK_START 0x20            // CMD32
-    #define SD_ERASE_WR_BLK_END   0x21            // CMD33
-    #define SD_ERASE              0x26            // CMD38
-    #define SD_APP_CMD            0x37            // CMD55
-    #define SD_SEND_OP_COND       0x29            // ACMD41
-    #define SD_SEND_SCR           0x33            // ACMD51
-    #define SD_READ_OCR           58              // ACMD58
+    #define SD_CMD_GO_IDLE_STATE      0x00            // CMD0
+    #define SD_CMD_V2_SEND_OP_COND    0x01            // CMD1
+    #define SD_CMD_SEND_IF_COND       0x08            // CMD8
+    #define SD_CMD_SEND_CSD           0x09            // CMD9
+    #define SD_CMD_SEND_CID           0x0A            // CMD10
+    #define SD_CMD_READ_SINGLE_BLOCK  0x11            // CMD17
+    #define SD_CMD_SET_BLOCKLEN       0x10            // CMD16
+    #define SD_CMD_WRITE_SINGLE_BLOCK 0x18            // CMD24
+    #define SD_CMD_ERASE_WR_BLK_START 0x20            // CMD32
+    #define SD_CMD_ERASE_WR_BLK_END   0x21            // CMD33
+    #define SD_CMD_ERASE              0x26            // CMD38
+    #define SD_CMD_APP_CMD            0x37            // CMD55
+    #define SD_CMD_SEND_OP_COND       0x29            // ACMD41
+    #define SD_CMD_SEND_SCR           0x33            // ACMD51
+    #define SD_CMD_READ_OCR           58              // ACMD58
    
 
     #define SD_START_DATA_BLOCK_TOKEN   0xfe      

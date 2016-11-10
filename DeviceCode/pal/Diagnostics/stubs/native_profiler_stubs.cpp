@@ -15,41 +15,41 @@
 #include "..\Native_Profiler.h"
 
 
-Native_Profiler::Native_Profiler()
+__weak Native_Profiler::Native_Profiler()
 {
 }
 
 
-Native_Profiler::~Native_Profiler()
+__weak Native_Profiler::~Native_Profiler()
 {
 }
 
 
-void Native_Profiler_Init()
+__weak void Native_Profiler_Init()
 {
 }
 
 
-void Native_Profiler_Dump()
+__weak void Native_Profiler_Dump()
 {
 }
 
 
-void Native_Profiler_WriteToCOM(void *buffer, UINT32 size)
+__weak void Native_Profiler_WriteToCOM(void *buffer, UINT32 size)
 {
 }
 
 
-UINT64 Native_Profiler_TimeInMicroseconds()
+__weak UINT64 Native_Profiler_TimeInMicroseconds()
 {
     return 0;
 }
 
-void Native_Profiler_Start()
+__weak void Native_Profiler_Start()
 {
 }
 
-void Native_Profiler_Stop()
+__weak void Native_Profiler_Stop()
 {
 }
 

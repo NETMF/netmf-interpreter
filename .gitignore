@@ -31,6 +31,12 @@
 ipch/
 *.VC.db
 
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
 !/tools/bin/
 
 #uVision
@@ -53,7 +59,18 @@ ReleaseNotesCrypto.txt
 /Solutions/Windows/TinyCLR/FLASH_MEMORY.bin
 *.opendb
 *.dbgconf
+!STM32Cube/ReadMe.m
 /tools/DisAsmPE/Debug
 /tools/DisAsmPE/DisAsmPE/Debug
 /tools/DisAsmPE/NETMF.PE.Metadata/Debug
 /tools/DisAsmPE/DisAsmPE/*.txt
+
+# STM32 Cube
+STM32Cube/*
+!STM32Cube/ReadMe.m
+
+# CMSIS PAL and HAL folders
+DeviceCode/Targets/Native/*/HAL_Driver
+DeviceCode/Targets/Native/*/USB/STM32_USB_Device_Library
+!DeviceCode/Targets/Native/*.proj
+!DeviceCode/Targets/Native/*.settings

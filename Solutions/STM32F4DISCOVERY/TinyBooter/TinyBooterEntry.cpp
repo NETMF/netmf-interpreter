@@ -14,14 +14,8 @@
 #include <tinyhal.h>
 #include <TinyBooterEntry.h>
 
-// boot loader doesn't use the CMSIS-RTOS kernel, so sleep goes direct
-// to the low level support
-extern void HAL_CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents );
-
-void CPU_Sleep( SLEEP_LEVEL level, UINT64 wakeEvents )
-{
-    HAL_CPU_Sleep( level, wakeEvents );
-}
+extern GenericPortTableEntry const Itm0GenericPort;
+extern GenericPortTableEntry const* const g_GenericPorts[TOTAL_GENERIC_PORTS] = { &Itm0GenericPort };
 
 ////////////////////////////////////////////////////////////////////////////////
 //  Tinybooter_ProgramWordCheck
@@ -279,4 +273,3 @@ BOOL TinyBooter_GetReleaseInfo(MfReleaseInfo& releaseInfo)
                     );
     return TRUE;
 }
-

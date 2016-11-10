@@ -1,0 +1,36 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>CMSIS_I2C</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{1745D6CE-8C0D-4796-B9CC-70185FE7F192}</ProjectGuid>
+    <Description>CMSIS I2C driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>CMSIS_I2C.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4xx\I2C\dotNetMF.proj</ProjectPath>
+    <ManifestFile>CMSIS_I2C.$(LIB_EXT).manifest</ManifestFile>
+    <Groups></Groups>
+    <Documentation>
+    </Documentation>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Targets\Native\STM32F4xx\I2C</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ARMBUILD_ONLY>true</ARMBUILD_ONLY>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="I2C_functions.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

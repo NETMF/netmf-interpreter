@@ -6,31 +6,30 @@
 
 //--//
 
-BOOL DA_Initialize( DA_CHANNEL channel, INT32 precisionInBits )
+__weak BOOL DA_Initialize( DA_CHANNEL channel, INT32 precisionInBits )
 {
     return FALSE;
 }
 
-void DA_Uninitialize( DA_CHANNEL channel )
+__weak void DA_Uninitialize( DA_CHANNEL channel )
 {
 }
 
-void DA_Write( DA_CHANNEL channel, INT32 level )
+__weak void DA_Write( DA_CHANNEL channel, INT32 level )
 {
 }
 
-UINT32 DA_DAChannels()
+__weak UINT32 DA_DAChannels()
 {
     return 0;
 }
 
-GPIO_PIN DA_GetPinForChannel( DA_CHANNEL channel )
+__weak GPIO_PIN DA_GetPinForChannel( DA_CHANNEL channel )
 {
     return GPIO_PIN_NONE;
 }
 
-BOOL DA_GetAvailablePrecisionsForChannel( DA_CHANNEL channel, INT32* precisions, UINT32& size )
+__weak BOOL DA_GetAvailablePrecisionsForChannel( DA_CHANNEL channel, INT32* precisions, UINT32& size )
 {
     size = 0; return FALSE;
 }
-

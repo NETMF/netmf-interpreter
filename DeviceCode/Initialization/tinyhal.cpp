@@ -8,11 +8,11 @@
 #include <rt_fp.h>
 #endif
 
+extern "C" void SystemClock_Config(void);
+
 //--//
 
-// we need this to force inclusion from library at link time
-#pragma import(EntryPoint)
-
+//extern UINT32 _end;
 
 #undef  TRACE_ALWAYS
 #define TRACE_ALWAYS               0x00000001
@@ -21,194 +21,6 @@
 #define DEBUG_TRACE (TRACE_ALWAYS)
 
 //--//
-
-#if !defined(BUILD_RTM) && !defined(PLATFORM_ARM_OS_PORT)
-
-UINT32 Stack_MaxUsed()
-{
-    // this is the value we check for stack overruns
-    const UINT32 StackCheckVal = 0xBAADF00D;
-
-    size_t  size = (size_t)&StackTop - (size_t)&StackBottom;
-    UINT32* ptr  = (UINT32*)&StackBottom;
-
-    DEBUG_TRACE1(TRACE_ALWAYS, "Stack Max  = %d\r\n", size);
-
-    while(*ptr == StackCheckVal)
-    {
-        size -= 4;
-        ptr++;
-    }
-
-    DEBUG_TRACE1(TRACE_ALWAYS, "Stack Used = %d\r\n", size);
-
-    return size;
-}
-
-#endif  // !defined(BUILD_RTM)
-
-//--//
-// this is the first C function called after bootstrapping ourselves into ram
-
-// these define the region to zero initialize
-extern UINT32 Image$$ER_RAM_RW$$ZI$$Base;
-extern UINT32 Image$$ER_RAM_RW$$ZI$$Length;
-
-// here is the execution address/length of code to move from FLASH to RAM
-#define IMAGE_RAM_RO_BASE   Image$$ER_RAM_RO$$Base
-#define IMAGE_RAM_RO_LENGTH Image$$ER_RAM_RO$$Length
-
-extern UINT32 IMAGE_RAM_RO_BASE;
-extern UINT32 IMAGE_RAM_RO_LENGTH;
-
-// here is the execution address/length of data to move from FLASH to RAM
-extern UINT32 Image$$ER_RAM_RW$$Base;
-extern UINT32 Image$$ER_RAM_RW$$Length;
-
-// here is the load address of the RAM code/data
-#define LOAD_RAM_RO_BASE Load$$ER_RAM_RO$$Base
-
-extern UINT32 LOAD_RAM_RO_BASE;
-extern UINT32 Load$$ER_RAM_RW$$Base;
-
-//--//
-
-#if defined(TARGETLOCATION_RAM)
-
-extern UINT32 Load$$ER_RAM$$Base;
-extern UINT32 Image$$ER_RAM$$Length;
-
-#elif defined(TARGETLOCATION_FLASH)
-
-extern UINT32 Load$$ER_FLASH$$Base;
-extern UINT32 Image$$ER_FLASH$$Length;
-
-#else
-    !ERROR
-#endif
-
-UINT32 LOAD_IMAGE_Start;
-UINT32 LOAD_IMAGE_Length;
-UINT32 LOAD_IMAGE_CalcCRC;
-
-//
-//  The ARM linker is not keeping FirstEntry.obj (and EntryPoint) for RTM builds of NativeSample (possibly others)
-//  The --keep FirstEntry.obj linker option also does not work, however, this unused method call to EntryPoint does the trick.
-//
-void KEEP_THE_LINKER_HAPPY_SINCE_KEEP_IS_NOT_WORKING()
-{
-    EntryPoint();
-}
-
-//--//
-
-#pragma arm section code = "SectionForBootstrapOperations"
-
-static void __section("SectionForBootstrapOperations") Prepare_Copy( UINT32* src, UINT32* dst, UINT32 len )
-{
-    if(dst != src)
-    {
-        INT32 extraLen = len & 0x00000003;
-        len            = len & 0xFFFFFFFC;
-        
-        while(len != 0)
-        {
-            *dst++ = *src++;
-
-            len -= 4;
-        }
-
-        // thumb2 code can be multiples of 2...
-
-        UINT8 *dst8 = (UINT8*) dst, *src8 = (UINT8*) src;
-
-        while (extraLen > 0)
-        {
-            *dst8++ = *src8++;
-
-            extraLen--;
-        }
-    }
-}
-
-static void __section("SectionForBootstrapOperations") Prepare_Zero( UINT32* dst, UINT32 len )
-{
-    INT32 extraLen = len & 0x00000003;
-    len            = len & 0xFFFFFFFC;
-
-    while(len != 0)
-    {
-        *dst++ = 0;
-
-        len -= 4;
-    }
-
-    // thumb2 code can be multiples of 2...
-
-    UINT8 *dst8 = (UINT8*) dst;
-
-    while (extraLen > 0)
-    {
-        *dst8++ = 0;
-
-        extraLen--;
-    }
-}
-
-void __section("SectionForBootstrapOperations") PrepareImageRegions()
-{
-    //
-    // Copy RAM RO regions into proper location.
-    //
-    {
-        UINT32* src = (UINT32*)&LOAD_RAM_RO_BASE; 
-        UINT32* dst = (UINT32*)&IMAGE_RAM_RO_BASE;
-        UINT32  len = (UINT32 )&IMAGE_RAM_RO_LENGTH; 
-
-        Prepare_Copy( src, dst, len );
-    }
-
-    //
-    // Copy RAM RW regions into proper location.
-    //
-    {
-        UINT32* src = (UINT32*)&Load$$ER_RAM_RW$$Base; 
-        UINT32* dst = (UINT32*)&Image$$ER_RAM_RW$$Base;
-        UINT32  len =  (UINT32)&Image$$ER_RAM_RW$$Length; 
-
-        Prepare_Copy( src, dst, len );
-    }
-
-    //
-    // Initialize RAM ZI regions.
-    //
-    {
-        UINT32* dst = (UINT32*)&Image$$ER_RAM_RW$$ZI$$Base;
-        UINT32  len = (UINT32 )&Image$$ER_RAM_RW$$ZI$$Length;
-
-        Prepare_Zero( dst, len );
-    }
-}
-
-#pragma arm section code
-
-//--//
-
-static void InitCRuntime()
-{
-#if (defined(HAL_REDUCESIZE) || defined(PLATFORM_EMULATED_FLOATINGPOINT))
-
-    // Don't initialize floating-point on small builds.
-
-#else
-
-#if  !defined(__GNUC__)
-    _fp_init();
-#endif
-
-   setlocale( LC_ALL, "" );
-#endif
-}
 
 #if !defined(BUILD_RTM)
 static UINT32 g_Boot_RAMConstants_CRC = 0;
@@ -269,13 +81,20 @@ void HAL_EnterBooterMode()
             switch(pAddr[i])
             {
                 case c_Empty:
-                    ::Watchdog_ResetCounter();
+                
+                    #ifdef FEATURE_WATCHDOG
+                        ::Watchdog_ResetCounter();
+                    #endif
 
                     if(deviceInfo->Attribute.SupportsXIP)
                     {
 
                         // will be either directly read from  NOR
+                    #ifdef FEATURE_CPUCACHE            
                         dataAddress = (volatile UINT32*)CPU_GetUncachableAddress(&pAddr[i]);
+                    #else
+                        dataAddress = (volatile UINT32*)&pAddr[i];
+                    #endif                        
 
                         // write directly
                         bRet = (TRUE == pBlockDevice->Write( (UINT32)dataAddress, sizeof(UINT32), (PBYTE)&c_Key, FALSE ));
@@ -307,7 +126,9 @@ void HAL_EnterBooterMode()
             // reading whole block, not just the configurationsector
             const BlockRegionInfo * pBlockRegionInfo = &deviceInfo->Regions[iRegion];
 
-            ::Watchdog_ResetCounter();
+            #ifdef FEATURE_WATCHDOG
+                ::Watchdog_ResetCounter();
+            #endif
 
             BYTE *data  = (BYTE*)  private_malloc(pBlockRegionInfo->BytesPerBlock);
 
@@ -333,7 +154,9 @@ void HAL_EnterBooterMode()
 
                 pBlockDevice->EraseBlock(configSectAddress);
 
-                ::Watchdog_ResetCounter();
+                #ifdef FEATURE_WATCHDOG
+                    ::Watchdog_ResetCounter();
+                #endif
 
                 // write back to sector, as we only change one bit from 0 to 1, no need to erase sector
                 bRet = (TRUE == pBlockDevice->Write( configSectAddress, pBlockRegionInfo->BytesPerBlock, data, FALSE ));
@@ -349,20 +172,39 @@ void HAL_EnterBooterMode()
 bool g_fDoNotUninitializeDebuggerPort = false;
 
 void HAL_Initialize()
-{    
+{
+#if defined(PLATFORM_ARM_OS_PORT)
+    // Interrupts must be enabled to handle calls to OS
+    // (Network stack uses the CMSIS-RTX OS, which uses
+    // SVC calls, which will hard fault if the interrupts
+    // are disabled at the Svc instruction )
+    // SystemInit handles this for the startup from reset
+    // However, this is also called from the CLR when doing
+    // a soft reboot.
+    __enable_irq();
+#endif
+    
     HAL_CONTINUATION::InitializeList();
     HAL_COMPLETION  ::InitializeList();
 
-    HAL_Init_Custom_Heap();
-
     Time_Initialize();
+    
+#ifdef FEATURE_PALEVENT
     Events_Initialize();
+#endif    
 
+#ifdef FEATURE_GPIO
     CPU_GPIO_Initialize();
-    CPU_SPI_Initialize();
+#endif
 
+#ifdef FEATURE_SPI    
+    CPU_SPI_Initialize();
+#endif 
+
+#if !defined(PLATFORM_ARM_OS_PORT)
     // this is the place where interrupts are enabled after boot for the first time after boot
     ENABLE_INTERRUPTS();
+#endif
 
     // have to initialize the blockstorage first, as the USB device needs to update the configure block
 
@@ -372,6 +214,7 @@ void HAL_Initialize()
 
     BlockStorageList::InitializeDevices();
 
+#ifdef FEATURE_FS
     FS_Initialize();
 
     FileSystemVolumeList::Initialize();
@@ -379,32 +222,63 @@ void HAL_Initialize()
     FS_AddVolumes();
 
     FileSystemVolumeList::InitializeVolumes();
+#endif
 
+#ifdef FEATURE_LCD
     LCD_Initialize();
+#endif    
     
     CPU_InitializeCommunication();
 
+#ifdef FEATURE_I2C
     I2C_Initialize();
+#endif    
 
+#ifdef FEATURE_BUTTONS
     Buttons_Initialize();
+#endif    
 
+#ifdef FEATURE_BACKLIGHT    
     // Initialize the backlight to a default off state
     BackLight_Initialize();
+#endif
 
+#ifdef FEATURE_PIEZO
     Piezo_Initialize();
+#endif
 
+#ifdef FEATURE_BATTERY
     Battery_Initialize();
-
+#endif
+#ifdef FEATURE_CHARGER    
     Charger_Initialize();
+#endif
 
+#ifdef FEATURE_PALEVENT
     PalEvent_Initialize();
+#endif    
+    
+#ifdef FEATURE_GESTURE 
     Gesture_Initialize();
+#endif
+
+#ifdef FEATURE_INK    
     Ink_Initialize();
+#endif    
+   
+#ifdef FEATURE_TIMESERVICE    
     TimeService_Initialize();
+#endif
 
 #if defined(ENABLE_NATIVE_PROFILER)
     Native_Profiler_Init();
 #endif
+
+#ifdef FEATURE_HARDWARE_CRC
+    // enable clock for the CRC calculation module
+    __HAL_RCC_CRC_CLK_ENABLE();
+#endif
+    
 }
 
 void HAL_UnReserveAllGpios()
@@ -435,24 +309,52 @@ void HAL_Uninitialize()
         }
     }    
 
+#ifdef FEATURE_HARDWARE_CRC
+    // disable clock for the CRC calculation module
+    __HAL_RCC_CRC_CLK_DISABLE();
+#endif
+
+#ifdef FEATURE_LCD
     LCD_Uninitialize();
+#endif
 
+#ifdef FEATURE_I2C
     I2C_Uninitialize();
+#endif
 
+#ifdef FEATURE_BUTTONS
     Buttons_Uninitialize();
+#endif
 
+#ifdef FEATURE_BACKLIGHT
     // Initialize the backlight to a default off state
     BackLight_Uninitialize();
+#endif    
 
+#ifdef FEATURE_PIEZO
     Piezo_Uninitialize();
+#endif
 
+#ifdef FEATURE_BATTERY
     Battery_Uninitialize();
+#endif
+
+#ifdef FEATURE_CHARGER    
     Charger_Uninitialize();
+#endif    
 
     TimeService_UnInitialize();
+#ifdef FEATURE_INK    
     Ink_Uninitialize();
+#endif    
+
+#ifdef FEATURE_GESTURE    
     Gesture_Uninitialize();
+#endif
+    
+#ifdef FEATURE_PALEVENT
     PalEvent_Uninitialize();
+#endif 
 
     SOCKETS_CloseConnections();
 
@@ -460,21 +362,30 @@ void HAL_Uninitialize()
     CPU_UninitializeCommunication();
 #endif
 
+#ifdef FEATURE_FS
     FileSystemVolumeList::UninitializeVolumes();
+#endif
 
     BlockStorageList::UnInitializeDevices();
 
     USART_CloseAllPorts();
 
+#ifdef FEATURE_SPI
     CPU_SPI_Uninitialize();
+#endif
 
     HAL_UnReserveAllGpios();
 
+#ifdef FEATURE_GPIO
     CPU_GPIO_Uninitialize();
+#endif
 
     DISABLE_INTERRUPTS();
 
+#ifdef FEATURE_PALEVENT
     Events_Uninitialize();
+#endif
+    
     Time_Uninitialize();
 
     HAL_CONTINUATION::Uninitialize();
@@ -483,118 +394,93 @@ void HAL_Uninitialize()
 
 extern "C"
 {
-
-void BootEntry()
+// defined as weak to allow it to be overriden by equivalent function at Solution level  
+__attribute__((weak)) int main(void)
 {
-
-#if (defined(GCCOP) && defined(COMPILE_THUMB))
-
-// the IRQ_Handler routine generated from the compiler is incorrect, the return address LR has been decrement twice
-// it decrements LR at the first instruction of IRQ_handler and then before return, it decrements LR again.
-// temporary fix is at the ARM_Vector ( IRQ), make it jump to 2nd instruction of IRQ_handler to skip teh first subs LR, LR #4;
-//
-    volatile int *ptr;
-    ptr =(int*) 0x28;
-    *ptr = *ptr +4;
-#endif
-
-
-#if !defined(BUILD_RTM) && !defined(PLATFORM_ARM_OS_PORT)
+    /* CMSIS HAL library initialization:
+       - Configure the Flash prefetch, instruction and Data caches
+       - Configure the Systick to generate an interrupt each 1 msec
+       - Set NVIC Group Priority to 4
+       - Global MSP (MCU Support Package) initialization
+    */
+    if(HAL_Init() == HAL_OK)
     {
-        int  marker;
-        int* ptr = &marker - 1; // This will point to the current top of the stack.
-        int* end = &StackBottom;
+        // debug enable options
+        #if !defined(BUILD_RTM)     
+            HAL_DBGMCU_EnableDBGSleepMode();
+            HAL_DBGMCU_EnableDBGStopMode();
+            HAL_DBGMCU_EnableDBGStandbyMode();
+        #endif
+                
+        /* Configure the system clock */
+        SystemClock_Config();
 
-        while(ptr >= end)
+        HAL_Time_Initialize();
+
+        HAL_Initialize();
+  
+        // check if system is waking-up from STANDBY power mode 
+        if (__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
         {
-            *ptr-- = 0xBAADF00D;
+            // TODO
+            // we may want to handle this to pass it somehow to the NETMF API
         }
-    }
-#endif
+        
+        #if !defined(BUILD_RTM) 
+            //DEBUG_TRACE4( STREAM_LCD, ".NetMF v%d.%d.%d.%d\r\n", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, VERSION_REVISION);
+            //DEBUG_TRACE3(TRACE_ALWAYS, "%s, Build Date:\r\n\t%s %s\r\n", HalName, __DATE__, __TIME__);
+            
+            #if defined(__GNUC__)
+                //DEBUG_TRACE1(TRACE_ALWAYS, "GNU Compiler version %d\r\n", __GNUC__);
+            #else
+                //DEBUG_TRACE1(TRACE_ALWAYS, "ARM Compiler version %d\r\n", __ARMCC_VERSION);
+            #endif
 
-    // these are needed for patch access
+            UINT8* BaseAddress;
+            UINT32 SizeInBytes;
 
-#if defined(TARGETLOCATION_RAM)
+            HeapLocation( BaseAddress,    SizeInBytes );
+            memset      ( BaseAddress, 0, SizeInBytes );
 
-    LOAD_IMAGE_Start  = (UINT32)&Load$$ER_RAM$$Base;
-    LOAD_IMAGE_Length = (UINT32)&Image$$ER_RAM$$Length;
+            #ifdef FEATURE_LCD
+                lcd_printf("\f");
+            
+                lcd_printf("%-15s\r\n", HalName);
+                lcd_printf("%-15s\r\n", "Build Date:");
+                lcd_printf("  %-13s\r\n", __DATE__);
+                lcd_printf("  %-13s\r\n", __TIME__);
+            #endif
 
-#elif defined(TARGETLOCATION_FLASH)
+        #endif  // !defined(BUILD_RTM)
 
-    LOAD_IMAGE_Start  = (UINT32)&Load$$ER_FLASH$$Base;
-    LOAD_IMAGE_Length = (UINT32)&Image$$ER_FLASH$$Length;
+        /***********************************************************************************/
 
-#else
-    !ERROR
-#endif
+        {
+            #if defined(FIQ_SAMPLING_PROFILER)
+                    FIQ_Profiler_Init();
+            #endif
+        }
 
-    InitCRuntime();
+        #ifdef FEATURE_WATCHDOG
+            Watchdog_GetSetTimeout ( WATCHDOG_TIMEOUT , TRUE );
+            Watchdog_GetSetBehavior( WATCHDOG_BEHAVIOR, TRUE );
+            Watchdog_GetSetEnabled ( WATCHDOG_ENABLE, TRUE );
+        #endif
+            
+        // CMSIS & NETMF HALs initialization completed.  Interrupts are enabled.  Jump to the Application routine
+        ApplicationEntryPoint();
 
-    LOAD_IMAGE_Length += (UINT32)&IMAGE_RAM_RO_LENGTH + (UINT32)&Image$$ER_RAM_RW$$Length;
+        #ifdef FEATURE_LCD
+            lcd_printf("\fmain exited!!???.  Halting CPU\r\n");
+        #endif    
+        //debug_printf("main exited!!???.  Halting CPU\r\n");        
+    }    
 
-#if !defined(BUILD_RTM)
-    g_Boot_RAMConstants_CRC = Checksum_RAMConstants();
-#endif
-
-
-    CPU_Initialize();
-
-    HAL_Time_Initialize();
-
-    HAL_Initialize();
-
-#if !defined(BUILD_RTM) 
-    DEBUG_TRACE4( STREAM_LCD, ".NetMF v%d.%d.%d.%d\r\n", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, VERSION_REVISION);
-    DEBUG_TRACE3(TRACE_ALWAYS, "%s, Build Date:\r\n\t%s %s\r\n", HalName, __DATE__, __TIME__);
-#if defined(__GNUC__)
-    DEBUG_TRACE1(TRACE_ALWAYS, "GNU Compiler version %d\r\n", __GNUC__);
-#else
-    DEBUG_TRACE1(TRACE_ALWAYS, "ARM Compiler version %d\r\n", __ARMCC_VERSION);
-#endif
-
-    UINT8* BaseAddress;
-    UINT32 SizeInBytes;
-
-    HeapLocation( BaseAddress,    SizeInBytes );
-    memset      ( BaseAddress, 0, SizeInBytes );
-
-    lcd_printf("\f");
-
-    lcd_printf("%-15s\r\n", HalName);
-    lcd_printf("%-15s\r\n", "Build Date:");
-    lcd_printf("  %-13s\r\n", __DATE__);
-    lcd_printf("  %-13s\r\n", __TIME__);
-
-#endif  // !defined(BUILD_RTM)
-
-    /***********************************************************************************/
-
-    {
-#if defined(FIQ_SAMPLING_PROFILER)
-        FIQ_Profiler_Init();
-#endif
-    }
-
-    // 
-    // the runtime is by default using a watchdog 
-    // 
-   
-    Watchdog_GetSetTimeout ( WATCHDOG_TIMEOUT , TRUE );
-    Watchdog_GetSetBehavior( WATCHDOG_BEHAVIOR, TRUE );
-    Watchdog_GetSetEnabled ( WATCHDOG_ENABLE, TRUE );
-
- 
-    // HAL initialization completed.  Interrupts are enabled.  Jump to the Application routine
-    ApplicationEntryPoint();
-
-    lcd_printf("\fmain exited!!???.  Halting CPU\r\n");
-    debug_printf("main exited!!???.  Halting CPU\r\n");
-
-#if defined(BUILD_RTM)
-    CPU_Reset();
-#else
-    CPU_Halt();
-#endif
+    #if defined(BUILD_RTM)
+        CPU_Reset();
+    #else
+        CPU_Halt();
+    #endif
 }
 
 } // extern "C"
@@ -605,24 +491,25 @@ void BootEntry()
 
 void debug_printf( const char* format, ... )
 {
-    char    buffer[256];
+    char buffer[256] = {0};
     va_list arg_ptr;
 
     va_start( arg_ptr, format );
 
    int len = hal_vsnprintf( buffer, sizeof(buffer)-1, format, arg_ptr );
 
-    // flush existing characters
-    DebuggerPort_Flush( HalSystemConfig.DebugTextPort );
-
-    // write string
-    DebuggerPort_Write( HalSystemConfig.DebugTextPort, buffer, len, 0 );
-
-    // flush new characters
-    DebuggerPort_Flush( HalSystemConfig.DebugTextPort );
+   { // take CLR lock to send whole message
+       GLOBAL_LOCK(clrLock);
+       // send characters directly to the trace port
+       for( char* p = buffer; *p != '\0' || p-buffer >= 256; ++p )
+            ITM_SendChar( *p );
+   }
 
     va_end( arg_ptr );
 }
+
+#ifdef FEATURE_LCD
+void lcd_printf( const char* format, ... );
 
 void lcd_printf( const char* format, ... )
 {
@@ -632,147 +519,6 @@ void lcd_printf( const char* format, ... )
 
     hal_vfprintf( STREAM_LCD, format, arg_ptr );
 }
-
-#endif  // !defined(BUILD_RTM)
-
-//--//
-
-volatile INT32 SystemStates[SYSTEM_STATE_TOTAL_STATES];
-
-
-#if defined(PLATFORM_ARM)
-
- void SystemState_SetNoLock( SYSTEM_STATE State )
-{
-    //ASSERT(State < SYSTEM_STATE_TOTAL_STATES);
-
-    ASSERT_IRQ_MUST_BE_OFF();
-
-    SystemStates[State]++;
-
-    //ASSERT(SystemStates[State] > 0);
-}
-
-
-void SystemState_ClearNoLock( SYSTEM_STATE State )
-{
-    //ASSERT(State < SYSTEM_STATE_TOTAL_STATES);
-
-    ASSERT_IRQ_MUST_BE_OFF();
-
-    SystemStates[State]--;
-
-    //ASSERT(SystemStates[State] >= 0);
-}
-
-
- BOOL SystemState_QueryNoLock( SYSTEM_STATE State )
-{
-    //ASSERT(State < SYSTEM_STATE_TOTAL_STATES);
-
-    ASSERT_IRQ_MUST_BE_OFF();
-
-    return (SystemStates[State] > 0) ? TRUE : FALSE;
-}
-
-#endif
-
-
-
-void SystemState_Set( SYSTEM_STATE State )
-{
-    GLOBAL_LOCK(irq);
-
-    SystemState_SetNoLock( State );
-}
-
-
-void SystemState_Clear( SYSTEM_STATE State )
-{
-    GLOBAL_LOCK(irq);
-
-    SystemState_ClearNoLock( State );
-}
-
-
-BOOL SystemState_Query( SYSTEM_STATE State )
-{
-    GLOBAL_LOCK(irq);
-
-    return SystemState_QueryNoLock( State );
-}
-
-//--//
-
-#if !defined(BUILD_RTM)
-
-UINT32 Checksum_RAMConstants()
-{
-    UINT32* RAMConstants = (UINT32*)&IMAGE_RAM_RO_BASE; 
-    UINT32  Length       = (UINT32 )&IMAGE_RAM_RO_LENGTH; 
-
-    UINT32 CRC;
-
-    // start with Vector area CRC
-    CRC = SUPPORT_ComputeCRC( NULL, 0x00000020, 0 );
-
-    // add the big block of RAM constants to CRC
-    CRC = SUPPORT_ComputeCRC( RAMConstants, Length, CRC );
-
-    return CRC;
-}
-
-void Verify_RAMConstants( void* arg )
-{
-    BOOL BreakpointOnError = (BOOL)arg;
-
-    //debug_printf("RAMC\r\n");
-
-    UINT32 CRC = Checksum_RAMConstants();
-
-    if(CRC != g_Boot_RAMConstants_CRC)
-    {
-        hal_printf( "RAMC CRC:%08x!=%08x\r\n", CRC, g_Boot_RAMConstants_CRC );
-
-        UINT32* ROMConstants  = (UINT32*)&LOAD_RAM_RO_BASE;
-        UINT32* RAMConstants  = (UINT32*)&IMAGE_RAM_RO_BASE;
-        UINT32  Length        = (UINT32 )&IMAGE_RAM_RO_LENGTH;
-        BOOL    FoundMismatch = FALSE;
-
-        for(int i = 0; i < Length; i += 4)
-        {
-            if(*RAMConstants != *ROMConstants)
-            {
-                hal_printf( "RAMC %08x:%08x!=%08x\r\n", (UINT32) RAMConstants, *RAMConstants, *ROMConstants );
-
-                if(!FoundMismatch) lcd_printf( "\fRAMC:%08x\r\n", (UINT32)RAMConstants );  // first one only to LCD
-                FoundMismatch = TRUE;
-            }
-
-            RAMConstants++;
-            ROMConstants++;
-        }
-
-        if(!FoundMismatch)
-        {
-            // the vector area must have been trashed
-            lcd_printf("\fRAMC:%08x\r\n", (UINT32) NULL);
-            RAMConstants = (UINT32*)NULL;
-
-            for(int i = 0; i < 32; i += 4)
-            {
-                hal_printf( "RAMC %02x:%08x\r\n", i, *RAMConstants   );
-                lcd_printf( "%02x:%08x\r\n"     , i, *RAMConstants++ );
-            }
-        }
-
-        DebuggerPort_Flush( HalSystemConfig.DebugTextPort );
-
-        if(BreakpointOnError)
-        {
-            HARD_BREAKPOINT();
-        }
-    }
-}
+#endif  // !defined(FEATURE_LCD)
 
 #endif  // !defined(BUILD_RTM)
