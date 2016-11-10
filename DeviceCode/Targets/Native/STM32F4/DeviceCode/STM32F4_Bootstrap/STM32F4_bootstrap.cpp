@@ -268,6 +268,9 @@ void __section("SectionForBootstrapOperations") STM32F4_BootstrapCode()
     RCC->APB1ENR = RCC_APB1ENR_PWREN;    // PWR clock used for sleep;
     RCC->APB2ENR = RCC_APB2ENR_SYSCFGEN; // SYSCFG clock used for IO;
     
+    // Enable the CRC peripheral clock
+    RCC->AHB1ENR |= RCC_AHB1ENR_CRCEN;
+
     // stop HSI clock
 #if SYSTEM_CRYSTAL_CLOCK_HZ != 0
 	RCC->CR &= ~RCC_CR_HSION;

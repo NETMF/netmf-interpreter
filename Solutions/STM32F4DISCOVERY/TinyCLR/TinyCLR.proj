@@ -192,9 +192,15 @@
         <DriverLibs Include="tinycrt_pal.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\devicecode\pal\TinyCRT\dotNetMF.proj" />
     </ItemGroup>
-    <ItemGroup>
+    <!-- Software CRC calculation -->
+    <!--<ItemGroup>
         <PlatformIndependentLibs Include="CRC.$(LIB_EXT)" />
         <RequiredProjects Include="$(SPOCLIENT)\Support\CRC\dotNetMF.proj" />
+    </ItemGroup>-->
+    <!-- Hardware CRC calculation -->
+    <ItemGroup>
+        <DriverLibs Include="STM32F4_CRC.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\Native\STM32F4\DeviceCode\STM32F4_CRC\dotNetMF.proj" />
     </ItemGroup>
     <ItemGroup>
         <PlatformIndependentLibs Include="WireProtocol.$(LIB_EXT)" />
