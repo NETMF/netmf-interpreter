@@ -42,6 +42,14 @@ Listings/
 /DeviceCode/Targets/OS/Win32/DeviceCode/WinPcap_Eth/Dependencies/WpdPack/
 
 *.axfdump
+<<<<<<< HEAD
+/Test/Platform/Tests/CLR/Microsoft.SPOT.TinyCore/Presentation/OnBoardFlash.dat
+/Test/Platform/Tests/CLR/Microsoft.SPOT.TinyCore/Presentation/OnBoardFlash.dat.smd
+/Test/Platform/Tools/MFTestSystem/Results
+/devenvdebug.cmd
+/setenv.cmd
+/setenv_base_classic.cmd
+/setenv_rvds.cmd
 /crypto/lib
 Firmware License (Crypto).rtf
 License (Crypto).rtf

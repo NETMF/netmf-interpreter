@@ -1,4 +1,10 @@
 ﻿<Project DefaultTargets="TinyCLR_Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props" Condition="Exists('$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), BuildEnv.props))\BuildEnv.props')" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>Microsoft.SPOT.Platform.Test.SslClient</AssemblyName>
     <OutputType>Exe</OutputType>

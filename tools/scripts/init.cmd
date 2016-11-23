@@ -1,5 +1,5 @@
 @rem
-@rem Set some basic vars based on the path of this script
+@rem Set some basic vars based on the path of this script 
 @rem
 set TEMPTOOLPATH=%~dp0
 @rem Sometimes cmd leaves the trailing backslash on - remove it.

@@ -19,7 +19,10 @@
   <PropertyGroup>
     <OEMSystemInfoString>Copyright Oberon microsystems, Inc.</OEMSystemInfoString>
   </PropertyGroup>
-
+  <PropertyGroup Condition="'$(COMPILER_TOOL)'=='DS5'">
+    <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M3</DEVICE_TYPE>
+    <BUILD_TOOL_GUID>{F7823E3C-8BCE-4D9A-AD56-9E06063C47CD}</BUILD_TOOL_GUID>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
     <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M3</DEVICE_TYPE>
     <BUILD_TOOL_GUID>{1942C531-3AAC-4abb-8B4F-C3111012F9D9}</BUILD_TOOL_GUID>

@@ -573,7 +573,7 @@ namespace Microsoft.SPOT.Tasks.ScatterFile
             string name = node.Name;
             IParse o    = null;
 
-            if (GetVariable("COMPILER_TOOL").ToUpper() == "RVDS" || GetVariable("COMPILER_TOOL").ToUpper() == "MDK")
+            if (GetVariable("COMPILER_TOOL").ToUpper() == "RVDS" || GetVariable("COMPILER_TOOL").ToUpper() == "MDK" || GetVariable("COMPILER_TOOL").ToUpper() == "DS5")
             {
                 if (name == "ScatterFile")          o = new Group();
                 else if (name == "Set")             o = new Variable();

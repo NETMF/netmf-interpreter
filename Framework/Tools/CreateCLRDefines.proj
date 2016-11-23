@@ -3,7 +3,7 @@
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
 
   <PropertyGroup>
-    <Directory>Framework\tools</Directory>
+    <Directory>$(SPOCLIENT)\Framework\tools</Directory>
     <PreBuildDependsOn>$(PreBuildDependsOn);BuildClrDefines</PreBuildDependsOn>
     <InCLRDefines>True</InCLRDefines>
   </PropertyGroup>
