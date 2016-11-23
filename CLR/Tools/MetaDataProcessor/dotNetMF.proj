@@ -13,6 +13,8 @@
     <LinkIgnore>4199</LinkIgnore>
     <!-- warning C4091: 'typedef ': ignored on left of 'NGenHintEnum' when no variable is declared -->
     <ExtraFlags>/wd4091</ExtraFlags>
+    <!--LNK4099: PDB 'filename' was not found with 'object/library' or at 'path'; linking object as if no debug info -->
+    <LinkIgnore>4099</LinkIgnore>    
   </PropertyGroup>
   <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
   <ItemGroup>
