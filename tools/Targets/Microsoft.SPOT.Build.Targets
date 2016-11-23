@@ -9,9 +9,9 @@
     <ResolveReferencesDependsOn>$(ResolveReferencesDependsOn);ResolveRuntimeDependenciesLE;ResolveRuntimeDependenciesBE</ResolveReferencesDependsOn>
     <!-- ADAPTED FROM DEVICE.TARGETS...  -->
     <TinyCLR_StartProgram Condition=" '$(StartAction)'== 'Program' ">$(StartProgram)</TinyCLR_StartProgram>
-    <TinyCLR_IntermediateAssembly>$(OutDir)..\pe\le\$(TargetName).pe</TinyCLR_IntermediateAssembly>
-    <TinyCLR_IntermediateAssemblyLE>$(ProjectDir)$(IntermediateOutputPath)le\$(TargetName)</TinyCLR_IntermediateAssemblyLE>
-    <TinyCLR_IntermediateAssemblyBE>$(ProjectDir)$(IntermediateOutputPath)be\$(TargetName)</TinyCLR_IntermediateAssemblyBE>
+    <TinyCLR_IntermediateAssembly>$(IntermediateOutputPath)$(TargetName)</TinyCLR_IntermediateAssembly>
+    <TinyCLR_IntermediateAssemblyLE>$(IntermediateOutputPath)le\$(TargetName)</TinyCLR_IntermediateAssemblyLE>
+    <TinyCLR_IntermediateAssemblyBE>$(IntermediateOutputPath)be\$(TargetName)</TinyCLR_IntermediateAssemblyBE>
     <TinyCLR_PdbxExt>.pdbx</TinyCLR_PdbxExt>
     <MF_GenerateStubsDirectory Condition="'$(MF_GenerateStubsDirectory)'==''">$(ProjectDir)Stubs\</MF_GenerateStubsDirectory>
     <MF_GenerateStubsRootName Condition="'$(MF_GenerateStubsRootName)'==''">$(TargetName)</MF_GenerateStubsRootName>

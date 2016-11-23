@@ -70,11 +70,11 @@
   <!-- MF-specific targets and other properties -->
   <PropertyGroup>
     <TinyCLR_StartProgram Condition=" '$(StartAction)'== 'Program' ">$(StartProgram)</TinyCLR_StartProgram>
-    <TinyCLR_IntermediateAssembly>$(ProjectDir)$(IntermediateOutputPath)$(TargetName)</TinyCLR_IntermediateAssembly>
-    <TinyCLR_IntermediateAssemblyLE>$(ProjectDir)$(IntermediateOutputPath)le\$(TargetName)</TinyCLR_IntermediateAssemblyLE>
-    <TinyCLR_IntermediateAssemblyBE>$(ProjectDir)$(IntermediateOutputPath)be\$(TargetName)</TinyCLR_IntermediateAssemblyBE>
-    <TinyCLR_AssemblyLE>$(ProjectDir)$(OutDir)le\$(TargetName)</TinyCLR_AssemblyLE>
-    <TinyCLR_AssemblyBE>$(ProjectDir)$(OutDir)be\$(TargetName)</TinyCLR_AssemblyBE>
+    <TinyCLR_IntermediateAssembly>$(IntermediateOutputPath)$(TargetName)</TinyCLR_IntermediateAssembly>
+    <TinyCLR_IntermediateAssemblyLE>$(IntermediateOutputPath)le\$(TargetName)</TinyCLR_IntermediateAssemblyLE>
+    <TinyCLR_IntermediateAssemblyBE>$(IntermediateOutputPath)be\$(TargetName)</TinyCLR_IntermediateAssemblyBE>
+    <TinyCLR_AssemblyLE>$(OutDir)le\$(TargetName)</TinyCLR_AssemblyLE>
+    <TinyCLR_AssemblyBE>$(OutDir)be\$(TargetName)</TinyCLR_AssemblyBE>
     <TinyCLR_PdbxExt>.pdbx</TinyCLR_PdbxExt>
     <TinyCLR_ExeExt>.exe</TinyCLR_ExeExt>
     <TinyCLR_DllExt>.dll</TinyCLR_DllExt>
@@ -88,20 +88,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EndianAwareDirs Include="$(ProjectDir)$(IntermediateOutputPath)le" />
-    <EndianAwareDirs Include="$(ProjectDir)$(IntermediateOutputPath)be" />
-    <EndianAwareDirs Include="$(ProjectDir)$(OutDir)le" />
-    <EndianAwareDirs Include="$(ProjectDir)$(OutDir)be" />
+    <EndianAwareDirs Include="$(IntermediateOutputPath)le" />
+    <EndianAwareDirs Include="$(IntermediateOutputPath)be" />
+    <EndianAwareDirs Include="$(OutDir)le" />
+    <EndianAwareDirs Include="$(OutDir)be" />
   </ItemGroup>
 
   <!-- Clean possible multitarget pe/pdbx files -->
   <Target Name="TinyCLRClean">
-    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)$(TargetName).pe')"   Files="$(ProjectDir)$(OutDir)$(TargetName).pe" />
-    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)$(TargetName).pdbx')" Files="$(ProjectDir)$(OutDir)$(TargetName).pdbx" />
-    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)le\$(TargetName).pe')"   Files="$(ProjectDir)$(OutDir)le\$(TargetName).pe" />
-    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)le\$(TargetName).pdbx')" Files="$(ProjectDir)$(OutDir)le\$(TargetName).pdbx" />
-    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)be\$(TargetName).pe')"   Files="$(ProjectDir)$(OutDir)be\$(TargetName).pe" />
-    <Delete Condition="EXISTS('$(ProjectDir)$(OutDir)be\$(TargetName).pdbx')" Files="$(ProjectDir)$(OutDir)be\$(TargetName).pdbx" />
+    <Delete Condition="EXISTS('$(OutDir)$(TargetName).pe')"   Files="$(OutDir)$(TargetName).pe" />
+    <Delete Condition="EXISTS('$(OutDir)$(TargetName).pdbx')" Files="$(OutDir)$(TargetName).pdbx" />
+    <Delete Condition="EXISTS('$(OutDir)le\$(TargetName).pe')"   Files="$(OutDir)le\$(TargetName).pe" />
+    <Delete Condition="EXISTS('$(OutDir)le\$(TargetName).pdbx')" Files="$(OutDir)le\$(TargetName).pdbx" />
+    <Delete Condition="EXISTS('$(OutDir)be\$(TargetName).pe')"   Files="$(OutDir)be\$(TargetName).pe" />
+    <Delete Condition="EXISTS('$(OutDir)be\$(TargetName).pdbx')" Files="$(OutDir)be\$(TargetName).pdbx" />
   </Target>
 
   <Target Name="EnsureEndianAwareDirectories">
@@ -110,39 +110,39 @@
 
   <Target Name="CopyExeToEndian" >
     <Copy
-        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)')"
-        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)"
-        DestinationFolder="$(ProjectDir)$(OutDir)le\" >
+        Condition="Exists('$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)')"
+        SourceFiles="$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)"
+        DestinationFolder="$(OutDir)le\" >
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
     <Copy
-        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)')"
-        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)"
-        DestinationFolder="$(ProjectDir)$(OutDir)be\" >
+        Condition="Exists('$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)')"
+        SourceFiles="$(IntermediateOutputPath)$(TargetName)$(TinyCLR_ExeExt)"
+        DestinationFolder="$(OutDir)be\" >
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
     <Copy
-        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)')"
-        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)"
-        DestinationFolder="$(ProjectDir)$(OutDir)le\" >
+        Condition="Exists('$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)')"
+        SourceFiles="$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)"
+        DestinationFolder="$(OutDir)le\" >
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
     <Copy
-        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)')"
-        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)"
-        DestinationFolder="$(ProjectDir)$(OutDir)be\" >
+        Condition="Exists('$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)')"
+        SourceFiles="$(IntermediateOutputPath)$(TargetName)$(TinyCLR_DllExt)"
+        DestinationFolder="$(OutDir)be\" >
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
     <Copy
-        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)')"
-        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)"
-        DestinationFolder="$(ProjectDir)$(OutDir)le\" >
+        Condition="Exists('$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)')"
+        SourceFiles="$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)"
+        DestinationFolder="$(OutDir)le\" >
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
     <Copy
-        Condition="Exists('$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)')"
-        SourceFiles="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)"
-        DestinationFolder="$(ProjectDir)$(OutDir)be\" >
+        Condition="Exists('$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)')"
+        SourceFiles="$(IntermediateOutputPath)$(TargetName)$(TinyCLR_PdbExt)"
+        DestinationFolder="$(OutDir)be\" >
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
   </Target>
