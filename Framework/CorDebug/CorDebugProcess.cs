@@ -435,7 +435,9 @@ namespace Microsoft.SPOT.Debugger
                     if((retry % 10) == 9) 
                         DetachFromEngine();
 
-                    Thread.Yield();
+// Replaced following line. Need to kill some time for slow devices rebooting.
+//                    Thread.Yield();
+                    Thread.Sleep(10);
                 }
                 catch
                 {
@@ -443,7 +445,9 @@ namespace Microsoft.SPOT.Debugger
 
                     if(!ShuttingDown)
                     {
-                        Thread.Yield();
+// Replaced following line. Need to kill some time for slow devices rebooting.
+//                        Thread.Yield();
+                        Thread.Sleep(10);
                     }
                 }
             }
