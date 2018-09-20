@@ -12,7 +12,7 @@
     <ManifestFile>batterymodel_IML200425_2.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Battery</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BatteryModel_HAL" Guid="{114C68EB-FDAB-4691-8630-E7DBF31D7F3D}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BatteryModel_HAL" Guid="{114C68EB-FDAB-4691-8630-E7DBF31D7F3D}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

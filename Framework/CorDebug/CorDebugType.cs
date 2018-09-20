@@ -72,12 +72,23 @@ namespace Microsoft.SPOT.Debugger
         CorElementType m_elemType;
         public RuntimeValue m_rtv;
         public CorDebugAppDomain m_appDomain;
+        private CorDebugAssembly m_assembly;
 
+        // This is used to resolve values into types when we know the appdomain, but not the assembly.
         public CorDebugGenericType(CorElementType elemType, RuntimeValue rtv, CorDebugAppDomain appDomain)
-        { 
+        {
             m_elemType = elemType;
             m_rtv = rtv;
-            m_appDomain = appDomain; 
+            m_appDomain = appDomain;
+        }
+
+        // This constructor is used exclusively for resovling potentially (but never really) generic classes into fully specified types.
+        // Generics are not supported by netmf, but we still need to be able to convert classes into fully specified types.
+        public CorDebugGenericType(CorElementType elemType, RuntimeValue rtv, CorDebugAssembly assembly)
+        {
+            m_elemType = elemType;
+            m_rtv = rtv;
+            m_assembly = assembly;
         }
 
         int ICorDebugType.EnumerateTypeParameters(out ICorDebugTypeEnum ppTyParEnum)
@@ -102,7 +113,7 @@ namespace Microsoft.SPOT.Debugger
 
         int ICorDebugType.GetClass(out ICorDebugClass ppClass)
         {
-            ppClass = CorDebugValue.ClassFromRuntimeValue(m_rtv, m_appDomain);
+            ppClass = CorDebugValue.ClassFromRuntimeValue(m_rtv, this.AppDomain);
             return Utility.COM_HResults.S_OK;
         }
 
@@ -115,8 +126,12 @@ namespace Microsoft.SPOT.Debugger
 
         int ICorDebugType.GetStaticFieldValue(uint fieldDef, ICorDebugFrame pFrame, out ICorDebugValue ppValue)
         {
-            ppValue = null;
-            return Utility.COM_HResults.E_NOTIMPL;
+            uint fd = TinyCLR_TypeSystem.ClassMemberIndexFromCLRToken(fieldDef, this.Assembly);
+            this.Process.SetCurrentAppDomain(this.AppDomain);
+            RuntimeValue rtv = this.Engine.GetStaticFieldValue(fd);
+            ppValue = CorDebugValue.CreateValue(rtv, this.AppDomain);
+
+            return Utility.COM_HResults.S_OK;
         }
 
         int ICorDebugType.GetBase(out ICorDebugType pBase)
@@ -124,5 +139,36 @@ namespace Microsoft.SPOT.Debugger
             pBase = null;
             return Utility.COM_HResults.E_NOTIMPL;
         }
+
+        public CorDebugAssembly Assembly
+        {
+            [System.Diagnostics.DebuggerHidden]
+            get { return m_assembly; }
+        }
+
+        public Engine Engine
+        {
+            [System.Diagnostics.DebuggerHidden]
+            get { return this.Process?.Engine; }
+        }
+
+        public CorDebugProcess Process
+        {
+            [System.Diagnostics.DebuggerHidden]
+            get { return this.Assembly?.Process; }
+        }
+
+        public CorDebugAppDomain AppDomain
+        {
+            [System.Diagnostics.DebuggerHidden]
+            get
+            {
+                if (m_appDomain != null)
+                    return m_appDomain;
+                else
+                    return this.Assembly?.AppDomain;
+            }
+        }
+
     }
 }

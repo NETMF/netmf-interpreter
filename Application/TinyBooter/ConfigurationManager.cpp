@@ -113,7 +113,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
     // Validity  write 
     if (checkWrite)
     {
-        for (int i = 0; i<size; i++)
+        for (UINT32 i = 0; i<size; i++)
         {
             if ((~configurationInBytes[ i + writeOffset ]) & data[ i ])
             { 
@@ -137,7 +137,7 @@ void ConfigurationSectorManager::WriteConfiguration( UINT32 writeOffset, BYTE *d
         {
             m_device->Read( m_cfgPhysicalAddress, writeLengthInBytes, configurationInBytes );
             // copy the new data to the configdata.
-            for (int i = 0; i<size; i++)
+            for (UINT32 i = 0; i<size; i++)
             {
                 configurationInBytes[ i + writeOffset ] = data[ i ];
 

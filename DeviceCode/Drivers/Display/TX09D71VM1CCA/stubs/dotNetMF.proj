@@ -35,8 +35,6 @@
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>True</IsStub>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
-    <CustomSpecific>
-    </CustomSpecific>
     <Directory>DeviceCode\Drivers\Display\TX09D71VM1CCA\stubs</Directory>
     <OutputType>Library</OutputType>
     <PlatformIndependentBuild>false</PlatformIndependentBuild>

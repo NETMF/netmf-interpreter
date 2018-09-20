@@ -28,7 +28,7 @@ LPCSTR CLR_RT_Assembly::GetString( CLR_STRING i )
     return &(((LPCSTR)GetTable( TBL_Strings ))[ i ]);
 }
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 
 void CLR_RT_Assembly::InitString( std::map<std::string,CLR_OFFSET>& map )
 {

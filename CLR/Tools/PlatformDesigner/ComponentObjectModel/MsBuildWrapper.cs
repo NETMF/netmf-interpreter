@@ -1,21 +1,20 @@
 using System;
-using System.Collections.Generic;
 using System.Collections;
-using System.Text;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using XsdInventoryFormatObject;
-using Microsoft.Build.Framework;
-//using Microsoft.Build.BuildEngine;
-using Microsoft.Build.Evaluation;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.XPath;
-using System.Xml.Serialization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
 using Microsoft.Build.Construction;
-using Microsoft.Build.Execution;
+using Microsoft.Build.Evaluation;
+using XsdInventoryFormatObject;
+//using Microsoft.Build.BuildEngine;
 
 [assembly: InternalsVisibleTo("ComponentBuilder, PublicKey=0024000004800000940000000602000000240000525341310004000001000100B72BE28059C8C300C866887A820EAB7FD9E8F7D41179917EA660A5AC8FA46AC492358A9E4A64591F7C279D77E56844ADDD3762F2F539D493A01631B82AE1A255110E0143856C079976A3396CC30D1E81EA2748F04D198BB273BD721C7FF461A514182C2775B7D8658B529DB2BD11319AB024FAABD7272B3C2F6196184EB666B3")]
 [assembly: InternalsVisibleTo("SolutionWizard, PublicKey=0024000004800000940000000602000000240000525341310004000001000100B72BE28059C8C300C866887A820EAB7FD9E8F7D41179917EA660A5AC8FA46AC492358A9E4A64591F7C279D77E56844ADDD3762F2F539D493A01631B82AE1A255110E0143856C079976A3396CC30D1E81EA2748F04D198BB273BD721C7FF461A514182C2775B7D8658B529DB2BD11319AB024FAABD7272B3C2F6196184EB666B3")]
@@ -46,78 +45,79 @@ namespace ComponentObjectModel
         //bool m_forceLoadDependencies = false;
 
         #region TAG_STRINGS
-        const string RelativeTargetPath     = "tools\\targets\\";
-        const string RelativePlatformPath   = "DeviceCode\\targets\\";
+        const string RelativeTargetPath = "tools\\targets\\";
+        const string RelativePlatformPath = "DeviceCode\\targets\\";
         const string MicrosoftSpotNamespace = "Microsoft.SPOT.";
-        const string TargetFileExtension    = ".Targets";
-        const string CCompilerTag           = "CC";
-        const string CppCompilerTag         = "CPP";
-        const string AsmCompilerTag         = "AS";
-        const string LinkerTag              = "LINK";
-        const string ArchiverTag            = "AR";
-        const string FromElfTag             = "FROMELF";
-        const string ToolWrapperTag         = "WRAPPER";
-        const string AdsWrapperTag          = "ADS_WRAPPER";
-        const string AdiWrapperTag          = "ADI_WRAPPER";
-        const string ArcWrapperTag          = "ARC_WRAPPER";
+        const string TargetFileExtension = ".Targets";
+        const string CCompilerTag = "CC";
+        const string CppCompilerTag = "CPP";
+        const string AsmCompilerTag = "AS";
+        const string LinkerTag = "LINK";
+        const string ArchiverTag = "AR";
+        const string FromElfTag = "FROMELF";
+        const string ToolWrapperTag = "WRAPPER";
+        const string AdsWrapperTag = "ADS_WRAPPER";
+        const string AdiWrapperTag = "ADI_WRAPPER";
+        const string ArcWrapperTag = "ARC_WRAPPER";
 
-        const string ArmCCompilerTargetTag  = "ArmCompileC";
-        const string ArmCppCompilerTargetTag= "ArmCompileCPP";
-        const string ArmAsmTargetTag        = "ArmAssemble";
-        const string ArmLibTargetTag        = "ArmBuildLib";
-        const string ArmExeTargetTag        = "BuildAXF";
+        const string ArmCCompilerTargetTag = "ArmCompileC";
+        const string ArmCppCompilerTargetTag = "ArmCompileCPP";
+        const string ArmAsmTargetTag = "ArmAssemble";
+        const string ArmLibTargetTag = "ArmBuildLib";
+        const string ArmExeTargetTag = "BuildAXF";
 
-        const string AdiCCompilerTargetTag  = "ADICompileC";
-        const string AdiCppCompilerTargetTag= "ADICompileCPP";
-        const string AdiAsmTargetTag        = "ADIAssemble";
-        const string AdiLibTargetTag        = "ADIBuildLib";
-        const string AdiExeTargetTag        = "BuildDXE";
+        const string AdiCCompilerTargetTag = "ADICompileC";
+        const string AdiCppCompilerTargetTag = "ADICompileCPP";
+        const string AdiAsmTargetTag = "ADIAssemble";
+        const string AdiLibTargetTag = "ADIBuildLib";
+        const string AdiExeTargetTag = "BuildDXE";
 
-        const string ArcCCompilerTargetTag  = "ARCCompileC";
-        const string ArcCppCompilerTargetTag= "ARCCompileCPP";
-        const string ArcAsmTargetTag        = "ARCAssemble";
-        const string ArcLibTargetTag        = "ARCBuildLib";
-        const string ArcExeTargetTag        = "ARCBuildDXE";
+        const string ArcCCompilerTargetTag = "ARCCompileC";
+        const string ArcCppCompilerTargetTag = "ARCCompileCPP";
+        const string ArcAsmTargetTag = "ARCAssemble";
+        const string ArcLibTargetTag = "ARCBuildLib";
+        const string ArcExeTargetTag = "ARCBuildDXE";
 
-        const string CCompilerTargetTag     = "CompileC";
-        const string CppCompilerTargetTag   = "CompileCpp";
-        const string AsmCompilerTargetTag   = "CompileAsm";
-        const string LibTargetTag           = "BuildLib";
-        const string ExeTargetTag           = "BuildExe";
-        const string TargetTaskTag          = "Exec";
-        const string ScatterFileTargetTag   = "BuildScatterfile";
+        const string CCompilerTargetTag = "CompileC";
+        const string CppCompilerTargetTag = "CompileCpp";
+        const string AsmCompilerTargetTag = "CompileAsm";
+        const string LibTargetTag = "BuildLib";
+        const string ExeTargetTag = "BuildExe";
+        const string TargetTaskTag = "Exec";
+        const string ScatterFileTargetTag = "BuildScatterfile";
 
-        const string CpuNamesTag            = "CpuNames";
-        const string ISAsTag                = "ISAName";
+        const string CpuNamesTag = "CpuNames";
+        const string ISAsTag = "ISAName";
 
-        const string PKUI_CpuNamesTag       = "PKUI_CpuNames";
-        const string PKUI_ISAsTag           = "PKUI_ISAs";
-        const string PKUI_LibCatTag         = "PKUI_LibraryCategory";
+        const string PKUI_CpuNamesTag = "PKUI_CpuNames";
+        const string PKUI_ISAsTag = "PKUI_ISAs";
+        const string PKUI_LibCatTag = "PKUI_LibraryCategory";
 
-        const string CommonToolFlagTag      = "AS_CC_CPP_COMMON_FLAGS";
-        const string CCppTargFlagTag        = "CC_CPP_TARGETTYPE_FLAGS";
-        const string CCppCommonFlagTag      = "CC_CPP_COMMON_FLAGS";
-        const string CFlagTag               = "CC_FLAGS";
-        const string CppFlagTag             = "CPP_FLAGS";
-        const string AsmFlagTag             = "AS_FLAGS";
-        const string AsmArmFlagTag          = "ASFLAGS";
-        const string LinkerFlagTag          = "LINK_FLAGS";
-        const string ArchiverFlagTag        = "AR_FLAGS";
-        const string ArchiverArmFlagTag     = "ARFLAGS";
-        const string ArchiverPlatFlagTag    = "AR_PLATFORM_FLAGS";
-        const string FromElfFlagTag         = "FROMELF_FLAGS";
-        const string ScatterFlagTag         = "SCATTER_FLAG";
+        const string CommonToolFlagTag = "AS_CC_CPP_COMMON_FLAGS";
+        const string CCppTargFlagTag = "CC_CPP_TARGETTYPE_FLAGS";
+        const string CCppCommonFlagTag = "CC_CPP_COMMON_FLAGS";
+        const string CFlagTag = "CC_FLAGS";
+        const string CppFlagTag = "CPP_FLAGS";
+        const string AsmFlagTag = "AS_FLAGS";
+        const string AsmArmFlagTag = "ASFLAGS";
+        const string LinkerFlagTag = "LINK_FLAGS";
+        const string ArchiverFlagTag = "AR_FLAGS";
+        const string ArchiverArmFlagTag = "ARFLAGS";
+        const string ArchiverPlatFlagTag = "AR_PLATFORM_FLAGS";
+        const string FromElfFlagTag = "FROMELF_FLAGS";
+        const string ScatterFlagTag = "SCATTER_FLAG";
 
-        const string SetEnvScriptTag        = "SetEnvironmentVariable";
+        const string SetEnvScriptTag = "SetEnvironmentVariable";
 
-        const string ObjExtFlag             = "OBJ_EXT";
-        const string LibExtFlag             = "LIB_EXT";
-        const string ExeExtFlag             = "EXE_EXT";
+        const string ObjExtFlag = "OBJ_EXT";
+        const string LibExtFlag = "LIB_EXT";
+        const string ExeExtFlag = "EXE_EXT";
+        const string ScatterExtFlag = "SCATTER_EXT";
 
         const string TaskScriptAttributeName = "Command";
 
         const string c_MSBuildDefaultSchema = @"http://schemas.microsoft.com/developer/msbuild/2003";
-        const string c_XmlHeaderString      = "<?xml version=\"1.0\" encoding=\"utf-16\"?>";
+        const string c_XmlHeaderString = "<?xml version=\"1.0\" encoding=\"utf-16\"?>";
 
         #endregion //TAG_STRINGS
 
@@ -312,15 +312,15 @@ namespace ComponentObjectModel
         {
             string compiler = Environment.GetEnvironmentVariable("COMPILER_TOOL");
 
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\ARM\\RVDS3.1"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\THUMB\\RVDS3.1"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\THUMB2\\RVDS3.1"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\ARM\\RVDS4.1"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\THUMB\\RVDS4.1"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\THUMB2\\RVDS4.1"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\ADI5.0"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\SH2A"));
-            LoadManifestFiles(Path.Combine(pkClientDirectory , "BuildOutput\\Windows"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\ARM\\RVDS3.1"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\THUMB\\RVDS3.1"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\THUMB2\\RVDS3.1"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\ARM\\RVDS4.1"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\THUMB\\RVDS4.1"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\THUMB2\\RVDS4.1"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\ADI5.0"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\SH2A"));
+            LoadManifestFiles(Path.Combine(pkClientDirectory, "BuildOutput\\Windows"));
         }
 
         public void LoadManifestFiles(string manifestRootDirectory)
@@ -329,10 +329,10 @@ namespace ComponentObjectModel
 
             if (Directory.Exists(fullpath))
             {
-                foreach(string dir in Directory.GetDirectories(fullpath))
+                foreach (string dir in Directory.GetDirectories(fullpath))
                 {
                     // only process debug
-                    if(fullpath.ToLower().Contains("\\release\\") || fullpath.ToLower().Contains("\\rtm\\"))
+                    if (fullpath.ToLower().Contains("\\release\\") || fullpath.ToLower().Contains("\\rtm\\"))
                     {
                         continue;
                     }
@@ -341,11 +341,11 @@ namespace ComponentObjectModel
                     {
                         continue;
                     }
-                    
+
                     LoadManifestFiles(dir);
                 }
-                
-                foreach(string file in Directory.GetFiles(fullpath, "*.manifest"))
+
+                foreach (string file in Directory.GetFiles(fullpath, "*.manifest"))
                 {
                     LoadLibraryFromManifest(file);
                 }
@@ -354,8 +354,8 @@ namespace ComponentObjectModel
 
         public void LoadDefaultProcessors(string pkClientDirectory)
         {
-            LoadProcessors(Path.Combine(pkClientDirectory , "devicecode\\Targets\\Native"));
-            LoadProcessors(Path.Combine(pkClientDirectory , "devicecode\\Targets\\OS"));
+            LoadProcessors(Path.Combine(pkClientDirectory, "devicecode\\Targets\\Native"));
+            LoadProcessors(Path.Combine(pkClientDirectory, "devicecode\\Targets\\OS"));
         }
 
         public void LoadProcessors(string procRootDirectory)
@@ -376,7 +376,7 @@ namespace ComponentObjectModel
                     Processor proc = new Processor();
                     proc.Name = Path.GetFileName(subdir);
                     proc.Guid = System.Guid.NewGuid().ToString("B");
-                    proc.ProjectPath = ConvertPathToEnv( Path.Combine(subdir, proc.Name + ".settings" ));
+                    proc.ProjectPath = ConvertPathToEnv(Path.Combine(subdir, proc.Name + ".settings"));
 
                     m_helper.DefaultInventory.Processors.Add(proc);
                 }
@@ -421,7 +421,7 @@ namespace ComponentObjectModel
 
             DirectoryInfo[] dirs = path.GetDirectories();
 
-            if(dirs == null || dirs.Length == 0)
+            if (dirs == null || dirs.Length == 0)
             {
                 return File.Exists(Path.Combine(path.FullName, c_dotNetMFProj));
             }
@@ -444,7 +444,7 @@ namespace ComponentObjectModel
             {
                 p = LoadProject(Path.Combine(path.FullName, c_dotNetMFProj));
 
-                foreach(DirectoryInfo dir in projDirs)
+                foreach (DirectoryInfo dir in projDirs)
                 {
                     bool fFoundProj = false;
                     ProjectItemGroupElement lastGroup = null;
@@ -454,7 +454,7 @@ namespace ComponentObjectModel
                         lastGroup = ig;
                         foreach (ProjectItemElement bi in ig.Items)
                         {
-                            if((0 == string.Compare(bi.ItemType, c_SubDirectoriesTag)) &&
+                            if ((0 == string.Compare(bi.ItemType, c_SubDirectoriesTag)) &&
                                (0 == string.Compare(bi.Include, dir.Name)))
                             {
                                 fFoundProj = true;
@@ -504,7 +504,7 @@ namespace ComponentObjectModel
         private void AdddotNetMFProjects(string platformRoot)
         {
             DirectoryInfo di = new DirectoryInfo(platformRoot);
-            
+
             // we didn't have any code to add
             if (!di.Exists) return;
 
@@ -539,8 +539,8 @@ namespace ComponentObjectModel
 
         internal void CopyTemplateFiles(LibraryCategory libType, MFSolution solution, MFComponent compLibTemplate)
         {
-            const string c_FastCompile      = @"fastcompile.cpp";
-            const string c_FastCompileTag   = @"FastCompileCPPFile";
+            const string c_FastCompile = @"fastcompile.cpp";
+            const string c_FastCompileTag = @"FastCompileCPPFile";
 
             string dstPath = Path.Combine(ExpandEnvVars(Path.GetDirectoryName(solution.ProjectPath), ""), "DeviceCode\\");
 
@@ -554,8 +554,8 @@ namespace ComponentObjectModel
 
             foreach (ApiTemplate api in libType.Templates)
             {
-                string src = ExpandEnvVars( api.FilePath, Environment.GetEnvironmentVariable("SPOCLIENT") );
-                
+                string src = ExpandEnvVars(api.FilePath, Environment.GetEnvironmentVariable("SPOCLIENT"));
+
                 //
                 // Make relative path based on path after \DeviceCode\ if it exists, otherwise up to two directories deep
                 //
@@ -712,10 +712,10 @@ namespace ComponentObjectModel
                         reloadProjs.Add(dst);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     System.Diagnostics.Debug.Print(e.ToString());
-                    System.Diagnostics.Debug.Print("Unable to copy file: " + src + " to " + dst );
+                    System.Diagnostics.Debug.Print("Unable to copy file: " + src + " to " + dst);
                 }
             }
             foreach (string prj in reloadProjs)
@@ -732,7 +732,7 @@ namespace ComponentObjectModel
             {
                 cond = comp2cond;
             }
-            else if(!string.IsNullOrEmpty(comp2cond))
+            else if (!string.IsNullOrEmpty(comp2cond))
             {
                 if (comp2cond.Contains(cond))
                 {
@@ -758,12 +758,12 @@ namespace ComponentObjectModel
 
         private void AddEnvVarCollection(List<EnvVar> vars, Project proj)
         {
-            
+
             //lets make it pretty
             Dictionary<string, List<EnvVar>> condToEnv = new Dictionary<string, List<EnvVar>>();
             foreach (EnvVar var in vars)
             {
-                if(condToEnv.ContainsKey(var.Conditional))
+                if (condToEnv.ContainsKey(var.Conditional))
                 {
                     condToEnv[var.Conditional].Add(var);
                 }
@@ -775,7 +775,7 @@ namespace ComponentObjectModel
                 }
             }
 
-            ProjectPropertyGroupElement global = null; 
+            ProjectPropertyGroupElement global = null;
 
             foreach (string cond in condToEnv.Keys)
             {
@@ -791,7 +791,7 @@ namespace ComponentObjectModel
                         group.AddProperty(var.Name, var.Value);
                     }
                 }
-                else if(list.Count == 1)
+                else if (list.Count == 1)
                 {
                     if (global == null)
                     {
@@ -848,12 +848,12 @@ namespace ComponentObjectModel
                 group.AddProperty(ToolWrapperTag, buildTool.BuildToolWrapper);
             }
 
-            group.AddProperty(CCompilerTag,   buildTool.ToolPath + buildTool.CCompiler.Exec);
+            group.AddProperty(CCompilerTag, buildTool.ToolPath + buildTool.CCompiler.Exec);
             group.AddProperty(CppCompilerTag, buildTool.ToolPath + buildTool.CppCompiler.Exec);
             group.AddProperty(AsmCompilerTag, buildTool.ToolPath + buildTool.AsmCompiler.Exec);
-            group.AddProperty(LinkerTag,      buildTool.ToolPath + buildTool.Linker.Exec);
-            group.AddProperty(ArchiverTag,    buildTool.ToolPath + buildTool.Archiver.Exec);
-            group.AddProperty(FromElfTag,     buildTool.ToolPath + buildTool.FromELF.Exec);
+            group.AddProperty(LinkerTag, buildTool.ToolPath + buildTool.Linker.Exec);
+            group.AddProperty(ArchiverTag, buildTool.ToolPath + buildTool.Archiver.Exec);
+            group.AddProperty(FromElfTag, buildTool.ToolPath + buildTool.FromELF.Exec);
 
             foreach (MiscBuildTool tool in buildTool.MiscTools)
             {
@@ -868,11 +868,11 @@ namespace ComponentObjectModel
                 AddBuildScript(tool.Name, tool.BuildTool.Conditional, ToEnvVar(ToolWrapperTag), tool.BuildToolOptions, proj, ToEnvVar(tool.Name + "_FLAGS"));
             }
 
-            AddBuildScript(CCompilerTargetTag  , buildTool.CCompiler.Conditional  , ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.CFlags       , proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(CFlagTag)  , ToEnvVar(CCppCommonFlagTag));
-            AddBuildScript(CppCompilerTargetTag, buildTool.CppCompiler.Conditional, ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.CppFlags     , proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(CppFlagTag), ToEnvVar(CCppCommonFlagTag));
+            AddBuildScript(CCompilerTargetTag, buildTool.CCompiler.Conditional, ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.CFlags, proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(CFlagTag), ToEnvVar(CCppCommonFlagTag));
+            AddBuildScript(CppCompilerTargetTag, buildTool.CppCompiler.Conditional, ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.CppFlags, proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(CppFlagTag), ToEnvVar(CCppCommonFlagTag));
             AddBuildScript(AsmCompilerTargetTag, buildTool.AsmCompiler.Conditional, ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.AsmFlags, proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(AsmFlagTag));
-            AddBuildScript(LibTargetTag        , buildTool.Archiver.Conditional   , ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.ArchiverFlags, proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(ArchiverFlagTag));
-            AddBuildScript(ExeTargetTag        , buildTool.Linker.Conditional     , ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.LinkerFlags  , proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(LinkerFlagTag));
+            AddBuildScript(LibTargetTag, buildTool.Archiver.Conditional, ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.ArchiverFlags, proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(ArchiverFlagTag));
+            AddBuildScript(ExeTargetTag, buildTool.Linker.Conditional, ToEnvVar(ToolWrapperTag), buildTool.BuildOptions.LinkerFlags, proj, ToEnvVar(CommonToolFlagTag), ToEnvVar(LinkerFlagTag));
 
         }
 
@@ -920,7 +920,7 @@ namespace ComponentObjectModel
                 }
             }
 
-            ProjectPropertyGroupElement global = null; 
+            ProjectPropertyGroupElement global = null;
 
             foreach (string cond in condToFlag.Keys)
             {
@@ -1146,7 +1146,7 @@ namespace ComponentObjectModel
             return opts;
         }
 
-        private List<BuildToolRef> LoadBuildToolFlags( Project proj )
+        private List<BuildToolRef> LoadBuildToolFlags(Project proj)
         {
             List<BuildToolRef> toolRefs = new List<BuildToolRef>();
 
@@ -1198,7 +1198,7 @@ namespace ComponentObjectModel
             return toolRefs;
         }
 
-        
+
         private Project GenerateBuildToolTargetFile(BuildTool buildTool)
         {
             Project proj = new Project();
@@ -1210,7 +1210,7 @@ namespace ComponentObjectModel
             mainGrp.AddProperty("Documentation", buildTool.Documentation);
             if (buildTool.SupportedCpuNames.Count > 0)
             {
-                mainGrp.AddProperty(CpuNamesTag, string.Join( ";", buildTool.SupportedCpuNames.ToArray() ) );
+                mainGrp.AddProperty(CpuNamesTag, string.Join(";", buildTool.SupportedCpuNames.ToArray()));
             }
             if (buildTool.SupportedISAs.Count > 0)
             {
@@ -1225,7 +1225,7 @@ namespace ComponentObjectModel
                     AddBuildToolFlags(isa.BuildToolOptions, proj, bgISA);
                 }
             }
-    
+
             AddBuildToolProperties(buildTool, proj);
 
             if (buildTool.Properties.Count > 0)
@@ -1273,17 +1273,17 @@ namespace ComponentObjectModel
         {
             string[] typeFlags = {
                 CommonToolFlagTag,
-                CCppTargFlagTag,        
-                CCppCommonFlagTag,      
-                CFlagTag,               
-                CppFlagTag,             
-                AsmFlagTag,             
-                LinkerFlagTag,          
-                ArchiverFlagTag,  
+                CCppTargFlagTag,
+                CCppCommonFlagTag,
+                CFlagTag,
+                CppFlagTag,
+                AsmFlagTag,
+                LinkerFlagTag,
+                ArchiverFlagTag,
                 ArchiverArmFlagTag,
                 ScatterFlagTag,
-                AsmArmFlagTag,       
-                ArchiverPlatFlagTag, 
+                AsmArmFlagTag,
+                ArchiverPlatFlagTag,
             };
 
             int idx = -1;
@@ -1404,7 +1404,7 @@ namespace ComponentObjectModel
                         toolOptions.BuildToolParameters.PreBuild.Add(script);
                     }
                 }
-                else if(string.Compare(task.Name, SetEnvScriptTag) == 0)
+                else if (string.Compare(task.Name, SetEnvScriptTag) == 0)
                 {
                     EnvVar var = new EnvVar();
                     var.Name = task.GetParameter("Name");
@@ -1486,13 +1486,13 @@ namespace ComponentObjectModel
         {
             Regex exp = new Regex("\\$\\(([^\\)]*)\\)");
 
-            if(string.IsNullOrEmpty(text)) return "";
+            if (string.IsNullOrEmpty(text)) return "";
 
             MatchCollection match = exp.Matches(text);
 
-            if(match.Count > 0)
+            if (match.Count > 0)
             {
-                for (int i = match.Count-1; i >= 0; i--)
+                for (int i = match.Count - 1; i >= 0; i--)
                 {
                     text = text.Replace("$(" + match[i].Groups[1].Value + ")", "%" + match[i].Groups[1].Value + "%");
                 }
@@ -1506,7 +1506,7 @@ namespace ComponentObjectModel
             }
 
             bool isNetworkDrive = text.StartsWith("\\\\");
-            
+
             text = text.Replace("\\\\", "\\");
 
             if (isNetworkDrive) text = "\\" + text;
@@ -1570,7 +1570,7 @@ namespace ComponentObjectModel
                 {
                     string val = (string)pi.GetValue(obj, null);
 
-                    if(val == null) val = "";
+                    if (val == null) val = "";
 
                     string name = pi.Name;
 
@@ -1606,7 +1606,7 @@ namespace ComponentObjectModel
                     if (cmp != null && !string.IsNullOrEmpty(cmp.Guid))
                     {
                         bpg.AddProperty(pi.Name, SerializeXml(cmp));
-                   }
+                    }
                 }
                 else if (pi.PropertyType == typeof(LibraryLevel))
                 {
@@ -1617,7 +1617,7 @@ namespace ComponentObjectModel
             return bpg;
         }
 
-        private void LoadStringProps(Project proj, object obj, Dictionary<string,string> tbl)
+        private void LoadStringProps(Project proj, object obj, Dictionary<string, string> tbl)
         {
             foreach (ProjectPropertyGroupElement bpg in proj.Xml.PropertyGroups)
             {
@@ -1661,7 +1661,7 @@ namespace ComponentObjectModel
                             if (pi.Name == "ProcessorSpecific") comp.ComponentType = MFComponentType.Processor;
                             if (pi.Name == "Processor") comp.ComponentType = MFComponentType.Processor;
                             if (pi.Name == "DefaultISA") comp.ComponentType = MFComponentType.ISA;
-                                
+
                             pi.SetValue(obj, comp, null);
                         }
                         else if (pi.PropertyType == typeof(LibraryLevel))
@@ -1853,7 +1853,7 @@ namespace ComponentObjectModel
                 {
                     string val = (string)obj.GetType().GetProperty(objName).GetValue(obj, null);
 
-                    if(val == null) val = "";
+                    if (val == null) val = "";
 
                     lookup[prop.ToUpper()].Value = val;
                 }
@@ -1994,7 +1994,9 @@ namespace ComponentObjectModel
                             case ExeExtFlag:
                                 tool.BinExt = bp.Value;
                                 break;
-
+                            case ScatterExtFlag:
+                                tool.ScatterExt = bp.Value;
+                                break;
                             case CCompilerTag:
                                 tool.CCompiler.Exec = RemoveWrapper(bp.Value);
                                 break;
@@ -2208,7 +2210,7 @@ namespace ComponentObjectModel
                     }
                     bpg.AddProperty("PlatformIndependentBuild", lib.PlatformIndependent.ToString().ToLower());
                     bpg.AddProperty("Version", lib.Version.Major + "." + lib.Version.Minor + "." + lib.Version.Revision + "." + lib.Version.Build);
-                    
+
                     // add standard import
                     proj.Xml.AddImport(@"$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings");
 
@@ -2236,10 +2238,10 @@ namespace ComponentObjectModel
                                     ProjectItemElement bi = big.AddItem("RequiredProjects", ConvertPathToEnv(l.ProjectPath));
                                     bi.Condition = cmp.Conditional;
                                 }
-                                else if(!string.IsNullOrEmpty(cmp.ProjectPath))
+                                else if (!string.IsNullOrEmpty(cmp.ProjectPath))
                                 {
                                     ProjectItemElement bi = big.AddItem("RequiredProjects", ConvertPathToEnv(cmp.ProjectPath));
-                                    bi.Condition = cmp.Conditional;                                    
+                                    bi.Condition = cmp.Conditional;
                                 }
                                 break;
                             case MFComponentType.LibraryCategory:
@@ -2252,7 +2254,7 @@ namespace ComponentObjectModel
                         }
                     }
 
-                    foreach(ProjectTargetElement targ in lib.Targets)
+                    foreach (ProjectTargetElement targ in lib.Targets)
                     {
                         ProjectTargetElement t = proj.Xml.AddTarget(targ.Name);
 
@@ -2267,7 +2269,7 @@ namespace ComponentObjectModel
                             tsk.Condition = task.Condition;
                             tsk.ContinueOnError = task.ContinueOnError;
 
-                            foreach (KeyValuePair<string,string> param in task.Parameters)
+                            foreach (KeyValuePair<string, string> param in task.Parameters)
                             {
                                 tsk.SetParameter(param.Key, param.Value);
                             }
@@ -2275,7 +2277,7 @@ namespace ComponentObjectModel
                     }
 
                     proj.Xml.AddImport(@"$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets");
-                    
+
                     proj.Save(fullpath);
                 }
                 catch (Exception e)
@@ -2340,7 +2342,7 @@ namespace ComponentObjectModel
                 System.Diagnostics.Debug.WriteLine("Error: loading Library file: " + fullpath + "\r\n", e.Message);
                 lib = null;
             }
-            
+
             return lib;
         }
 
@@ -2577,7 +2579,7 @@ namespace ComponentObjectModel
                             }
                             foreach (MFBuildFile bf in lib.HeaderFiles)
                             {
-                                if (Path.IsPathRooted(MsBuildWrapper.ExpandEnvVars(bf.File,"")) || bf.File.Contains("..")) continue;
+                                if (Path.IsPathRooted(MsBuildWrapper.ExpandEnvVars(bf.File, "")) || bf.File.Contains("..")) continue;
 
                                 api = new ApiTemplate();
                                 api.FilePath = ConvertPathToEnv(Path.Combine(path, bf.File));
@@ -2642,7 +2644,7 @@ namespace ComponentObjectModel
                     {
                         foreach (ProjectPropertyElement bp in bpg.Properties)
                         {
-                            switch(bp.Name)
+                            switch (bp.Name)
                             {
                                 case "Description":
                                     bp.Value = asm.Description;
@@ -2665,7 +2667,7 @@ namespace ComponentObjectModel
 
         internal MFAssembly LoadAssemblyProj(string asmProjFile, string path)
         {
-            
+
             Project proj;
             string projname = Path.GetFileNameWithoutExtension(asmProjFile);
             string fullpath = ExpandEnvVars(asmProjFile, path);
@@ -2776,7 +2778,7 @@ namespace ComponentObjectModel
                 try
                 {
                     Project proj;
-                    
+
                     string path = ExpandEnvVars(feature.ProjectPath, "");
 
                     if (File.Exists(path))
@@ -2807,7 +2809,7 @@ namespace ComponentObjectModel
 
                     proj.Save(proj.FullPath);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine("Error: failure saving feature file " + feature.ProjectPath + "\r\n" + e.Message);
                 }
@@ -3028,7 +3030,7 @@ namespace ComponentObjectModel
 
                     proj.Save(fullpath);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine("Error: Unable to save procesor file " + proc.ProjectPath + "\r\n" + e.Message);
                 }
@@ -3156,7 +3158,7 @@ namespace ComponentObjectModel
                     bpg = proj.Xml.AddPropertyGroup();
                     foreach (MFProperty prop in mfproj.Properties)
                     {
-                        if(!tbl.ContainsKey(prop.Name) || tbl[prop.Name] != prop.Value)
+                        if (!tbl.ContainsKey(prop.Name) || tbl[prop.Name] != prop.Value)
                         {
                             ProjectPropertyElement bp = bpg.AddProperty(prop.Name, prop.Value);
                             bp.Condition = prop.Condition;
@@ -3235,7 +3237,7 @@ namespace ComponentObjectModel
                             tsk.Condition = task.Condition;
                             tsk.ContinueOnError = task.ContinueOnError;
 
-                            foreach (KeyValuePair<string,string> param in task.Parameters)
+                            foreach (KeyValuePair<string, string> param in task.Parameters)
                             {
                                 tsk.SetParameter(param.Key, param.Value);
                             }
@@ -3524,7 +3526,7 @@ namespace ComponentObjectModel
 
                             //Console.WriteLine("Error: Feature not found " + imp.Project);
                         }
-                        else if(!featLookup.ContainsKey(feat.Guid.ToLower()))
+                        else if (!featLookup.ContainsKey(feat.Guid.ToLower()))
                         {
                             comp = new MFComponent(MFComponentType.Feature, feat.Name, feat.Guid, imp.Project);
                             comp.Conditional = imp.Condition;
@@ -3586,7 +3588,7 @@ namespace ComponentObjectModel
 
                         List<MemoryMap> maps = sw.LoadFromFile(scatterfile);
 
-                        if(maps != null && maps.Count > 0)
+                        if (maps != null && maps.Count > 0)
                         {
                             mfproj.MemoryMap = maps[0];
                         }
@@ -3606,7 +3608,7 @@ namespace ComponentObjectModel
                     mfproj.Targets.Add(targ);
                 }
 
-                foreach(MFComponent comp in driverLibCheck)
+                foreach (MFComponent comp in driverLibCheck)
                 {
                     Library lib = m_helper.FindLibraryByFile(comp.ProjectPath);
 
@@ -3714,7 +3716,7 @@ namespace ComponentObjectModel
 
                     Project proj = LoadProject(fullpath);
                     proj.ProjectCollection.UnloadProject(proj);
-                    
+
                     proj = new Project();
                     proj.Xml.DefaultTargets = "Build";
 
@@ -3742,7 +3744,7 @@ namespace ComponentObjectModel
                     mainGrp.AddProperty("IsSolutionWizardVisible", solution.IsSolutionWizardVisible.ToString());
                     mainGrp.AddProperty("ENDIANNESS", solution.ENDIANNESS.ToString());
 
-                    Dictionary<string,object> nameLookup = new Dictionary<string,object>();
+                    Dictionary<string, object> nameLookup = new Dictionary<string, object>();
 
                     foreach (MFProperty prop in solution.Properties)
                     {
@@ -3763,7 +3765,7 @@ namespace ComponentObjectModel
 
                             default:
                                 string key = prop.Name.ToLower();
-                                if(!nameLookup.ContainsKey(key))
+                                if (!nameLookup.ContainsKey(key))
                                 {
                                     ProjectPropertyElement bp = mainGrp.AddProperty(prop.Name, prop.Value);
                                     bp.Condition = prop.Condition;
@@ -3884,7 +3886,7 @@ namespace ComponentObjectModel
 
                     proj.Save(fullpath);
 
-                    
+
                     if (solution.m_cloneSolution != null)
                     {
                         string cloneRoot = Path.GetDirectoryName(ExpandEnvVars(solution.m_cloneSolution.ProjectPath, "")) + "\\";
@@ -3958,7 +3960,7 @@ namespace ComponentObjectModel
                     {
                         Processor proc = m_helper.FindProcessor(solution.Processor.Guid);
 
-                        if(proc != null)
+                        if (proc != null)
                         {
                             string template = Path.GetDirectoryName(ExpandEnvVars(proc.ProjectPath, "")) + "\\" + proc.Name + "_template_selector.h";
                             string newRoot = Path.GetDirectoryName(ExpandEnvVars(solution.ProjectPath, "")) + "\\";
@@ -4181,7 +4183,7 @@ namespace ComponentObjectModel
         {
             int val = -1;
 
-            Regex rx = new Regex("\\s"+key+"\\s+([aAbBcCdDeEfFxX\\d]+)");
+            Regex rx = new Regex("\\s" + key + "\\s+([aAbBcCdDeEfFxX\\d]+)");
             Match m = rx.Match(text);
             if (m.Success)
             {
@@ -4204,7 +4206,7 @@ namespace ComponentObjectModel
 
                 if (m.Success)
                 {
-                    string[] vals = m.Groups[1].Value.Split(new char[]{'*'}, StringSplitOptions.RemoveEmptyEntries);
+                    string[] vals = m.Groups[1].Value.Split(new char[] { '*' }, StringSplitOptions.RemoveEmptyEntries);
 
                     val = 1;
                     foreach (string num in vals)
@@ -4476,7 +4478,7 @@ namespace ComponentObjectModel
                     sol = dbSol;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Error: Exception in load solution " + e.Message);
                 sol = null;
@@ -4492,7 +4494,7 @@ namespace ComponentObjectModel
             Project proj = LoadProject(fullpath);
 
             proj.ProjectCollection.UnloadProject(proj);
-                
+
             proj = new Project();
             proj.Xml.DefaultTargets = "Build";
             bool fRet = false;
@@ -4527,7 +4529,7 @@ namespace ComponentObjectModel
 
                 fRet = true;
             }
-            catch( Exception e )
+            catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("Error: failure saving LibCat file: " + fullpath + "\r\n", e.Message);
             }
@@ -4592,7 +4594,7 @@ namespace ComponentObjectModel
                 System.Diagnostics.Debug.WriteLine("Error: loading LibCat file: " + fullpath + "\r\n", e.Message);
             }
 
-            
+
             return libcat;
         }
 
@@ -4652,7 +4654,7 @@ namespace ComponentObjectModel
                 {
                     System.Diagnostics.Debug.WriteLine("Error: Copying clone files\r\n\tsrc:" + dirSource + "\r\n\tdst:" + dirTarg + "\r\n", e.Message);
                 }
-                
+
             }
         }
     }

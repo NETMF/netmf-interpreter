@@ -12,7 +12,7 @@
     <ManifestFile>batterycharger_hal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Battery\stubs</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BatteryCharger_HAL" Guid="{381CBCC8-A737-4DD2-A821-6ABF0F908305}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BatteryCharger_HAL" Guid="{381CBCC8-A737-4DD2-A821-6ABF0F908305}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AssemblyName>WinPcap_Eth</AssemblyName>
+    <Size>
+    </Size>
+    <ProjectGuid>{8BA0D2BB-CAFA-4279-BB5D-9013ABEFF9B5}</ProjectGuid>
+    <Description>WinPcap Ethernet Driver</Description>
+    <Level>HAL</Level>
+    <LibraryFile>WinPcap_Eth.$(LIB_EXT)</LibraryFile>
+    <ProjectPath>$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\dotNetMF.proj</ProjectPath>
+    <ManifestFile>WinPcap_Eth.$(LIB_EXT).manifest</ManifestFile>
+    <PlatformIndependent>False</PlatformIndependent>
+    <CustomFilter>
+    </CustomFilter>
+    <Required>False</Required>
+    <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
+    <IsStub>False</IsStub>
+    <Directory>DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth</Directory>
+    <OutputType>Library</OutputType>
+    <PlatformIndependentBuild>false</PlatformIndependentBuild>
+    <Version>4.0.0.0</Version>
+  </PropertyGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+  <PropertyGroup />
+  <ItemGroup>
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\LWIP\src\include" />
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\LWIP\src\include\lwip" />
+    <!-- lwIP does NOT support ipv4 and ipv6 at the same time -->
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\LWIP\src\include\ipv4" />
+    <IncludePaths Include="DeviceCode\pal\lwip_1_4_1_os\LWIP\src\include\netif" />
+	<IncludePaths Include="DeviceCode\Targets\OS\Win32\lwip_1_4_1_os\arch" />
+	<IncludePaths Include="DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\Dependencies\WpdPack\Include" />
+    <HFiles Include="WinPcap_Eth_lwIP_Adapter.h" />
+	<HFiles Include="pcapif.h" />
+	<HFiles Include="pcapif_helper.h" />
+    <Compile Include="WinPcap_Eth_lwIP_Adapter.cpp" />
+	<Compile Include="pcapif.c" />
+	<Compile Include="pcapif_helper.c" />
+  </ItemGroup>
+  <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>

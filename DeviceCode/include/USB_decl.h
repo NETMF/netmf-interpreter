@@ -5,7 +5,7 @@
 #ifndef _DRIVERS_USB_DECL_H_
 #define _DRIVERS_USB_DECL_H_ 1
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #pragma pack(push, USB_DECL_H_, 1)
 #endif
 
@@ -584,7 +584,7 @@ BOOL           CPU_USB_ProtectPins      ( int Controller, BOOL On );
 
 //--//
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #pragma pack(pop, USB_DECL_H_)
 #endif
 

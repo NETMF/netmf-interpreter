@@ -12,7 +12,7 @@
     <ManifestFile>piezo_config_pal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Sound</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PiezoConfig_PAL" Guid="{4D93804C-A10C-4CF8-AE9F-2988B12E4A2C}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PiezoConfig_PAL" Guid="{4D93804C-A10C-4CF8-AE9F-2988B12E4A2C}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

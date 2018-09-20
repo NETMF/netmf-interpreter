@@ -6,10 +6,6 @@
 #include <TinyCLR_Debugging.h>
 #include <MFUpdate_decl.h>
 
-#if defined(PLATFORM_WINDOWS)
-#pragma comment(lib,"crypto")
-#endif
-
 #include <crypto.h>
 
 #if 0
@@ -374,7 +370,7 @@ bool CLR_DBG_Debugger::Monitor_Ping( WP_Message* msg, void* owner )
 
         cmdReply.m_source    = CLR_DBG_Commands::Monitor_Ping::c_Ping_Source_TinyCLR;
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
         cmdReply.m_dbg_flags = CLR_EE_DBG_IS(State_ProgramExited) != 0 ? CLR_DBG_Commands::Monitor_Ping::c_Ping_DbgFlag_AppExit : 0;
 #else
         cmdReply.m_dbg_flags  = CLR_DBG_Commands::Monitor_Ping::c_Ping_DbgFlag_BigEndian;
@@ -696,7 +692,7 @@ bool CLR_DBG_Debugger::AccessMemory( CLR_UINT32 location, UINT32 lengthInBytes, 
     //--// RAM write
         ByteAddress sectAddr = location;
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
 
         bool proceed = false;
         void * temp;
@@ -1436,7 +1432,7 @@ static bool FillValues( CLR_RT_HeapBlock* ptr, CLR_DBG_Commands::Debugging_Value
         // Primitives or optimized value types.
         //
         
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
         memcpy( dst->m_builtinValue, (void*)&ptr->NumericByRefConst().u1, 8 );
 #else
         {
@@ -2950,7 +2946,7 @@ bool CLR_DBG_Debugger::Debugging_Resolve_Assembly( WP_Message* msg, void* owner 
 
     if(assm)
     {
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
         //append path
         if(assm->m_strPath != NULL)
         {

@@ -18,7 +18,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
 #define TINYCLR_TRACE_DEFAULT(win,arm) (win)
 #else
 #define TINYCLR_TRACE_DEFAULT(win,arm) (arm)
@@ -48,7 +48,7 @@ int s_CLR_RT_fTrace_MemoryStats                = TINYCLR_TRACE_DEFAULT(c_CLR_RT_
 int s_CLR_RT_fTrace_GC                         = TINYCLR_TRACE_DEFAULT(c_CLR_RT_Trace_None,c_CLR_RT_Trace_None);
 #endif
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(WIN32)
 int s_CLR_RT_fTrace_SimulateSpeed              = TINYCLR_TRACE_DEFAULT(c_CLR_RT_Trace_Info,c_CLR_RT_Trace_None);
 #endif
 
@@ -64,11 +64,11 @@ int  s_CLR_RT_fJitter_Trace_Invoke             = TINYCLR_TRACE_DEFAULT(c_CLR_RT_
 int  s_CLR_RT_fJitter_Trace_Execution          = TINYCLR_TRACE_DEFAULT(c_CLR_RT_Trace_None,c_CLR_RT_Trace_None);
 #endif
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(WIN32)
 int s_CLR_RT_fTrace_StopOnFAILED               = TINYCLR_TRACE_DEFAULT(c_CLR_RT_Trace_None,c_CLR_RT_Trace_None);
 #endif
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(WIN32)
 int s_CLR_RT_fTrace_ARM_Execution              = 0;
 
 int          s_CLR_RT_fTrace_RedirectLinesPerFile;
@@ -1342,7 +1342,7 @@ bool CLR_RECORD_ASSEMBLY::GoodHeader() const
     NATIVE_PROFILE_CLR_CORE();
     CLR_RECORD_ASSEMBLY header = *this; header.headerCRC = 0;
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     if ( (header.flags & CLR_RECORD_ASSEMBLY::c_Flags_BigEndian) == CLR_RECORD_ASSEMBLY::c_Flags_BigEndian)
 #else
     if ( (header.flags & CLR_RECORD_ASSEMBLY::c_Flags_BigEndian) != CLR_RECORD_ASSEMBLY::c_Flags_BigEndian)
@@ -1366,7 +1366,7 @@ bool CLR_RECORD_ASSEMBLY::GoodAssembly() const
     return SUPPORT_ComputeCRC( &this[ 1 ], this->TotalSize() - sizeof(*this), 0 ) == this->assemblyCRC;
 }
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(WIN32)
 
 void CLR_RECORD_ASSEMBLY::ComputeCRC()
 {
@@ -1697,7 +1697,7 @@ HRESULT CLR_RT_Assembly::CreateInstance( const CLR_RECORD_ASSEMBLY* header, CLR_
 }
 
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(WIN32)
 HRESULT CLR_RT_Assembly::CreateInstance( const CLR_RECORD_ASSEMBLY* header, CLR_RT_Assembly*& assm, LPCWSTR szName )
 {
     NATIVE_PROFILE_CLR_CORE();
@@ -1776,7 +1776,7 @@ void CLR_RT_Assembly::DestroyInstance()
         g_CLR_RT_TypeSystem.m_assemblies[ m_idx-1 ] = NULL;
     }
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(WIN32)
     if(this->m_strPath != NULL)
     {
         delete this->m_strPath;
@@ -2881,7 +2881,7 @@ HRESULT CLR_RT_Assembly::PrepareForExecution()
         {
             CLR_PMETADATA ptr = GetResourceData( m_header->patchEntryOffset );
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(WIN32)
             CLR_Debug::Printf( "Simulating jump into patch code...\r\n" );
 #else
             ((void (*)())ptr)();
@@ -3616,7 +3616,7 @@ bool CLR_RT_TypeSystem::FindTypeDef( LPCSTR szClass, CLR_RT_Assembly* assm, CLR_
 //--//
 
 int
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_MSC_VER)
 __cdecl
 #endif
 CompareResource( const void* p1, const void* p2 )
@@ -4430,7 +4430,7 @@ HRESULT CLR_RT_AttributeParser::Next( Value*& res )
             CLR_UINT32 size = (dtl.m_sizeInBits + 7) / 8;
 
 // FIXME GJS - the numeric values, what is their endiannes??? In the MSTV code there is a BIG endian fix but it looks like it will not work, so was it ever used?
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
             memcpy( &m_lastValue.m_value.NumericByRef(), m_blob, size ); m_blob += size;
 #else
             switch(size)

@@ -12,7 +12,6 @@
     </InteropFeatures>
     <ExtraAssemblies>
     </ExtraAssemblies>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Windows2\TinyCLR\TinyCLR.proj</ProjectPath>
     <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows2\Windows2.settings</MFSettingsFile>
     <IsSolutionWizardVisible>True</IsSolutionWizardVisible>
   </PropertyGroup>

@@ -37,7 +37,7 @@ static const int c_CLR_HW_Button_Raw_B9    = 19;
 
 static const int c_CLR_HW_Button_MAX       = 32;
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_WIN32)
 #include <TinyCLR_Win32.h>
 #endif
 

@@ -12,7 +12,7 @@
     <ManifestFile>SPOT_Hardware_SerialPort_stub.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Hardware</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_Serial_CLR" Guid="{FE9B7E92-76BC-484C-93D1-D31D3C3CEC65}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Hardware_Serial_CLR" Guid="{FE9B7E92-76BC-484C-93D1-D31D3C3CEC65}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>
@@ -32,8 +32,6 @@
     <IgnoreDefaultLibPath>False</IgnoreDefaultLibPath>
     <IsStub>True</IsStub>
     <HasLibraryCategory>True</HasLibraryCategory>
-    <CustomSpecific>
-    </CustomSpecific>
     <Directory>CLR\Libraries\SPOT_Hardware\SPOT_Serial</Directory>
     <OutputType>Library</OutputType>
     <VCProjName>Lib_SPOT_Hardware_SerialPort_stub</VCProjName>

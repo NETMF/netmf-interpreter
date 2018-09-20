@@ -12,7 +12,7 @@
     <ManifestFile>ENC28J60_LWIP_config_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Network\ENC28J60</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ENC28J60_Config_LWIP_HAL" Guid="{DD104859-675B-41E8-9885-092EBEDE8309}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="ENC28J60_Config_LWIP_HAL" Guid="{DD104859-675B-41E8-9885-092EBEDE8309}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

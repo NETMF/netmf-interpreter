@@ -5,7 +5,6 @@
     <ProjectGuid>E7D5455B-4FE3-42AF-8F44-AFB687DF5A87</ProjectGuid>
     <OutputType>DLL</OutputType>
     <Directory>Solutions\Windows2\TinyCLR</Directory>
-    <ProjectPath>$(SPOCLIENT)\Solutions\Windows2\TinyCLR\TinyCLR.proj</ProjectPath>
     <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows2\Windows2.settings</MFSettingsFile>
     <IsClrProject>True</IsClrProject>
   </PropertyGroup>

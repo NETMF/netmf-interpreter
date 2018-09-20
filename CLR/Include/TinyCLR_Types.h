@@ -73,7 +73,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_MSC_VER)
 #pragma pack(push, TINYCLR_TYPES_H, 4)
 #endif
 
@@ -475,7 +475,7 @@ inline CLR_UINT32 CLR_UncompressMethodToken( CLR_UINT32 tk )
     return CLR_TkFromType( c_lookup[ (tk >> 15) & 1 ], 0x7fff & tk );
 }
 
-#if defined(TINYCLR_JITTER) || defined(PLATFORM_WINDOWS)
+#if defined(TINYCLR_JITTER) || defined(_WIN32)
 
 CLR_UINT32 CLR_ReadTokenCompressed( CLR_PMETADATA& ip, CLR_OPCODE opcode );
 
@@ -606,12 +606,12 @@ inline CLR_UINT32 CLR_TkFromStream( const CLR_UINT8*& p )
 
 //--//--//--//
 
-#if defined(PLATFORM_WINCE) || defined(PLATFORM_BLACKFIN) || defined(__GNUC__) || defined(__RENESAS__)  // unfortunately WINCE doesn't support 1 byte alignment (even with _declspec unless the entire project is built with 1 byte alignment).
+#if defined(PLATFORM_BLACKFIN) || defined(__GNUC__) || defined(__RENESAS__)
 
 #define TINYCLR_READ_UNALIGNED_UINT8(arg,ip)  arg = *(const CLR_UINT8 *)ip; ip += sizeof(CLR_UINT8 )
 template<typename T> __inline void TINYCLR_READ_UNALIGNED_UINT16(T& arg, CLR_PMETADATA& ip) 
 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     arg  = (CLR_UINT16)(*(const CLR_UINT8 *)ip)     ; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT16)(*(const CLR_UINT8 *)ip) << 8; ip += sizeof(CLR_UINT8);
 #else
@@ -621,7 +621,7 @@ template<typename T> __inline void TINYCLR_READ_UNALIGNED_UINT16(T& arg, CLR_PME
 }
 template<typename T> __inline void TINYCLR_READ_UNALIGNED_UINT32(T& arg, CLR_PMETADATA& ip) 
 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     arg  = (CLR_UINT32)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
@@ -631,11 +631,11 @@ template<typename T> __inline void TINYCLR_READ_UNALIGNED_UINT32(T& arg, CLR_PME
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
 }
 template<typename T> __inline void TINYCLR_READ_UNALIGNED_UINT64(T& arg, CLR_PMETADATA& ip) 
 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     arg  = (CLR_UINT64)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
@@ -653,24 +653,24 @@ template<typename T> __inline void TINYCLR_READ_UNALIGNED_UINT64(T& arg, CLR_PME
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
 }
 
 #define TINYCLR_READ_UNALIGNED_INT8(arg,ip)   arg = *(const CLR_INT8 * )ip; ip += sizeof(CLR_INT8  )
 template<typename T> __inline void TINYCLR_READ_UNALIGNED_INT16(T& arg, CLR_PMETADATA& ip) 
 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     arg  = (CLR_UINT16)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT16)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
 #else
     arg  = (CLR_UINT16)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT16)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
     arg  = (CLR_INT16)arg;
 }
 template<typename T> __inline void TINYCLR_READ_UNALIGNED_INT32(T& arg, CLR_PMETADATA& ip) 
 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     arg  = (CLR_UINT32)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
@@ -680,12 +680,12 @@ template<typename T> __inline void TINYCLR_READ_UNALIGNED_INT32(T& arg, CLR_PMET
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT32)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
     arg  = (CLR_INT32)arg;
 }
 template<typename T> __inline void TINYCLR_READ_UNALIGNED_INT64(T& arg, CLR_PMETADATA& ip) 
 {
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     arg  = (CLR_UINT64)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
@@ -703,12 +703,12 @@ template<typename T> __inline void TINYCLR_READ_UNALIGNED_INT64(T& arg, CLR_PMET
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) << 16; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip) <<  8; ip += sizeof(CLR_UINT8);
     arg |= (CLR_UINT64)(*(const CLR_UINT8 *)ip)      ; ip += sizeof(CLR_UINT8);
-#endif //BIG_ENDIAN
+#endif //NETMF_TARGET_BIG_ENDIAN
     arg  = (CLR_INT64)arg;
 }
 
 
-#elif defined(PLATFORM_WINDOWS)
+#elif defined(_MSC_VER)
 
 #define TINYCLR_READ_UNALIGNED_UINT8(arg,ip)  arg = *(__declspec(align(1)) const CLR_UINT8 *)ip; ip += sizeof(CLR_UINT8 )
 #define TINYCLR_READ_UNALIGNED_UINT16(arg,ip) arg = *(__declspec(align(1)) const CLR_UINT16*)ip; ip += sizeof(CLR_UINT16)
@@ -732,7 +732,7 @@ template<typename T> __inline void TINYCLR_READ_UNALIGNED_INT64(T& arg, CLR_PMET
 #define TINYCLR_WRITE_UNALIGNED_INT32(ip,arg)  *(__declspec(align(1)) CLR_INT32* )ip = arg; ip += sizeof(CLR_INT32 )
 #define TINYCLR_WRITE_UNALIGNED_INT64(ip,arg)  *(__declspec(align(1)) CLR_INT64* )ip = arg; ip += sizeof(CLR_INT64 )
 
-#else
+#else // TODO: __packed is compiler specific... Which compiler is this for?
 
 #define TINYCLR_READ_UNALIGNED_UINT8(arg,ip)  arg = *(__packed CLR_UINT8 *)ip; ip += sizeof(CLR_UINT8 )
 #define TINYCLR_READ_UNALIGNED_UINT16(arg,ip) arg = *(__packed CLR_UINT16*)ip; ip += sizeof(CLR_UINT16)
@@ -818,7 +818,7 @@ inline CLR_OPCODE CLR_ReadNextOpcodeCompressed( CLR_PMETADATA& ip )
 
 //--//
 
-#if defined(TINYCLR_JITTER) || defined(PLATFORM_WINDOWS)
+#if defined(TINYCLR_JITTER) || defined(_WIN32)
 
 CLR_PMETADATA CLR_SkipBodyOfOpcode          ( CLR_PMETADATA ip, CLR_OPCODE opcode );
 CLR_PMETADATA CLR_SkipBodyOfOpcodeCompressed( CLR_PMETADATA ip, CLR_OPCODE opcode );
@@ -853,7 +853,7 @@ struct CLR_Debug
 
     typedef int (*OutputHandler)( const char *format, ... );
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     static void RedirectToString( std::string* str );
 #endif
 };
@@ -904,7 +904,7 @@ struct CLR_RECORD_ASSEMBLY
     bool GoodHeader  () const;
     bool GoodAssembly() const;
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_WIN32)
     void ComputeCRC();
 #endif
 
@@ -1181,7 +1181,7 @@ struct CLR_RECORD_RESOURCE
 };
 
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE)
+#if defined(_MSC_VER)
 #pragma pack(pop, TINYCLR_TYPES_H)
 #endif
 

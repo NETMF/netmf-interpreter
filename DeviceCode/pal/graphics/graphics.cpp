@@ -921,8 +921,8 @@ void Graphics_Driver::RotateImage( INT16 degree, const PAL_GFX_Bitmap& dst, cons
         {
             float dx = (x - xCenterDst);
 
-            int xSrc = (int)(xCenterSrc + ((dx * cos) + sinY) + 0.5); 
-            int ySrc = (int)(yCenterSrc + (cosY - (dx * sin)) + 0.5); 
+            int xSrc = (int)(xCenterSrc + ((dx * cos) + sinY) + 0.5f); 
+            int ySrc = (int)(yCenterSrc + (cosY - (dx * sin)) + 0.5f); 
             
             if(xSrc <= srcRect.right && srcRect.left <= xSrc && ySrc <= srcRect.bottom && srcRect.top <= ySrc && ySrc > 0 && xSrc > 0)
             {
@@ -1144,7 +1144,7 @@ UINT32* Graphics_Driver::ComputePosition( const PAL_GFX_Bitmap& bitmap, int x, i
 {
     NATIVE_PROFILE_PAL_GRAPHICS();
 
-#if !defined(BIG_ENDIAN)
+#if !defined(NETMF_TARGET_BIG_ENDIAN)
     shift = (x % 2) * 16;
     mask = 0x0000FFFF << shift;
 #else

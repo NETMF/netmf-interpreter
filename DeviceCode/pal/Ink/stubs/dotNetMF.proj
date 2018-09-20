@@ -12,7 +12,7 @@
     <ManifestFile>Ink_pal_stubs.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Touch</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Ink_PAL" Guid="{D6E9B6C7-B280-4b0f-91B1-3AA8E65375A7}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Ink_PAL" Guid="{D6E9B6C7-B280-4b0f-91B1-3AA8E65375A7}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

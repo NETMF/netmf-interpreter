@@ -22,11 +22,11 @@
     </ItemGroup>
 
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='RVDS'">
-        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp.sp</DEVICE_TYPE>
         <BUILD_TOOL_GUID>{00C50096-00DD-00E7-BBA9-7FC84D408562}</BUILD_TOOL_GUID>
     </PropertyGroup>
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='MDK'">
-        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp</DEVICE_TYPE>
+        <DEVICE_TYPE Condition="'$(DEVICE_TYPE)' == ''">Cortex-M4.fp.sp</DEVICE_TYPE>
         <BUILD_TOOL_GUID>{00EC0018-007A-0040-9936-929B39330107}</BUILD_TOOL_GUID>
     </PropertyGroup>
     <PropertyGroup Condition="'$(COMPILER_TOOL)'=='GCC'">

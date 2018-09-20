@@ -118,7 +118,8 @@ static UINT8 s_receiveRetries = 10;
 
 
 void enc28j60_handle_recv_error( struct netif *pNetIF, SPI_CONFIGURATION  *SpiConf )
-{
+{
+
     UINT8 byteData;
 
     if(--s_receiveRetries <= 0)
@@ -157,7 +158,8 @@ void enc28j60_handle_recv_error( struct netif *pNetIF, SPI_CONFIGURATION  *SpiCo
 }
 
 void enc28j60_handle_xmit_error( struct netif *pNetIF, SPI_CONFIGURATION  *SpiConf )
-{
+{
+
     UINT8 byteData;
     
     byteData = (1 << ENC28J60_ECON1_TXRST_BIT);
@@ -195,7 +197,7 @@ void  enc28j60_lwip_pre_interrupt  (GPIO_PIN Pin, BOOL PinState, void* pArg )
     UINT8               eirData;
     SPI_CONFIGURATION  *SpiConf = &g_ENC28J60_LWIP_Config.DeviceConfigs[0].SPI_Config;
     
-    GLOBAL_LOCK(encIrq);
+    GLOBAL_LOCK(irq);
 
     /* After an interrupt occurs, the host controller should
         clear the global enable bit for the interrupt pin before
@@ -235,7 +237,7 @@ void enc28j60_lwip_interrupt( struct netif *pNetIF )
    
     SPI_CONFIGURATION  *SpiConf;
     
-    GLOBAL_LOCK(encIrq);
+    GLOBAL_LOCK(irq);
     
     if (!pNetIF )
     {
@@ -292,7 +294,9 @@ void enc28j60_lwip_interrupt( struct netif *pNetIF )
         
         if (cntPkts)
         {
+			irq.Release();
             packetsLeft = enc28j60_lwip_recv( pNetIF );
+			irq.Acquire();
         }
     }
     
@@ -366,7 +370,7 @@ int enc28j60_lwip_recv( struct netif *pNetIF )
     {
         {
             /* Disable interrupt for each loop and only each loop */
-            GLOBAL_LOCK(encIrq);
+            GLOBAL_LOCK(irq);
 
             /* Set the read buffer pointer to the beginning of the packet */
             enc28j60_lwip_select_bank(SpiConf, ENC28J60_CONTROL_REGISTER_BANK0);
@@ -401,8 +405,10 @@ int enc28j60_lwip_recv( struct netif *pNetIF )
 
             if (length != 0)
             {
+				irq.Release();
                 pPBuf = pbuf_alloc( PBUF_RAW, length, PBUF_RAM );
-                
+				irq.Acquire();
+
                 if ( pPBuf )
                 {
                    dataRX = (UINT8 *)pPBuf->payload;
@@ -422,7 +428,9 @@ int enc28j60_lwip_recv( struct netif *pNetIF )
                 
                     /* invoke stack ip input - the stack should free the buffer when it is done,
                                         so DON'T call pbuf_free on pPBuf!!!!!*/
+					irq.Release();
                     pNetIF->input( pPBuf, pNetIF );
+					irq.Acquire();
                 }
                 else
                 {
@@ -447,7 +455,8 @@ int enc28j60_lwip_recv( struct netif *pNetIF )
                 }
             }
             else
-            {
+            {
+
                 lastReceiveBuffer = s_ENC28J60_RECEIVE_BUFFER_START;
             }
 
@@ -502,7 +511,7 @@ err_t enc28j60_lwip_xmit( struct netif *pNetIF, struct pbuf *pPBuf)
     int                     retries = 100;
     
         
-    GLOBAL_LOCK(encIrq);
+    GLOBAL_LOCK(irq);
     
     if ( !pNetIF )
     {
@@ -573,8 +582,9 @@ err_t enc28j60_lwip_xmit( struct netif *pNetIF, struct pbuf *pPBuf)
     perPacketControlByte = (1 << ENC28J60_XMIT_CONTROL_PPADEN_BIT) |
                            (1 << ENC28J60_XMIT_CONTROL_PCRCEN_BIT) ;
 
-
+	irq.Release();
     pTmp = pbuf_alloc(PBUF_RAW, length + 2, PBUF_RAM);
+	irq.Acquire();
 
     if(!pTmp) return ERR_MEM;
 
@@ -596,7 +606,9 @@ err_t enc28j60_lwip_xmit( struct netif *pNetIF, struct pbuf *pPBuf)
 
     CPU_SPI_nWrite8_nRead8(*SpiConf, pTx, length+2, 0, 0, 0 );
 
+	irq.Release();
     pbuf_free(pTmp);
+	irq.Acquire();
 
     s_ENC28J60_TRANSMIT_BUFFER_START += length;
     
@@ -892,7 +904,7 @@ bool enc28j60_lwip_setup_device( struct netif *pNetIF )
             the MIREGADR register.
         2. Set the MICMD.MIIRD bit. The read operation begins and 
             the MISTAT.BUSY bit is set.
-        3. Wait 10.24 ìs. Poll the MISTAT.BUSY bit to be certain 
+        3. Wait 10.24 ?. Poll the MISTAT.BUSY bit to be certain 
             that the operation is complete. While busy, the host 
             controller should not start any MIISCAN operations or 
             write to the MIWRH register. When the MAC has obtained 

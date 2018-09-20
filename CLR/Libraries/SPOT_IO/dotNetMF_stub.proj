@@ -12,7 +12,7 @@
     <ManifestFile>SPOT_IO_stub.$(LIB_EXT).manifest</ManifestFile>
     <Groups>IO</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_IO_CLR" Guid="{BE315479-72F7-4C61-8DDF-F08424A0B0E3}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_IO_CLR" Guid="{BE315479-72F7-4C61-8DDF-F08424A0B0E3}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

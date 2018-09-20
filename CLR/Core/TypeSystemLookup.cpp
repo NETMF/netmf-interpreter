@@ -45,7 +45,7 @@
 #define DT_NOREL(x)  NULL
 #define DT_REL(x)    (CLR_RT_HeapBlockRelocate)&x
 
-#if defined(PLATFORM_WINDOWS) || defined(TINYCLR_TRACE_MEMORY_STATS)
+#if defined(WIN32) || defined(TINYCLR_TRACE_MEMORY_STATS)
 #define DT_OPT_NAME(x) , #x
 #else
 #define DT_OPT_NAME(x)

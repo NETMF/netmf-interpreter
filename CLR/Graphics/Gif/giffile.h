@@ -26,7 +26,7 @@
 #define GIFPLAINTEXTEXTENSIONSIZE 13
 #define GIFAPPEXTENSIONHEADERSIZE 11
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE) || defined(PLATFORM_BLACKFIN) 
+#if defined(_MSC_VER) || defined(PLATFORM_BLACKFIN) 
 #pragma pack(1)
 // __packed is an ARM compiler-only keyword (equivalent of #pragma pack(1))
 #define __packed 
@@ -101,7 +101,7 @@ struct __gnu_packed GifGraphicControlExtension  //6 bytes
     BYTE transparentcolorindex;
 };
 
-#if defined(PLATFORM_WINDOWS) || defined(PLATFORM_WINCE) || defined(PLATFORM_BLACKFIN)
+#if defined(_MSC_VER) || defined(PLATFORM_BLACKFIN)
 #pragma pack()
 #endif
 

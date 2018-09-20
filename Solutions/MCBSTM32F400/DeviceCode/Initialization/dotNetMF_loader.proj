@@ -8,11 +8,10 @@
     <Description>System initialization library for MCBSTM32F400 (for boot loaders)</Description>
     <Level>HAL</Level>
     <LibraryFile>MCBSTM32F400_initialization_hal_loader.$(LIB_EXT)</LibraryFile>
-    <ProjectPath>$(SPOCLIENT)\Solutions\MCBSTM32F400\DeviceCode\Initialization\dotNetMF_loader.proj</ProjectPath>
     <ManifestFile>MCBSTM32F400_initialization_hal_loader.$(LIB_EXT).manifest</ManifestFile>
     <Groups>System</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Initialization_HAL" Guid="{34EDFFBE-0FB6-49CC-A673-03BD96EDE0A9}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Initialization_HAL" Guid="{34EDFFBE-0FB6-49CC-A673-03BD96EDE0A9}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

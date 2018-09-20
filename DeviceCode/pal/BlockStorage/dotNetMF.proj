@@ -12,7 +12,7 @@
     <ManifestFile>blockstorage_pal.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Storage</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorage_PAL" Guid="{762EA1E3-8DDC-480A-A6C7-4A6F1998B30A}" ProjectPath="" Conditional="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="BlockStorage_PAL" Guid="{762EA1E3-8DDC-480A-A6C7-4A6F1998B30A}" Conditional="" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

@@ -12,7 +12,7 @@
     <ManifestFile>SPOT_Serialization.$(LIB_EXT).manifest</ManifestFile>
     <Groups>Serialization</Groups>
     <LibraryCategory>
-      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Serialization_CLR" Guid="{5944DE0A-3A13-401E-A853-1C01341B4752}" ProjectPath="" xmlns="">
+      <MFComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SPOT_Serialization_CLR" Guid="{5944DE0A-3A13-401E-A853-1C01341B4752}" xmlns="">
         <VersionDependency xmlns="http://schemas.microsoft.com/netmf/InventoryFormat.xsd">
           <Major>4</Major>
           <Minor>0</Minor>

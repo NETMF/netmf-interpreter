@@ -29,6 +29,7 @@
 [Bb]in/
 [Oo]bj/
 ipch/
+*.VC.db
 
 !/tools/bin/
 
@@ -42,3 +43,17 @@ Listings/
 
 *.axfdump
 /crypto/lib
+Firmware License (Crypto).rtf
+License (Crypto).rtf
+PKCryptoWelcome.rtf
+REDIST_CRYPTO.TXT
+ReleaseNotesCrypto.txt
+*.tlog
+/Solutions/Windows/TinyCLR/Debug
+/Solutions/Windows/TinyCLR/FLASH_MEMORY.bin
+*.opendb
+*.dbgconf
+/tools/DisAsmPE/Debug
+/tools/DisAsmPE/DisAsmPE/Debug
+/tools/DisAsmPE/NETMF.PE.Metadata/Debug
+/tools/DisAsmPE/DisAsmPE/*.txt

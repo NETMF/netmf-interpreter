@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #pragma pack(push, SUPPORT_WIREPROTOCOL_H_, 4)
 #endif
 
@@ -127,7 +127,7 @@ public:
     void PrepareReply    ( const WP_Packet& req, UINT32 flags, UINT32 payloadSize, UINT8* payload );
     void SetPayload      (                                                         UINT8* payload );
     void Release         (                                                                        );
-#if defined(BIG_ENDIAN)
+#if defined(NETMF_TARGET_BIG_ENDIAN)
     void SwapEndian      (                                                                        );
 #endif
 
@@ -177,7 +177,7 @@ struct WP_CompileCheck
 
 //--//
 
-#if defined(PLATFORM_WINDOWS)
+#if defined(_MSC_VER)
 #pragma pack(pop, SUPPORT_WIREPROTOCOL_H_)
 #endif
 

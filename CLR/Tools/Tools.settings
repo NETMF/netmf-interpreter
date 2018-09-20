@@ -1,6 +1,9 @@
 <Project DefaultTargets="-NOBUILD-" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+    <ItemGroup>
+        <CC_CPP_Defines Include="PLATFORM_TOOLS" />
+    </ItemGroup>
 
-  <ItemGroup> <!-- CLR core, primarily to provide the TinyCLR type system -->
+    <ItemGroup> <!-- CLR core, primarily to provide the TinyCLR type system -->
     <RequiredProjects        Include="$(SPOCLIENT)\CLR\StartupLib\dotnetmf.proj"  />
     <PlatformIndependentLibs Include="ClrStartup.$(LIB_EXT)"/>
 

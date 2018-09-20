@@ -9,7 +9,7 @@
 struct Library_spot_hardware_onewire_native_Microsoft_SPOT_Hardware_OneWire
 {
     static const int FIELD___pin = 1;
-
+    static const int FIELD___logicalPort = 2;
     TINYCLR_NATIVE_DECLARE(TouchReset___I4);
     TINYCLR_NATIVE_DECLARE(TouchBit___I4__I4);
     TINYCLR_NATIVE_DECLARE(TouchByte___I4__I4);

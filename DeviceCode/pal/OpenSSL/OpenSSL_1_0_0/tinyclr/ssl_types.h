@@ -65,7 +65,7 @@ typedef int  _ssize_t;
 typedef int  ssize_t;
 #endif
 
-#if defined(LITTLE_ENDIAN)
+#if defined(NETMF_TARGET_LITTLE_ENDIAN)
 #define SSL_LONG_LITTLE_ENDIAN(x) (x)
 #define SSL_ntohl(x) SOCK_htonl(x)
 #else

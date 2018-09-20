@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!--
+        This entire project is actually only used to generate the dependent libraries
+        for TinyCLR.vcxproj. Eventually we'll solve the dependency problem with a 
+        complete revamp in the build, but this works for now. (One step at a time...)
+        -->
+    <PropertyGroup>
+        <AssemblyName>tinyclr</AssemblyName>
+        <ProjectGuid>{06DFA275-4B71-45ad-8BAE-818020DA5E58}</ProjectGuid>
+        <Description>
+        </Description>
+        <Documentation>
+        </Documentation>
+        <Directory>Solutions\Windows\TinyCLR</Directory>
+        <IsClrProject>True</IsClrProject>
+        <InteropFeatures>
+        </InteropFeatures>
+        <ExtraAssemblies>
+        </ExtraAssemblies>
+        <ProjectPath>$(SPOCLIENT)\Solutions\Windows\TinyCLR\TinyCLR.proj</ProjectPath>
+        <MFSettingsFile>$(SPOCLIENT)\Solutions\Windows\Windows.settings</MFSettingsFile>
+        <IsSolutionWizardVisible>False</IsSolutionWizardVisible>
+    </PropertyGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Settings" />
+    <Import Project="$(SPOCLIENT)\tools\Targets\Microsoft.SPOT.Build.Targets" />
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <Subsystem>CONSOLE</Subsystem>        
+        <VCProjName>TinyCLR</VCProjName>
+        <PCHFile>none</PCHFile>
+        <HasAuxTargets>true</HasAuxTargets>
+        <NoOptForParserTarget>Release</NoOptForParserTarget>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- Need to compile something into the library so this is an empty file -->
+        <Compile Include="ClrDependencies\Empty.cpp" />
+    </ItemGroup>
+    <ItemGroup>
+        <IncludePaths Include="CLR\libraries\corlib" />
+        <IncludePaths Include="CLR\libraries\SPOT" />
+        <IncludePaths Include="CLR\libraries\SPOT_Hardware" />
+        <IncludePaths Include="CLR\libraries\SPOT_Net" />
+        <IncludePaths Include="CLR\libraries\SPOT_Graphics" />
+        <IncludePaths Include="DeviceCode\PAL" />
+        <IncludePaths Include="DeviceCode" />
+        <IncludePaths Include="DeviceCode\Targets\OS\Win32\lwip_1_4_1_os" />
+        <LibDirs Include="$(SPOCLIENT)\Crypto\lib\x86" />
+        <LibDirs Include="$(LIB_DIR)" />
+        <LibDirs Include="$(PLATFORM_INDEPENDENT_LIB_DIR)" />
+    </ItemGroup>
+    <!-- Importing correct FeatureProjects is required as they include settings that
+         identify interop support so the build can generate the interop assemblies table
+         In the early days of interop we tried doing this entierly with static constructors
+         that would register the interop component during startup, however we ran into a
+         problem where the VS Linker at the time was more aggressive, although arguably
+         legitimatly, in optimizing out unreferenced code and data from a LIB. Current
+         versions of the tool chain now have ways to deal with that so this is an area
+         for some improvement and simplification of our builds.
+    -->
+    <Import Condition="'$(CORE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\core.featureproj" />
+    <Import Condition="'$(DIAGNOSTICS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Diagnostics.featureproj" />
+    <Import Condition="'$(BLOCKSTORAGE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\BlockStorage.featureproj" />
+    <Import Condition="'$(NATIVEEVENTDISPATCHER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\NativeEventDispatcher.featureproj" />
+    <Import Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS' AND '$(NETWORK_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network_LWIP_OS.featureproj" />
+    <Import Condition="'$(HARDWARE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Hardware.featureproj" />
+    <Import Condition="'$(INTERRUPTHANDLER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\InterruptHandler.featureproj" />
+    <Import Condition="'$(STREAM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Stream.featureproj" />
+    <Import Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS' AND '$(HTTP_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\HTTP_LWIP_OS.featureproj" />
+  <!--<Import Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS' AND '$(SSL_OPEN_LWIP_OS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SSL_Open_lwip_os.featureproj" />-->
+    
+    <!--
+    <Import Condition="'$(NETWORK_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Network.featureproj" />
+    <Import Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS' AND '$(SSL_OPEN_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SSL_Open.featureproj" />
+    <Import Condition="'$(NATIVEEVENTDISPATCHER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\NativeEventDispatcher.featureproj" />
+    <Import Condition="'$(SERIALIZATION_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Serialization.featureproj" />
+    <Import Condition="'$(STREAM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Stream.featureproj" />
+    <Import Condition="'$(FILESYSTEM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\FileSystem.featureproj" />
+    <Import Condition="'$(DATASTORAGE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\DataStorage.featureproj" />
+    <Import Condition="'$(GRAPHICS_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Graphics.featureproj" />
+    <Import Condition="'$(TINYCORE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\TinyCore.featureproj" />
+    <Import Condition="'$(TOUCHSCREEN_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\TouchScreen.featureproj" />
+    <Import Condition="'$(DEBUGGER_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Debugger.featureproj" />
+    <Import Condition="'$(SOCKETS_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SOCKETS_Port.featureproj" />
+    <Import Condition="'$(SSL_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Ssl.featureproj" />
+    <Import Condition="'$(USB_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\USB_Port.featureproj" />
+    <Import Condition="'$(USB_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Usb.featureproj" />
+    <Import Condition="'$(INK_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Ink.featureproj" />
+    <Import Condition="'$(SERIAL_PORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\serial_port.featureproj" />
+    <Import Condition="'$(XML_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Xml.featureproj" />
+    <Import Condition="'$(PWM_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\PWM.featureproj" />
+    <Import Condition="'$(ONEWIRE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\OneWire.featureproj" />
+    <Import Condition="'$(SERIALPORT_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SerialPort.featureproj" />
+    <Import Condition="'$(GESTURE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Gesture.featureproj" />
+    <Import Condition="'$(CRYPTO_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\Crypto.featureproj" />
+    <Import Condition="'$(I2C_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\I2C.featureproj" />
+    <Import Condition="'$(SPI_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\SPI.featureproj" />
+    <Import Condition="'$(TIMESERVICE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\TimeService.featureproj" />
+    <Import Condition="'$(MFUPDATE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\MFUpdate.featureproj" />
+    <Import Condition="'$(WEARLEVELING_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\WearLeveling.featureproj" />
+
+    <Import Condition="'$(INTEROPSAMPLE_FEATUREPROJ)'==''" Project="$(SPOCLIENT)\Framework\Features\InteropSample.featureproj" />-->
+
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Interop.Settings" />
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\StartupLib\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="CLRStartup.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\clr\core\serialization\dotNetMF_stub.proj" />
+        <PlatformIndependentLibs Include="Serialization_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Events\dotNetMF.proj" />
+        <DriverLibs Include="events_pal.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- Serialization Interop for mscorlib -->
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT\SPOT_Serialization\dotNetMF_stub.proj" />
+        <PlatformIndependentLibs Include="SPOT_Serialization_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Core.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- Standard PAL Time API Implementation-->
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Time\dotNetMF.proj" />
+        <DriverLibs Include="Time_pal.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\Hardware\InterruptHandler\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="InterruptHandler.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- Required interop layer for mscorlib -->
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\CorLib\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="CorLib.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- Required non-emulated double support (via standard C Runtime APIs ) -->
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Double\dotNetMF.proj" />
+        <DriverLibs Include="native_double_pal.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- include CRC compute code and table, if hardware has CRC computation this can be replaced to reduce the RO data size -->
+        <RequiredProjects Include="$(SPOCLIENT)\Support\CRC\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="CRC.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Diagnostics\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Diagnostics.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- stub out the Weak reference support -->
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\core\HeapPersistence\dotNetMF_stub.proj" />
+        <PlatformIndependentLibs Include="HeapPersistence_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- stub out RPC [TODO: figure out and document what the difference between RPC and the "Messaging" API components are really for -->
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\core\RPC\dotNetMF_Stub.proj" />
+        <PlatformIndependentLibs Include="RPC_stub.$(LIB_EXT)" />
+    </ItemGroup>    
+    <ItemGroup>
+        <!-- stub out the wire protocol "Messaging" used for tinybooter and Debugger -->
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Messaging\dotNetMF_stub.proj" />
+        <PlatformIndependentLibs Include="Messaging_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT\SPOT_Messaging\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Messaging.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Debugger\dotnetmf_stub.proj" />
+        <PlatformIndependentLibs Include="Debugger_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\IOPort\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="IOPort.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\core\Hardware\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Hardware.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\core\I2C\dotNetMF_stub.proj" />
+        <PlatformIndependentLibs Include="I2C_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <!-- NOTE: INCONSISTENCY - the stubs project is in a "stubs" folder and the lib name uses the plural form
+             both of these are inconsistent with other PAL/HAL APIs. (Should fix this)
+        -->
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Watchdog\dotNetMF.proj" />
+        <DriverLibs Include="Watchdog_pal.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Graphics\dotNetMF_stub.proj" />
+        <PlatformIndependentLibs Include="Graphics_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\BlockStorage\dotNetMF.proj" />
+        <DriverLibs Include="blockstorage_pal.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Configuration\dotNetMF.proj" />
+        <DriverLibs Include="config_pal.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Hardware.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Net.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_IO\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_IO.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\Stream\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Stream.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\FS\stubs\config\dotnetmf.proj" />
+        <DriverLibs Include="FS_Config_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\fs\stubs\dotNetMF.proj" />
+        <DriverLibs Include="fs_pal_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+      <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Net_Security\dotNetMF.proj" />
+      <PlatformIndependentLibs Include="SPOT_Net_Security.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+      <RequiredProjects Include="$(SPOCLIENT)\Crypto\stubs\dotNetMF.proj" />
+      <DriverLibs Include="Crypto_stub.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\AsyncProcCall\dotNetMF.proj" />
+        <DriverLibs Include="asyncproccall_pal.$(LIB_EXT)" />
+    </ItemGroup>
+  
+    <!-- lwIP STACK LIBRARIES -->
+    <ItemGroup Condition="'$(TCP_IP_STACK)'=='LWIP_1_4_1_OS'">
+        <RequiredProjects Include="$(SPOCLIENT)\devicecode\drivers\timeservice\stubs\dotNetMF.proj" />
+        <DriverLibs Include="timeservice_hal_stubs.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets_lwip_os\dotNetMF.proj" />
+        <DriverLibs Include="sockets_pal_lwip_os.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_OS\SocketsDriver\dotnetmf.proj" />
+        <DriverLibs Include="SocketsDriver_PAL_LWIP_os.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_OS\LWIP\src\dotnetmf_sockets.proj" />
+        <DriverLibs Include="sockets_hal_sockets_lwIP_os.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_OS\LWIP\src\dotnetmf_dhcp.proj" />
+        <DriverLibs Include="sockets_hal_DHCP_LWIP_os.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_OS\LWIP\src\dotnetmf_tcp.proj" />
+        <DriverLibs Include="sockets_hal_tcp_lwIP_os.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\lwip_1_4_1_OS\LWIP\src\dotnetmf_udp.proj" />
+        <DriverLibs Include="sockets_hal_udp_lwIP_os.$(LIB_EXT)" />
+      
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\lwip_1_4_1_os\arch\dotNetMF.proj" />
+        <DriverLibs Include="lwip_1_4_1_os_win32.$(LIB_EXT)" />
+
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Targets\OS\Win32\DeviceCode\WinPcap_Eth\dotNetMF.proj" />
+        <DriverLibs Include="WinPcap_Eth.$(LIB_EXT)" />
+
+        <RequiredProjects Include="$(SPOCLIENT)\Solutions\Windows\TinyCLR\DeviceCode\Network\WinPcap_Eth_lwIP\dotNetMF.proj" />
+        <DriverLibs Include="WinPcap_Eth_lwIP_driver_config.$(LIB_EXT)" />
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\ssl\stubs\dotNetMF.proj" />
+        <DriverLibs Include="ssl_pal_stubs.$(LIB_EXT)" />
+        <!--<RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\COM\Sockets\openssl\dotNetMF.proj" />
+        <DriverLibs Include="openssl_pal.$(LIB_EXT)" />
+    
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\tinyclr\dotnetmf.proj" />
+        <DriverLibs Include="ssl_types.$(LIB_EXT)" />
+            
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\ssl\dotNetMF.proj" />
+        <DriverLibs Include="libssl_openssl.$(LIB_EXT)" />
+    
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\dotNetMF.proj" />
+        <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
+
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\OpenSSL\dotNetMF.proj" />
+        <DriverLibs Include="OpenSSL_PKCS11_Crypto.$(LIB_EXT)" />
+      
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\dotNetMF.proj" />
+        <DriverLibs Include="PKCS11_Engine.$(LIB_EXT)" />
+        
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleStorage\dotNetMF.proj" />
+        <DriverLibs Include="SimpleStorage_PAL.$(LIB_EXT)" />
+    
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\Stubs\Crypto_Config\dotNetMF.proj" />
+        <DriverLibs Include="Crypto_config_stub.$(LIB_EXT)" />-->
+    </ItemGroup>
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\Stubs\dotnetmf.proj" />
+        <DriverLibs Include="LargeBuffer_hal_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\stubs\dotNetMF.proj" />
+        <DriverLibs Include="SimpleHeap_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\BatteryMeasurement\stubs\dotNetMF.proj" />
+      <DriverLibs Include="batterymeasurement_hal_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\BatteryCharger\stubs\dotNetMF.proj" />
+      <DriverLibs Include="batterycharger_hal_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\BatteryModel\stubs\dotNetMF.proj" />
+      <DriverLibs Include="batterymodel_hal_stubs.$(LIB_EXT)" />
+    </ItemGroup>
+
+    <!--<ItemGroup>
+        --><!-- NOTE: INCONSISTENCY - the stubs project is in a "stubs" folder and the lib name uses the plural form
+             both of these are inconsistent with other PAL/HAL APIs. (Should fix this)
+        --><!--
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Buttons\stubs\dotNetMF.proj" />
+        <DriverLibs Include="Buttons_pal_stubs.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\OpenSSL\OpenSSL_1_0_0\crypto\dotNetMF.proj" />
+        <DriverLibs Include="crypto_openssl.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleStorage\dotNetMF.proj" />
+        <DriverLibs Include="SimpleStorage_PAL.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\OpenSSL\dotNetMF.proj" />
+        <DriverLibs Include="OpenSSL_PKCS11_Crypto.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\Tokens\Legacy\dotNetMF.proj" />
+        <DriverLibs Include="Legacy_Crypto_Token.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\Crypto\dotNetMF.proj" />
+        <DriverLibs Include="Crypto.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\PKCS11\dotNetMF.proj" />
+        <DriverLibs Include="PKCS11_Engine.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\OpenSSL\OpenSSL_1_0_0\tinyclr\dotnetmf.proj" />
+        <DriverLibs Include="ssl_types.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Update\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Update.$(LIB_EXT)" />
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\MFUpdate\dotnetMF.proj" />
+        <DriverLibs Include="MFUpdate_PAL.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Tools\EmulatorInterface\EmulatorInterface.csproj" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\drivers\LargeBuffer\test\dotnetmf.proj" />
+        <DriverLibs Include="LargeBuffer_hal_test.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\stubs\processor\stubs_perfcounter\dotNetMF.proj" />
+        <DriverLibs Include="cpu_performancecounter_stubs.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Graphics\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Graphics.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_Serial\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Hardware_SerialPort.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_Usb\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Hardware_Usb.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_PWM\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Hardware_PWM.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Net.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\System_Xml\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="System_Xml.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Touch\dotnetmf.proj" />
+        <PlatformIndependentLibs Include="SPOT_Touch.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\libraries\spot_net_security\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="SPOT_Net_Security.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_TimeService\dotnetmf.proj" />
+        <PlatformIndependentLibs Include="SPOT_TimeService.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\CorLib\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="CorLib.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Graphics\Jpeg\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Graphics_Jpeg.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Graphics\GIF\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Graphics_Gif.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Graphics\BMP\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Graphics_Bmp.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\Support\WireProtocol\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="WireProtocol.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Core\Xml\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="Xml.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\Support\CRC\dotNetMF.proj" />
+        <PlatformIndependentLibs Include="CRC.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\BlockStorage\WearLeveling\dotnetmf.proj" />
+        <DriverLibs Include="BS_WearLeveling.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Graphics\dotNetMF.proj" />
+        <DriverLibs Include="graphics_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\TouchPanel\dotNetMF.proj" />
+        <DriverLibs Include="TouchPanel_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\palevent\dotNetMF.proj" />
+        <DriverLibs Include="palevent_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Gesture\dotNetMF.proj" />
+        <DriverLibs Include="Gesture_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\Ink\dotNetMF.proj" />
+        <DriverLibs Include="Ink_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\pal\fs\dotNetMF.proj" />
+        <DriverLibs Include="fs_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Drivers\FS\FAT\dotNetMF.proj" />
+        <DriverLibs Include="FS_FAT.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\tools\scripts\port\Sample\InteropSample\InteropNativeCode\dotNetMF.proj" />
+        <DriverLibs Include="SPOT_InteropSample.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\SimpleHeap\dotNetMF.proj" />
+        <DriverLibs Include="SimpleHeap.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\TimeService\dotNetMF.proj" />
+        <DriverLibs Include="TimeService_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\TimeService\driver\dotNetMF.proj" />
+        <DriverLibs Include="timeservice_hal_generic.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\PAL\Diagnostics\dotNetMF.proj" />
+        <DriverLibs Include="diagnostics_pal.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\DeviceCode\Pal\OneWire\Stubs\dotNetMF.proj" />
+        <DriverLibs Include="onewire_pal_stubs.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <!--<ItemGroup>
+        <RequiredProjects Include="$(SPOCLIENT)\CLR\Libraries\SPOT_Hardware\SPOT_OneWire\dotNetMF.proj"  />
+        <PlatformIndependentLibs Include="SPOT_Hardware_OneWire.$(LIB_EXT)" />
+    </ItemGroup>-->
+    <ItemGroup>
+        <HFiles Include="$(PLATFORM_INDEPENDENT_LIB_DIR)\CLR_defines.h" />
+        <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_application.h" />
+        <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_errorcodes.h" />
+        <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_interop.h" />
+        <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_platformdef.h" />
+        <HFiles Include="$(SPOCLIENT)\clr\include\tinyclr_win32.h" />
+        <HFiles Include="$(SPOCLIENT)\crypto\inc\crypto.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\drivers\blockstorage\wearleveling\BS_wearleveling.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\include\mfupdate_decl.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\include\tinyclr_endian.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptoki.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\cryptokipal.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11f.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\pkcs11t.h" />
+        <HFiles Include="$(SPOCLIENT)\devicecode\pal\pkcs11\tokens\legacy\netmfcrypto.h" />
+        <HFiles Include="emulatornative.h" />
+        <HFiles Include="pkcs11.h" />
+        <HFiles Include="stdafx.h" />
+        <HFiles Include="update.h" />
+    </ItemGroup>
+    <Import Project="$(SPOCLIENT)\tools\targets\Microsoft.SPOT.System.Targets" />
+</Project>
