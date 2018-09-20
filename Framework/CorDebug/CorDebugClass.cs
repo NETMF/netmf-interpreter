@@ -122,7 +122,7 @@ namespace Microsoft.SPOT.Debugger
         int ICorDebugClass2.GetParameterizedType( CorElementType elementType, uint nTypeArgs, ICorDebugType []ppTypeArgs, out ICorDebugType ppType )
         {
             // CorDebugClass.GetParameterizedType is not implemented
-            ppType = null;
+            ppType = new CorDebugGenericType(elementType, null, this.Assembly);
 
             return Utility.COM_HResults.S_OK;
         }
